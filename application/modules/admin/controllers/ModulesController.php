@@ -50,7 +50,7 @@ class Admin_ModulesController extends Zend_Controller_Action
 		// On initalise les proprietes
 		$profil= Class_Profil::getLoader()->find($this->id_profil);
 		$cls_module=new Class_Systeme_ModulesAppli();
-		$this->path_templates=".".$profil->getPathTheme()."templates/boites/";
+		$this->path_templates=$profil->getPathTemplates();
 
 		$preferences = $profil->getCfgModulesPreferences($this->type_module, $this->action, $this->action2);
 
