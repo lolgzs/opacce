@@ -295,7 +295,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function getPathTheme()	{
 		$path='/public/'.$this->getBrowser().'/skins/'.$this->getSkin().'/';
 		if(!file_exists(".".$path))
-			$path='/public/'.$this->getBrowser().'/original/';
+			$path='/public/'.$this->getBrowser().'/skins/original/';
 		return $path;
 	}
 
