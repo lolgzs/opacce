@@ -1,0 +1,111 @@
+<?php
+// mode d'emploi
+if($this->mode == "intro")
+{
+	echo '<h2>Mode d\'emploi :</h2>';
+	echo '<b>Sur le site opac2 : </b>' . BR;
+	echo '1 - Tapez l\'url suivante : [URL_DU_SITE]/cms/export.' . BR;
+	echo '2 - Copiez les données contenues dans le champ "contenu du fichier" tout en bas de la page.' . BR . BR;
+	echo '<b>Dans l\'opac3 : </b>' . BR;
+	echo '1 - Collez les données dans le champ ci-dessous.' . BR;
+	echo '2 - Cliquez le bouton : Importer maintenant.' . BR;
+
+	// champ d'import
+	echo '<h2>Données à importer :</h2>';
+	echo '<form action="importavisopac2?mode=submit" method="post">';
+	echo '<textarea name="data_opac2" cols="80" rows="10"></textarea>' . BR . BR;
+	echo '<input type="submit" value="Importer maintenant" style="cursor:pointer;margin-left:10px;">';
+	echo '</form>';
+}
+
+// erreurs
+if ($this->erreur)
+{
+	echo '<h2>Erreur :</h2>';
+	echo '<div class="error">' . $this->erreur . '</div>';
+	echo BR . '<a href="importavisopac2"><input type="button" value="Retour" style="cursor:pointer"></a>';
+}
+
+// import
+elseif ($this->mode == "import")
+{
+	echo '<h2>Import des avis</h2>';
+
+	// id user admin
+	$id_user_admin=fetchOne("select ID_USER from bib_admin_users where role_level>5 order by role_level");
+
+	// parcours des donnnées
+	$data = explode(chr(13) . chr(10), $this->data_opac2);
+	foreach ($data as $ligne)
+	{
+		$nb_total++;
+		$clef_oeuvre="";
+		$ligne=explode(chr(9), $ligne);
+
+		// recherche par ancien id_notice dans les exemplaires
+		$id_origine=$ligne[2];
+		$id_origine=str_repeat("0",(8 - strlen($id_origine))).$id_origine;
+		$id_notice=fetchOne("select id_notice from exemplaires where id_origine='$id_origine'");
+		if($id_notice) $clef_oeuvre=fetchOne("select clef_oeuvre from notices where id_notice=$id_notice");
+
+		// recherche de la notice par son isbn
+		if(!$clef_oeuvre)
+		{
+			$isbn=$ligne[9];
+			$cls_isbn=new Class_Isbn($isbn);
+			$ret=$cls_isbn->getAll();
+			if($ret["statut"]!=2 or !$ret["isbn10"])
+			{
+				$nb_erreur_isbn++;
+				continue;
+			}
+			$notice=fetchEnreg("select id_notice,clef_oeuvre from notices where isbn='".$ret["isbn10"]."' or isbn='".$ret["isbn13"]."'");
+			if(!$notice["id_notice"])
+			{
+				$nb_isbn_not_found++;
+				continue;
+			}
+			$clef_oeuvre=$notice["clef_oeuvre"];
+		}
+
+		// recherche abonné
+		$id_abon=$ligne[0];
+		$ordre_abon=$ligne[1];
+		if(!$id_abon) $id_user=$id_user_admin;
+		else $id_user=fetchOne("select ID_USER from bib_admin_users where IDABON='$id_abon' and ORDREABON=$ordre_abon");
+		if(!$id_user)
+		{
+			$nb_abon_not_found++;
+			$id_user=$id_user_admin;
+		}
+
+		// constitution de l'enreg
+		$enreg["ID_USER"]=$id_user;
+		$enreg["ID_NOTICE"]=$id_notice;
+		$enreg["CLEF_OEUVRE"]=$clef_oeuvre;
+		$enreg["DATE_AVIS"]=$ligne[3];
+		$enreg["DATE_MOD"]=$ligne[4];
+		$enreg["NOTE"]=$ligne[5];
+		$enreg["ENTETE"]=$ligne[6];
+		$enreg["AVIS"]=str_replace("[CRLF]",chr(13).chr(10),$ligne[7]);
+		$enreg["STATUT"]=1;
+		$enreg["ABON_OU_BIB"]=$ligne[10];
+		
+		// écriture de l'enreg
+		$controle=fetchOne("select count(*) from notices_avis where ID_USER=$id_user and CLEF_OEUVRE='$clef_oeuvre'");
+		if($controle) $existe_deja++;
+		else
+		{
+			sqlInsert("notices_avis", $enreg,true);
+			$nb_integre++;
+		}
+	}
+
+	// fini
+	echo 'Avis insérés dans la base : '.$nb_integre." sur ".$nb_total.BR;
+	echo 'Rejetés car existent déjà : '.$existe_deja.BR;
+	echo 'Isbn incorrects : '.$nb_erreur_isbn.BR;
+	echo 'Notices non trouvées : '.$nb_isbn_not_found.BR;
+	echo 'Abonnés non trouvés : '.$nb_abon_not_found.BR;
+}
+?>

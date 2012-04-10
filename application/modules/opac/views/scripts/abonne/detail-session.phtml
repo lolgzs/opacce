@@ -1,0 +1,67 @@
+<?php 
+echo $this->openBoite(sprintf('Formation %s: session du %s',
+															$this->session->getLibelleFormation(),
+															$this->humanDate($this->session->getDateDebut(), 
+																							 'd MMMM yyyy')));
+
+?>
+
+<dl class="session_formation">
+	<dt><?php echo $this->_('Lieu') ?></dt>
+	<dd><?php echo $this->session->getLieu() ?></dd>
+
+
+	<dt><?php echo $this->_('Horaires') ?></dt>
+	<dd><?php echo $this->session->getHoraires() ?></dd>
+
+
+	<dt><?php echo $this->_('Nombre de Participants') ?></dt>
+	<dd>
+	<?php 
+	  echo sprintf('%s: %d, %s: %d, %s: %d',
+								 $this->_('minimum'),
+								 $this->session->getEffectifMin(),
+								 $this->_('maximum'),
+								 $this->session->getEffectifMax(),
+								 $this->_('actuel'),
+								 $this->session->getNbStagiaires());
+	?>
+	</dd>
+
+	<dt><?php echo $this->_('Intervenants') ?></dt>
+	<dd>
+	  <ul>
+	  <?php
+	  foreach ($this->session->getIntervenants() as $intervenant)
+		  echo sprintf('<li>%s</li>', $intervenant->getNomAff());
+    ?>
+    </ul>
+	</dd>
+
+	<dt><?php echo $this->_('Durée de la session') ?></dt>
+	<dd><?php echo sprintf('%d h', $this->session->getDuree()) ?></dd>
+
+
+	<dt><?php echo $this->_('Contenu') ?></dt>
+	<dd><?php echo $this->session->getContenu() ?></dd>
+
+	<dt><?php echo $this->_('Objectif') ?></dt>
+	<dd><?php echo $this->session->getObjectif() ?></dd>
+</dl>
+
+
+
+<div class='actions'>
+<?php
+echo $this->tagSessionFormationInscription($this->session); 
+
+echo $this->tagAnchor($this->url(array('controller' => 'abonne',
+																			 'action' => $this->retour_action),
+																 null,
+																 true),
+											$this->_('Retour'));
+
+?>
+</div>
+
+<?php echo $this->closeBoite(); ?>

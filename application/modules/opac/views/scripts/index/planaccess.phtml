@@ -1,0 +1,52 @@
+<script src="<?php echo URL_JS?>plan_acces.js"> </script>
+<?php	echo $this->mapEvents(); ?>
+<script
+	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->googleKey?>"
+	type="text/javascript"></script>
+
+<link rel="stylesheet"
+	type="text/css" media="screen"
+	href="<?php echo URL_ADMIN_CSS;?>map.css" />
+
+<script type="text/javascript">
+function initOCouches()
+{
+<?php echo $this->oCouches; ?>
+return oCouches;
+}
+
+function initHIcone()
+{
+<?php echo $this->hIcone; ?>
+return hIcone;
+}
+
+</script>
+<div>
+<span id="abonne_erreur" class="abonne"><?php echo $this->traduire($this->message); ?></span>
+
+<?php $this->openBoite("Plan d'accès")?>
+<table class="map">
+	<tr>
+		<td>
+		<ul class="map">
+
+		<?php for($couche=1; $couche<=count($this->map["couches"]); $couche++)
+		{
+			echo ('<a href="javascript:afficher_couche('.$couche.')"><li>'.stripslashes($this->map["couches"][$couche]["titre"]).'</li></a>');
+		} ?>
+
+		</ul>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+		<div id="map" style="width: 630px; height: 570px"></div>
+		</td>
+	</tr>
+
+</table>
+</div>
+
+<?php $this->closeBoite(); ?>

@@ -1,0 +1,82 @@
+<center>
+<h1>Propriétés du module sithothèque</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+				
+				<tr>
+					<td class="droite">Style de boite&nbsp;</td>
+					<td class="gauche"><?php echo $this->combo_templates ?></td>
+				</tr>
+				
+			</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+			<legend>Généralités</legend>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite">Titre&nbsp;</td>
+					<td class="gauche"><input type="text" name="titre" size="50" value="<?php print($this->preferences["titre"]); ?>"></td>
+				</tr>
+			</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+					<legend>Sites à afficher</legend>
+					<table cellspacing="2" width="100%">
+						<tr>
+							<td class="droite" width="90px">Type&nbsp;</td>
+							<td class="gauche">
+								<?php 
+									$onchange="$('.treeselect').treeselect('toggleVisibility', (this.value == '1'));";
+									echo $this->formSelect("type_aff",
+																				 $this->preferences["type_aff"],
+																				 array("onchange" => $onchange),
+																				 array("1" => "Une sélection de catégories ou de sites",
+																							 "2" => "Les sites les plus récents")) 
+								?>
+							</td>
+						</tr>
+					</table>
+						
+					<div	id="table_selection">
+						<?php	
+								echo $this->treeSelect(
+																	$this->preferences["id_items"],
+																	$this->preferences["id_categorie"],
+																	($this->preferences["type_aff"] == "1"),
+																	BASE_URL.'/admin/bib/allitems?id_bib='.$this->id_bib.'&type=sito',
+																	"form");
+							?>							
+					</div>
+
+					<table cellspacing="2" width="100%">
+					<tr id='option_nb_aff'>
+						<td class="droite" width="90px">Nbre à afficher&nbsp;</td>
+						<td class="gauche"><input type="text" name="nb_aff" size="3" maxlength="3" value="<?php print($this->preferences["nb_aff"]); ?>"></td>
+					</tr>
+
+					<tr>
+						<td class="droite" width="90px">Grouper par catégorie&nbsp;</td>
+						<td class="gauche">
+						<?php
+										echo $this->formCheckbox('group_by_categorie', 
+																						 null, 
+																						 array('checked' => $this->preferences["group_by_categorie"]));
+						?>
+						</td>
+					</tr>
+				</table>
+				
+			</fieldset>
+			<br />
+				
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+	</form>
+ </div>

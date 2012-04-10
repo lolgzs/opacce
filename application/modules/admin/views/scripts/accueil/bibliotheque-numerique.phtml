@@ -1,0 +1,92 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $('input[name="type_aff"]').click(function (event) {
+   $('tr.displayOptions').hide();
+   $('tr.' + $(this).val() + 'Options').show();
+  });
+
+  $('input:checked[name="type_aff"]').click();
+});
+</script>
+
+<center>
+<h1>Propriétés de la bibliothèque numérique</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+		<fieldset>
+			<legend>Général</legend>
+			<table cellspacing="2">    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+				<tr>
+    			<td class="droite">Titre de la boite&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="52" value="<?php echo $this->escape($this->preferences["titre"]); ?>"></td>
+    		</tr>
+  		</table>
+		</fieldset>
+		<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Type d'affichage</td>
+    			<td class="gauche"><?php echo $this->formRadio('type_aff', 
+					                                               $this->preferences['type_aff'], 
+					                                               array(), 
+					                                               $this->displayModes);	?></td>
+    		</tr>
+    		<tr class="displayTreeOptions displayOptions" style="display:none;" >
+    			<td class="droite">Collection </td>
+    			<td class="gauche"><?php
+
+					$multiOptions = array('' => 'Toutes les collections');
+					foreach ($this->categories as $categorie) {
+					  $multiOptions[$categorie->getId()] = $categorie->getLibelle();
+					}
+
+					echo $this->formSelect('id_categories', $this->preferences['id_categories'], array(), $multiOptions);
+					?></td>
+    		</tr>
+    		<tr class="displayAlbumTeaserOptions displayOptions" style="display:none;" >
+    			<td class="droite">Album </td>
+    			<td class="gauche"><?php
+					$multiOptions = array();
+					foreach ($this->albums as $album) {
+					  $hierarchy = $album->getHierarchy();
+						$hierarchy = array_reverse($hierarchy);
+						$parents = array();
+						foreach ($hierarchy as $parent) {
+						  $parents[] = $parent->getLibelle();
+						}
+
+					  $multiOptions[$album->getId()] = implode(' > ', $parents) . ' > ' . $album->getTitre();
+					}
+
+					echo $this->formSelect('id_albums', $this->preferences['id_albums'], array(), $multiOptions);
+					?></td>
+    		</tr>
+				<tr class="displayAlbumTeaserOptions displayOptions" style="display:none;">
+    			<td class="droite" valign="top">Style de représentation&nbsp;</td>
+    			<td class="gauche"><?php echo $this->imageViewersOptions($this->preferences)?></td>
+    		</tr>
+    		<tr class="displayAlbumTeaserOptions displayOptions" style="display:none;" >
+    			<td class="droite">Nb d'images à afficher</td>
+    			<td class="gauche"><?php
+						echo $this->formText('nb_aff', $this->preferences['nb_aff'], array('size' => '4'));
+					?></td>
+    		</tr>
+    		<tr class="displayAlbumTeaserOptions displayOptions" style="display:none;" >
+    			<td class="droite">Mode de tri </td>
+    			<td class="gauche"><?php
+						echo $this->formRadio('order',
+																	$this->preferences['order'], 
+																	array(), 
+																	$this->orderModes);
+					?></td>
+    		</tr>
+			</table>
+		</fieldset>
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>

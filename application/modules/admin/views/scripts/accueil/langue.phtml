@@ -1,0 +1,24 @@
+<center>
+<h1>Propriétés d'affichage du sélecteur de langue</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+		
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+				<tr>
+    			<td class="droite">Titre de la boite&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="52" value="<?php print($this->preferences["titre"]); ?>"></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>
+
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>

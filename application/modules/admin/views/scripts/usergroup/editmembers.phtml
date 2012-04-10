@@ -1,0 +1,8 @@
+<?php 
+echo $this->getHelper('SubscribeUsers')->render(); 
+
+echo $this->bouton('id=close',
+									 'type=RETOUR',
+									 'url='.$this->url(array('module' => 'admin',
+																					 'controller' => 'usergroup'), null, true));
+?>

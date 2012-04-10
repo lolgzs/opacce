@@ -1,0 +1,104 @@
+<script src="<?php echo URL_ADMIN_JS?>common.js"> </script>
+<script src="<?php echo URL_ADMIN_JS?>subModal.js"> </script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS?>subModal.css" />
+
+<div class="form">
+	<form name="form" action="<?php echo BASE_URL ?>/admin/users/<?php print($this->action."/id/".$this->id_user); ?>"method="post">
+		<fieldset>
+			<legend><?php echo $this->traduire('Utilisateur'); ?></legend>
+			<span id="abonne_erreur" class="abonne"><?php echo $this->erreurs; ?></span>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite">Identifiant&nbsp;*</td>
+					<td class="gauche"><input type="text" name="username" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape($this->user->getLogin());?>" maxlength="20"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Mot de passe&nbsp;*</td>
+					<td class="gauche"><input type="text" name="password" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape($this->user->getPassword());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Nom&nbsp;</td>
+					<td class="gauche"><input type="text" name="nom" size="50" value="<?php echo $this->escape($this->user->getNom());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Prénom&nbsp;</td>
+					<td class="gauche"><input type="text" name="prenom" size="50" value="<?php echo $this->escape($this->user->getPrenom());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite"><?php echo $this->traduire('Rôle'); ?>&nbsp;</td>
+					<td class="gauche">
+						<?php $comboListeRole = new ZendAfi_Acl_AdminControllerRoles();
+          	if ($this->user->getId() == '1') 
+						  echo '<select disabled="disabled"><option selected="selected" value="7">super_admin</option></select><input type="hidden" value="7" name="role" id="role"/>';
+						else 
+						  print $comboListeRole->rendCombo($this->user->getRole(),$this->authUser->ROLE_LEVEL); 
+						?>
+
+					</td>
+				</tr>
+				<tr id="option_bib">
+					<td class="droite">Bibliothèque&nbsp;</td>
+					<td class="gauche">
+						<?php
+							if (($this->user->getRoleLevel() <= ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) and ($bib = Class_Bib::getLoader()->find($this->id_bib))) {
+								echo '<select disabled="disabled"><option selected="selected" value="'.$this->id_bib.'">'.$bib->LIBELLE.'</option></select>
+									<input type="hidden" value="'.$this->id_bib.'" name="bib" id="bib"/>';
+							}	else {
+								$bib = new Class_Bib();
+								echo $bib->getComboBib($this->user->getIdSite());  
+							}
+						?>
+						<script type="text/javascript">
+							formSelectToggleVisibilityForElement("select[name='role']",
+																									 "#option_bib", 
+																									 ["2", "3", "4"]);
+							formSelectToggleVisibilityForElement("select[name='role']",
+																									 "#abonne_sigb", "2");
+						</script>
+					</td>
+				</tr>
+				<tr>
+					<td class="droite">E-mail&nbsp;</td>
+					<td class="gauche"><input type="text" name="mail" size="50" value="<?php echo $this->escape($this->user->getMail());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Téléphone&nbsp;</td>
+					<td class="gauche"><input type="text" name="telephone" size="50" value="<?php echo $this->escape($this->user->getTelephone());?>"/></td>
+				</tr>
+			</table>
+		</fieldset>
+
+		<fieldset id="abonne_sigb">
+			<legend><?php echo $this->traduire('Abonné sigb'); ?></legend>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite" style="width:150px">Numéro de carte&nbsp;</td>
+					<td class="gauche"><input type="text" name="id_abon" value="<?php echo $this->escape($this->user->getIdabon());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Ordre&nbsp;</td>
+					<td class="gauche"><input type="text" name="ordre" size="3" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape($this->user->getOrdreabon());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Abonnement valide - du&nbsp;</td>
+					<td class="gauche"><?php echo formatDate($this->user->getDateDebut(),1);?></td>
+				</tr>
+				<tr>
+					<td class="droite">au&nbsp;</td>
+					<td class="gauche"><?php echo formatDate($this->user->getDateFin(),1);?></td>
+				</tr>
+			</table>
+
+			<input type="hidden" name="id" value="<?php echo $this->user->getId(); ?>" />
+		</fieldset>
+
+		<table>
+			<tr>
+				<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+				<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/users?z='.$this->id_zone.'&b='.$this->id_bib,'largeur=120px'); ?></td>
+			</tr>
+		</table>
+	</form>
+</div>
+

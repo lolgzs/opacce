@@ -1,0 +1,4 @@
+auto=2
+largeur_img=90
+hauteur_img=120
+scroll=1

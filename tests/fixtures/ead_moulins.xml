@@ -1,0 +1,4163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead>
+	<archdesc>
+		<dsc>
+			<c id="D09030001" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">1</unitid>
+					<unittitle>Biblia sacra (<emph render="italic">Bible de
+						Souvigny</emph>)</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1101/1200">XII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>392 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<physfacet type="illustration">122 enluminures</physfacet>
+						<dimensions unit="mm">560 × 390 mm</dimensions>
+						<physfacet type="reliure">Reliure restaurée en 1980 par la BN. Reliure en
+							bois recouverte de cuir, les ornements anciens en métal ciselé ont été
+							déposés sur une plaque indépendante</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>L'importance de cette Bible nous a engagé à en donner la description
+						détaillée. Fol. 46 v<emph render="super">o</emph> Le folio de cette Bible a
+						été reproduit en photogravure dans la collection de fac-simile de l'École
+						des chartes, n<emph render="super">o</emph> 121.</p>
+				</scopecontent>
+				<custodhist>
+					<p>Souvigny, Prieuré</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Souvigny</geogname>
+					<name>Prieuré</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Bible de Souvigny</subject>
+				</controlaccess>
+				<controlaccess>
+					<subject>Bible de Souvigny</subject>
+					<name>Description détaillée</name>
+				</controlaccess>
+				<c id="D09030002" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>« [Hieronymus Paulino : ]... avissimas litteras que...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030003" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 3</unitid>
+						<unittitle>« Praefatio in Pentateuchum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030004" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 3 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula Genesis »</unittitle>
+					</did>
+				</c>
+				<c id="D09030005" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 4 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Genesis »</unittitle>
+					</did>
+				</c>
+				<c id="D09030006" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 22</unitid>
+						<unittitle>« Capitula Exodi »</unittitle>
+					</did>
+				</c>
+				<c id="D09030007" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 22 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Exodus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030008" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 26 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Leviticus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030009" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 46 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Numeri »</unittitle>
+					</did>
+				</c>
+				<c id="D09030010" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 60</unitid>
+						<unittitle>« Capitula Deuteronomii »</unittitle>
+					</did>
+				</c>
+				<c id="D09030011" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 61</unitid>
+						<unittitle>« Deuteronomium »</unittitle>
+					</did>
+				</c>
+				<c id="D09030012" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 72 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula [Jesu Nave] »</unittitle>
+					</did>
+				</c>
+				<c id="D09030013" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 73</unitid>
+						<unittitle>« Jesu Nave »</unittitle>
+					</did>
+				</c>
+				<c id="D09030014" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 81 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula Judicum. » — <emph render="italic">Ibid.</emph> «
+							Liber Judicum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030015" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 90</unitid>
+						<unittitle>« Ruth »</unittitle>
+					</did>
+				</c>
+				<c id="D09030016" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 91 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prefacio in libro Regum [Prologus galeatus] »</unittitle>
+					</did>
+				</c>
+				<c id="D09030017" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 92</unitid>
+						<unittitle>« Capitula [95 cap.]. »</unittitle>
+					</did>
+				</c>
+				<c id="D09030018" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 93</unitid>
+						<unittitle>« Liber Regum primus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030019" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 105 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber Regum secundus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030020" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 114 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber Regum tertius »</unittitle>
+					</did>
+				</c>
+				<c id="D09030021" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 126</unitid>
+						<unittitle>« Liber Regum quartus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030022" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 136</unitid>
+						<unittitle>« Prologus in Ysaia. » — <emph render="italic">Ibid</emph>. «
+							Ysaias. » (A la fin d'Isaïe : « Habet versus II ̅I ̅ DLXXX.
+							»)</unittitle>
+					</did>
+				</c>
+				<c id="D09030023" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 150 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus in Hieremia »</unittitle>
+					</did>
+				</c>
+				<c id="D09030024" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 150 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Hieremias »</unittitle>
+					</did>
+				</c>
+				<c id="D09030025" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 168</unitid>
+						<unittitle>« Lamentatio »</unittitle>
+					</did>
+				</c>
+				<c id="D09030026" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 169 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Oratio »</unittitle>
+					</did>
+				</c>
+				<c id="D09030027" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 170</unitid>
+						<unittitle>« Prologus in Hiezechiel »</unittitle>
+					</did>
+				</c>
+				<c id="D09030028" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 170</unitid>
+						<unittitle>« Hiezechiel »</unittitle>
+					</did>
+				</c>
+				<c id="D09030029" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 185</unitid>
+						<unittitle>« Prologus in Daniele »</unittitle>
+					</did>
+				</c>
+				<c id="D09030030" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 185 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Daniel »</unittitle>
+					</did>
+				</c>
+				<c id="D09030031" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 191 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus XII<emph render="super">cim</emph> Prophetarum
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030032" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 191 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Osee »</unittitle>
+					</did>
+				</c>
+				<c id="D09030033" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 193 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Johel »</unittitle>
+					</did>
+				</c>
+				<c id="D09030034" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 194 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Amos »</unittitle>
+					</did>
+				</c>
+				<c id="D09030035" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 196</unitid>
+						<unittitle>« Abdias »</unittitle>
+					</did>
+				</c>
+				<c id="D09030036" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 196 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Jonas »</unittitle>
+					</did>
+				</c>
+				<c id="D09030037" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 197</unitid>
+						<unittitle>« Michas »</unittitle>
+					</did>
+				</c>
+				<c id="D09030038" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 198</unitid>
+						<unittitle>« Naum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030039" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 198 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Abacuc »</unittitle>
+					</did>
+				</c>
+				<c id="D09030040" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 199 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Sophonias »</unittitle>
+					</did>
+				</c>
+				<c id="D09030041" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 200</unitid>
+						<unittitle>« Ageus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030042" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 200 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Zacharias »</unittitle>
+					</did>
+				</c>
+				<c id="D09030043" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 203</unitid>
+						<unittitle>« Malachias »</unittitle>
+					</did>
+					<scopecontent>
+						<p>(A la fin de Malachie : « Prophetarum duodecim versus sunt II̅I DCCC.
+							»)</p>
+					</scopecontent>
+				</c>
+				<c id="D09030044" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 203 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus in Job »</unittitle>
+					</did>
+				</c>
+				<c id="D09030045" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 204</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030046" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 204 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Job »</unittitle>
+					</did>
+				</c>
+				<c id="D09030047" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 212 v<emph render="super">o</emph>
+						</unitid>
+					</did>
+					<scopecontent>
+						<p>(A la fin de Job, Fol. 212 v<emph render="super">o</emph> : « Job quoque
+							exemplar pacientiæ... — ...spes mea in sinu meo. Hæc Jeronimus de Job.
+							»)</p>
+					</scopecontent>
+				</c>
+				<c id="D09030048" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 213</unitid>
+						<unittitle>« In Hebreo libri Psalmorum cytra numeri adjectionem descripti
+							sunt omnes... et de manu Saul »</unittitle>
+					</did>
+				</c>
+				<c id="D09030049" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 213</unitid>
+						<unittitle>« David filius Jesse cum esset in regno... quia David dictus est
+							Christus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030050" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 213 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Psalterium Rome dudum positus emendaram... — ...de purissimo
+							fonte potare »</unittitle>
+					</did>
+				</c>
+				<c id="D09030051" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 213 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Scio quosdam putare psalterium... et meminisse mei
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030052" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 213 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Damasus episcopus... Hieronimo... Dum multa corpora librorum...
+							habere scientiam nescientiam »</unittitle>
+					</did>
+				</c>
+				<c id="D09030053" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 214</unitid>
+						<unittitle>« Hieronimus Marcelle. Nudius tercius cum centesimum... sanctius
+							est sacramentum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030054" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 214 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Psalterium grecum est et in latino... pusillus eram inter
+							fratres meos »</unittitle>
+					</did>
+				</c>
+				<c id="D09030055" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 214 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Cuamvis totius textus psalterii... l. CI. CXXVIII. CXLII
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030056" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 214 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Beatissimo papae Damaso... Hieronimus. Simplex legi litteras...
+							semper canatur »</unittitle>
+					</did>
+				</c>
+				<c id="D09030057" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 214 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« David filius Jesse cum esset in regno... omnis spiritus laudet
+							Dominum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030058" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 215</unitid>
+						<unittitle>Psalmi I-CL</unittitle>
+					</did>
+				</c>
+				<c id="D09030059" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 225 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>[Præfatio Parabolarum.] « Jungat epistola... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030060" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 226</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030061" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 226 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber Proverbiorum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030062" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 232 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitulatio Ecclesiastis »</unittitle>
+					</did>
+				</c>
+				<c id="D09030063" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 232 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Ecclesiastes »</unittitle>
+					</did>
+				</c>
+				<c id="D09030064" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 235</unitid>
+						<unittitle>« Cantica canticorum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030065" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 236 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitulatio Sapientiae »</unittitle>
+					</did>
+				</c>
+				<c id="D09030066" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 236 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Sapientia »</unittitle>
+					</did>
+				</c>
+				<c id="D09030067" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 241 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus libri Ihesu filii Sirach »</unittitle>
+					</did>
+				</c>
+				<c id="D09030068" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 242</unitid>
+						<unittitle>« Ecclesiasticus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030069" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 254 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prefatio in Verba dierum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030070" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 255</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030071" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 256</unitid>
+						<unittitle>« Verba dierum [lib. I] »</unittitle>
+					</did>
+				</c>
+				<c id="D09030072" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 264 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula [lib. II] »</unittitle>
+					</did>
+				</c>
+				<c id="D09030073" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 265</unitid>
+						<unittitle>« Paralipomenon liber II »</unittitle>
+					</did>
+				</c>
+				<c id="D09030074" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 276</unitid>
+						<unittitle>« Prefatio in Esdra »</unittitle>
+					</did>
+				</c>
+				<c id="D09030075" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 276 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Hesdras »</unittitle>
+					</did>
+					<scopecontent>
+						<p>Livres I et II, seulement ; au milieu, petit titre : « Verba Nehemie
+							filii Alchiæ »</p>
+					</scopecontent>
+				</c>
+				<c id="D09030076" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 279 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>)</unittitle>
+					</did>
+				</c>
+				<c id="D09030077" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 284</unitid>
+						<unittitle>« Prefatio in Hester »</unittitle>
+					</did>
+				</c>
+				<c id="D09030078" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 284</unitid>
+						<unittitle>« Hester »</unittitle>
+					</did>
+				</c>
+				<c id="D09030079" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 288</unitid>
+						<unittitle>« Prefatio Tobie »</unittitle>
+					</did>
+				</c>
+				<c id="D09030080" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 288 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Tobie »</unittitle>
+					</did>
+				</c>
+				<c id="D09030081" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 291 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prefatio in Judith »</unittitle>
+					</did>
+				</c>
+				<c id="D09030082" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 292</unitid>
+						<unittitle>« Judith »</unittitle>
+					</did>
+				</c>
+				<c id="D09030083" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 296</unitid>
+						<unittitle>« Proemium in libro Machabeorum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030084" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 296</unitid>
+						<unittitle>« Liber Machabeorum primus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030085" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 306</unitid>
+						<unittitle>« Capitula libri secundi »</unittitle>
+					</did>
+				</c>
+				<c id="D09030086" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 306 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber Machabeorum secundus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030087" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 314</unitid>
+						<unittitle>Canons des Évangiles</unittitle>
+					</did>
+					<scopecontent>
+						<p>Au bas de la dernière colonne de droite, à la fin des canons, Fol. 316,
+							on a tracé à la pointe, sur le fond bleu, la date MCXV.</p>
+					</scopecontent>
+				</c>
+				<c id="D09030088" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 317</unitid>
+						<unittitle>Præfatio in Evangelium. « Novum opus facere... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030089" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 317</unitid>
+						<unittitle>« Item aliud argumentum. Sciendum tamen ne quis ignarum...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030090" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 317 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus quatuor Evangeliorum. Plures fuisse qui...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030091" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 317 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus in Matheum. Matheum ex Judea... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030092" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 318</unitid>
+						<unittitle>Capitula in Matthaei evangelium</unittitle>
+					</did>
+				</c>
+				<c id="D09030093" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 318</unitid>
+						<unittitle>Evangelium Matthæi</unittitle>
+					</did>
+				</c>
+				<c id="D09030094" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 325</unitid>
+						<unittitle>« Prologus in Marci evangelium. Marcus evangelista Dei...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030095" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 325</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030096" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 325</unitid>
+						<unittitle>Evangelium Marci</unittitle>
+					</did>
+				</c>
+				<c id="D09030097" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 329</unitid>
+						<unittitle>« Prologus in Lucæ evangelium. Lucas natione Syrus...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030098" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 329</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030099" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 329 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Evangelium Lucae</unittitle>
+					</did>
+				</c>
+				<c id="D09030100" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 336 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus in Johannis evangelium. Hic est Johannes
+							evangelista... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030101" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 336 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030102" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 336 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Evangelium Johannis</unittitle>
+					</did>
+				</c>
+				<c id="D09030103" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 342</unitid>
+						<unittitle>« Prefatio in Actus apostolorum. Lucas Syrus natione cujus
+							laus... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030104" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 342</unitid>
+						<unittitle>« Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030105" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 342 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Actus apostolorum »</unittitle>
+					</did>
+				</c>
+				<c id="D09030106" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 353</unitid>
+						<unittitle>« Prologus septem epistolarum canonicarum. Non ita mos est apud
+							Grecos... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030107" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 353</unitid>
+						<unittitle>« Capitula epistolæ sancti Jacobi »</unittitle>
+					</did>
+				</c>
+				<c id="D09030108" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 353</unitid>
+						<unittitle>« Epistola sancti Jacobi »</unittitle>
+					</did>
+				</c>
+				<c id="D09030109" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 354 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula S. Petri [epistol.] I. » — Epistolæ</unittitle>
+					</did>
+				</c>
+				<c id="D09030110" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 355 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Breves epistolæ secundæ. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030111" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 356 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Breves epistolæ sancti Johannis I. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030112" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 357 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula epistole secunde. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030113" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 358</unitid>
+						<unittitle>« Breves epistolæ tertiæ. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030114" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 358 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula [epistolæ Judæ]. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030115" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 358 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prefatio in Apocalypsis »</unittitle>
+					</did>
+				</c>
+				<c id="D09030116" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 359</unitid>
+						<unittitle>« Capitula. » — « Apocalipsis »</unittitle>
+					</did>
+				</c>
+				<c id="D09030117" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 364</unitid>
+						<unittitle>« Capitula in epistola ad Romanos »</unittitle>
+					</did>
+				</c>
+				<c id="D09030118" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 364 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in epistola ad Romanos. Epistole Pauli ad Romanos...
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030119" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 364 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Aliud argumentum. Primum queritur quare... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030120" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 365</unitid>
+						<unittitle>« Item aliud argumentum solius epistole ad Romanos. Romani sunt
+							qui ex Judeis... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030121" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 365 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in epistola ad Romanos. Romani sunt in partibus
+							Italie... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030122" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 365 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Epistola ad Romanos</unittitle>
+					</did>
+				</c>
+				<c id="D09030123" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 369</unitid>
+						<unittitle>« Argumentum ad Cor. I. Corinthi sunt... » — « Capitula
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030124" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 369 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030125" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 373</unitid>
+						<unittitle>« Argumentum in Cor. II. Post actam penitentiam... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030126" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 373 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030127" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 376</unitid>
+						<unittitle>« Argumentum ad Galat. Galate sunt Greci... » — « Capitula. » —
+							Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030128" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 377 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in Ephes. Ephesii sunt Asiani... » — « Capitula. » —
+							Epistola. — Fol. 379. « Argumentum in Philipp. Philippenses Macedones
+							sunt... » — « Capitula. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030129" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 380</unitid>
+						<unittitle>« Argumentum ad Coloss. Colossenses et hi sicut Laodicenses... »
+							— « Capitula »</unittitle>
+					</did>
+				</c>
+				<c id="D09030130" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 380 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030131" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 381</unitid>
+						<unittitle>« Argumentum in epistola ad Tessalonicenses »</unittitle>
+					</did>
+				</c>
+				<c id="D09030132" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 381 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Capitula. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030133" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 382 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in epistola ad Thessalonicenses secunda. » — «
+							Capitula. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030134" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 382</unitid>
+						<unittitle>« Argumentum in epistola ad Timotheum I. » — « Capitula
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030135" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 383 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030136" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 384 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in Timoth. II. » — « Capitula. » —
+							Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030137" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 385 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in epistola ad Titum. » — « Capitula. » —
+							Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030138" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 386</unitid>
+						<unittitle>« Argumentum in Philemonem. » — « Capitula. » —
+							Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030139" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 386 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Argumentum in Hebreos. » — « Capitula. » — Epistola</unittitle>
+					</did>
+				</c>
+				<c id="D09030140" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 389 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Epistola ad Laodicenses »</unittitle>
+					</did>
+				</c>
+				<c id="D09030141" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 390</unitid>
+						<unittitle>« Liber Baruc notarii Iheremie prophete de oratione et sacrificio
+							pro vita Nabucodonosor. Hec verba libri quæ scripsit Baruch... —
+							...longe ab opprobriis »</unittitle>
+					</did>
+
+				</c>
+			</c>
+			<c id="D09030142" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">2</unitid>
+					<unittitle>« Codicis domini Justiniani » libri I-IX, cum glossis</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>5 et 297 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<physfacet type="illustration">Les lettres historiées ont été découpées sauf
+							deux lettres ornées de rinceaux</physfacet>
+						<dimensions unit="mm">445 × 290 mm</dimensions>
+						<physfacet type="reliure">Reliure ais de bois recouverts de peau retournée
+							marron. Restauration BN 1954</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Justinien Ier (empereur de Byzance ; 0482-0565)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb12055108q"
+						>Justinien</persname>
+					<title>Code avec gloses</title>
+				</controlaccess>
+			</c>
+			<c id="D09030143" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">3</unitid>
+					<unittitle>Decreti Gratiani partes II et III, cum glossis</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>353 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<physfacet type="illustration">Nombreuses illustrations
+							découpées</physfacet>
+						<dimensions unit="mm">445 × 290 mm</dimensions>
+						<physfacet type="reliure">Reliure retaurée par la BN en 1951. Ais de bois
+							recouverts de papier, dos cuir</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Au verso du dernier feuillet, on lit : « Explicit Decretum per manum « Jo.
+						Ortolani » ; — et plus bas : « Fuit expletum per manum Jo. Or« tolani, anno
+						Domini M<emph render="super">o</emph> CCC<emph render="super">o</emph>
+							XLI<emph render="super">o</emph>, et die V<emph render="super">a</emph>
+						julii. »</p>
+				</scopecontent>
+				<controlaccess>
+					<persname role="070">Gratien</persname>
+					<title>Decretum</title>
+				</controlaccess>
+				<controlaccess>
+					<persname role="700">Ortolani (Jo.), copiste</persname>
+				</controlaccess>
+			</c>
+			<c id="D09030144" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">4</unitid>
+					<unittitle>« Innocentius [IV papa] super quinque libros Decretalium » (fragment
+						du livre II)</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>12 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<dimensions unit="mm">425 × 280 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Innocent IV (pape ; 1200?-1254)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb134836787">Innocent IV,
+						pape</persname>
+					<title>Apparatus in Decretales</title>
+				</controlaccess>
+			</c>
+			<c id="D09030145" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">5</unitid>
+					<unittitle>« Recueil des armoiries des premiers et anciens pairs, que jadiz on
+						nommoit et appelloit les douze pairs de France, et celles des modernes ducz,
+						pairs et non pairs, ... le tout recueilli et mis en ordre par le sieur de
+						Valles, de la ville de Chartres en Beauce, résidant à Lion, ... Paris, 1633
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>96 feuillets</extent>
+						<dimensions unit="mm">435 × 330 mm</dimensions>
+						<physfacet type="reliure">Reliure maroquin rouge</physfacet>
+						<physfacet type="illustration">Aquarelles</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Au Fol. 35, portrait de Louis XIII, à l'aquarelle.</p>
+				</scopecontent>
+				<controlaccess>
+					<persname>Louis XIII, roi de France</persname>
+					<name>Portrait à l'aquarelle</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Valles (De)</persname>
+					<title>Recueil des armoiries des douze pairs de France et des ducs modernes,
+						pairs et non pairs</title>
+				</controlaccess>
+			</c>
+			<c id="D09030146" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">6</unitid>
+					<unittitle>« Lettre à un appelant de la Constitution Unigenitus, ensemble «
+						repliques à diverses observations critiques faites sur cette lettre, par «
+						M. l'abbé... » (le R. P. Prévost, ex-provincial des Augustins de
+						Paris)</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>106 et 293 pages</extent>
+						<dimensions unit="mm">415 × 265 mm</dimensions>
+						<physfacet type="reliure">Reliure peau</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Augustins de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<corpname>Augustins</corpname>
+				</controlaccess>
+				<controlaccess>
+					<persname>Prévost, Le Père, ex-provincial des Augustins de Paris</persname>
+					<title>Lettre à un appelant de la constitution Unigenitus</title>
+				</controlaccess>
+			</c>
+			<c id="D09030147" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">7</unitid>
+					<unittitle>Jean Germain. Trésor des simples</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>229 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<physfacet type="décoration">Au bas du folio 1 est peint un écu, <emph
+								render="italic">d'azur à une étoile d'or, au chef de gueules chargé
+								de deux croissants d'or.</emph></physfacet>
+						<dimensions unit="mm">384 × 280 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Au commencement et à la fin du volume on lit la signature « Bellossier »</p>
+				</scopecontent>
+				<custodhist>
+					<p>Capucins de Moulins</p>
+				</custodhist>
+				<bioghist>
+					<p>Oudard Bellossier fut conseiller-auditeur à la chambre des comptes de Moulins
+						durant 38 ans, de 1483 à 1521, date où il mourut très probablement.</p>
+				</bioghist>
+				<controlaccess>
+					<persname role="700">Bellossier, Oudard</persname>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070">Germain, Jean, évêque de Chalon</persname>
+					<title>Trésor des simples</title>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<corpname>Capucins</corpname>
+				</controlaccess>
+				<c id="D09030148" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>Miniature représentant Jean Germain présentant son livre au duc
+							de Bourgogne</unittitle>
+					</did>
+					<scopecontent>
+						<p>L'épître dédicatoire commence : « A tres « puissant... maistre Phelippe
+							de France le second, par la grace de « Dieu, duc de Bourgoingne, ...
+							Jehan, evesque de Challon, ... chan« cellier de la Toison d'or... » — et
+							finit : « Escript en la dicte cité « de Chalon sur la Soone en
+							Bourgoigne, l'an de Nostre Seigneur Jhesu « Crist mil CCCC cinquante, le
+							premier jour du mois d'avril. »</p>
+					</scopecontent>
+				</c>
+				<c id="D09030149" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Le second prologue, qui contient l'entencion et matiere « de ce
+							present euvre. Se j'ai entreprins le present euvre... appelé « <emph
+								render="italic">Tresor des simples.</emph>.. et sera divisé par cinq
+							livres... »</unittitle>
+					</did>
+				</c>
+				<c id="D09030150" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 5 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Cy commance le premier livre de cest present euvre, « qui parle
+							de la secte de Mahumet selon l'epistre du Sarrazin... — « ...et de sa
+							sainte foy. Amen. Cy finist le quart livre de ce present « euvre
+							»</unittitle>
+					</did>
+				</c>
+			</c>
+			<c id="D09030151" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">8</unitid>
+					<unittitle>A. Ripoud. Notes bibliographiques</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1801/1900">XIX<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>209 feuillets</extent>
+						<dimensions unit="mm">390 × 265 mm</dimensions>
+						<physfacet type="reliure">Non relié</physfacet>
+					</physdesc>
+				</did>
+				<c id="D09030152" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>« Tableaux bibliographiques offrant d'une manière sommaire les
+							cinq divisions de la Bibliothèque publique de la ville de Moulins » (par
+							A. Ripoud)</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070">Ripoud, Auguste</persname>
+						<name>Tableaux bibliographiques des cinq divisions de la Bibliothèque de
+							Moulins</name>
+					</controlaccess>
+				</c>
+				<c id="D09030153" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 101</unitid>
+						<unittitle>« Notices de plusieurs écrivains ou habitans du Bourbonnais
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030154" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 136</unitid>
+						<unittitle>« Copie du journal du siége de Bergen-op-Zoom, 1747 »</unittitle>
+					</did>
+					<controlaccess>
+						<geogname>Bergen-op-Zoom</geogname>
+						<name>Copie du journal du siége de Bergen-op-Zoom</name>
+					</controlaccess>
+				</c>
+				<c id="D09030155" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 207</unitid>
+						<unittitle>Extraits théologiques</unittitle>
+					</did>
+					<controlaccess>
+						<subject>Théologie</subject>
+						<name>Theologica fragmenta</name>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030156" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">9-10</unitid>
+					<unittitle>« Mélanges poétiques, moraux et littéraires »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>232 et 222 feuillets</extent>
+						<dimensions unit="mm">360 × 235 mm</dimensions>
+						<physfacet type="reliure">Cartonné parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<title>Mélanges poétiques, moraux et littéraires</title>
+				</controlaccess>
+			</c>
+			<c id="D09030157" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">11</unitid>
+					<unittitle>« Mémoires concernans les généralitez de Moulins et Bourges ;...
+						Moulins, composé par M. de Turmenyes de Nointel, maître des requêtes,
+						intendant en la dicte généralité, ... année 1697 »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>208 feuillets</extent>
+						<dimensions unit="mm">370 × 250 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>On y a joint des cartes de la généralité de Moulins, par Jaillot, 1710 ; de
+						la généralité de Bourges, par le même, 1707 ; des gouvernements de Poitou,
+						d'Anjou, de Bourbonnais, de Nivernais et d'Orléans, par N. de Fer, 1705.</p>
+				</scopecontent>
+				<controlaccess>
+					<persname role="440" normal="Jaillot, Alexis-Hubert (1632?-1712)"
+						souce="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb15286314t"
+						>Jaillot</persname>
+					<name>Carte de la généralité de Moulins</name>
+					<name>Cartes de la généralité de Bourges</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="440" normal="Fer, Nicolas de (1646-1720)"
+						souce="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb15287405c">Fer, N.
+						de</persname>
+					<name>Cartes des gouvernements de Poitou, d'Anjou, de Bourbonnais, de Nivernais
+						et d'Orléans</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Turmenyes de Nointel (De), maître des requêtes, intendant en la
+						généralité de Moulins</persname>
+					<name>Mémoires concernant les généralités de Moulins et de Bourges</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Bourbonnais</geogname>
+					<name>Notice de plusieurs écrivains et habitants</name>
+				</controlaccess>
+			</c>
+			<c id="D09030158" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">12</unitid>
+					<unittitle>Registre contenant les priviléges accordés par les ducs de Bourbon à
+						différentes villes du Bourbonnais</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>Feuillets VII-XL</extent>
+						<dimensions unit="mm">340 × 265 mm</dimensions>
+						<physfacet type="reliure">Reliure bois</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<famname>Bourbon (Ducs de)</famname>
+					<name>Privilèges pour différentes villes du Bourbonnais</name>
+				</controlaccess>
+				<note type="absent">
+					<p>Le manuscrit est conservé aux archives municipales de Moulins</p>
+				</note>
+				<controlaccess>
+					<geogname>Bourbonnais</geogname>
+					<name>Notice de plusieurs écrivains et habitants</name>
+				</controlaccess>
+			</c>
+			<c id="D09030159" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">13</unitid>
+					<unittitle>Obituaire de l'abbaye de Souvigny</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>63 feuillets</extent>
+						<dimensions unit="mm">340 × 245 mm</dimensions>
+						<physfacet type="reliure">Reliure peau</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Prieuré de Souvigny</p>
+				</custodhist>
+				<controlaccess>
+					<corpname>Souvigny, Abbaye de</corpname>
+					<name>Obituaire de l'abbaye</name>
+				</controlaccess>
+			</c>
+			<c id="D09030160" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">14</unitid>
+					<unittitle>« Sacramentarium » ad usum Sylviniacensem</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1101/1200">XII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>104 feuillets</extent>
+						<physfacet type="illustration">Au Folio 33, miniature à pleine page
+							représentant le Christ bénissant (<emph render="italic">Te
+								igitur,</emph> etc.)</physfacet>
+						<physfacet type="décoration">Initiales ornées au f. 1,22v, 36, 60v et 65v </physfacet>
+						<dimensions unit="mm">340 × 245 mm</dimensions>
+						<physfacet type="reliure">Reliure bois</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Prieuré de Souvigny</p>
+				</custodhist>
+				<controlaccess>
+					<corpname>Souvigny, Abbaye de</corpname>
+					<title>Sacramentarium ad usum Sylviniacensem</title>
+				</controlaccess>
+			</c>
+			<c id="D09030161" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">15</unitid>
+					<unittitle>« Antiquités du prieuré de Souvigny, par dom Nicolas de Mesgrigny,
+						prieur commandataire de Souvigny »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>248 feuillets</extent>
+						<dimensions unit="mm">330 × 205 mm</dimensions>
+						<physfacet type="reliure">Reliure en veau fauve au nom de la bibliothèque de
+							Moulins</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Mesgrigny, Dom Nicolas de, prieur commendataire de
+						Souvigny</persname>
+					<title>Antiquités du prieuré de Souvigny</title>
+				</controlaccess>
+			</c>
+			<c id="D09030162" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">16</unitid>
+					<unittitle>« C'est le livre du terrier des bourgois, manans et habitans de la
+						ville et franchise de Molins, lequel terrier fait mencion et décaracion de
+						tous les cens, rentes d'argent, blez, dismes et autres devoirs deuz ung
+						chacun an tant à cause du pont de la rivière d'Alier comme à cause des
+						ausmones qui se font ung chacun an le jour de l'Ascension Nostre Seigneur et
+						le jour de la feste aux Mors... l'an mil CCCC cinquante et cinq...
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>19 feuillets</extent>
+						<dimensions unit="mm">355 × 275 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Livre du terrier des bourgeois, manants et habitants de la ville et
+						franchise</name>
+				</controlaccess>
+				<note type="absent">
+					<p>Le manuscrit est conservé aux archives municipales de Moulins depuis 1997</p>
+				</note>
+			</c>
+			<c id="D09030163" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">17</unitid>
+					<unittitle>« Compte de M<emph render="super">e</emph> François Faure, tresorier
+						et receveur general du domaine et duché de Bourbonnois, des recepte et
+						despence par luy faictes à cause de ladicte tresorerie durant une année
+						commencée au jour et feste de sainct Jean Baptiste mil six cens dix...
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>102 feuillets</extent>
+						<dimensions unit="mm">335 × 275 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Faure, François, trésorier et receveur général du duché de
+						Bourbonnais</persname>
+					<name>Comptes de l'année 1610</name>
+				</controlaccess>
+			</c>
+			<c id="D09030164" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">18</unitid>
+					<unittitle>« Recherches bibliographiques sur les éditions rares des XV<emph
+							render="super">e</emph> et XVI<emph render="super">e</emph> siècles, et
+						sur les livres les plus précieux de la bibliothèque publique de la ville de
+						Moulins, par Aug. Ripoud, de Moulins. — 1844 »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1844">1844</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>718 feuillets</extent>
+						<dimensions unit="mm">295 × 206 mm</dimensions>
+						<physfacet type="reliure">Reliure chagrin noir</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Ripoud, Auguste</persname>
+					<name>Recherches bibliographiques sur les éditions rares des XV<emph
+							render="super">e</emph> et XVI<emph render="super">e</emph> siècles, et
+						sur les livres les plus précieux de la Bibliothèque de Moulins</name>
+				</controlaccess>
+			</c>
+			<c id="D09030165" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">19</unitid>
+					<unittitle>Recueil d'oraisons, capitules et bénédictions</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1501/1700">XVI<emph
+							render="super">e</emph>-XVII<emph render="super">e</emph>
+						siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>64 feuillets</extent>
+						<dimensions unit="mm">310 × 200 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Oraisons</subject>
+					<name>Oraisons, capitules et bénédictions</name>
+				</controlaccess>
+				<c id="D09030166" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 39</unitid>
+						<unittitle>Fondations de saluts dans l'église Notre-Dame de
+							Moulins</unittitle>
+					</did>
+					<controlaccess>
+						<geogname>Moulins</geogname>
+						<name>Fondations de saluts dans l'église Notre-Dame</name>
+					</controlaccess>
+				</c>
+				<c id="D09030167" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 44</unitid>
+						<unittitle>« Statuta et decreta insignis ecclesiae secularis et collegiatae
+							Beatae Mariae Virginis de Molinis »</unittitle>
+					</did>
+					<controlaccess>
+						<geogname>Moulins</geogname>
+						<name>Statuta et decreta insignis ecclesiae Beatae Mariae virginis de
+							Molinis</name>
+					</controlaccess>
+				</c>
+				<c id="D09030168" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 53</unitid>
+						<unittitle>Oraisons diverses. « Orationes diversae per D. Claudium Feydrau
+							decanum scriptae »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070">Feydeau, Claudius</persname>
+						<name>Orationes diversae</name>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030169" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">20</unitid>
+					<unittitle>Poésies chrétiennes</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>431 et 93 feuillets</extent>
+						<dimensions unit="mm">300 × 205 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Poésie</subject>
+					<name>Poésies chrétiennes</name>
+				</controlaccess>
+			</c>
+			<c id="D09030170" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">21</unitid>
+					<unittitle>« Les dits mémorables de Socrate, par Xénophon » ; traduction
+						française</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>265 feuillets</extent>
+						<dimensions unit="mm">310 × 205 mm</dimensions>
+						<physfacet type="reliure">Cartonné</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>incomplet.</p>
+				</scopecontent>
+				<controlaccess>
+					<persname role="070">Xénophon</persname>
+					<title>Les dits mémorables de Socrate, en français</title>
+				</controlaccess>
+			</c>
+			<c id="D09030171" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">22</unitid>
+					<unittitle>Rufini « lectura Decretorum »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>166 feuillets</extent>
+						<dimensions unit="mm">315 × 210 mm</dimensions>
+						<physfacet type="reliure">Reliure ais de bois recouverts de cuir.
+							Restauration BN 1987</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Commence : « Sacrosancte ecclesie regularis iustitutio omnibus unitur...
+						Distinctio I. Humanum genus. Genus tractatur de jure canonico... » — Finit :
+						« ...querens requiem et gloriam sempiternam. Explicit. Amen. »</p>
+				</scopecontent>
+				<custodhist>
+					<p>Au bas du dernier feuillet, on lit, en rouge : « Ista lectura fuit Hervei de
+						Sancto Jocio, qui eam emit XIX. sol. par..., » — puis : « Hanc lecturam
+						super Decretum contulit huic monasterio frater Gaufridus « Choleti, prior
+						hujus loci, et voluit eam reponi in libraria communi « ad utilitatem omnium
+						fratrum. » — Enfin : « Rufinus aurei voluminis « Decretorum elegans
+						apparator sive expositor primus. Similis exposi« tio habetur in bibliotheca
+						fratrum Praedicatorum Pictavensium. Natalis. »</p>
+				</custodhist>
+				<controlaccess>
+					<persname>Choletus, Gaufridus</persname>
+				</controlaccess>
+				<controlaccess>
+					<persname>Rufinus</persname>
+					<name>Lectura Decretorum</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Sancto Jocio, Herveus de</persname>
+				</controlaccess>
+			</c>
+			<c id="D09030172" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">23</unitid>
+					<unittitle>« In decem libros Ethicorum Aristotelis ad Nichomachum inscriptos
+						commentarii R. P. Joan. Boucher, S. J. 1629-1631. Parisiis, in collegio
+						Claromontano »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>448 feuillets</extent>
+						<dimensions unit="mm">300 × 200 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="212">Boucher, R. P. Joan.</persname>
+					<name>In libros Ethicorum Aristotelis ad Nicomachum commentarii</name>
+				</controlaccess>
+			</c>
+			<c id="D09030173" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">24</unitid>
+					<unittitle>« Messes que l'on chante dans la chapelle de Notre-Dame de Mibonnet
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>82 feuillets</extent>
+						<dimensions unit="mm">285 × 205 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Mibonnet</persname>
+					<name>Messes que l'on chante dans la chapelle de Notre-Dame</name>
+				</controlaccess>
+			</c>
+			<c id="D09030174" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">25</unitid>
+					<unittitle>« Description générale du païs et duché de Bourbonnois, par Nicolas
+						de Nicolaï »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>102 feuillets</extent>
+						<dimensions unit="mm">290 × 205 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>copie.</p>
+				</scopecontent>
+				<controlaccess>
+					<persname role="070" normal="Nicolay, Nicolas de (1517-1583)"
+						source="Bnf_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb14334152b">Nicolaï,
+						Nicolas de</persname>
+					<title>Description du pays et duché de Bourbonnais</title>
+				</controlaccess>
+			</c>
+			<c id="D09030175" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">26</unitid>
+					<unittitle>Opuscules d'Alain Chartier</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>, <language langcode="lat"
+							>latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>96 feuillets</extent>
+						<physfacet type="autre">A la fin, un écu : <emph render="italic">de gueules
+								à neuf étoiles d'argent, trois, trois et trois ; à la bande componée
+								d'or et d'azur.</emph>
+						</physfacet>
+						<dimensions unit="mm">288 × 210 mm</dimensions>
+						<physfacet type="reliure">Reliure veau estampé</physfacet>
+						<physfacet type="autre">Des mutilations sont signalées en 1897 sur les
+							folios 1, 35 , 41 et 79.</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Capucins de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<corpname>Capucins</corpname>
+				</controlaccess>
+				<c id="D09030176" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>Alain Chartier, quadriloge invectif</unittitle>
+						<langmaterial>
+							<language langcode="fre">français</language>
+						</langmaterial>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Chartier, Alain (1385?-1430?)"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11896240s"
+							>Chartier, Alain</persname>
+						<title>Quadriloge invectif</title>
+					</controlaccess>
+				</c>
+				<c id="D09030177" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 25 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Dialogus familiaris amici et sodalis super deploratione Gallice
+							calamitatis, ab Alano Aurige editus »</unittitle>
+						<langmaterial>
+							<language langcode="lat">latin</language>
+						</langmaterial>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Chartier, Alain (1385?-1430?)"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11896240s"
+							>Chartier, Alain</persname>
+						<title>Dialogus familiaris amici et sodalis super deploratione Gallice
+							calamitatis</title>
+					</controlaccess>
+				</c>
+				<c id="D09030178" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 35</unitid>
+						<unittitle>Le Curial, d'Alain Chartier</unittitle>
+						<langmaterial>
+							<language langcode="fre">français</language>
+						</langmaterial>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Chartier, Alain (1385?-1430?)"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11896240s"
+							>Chartier, Alain</persname>
+						<title>Le curial</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030179" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">27</unitid>
+					<unittitle>« Stances sur le mausolée de Henry II, dernier duc de Montmorency
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>55 feuillets</extent>
+						<dimensions unit="mm">280 × 215 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="sujet">Henri II, dernier duc de Montmorency</persname>
+					<name>Stances sur son mausolée</name>
+				</controlaccess>
+			</c>
+			<c id="D09030180" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">28</unitid>
+					<unittitle>« Entretiens familiers de feu monsieur Priolo avec ses enfans
+						touchant la conduite de la vie humaine et la diversité des événemens qui en
+						accompagnent le cours, recueillis par M. son fils aîné »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>379 feuillets</extent>
+						<dimensions unit="mm">265 × 195 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Priolo</persname>
+					<title>Entretiens familiers avec ses enfants touchant la conduite de la
+						vie</title>
+				</controlaccess>
+			</c>
+			<c id="D09030181" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">29</unitid>
+					<unittitle>« Description générale du pays et duché de Bourbonnois, par Nicolas
+						de Nicolaï »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>170 feuillets</extent>
+						<dimensions unit="mm">260 × 175 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<phystech>Boîte de conservation</phystech>
+				<controlaccess>
+					<persname role="070" normal="Nicolay, Nicolas de (1517-1583)"
+						source="Bnf_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb14334152b">Nicolaï,
+						Nicolas de</persname>
+					<name>Description du pays et duché de Bourbonnais</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Bourbonnais</geogname>
+				</controlaccess>
+			</c>
+			<c id="D09030182" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">30</unitid>
+					<unittitle>Traités médicaux</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>94 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<dimensions unit="mm">285 × 210 mm</dimensions>
+						<physfacet type="reliure">Reliure en veau fauve au nom de la Bibliothèque de
+							Moulins</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Médecine</subject>
+					<name>Traités</name>
+				</controlaccess>
+				<c id="D09030183" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>« Egidius [Corboliensis] de urinis. Sicut dixit Constantinus
+							Pantegni... — ...tangere dignus. Finito libro sit laus et gloria Christo
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<name>Liber urinarum</name>
+					</controlaccess>
+				</c>
+				<c id="D09030184" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 45</unitid>
+						<unittitle>« Urine Ysaac [Judaei]. In latinis quidem libris nullum
+							actorem... — ...et liquida est valde. Expliciunt urine Ysahac
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<name>Liber urinarum</name>
+					</controlaccess>
+				</c>
+				<c id="D09030185" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 61 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Theophilus [Protospatharius] de urinis. De urinarum differentia
+							negotium... — ...convenienter exposuimus. Explicit Theophilus de urinis
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Théophile Protospathaire"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13093366x"
+							>Protospatharius, Theophilus</persname>
+						<title>De urinis</title>
+					</controlaccess>
+				</c>
+				<c id="D09030186" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 64 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Incipit Philaretus [Theophilus Protospatharius] de pulsibus.
+							Intentionem habemus in presenti... — ...et mortem signat »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Théophile Protospathaire"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13093366x"
+							>Protospatharius, Theophilus</persname>
+						<title>De pulsibus</title>
+					</controlaccess>
+				</c>
+				<c id="D09030187" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 65 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>Figurae « de pulsu » et « de urinis »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Egidius Corboliensis</persname>
+						<name>De urinis et de pulsu</name>
+					</controlaccess>
+				</c>
+				<c id="D09030188" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 66</unitid>
+						<unittitle>« Egidii [Corboliensis] de pulsu. Quatuor sunt membra... —
+							...vomeris horret. Expliciunt versus Egidii de pulsibus cum commento
+							»</unittitle>
+					</did>
+				</c>
+				<c id="D09030189" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 82</unitid>
+						<unittitle>« Incipit liber Galieni de tactu pulsu[s], quem transtulit
+							Johannicius, filius Ysahac de greco in arabicum et Marcus Tholotanus de
+							arabico in latinum »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Galien, Claude (0131?-0201?)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb119039184"
+							>Galien</persname>
+						<title>Liber de tactu pulsus, quem transtulit Johannicius, filius Ysahac, de
+							greco in arabicum et Marcus Tholetanus de arabico in latinum</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Galien, Claude (0131?-0201?)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb119039184"
+							>Galien</persname>
+						<title>Liber de utilitate pulsus</title>
+					</controlaccess>
+				</c>
+				<c id="D09030190" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 86</unitid>
+						<unittitle>« Incipit liber G[alieni] de introducendis in pulsum a
+							Burgundione, judice Pisano, de greco in latinum translatus »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Galien, Claude (0131?-0201?)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb119039184"
+							>Galien</persname>
+						<title>Liber de introducendis in pulsum, a Burgundione, judice Pisano,
+							translatus</title>
+					</controlaccess>
+				</c>
+				<c id="D09030191" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 90</unitid>
+						<unittitle>« Incipit liber G[alieni] de utili[ta]te pulsus »</unittitle>
+					</did>
+				</c>
+				<c id="D09030192" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 92 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Incipit liber G[alieni] de juramento hanelitu[s] »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Galien, Claude (0131?-0201?)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb119039184"
+							>Galien</persname>
+						<title>De juramento hanelitus</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030193" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">31</unitid>
+					<unittitle>« Entretiens sur certains sujets de piété »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>287 feuillets</extent>
+						<dimensions unit="mm">260 × 180 mm</dimensions>
+						<physfacet type="reliure">Cartonnée, recouverte de parchemin
+							manuscrit</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Piété</subject>
+					<name>Entretiens sur certains sujets de piété</name>
+				</controlaccess>
+			</c>
+			<c id="D09030194" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">32</unitid>
+					<unittitle>« Aveu et denombrement que donne au Roy... Louis Douet, chevalier,
+						seigneur de Saint-Germain-des-Fossez, Vichy, Charmeil, Beauregard, Le
+						Chambon, Saint-Remy, Creuzier le Vieux et autres... le 13 février 1731
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>18 feuillets</extent>
+						<dimensions unit="mm">235 × 185 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Douet, Louis, chevalier</persname>
+					<name>Aveu et dénombrement des terres de Saint-Germain-des-Fossez, etc</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Beauregard</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Chambon (Le)</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Charmeil</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Creuzier-le-Vieux</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Saint-Germain des Fossés</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Saint-Remy</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Vichy</geogname>
+					<name>Aveu et dénombrement</name>
+				</controlaccess>
+			</c>
+			<c id="D09030195" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">33-34</unitid>
+					<unittitle>« Lettres d'une solitaire à son directeur, avec les réponses du même
+						directeur. » Correspondance de Jeanne-Marguerite de Montmorency avec le P.
+						Luc de Bray</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>118 et 136 feuillets</extent>
+						<dimensions unit="mm">245 × 165 mm</dimensions>
+						<physfacet type="reliure">Cartonnée recouverte de parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Jean, saint</persname>
+					<name>Manualis introductio ad epistolas sancti Joannis</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070" normal="Montmorency, Jeanne-Marguerite de (1649?-1700?)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb122331352">Montmorency,
+						Jeanne-Marguerite de</persname>
+					<title>Lettres au Père Luc de Bray</title>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070">Bray, Luc de </persname>
+					<name>Réponses du Père Luc de Bray à ses lettres</name>
+				</controlaccess>
+			</c>
+			<c id="D09030196" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">35</unitid>
+					<unittitle>« Description générale de la province, pays et duché de Bourbonnois,
+						par Nicolas de Nicolaï »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>XXV et 77 pages</extent>
+						<dimensions unit="mm">250 × 190 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Nicolay, Nicolas de (1517-1583)"
+						source="Bnf_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb14334152b">Nicolaï,
+						Nicolas de</persname>
+					<name>Description du pays et duché de Bourbonnais</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Bourbonnais</geogname>
+				</controlaccess>
+			</c>
+			<c id="D09030197" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">36</unitid>
+					<unittitle>« Manualis introductio ad epistolas divi Pauli, nec non ad epistolas
+						catholicas et canonicas sanctorum Petri, Jacobi, Joannis et Judae : in quâ
+						paucis textui per modum explicationis additis vocibus ad sensus litteralis
+						intelligentiam manducitur lector... »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>468 pages</extent>
+						<dimensions unit="mm">240 × 170 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Jacques, saint</persname>
+					<name>Manualis introductio ad epistolas Sancti Jacobi</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Jude, saint</persname>
+					<name>Manualis introductio ad epistolas S. Judae</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Paul, saint</persname>
+					<name>Manualis introductio ad epistolas</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Pierre, saint</persname>
+					<name>Manualis introductio ad epistolas catholicas</name>
+				</controlaccess>
+			</c>
+			<c id="D09030198" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">37-38</unitid>
+					<unittitle>« Meditations sur la vie de Jesus-Christ, pour tous les jours de
+						l'année et pour les festes des saincts, composées et divisées en quatre
+						parties selon les quatre saisons de l'an, par le P. Julien Hayneufve, de la
+						Compagnie de Jésus »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>324 et 342 feuillets</extent>
+						<dimensions unit="mm">240 × 175 mm</dimensions>
+						<physfacet type="reliure">Reliure maroquin noir</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Copie de la main de la duchesse de Montmorency.</p>
+				</scopecontent>
+				<custodhist>
+					<p>Monastère de la Visitation Sainte Marie de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<persname>Hayneufve, Le Père Julien, de la Compagnie de Jésus</persname>
+					<name>Méditations</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="700"
+						normal="Montmorency, Félicie Des Ursins (1600-1666 ; duchesse de)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb14916567k">Montmorency,
+						Duchesse de, copiste</persname>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Visitation Sainte Marie</name>
+				</controlaccess>
+			</c>
+			<c id="D09030199" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">39</unitid>
+					<unittitle>« Liber miserie conditionis humane, editus a Lothario, SS. Sergi et
+						Bachi diacono cardinali, qui Innocentius papa III appellatus est
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>33 feuillets</extent>
+						<dimensions unit="mm">232 × 162 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Lotharius, SS. Sergi et Bachi diaconus cardinalis</persname>
+					<name>Liber miserie conditionis humane</name>
+				</controlaccess>
+			</c>
+			<c id="D09030200" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">40</unitid>
+					<unittitle>Constantini Africani viaticum, cum commentario « Giroldi, Bituriensis
+						medici »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>121 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<dimensions unit="mm">238 × 160 mm</dimensions>
+						<physfacet type="reliure">Reliure peau blanche</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Constantin l'Africain (101.-1087?)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb118860076">Constantin
+						l'Africain</persname>
+					<title>Viaticum</title>
+				</controlaccess>
+				<controlaccess>
+					<persname role="212">Giroldus, Bituricensis medicus</persname>
+				</controlaccess>
+				<c id="D09030201" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+					</did>
+					<scopecontent>
+						<p>
+							<blockquote>
+								<p> « Hi versus sunt in quibus debent dari opiace.<lb/>Aurea quando
+									datur caput a lamgore sanatur<lb/>...............<lb/>Desperatus
+									sit si pectus ab ydrope tussit. »</p>
+							</blockquote>
+						</p>
+					</scopecontent>
+				</c>
+				<c id="D09030202" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 4</unitid>
+						<unittitle>Incipit : « Cum omne elementum et ex elementis corporis
+							generatum... »</unittitle>
+					</did>
+					<scopecontent>
+						<p>Desinit : « (VII)...oleo rosato multum valent. »</p>
+					</scopecontent>
+				</c>
+			</c>
+			<c id="D09030203" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">41</unitid>
+					<unittitle>Traité de blason</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>286 feuillets</extent>
+						<dimensions unit="mm">230 × 175 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<phystech>Boîte de conservation</phystech>
+				<controlaccess>
+					<subject>Blason</subject>
+					<name>Traité</name>
+				</controlaccess>
+			</c>
+			<c id="D09030204" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">42</unitid>
+					<unittitle>Distinctiones theologicae, alphabetice</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>119 feuillets</extent>
+						<dimensions unit="mm">265 × 190 mm</dimensions>
+						<physfacet type="reliure">Reliure en bois. Restauration BN 1985</physfacet>
+					</physdesc>
+				</did>
+				<phystech>Boîte de conservation</phystech>
+				<scopecontent>
+					<p>Commence : « Abel dicitur principium ecclesie propter innocentiam... » —
+						Finit : « ...hiis quatuor versibus notatur :<blockquote>
+							<p>V. Johannes, vitulus Lucas, leo Marchus, <lb/>Est homo Matheus,
+								quatuor ista Deus.<lb/>Est homo nascendo, vitulus mortem paciendo,
+								<lb/>Est leo surgendo, Jovis ales summa petendo. »</p>
+						</blockquote>
+					</p>
+				</scopecontent>
+				<custodhist>
+					<p>Ex-dono G. Cholet sur le plat supérieur.</p>
+				</custodhist>
+				<custodhist>
+					<p>Souvigny, prieuré</p>
+				</custodhist>
+				<controlaccess>
+					<subject>Théologie</subject>
+					<title>Distinctiones theologicae</title>
+				</controlaccess>
+				<controlaccess>
+					<persname>Cholet, Geoffroy, prieur de Souvigny</persname>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Souvigny</geogname>
+					<name>prieuré</name>
+				</controlaccess>
+				<c id="D09030205" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 117 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« De superbia que est arbor diaboli »</unittitle>
+					</did>
+					<controlaccess>
+						<title>Superbia (De)</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030206" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">43</unitid>
+					<unittitle>S. Bernardi Claraevallensis opuscula</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>99 feuillets</extent>
+						<dimensions unit="mm">245 × 165 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+						saint</persname>
+					<title>De gratia et libero arbitrio</title>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+						saint</persname>
+					<title>De laudibus Virginia Mariae</title>
+				</controlaccess>
+				<c id="D09030207" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>« Prefatio Bernardi Clarevallis abbatis in laudibus Virginis
+							matris. Scribere me aliquid et devotio jubet... — Missus est angelus
+							Gabriel... — ...destinavi devotissime »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De gratia et libero arbitrio</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De laudibus Virginia Mariae</title>
+					</controlaccess>
+				</c>
+				<c id="D09030208" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 25</unitid>
+						<unittitle>« Prefatio beati Bernardi in libro de gracia et libero arbitrio
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De gratia et libero arbitrio</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De laudibus Virginia Mariae</title>
+					</controlaccess>
+				</c>
+				<c id="D09030209" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 45</unitid>
+						<unittitle>« Liber ad milites Templi exortatorius »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>Liber ad milites Templi exortatorius</title>
+					</controlaccess>
+				</c>
+				<c id="D09030210" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 59</unitid>
+						<unittitle>« Tractatus de XII gradibus humilitatis »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>Tractatus de XII gradibus humilitatis</title>
+					</controlaccess>
+				</c>
+				<c id="D09030211" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 82 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber apologeticus beati Bernardi ad V., abbatem Sancti
+							Theodorici »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De gratia et libero arbitrio</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>De laudibus Virginia Mariae</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>Liber apologeticus ad abbatem Sancti Theodorici</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030212" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">44</unitid>
+					<unittitle>« Considérations et conférences qui peuvent servir de lectures
+						pendant les exercices spirituelles de la retraite, par le R.P. de Belingant
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>409 pages</extent>
+						<dimensions unit="mm">235 × 175 mm</dimensions>
+						<physfacet type="reliure">Cartonnée recouverte de parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Belingant, le R. P. de</persname>
+					<name>Considérations et conférences</name>
+				</controlaccess>
+			</c>
+			<c id="D09030213" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">45</unitid>
+					<unittitle>« Constitutiones ordinis Beate Marie de Monte Carmeli, correcte per
+						V.P. Mag. Petrum Raymundi, priorem generalem dicti ordinis in capitulo
+						generali, anno Domini M<emph render="super">o</emph> CCC<emph render="super"
+							>o</emph> LVII<emph render="super">o</emph> »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>72 feuillets</extent>
+						<dimensions unit="mm">215 × 145 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Avec l'<emph render="italic">ex libris</emph> : « Carmelus Molinensis. J. 39.
+						F. Cuissot, Carmel. Molin. »</p>
+				</custodhist>
+				<controlaccess>
+					<persname>Petrus Raymondi, prior generalis</persname>
+					<name>Constitutiones ordinis Beate Marie de Monte Carmeli</name>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Carmel</name>
+				</controlaccess>
+			</c>
+			<c id="D09030214" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">46</unitid>
+					<unittitle>« La Règle des Frères de la Bienheureuse Mère de Dieu et Vierge Marie
+						du Mont-Carmel. A Paris, M. D. C. XLIII »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>678 pages</extent>
+						<dimensions unit="mm">215 × 140 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Carmel de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<corpname>Carmel</corpname>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>La règle des Frères de la Bienheureuse Mère de Dieu et Vierge Marie du
+						Mont-Carmel, à Moulins</name>
+				</controlaccess>
+			</c>
+			<c id="D09030215" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">47</unitid>
+					<unittitle>« Troisième retraite sur les veritez les plus misterieuses de notre
+						sainte religion ou sur le sacrement adorable du corps et du sang du Fils de
+						Dieu », par le P. Marchamont</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>123 pages</extent>
+						<dimensions unit="mm">215 × 160 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Marchamont, Le Père</persname>
+					<title>Troisième retraite sur le sacrement adorable du corps et du sang du Fils
+						de Dieu</title>
+				</controlaccess>
+			</c>
+			<c id="D09030216" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">48</unitid>
+					<unittitle>« De indulgentiis. Frater Joannes Cuissot, carmelita Molinensis, anno
+						1623 »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>75 feuillets</extent>
+						<dimensions unit="mm">220 × 170 mm</dimensions>
+						<physfacet type="reliure">Cartonné</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Cuissot, Frater Joannes), carmelita Molinensis</persname>
+					<title>De indulgentiis</title>
+				</controlaccess>
+				<custodhist>
+					<p>Carmel de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<corpname>Carmel</corpname>
+				</controlaccess>
+
+				<c id="D09030217" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 23</unitid>
+						<unittitle>« Tractatus de purgatorio »</unittitle>
+					</did>
+				</c>
+				<c id="D09030218" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 43</unitid>
+						<unittitle>« Quaestio de pompa funeris »</unittitle>
+					</did>
+					<controlaccess>
+						<subject>Pompe funèbre</subject>
+						<title>Quaestio de pompa funeris</title>
+					</controlaccess>
+				</c>
+				<c id="D09030219" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 51</unitid>
+						<unittitle>« Exercitium breve de figuris sententiarum »</unittitle>
+					</did>
+					<controlaccess>
+						<title>Exercitium breve de figuris sententiarum</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030220" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">49</unitid>
+					<unittitle>Traités médicaux</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1400">XIII<emph
+							render="super">e</emph>-XIV<emph render="super">e</emph>
+						siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>161 feuillets</extent>
+						<dimensions unit="mm">232 × 160 mm</dimensions>
+						<physfacet type="reliure">Reliure cartonnée recouverte de
+							parchemin</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Prieuré de Souvigny</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Souvigny</geogname>
+					<name>prieuré</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Médecine</subject>
+					<name>Traités</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Purgatoire</subject>
+					<name>Traité</name>
+				</controlaccess>
+				<c id="D09030221" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>Isaac Judaei « diete universales »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<title>Dicte universales</title>
+					</controlaccess>
+				</c>
+				<c id="D09030222" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 40</unitid>
+						<unittitle>Ejusdem « diete particulares »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<title>Diete particulares</title>
+					</controlaccess>
+				</c>
+				<c id="D09030223" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 78</unitid>
+						<unittitle>« Liber urinarum Ysaac [Judaei] »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<title>Liber urinarum</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Théophile Protospathaire"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13093366x"
+							>Protospatharius, Theophilus</persname>
+						<title>De urinis</title>
+					</controlaccess>
+				</c>
+				<c id="D09030224" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 110</unitid>
+						<unittitle>« Ysagoge Joh[annicii] ad tegni Galieni »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Johannicius</persname>
+						<title>Ysagoge ad Tegni Galieni</title>
+					</controlaccess>
+				</c>
+				<c id="D09030225" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 127 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber pronosticorum Ypocratis »</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Hippocrate (0460-0377 av. J.-C.)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb119075525"
+							>Hippocrate</persname>
+						<title>Liber pronosticorum</title>
+					</controlaccess>
+				</c>
+				<c id="D09030226" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 135</unitid>
+						<unittitle>« Liber urinarum a voce Theophili [Protospatharii] »</unittitle>
+					</did>
+					<controlaccess>
+						<persname>Isaac judaeus</persname>
+						<title>Liber urinarum</title>
+					</controlaccess>
+					<controlaccess>
+						<persname role="070" normal="Théophile Protospathaire"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13093366x"
+							>Protospatharius, Theophilus</persname>
+						<name>De urinis</name>
+					</controlaccess>
+				</c>
+				<c id="D09030227" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 140 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Liber pulsuum Philareti [Theophili Protospatharii]»</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Théophile Protospathaire"
+							source="Bnf_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13093366x"
+							>Protospatharius, Theophilus</persname>
+						<title>De pulsibus</title>
+					</controlaccess>
+				</c>
+				<c id="D09030228" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 142 v<emph render="super">o</emph>
+						</unitid>
+						<unittitle>« Prologus de causis sanis, egris et neutris. Tres sunt omnes
+							doctrine... Medicina scientia sanorum, egrorum et neutrorum... —
+							...determinabo ora[ti]onem in eis »</unittitle>
+					</did>
+					<controlaccess>
+						<title>Causis (De) sanis, egris et neutris</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030229" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">50</unitid>
+					<unittitle>« Prothemata de IIII<emph render="super">or</emph> festivitatibus
+						Christi, videlicet de Ramis palmarum, de Cena Domini, de Parasceve et de
+						Resurrectione »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>311 feuillets</extent>
+						<dimensions unit="mm">210 × 148 mm</dimensions>
+						<physfacet type="reliure">Reliure peau</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>A la fin : « Est hic liber conventus Molinensis » ; — et plus bas : « Ex
+						Carmelo Molinensi »</p>
+				</scopecontent>
+				<custodhist>
+					<p>Carmel de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Carmel</name>
+				</controlaccess>
+				<controlaccess>
+					<title>Prothemata de IIII<emph render="super">or</emph> festivitatibus
+						Christi</title>
+				</controlaccess>
+				<controlaccess>
+					<subject>Fêtes</subject>
+					<name>Des quatre grandes fêtes du Christ</name>
+				</controlaccess>
+			</c>
+			<c id="D09030230" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">51</unitid>
+					<unittitle>Recueil de chansons sur les personnages de la fin du règne de Louis
+						XIV et du commencement du règne de Louis XV</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>114 feuillets</extent>
+						<dimensions unit="mm">195 × 150 mm</dimensions>
+					</physdesc>
+				</did>
+				<phystech>Le manuscrit est relié avec un recueil factice coté R-8-28244</phystech>
+				<controlaccess>
+					<persname>Louis XIV, roi de France</persname>
+					<name>Chansons sur les personnages de la fin du règne</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Louis XV, roi de France</persname>
+					<name>Chansons sur les personnages du commencement de son règne</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Chansons</subject>
+					<name>Recueil</name>
+				</controlaccess>
+			</c>
+			<c id="D09030231" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">52</unitid>
+					<unittitle>Poésies chrétiennes de Jean Phelipard, bénédictin de
+						Souvigny</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>527 pages</extent>
+						<dimensions unit="mm">200 × 162 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>On lit au Fol. 8 v<emph render="super">o</emph> cette courte biographie de
+						l'auteur : <blockquote>
+							<p>In cella cecinit Phelipardi musa Johannis <lb/>Quae sunt presenti
+								carmina scripta libro.<lb/>Si quaeras patriam, Boiorum disce
+								Molinas, <lb/>Si stirpem poscas, est mediocre genus.<lb/>E mundi
+								tenebris eductus numinis aura <lb/>Ad Benedictinos transiit ille
+								patres ;<lb/>Parisiis domus est Martino fulta patrono <lb/>A
+								circumpositis dans sibi nomen agris,<lb/>Strictam Cluniaci vitam hic
+								per vota professus <lb/>Sorte fuit foelix, munere, parte,
+								loco.<lb/>Delicias animi fecere aliquando camoenae <lb/>Sed placuere
+								modo, cum cecinere pie :<lb/>Hos illibatae cantus et opuscula matri
+								<lb/>Servulus addictus vovit adhucque vovet.</p>
+						</blockquote>
+					</p>
+				</scopecontent>
+				<custodhist>
+					<p>Prieuré de Souvigny</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Souvigny</geogname>
+					<name>prieuré</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Phelipard, Jean, Bénédictin de Souvigny</persname>
+					<name>Biographie en vers</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Phelipard, Jean, Bénédictin de Souvigny</persname>
+					<name>Poésies chrétiennes</name>
+				</controlaccess>
+				<controlaccess>
+					<name>Poésies chrétiennes</name>
+				</controlaccess>
+			</c>
+			<c id="D09030232" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">53</unitid>
+					<unittitle>Claudii Claudiani poemata</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>93 feuillets</extent>
+						<dimensions unit="mm">222 × 105 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Claudien (0370?-0404?)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13091718p">Claudien</persname>
+					<name>Poemata</name>
+				</controlaccess>
+			</c>
+			<c id="D09030233" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">54</unitid>
+					<unittitle>Petri Rigae aurora</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>193 feuillets</extent>
+						<dimensions unit="mm">208 × 125 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>A la fin les « Recapitulationes ».</p>
+				</scopecontent>
+				<custodhist>
+					<p>« Ex libris Claudii Laplace, Sancti Johannis Molinensis parochi. »</p>
+				</custodhist>
+				<controlaccess>
+					<persname role="390">Laplace (Claude), curé de Saint-Jean de Moulins</persname>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070" normal="Pierre Riga (11..-1209)" source="BnF_catalogue-général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb13547969d">Riga, Pierre</persname>
+					<name>Aurora</name>
+				</controlaccess>
+			</c>
+			<c id="D09030234" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">55-56</unitid>
+					<unittitle>« Abregé de l'histoire du règne de Louis XIV, roy de France et de
+						Navarre, tiré de celle de H. P. de Limiers, docteur en droit, imprimée à
+						Amsterdam en M. D. CC. XVIII, écrit par D. N. F. D. W M. D. C. A. P. en 1725
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1725">1725</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<physfacet type="illustration">52 et 54 portraits gravés sur cuivre, dont certaines sont signées desrochers illustrent le texte</physfacet>
+						<extent>336 et 366 pages</extent>
+						<dimensions unit="mm">205 × 160 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="100" normal="Limiers, Henri-Philippe de (16..-1728)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb10631745z">Limiers, H. P. de</persname>
+					<title>Histoire du règne de Louis XIV</title>
+				</controlaccess>
+				<controlaccess>
+					<persname role="700">D. N. F. D. W. M. D. C. A. P, copiste</persname>
+				</controlaccess>
+				<controlaccess>
+					<persname role="440" normal="Desrochers, Étienne Jahandier (1668-1741)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb12329318f">E. Desrochers</persname>
+				</controlaccess>
+				<controlaccess>
+					<subject>Droit et coutumes de France</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030235" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">57</unitid>
+					<unittitle>« Institutions au droit françois »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>122 feuillets</extent>
+						<dimensions unit="mm">210 × 165 mm</dimensions>
+						<physfacet type="reliure">Cartonné</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Droit et coutumes de France</subject>
+				</controlaccess>
+				<controlaccess>
+					<subject>Droit français</subject>
+					<title>Institutions au droit français</title>
+				</controlaccess>
+			</c>
+			<c id="D09030236" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">58</unitid>
+					<unittitle>« Meditations et considerations pour une retraite de huit jours sur
+						les veritez fondamentales de la religion chretiene, divisez en deux parties,
+						par le R. P. de *** [Belingand], de la C<emph render="super">ie</emph> de
+						Jésus »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>514 pages</extent>
+						<dimensions unit="mm">200 × 155 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Belingant, le R. P. de</persname>
+					<title>Méditations pour une retraite de huit jours</title>
+				</controlaccess>
+			</c>
+			<c id="D09030237" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">59</unitid>
+					<unittitle>Fragments du Coran. Manuscrit arabe</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="ara">arabe</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>151 feuillets</extent>
+						<dimensions unit="mm">210 × 155 mm</dimensions>
+						<physfacet type="reliure">Reliure orientale</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<title>Coran (Le)</title>
+					<name>Fragments du Coran</name>
+				</controlaccess>
+				<acqinfo><p>La manuscrit a été donné à la bibliothèque de Moulins en 1832 par le
+						capitaine Demercières, qui l'avait rapporté d'Afrique</p></acqinfo>					
+				<controlaccess>
+					<persname role="390">Demercières, Capitaine</persname>
+				</controlaccess>
+			</c>
+			<c id="D09030238" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">60</unitid>
+					<unittitle>« Méditations pour une retraitte de dix jours à l'usage des maisons
+						religieuses »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>143 pages</extent>
+						<dimensions unit="mm">200 × 155 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Hayneufve, le Père Julien, de la Compagnie de Jésus</persname>
+					<name>Méditations</name>
+				</controlaccess>
+			</c>
+			<c id="D09030239" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">61</unitid>
+					<unittitle>Méditations pour une retraite</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>130 feuillets</extent>
+						<dimensions unit="mm">190 × 155 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Hayneufve, le Père Julien, de la Compagnie de Jésus</persname>
+					<name>Méditations</name>
+				</controlaccess>
+				<controlaccess>
+					<title>Méditations pour une retraite</title>
+				</controlaccess>
+			</c>
+			<c id="D09030240" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">62</unitid>
+					<unittitle>« Méditation et considération pour une retraite de dix jours, par le
+						R. P. Hongnant, de la C<emph render="super">ie</emph> de Jésus »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>241 feuillets</extent>
+						<dimensions unit="mm">190 × 130 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Hayneufve, le Père Julien, de la Compagnie de Jésus</persname>
+					<name>Méditations</name>
+				</controlaccess>
+				<controlaccess>
+					<persname>Hongnant (Le Père), de la Compagnie de Jésus</persname>
+					<name>Méditation pour une retraite</name>
+				</controlaccess>
+				<controlaccess>
+					<title>Méditations pour une retraite</title>
+				</controlaccess>
+				<controlaccess>
+					<subject>Retraite spirituelle</subject>
+					<name>Méditations pour une retraite de dix jours</name>
+				</controlaccess>
+			</c>
+			<c id="D09030241" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">63</unitid>
+					<unittitle>« Recueil des lettres patentes octroyées aux Jésuites, par les roys
+						Henry IIII et Louis XIII, concernants leurs restablissements...
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>166 pages</extent>
+						<dimensions unit="mm">190 × 130 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070" normal="Henri IV (roi de France ; 1553-1610)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb120154019">Henri IV</persname>
+					<name>Recueil des lettres patentes octroyées par Henri IV aux Jésuites</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="070" normal="Louis XIII (roi de France ; 1601-1643)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11913462f">Louis XIII, roi de France</persname>
+					<name>Recueil des lettres patentes octroyées aux Jésuites par Louis XIII</name>
+				</controlaccess>
+				<controlaccess>
+					<corpname>Société de Jésus</corpname>
+					<name>Lettres patentes octroyées aux Jésuites</name>
+				</controlaccess>
+			</c>
+			<c id="D09030242" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">64</unitid>
+					<unittitle>« Abrégé des méditations du R. P. Julien Hayneufve, de la C<emph
+							render="super">ie</emph> de Jesus, pour les quatres saisons de l'année,
+						fait par N. A. S. M. H. D. V. D. M. (écrites de la main de notre mère de
+						Montmorency) »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>447 feuillets</extent>
+						<dimensions unit="mm">190 × 142 mm</dimensions>
+						<physfacet type="reliure">Reliure plein cuir rouge doré, au nom de la
+							bibliothèque de Moulins</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Hayneufve, Le Père Julien, de la Compagnie de Jésus</persname>
+					<name>Méditations</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="700"
+						normal="Montmorency, Félicie Des Ursins (1600-1666 ; duchesse de)"
+						source="BnF_catalogue_général"
+						authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb14916567k">Montmorency,
+						Duchesse de, copiste</persname>
+				</controlaccess>
+			</c>
+			<c id="D09030243" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">65</unitid>
+					<unittitle>Traité de rhétorique</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>190, 79 et 44 pages</extent>
+						<dimensions unit="mm">185 × 140 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Rhétorique</subject>
+					<name>Traités</name>
+				</controlaccess>
+			</c>
+			<c id="D09030244" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">66</unitid>
+					<unittitle>« Rhetorica a reverendissimo patre de Lespine tradita, et a Petro
+						Adam scripta, anno Domini 1750 »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>176 feuillets</extent>
+						<dimensions unit="mm">198 × 158 mm</dimensions>
+						<physfacet type="reliure">Cartonné</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="700">Adam, Pierre, scribe</persname>
+				</controlaccess>
+				<controlaccess>
+					<persname role="730">Lespine, le Père de</persname>
+					<name>Rhetorica</name>
+				</controlaccess>
+			</c>
+			<c id="D09030245" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">67</unitid>
+					<unittitle>« Meditation pour une retraite de huit jours sur les verités
+						fondamentales de la religion chrétienne, par le R. P. de Belingant
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>483 pages</extent>
+						<dimensions unit="mm">185 × 115 mm</dimensions>
+						<physfacet type="reliure">Reliure cartonnée recouverte de
+							parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname role="070">Belingant, le R. P. de</persname>
+					<title>Méditations pour une retraite de huit jours</title>
+				</controlaccess>
+			</c>
+			<c id="D09030246" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">68</unitid>
+					<unittitle>« Histoire de Théodule et son heureux malheur, ensemble Flaminio, ou
+						le Beau Changement de la droicte de Dieu, par Flaminio. — Angers, ce dernier
+						jour d'octobre 1636 »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>418 pages</extent>
+						<dimensions unit="mm">178 × 132 mm</dimensions>
+						<physfacet type="reliure">Reliure basane</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Ex-libris manuscrit M. Ruette</p>
+				</custodhist>
+				<controlaccess>
+					<persname>Ruette, M.</persname>
+				</controlaccess>
+				<controlaccess>
+					<title>Flaminio, ou le Beau Changement de la droite de Dieu</title>
+				</controlaccess>
+			</c>
+			<c id="D09030247" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">69</unitid>
+					<unittitle>Recueil de Sermons pour les différentes fêtes de l'année</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>329 feuillets</extent>
+						<dimensions unit="mm">189 × 122 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Minimes de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Minimes</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Sermons</subject>
+					<name>Recueil</name>
+				</controlaccess>
+			</c>
+			<c id="D09030248" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">70-71</unitid>
+					<unittitle>« Cursus theologici... excipiente D. Joanne Becaud. Parodiensi
+						clerico, diocesis Augustodunensis, in collegio Avenionensi Soc. Jesu
+						»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>789 et 465 pages</extent>
+						<dimensions unit="mm">182 × 130 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Bécaud, Joannes, Parodiensis clericus, diocesis
+						Augustodunensis</persname>
+					<name>Cursus theologici</name>
+				</controlaccess>
+			</c>
+			<c id="D09030249" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">72</unitid>
+					<unittitle>« Le Jardin ou parterre spirituel dans lequel on peut cueillir des
+						fleurs de piété et de devotion, traduit du Verger de l'âme de Ambroise de
+						Salazar, Espagnol, par Dom Megret »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>354 pages</extent>
+						<dimensions unit="mm">175 × 112 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Visitation de Moulins.</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Visitation</name>
+				</controlaccess>
+				<controlaccess>
+					<persname role="730">Megret, Dom</persname>
+					<title>Le jardin ou parterre spirituel</title>
+					<persname role="070" normal="Salazar, Ambrosio de (1573-1643)" source="BnF_catalogue_général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb12264239k">Salazar, Ambroise de</persname>
+					<title>Verger de l'âme</title>
+				</controlaccess>
+			</c>
+			<c id="D09030250" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">73</unitid>
+					<unittitle>Recueil de cantiques en l'honneur du bienheureux Louis de
+						Gonzague</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>126 pages</extent>
+						<dimensions unit="mm">180 × 123 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Louis de Gonzague, Bienheureux</persname>
+					<name>Cantiques en son honneur</name>
+				</controlaccess>
+			</c>
+			<c id="D09030251" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">74</unitid>
+					<unittitle>« Actions oratoires de maistre Remy Guillouet, conseiller et advocat
+						du Roy en la seneschaussée et siége présidial de Bourbonnois établi à
+						Moulins »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>161 feuillets</extent>
+						<dimensions unit="mm">178 × 125 mm</dimensions>
+						<physfacet type="reliure">Couverture parchemin</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Guillouet, Remy, conseiller et avocat du Roi en la sénéchaussée et
+						siége présidial de Moulins</persname>
+					<name>Actions oratoires</name>
+				</controlaccess>
+			</c>
+			<c id="D09030252" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">75</unitid>
+					<unittitle>« Lettres spirituelles d'un grand serviteur de Dieu (Frère Severin de
+						Paris, C. I. de S. Honoré), écrites à une dame qu'il conduisoit dans la vie
+						intérieure et qui est morte en odeur de sainteté »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>542 pages</extent>
+						<dimensions unit="mm">166 × 110 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Séverin, Frère de Paris, Capucin de Saint-Honoré</persname>
+					<name>Lettres spirituelles à une dame</name>
+				</controlaccess>
+			</c>
+			<c id="D09030253" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">76</unitid>
+					<unittitle>« De la figure de l'Europe »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>425 feuillets</extent>
+						<dimensions unit="mm">166 × 125 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<geogname>Europe</geogname>
+					<name>De la figure de l'Europe</name>
+				</controlaccess>
+			</c>
+			<c id="D09030254" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">77</unitid>
+					<unittitle>«Officium sacratissimi Cordis domini nostri Jesu Christi.» <emph
+							render="super">ti</emph>. Johannis Molin. pastoris »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>39 feuillets</extent>
+						<dimensions unit="mm">169 × 115 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Avec l'ex libris Claudii Laplace</p>
+				</custodhist>
+				<controlaccess>
+					<persname>Laplace, Claude, curé de Saint-Jean de Moulins</persname>
+				</controlaccess>
+				<controlaccess>
+					<title>Officium sacratissimi cordis domini nostri Jesu Christi</title>
+				</controlaccess>
+			</c>
+			<c id="D09030255" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">78</unitid>
+					<unittitle>« L'Office du Cœur sacré de Jesus »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>273 pages</extent>
+						<dimensions unit="mm">163 × 110 mm</dimensions>
+						<physfacet type="reliure">Reliure veau</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Jésus-Christ</persname>
+					<name>Office du Cœur sacré</name>
+				</controlaccess>
+			</c>
+			<c id="D09030256" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">79</unitid>
+					<unittitle>Horae, cum calendario</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>113 feuillets</extent>
+						<physfacet type="illustration">32 miniatures</physfacet>
+						<dimensions unit="mm">169 × 120 mm</dimensions>
+						<physfacet type="reliure">Reliure maroquin brun</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Augustins de Moulins.</p>
+				</custodhist>
+				<controlaccess>
+					<subject>Livre d'heures</subject>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Augustins</name>
+				</controlaccess>
+			</c>
+			<c id="D09030257" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">80</unitid>
+					<unittitle>Horae, cum calendario</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1301/1400">XIV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>140 feuillets</extent>
+						<physfacet type="illustration">13 miniatures</physfacet>
+						<dimensions unit="mm">167 × 122 mm</dimensions>
+						<physfacet type="reliure">Parchemin sur carton, restaurée</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Livre d'heures</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030258" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">81</unitid>
+					<unittitle>Biblia sacra</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1201/1300">XIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>704 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<dimensions unit="mm">160 × 102 mm</dimensions>
+						<physfacet type="reliure">Reliure veau estampé</physfacet>
+					</physdesc>
+					<phystech>
+						<p>les pages de la fin sont rongées et illisibles.</p>
+					</phystech>
+				</did>
+				<scopecontent>
+					<p>Calendrier, entre les Psaumes et les Proverbes, avec mentions d'obits, parmi
+						lesquels :</p>
+					<p>19 kl. febr. Sugerii abbatis ; — 15. Philippi, comitis Bolonie ; — 10.
+						Ysabellae reginae ; — 7 id. febr. Yvo abbas ; — 4 non. Guillelmi de
+						Maucorris ; — 14 kl. maii. Hugonis Mediolanensis ; — 3 non. Odo,
+						archiepiscopus Rothomagensis ; — 14 kl. aug. G. de Val. ; — 6. H. abbas ; —
+						3 id. aug. Petri de Aut. abbatis ; — 7 kl. oct. Matheus abbas ; — non. oct.
+						Constancie regine, etc.</p>
+				</scopecontent>
+				<custodhist>
+					<p>Carmes de Moulins.</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Carmes</name>
+				</controlaccess>
+				<controlaccess>
+					<title>Bible</title>
+					<name>Bible latine</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Calendriers</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030259" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">82</unitid>
+					<unittitle>Breviarium</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>324 feuillets</extent>
+						<physfacet type="autre">Manuscrit à 2 colonnes</physfacet>
+						<dimensions unit="mm">157 × 114 mm</dimensions>
+						<physfacet type="reliure">Reliure en parchemin sur carton</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>ex-libris manuscrit fol. 123 "Ce livre appartient à moy Jean-Franç. Donjan,
+						religieux augustin" </p>
+				</custodhist>
+				<controlaccess>
+					<persname>Donjan, Jean-François, religieux augustin></persname>
+				</controlaccess>
+				<controlaccess>
+					<subject>Bréviaires</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030260" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">83</unitid>
+					<unittitle>Offices des différentes fêtes de l'année</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>97 feuillets</extent>
+						<dimensions unit="mm">164 × 105 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin sur carton</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<subject>Fêtes</subject>
+					<name>Offices, répons, etc., pour les différentes fêtes</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Offices divers</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030261" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">84</unitid>
+					<unittitle>Coutume de Normandie</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>89 feuillets</extent>
+						<dimensions unit="mm">150 × 116 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin</physfacet>
+					</physdesc>
+				</did>
+				<scopecontent>
+					<p>Commence : « Pour ce que nostre entencion... (Table). Ci commence li secons
+						livrez des drois la reigne Blance. Pour ce que la malice de convetise... —
+						...chacune fois a soustenir le puelle. »</p>
+				</scopecontent>
+				<controlaccess>
+					<geogname>Normandie</geogname>
+					<name>Coutume</name>
+				</controlaccess>
+			</c>
+			<c id="D09030262" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">85</unitid>
+					<unittitle>Recueil de sermons, en latin, pour les différentes fêtes de
+						l'année</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1601/1700">XVII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>539 feuillets</extent>
+						<dimensions unit="mm">145 × 98 mm</dimensions>
+						<physfacet type="reliure">Reliure peau de truie</physfacet>
+					</physdesc>
+				</did>
+				<custodhist>
+					<p>Augustins de Moulins</p>
+				</custodhist>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>Augustins</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Fêtes</subject>
+					<name>Offices, répons, etc., pour les différentes fêtes</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Fêtes</subject>
+					<name>Sermons pour les fêtes de l'année</name>
+				</controlaccess>
+				<controlaccess>
+					<subject>Sermons</subject>
+					<name>Recueil</name>
+				</controlaccess>
+			</c>
+			<c id="D09030263" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">86</unitid>
+					<unittitle>« Recueil de l'Oraison dominicale, avec la Salutation angélique en
+						différentes langues, dont les plus parts sont écrits avec les caractères
+						propres à chaque nation. P.A.R. [par de Kroock] »</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>71 pages</extent>
+						<dimensions unit="mm">135 × 107 mm</dimensions>
+						<physfacet type="reliure">Reliure maroquin brun</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Kroock, De</persname>
+					<name>Oraison dominicale et Salutation angélique en différentes langues</name>
+				</controlaccess>
+			</c>
+			<c id="D09030264" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">87</unitid>
+					<unittitle>Senecae libellus de quatuor virtutibus et S. Bernardi de contemptu
+						mundi</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>84 feuillets</extent>
+						<dimensions unit="mm">140 × 95 mm</dimensions>
+						<physfacet type="reliure">Reliure veau estampé</physfacet>
+					</physdesc>
+				</did>
+				<c id="D09030265" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 1</unitid>
+						<unittitle>« Senecae moralis philosophi de quattuor virtutibus libellus
+							feliciter incipit. Quattuor virtutum... — ...puniat ignaviam
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Sénèque (0004 av. J.-C.-0065)" source="BnF_catalogue-général" authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11887555p"> Senèque</persname>
+						<title>De quatuor virtutibus liber</title>
+					</controlaccess>
+				</c>
+				<c id="D09030266" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 14</unitid>
+						<unittitle>« Opusculum beati Bernardi de contemptu mundi. Et tibi solitudo
+							dulcescat... — Omne peccatum actio est... — ...proximos facit
+							»</unittitle>
+					</did>
+					<controlaccess>
+						<persname role="070" normal="Bernard de Clairvaux (saint ; 1090?-1153)"
+							source="BnF_catalogue_général"
+							authfilenumber="http://catalogue.bnf.fr/ark:/12148/cb11891532s">Bernard,
+							saint</persname>
+						<title>Opusculum de contemptu mundi</title>
+					</controlaccess>
+				</c>
+				<c id="D09030267" level="otherlevel" otherlevel="sous-notice">
+					<did>
+						<unitid type="division">Fol. 26</unitid>
+						<unittitle>Dicta moralia philosophorum. « Tales philosophus... plura alia
+							moralia scripsit »</unittitle>
+					</did>
+					<controlaccess>
+						<title>Dicta moralia philosophorum</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030268" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">88</unitid>
+					<unittitle>Horae</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>150 feuillets</extent>
+						<physfacet type="illustration">Lettres ornées</physfacet>
+						<dimensions unit="mm">120 × 83 mm</dimensions>
+						<physfacet type="reliure">Reliure parchemin sur carton</physfacet>
+					</physdesc>
+				</did>
+			</c>
+			<c id="D09030269" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">89</unitid>
+					<unittitle>Horae</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1401/1500">XV<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="lat">latin</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Parchemin</physfacet>
+						<extent>121 feuillets</extent>
+						<physfacet type="autre">16 miniatures à pleine page</physfacet>
+						<dimensions unit="mm">125 × 90 mm</dimensions>
+						<physfacet type="reliure">Reliure maroquin vert</physfacet>
+					</physdesc>
+				</did>
+				<acqinfo>
+					<p>Don de Mme Vve Dougny, née Finot. Remis à la bibliothèque de la ville par le
+						légataire universel M. Gabriel Plainchant, avocat, membre du conseil
+						municipal à la ville de Moulins</p>
+				</acqinfo>
+				<controlaccess>
+					<subject>Livre d'heures</subject>
+				</controlaccess>
+			</c>
+			<c id="D09030270" level="otherlevel" otherlevel="groupe-de-notices">
+				<did>
+					<unitid type="numéro_de_notice">90-94</unitid>
+					<unittitle>Manuscrits de M. Conny, ancien bibliothécaire de Moulins (†
+						1879)</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1801/1900">XIX<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<dimensions unit="mm">245 × 157 mm</dimensions>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<persname>Conny, ancien bibliothécaire de Moulins</persname>
+					<title>Dictionnaire du langage vicieux et populaire de l'habitant du Bourbonnais,
+						et surtout de l'arrondissement de Moulins</title>
+				</controlaccess>
+				<controlaccess>
+					<persname>Conny, ancien bibliothécaire de Moulins</persname>
+					<title>Table de ces bibliographies</title>
+				</controlaccess>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>État ou histoire de l'église d'Izeure, paroisse matrice de la ville</name>
+				</controlaccess>
+				<c id="D09030271" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">90</unitid>
+						<unittitle>« Ma vie et mes souvenirs pendant sa durée »</unittitle>
+						<physdesc>
+							<extent>3 volumes (2056 pages)</extent>
+							<physfacet type="reliure">Relié, dos cuir</physfacet>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Ma vie et mes souvenirs pendant sa durée</title>
+					</controlaccess>
+				</c>
+				<c id="D09030272" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">91</unitid>
+						<unittitle>« Inscriptions des cloches du département de l'Allier
+							»</unittitle>
+						<physdesc>
+							<extent>123 feuillets</extent>
+							<physfacet type="reliure">Liasse</physfacet>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Inscriptions des cloches du département de l'Allier</title>
+					</controlaccess>
+				</c>
+				<c id="D09030273" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">92</unitid>
+						<unittitle>« Dictionnaire raisonné de bibliologie, contenant l'explication
+							des principaux termes relatifs à la bibliographie, à l'art
+							typographique, etc. »</unittitle>
+						<physdesc>
+							<extent>40 pages</extent>
+							<physfacet type="reliure">Cahier broché</physfacet>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Dictionnaire raisonné de bibliologie</title>
+					</controlaccess>
+				</c>
+				<c id="D09030274" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">93</unitid>
+						<unittitle>« Dictionnaire du langage vicieux et populaire de l'habitant du
+							Bourbonnais, et particulièrement de celui de l'arrondissement de Moulins
+							»</unittitle>
+						<physdesc>
+							<extent>53 pages</extent>
+							<physfacet type="reliure">Cahier broché</physfacet>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<geogname>Moulins</geogname>
+						<name>État ou histoire de l'église d'Izeure, paroisse matrice de la
+							ville</name>
+					</controlaccess>
+				</c>
+				<c id="D09030275" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">94</unitid>
+						<unittitle>« Proverbes en usage dans le département de l'Allier
+							»</unittitle>
+						<physdesc>
+							<extent>15 feuillets</extent>
+							<physfacet type="reliure">Cahier broché</physfacet>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Proverbes du département de l'Allier</title>
+					</controlaccess>
+				</c>
+			</c>
+			<c id="D09030276" level="otherlevel" otherlevel="notice">
+				<did>
+					<unitid type="numéro_de_notice">95</unitid>
+					<unittitle>«Estat ou hystoire raisonée de l'eglise d'Izeure, eglise et parroisse
+						matrice de la ville de Moulins, capitale du Bourbonnois»</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1701/1800">XVIII<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<extent>121 feuillets</extent>
+						<dimensions unit="mm">260 × 180 mm</dimensions>
+						<physfacet type="reliure">Dérelié</physfacet>
+					</physdesc>
+				</did>
+				<controlaccess>
+					<geogname>Moulins</geogname>
+					<name>État ou histoire de l'église d'Izeure, paroisse matrice de la ville</name>
+				</controlaccess>
+			</c>
+			<c id="D09030277" level="otherlevel" otherlevel="groupe-de-notices">
+				<did>
+					<unitid type="numéro_de_notice">96-100</unitid>
+					<unittitle>Travaux bibliographiques de M. Conny</unittitle>
+					<unitdate era="ce" calendar="gregorian" normal="1801/1900">XIX<emph
+							render="super">e</emph> siècle</unitdate>
+					<langmaterial>
+						<language langcode="fre">français</language>
+					</langmaterial>
+					<physdesc>
+						<physfacet type="support">Papier</physfacet>
+						<dimensions unit="mm">160 × 122 mm</dimensions>
+						<physfacet type="reliure">Portefeuilles</physfacet>
+					</physdesc>
+				</did>
+				<c id="D09030278" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">96</unitid>
+						<unittitle>« Bibliographie de la Bourgogne »</unittitle>
+						<physdesc>
+							<extent>706 fiches</extent>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Bibliographie de la Bourgogne</title>
+					</controlaccess>
+				</c>
+				<c id="D09030279" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">97</unitid>
+						<unittitle>« Bibliographie Bourbonnaise »</unittitle>
+						<physdesc>
+							<extent>1059 fiches</extent>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<title>Bibliographie bourbonnaise</title>
+					</controlaccess>
+				</c>
+				<c id="D09030280" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">98</unitid>
+						<unittitle>« Bibliographie de l'Auvergne et du Velay »</unittitle>
+						<physdesc>
+							<extent>426 fiches</extent>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<name>Bibliographie de l'Auvergne et du Velay</name>
+					</controlaccess>
+				</c>
+				<c id="D09030281" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">99</unitid>
+						<unittitle>« Bibliographie du Berry, du Nivernais, de la Marche et du Forez
+							»</unittitle>
+						<physdesc>
+							<extent>387 fiches</extent>
+						</physdesc>
+					</did>
+					<controlaccess>
+						<persname>Conny, ancien bibliothécaire de Moulins</persname>
+						<name>Bibliographie du Berry, du Nivernais, de la Marche et du Forez</name>
+					</controlaccess>
+				</c>
+				<c id="D09030282" level="otherlevel" otherlevel="notice">
+					<did>
+						<unitid type="numéro_de_notice">100</unitid>
+						<unittitle>Table des différentes bibliographies de M. Conny</unittitle>
+						<physdesc>
+							<extent>240 fiches</extent>
+						</physdesc>
+					</did>
+				</c>
+			</c>
+		</dsc>
+	</archdesc>
+</ead>

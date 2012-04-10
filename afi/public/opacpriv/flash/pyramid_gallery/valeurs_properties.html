@@ -1,0 +1,13 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="160px">Espacement des images&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_pictureDistance",$preferences["op_pictureDistance"],2,15,1) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Nombre d'images par ligne&nbsp;</td>
+		<td class="gauche"><?php $this->view->comboNombres("op_columns",$preferences["op_columns"],1,10,1) ?></td>
+	</tr>
+
+</table>

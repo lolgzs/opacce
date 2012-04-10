@@ -1,0 +1,8 @@
+<?php print('<h1>'.$this->traduire('Gestion des utilisateurs').'</h1>'); ?>
+<br><br><br>
+<center>
+<div class="error"><?php echo $this->erreur ?></div>
+<br><br>
+<?php 
+	print($this->bouton("type=RETOUR","url=".BASE_URL."/admin/users","largeur=120px")); 
+?>

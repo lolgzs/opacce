@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="<?php echo $this->_translate()->getLocale() ?>" xml:lang="<?php echo $this->_translate()->getLocale() ?>" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title><?php echo $this->titre ?></title>
+<?php $current_profil = Class_Profil::getCurrentProfil(); ?>
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="<?php echo $current_profil->getCommentaire();?>" />
+<meta name="keywords" content="<?php echo $current_profil->getRefTags();?>" />
+<meta name="language" content="<?php echo $this->_translate()->getLocale() ?>" />
+<meta content="all" name="robots" />
+<meta content="10 days" name="revisit-after" />
+<?php 
+	echo $current_profil->getStyleCss();
+  if ($current_profil->hasFavicon())
+		echo sprintf('<link rel="shortcut icon" href="%s"/>', $current_profil->getFavicon());
+
+$head_scripts = Class_ScriptLoader::newInstance()
+	->addStyleSheet(URL_ADMIN_JS.'jquery_ui/css/jquery.ui.afi.theme')
+	->addOPACStyleSheet('global')
+	->addSkinStyleSheets(array('global', 'erreur', 'dialog', 'popup', 'nuage_tags'))
+	->addAdminStyleSheet('subModal')
+	->addOPACStyleSheet('print', array('media' => 'print'))
+	->addInlineScript(sprintf('var baseUrl="%s"; var imagesUrl="%s"; var cssUrl="%s"; var userFilesUrl="%s"',
+														BASE_URL, URL_IMG, URL_CSS, USERFILESURL))
+	->loadJQuery()
+	->loadJQueryUI()
+	->addAdminScripts(array('onload_utils', 'global', 'toolbar', 'common', 'subModal'))			 
+	->addOPACScripts(array('abonne', 'menu', 'bib', 'avis', 'recherche'))
+	->addJQueryReady('ajaxify_calendars()')
+	->addJQueryReady('setupAnchorsTarget()')
+	->showNotifications();
+
+if (file_exists(PATH_SKIN.'/css/bib.css'))
+	$head_scripts->addSkinStyleSheet('bib');
+
+if ($this->header_css)
+	$head_scripts->addStyleSheet($this->header_css);
+
+if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visuelles
+	$head_scripts
+		->addOPACStyleSheet('blanc_sur_noir', array('rel' => 'alternate stylesheet',
+																								'title' => $this->_('Blanc sur noir')))
+		->addOPACStyleSheet('noir_sur_blanc', array('rel' => 'alternate stylesheet',
+																								'title' => $this->_('Noir sur blanc'))) 
+		->addOPACStyleSheet('bleu_sur_jaune', array('rel' => 'alternate stylesheet',
+																								'title' => $this->_('Bleu sur jaune')))
+		->cssAddLine($this->_('<link rel="alternate stylesheet" type="text/css" href="" title="%s" />', 
+													'Style par défaut'))
+		->cssAddLine('<link id="accessibility_stylesheet" rel="stylesheet" type="text/css" href="" title="" />')
+		->addAdminScript('jquery.cookie')
+		->addJQueryReady('initAccessibilityOptions();');
+}
+
+if (getVar('ID_READ_SPEAKER'))
+	$head_scripts
+		->addJQueryReady(sprintf('$.getScript("http://wr.readspeaker.com/webreader/webreader.js.php?cid=%s")',
+														 getVar('ID_READ_SPEAKER')));
+
+$script_loader = Class_ScriptLoader::getInstance();
+$head_scripts->renderStyleSheets();
+$script_loader->renderStyleSheets();
+
+
+
+foreach(array(7,8) as $ie) {
+	if (file_exists(PATH_SKIN.'/css/ie'.$ie.'.css')) {
+		echo sprintf('<!--[if IE %d]><link rel="stylesheet" type="text/css" href="%sie%d.css" /><![endif]-->',
+								 $ie, URL_CSS, $ie);
+	}
+
+	$ie_css = $current_profil->getHeaderCssIE($ie);
+	if (file_exists(USERFILESPATH.'/css/'.$ie_css ))
+		echo sprintf('<!--[if IE %d]><link rel="stylesheet" type="text/css" href="%s/css/%s" /><![endif]-->',
+								 $ie, USERFILESURL, $ie_css);
+}
+
+
+$head_scripts->renderJavaScripts();
+$script_loader->renderJavaScripts();
+?>
+</head>

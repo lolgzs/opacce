@@ -1,0 +1,5 @@
+radiusX=230
+thumbWidth=90
+thumbHeight=110
+centerX=90
+centerY=300

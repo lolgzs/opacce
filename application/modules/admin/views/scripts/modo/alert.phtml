@@ -1,0 +1,57 @@
+<?php print('<h1>'.$this->traduire('Modération des alertes').'</h1>'); 
+print('<br />');
+if(!count($this->liste_alert))
+{
+	print('<h4>Il n\'y a aucune alerte &agrave; mod&eacute;rer</h4>');
+}
+else
+{
+?>
+<form name="form" action="<?php echo BASE_URL ?>/admin/modo/updatealerte" method="post">
+<table cellpadding="5px" cellspacing="0">
+   <tr class="soustitre">  
+   		<td style="width:2%;">&nbsp;</td>
+      <td style="width:90%;">Avis</td>
+      <td style="width:8%">Action</td>
+  </tr>
+  <tr>
+	 	<td colspan="3"  class="separ"> </td>
+  </tr>
+    
+<?php
+} 
+    if(is_array($this->liste_alert))
+    {
+        foreach ($this->liste_alert as $cmt)
+        {
+            $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+            $id_cmt = $cmt["ID_NOTICE"].'_'.$cmt["ID_USER"].'_'.$cmt["ID_CMT"];
+            print('<tr class="'.$class.'">');
+            print('<td valign="top">'.$ligne.'</td>');
+            
+            // Bloc avis
+            print('<td valign="top">');
+            print("<b>Le : </b>". substr($cmt["DATE_CMT"],0,10)."<b>&nbsp;&nbsp;Par : </b>".$cmt["SIGNATURE"].BR);
+            print('<span class="avis_notice">'.$avis["NOTICE"].'</span>');
+            print('<b>Commentaires : </b><br /><textarea name="cmt['.$ligne.']" rows="7" cols="66">'.$cmt["CMT"].'</textarea></b>');
+            print('</td>');
+                
+            // Action
+            print('<td valign="top"><select name="avis['.$ligne.']">');
+            print('<option value="1_'.$id_cmt.'">Valider</option>');
+            print('<option value="2_'.$id_cmt.'">Supprimer</option>');
+            print('<option value="0_'.$id_cmt.'" selected>Ne rien faire</option>');
+            print('</select>');
+            print('</td>');
+            print('</tr>');
+        }
+    }
+    print('</table>');
+    if (count($this->liste_alert) > 0) print('<br><center><div>' . $this->bouton('type=V') . '</div>');
+    print('</form>');
+
+?> 
+<br>
+<?php echo $this->message; ?>
+
+<div id="ajax"></div>

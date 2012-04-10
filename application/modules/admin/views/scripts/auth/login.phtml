@@ -1,0 +1,24 @@
+<form name="form" action="<?php echo BASE_URL ?>/admin/auth/login" method="post">
+<center>
+ <div class="login" align="center">
+  	<table cellpadding="0" cellspacing="0" >
+   		<tr class ="dark">
+   			<td colspan="2" align="center" height="60">
+	 <span id="abonne_erreur"><?php echo $this->_($this->message); ?><br /></span>   			
+<?php echo $this->_("Entrez votre identité S.V.P.") ?></td>
+  		</tr>
+  		<tr class="light">
+     		<td width="50%" height="54" align="right"><label for="username"><?php echo $this->traduire("Identifiant") ?></label>&nbsp;&nbsp;&nbsp;</td>
+			<td width="50%" height="54" align="left" valign="middle">&nbsp;&nbsp;<input type="text" name="username" value=""/></td>
+  		</tr>
+  		<tr class="light">
+     		<td width="50%" height="55" align="right"><label for="password"><?php echo $this->traduire("Mot de passe") ?></label>&nbsp;&nbsp;&nbsp;</td>
+			<td width="50%" height="55" align="left" valign="middle">&nbsp;&nbsp;<input type="password" name="password" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value=""/></td>
+  		</tr>
+  		<tr class="dark">
+     		<td colspan="2" width="50%" height="66" align="center"><?php echo $this->bouton('type=V'); ?></td>
+  		</tr>
+  </table>
+ </div>
+</center>
+</form>

@@ -1,0 +1,46 @@
+<?php $this->openBoite("Prêts en cours");
+echo '<div class="abonneTitre">'.$this->fiche["nom_aff"].'</div>';
+
+if($this->fiche["message"]) echo '<p class="error">'.$this->fiche["message"].'</p>';
+if($this->fiche["erreur"]) echo '<p class="error">' . $this->fiche["erreur"] . '</p>';
+?>
+
+<table width="100%">
+	<tr>
+		<th style="text-align:left"><?php echo $this->_('n°') ?></th>
+		<th style="text-align:left"><?php echo $this->_('Titre') ?></th>
+		<th style="text-align:left"><?php echo $this->_('Auteur') ?></th>
+		<th style="text-align:left"><?php echo $this->_('Bibliothèque') ?></th>
+		<th style="text-align:center"><?php echo $this->_('Retour prévu') ?></th>
+	</tr>
+	<?php
+    $num=1;
+    if(isset($this->fiche["fiche"])) {
+				foreach($this->fiche["fiche"]->getEmprunts() as $emprunt) {
+					$class_retard = $emprunt->enRetard() ? 'class="pret_en_retard"' : '';
+					echo '<tr '.$class_retard.'>';
+					  echo '<td width="15px" align="center"><b>'.$num++.'</b></td>';
+					  echo '<td>'.$this->tagAnchor($this->url(array('controller' => 'recherche', 
+																													'action' => 'viewnotice', 
+																													'id' => $emprunt->getNoticeOPACId())), 
+																				 $emprunt->getTitre()).'</td>';
+						echo '<td>'.$emprunt->getAuteur().'</td>';
+						echo '<td>'.$emprunt->getBibliotheque().'</td>';
+						echo '<td class="date_retour">'.$emprunt->getDateRetour().' ';
+							if ($emprunt->isRenewable())
+								echo $this->tagAnchor($this->url(array('action' => 'prolongerPret',
+																											 'id_pret' => $emprunt->getId())),
+																			$this->_('Prolonger'));
+						echo '</td>';
+					echo '</tr>';
+			}
+		}
+	?>
+</table>
+
+<?php $this->closeBoite();?>
+<div style="margin-top:5px">
+<a href="<?php echo BASE_URL ?>/abonne/fiche"><?php echo $this->_('Retour') ?></a>
+</div>
+<br/>
+<br/>

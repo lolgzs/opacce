@@ -1,0 +1,50 @@
+<?php
+ob_start();
+echo '<body '.$this->bodyParam.'>';
+?>
+
+
+<div id="site_web_wrapper" style="width:<?php echo $this->profil->getLargeurSite(); ?>px; margin-left:auto; margin-right:auto">
+	<div class="siteWeb portail_background_img">
+		<div id="site_web_content">
+
+			<?php	echo $this->partial("banniere.phtml", array("profil" => $this->profil));	?>	
+
+			<div id="col_wrapper">
+				<?php
+					switch ($this->profil->getNbDivisions()) {
+					case 1:
+					echo $this->division($this->profil, 1, 'colContenu');
+					break;
+
+					case 2:
+					echo $this->division($this->profil, 1, 'colGauche');
+					echo $this->division($this->profil, 2, 'colContenu');
+					break;
+
+					case 3:
+					echo '<div id="right_col_color">';
+					echo $this->division($this->profil, 1, 'colGauche');
+					echo $this->division($this->profil, 2, 'colMilieu');
+					echo $this->division($this->profil, 3, 'colDroite');
+					echo '</div>';
+					break;
+					}
+				?>
+				<div class="clear"></div>
+			</div> <!-- col_wrapper -->
+		</div> <!-- site_web_content -->
+</div> <!-- siteWeb -->
+
+
+<?php 
+echo $this->render('footer.phtml');
+
+$html = ob_get_contents();
+ob_end_clean();
+
+echo $this->partial('head.phtml', 
+										array_merge($this->profil->getCfgSiteAsArray(), 
+																array('titre' => $this->getTitre())));
+echo $html;
+?>

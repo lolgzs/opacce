@@ -1,0 +1,18 @@
+tooltip {
+    font-family: Verdana;
+    font-size: 16px;
+	color: #FFFFFF;
+	background-color:#FF0000;
+	text-align:center;
+}
+
+description{
+    font-family: Verdana;
+    font-size: 14px;
+	color: #ffffdd;
+	text-align:center;
+}
+a {
+	color: #aaaaff;
+	text-decoration:underline;
+}

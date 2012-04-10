@@ -1,0 +1,30 @@
+<table cellpadding="1" cellspacing="1">
+	<tr>
+	<?php
+	$col = 0;
+	for ($i = 0; $i < count($this->images); ++$i) {
+		if ($col > 2){
+			$col = 0;
+			echo '</tr>';
+			echo '<tr>';
+		}
+		echo '<td align="center" width="5%"><a href="#"><img src="' . URL_ADMIN_IMG . 'plan_acces/icon' . $this->images[$i] . '.png" class="ico" border="0" onclick="javascript:window.top.setInputValue(&#39;' . $this->images[$i] . '&#39;);window.top.hidePopWin(false);window.top.selectImage();window.top.changer_icone();return false;"/></td>';
+		$col++;
+	}
+	if ($col < 3){
+		for ($i = $col; $i < 3; ++$i) {
+			echo '<td align="center" width="5%">&nbsp;</td>';
+		}
+	}
+
+	?>
+	</tr>
+	<tr>
+	<td align="center" colspan="3">
+	<?php
+$closePopup = "javascript:window.top.hidePopWin(false);";
+echo ('<br>'.$this->bouton('id=20','picto=del.gif','texte='.$this->traduire('Annuler').'','url='.$closePopup.'','largeur=120px').'</div></center>'); ?>
+</td>
+	</tr>
+</table>
+

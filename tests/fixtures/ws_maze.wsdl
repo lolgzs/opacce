@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Generated 02/24/12 by Microsoft SOAP Toolkit WSDL File Generator, Version 3.00.1325.0 --> 
+<definitions
+	name='ws_maze'
+	targetNamespace='uri:/ws_maze/wsdl/'
+	xmlns:wsdlns='uri:/ws_maze/wsdl/'
+	xmlns:typens='uri:/ws_maze/type/'
+	xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+	xmlns:stk='http://schemas.microsoft.com/soap-toolkit/wsdl-extension'
+	xmlns:dime='http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/'
+	xmlns:ref='http://schemas.xmlsoap.org/ws/2002/04/reference/'
+	xmlns:content='http://schemas.xmlsoap.org/ws/2002/04/content-type/'
+	xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+	xmlns='http://schemas.xmlsoap.org/wsdl/'>
+
+	<types>
+		<schema
+			targetNamespace='uri:/ws_maze/type/'
+			xmlns='http://www.w3.org/2001/XMLSchema'
+			xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+			xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+			elementFormDefault='qualified'>
+
+			<import namespace='http://schemas.xmlsoap.org/soap/encoding/'/>
+			<import namespace='http://schemas.xmlsoap.org/wsdl/'/>
+			<import namespace='http://schemas.xmlsoap.org/ws/2002/04/reference/'/>
+			<import namespace='http://schemas.xmlsoap.org/ws/2002/04/content-type/'/>
+
+		</schema>
+	</types>
+
+	<message name='ws_maze.infos_exemplaires'>
+		<part name='nno_notice' type='xsd:int'/>
+	</message>
+
+	<message name='ws_maze.infos_exemplairesResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.infos_abonne'>
+		<part name='cLogin' type='xsd:string'/>
+		<part name='cPass' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.infos_abonneResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.ajout_reservation'>
+		<part name='cno_abonne' type='xsd:string'/>
+		<part name='ccode_barre' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.ajout_reservationResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.annule_reservation'>
+		<part name='cno_abonne' type='xsd:string'/>
+		<part name='ccode_barre' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.annule_reservationResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.prolonge_pret'>
+		<part name='cno_abonne' type='xsd:string'/>
+		<part name='ccode_barre' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.prolonge_pretResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.modif_abonne'>
+		<part name='cLogin' type='xsd:string'/>
+		<part name='cPass' type='xsd:string'/>
+		<part name='cMail' type='xsd:string'/>
+	</message>
+
+	<message name='ws_maze.modif_abonneResponse'>
+		<part name='Result' type='xsd:string'/>
+	</message>
+
+	<portType name='ws_mazeSoapPort'>
+
+		<operation name='infos_exemplaires' parameterOrder='nno_notice'>
+			<input message='wsdlns:ws_maze.infos_exemplaires'/>
+			<output message='wsdlns:ws_maze.infos_exemplairesResponse'/>
+		</operation>
+
+		<operation name='infos_abonne' parameterOrder='cLogin cPass'>
+			<input message='wsdlns:ws_maze.infos_abonne'/>
+			<output message='wsdlns:ws_maze.infos_abonneResponse'/>
+		</operation>
+
+		<operation name='ajout_reservation' parameterOrder='cno_abonne ccode_barre'>
+			<input message='wsdlns:ws_maze.ajout_reservation'/>
+			<output message='wsdlns:ws_maze.ajout_reservationResponse'/>
+		</operation>
+
+		<operation name='annule_reservation' parameterOrder='cno_abonne ccode_barre'>
+			<input message='wsdlns:ws_maze.annule_reservation'/>
+			<output message='wsdlns:ws_maze.annule_reservationResponse'/>
+		</operation>
+
+		<operation name='prolonge_pret' parameterOrder='cno_abonne ccode_barre'>
+			<input message='wsdlns:ws_maze.prolonge_pret'/>
+			<output message='wsdlns:ws_maze.prolonge_pretResponse'/>
+		</operation>
+
+		<operation name='modif_abonne' parameterOrder='cLogin cPass cMail'>
+			<input message='wsdlns:ws_maze.modif_abonne'/>
+			<output message='wsdlns:ws_maze.modif_abonneResponse'/>
+		</operation>
+
+	</portType>
+
+	<binding name='ws_mazeSoapBinding' type='wsdlns:ws_mazeSoapPort' >
+
+		<stk:binding preferredEncoding='UTF-8'/>
+		<soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+
+		<operation name='infos_exemplaires'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.infos_exemplaires'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='nno_notice'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+		<operation name='infos_abonne'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.infos_abonne'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='cLogin cPass'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+		<operation name='ajout_reservation'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.ajout_reservation'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='cno_abonne ccode_barre'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+		<operation name='annule_reservation'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.annule_reservation'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='cno_abonne ccode_barre'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+		<operation name='prolonge_pret'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.prolonge_pret'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='cno_abonne ccode_barre'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+		<operation name='modif_abonne'>
+			<soap:operation soapAction='uri:/ws_maze/action/ws_maze.modif_abonne'/>
+			<input>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='cLogin cPass cMail'/>
+			</input>
+			<output>
+				<soap:body
+					use='encoded'
+					namespace='uri:/ws_maze/message/'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+					parts='Result'/>
+			</output>
+		</operation>
+
+	</binding>
+
+	<service name='ws_maze' >
+		<port name='ws_mazeSoapPort' binding='wsdlns:ws_mazeSoapBinding' >
+			<soap:address location='http://80.11.188.93/WebServices/ws_maze.WSDL'/>
+		</port>
+	</service>
+
+</definitions>

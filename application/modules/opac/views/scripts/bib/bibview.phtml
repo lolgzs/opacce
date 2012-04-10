@@ -1,0 +1,122 @@
+<?php 
+$this->openBoite($this->_("Rechercher un livre, un disque, une vidéo"));
+	 
+if(!$_SESSION["selection_bib"]["nb_notices"]) print($this->_("Le catalogue de cette bibliothèque n'est pas encore intégré au portail"));
+else
+{
+?>
+
+
+<form id="recherche" style="text-align: left;" name="recherche" method="post" action="<?php echo BASE_URL; ?>/recherche/simple?geo_bib=<?php echo $this->id_bib; ?>">
+  <input type="field" style="width: 250px;" value="" name="expressionRecherche" id="expressionRecherche" />
+  <input class="submit" type="submit" value="" name="button"/>
+  <?php echo $this->_('La bibliothèque contient %s notices.', $_SESSION["selection_bib"]["nb_notices"]) ?>
+  <br/>
+  <?php echo $this->_('Dans cette bibliothèque.') ?> 
+</form>
+
+<?php
+}
+$this->closeBoite();
+?>
+
+<table width="635px" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top">
+			<table width="460" border="0" cellpadding="3" cellspacing="1">
+    		<tr>
+      		<td colspan="2"><h1><?php echo $this->_('Fiche de la bibliothèque :') ?><br /></h1></td>
+     		</tr>
+    		<tr>
+      		<td width="120" style="text-align:right;padding-right:5px;" valign="top"><?php echo $this->_('Nom :') ?></td>
+      		<td width="346"><h2><?php echo $this->bib->LIBELLE ;?></h2></td>
+   		 </tr>
+
+<?php
+if ( strlen($this->bib->ADRESSE) > 0 || strlen($this->bib->CP) > 0 || strlen($this->bib->VILLE) > 0) echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Adresse : ') ?></td>
+      <td valign="top"><h2>
+<?php if (strlen($this->bib->ADRESSE) > 0) echo $this->bib->ADRESSE .'<br />' . $this->bib->CP .'&nbsp;'. $this->bib->VILLE ;
+else echo $this->bib->CP .'&nbsp;'. $this->bib->VILLE ;?>
+      </h2></td>
+      </tr>
+<?php if (strlen($this->bib->TELEPHONE) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Tel. :') ?> </td>
+      <td><h2><?php echo $this->bib->TELEPHONE ;?></h2></td>
+      </tr>
+<?php if (strlen($this->bib->MAIL) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Mail : ') ?></td>
+      <td><a href="mailto:<?php echo $this->bib->MAIL ;?>"><?php echo $this->_('Mail') ?></a></td>
+      </tr>
+<?php if (strlen($this->bib->URL_WEB) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Site internet :') ?> </td>
+      <td><a href="<?php echo $this->bib->URL_WEB ;?>" target="_blank"><?php echo $this->_('Site') ?></a></td>
+      </tr>
+<?php if (strlen($this->bib->LIEN_CARTO) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Lien cartographique :') ?> </td>
+      <td><a href="<?php echo $this->bib->LIEN_CARTO ;?>" target="_blank"><?php echo $this->_('Carte') ?></a></td>
+      </tr>
+<?php if (strlen($this->bib->HORAIRE) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Horaires :') ?> </td>
+      <td><h2><?php $horaire = str_replace('%0D%0A','BR',$this->bib->HORAIRE); 
+      echo  str_replace ('BR','<br />',urldecode($horaire));?></h2></td>
+      </tr>
+<?php if (strlen($this->bib->INSCRIPTION) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Conditions inscription :') ?></td>
+      <td><h2><?php $inscr = str_replace('%0D%0A','BR',$this->bib->INSCRIPTION);
+      echo str_replace ('BR','<br />',urldecode($inscr)) ;?></h2></td>
+      </tr>
+<?php if (strlen($this->bib->PRET) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Prêts et réservations :') ?> </td>
+      <td><h2><?php $pret = str_replace('%0D%0A','BR',$this->bib->PRET);
+      echo str_replace ('BR','<br />',urldecode($pret));?></h2></td>
+      </tr>
+<?php if (strlen($this->bib->ANNEXE) > 0)echo ('<tr>');
+else echo ('<tr style="display:none;">'); ?>
+      <td style="text-align:right;padding-right:5px;width:117px;" valign="top"><?php echo $this->_('Annexe :') ?> </td>
+      <td><h2><?php $annexe = str_replace('%0D%0A','BR',$this->bib->ANNEXE) ;
+      echo str_replace ('BR','<br />',urldecode($annexe));?></h2></td>
+      </tr>
+    </td>
+    </tr>
+  </table>
+</td>
+  	<td valign="top">
+	  	<table border="0" cellspacing="0" cellpadding="0" >
+          <tr>
+            <td align="right"></td>
+          </tr>
+          <tr>
+            <td>
+            	<br /><center><div align="center">
+            	<?php 
+                if (trim($this->bib->PHOTO) !="") $img_bib = '<img src="'.BASE_URL.'/bib/photobib?id_bib='.$this->bib->ID_SITE.'" border="0" width="180" height="140"/>'; 
+                else $img_bib = '';
+                 print($img_bib);
+                 if(trim($this->bib->GOOGLE_MAP) !="") print('<br /> <a href="'.BASE_URL.'/opac/bib/mapview/id_bib/'.$this->bib->ID_SITE.'">'.$this->_('Voir le plan').'</a>');
+								 ?>
+              </div> </center>
+            </td>
+          </tr>
+        </table>
+		</td>
+	</tr>
+  <tr>
+    <td colspan="20" style="background:transparent url(<?php echo URL_IMG; ?>box/menu/separ.gif) repeat-x scroll center bottom">&nbsp;</td>
+  </tr>
+	<tr>
+    <td style="text-align:left"><a href="<?php echo $this->url_retour ?>"><?php echo $this->_('Retour') ?></a></td>
+	  <td style="text-align:right"><a href="#Top">Haut</a></td>
+  </tr>
+ </table>
+
+<?php echo $this->newsBibHelper($this->bib->ID_SITE);?>  
+  

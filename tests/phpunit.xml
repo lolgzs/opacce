@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+	bootstrap="./bootstrap.php"
+	colors="false"
+	backupGlobals="false"
+	stopOnFailure="false"
+	stopOnError="false"
+	>
+	<testsuites>
+		<testsuite name="ApplicationTestSuite">
+			<directory>./application/</directory>
+			<directory>./library/</directory>
+			<directory>./Storm/</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../application</directory>
+			<directory suffix=".php">../library/Class</directory>
+			<directory suffix=".php">../library/Storm</directory>
+			<directory suffix=".php">../library/ZendAfi</directory>
+			<directory suffix=".php">../library/fonctions</directory>
+			<exclude>
+				<file>../index.php</file>
+				<directory>../library/Class/Pdf</directory>
+				<directory>../library/Thumbs</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+</phpunit>

@@ -1,0 +1,24 @@
+<?php	 
+$this->openBoite($this->tagRss($this->url(array('controller' => 'rss',
+																								'action' => 'user',
+																								'id' => $this->id_user)),
+															 $this->_("S'abonner au flux RSS")).
+								 $this->_("Critiques rédigées par %s",$this->name));
+
+if(is_array($this->liste_avis)) {
+	$html_avis = array();
+	foreach($this->liste_avis as $avis)
+		$html_avis []= $this->avis($avis);
+	echo implode('<div class="separator"></div>', $html_avis);
+} else {
+	echo('<tr><td><p>'.$this->_('Aucun avis pour %s', $this->name).'</p></td></tr>');
+}
+$this->closeBoite();
+?>
+
+<table style="width:100%">
+	<tr>
+		<td style="text-align:left"><a href="javascript:history.back()">Retour</a></td>
+		<td style="text-align:right"><a href="#Top"><?php echo $this->_('Haut') ?></a></td>
+	</tr>
+</table>

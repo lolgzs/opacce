@@ -1,0 +1,35 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>recherche.css" />
+<?php $this->openBoite($this->current_module["preferences"]["titre"]);
+
+// Fil d'ariane
+extract($this->resultat);
+if($fil_ariane["liens"])
+{
+	foreach($fil_ariane["liens"] as $fil)
+	{
+		print('<span><a href="'.$fil["url"].'">&nbsp;&raquo;&nbsp;'.$fil["libelle"].'</a></span>');
+	}
+}
+print('<br><hr>');
+// Rubriques
+if(!$rubriques) print($this->_("Il n'y a plus de sous-niveau"));
+else
+{	
+	foreach($rubriques as $rubrique)
+	{
+		print('<a href="'.$rubrique["url"].'">&raquo;&nbsp;'.$rubrique["libelle"].'</a><br>');
+	}
+}
+if($this->current_module["preferences"]["select_bib"]==1) echo $_SESSION["selection_bib"]["html"];
+$this->closeBoite();
+
+// Liste
+if(strlen($fil_ariane["fil"]) > 4)
+{
+	echo '<div class="conteneur_simple">';
+	echo $this->listeNotices($this->liste,$nombre,$page_cours,$this->current_module["preferences"]); 
+	echo '<div style="width:630px;text-align:center">'.$this->pager($nombre,$this->current_module["preferences"]["liste_nb_par_page"],$page_cours,$_SESSION["recherche"]["retour_liste"]).'</div>'; 
+	echo '</div>';
+
+}
+?>

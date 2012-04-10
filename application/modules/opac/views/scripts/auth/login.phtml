@@ -1,0 +1,44 @@
+<script>
+	function getUsername()
+	{
+	oUser = document.getElementById('username');
+	username = oUser.value;
+	var url = window.location.href=baseUrl+"/auth/lostpass?id="+username+"&r=auth";
+	return(url);
+	}
+</script>
+
+<div class="form" >
+	<?php	$this->openBoite("Se connecter") ?>
+	<form name="form_login" action="<?php echo BASE_URL ?>/opac/auth/login"
+	method="post">
+	<table cellpadding="0" cellspacing="0" style="width:100%;margin-top:20px">
+		
+		<tr>
+			<td class="masque"><?php echo $this->_('Identifiant') ?></td>
+			<td class="saisie"><input type="text" name="username" id="username" size="15"></td>
+		</tr>
+		
+		<tr>
+			<td  class="masque"><?php echo $this->_('Mot de passe') ?></td>
+			<td  class="saisie">
+				<input type="password" name="password" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" size="15">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" width="50%" height="70px" style="text-align:center">
+					<a  href="#" onclick="getUsername();">&raquo;&nbsp;<?php echo $this->_('Mot de passe oublié ?') ?></a> &nbsp;&nbsp;
+					<?php if (!Class_AdminVar::get('INTERDIRE_ENREG_UTIL')) {?>
+					<a href="<?php echo BASE_URL; ?>/auth/register" target="_parent">&raquo;&nbsp;<?php echo $this->_("S'inscrire sur le portail") ?></a>  <br />
+					<?php } ?>
+				</td>
+			</tr>
+		</table>
+		<?php $this->closeBoite() ?>
+		<?php echo $this->bouton('type=V', 'form=form_login'); ?>
+	</form>
+	<br/>
+	<?php if ($this->message) {?>
+	<div class="error" align="center"><?php echo $this->message;?></div>
+	<?php }?>
+</div>

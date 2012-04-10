@@ -1,0 +1,54 @@
+<link rel="stylesheet" type="text/css" media="screen"	href="<?php echo URL_ADMIN_CSS;?>map.css" />
+<script	type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->googleKey?>"></script>
+<script type="text/javascript" src="<?php echo URL_JS?>plan_acces.js"></script>
+
+<?php echo $this->mapEvents();?>
+
+<script type="text/javascript">
+function initHIcone()
+{
+<?php echo $this->hIcone; ?>
+return hIcone;
+}
+function initOCouches()
+{
+<?php echo $this->oCouches; ?>
+return oCouches;
+}
+</script>
+
+<div>
+<?php
+$this->openBoite($this->_("Plan d'accès"));
+	
+ ?>
+    <table class="map" width="100%">
+    <tr>
+        <td>
+        <ul class="map">
+
+        <?php for($couche=1; $couche<=count($this->map["COUCHE"]); $couche++)
+        {
+            echo ('<a href="javascript:afficher_couche('.$couche.')"><li>'.stripslashes($this->map["COUCHE"][$couche]["TITRE"]).'</li></a>');
+        } ?>
+
+        </ul>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="100%">
+        <div id="map" style="width: 630px; height: 570px"></div>
+        </td>
+    </tr>
+    </table>
+    </div>
+
+<?php $this->closeBoite(); ?>
+<table style="width:100%">
+	<tr>
+    <td style="text-align:left"><a href="<?php echo $this->url_retour; ?>"><?php echo $this->_('Retour') ?></a></td>
+	 <td style="text-align:right"><a href="#Top"><?php echo $this->_('Haut') ?></a></td>
+  </tr>
+</table>
+<br/>

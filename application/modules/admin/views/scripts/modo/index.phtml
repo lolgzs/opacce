@@ -1,0 +1,26 @@
+<?php
+$moderer = new Class_Moderer();
+$modstats = $moderer->getModerationStats();
+
+$menus = array(array("icon" => "article.png",
+										 "label" => "Articles",
+										 "url" => "/admin/modo/aviscms",
+										 "count" => $modstats['avis_articles']['count']),
+							 array("icon" => "books.png",
+										 "label" => "Notices",
+										 "url" => "/admin/modo/avisnotice",
+										 "count" => $modstats['avis_notices']['count']),
+							 array("icon" => "tag_blue.png",
+										 "label" => "Tags notices",
+										 "url" => "/admin/modo/tagnotice",
+										 "count" => $modstats['tags_notices']['count'])
+							 //array("icon" => "alert.png", 
+							 //    	 "label" => "Alertes",
+							 //   	 "url" => "/admin/modo/alert")
+							 );
+echo '<div class="menu">'.$this->getHelper('MenuHorizontalAdmin')->generateMenu($menus).'</div>';
+
+if ($this->subview) 
+	echo "<div class='subview'>".$this->subview."<div class='clear'></div></div>";
+?>	
+

@@ -1,0 +1,25 @@
+<?php
+if (!$this->album->isNew())
+	echo $this->partial('album/_album_panel.phtml', 
+											array('album' => $this->album));
+
+if ($this->album->hasErrors()) {
+	echo $this->htmlList($this->album->getErrors(), false, array('class' => 'errors'));
+}
+
+if (!$this->album->isNew()) {
+	echo '<dl class="info">';
+	echo sprintf('<dt>Dernière modification:</dt><dd>%s</dd>', 
+							 $this->humanDate($this->album->getDateMaj()));
+
+	echo sprintf('<dt>Permalien:</dt><dd><input class="permalink" value="%s" readonly="true" size="80"/></dd>', 
+							 $this->absoluteUrl($this->album->getPermalink(), null, true));
+
+	echo sprintf('<dt>Permalien vignette:</dt><dd><input class="permalink"  value="%s" readonly="true" size="80"/></dd>', 
+							 $this->absoluteUrl($this->album->getPermalinkThumbnail(), null, true));
+	echo '</dl><div class="clear"/>';
+}
+
+echo $this->renderForm($this->form);
+
+?>

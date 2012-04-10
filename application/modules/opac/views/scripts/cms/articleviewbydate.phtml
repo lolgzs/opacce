@@ -1,0 +1,48 @@
+<a name="Top"></a>
+<?php $this->openBoite("Calendrier"); ?>
+
+<div class="calendar_event_list articleviewbydate">
+<?php if (0 < count($this->articles)) { ?>
+		<ul>
+			<?php foreach ($this->articles as $bibliotheque => $articles) { ?>
+				<li><h2><?php echo ('' == $bibliotheque) ? $this->_('Portail') : $bibliotheque;?></h2>
+				<ul>
+				<?php
+				foreach ($articles as $article) {	?>
+					<li>
+						<?php echo $this->tagArticleEvent($article);?>
+						<span><?php
+						echo $this->tagAnchor(
+							$this->url(array('cat' => $article->getIdCat())),
+							$article->getCategorie()->getLibelle(),
+							array('class' => 'calendar_event_info')
+						);?> - <?php
+						echo $this->tagAnchor(
+							$article->getUrl(),
+							$article->getTitre(),
+							array('class' => 'calendar_event_title')
+						); ?>
+						</span>
+					</li>
+				<?php } ?>
+			</ul>
+		</li>
+		<?php } ?>
+		</ul>
+<?php
+
+} else {
+	echo $this->_('Aucun contenu');
+
+} ?>
+
+</div>
+
+<?php $this->closeBoite();?>
+
+<table style="width:100%">
+	<tr>
+		<td style="text-align:left"><a href="javascript:history.back()"><?php echo $this->_('Retour') ?></a></td>
+		<td style="text-align:right"><a href="#Top"><?php echo $this->_('Haut') ?></a></td>
+	</tr>
+</table>

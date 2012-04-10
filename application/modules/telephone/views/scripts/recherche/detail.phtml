@@ -1,0 +1,9 @@
+<?php
+echo $this->toolbar("Notice détaillée",$this->url_retour,true);
+echo '<h1>'.$this->titre.'</h1>';
+echo '<div class="pave">';
+$notice_html=new Class_NoticeHtml($this->notice);
+$notice_html->notice=$this->notice;
+echo $notice_html->getEntete();
+echo '</div>'.BR;
+?>

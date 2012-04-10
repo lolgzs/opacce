@@ -1,0 +1,42 @@
+<?php
+echo $this->profileSelect('bib',$this->id_zone,$this->id_bib,'z'); 
+echo ('<center><div align="center"><br>'.$this->bouton('id=c_19','picto=add.gif','texte='.$this->traduire('Ajouter une bibliothèque').'','url='.BASE_URL.'/admin/bib/add','largeur=220px').'</div></center>');  
+?>
+<br /><table cellspacing="0" cellpadding="0">
+    <tr class="soustitre">    
+        <td style="width:30%;">Ville</td>
+        <td style="width:55%">Libelle</td>
+        <td style="width:15%;padding-left:10px;" colspan="4"> Action</td>
+    </tr>
+     <tr>
+      	<td colspan="6"  class="separ"> </td>
+      </tr>
+    
+<?php 
+$ligne = 0;
+foreach ($this->bib_array as $bib)
+{
+    $class_zone = new Class_Zone();
+    $class_bib = new Class_bib();
+    $test = $class_bib->isBibDeletable($bib["ID_SITE"]);
+    if($test == true) $ico_del = '<a href="'.BASE_URL.'/admin/bib/delete/id/'.$bib["ID_SITE"].'">'.$this->boutonIco("type=del").'</a>';
+    else $ico_del ='<a href="#" onclick="alert(\'Cette bibliothèque possède encore du contenu\'); return false;"><img src="'.URL_ADMIN_IMG.'ico/del.gif" class="ico" alt="Supprimer" title="Supprimer"/></a>';
+    
+    
+    $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+    $ville = ucfirst($bib["VILLE"]);
+    echo('<tr class="'.$class.'">
+		<td valign="top">'.$ville. '</td>
+		<td valign="top" align="left">'.$bib["LIBELLE"].'</td>
+		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/edit/id/'.$bib["ID_SITE"].'">'.$this->boutonIco("type=edit").'</a></td>
+    <td valign="top" align="center">'.$ico_del.'</td>
+			<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/planacces/id/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/map.gif" border="0" alt="Configurer le plan d\'accès" title="Configurer le plan d\'accès"/></a></td>
+		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/plans/id_bib/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/plan.gif" border="0" alt="Plans et de la bibliothèque" title="Plans de la bibliothèque"/></a></td>
+		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/localisations/id_bib/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/localisation.gif" border="0" alt="Localisations de la bibliothèque" title="Localisations de la bibliothèque"/></a></td>
+    </tr>');
+}
+echo ('</table>');
+echo '<span id="abonne_erreur" class="abonne">'.$this->errorMessage.'</span>'; ?>
+
+
+<div id="ajax"></div>

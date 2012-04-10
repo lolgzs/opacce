@@ -1,0 +1,43 @@
+<li class="<?php echo $this->item_class; echo $this->session->isAnnule() ? ' annule': '' ?>">
+<div>&nbsp</div>
+<?php 
+
+$url_edit_participants = $this->url(array('action' => 'inscriptions',
+																					'session_id' => $this->session->getId()));
+
+echo sprintf("<div>%s</div>", $this->humanDate($this->session->getDateDebut(), 'MMMM, d'));
+
+echo sprintf("<div><a href='%s'>%d / %d-%d participants</a></div>", 
+						 $url_edit_participants,
+						 count($this->session->getStagiaires()),
+						 $this->session->getEffectifMin(),
+						 $this->session->getEffectifMax());
+
+echo sprintf("<div class='actions'>%s</div>", 
+						 $this->tagAnchor(array('action' => 'session_edit',
+																		'id' => $this->session->getId()),
+															$this->boutonIco("type=edit")).
+										 
+						 $this->tagAnchor($url_edit_participants,
+															$this->boutonIco("picto=picto/abonnes.gif", "bulle=Stagiaires")).
+
+						 $this->tagAnchor(array('action' => 'presences',
+																		'id' => $this->session->getId()),
+															$this->boutonIco("picto=ico/coche_verte.gif", "bulle=Présences")).
+
+						 $this->tagAnchor(array('action' => 'session_impressions',
+																		'id' => $this->session->getId()),
+															$this->boutonIco("picto=picto/printer.png", "bulle=Imprimer")).
+
+						 $this->tagAnchor(array('action' => 'export_inscriptions',
+																		'id' => $this->session->getId()),
+															$this->boutonIco("picto=picto/vcard.png", "bulle=Exporter")).
+
+						 $this->tagAnchor(array('action' => 'session_delete',
+																		'id' => $this->session->getId()),
+															$this->boutonIco("type=del")));
+
+if (!$this->session->isValid())
+	echo sprintf('<div class="error">%s</div>', implode(',', $this->session->getErrors()));
+?>
+</li>

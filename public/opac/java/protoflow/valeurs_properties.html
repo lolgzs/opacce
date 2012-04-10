@@ -1,0 +1,23 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="120px">Animation&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_autoplay",$preferences["op_autoplay"],"",array("false" => "ne pas animer","true"=>"animer")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Afficher les titres&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_captions",$preferences["op_captions"],"",array("true" => "oui","false"=>"non")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Largeur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_largeur_img",$preferences["op_largeur_img"],50,200,5) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Hauteur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_hauteur_img",$preferences["op_hauteur_img"],50,200,5) ?></td>
+	</tr>
+
+</table>

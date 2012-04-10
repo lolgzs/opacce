@@ -1,0 +1,83 @@
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>common.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>subModal.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>config_accueil.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>controle_maj.js"> </script>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS?>subModal.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS?>config_accueil.css" />
+
+<?php echo $this->partial('profil/_profil_panel.phtml',
+													array('profil' => $this->profil)); ?>
+
+
+
+<div class="form">
+	<form name="form" action="<?php echo BASE_URL.'/admin/profil/accueil/id_profil/'.$this->profil->getid() ?>" method="post">
+	    <fieldset>
+				<legend>Page</legend>
+				<table border="0" cellpadding="5" cellspacing="0">
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Libelle'); ?></td>
+						<td class="gauche"><input type="text" name="libelle" value="<?php echo $this->escape(trim($this->profil->getLibelle()));?>" maxlength="50"/></td>
+					</tr>
+				</table>
+			</fieldset>
+			<fieldset><legend>Modules</legend>
+				<div style="font-size:10pt">Modules disponibles</div>
+				<div id="dhtmlgoodies_dragDropContainer">
+					<div id="dhtmlgoodies_listOfItems">
+						<table>
+							<tr>
+								<td style="width:33%;"><?php echo $this->module_info; ?></td>
+								<td style="width:33%;"><?php echo $this->module_rech; ?></td>
+								<td style="width:33%;"><?php echo $this->module_site; ?></td>
+							</tr>
+						</table>
+					</div>
+
+					<br/>
+
+					<div style="font-size:10pt">Modules installés</div>
+					<div id="dhtmlgoodies_mainContainer">
+						<table>
+							<?php
+							if($this->nb_divisions == 1) $width_col = "98%";
+							if($this->nb_divisions == 2) $width_col = "48%";
+							if($this->nb_divisions == 3) $width_col = "33%";
+
+							echo('<tr><td style="width:'.$width_col.';">   
+												<div style="width:100%;background-color:#E2EBED">
+												<p>1ere division</p>
+												<ul id="box1">'.$this->box1.'</ul>
+								</div></td>');
+							if($this->nb_divisions > 1)
+							{
+								echo('<td style="width:'.$width_col.'"><div style="width:100%;background-color:#E2EBED">
+								<p>2eme division</p>
+								<ul id="box2">'.$this->box2.'</ul>
+								</div></td>');
+							}
+							if($this->nb_divisions > 2)
+							{
+								echo('<td style="width:'.$width_col.'">
+								<div style="width:100%;background-color:#E2EBED">
+								<p>3eme division</p>
+								<ul id="box3">'.$this->box3.'</ul>
+								</div></td>');
+							}
+							?>
+						</tr></table>
+					</div>
+				</div>
+			</fieldset>
+
+			<ul id="dragContent"></ul>
+			<div id="dragDropIndicator"><img src="<?php echo URL_ADMIN_IMG; ?>insert.gif" alt='insérer' /></div>
+			<textarea id="saveContent" name="saveContent" style="display:none;" rows="30" cols="10"></textarea>
+			<br/>
+			<div  align="center" style="width:100%">
+				<?php echo $this->bouton('type=V',"javascript=;setFlagMaj(false);saveDragDropNodes();"); ?>
+			</div>
+		</form>
+	</div>
+
+				

@@ -1,0 +1,81 @@
+<transitions>
+
+	<transition name = 'Bouncing Ball' > 
+		<link value = "transitions/masks/Bouncing Ball.swf"/>
+	</transition>	
+	<transition name = 'Centered Expanding Rectangles' > 
+		<link value = "transitions/masks/Centered Expanding Rectangles.swf"/>
+	</transition>
+	<transition name = 'Centered Vertical Blinds' > 
+		<link value = "transitions/masks/Centered Vertical Blinds.swf"/>
+	</transition>
+	<transition name = 'Circles Wave' > 
+		<link value = "transitions/masks/Circles Wave.swf"/>
+	</transition>
+	<transition name = 'Clench' > 
+		<link value = "transitions/masks/Clench.swf"/>
+	</transition>
+	<transition name = 'Concentric Circles' > 
+		<link value = "transitions/masks/Concentric Circles.swf"/>
+	</transition>
+	<transition name = 'Concentric Squares' > 
+		<link value = "transitions/masks/Concentric Squares.swf"/>
+	</transition>
+	<transition name = 'Curtain Fall' > 
+		<link value = "transitions/masks/Curtain Fall.swf"/>
+	</transition>
+	<transition name = 'Expanding Clench' > 
+		<link value = "transitions/masks/Expanding Clench.swf"/>
+	</transition>
+	<transition name = 'Hatching' > 
+		<link value = "transitions/masks/Hatching.swf"/>
+	</transition>
+	<transition name = 'Horizontal Expanding Rectangles' > 
+		<link value = "transitions/masks/Horizontal Expanding Rectangles.swf"/>
+	</transition>
+	<transition name = 'Large Vertical Blinds' > 
+		<link value = "transitions/masks/Large Vertical Blinds.swf"/>
+	</transition>
+	<transition name = 'Progressive Expanding Circles' > 
+		<link value = "transitions/masks/Progressive Expanding Circles.swf"/>
+	</transition>
+	<transition name = 'Progressive Expanding Lines' > 
+		<link value = "transitions/masks/Progressive Expanding Lines.swf"/>
+	</transition>
+	<transition name = 'Progressive Expanding Squares' > 
+		<link value = "transitions/masks/Progressive Expanding Squares.swf"/>
+	</transition>
+	<transition name = 'Quick Assembly' > 
+		<link value = "transitions/masks/Quick Assembly.swf"/>
+	</transition>
+	<transition name = 'Random Expanding Circles' > 
+		<link value = "transitions/masks/Random Expanding Circles.swf"/>
+	</transition>
+	<transition name = 'Random Expanding Squares' > 
+		<link value = "transitions/masks/Random Expanding Squares.swf"/>
+	</transition>
+	<transition name = 'Rotating Expanding Stars' > 
+		<link value = "transitions/masks/Rotating Expanding Stars.swf"/>
+	</transition>
+	<transition name = 'Simultaneously Expanding Circles' > 
+		<link value = "transitions/masks/Simultaneously Expanding Circles.swf"/>
+	</transition>
+	<transition name = 'Simultaneously Expanding Squares' > 
+		<link value = "transitions/masks/Simultaneously Expanding Squares.swf"/>
+	</transition>
+	<transition name = 'Simultaneously Expanding Stars' > 
+		<link value = "transitions/masks/Simultaneously Expanding Stars.swf"/>
+	</transition>
+	<transition name = 'Squares Wave' > 
+		<link value = "transitions/masks/Squares Wave.swf"/>
+	</transition>
+	<transition name = 'Thin Vertical Blinds' > 
+		<link value = "transitions/masks/Thin Vertical Blinds.swf"/>
+	</transition>
+	<transition name = 'Water Drops' > 
+		<link value = "transitions/masks/Water Drops.swf"/>
+	</transition>
+	<transition name = 'Wiping Vertical Blinds' > 
+		<link value = "transitions/masks/Wiping Vertical Blinds.swf"/>
+	</transition>
+</transitions>

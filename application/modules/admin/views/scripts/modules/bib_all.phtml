@@ -1,0 +1,18 @@
+<?php include("..".URL_ADMIN_HTML."modules/_debut.phtml");?><br />
+<fieldset>
+	<legend><?php echo $this->_("Affichage") ?></legend>
+	<table cellspacing="2">
+		<tr>
+			<td class="droite"><?php echo $this->_("Cacher les articles") ?></td>
+			<td class="gauche">
+				<?php 
+          echo $this->formCheckbox( 'hide_news', 
+																		null, 
+																		array('checked' => $this->preferences["hide_news"])) 
+				?>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+			
+<?php include("..".URL_ADMIN_HTML."modules/_fin.phtml");?>

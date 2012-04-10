@@ -1,0 +1,34 @@
+<?php
+echo '<center>';
+echo '<div class="form" style="width:'.$this->current_module["preferences"]["largeur_form"].'px;margin-top:50px;margin-bottom:200px">';
+
+
+$this->openBoite($this->current_module["preferences"]["titre"]);
+
+// Message final
+if($this->message_mail)
+{
+	echo '<div align="center">'.$this->message_mail.'</div>';
+}
+
+// Saisie nom d'utilisateur
+else
+{
+	echo '
+		<form name="form_lostpass" action="'.BASE_URL.'/opac/auth/lostpass" method="post" style="margin:10px">
+					<label for="username">'.$this->_('Identifiant').'</label>
+					<input type="text" name="username" id="username" size="20" value="'.$this->username.'"></input></form>';
+
+	echo $this->bouton('type=V', 'form=form_lostpass');
+
+echo '
+	<br/>
+	<div class="error" align="center">'.$this->message.'</div>';
+
+$this->closeBoite();
+
+echo '</div>
+</center>';
+}
+?>
+

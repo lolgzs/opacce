@@ -1,0 +1,29 @@
+<?php print('<h1>Plan d\'accès</h1>');?>
+<center><div class="form" style="text-align:center;">
+ <fieldset>
+	<legend>Problème</legend>
+	<table>
+		<tr>
+			<td style="font-size:8pt;">
+            Votre clef d'accès Google-map n'est pas valide pour se site.<br />
+            <i>(<?php echo $this->clef; ?>)</i>
+            </td>
+		</tr>
+	</table>	
+</fieldset>
+<br />
+<fieldset>
+	<legend>Remède</legend>
+	<table>
+		<tr>
+			<td style="font-size:8pt;">
+            Vous pouvez obtenir cette clef en indiquant l'adresse url de votre site. 
+            <b><a href="http://www.google.com/apis/maps/signup.html" target="_blank">obtenir ma clef google maintenant</a></b><br />
+            Une fois l'obtention de votre clef google, il vous faut l'enregistrer dans pergame.
+            <a href="<?php echo (BASE_URL . '/admin/index/adminvaredit/cle/CLEF_GOOGLE_MAP');?>"><b>enregistrer ma clef </b></a>
+            </td>
+		</tr>
+	</table>	
+</fieldset>
+<br />
+</div> </center>

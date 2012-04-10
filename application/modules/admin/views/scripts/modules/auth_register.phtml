@@ -1,0 +1,21 @@
+<?php include("..".URL_ADMIN_HTML."modules/_debut.phtml");?>
+			
+<br>
+<fieldset>
+	<legend>Préférences</legend>
+	<table cellspacing="2">
+
+		<tr>
+			<td class="droite">Message de sollicitation&nbsp;</td>
+			<td class="gauche"><input type="text" name="titre" size="40" value="<?php print($this->preferences["titre"]); ?>"></td>
+		</tr>
+		
+		<tr>
+			<td class="droite">Largeur de la boite&nbsp;</td>
+			<td class="gauche"><input type="text" name="largeur_form" size="3"  maxlength="3" value="<?php print($this->preferences["largeur_form"]); ?>">&nbsp;pixels</td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php include("..".URL_ADMIN_HTML."modules/_fin.phtml");?>

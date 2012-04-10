@@ -1,0 +1,57 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS ?>slimbox/slimbox2.css">
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>slimbox/slimbox2.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>slimbox/autoload_image_simple.js"> </script>
+
+<?php
+echo ('<center><div align="center"><br>'.$this->bouton('id=c_19','picto=add.gif','texte='.$this->traduire('Ajouter une localisation').'','url='.BASE_URL.'/admin/bib/localisationsmaj?id_bib='.$this->id_bib.'&creation=1','largeur=230px').'</div></center>');  ?>
+<br />
+
+<?php
+if($this->localisations)
+{
+	?>
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td style="width:30%">Libellé</td>
+		<td style="width:60%;">Description</td>
+		<td style="width:10%;">Image</td>
+		<td style="width:30px;padding-left:10px;" colspan="4">Action</td>
+	</tr>
+	<tr>
+		<td colspan="6"  class="separ"> </td>
+	</tr>
+	<?php
+	foreach ($this->localisations as $localisation)
+	{
+		if($localisation["IMAGE"]) $image=BASE_URL.'/userfiles/photobib/localisations/'.$localisation["IMAGE"]; else $image="";
+		$ico_del = '<a href="'.BASE_URL.'/admin/bib/localisationsdelete/id_localisation/'.$localisation["ID_LOCALISATION"].'?id_bib='.$this->id_bib.'">'.$this->boutonIco("type=del").'</a>';
+		$ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+		echo '<tr class="'.$class.'">
+			<td>'.$localisation["LIBELLE"]. '</td>
+			<td>'.$localisation["DESCRIPTION"].'</td>
+			<td>';
+			if($image)
+			{
+				//Le time c'est pour contourner le cache du navigateur: scr toujours différent
+				echo'
+				<a href="'.$image.'" rel="lightbox" title="'.$localisation["LIBELLE"].'">
+				<img src="'.$image.'?'.time().'" width="100" border="0">
+				</a>';
+			}
+			else echo "&nbsp;";
+			echo'
+			</td>
+			<td align="center"><a href="'.BASE_URL.'/admin/bib/localisationsmaj/id_localisation/'.$localisation["ID_LOCALISATION"].'?id_bib='.$this->id_bib.'?id_bib='.$this->id_bib.'">'.$this->boutonIco("type=edit").'</a></td>
+			<td align="center">'.$ico_del.'</td>
+		</tr>';
+	}
+	?>
+	</tr>
+  <tr><td colspan="20" style="background:transparent url(<?php echo URL_IMG; ?>box/menu/separ.gif) repeat-x scroll center bottom">&nbsp;</td></tr>
+	<tr><td colspan="20" style="text-align:left"><a href="<?php echo BASE_URL.'/admin/bib' ?>">Retour</a></td></tr>
+	<?php
+	echo ('</table>');
+}
+else echo '<p class="error" align="center">Il n\'y a aucune localisation associée à cette bibliothèque.</p>';
+?>
+

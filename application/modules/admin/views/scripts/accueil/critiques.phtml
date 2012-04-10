@@ -1,0 +1,74 @@
+<center>
+	<h1>Propriétés du module : Dernières critiques</h1><br>
+	<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite">Titre du bloc&nbsp;</td>
+					<td class="gauche"><input type="text" name="titre" size="50"	 maxlength="60" value="<?php print($this->preferences["titre"]); ?>"></td>
+				</tr>
+				
+				<tr>
+					<td class="droite">Style de boite&nbsp;</td>
+					<td class="gauche"><?php echo $this->combo_templates ?></td>
+				</tr>
+				
+			</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+			<legend>Critiques</legend>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite">Origine des critiques&nbsp;</td>
+					<td class="gauche">
+						<?php echo $this->formSelect("abon_ou_bib",$this->preferences["abon_ou_bib"],"",array("1" => "Bibliothécaire","0"=>"Abonné ou utilisateur du site","all" => "Tout le monde")) ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="droite">Nombre à afficher&nbsp;</td>
+					<td class="gauche"><input type="text" name="nb_aff_avis" size="2" maxlength="2" value="<?php print($this->preferences["nb_aff_avis"]); ?>"></td>
+				</tr>
+				<tr>
+					<td class="droite">Ordre d'affichage&nbsp;</td>
+					<td class="gauche">
+					<?php 
+						echo $this->formRadioButtons("display_order", 
+																				 $this->preferences["display_order"], 
+																				 array(
+																								"CreationDesc" => "Par date de création (plus récent en premier)",
+																								"Random" => "Aléatoire"));
+					?>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="droite">Couper les critiques à&nbsp;</td>
+					<td class="gauche"><input type="text" name="nb_words" size="3" maxlength="3" value="<?php print($this->preferences["nb_words"]); ?>">mots</td>
+				</tr>
+				<tr>
+					<td class="droite">Proposer un fil Rss&nbsp;</td>
+					<td class="gauche">
+            <?php echo $this->formCheckbox('rss_avis', 
+                                           $this->preferences['rss_avis'], 
+                                           null, 
+                                           array('1', '0')) ?>
+					</td>
+				</tr>
+			</table>
+			</fieldset>
+
+    	<?php  
+         echo $this->partial("accueil/_options_catalogue_panier.phtml",
+				                     array('preferences' => $this->preferences,
+														       'catalogues' => $this->catalogues,
+														       'paniers' => $this->paniers));
+      ?>
+	
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+	</form>
+ </div>

@@ -1,0 +1,14 @@
+<li class="session_<?php echo $this->session->getId()?>">
+<div>&nbsp</div>
+<?php 
+echo sprintf("<div>%s %s</div>", 
+						 $this->humanDate($this->session->getDateDebut(), 'MMMM, d'),
+						 $this->session->isAnnule() ? '(Annulé)' : '');
+echo sprintf("<div>%s&nbsp;</div>", $this->session->getLieu());
+echo sprintf("<div class='actions'>%s %s</div>", 
+						 $this->tagAnchor(array('action' => 'detail_session',
+																		'id' => $this->session->getId()),
+															$this->_('Détails de la session')),
+						 $this->tagSessionFormationInscription($this->session)); 
+?>
+</li>

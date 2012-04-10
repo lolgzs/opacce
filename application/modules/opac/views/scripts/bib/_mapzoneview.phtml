@@ -1,0 +1,79 @@
+<?php
+
+$image = $this->zone->getImageWithInfos();
+echo '<div style="width:100%" align="center">';
+echo '<div id="image_container" style="width:'.$image[0].'px;height:'.$image[1].'px;position:relative;background-image:url(\''.$image["url"].'\');" align="left">';
+
+
+// Afficher les villes
+if ($image[0]) {
+	$index=0;
+	foreach ($this->liste_bib as $bib)
+	{
+		// Proprietes
+		$props = $bib->getAffZoneAsArray();
+		$libelle=$props["libelle"]; 
+		if(!$libelle) $libelle = $bib->getVille();
+
+		$posX=$props["posX"]; if(!$posX) $posX=0;
+		$posY=$props["posY"]; if(!$posY) $posY=12*$index;
+		$posPoint=$props["posPoint"]; if(!$posPoint)$posPoint="gauche";
+
+		$onclick=sprintf("document.location='%s'", $bib->getUrl());
+		echo '<span class="zoneview_bib" id="bib'.$index.'" style="position:absolute;display:block;font-size:'.$this->zone->TAILLE_FONTE.'px;color:'.$this->zone->COULEUR_TEXTE.';text-shadow: 1px 0px 5px '.$this->zone->COULEUR_OMBRE.'" onclick="'.$onclick.'">'.$libelle.'</span>';
+		echo '<img id="point_'.$index.'" src="'.URL_ADMIN_IMG.'picto/point_map.png" style="position:absolute;" />';
+
+		?>
+		<script>
+			$(function()
+			{
+				// Etiquette
+				posContainer=$('#image_container').offset();
+				posX=parseInt(<?php echo $posX ?>);
+				posY=parseInt(<?php echo $posY ?>);
+				oObj=$('#bib<?php echo $index ?>');
+				oObj.css('left',posX+'px');
+				oObj.css('top',posY+'px');
+				
+				// Point
+				oPoint=$('#point_<?php echo $index ?>');
+				var hauteur_point=oPoint.outerHeight(true);
+				var largeur_point=oPoint.outerWidth(true);
+				var hauteur=oObj.outerHeight(true);
+				var largeur=oObj.outerWidth(true);
+				var position='<?php echo $posPoint?>';
+				if(position=="dessus")
+				{
+					pointY=posY-hauteur_point;
+					pointX=posX+(largeur/2)-(largeur_point/2);
+				}
+				if(position=="dessous")
+				{
+					pointY=posY+hauteur;
+					pointX=posX+(largeur/2)-(largeur_point/2);
+				}
+				if(position=="droite")
+				{
+					pointY=posY+(hauteur/2)-(hauteur_point/2);
+					pointX=posX+largeur+2;
+				}
+				if(position=="gauche")
+				{
+					pointY=posY+(hauteur/2)-(hauteur_point/2);
+					pointX=posX-largeur_point-2;
+				}
+				oPoint.css('left',parseInt(pointX)+'px');
+				oPoint.css('top',parseInt(pointY)+'px');
+			});
+
+		</script>
+		<?php
+		$index++;
+	}
+}
+
+echo '</div>';
+echo '</div>';
+
+
+?>

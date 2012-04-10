@@ -1,0 +1,3 @@
+transition=zoom
+largeur_img=90
+hauteur_boite=160

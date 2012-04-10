@@ -1,0 +1,18 @@
+<table id='abonnes' class='models'>
+	 <thead>
+		 <tr>
+			<?php 
+				 foreach(array('Nom', 'Prénom', 'Identifiant', 'E-mail') as $head_field) 
+					 echo '<th>'.$head_field.'</th>';
+			 ?>
+		 </tr>
+	 </thead>
+	 <tbody>
+		 <?php
+			 echo $this->partialCycle('newsletter/_subscriber_table_row.phtml',
+																'user',
+																$this->newsletter->getUsers(),
+																array('first', 'second')); 
+		 ?>
+	 </tbody>
+</table>

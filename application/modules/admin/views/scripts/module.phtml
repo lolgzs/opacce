@@ -1,0 +1,25 @@
+<?php ob_start(); ?>
+
+<body <?php echo $this->bodyParam; ?>>
+		<div class="main" align="center">
+			<div id='banniere'><img src="<?php echo URL_ADMIN_IMG?>portailbandeauafi.png" width="1000px" height="100px" alt="bannière" /></div>
+			<div class="menu barre_nav"><?php echo $this->menuHorizontalAdmin() ?></div>
+			<div class="left"><?php echo $this->menuGaucheAdmin() ?></div>
+			<div class="modules">
+				<h1><?php echo $this->traduire($this->titre); echo $this->helpLink();  ?></h1>
+				<?php	echo $this->render($this->actionScript); ?>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+
+<?php 
+																												
+echo $this->render('footer.phtml'); 
+
+$html = ob_get_contents();
+ob_end_clean();
+echo $this->render('head.phtml'); 
+echo $html;
+
+?>

@@ -1,0 +1,2 @@
+largeur_img=120
+hauteur_img=150

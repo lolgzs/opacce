@@ -1,0 +1,70 @@
+
+<div id="bib_zoneview_recherche">
+	<?php $this->openBoite("Rechercher un livre, un disque, une vidéo")?>
+
+	<form id="recherche" style="text-align: left;" name="recherche" method="post" action="<?php echo BASE_URL; ?>/recherche/simple?geo_zone=<?php echo $this->id_zone; ?>">
+		<input type="field" style="width: 250px;" value="" name="expressionRecherche" id="expressionRecherche" />
+		<input class="submit" type="submit" value="" name="button"/>
+		<?php echo $this->_("Le territoire contient %s notices", $_SESSION["selection_bib"]["nb_notices"]) ?>
+		<br/>
+		<?php echo $this->_('Dans ce territoire.') ?>
+	</form>
+</div>
+
+<?php
+	 $this->closeBoite();
+   echo $this->partial('bib/_mapzoneview.phtml', array('zone' => $this->zone,
+																											  'liste_bib' => $this->liste_bib));
+?>
+
+
+<table cellspacing="0" cellpadding="3" border="0" width="90%">
+	<tr>
+		<td class="listeTitre" width="200"><?php echo $this->_('Bibliothèque') ?> </td>
+		<td class="listeTitre" width="200"><?php echo $this->_('Email') ?></td>
+		<td class="listeTitre" width="100"><?php echo $this->_('Téléphone') ?></td>
+		<td class="listeTitre" width="30"><?php echo $this->_('Web') ?></td>
+	</tr>
+	<?php
+	echo '<h2>'.$this->zone->LIBELLE.'</h2>';
+
+if($this->liste_bib)
+{
+	$i=0;
+	foreach ($this->liste_bib as $bib)
+	{
+		if($i & 1) $style_css = "listeImpaire"; else $style_css = "listePaire";
+		if(trim($bib->getUrlWeb())!="")
+		{
+			$url_web ='<a href="'.$bib->getUrlWeb().'" target="_blank"><img src="'.URL_ADMIN_IMG.'/picto/web.gif"/></a>';
+		} else $url_web='';
+		echo ('<tr>
+        <td class="'.$style_css .'" ><a href="'.$bib->getUrl().'">'.$bib->getLibelle().'</a></td>
+        <td class="'.$style_css .'" >'.$bib->getMail().'</td>
+        <td class="'.$style_css .'" >'.$bib->getTelephone().'</td>
+        <td class="'.$style_css .'" >'.$url_web.'</td>
+    </tr>');
+	$i++;
+	}
+}
+	?>
+	<tr>
+    <td colspan="4" style="border-top:1px solid #CACFD5;">
+			<table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tr>
+					<td width="38%"><a href="<?php echo BASE_URL.'/bib';?>">Retour</a></td>
+					<td align="center" colspan="3"></td>
+					<td width="24%"><div align="right"><a href="#Top"><?php echo $this->_('HAUT') ?></a></div></td>
+        </tr>
+			</table>
+    </td>
+	</tr>
+</table>
+<?php echo $this->map_img ; ?>
+<div id="navtxt" style="position:absolute; top:-100px; left:0px; visibility:hidden;width:300px;" class="navtext"></div>
+<br /><br />
+
+<?php
+	echo $this->partial('bib/_articles_by_bib.phtml', 
+											array('articles' => $this->articles));
+?>

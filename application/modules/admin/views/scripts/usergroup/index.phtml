@@ -1,0 +1,29 @@
+<?php
+echo $this->bouton('id=add_usergroup',
+									 'picto=add.gif',
+									 'texte=' . $this->traduire('Ajouter un groupe'),
+									 'url=' . $this->url(array('action' => 'add',
+																						 'id' => null))
+									 );
+
+?>
+
+
+<table>
+	<thead>
+		<tr class="soustitre">
+			<td>Libellé</td>
+			<td>Membres</td>
+			<td>Droits</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+			 echo $this->partialCycle('usergroup/_usergroup.phtml',
+																'group',
+																$this->groups,
+																array('first', 'second'));
+		?>
+	</tbody>
+</table>

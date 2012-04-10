@@ -1,0 +1,26 @@
+<script src="<?php echo URL_ADMIN_JS?>sito.js"> </script>
+<div class="auto_resize">
+<?php 
+
+
+echo '<h1>'.($this->article->titre).'</h1>'; 	
+
+if ($this->article->hasSummary()) 
+{
+	echo "<h2>Résumé</h2>";
+	echo $this->article->description;
+	echo "<h2>Article</h2>";
+}
+
+echo $this->article->getFullContent();
+
+$url = 'url='.BASE_URL.'/admin/cms?z='.$this->sess_id_zone.'&b='.$this->sess_id_site; 
+
+echo '<br />'.
+  '<center>'.
+    '<div align="center">'.
+      $this->bouton('id=c_2','picto=back.gif','texte=Retour',$url,'largeur=100px').
+    '</div>'.
+  '</center>';
+?>
+</div>

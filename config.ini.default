@@ -1,0 +1,31 @@
+[global]
+sgbd.adapter = mysqli
+superuser.user = admin
+superuser.pwd = admin
+console.user = console
+console.pwd = console
+timeZone = Europe/Paris
+langue = fr_FR
+mail.transport.smtp.host = 
+proxy.host = 
+proxy.port = 
+proxy.user = 
+proxy.pass = 
+sgbd.config.host = localhost
+sgbd.config.port = 3306
+sgbd.config.username =
+sgbd.config.password = 
+sgbd.config.dbname = 
+key_google = 
+id_amazon = 
+debug.level = 0
+debug.debug = no
+debug.ip =
+debug.port =
+debug.file =
+caching = 1
+amber.deploy = 0
+
+[local : global]				
+
+[production : global]

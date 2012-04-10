@@ -1,0 +1,14 @@
+table.calendar_main {font-family: Verdana;font-size: 10px;}
+.calendar_title {color: #000000;text-align: center;}
+.calendar_title_month_clickable {color: #D44100;text-decoration: none;font-weight:bold;}
+.calendar_table {border: none;	font-size: 10px;}
+.calendar_table td {border-bottom: 1px solid #666666;text-align: center;width: 20px;}
+.calendar_table th {background-color: #FFFFFF;font-weight: bold;text-align: center;}
+.calendar_weekend {background-color: #FFFFFF;}
+.calendar_other_month {color: #FFFFFF;}
+.calendar_other_month_clickable {color: #FFFFFF;text-decoration: none;}
+.calendar_non_clickable {color: #666666;}
+.calendar_today_clickable {text-decoration: none;font-weight:bold;}
+.day_clickable {color: #D44100;text-decoration: none;}
+.calendar_day_non_clickable {color: #666666;text-decoration: none;}
+.day {	font-weight:bold;}

@@ -1,0 +1,6 @@
+export TEXTEAGPL="/**\n * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.\n *\n * AFI-OPAC 2.0 is free software; you can redistribute it and/or modify\n * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by\n * the Free Software Foundation.\n *\n * There are special exceptions to the terms and conditions of the AGPL as it\n * is applied to this software (see README file).\n *\n * AFI-OPAC 2.0 is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n * GNU AFFERO GENERAL PUBLIC LICENSE for more details.\n *\n * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE\n * along with AFI-OPAC 2.0; if not, write to the Free Software\n * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA \n */"
+for i in `find . -name "*.php" |xargs -n1`
+do
+		dos2unix $i
+		gsed -i "2i$TEXTEAGPL" $i
+done 

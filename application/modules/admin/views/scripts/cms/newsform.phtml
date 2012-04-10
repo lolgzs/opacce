@@ -1,0 +1,208 @@
+<?php
+$currentYear= (int)date('Y');
+$limitYear	= $currentYear + 10;
+$currentYear--;
+
+Class_ScriptLoader::getInstance()
+->addJQueryReady('
+				$("#description_editor_switch")
+					.click(function(){
+							$("#description_editor").toggle("fast");
+						})
+					.mouseover(function () {
+							$(this).css("cursor", "hand");
+						});');
+
+?>
+
+<?php echo $this->partial('cms/_newsform_head.phtml', array('article' => $this->article)); ?>
+
+<form
+	 id="news_form"
+	 class="form"
+	 name="form"
+	 action="<?php echo $this->url(); ?>"
+	 method="post">
+
+	 <span class="error"><?php echo implode('<br/>', $this->article->getErrors()); ?></span>
+
+	<fieldset>
+		<legend><?php echo $this->traduire('Publication'); ?></legend>
+		<table>
+			<tr>
+				<td><?php echo $this->traduire('Titre'); ?> *</td>
+				<td>
+					<input
+						 type="text"
+						 name="titre"
+						 id="titre"
+						 value="<?php echo $this->escape($this->article->getTitre());?>"
+						 size="100"
+						 maxlength="<?php echo Class_Article::TITLE_MAX_LENGTH ?>" />
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire("Titre caché"); ?></td>
+				<td><?php echo $this->formCheckbox('cacher_titre',
+																	 (int)$this->article->getCacherTitre(),
+																	 null,
+																	 array(1, 0)); ?>
+        </td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Catégorie'); ?></td>
+				<td><?php echo $this->combo_cat; ?></td>
+			</tr>
+
+			<?php if (Class_AdminVar::isWorkflowEnabled()) { ?>
+			<tr>
+				<td><?php echo $this->traduire('Statut'); ?></td>
+				<td><?php
+				$element = new Zend_Form_Element_Radio('status', array(
+					'multiOptions' => $this->article->getKnownStatus(),
+					'separator' => ' ',
+					'value' => (int)$this->article->getStatus(),
+				));
+
+				if (Class_Users::getLoader()->getIdentity()->isRedacteur()) {
+					$element->setOptions(array('disable' => array(Class_Article::STATUS_VALIDATED)));
+				}
+
+				$element->removeDecorator('label')
+								->removeDecorator('HtmlTag');
+
+				echo $element;
+				?></td>
+			</tr>
+			<?php } ?>
+
+			<tr>
+				<td><?php echo $this->traduire('Publication'); ?></td>
+				<td>
+					<span><?php echo $this->traduire('du'); ?></span>
+					<span class="date_picker">
+						<?php
+							 echo $this->datePicker(
+																			'debut',
+																			$this->article->DEBUT,
+																			$currentYear,
+																			$limitYear);
+						?>
+					</span>
+					<span><?php echo $this->traduire('au'); ?></span>
+					<span>
+						<?php
+							 echo $this->datePicker(
+																		 'fin',
+																		 $this->article->getFin(),
+																		 $currentYear,
+																		 $limitYear);
+						?>
+					</span>
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Agenda'); ?></td>
+				<td>
+					<span><?php echo $this->traduire('du'); ?></span>
+					<span class="date_picker">
+						<?php
+				 			 echo $this->datePicker(
+									'events_debut',
+									$this->article->getEventsDebut(),
+									$currentYear,
+									$limitYear);
+						?>
+					</span>
+					<span><?php echo $this->traduire('au'); ?></span>
+					<span>
+						<?php
+							 echo $this->datePicker(
+									'events_fin',
+									$this->article->getEventsFin(),
+									$currentYear,
+									$limitYear);
+						?>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+
+	<fieldset>
+		<legend><?php echo $this->traduire('Article'); ?></legend>
+
+		<table>
+			<tr>
+				<td colspan="2">
+					<?php echo $this->ckEditor($this->article->getContenu(), 'contenu') ?>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+
+
+	<fieldset>
+		<legend><?php echo $this->traduire("Résumé pour la page d'accueil") ?></legend>
+		<div id="description_editor_switch" class="subfieldset">
+			<?php echo $this->traduire("Cliquez ici pour modifier"); ?>
+		</div>
+		<div id="description_editor" style="display:none">
+			<?php echo $this->ckEditor($this->article->getDescription(), 'description') ?>
+		</div>
+	</fieldset>
+
+
+
+	<fieldset>
+		<legend><?php echo $this->traduire('Options'); ?></legend>
+		<table>
+
+			<tr>
+				<td></td>
+				<td class="info">
+					Entrez la liste des mots-clefs  et expressions qui caractérisent votre article séparés par ;
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Tags'); ?></td>
+				<td>
+					<textarea name="tags" rows="4" cols="51">
+						<?php echo $this->article->getTags(); ?>
+					</textarea>
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Autoriser les commentaires d\'internautes (Mode blog) ?'); ?></td>
+				<td>
+					<?php echo $this->formCheckbox('avis',
+						                       (int)$this->article->getAvis(),
+																	 null,
+																	 array(1, 0)); ?>				
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Indexer l\'article dans le catalogue ?'); ?></td>
+				<td>
+					<?php echo $this->formCheckbox('indexation',
+						                      (int)$this->article->getIndexation(),
+																	 null,
+                            			array(1, 0)); ?>				
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+
+	<?php echo $this->partial('cms/_newsform_buttons.phtml'); ?>
+</form>
+
+<script type="text/javascript">
+	oField = document.getElementById('titre');
+	oField.focus();
+</script>

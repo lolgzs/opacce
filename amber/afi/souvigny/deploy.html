@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>Bible de Souvigny</title>
+		<script src="js/amber.js" type="text/javascript"></script>
+
+		<script type="text/javascript">
+			loadAmber({
+				files: ['AFI.deploy.js'],
+				deploy: true,
+				ready: function() { $(function(){smalltalk.BookWidget._open()}) }
+			});
+		</script>
+
+		<style type="text/css"> 
+
+		body {
+			  background-color: black;
+				color: white;
+		}
+
+		.bk-widget .loading {
+			  text-align:center;
+		}
+		
+		.bk-widget .booklet .b-wrap-right {
+			  background-color: transparent;
+				padding: 0px; !important;
+		}
+
+		.bk-widget .booklet .b-wrap-left {
+			  background-color: transparent;
+				padding: 0px; !important;
+		}
+
+		.bk-widget .booklet .b-page-cover {
+			  background-color: transparent;
+		}
+
+		.bk-widget .b-menu {
+			  font-size: 1.4em;
+			  font-weight: bold;
+			  width: 820px;
+			  margin: 0 auto;
+			  height: 60px;
+		}
+
+		.bk-widget .b-menu .b-selector {
+			  width: 600px;
+			  text-align: left;
+			  height: 60px;
+			  float:none;
+		}
+
+		.bk-widget .b-menu .b-selector .b-current {
+			  height: auto;
+			  text-align: left;
+			  background: url(menu_off.png) no-repeat 15px center;
+			  padding-left: 45px;
+		}
+
+		.bk-widget .b-menu .b-selector:hover .b-current {
+			  background-image: url(menu_on.png);
+		}
+
+		.bk-widget .b-menu .b-selector ul {
+			  width: 584px;
+			  border-left: 2px solid white;
+			  border-bottom: 2px solid white;
+			  top: auto;
+			  background: rgba(0,0,0,0.8);
+			  box-shadow: 2px 2px 40px rgba(0,0,0,0.8);
+			  max-height: 600px;
+			  overflow-y: auto !important;
+		}
+
+		.bk-widget .b-menu .b-selector ul li {
+			  font-size: 1.2em;
+		}
+
+		.bk-widget .b-menu .b-selector ul li a {
+			  height: auto;
+		}
+
+		.bk-widget .b-menu .b-selector ul li a .b-text {
+			  float: none;
+		}
+
+		.bk-widget button {float: left}
+
+		.bk-widget pre {
+			  white-space: pre-wrap;
+			  color: #CECECE;
+			  font-family: serif;
+			  line-height: 1.3em;
+			  font-size: 1.1em;
+			  width: 760px;
+			  margin: 10px auto;
+		}
+
+		.bk-widget .booklet .b-arrow-next div {
+				background-image:url(booklet/images/arrow-next_black.png);
+		}
+
+		.bk-widget .booklet .b-arrow-next:hover div {
+				background-image:url(booklet/images/arrow-next.png);
+		}
+
+		.bk-widget .booklet .b-arrow-prev div {
+				background-image:url(booklet/images/arrow-prev_black.png);
+		}
+
+		.bk-widget .booklet .b-arrow-prev:hover div {
+				background-image:url(booklet/images/arrow-prev.png);
+		}
+
+		.clear {
+				clear: both;
+				height: 0px !important;
+		}
+
+		.b-zoom {
+			  height: 0px;
+		}
+
+		.b-zoom pre {
+			  margin: 0px 5px;
+			  width: auto;
+		}
+
+		.b-zoom-magnify {
+			  width: 910px;
+			  margin: 0px auto;
+		}
+
+		.b-zoom-magnify a {
+				display: block;
+				background: url(magnify_black.png) no-repeat;
+				width: 48px;
+				height: 48px;
+				z-index: 20;
+				position: relative;
+				cursor: pointer;
+		}
+		
+		.b-zoom-magnify a:hover {
+				background-image: url(magnify_white.png);
+		}
+
+		.b-zoom-magnify a.active {
+				background-image: url(close_black.png);
+		}
+
+		.b-zoom-magnify a.active:hover {
+				background-image: url(close_white.png);
+		}
+
+
+		.b-zoom-magnify a {
+				float: left;
+		}
+
+		.b-zoom-magnify a + a {
+				float: right;
+		}
+
+		.b-zoom > div {
+			  position: relative;
+			  z-index: 30;
+			  background-color: black;
+			  border: 10px solid black;
+			  border-radius: 10px;
+			  display:none;
+			  padding: 1px;
+		}
+
+		.b-zoom > div > div {
+			  height: 600px;
+			  overflow: scroll;
+			  border-radius: 10px;
+		}
+
+		.b-zoom .controls {
+			  height: auto;
+			  padding: 4px;
+			  margin: 0 4px;
+			  background-color: #aaa;
+			  overflow: hidden;
+		}
+
+		.b-zoom .iviewer_with_text {
+			  float: left;
+			  width: 500px;
+			  margin-right: 5px;
+		}
+
+		.iviewer {
+			  backround-color: black;
+		}
+
+		.controls {
+			  float: left;
+			  text-align: center;
+		}
+
+		.controls div.iviewer_common {
+			  position: static !important;		
+			  margin: 5px auto;
+		}
+
+		.iviewer_zoom_close {
+			  background: url(close_black28.png);
+		}
+
+
+
+		</style>
+	</head>
+	<body>
+
+
+	</body>
+</html>

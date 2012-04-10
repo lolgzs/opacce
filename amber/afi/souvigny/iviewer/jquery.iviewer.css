@@ -1,0 +1,57 @@
+.iviewer_common {
+    position:absolute;
+    bottom:10px;
+    height: 28px;
+    z-index: 5000;
+}
+
+.iviewer_cursor {
+    cursor: -moz-grab;
+}
+
+.iviewer_drag_cursor {
+    cursor: -moz-grabbing;
+}
+
+.iviewer_button {
+    width: 28px;
+    cursor: pointer;
+    background-position: center center;
+    background-repeat: no-repeat;
+		border-radius:5px;
+}
+
+.iviewer_zoom_in {
+    left: 20px;
+    background: url(img/iviewer.zoom_in.png);
+}
+
+.iviewer_zoom_out {
+    left: 55px;
+    background: url(img/iviewer.zoom_out.png);
+}
+
+.iviewer_zoom_zero {
+    left: 90px;
+    background: url(img/iviewer.zoom_zero.png);
+    width: 40px;
+}
+
+.iviewer_zoom_fit {
+    left: 137px;
+    background: url(img/iviewer.zoom_fit.png);
+}
+
+.iviewer_zoom_status {
+    left: 172px;
+    font: 1em/28px Sans;
+		font-weight:bold;
+    color: #464648;
+    text-align: center;
+    width: 40px;
+		background: url(img/iviewer.zoom_percent.png) no-repeat;
+}
+
+div.iviewer_common:hover {
+		background-color: rgba(250,250,250, 0.8);
+}

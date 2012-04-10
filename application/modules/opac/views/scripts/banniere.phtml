@@ -1,0 +1,9 @@
+<div id="header">
+	<?php echo $this->tagBanniere(); ?>
+  <?php echo $this->boitesBanniere($this->profil); ?>
+</div>
+
+<?php
+  if ($this->profil->getMenuHautOn()) echo $this->menuHorizontal();
+?>
+

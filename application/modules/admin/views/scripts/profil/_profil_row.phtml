@@ -1,0 +1,81 @@
+<?php
+
+include_once('_profil_drag_drop.phtml');
+
+$this->current_profil = Class_Profil::getCurrentProfil();
+if ($this->profil->hasParentProfil())
+	$this->profil = $this->profil->getParentProfil();
+
+
+if ($this->profil->isTelephone()) {
+	$icone = URL_ADMIN_IMG.'ico/telephone.gif'; 
+	$bulle="Interface pour téléphone";
+}	else if ($this->profil->isPortail()) {
+	$icone= URL_ADMIN_IMG.'picto/map.gif'; 
+	$bulle="Portail du site";
+}	else if (!$this->profil->isPublic()) {
+	$icone= URL_ADMIN_IMG.'ico/ecran_rouge.png'; 
+	$bulle="Profil restreint";
+} else {
+	$icone= URL_ADMIN_IMG.'ico/ecran.png'; 
+	$bulle="Interface pour écran";
+}
+
+?>
+
+
+<li class="<?php echo $this->item_class ?>">
+	<div><img src="<?php echo $icone ?>" alt="<?php echo $bulle ?>" title="<?php echo $bulle ?>"/></div>
+
+	<div>
+				<?php echo $this->profil->getLibelle() ?>
+	</div>
+
+	<div class="commentaire">
+		<?php echo $this->profil->getCommentaire() ?>&nbsp;
+	</div>
+
+ 	<div class="actions">
+		<?php 
+			$actions = array(array('action' => 'edit', 'icon' => 'ico/edit.gif', 'help' => 'Modifier'),
+											 array('action' => 'menusindex', 'icon' => 'picto/menus.png', 'help' => 'Configuration des menus'),
+											 array('action' => 'proprietes', 'icon' => 'picto/module.gif', 'help' => 'Propriétés des modules'),
+											 array('action' => 'newpage', 'icon' => 'ico/page_add.png', 'help' => 'Ajouter une page'));
+
+			foreach ($actions as $action)
+				echo $this->tagAnchor($this->url(array('action' => $action['action'], 
+																							 'id_profil' => $this->profil->getId())),
+															'<img src="'.URL_ADMIN_IMG.$action['icon'].'" alt="'.$action['help'].'" title="'.$action['help'].'" />');
+
+			if ($this->profil->isPortail() == 1) 
+				echo '&nbsp;';
+			else 
+				echo
+					'<a href="'.BASE_URL.'/admin/profil/delete/id_profil/'.$this->profil->getId(). '">'. 
+						$this->boutonIco("type=del").
+					'</a>';
+		?>
+	</div>
+
+	<ul>
+	<?php 
+		echo $this->partial('profil/_page_row.phtml', array('profil' => $this->profil,
+																												'libelle' => 'Accueil',
+																												'include_delete_action' => false,
+																												'icon' => 'picto/icon_home.gif',
+																												'selected' => ($this->profil->getId() == $this->current_profil->getId()))); 
+  ?>
+  </ul>
+
+	<ul id="profil_<?php echo $this->profil->getId() ?>" class="profil_pages">
+	<?php
+		foreach ($this->profil->getSubProfils() as $page)
+				echo $this->partial('profil/_page_row.phtml', array('profil' => $page,
+																														'libelle' => $page->getLibelle(),
+																														'include_delete_action' => true,
+																														'icon' => 'ico/page.png',
+																														'selected' => ($page->getId() == $this->current_profil->getId()))); 
+	?>
+	</ul>
+</li>
+

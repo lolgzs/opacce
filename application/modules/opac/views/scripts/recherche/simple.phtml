@@ -1,0 +1,50 @@
+<?php
+if($this->statut=="saisie")
+{
+	$this->openBoite($this->current_module["preferences"]["titre"]);
+?>
+<center>
+<form name="form" action="<?php echo BASE_URL ?>/opac/recherche/simple" method="post">
+	<table width="100%">
+		<tr>
+			<td><?php echo $this->current_module["preferences"]["message"] ?></td>
+			<td><label for="select_type_doc">Type de document</label></td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="expressionRecherche" value="<?php echo $this->expressionRecherche; ?>" size="35"
+				onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item22'), 'menu_item22');this.form.submit();return false;}">
+				<input name="button" type="submit" class="submit" value="">
+			</td>
+			<td><?php echo $this->ComboCodification('type_doc', $this->type_doc); ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->current_module["preferences"]["exemple"] ?></td>
+			<td></td>
+		</tr>
+	</table>
+</form>
+</center>
+
+<?php if($this->current_module["preferences"]["select_bib"]==1) echo $_SESSION["selection_bib"]["html"] ?>
+<script language="JavaScript">document.form.expressionRecherche.focus();</script>
+
+<?php 
+$this->closeBoite();
+	
+echo '<div class="conteneur_simple">';
+// Historique des recherches
+if($_SESSION["histo_recherche"]) $this->historiqueRecherche();
+
+echo '</div>';
+}
+
+
+
+else
+{
+	echo $this->render("recherche/resultatRecherche.phtml" );
+}
+
+
+?>

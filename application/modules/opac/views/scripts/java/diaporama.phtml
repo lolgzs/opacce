@@ -1,0 +1,32 @@
+<style>
+	.slideshow { height:auto; width: 100%; margin: auto }
+	.slideshow img { padding: 0px; border: 1px solid #ccc; background-color: #eee; }
+</style>
+<script src="<?php echo JQUERY ?>" type="text/javascript"> </script>
+<script type="text/javascript" src="<?php echo URL_JAVA ?>diaporama/jquery.cycle.all.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.slideshow').cycle({
+		fx: '<?php echo $this->preferences["op_transition"]?>',
+		pause: 1
+	});
+});
+</script>
+
+<center>
+
+<?php
+if(!$this->notices) echo '<p style="margin-left:10px;color:red;font-size:10pt">Aucun document n\'a été trouvé.</p>';
+else
+{
+	echo '<div class="slideshow">';
+	foreach($this->notices as $notice)
+	{
+		$onclick="window.parent.location='".BASE_URL."/recherche/viewnotice/id/".$notice["id_notice"]."/type_doc/".$notice["type_doc"]."';";
+		echo '<img src="'.$notice["vignette"].'" width="'.$this->preferences["op_largeur_img"].'" title="'.$notice["titre"].'" onclick="'.$onclick.'" style="cursor:pointer">';
+	}
+	echo '</div>';
+}
+?>
+
+</center>

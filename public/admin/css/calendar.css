@@ -1,0 +1,106 @@
+.calendarIcon{	
+	position:relative;
+    margin-bottom: -1px; 
+    margin-left: -15px;
+    /*cursor:pointer;*/
+}
+	
+#basis {
+    display:inline;
+     position:absolute;
+     }
+#calendar {
+     position:absolute;
+     top: 0px;
+     left:-125px;
+     width:256px;
+     height:195px;
+     background-image: url(../images/calendar/images/calendar.gif);
+	 background-repeat: no-repeat;
+	 background-position: right bottom;
+     z-index:+10;
+     }
+#cancel {
+	 position:absolute;
+	 top:18px;
+	 left:223px;
+	 cursor:pointer;
+	 }
+#control {
+     position:absolute;
+     top:18px;
+     left:38px;
+     text-align:center;
+     margin:0 0 5px 0;
+     }
+#control select {
+     font-family: Verdana, Arial, Helvetica, sans-serif;
+	 vertical-align:middle;     
+	 font-size: 12px;
+	 font-weight: normal;
+	 color: #1C7FA2;
+	 width: 75px;
+	 margin-top: 0px;
+	 margin-right: 15px;
+	 margin-bottom: 0px;
+	 margin-left: 0px;
+	 border: 2px solid #1C7FA2;
+	 /*height: 17px;*/
+     }
+#calendar .controlPlus {
+     padding:0 5px;
+     text-decoration:none;
+     color:#333;
+     }
+#calendar table {
+     position:absolute;
+     top:45px;
+     left:19px;
+     empty-cells: show;
+     width:85%;
+     text-align:center;
+     font-family: Arial, Helvetica, sans-serif;
+	 font-size:10px;
+     table-layout:fixed;
+     border:0;
+     }
+#calendar .weekdays td{
+     text-align:center;
+     padding:1px 2px;
+     color:#1C7FA2;
+     font-size:12px;
+     font-weight: bold;
+     }
+#calendar .week td {
+     text-align:center;
+     cursor:pointer;
+     height:19px;
+     padding-bottom:1px;
+     width:32px;
+     vertical-align:middle;
+     font-size:12px;
+     }
+#calendar .week .today { 
+	background-color:transparent;
+    border: 0;
+    color:#E86063;
+    font-weight: bold;
+     }
+#calendar .week .collected { 
+	background-color:#EEA72D;
+    border: 1px solid #1C7FA2;
+    color:#FFFFFF;
+    font-weight: bold;
+     }
+#calendar .week .holiday {
+     font-family: Arial, Helvetica, sans-serif;
+	 font-weight: bold;
+	 color: #1D7DA3;
+     }
+#calendar .week .hoverEle {
+     border-color:#FFF;
+     background-color:#268AAA;
+     color:#FFF;
+     font-weight: bold;
+     border:0;
+     }

@@ -1,0 +1,7 @@
+<?php echo $this->toolbar('Article', $this->url(array(), null, true) ,false); ?>
+
+<h1><?php echo $this->article->titre ?></h1>
+
+<div class='article pave'>
+	 <?php echo $this->article->getFullContent();?>
+</div>

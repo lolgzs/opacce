@@ -1,0 +1,206 @@
+1. GetRecords:
+
+Etant donné une liste d'identifiant de notices, retourne les notices incluant les informations bibliographiques et d'exemplaires. 
+
+* Paramètres:
+
+id (Obligatoire): un ou plusieurs identifiants
+
+* Exemple:
+
+http://localhost:8080/afi_Nanook/ilsdi/service/GetRecords/id/9842+2345+2
+
+* Réponse
+
+<?xml version="1.0" encoding="UTF-8"?>
+<GetRecords>
+	<record>
+		<bibId>9842</bibId>  <!-- identifiant de la notice -->
+		<title>Lili, Grisbi et Compagnie</title> <!-- titre principal -->
+		<items>  <!-- Liste des exemplaires -->
+			<item>
+				<barcode>L-007552</barcode>  <!-- code barres -->
+				<itemId>10713</itemId>       <!-- identifiant de l'exemplaire -->
+				<available>1</available>     <!-- code de disponibilité (0: non-disponible. 1: disponible) -->
+				<holdable>0</holdable>       <!-- code de réservabilité (0: non-réservable. 1: réservable) -->
+				<visible>1</visible>         <!-- code de visibilité OPAC (0: invisible. 1: visible)  -->
+				<locationLabel>Annecy</locationLabel> <!-- libellé du site de l'exemplaire -->
+				<locationId>3</locationId>            <!-- identifiant du site de l'exemplaire -->
+			</item>
+			<item>
+				<barcode>L-072666</barcode>
+				<itemId>10714</itemId>
+				<available>0</available>
+				<holdable>1</holdable>
+				<visible>1</visible>
+				<dueDate>2029-01-12</dueDate>
+				<locationLabel>Cran-Gevrier</locationLabel>
+				<locationId>2</locationId>
+			</item>
+		</items>
+	</record>
+
+	<record>
+		<bibId>2345</bibId>
+		....
+	</record>
+
+	<record>
+		<bibId>2</bibId>
+		....
+	</record>
+</GetRecords>
+
+
+
+
+2. GetPatronInfo:
+
+Retourne les informations de l'adhérent
+
+* Paramètres:
+
+patron_id: identifiant unique de l'adhérent
+
+* Exemple:
+
+http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/1
+
+* Réponse:
+
+<?xml version="1.0" encoding="utf-8"?>
+<GetPatronInfo>
+  <patronId>1</patronId>           <!-- identifiant de l'adhérent -->
+  <lastName>DELPEYROUX</lastName>  <!-- nom de l'adhérent -->
+  <firstName>Christel</firstName>  <!-- prénom de l'adhérent -->
+  <loans>                          <!-- liste des prêts -->
+    <loan>
+      <bibId>117661</bibId>        <!-- identifiant de la notice -->
+      <itemId>196895</itemId>      <!-- identifiant de l'exemplaire -->
+      <title>Béart en public</title> <!-- titre principal -->
+      <author>Guy Béart</author>     <!-- auteur principal --> 
+      <locationLabel>Site Principal</locationLabel> <!-- libelle du site de l'exemplaire  -->
+			<dueDate>2011-05-04</dueDate>  <!-- date limite de retour -->
+    </loan>
+    <loan>
+      <bibId>83413</bibId>
+      <itemId>107177</itemId>
+      ....
+    </loan>
+  </loans>
+  <holds>  <!-- liste des réservations -->
+    <hold>
+      <bibId>7307</bibId>  <!-- identifiant de la notice -->
+      <itemId>7105</itemId> <!-- identifiant de l'exemplaire -->
+      <title>Contes des quatre vents</title> <!-- titre principal -->
+      <author>Natha Caputo</author>  <!-- auteur principal -->
+      <locationLabel>Site Principal</locationLabel> <!-- libelle du site de retrait  -->
+			<priority>1</priority>  <!-- rang de réservation  -->
+    </hold>
+    <hold>
+      <bibId>12501</bibId>
+      <itemId>14586</itemId>
+      <title>Le Chant du lac</title>
+      <author>Olympe Bhêly-Quénum</author>
+      <locationLabel>Site Principal</locationLabel>
+			<priority>49</priority>
+    </hold>
+  </holds>
+</GetPatronInfo>
+
+
+
+
+3. HoldTitle:
+
+Créé une réservation au niveau de la notice bibliographique pour un adhérent.
+
+* Paramètres:
+
+patron_id: identifiant de l'adhérent qui place la réservation
+bib_id: identifiant de la notice bibliographique réservée
+pickupLocation: identifiant permettant d'indiquer la localisation du site de retrait
+
+* Exemple:
+
+http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/2
+
+* Réponse:
+
+- Succès
+
+<?xml version="1.0" encoding="UTF-8"?>
+<HoldTitle>
+	<title>La guerre des boutons</title>  <!-- Titre de la notice réservée -->
+</HoldTitle>
+
+- Echec
+
+<?xml version="1.0" encoding="UTF-8"?>
+<HoldTitle>
+	<error>PatronNotFound</error>  <!-- Identifiant, code ou message d'erreur, cf ILS-DI -->
+</HoldTitle>
+
+
+
+
+4. CancelHold
+
+Annule une réservation sur le compte de l'adhérent.
+
+* Paramètres:
+
+patron_id: identifiant de l'adhérent qui place la réservation
+item_id: identifiant de l'exemplaire réservé
+
+* Exemple:
+
+http://localhost:8080/afi_Nanook/ilsdi/service/CancelHold/patronId/1/itemId/196895
+
+* Réponse:
+
+- Succès
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CancelHold>
+	<title>La guerre des boutons</title>  <!-- Titre de la notice réservée -->
+</CancelHold>
+
+- Echec
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CancelHold>
+	<error>NotCanceled</error>  <!-- Identifiant, code ou message d'erreur, cf ILS-DI -->
+</CancelHold>
+
+
+
+
+5. RenewLoan
+
+Prolonge le prêt sur le compte d'un adhérent.
+
+* Paramètres:
+
+patron_id: identifiant de l'adhérent qui place la réservation
+item_id: identifiant de l'exemplaire réservé
+
+* Exemple:
+
+http://localhost:8080/afi_Nanook/ilsdi/service/RenewLoan/patronId/1/itemId/196895
+
+* Réponse:
+
+- Succès
+
+<?xml version="1.0" encoding="UTF-8"?>
+<RenewLoan>
+	<title>La guerre des boutons</title>  <!-- Titre de la notice réservée -->
+</RenewLoan>
+
+- Echec
+
+<?xml version="1.0" encoding="UTF-8"?>
+<RenewLoan>
+	<error>NotRenewable</error>  <!-- Identifiant, code ou message d'erreur, cf ILS-DI -->
+</RenewLoan>

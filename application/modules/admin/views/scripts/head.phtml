@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr-FR" xml:lang="fr-FR" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title><?php echo $this->getTitre(); ?></title>
+	<?php
+		$head_scripts = Class_ScriptLoader::newInstance()
+										 ->addStyleSheet(URL_ADMIN_JS.'jquery_ui/css/jquery.ui.afi.theme')
+										 ->addAdminStyleSheet('global')
+										 ->loadJQuery()
+										 ->loadJQueryUI()
+										 ->addInlineScript(sprintf('var baseUrl="%s"; var imagesUrl="%s"; var cssUrl="%s"; var userFilesUrl="%s"',
+																							 BASE_URL, URL_ADMIN_IMG, URL_ADMIN_CSS, USERFILESURL))
+										 ->addAdminScripts(array('onload_utils', 'global', 'toolbar'))
+										 ->loadPrettyPhoto()
+										 ->showNotifications();
+
+		 $script_loader = Class_ScriptLoader::getInstance();
+		 $head_scripts->renderStyleSheets();
+		 $script_loader->renderStyleSheets();
+
+		 $head_scripts->renderJavaScripts();
+		 $script_loader->renderJavaScripts();
+
+		 echo $this->headScript();
+		 echo $this->headLink(); 
+	?>
+</head>

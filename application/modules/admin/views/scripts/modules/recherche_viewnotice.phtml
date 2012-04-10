@@ -1,0 +1,67 @@
+<?php 
+echo '<script src="'.URL_ADMIN_JS.'drag_and_drop.js'.'" type="text/javascript"> </script>';
+echo '<script src="'.URL_ADMIN_JS.'selection_champs.js'.'" type="text/javascript"> </script>';
+echo '<link rel="stylesheet" type="text/css" media="screen" href="'.URL_ADMIN_CSS.'drag_and_drop.css" />';
+echo $this->tagSelectionChamps("libelles").NL;
+?>
+
+<center>
+<h1>Propriétés d'affichage des notices<br>Type de document : <?php echo Class_Codification::getLibelleFacette('T'.$this->type_doc) ?></h1>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			<fieldset>
+				<legend>Généralités</legend>
+				<table cellspacing="2">
+					<tr>
+						<td class="droite">Style de boite&nbsp;</td>
+						<td class="gauche"><?php echo $this->combo_templates ?></td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<fieldset>
+			<legend>Entête</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite" valign="top">Champs à afficher&nbsp;</td>
+    			<?php 
+    				$data=$this->tagSelectionChamps("champs",$this->preferences["entete"]); echo $data["codes_dispo"];
+    				echo '<td class="gauche">';   				
+    				echo $data["champ_code"].$data["champ_libelle"].$data["bloc_saisie"]; 
+    				?> 
+  				</td>
+  			</tr>
+  		</table>
+			</fieldset>
+
+			<br>
+			<fieldset>
+			<legend>Onglets et blocs</legend>
+			<table cellspacing="2">
+    		<tr><td>&nbsp;</td></tr>
+    		<tr>
+    			<td><b>Rubrique</b></td>
+    			<td><b>Style</b></td>
+    			<td><b>Ordre</b></td>
+    			<td><b>Titre</b></td>
+    			<td><b>Largeur</b></td>
+    		</tr>
+<?php
+    		foreach($this->preferences["onglets"] as $clef => $valeurs)
+    		{
+    			$nom_onglet=Class_Codification::getNomOnglet($clef);
+    			if(!$valeurs["titre"]) $valeurs["titre"]=$nom_onglet;
+    			print('<tr>');
+    			print('<td class="droite">'.$nom_onglet.'&nbsp;</td>');
+    			$combo=$this->formSelect($clef.'_aff',$valeurs["aff"],"",array("0" => "Ne pas afficher","1"=>"Bloc déplié","2" => "Bloc fermé", "3" => "Dans un onglet"));
+    			print('<td class="gauche">'.$combo.'</td>');
+    			print('<td class="gauche"><input type="text" name="'.$clef.'_ordre" size="3" value="'.$valeurs["ordre"].'"></td>');
+    			print('<td class="gauche"><input type="text" name="'.$clef.'_titre" size="20" value="'.$valeurs["titre"].'"></td>');
+    			print('<td class="gauche"><input type="text" name="'.$clef.'_largeur" size="3" value="'.$valeurs["largeur"].'">&nbsp;%</td>');
+  			print('</tr>');
+  			}
+?>
+  		</table>
+			</fieldset>
+
+<?php include("..".URL_ADMIN_HTML."modules/_fin.phtml");?>

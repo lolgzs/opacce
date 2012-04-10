@@ -1,0 +1,33 @@
+<h1><?php echo $this->traduire("Aperçu de la lettre: ".$this->newsletter->getTitre()) ?></h1>
+
+<h2>Expéditeur:</h2>
+<p>
+  <?php echo quoted_printable_decode($this->mail->getFrom()) ?>
+</p>
+
+<h2>Sujet:</h2>
+<p>
+ <?php echo $this->newsletter->getTitre() ?>
+</p>
+
+<h2>Contenu texte:</h2>
+<p>
+  <?php 
+     $bodyText = quoted_printable_decode($this->mail->getBodyText()->getContent());
+     echo nl2br($bodyText);
+  ?>
+</p>
+
+
+<h2>Contenu HTML:</h2>
+<div>
+		 <?php 
+        echo quoted_printable_decode($this->mail->getBodyHTML()->getContent());
+		 ?>
+</div>
+
+<h2>Abonnés</h2>
+<?php
+  echo $this->partial('newsletter/_newsletter_list_subscribers.phtml',
+											array('newsletter' => $this->newsletter));
+?>

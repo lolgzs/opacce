@@ -1,0 +1,34 @@
+<?php 
+echo ('<center><div align="center"><br>'.$this->bouton('id=c_19','picto=add.gif','texte='.$this->traduire('Ajouter un catalogue').'','url='.BASE_URL.'/admin/catalogue/add','largeur=220px').'</div></center>');  
+?>
+
+<br>
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td style="width:90%;">Libellé</td>
+		<td style="width:10%;padding-left:10px;" colspan="2"> Action</td>
+	</tr>
+	<tr>
+		<td colspan="6"  class="separ"> </td>
+	</tr>
+    
+<?php
+if($this->catalogues)
+{
+	$ligne = 0;
+	foreach ($this->catalogues as $catalogue)
+	{
+		$ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+		echo('<tr class="'.$class.'">
+			<td valign="top" align="left">'.$catalogue["LIBELLE"].'</td>
+			<td valign="top" align="center"><a href="'.BASE_URL.'/admin/catalogue/tester/id_catalogue/'.$catalogue["ID_CATALOGUE"].'">'.$this->boutonIco("type=test").'</a></td>
+			<td valign="top" align="center"><a href="'.BASE_URL.'/admin/catalogue/edit/id_catalogue/'.$catalogue["ID_CATALOGUE"].'">'.$this->boutonIco("type=edit").'</a></td>
+			<td valign="top" align="center"><a href="'.BASE_URL.'/admin/catalogue/delete/id_catalogue/'.$catalogue["ID_CATALOGUE"].'">'.$this->boutonIco("type=del").'</a></td>
+   	</tr>');
+  }
+}
+
+?>
+</table>
+<br>
+<p align="center" class="error"><?php echo $this->message ?></p>

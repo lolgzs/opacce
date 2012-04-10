@@ -1,0 +1,11 @@
+<a name="Top"></a>
+<?php
+	 echo $this->partial('cms/article_partial.phtml', array('article' => $this->article));
+?>
+
+<table style="width:100%">
+	<tr>
+		<td style="text-align:left"><a href="javascript:history.back()"><?php echo $this->_('Retour') ?></a></td>
+		<td style="text-align:right"><a href="#Top"><?php echo $this->_('Haut') ?></a></td>
+	</tr>
+</table>

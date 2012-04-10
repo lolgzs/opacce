@@ -1,0 +1,51 @@
+<p>Choisissez la langue</p>
+<div class="traduction_navigator">
+	<div>&nbsp;</div>
+<?php
+$stringsCount = count($this->master);
+
+asort($this->master, SORT_STRING);
+
+foreach ($this->translated as $langue => $v) { ?>
+	<div class="country_flag"><a href="#" rel="i18n_<?php echo $langue;?>" class="content_triggerer">
+		<?php
+		$translatedCount = 0;
+		foreach ($v as $translation) {
+			if ('' != $translation)
+				$translatedCount++;
+		}
+
+		echo $this->tagImg(URL_ADMIN_IMG.'flags/' . $langue .'.png') . sprintf($this->_('%.2f %%'), ($translatedCount / $stringsCount)*100);
+		?>
+	</a>
+	</div>
+<?php } ?>
+</div>
+
+<form class="form">
+	<label><?php echo $this->_('Filtrer');?> : </label><input id="i18n_filter" type="text" style="width: 300px" />
+</form>
+
+<form action="<?php echo $this->form->getAction();?>"
+			method="<?php echo $this->form->getMethod();?>"
+			class="form"
+			id="<?php echo $this->form->getId()?>"
+			>
+<?php foreach ($this->translated as $langue => $v) { ?>
+	<div class="i18n_content" id="i18n_<?php echo $langue;?>" style="display: none;">
+	<table>
+		<tr>
+			<th><?php echo $this->_('Original');?></th>
+			<th><?php echo $this->_('Traduction').'&nbsp;'.$this->tagImg(URL_ADMIN_IMG.'flags/' . $langue .'.png'); ?></th>
+		</tr>
+	<?php foreach ($this->form->{$langue}->getElements() as $element) { ?>
+		<tr>
+			<td class="i18n_label"><?php echo $element->getLabel(); ?></td>
+			<td><?php echo $element->removeDecorator('label') ?></td>
+		</tr>
+	<?php } ?>
+	</table>
+	</div>
+<?php } ?>
+	<?php echo new Zend_Form_Element_Hidden('i18nFormId', array('value' => 1)); ?>
+</form>

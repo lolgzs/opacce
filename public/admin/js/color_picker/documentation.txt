@@ -1,0 +1,17 @@
+Exemple d'utilisation
+---------------------
+
+<style type="text/css" media="all">jquery.vreboton.ColorPicker.css</style>
+        
+<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+<script src="jquery.vreboton.ColorPicker.js" type="text/javascript"></script>
+
+
+
+<input id="vtrColorPicker" size="7" value="#ff0000" type="text" />
+
+<script type="text/javascript">
+	jQuery(function($) {
+           $("#vtrColorPicker").attachColorPicker();
+        });
+</script>

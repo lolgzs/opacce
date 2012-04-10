@@ -1,0 +1,38 @@
+<link rel="stylesheet" type="text/css" href="<?php echo URL_JAVA ?>mycarousel_vertical/carousel.css" />
+
+<script src="<?php echo JQUERY ?>" type="text/javascript"> </script>
+<script type="text/javascript" src="<?php echo URL_JAVA ?>mycarousel_vertical/jMyCarousel.pack.js"></script>
+<script type="text/javascript">
+		$(function() {
+		    $(".jMyCarousel").jMyCarousel({
+		        visible: '<?php echo $this->preferences["op_visible"]?>',
+		        auto: false,
+						vertical: true,
+						evtStart: 'mousedown',
+						evtStop: 'mouseup',
+		        speed : <?php echo $this->preferences["op_speed"]?>
+		    });
+		});
+	</script>
+<center>
+
+<?php
+if(!$this->notices) echo '<p style="margin-left:10px;color:red;font-size:10pt">'.$this->_("Aucun document n'a été trouvé").'</p>';
+else
+{
+	echo '<div class="jMyCarousel">';
+	echo '<ul>';
+	foreach($this->notices as $notice)
+	{
+		echo '<li>';
+		echo '<a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'/type_doc/'.$notice["type_doc"].'" target="_parent">';
+		echo '<img src="'.$notice["vignette"].'" width="'.$this->preferences["op_largeur_img"].'" height="'.$this->preferences["op_hauteur_img"].'" title="'.$notice["titre"].'">';
+		echo '</a>';
+		echo '</li>';
+	}
+	echo '</ul>';
+	echo '</div>';
+}
+?>
+
+</center>

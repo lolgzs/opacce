@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>Bib num</title>
+		<script src="../../src/js/amber.js" type="text/javascript"></script>
+		<style type="text/css">
+			body {
+					background-color: black
+			}
+
+			.bib-num-album {
+					background-color: black;
+					color: white;
+			}
+
+			.bk-widget pre {
+					color: #CECECE;
+			}
+
+			.souvigny .bk-widget .b-menu .b-selector {
+					color: #CECECE;
+			}
+
+			.souvigny .bk-widget .b-menu .b-selector:hover {
+					color: white;
+			}
+
+			.souvigny .bk-widget .b-menu .b-selector ul {
+					background-color: rgba(0,0,0,0.8);
+					color: #CECECE
+			}
+
+
+			.souvigny .bk-widget .b-menu .b-selector li:hover {
+					color: white;
+			}
+
+			.bk-widget .b-menu .b-selector ul {
+					border-left: 2px solid white;
+					border-bottom: 2px solid white;
+					box-shadow: 2px 2px 40px rgba(0,0,0,0.8);
+			}
+
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			loadAmber({
+				files: ['AFI-Core.js', 'AFI.js', 'AFI-Tests.js'],
+				prefix: '../afi/js',
+				ready: function(){$(function(){
+						smalltalk.BookWidget._reset();
+						smalltalk.Browser._open();
+					})}
+			});
+		</script>
+		<button style="float:right" onclick="smalltalk.BookWidget._reset()">Ouvrir livre</button>
+		<button style="float:right" onclick="smalltalk.Browser._open()">Browser</button>
+		<div class='souvigny'>
+			<div class='bib-num-album'></div>
+		</div>
+	</body>
+</html>

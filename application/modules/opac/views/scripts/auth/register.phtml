@@ -1,0 +1,53 @@
+<form name="form_register" action="<?php echo BASE_URL ?>/opac/auth/register" method="post">
+	<center>
+
+		<div class="form" style="width:<?php echo $this->current_module["preferences"]["largeur_form"]?>px;">
+			<?php $this->openBoite($this->current_module["preferences"]["titre"]); ?>
+
+			<table cellpadding="1" cellspacing="5" width="100%">
+				<tr>
+					<td class="masque" width="45%"><?php echo $this->_('Identifiant') ?></td>
+					<td class="saisie" colspan="2"><input type="text" name="login" maxlength="20" value="<?php echo $this->login; ?>"></td>
+				</tr>
+
+				<tr>
+					<td class="masque"><?php echo $this->_('Mot de passe') ?></td>
+					<td class="saisie" colspan="2"><input type="password" name="mdp" maxlength="15"></td>
+				</tr>
+
+				<tr>
+					<td class="masque"><?php echo $this->_('Confirmer votre mot de passe') ?></td>
+					<td class="saisie" colspan="2"><input type="password" name="mdp2" maxlength="15"></td>
+				</tr>
+
+				<tr>
+					<td class="masque"><?php echo $this->_('E-mail') ?></td>
+					<td class="saisie" colspan="2"><input type="text" name="mail" maxlength="50" value="<?php echo $this->email; ?>"></td>
+				</tr>
+
+				<tr>
+					<td class="masque" style="padding-bottom:0px"><?php echo $this->_('Copiez le code anti-spam') ?></td>
+					<td class="saisie" style="padding-bottom:0px"><?php echo $this->img_captcha; ?></td>
+					
+				</tr>
+				
+				<tr>
+					<td class="masque" style="padding-top:0px">ici</td>
+					<td class="saisie" style="padding-top:0px">
+						<input type="text" name="captcha" style="height:15px;">
+						<input type="hidden" value="<?php echo $this->cle; ?>" name="cle">
+					</td>
+				</tr>
+			</table>
+			<?php echo $this->bouton('type=V', 'form=form_register'); ?>
+
+			<?php $this->closeBoite() ?>
+		</div>
+		
+
+	</center>
+
+</form>
+
+
+<?php echo $this->error; ?>

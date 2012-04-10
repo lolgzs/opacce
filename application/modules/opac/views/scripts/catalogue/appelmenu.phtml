@@ -1,0 +1,63 @@
+<?php $this->openBoite($this->titre); ?>
+<script src="<?php echo URL_JS?>recherche.js" type="text/javascript"> </script>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>recherche.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>nuage_tags.css" />
+
+<?php
+echo '<div>';
+echo $this->texte_selection;
+echo'</div>';
+$this->closeBoite();
+
+
+$preferences=$this->current_module["preferences"];
+extract($this->resultat);
+print('<div class="conteneur_simple" style="width:100%">');
+
+// Si facettes ou tags on ouvre un tableau a 2 colonnes
+if($preferences["facettes_actif"]==1 or ($preferences["tags_actif"]==1 and $preferences["tags_position"]==2))
+{ 
+	print('<table width="100%"><tr><td style="vertical-align:top" width="65%">');
+}
+
+// Liste notices
+echo $this->listeNotices($this->liste,$nombre,$page_cours,$preferences);
+echo '<br><div style="width:100%;text-align:center;">'.$this->pager($nombre,$preferences["liste_nb_par_page"],$page_cours,$this->url_retour).'</div>';
+
+// Container notice pour listes d'images
+if($preferences["liste_format"]>3)
+{
+	$notice_html= new Class_NoticeHtml();
+	print($notice_html->getConteneurNotice("notice"));
+}
+
+// Tags sous la liste
+if($preferences["tags_actif"]==1 and $preferences["tags_position"]==1)
+{
+	print(BR.$this->nuageTags($tags,$preferences["tags_codes"],$this->url_retour));
+}
+// Facettes et tags sous les facettes
+if($preferences["facettes_actif"]==1 or $preferences["tags_actif"]==1)
+{	
+	print('</td><td style="vertical-align:top" width="35%">');
+	if($nombre)
+	{
+		if($preferences["facettes_actif"]==1)
+		{
+			print('<div style="margin-left:10px;margin-top:17px">');
+			if($preferences["facettes_message"]) print('<b>'.$preferences["facettes_message"].'</b><br>');
+			print($this->facettes($facettes,$preferences,$this->url_facette));
+			print('</div>');
+		}
+		if($preferences["tags_actif"]==1 and $preferences["tags_position"]==2)
+		{
+			print('<div style="margin-left:10px"><br>');
+			if($preferences["tags_message"]) print('<b>'.$preferences["tags_message"].'</b>');
+			print($this->nuageTags($tags,$preferences["tags_calcul"],$this->url_retour));
+			print('</div>');
+		}
+	}
+	print('</td></tr></table>');
+}
+print('</div>');
+?>

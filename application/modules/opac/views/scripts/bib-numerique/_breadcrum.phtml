@@ -1,0 +1,12 @@
+<?php
+$parents = array_reverse($this->parents);
+$links = array();
+foreach ($parents as $parent) {
+	$links[] = $this->tagAnchor($this->url(array('action' => $this->action, 
+																							 'id' => $parent->getId())),
+															$parent->getLibelle());
+}
+
+if (0 < count($links)) { ?>
+	<div class="breadcrum">&gt; <?php echo implode(' &gt; ', $links);?></div>
+<?php } ?>

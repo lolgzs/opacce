@@ -1,0 +1,30 @@
+<style>#linksCube img { width: 100%; height: 100%; border:1px solid #B0BEC7}</style>
+<script src="<?php echo JQUERY ?>" type="text/javascript"> </script>
+<script type="text/javascript" src="<?php echo URL_JAVA ?>cube/jquery.imagecube.pack.js"></script>
+
+<center>
+<div id="linksCube" style="width: <?php echo $this->preferences["op_largeur_img"] ?>px; height: <?php echo $this->preferences["op_hauteur_img"] ?>px;margin-top:10px">
+
+<?php
+if(!$this->notices) echo '<p style="margin-left:10px;color:red;font-size:10pt">Aucun document n\'a été trouvé.</p>';
+else
+{
+	foreach($this->notices as $notice)
+	{
+		echo '<a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'/type_doc/'.$notice["type_doc"].'" target="_parent">';
+		echo '<img src="'.$notice["vignette"].'" title="'.$notice["titre"].'">';
+		echo '</a>';
+	}
+}
+?>
+
+</div>
+</center>
+<script>
+	$("#linksCube").imagecube({speed: 1000});
+	function endedRotate(current, next)
+	{
+		$('#rotateStatus').text('ended ' + $(current).attr('title'));
+	}
+</script>
+

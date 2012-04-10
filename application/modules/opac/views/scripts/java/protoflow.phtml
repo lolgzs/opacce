@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="<?php echo URL_JAVA ?>protoflow/protoFlow.css" type="text/css"/>
+<script src="<?php echo URL_JAVA ?>protoflow/prototype.js" type="text/javascript"></script>
+<script src="<?php echo URL_JAVA ?>protoflow/scriptaculous.js" type="text/javascript"></script>
+<script src="<?php echo URL_JAVA ?>protoflow/reflection.js" type="text/javascript"></script>
+<script src="<?php echo URL_JAVA ?>protoflow/protoFlow.js" type="text/javascript"></script>
+<script language="Javascript">
+	Event.observe(window, 'load', function() {
+	cf = new ProtoFlow($("protoflow"), {
+					captions: <?php echo $this->preferences["op_captions"]?>,
+					useReflection: true,
+					autoplay: <?php echo $this->preferences["op_autoplay"]?>,
+					enableOnClickScroll: false
+				});
+			});
+</script>
+
+<div id="protoflow" style="height:350px;width:100%">
+
+<?php
+if(!$this->notices) echo '<p style="margin-left:10px;color:red;font-size:10pt">'.$this->_("Aucun document n'a été trouvé").'</p>';
+else
+{
+	foreach($this->notices as $notice)
+	{
+		echo '<a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'/type_doc/'.$notice["type_doc"].'" target="_parent">';
+		echo '<img border="0" width="'.$this->preferences["op_largeur_img"].'" height="'.$this->preferences["op_hauteur_img"].'" src="'.$notice["vignette"].'" alt="'.$notice["titre"].'">';
+		echo '</a>';
+	}
+}
+?>
+
+</div>
+

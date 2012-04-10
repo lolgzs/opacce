@@ -1,0 +1,54 @@
+<?php 
+if($this->authUser->ROLE_LEVEL > 6) echo '<b><small>'.$this->requete.BR.BR.'</small></b>';
+if(!$this->notices) echo BR.'<p align="center" class="error">Ce catalogue ne renvoie aucun résultat.</p>';
+else
+{
+	ligneInfos("Notices trouvées",$this->nb_notices);
+	ligneInfos("Avec vignettes en cache",$this->avec_vignettes);
+	ligneInfos("Temps d'éxécution de la requête",$this->temps_execution);
+}
+
+if($this->notices)
+{
+	
+?>
+	<br>
+	<table cellspacing="0" cellpadding="0">
+		<tr class="soustitre">
+			<td style="width:2%;">&nbsp;</td>
+			<td style="width:60%">Titre</td>
+			<td style="width:38%">Auteur</td>
+		</tr>
+		<tr><td colspan="6"  class="separ"></td></tr>
+<?php	
+
+	foreach ($this->notices as $notice)
+	{
+		$ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+		echo '<tr class="'.$class.'">
+						<td align="center" style="padding:3px 5px 3px 0px"><img src="'.URL_ADMIN_IMG.'supports/support_'.$notice["type_doc"].'.gif"></td>
+						<td>'.$notice["titre"].'</td>
+						<td>'.$notice["auteur"].'</td>
+   				</tr>';
+  }
+  echo '<tr><td colspan="6"  class="separ"></td></tr>';
+	echo '</table>';
+	echo '<p style="margin-top:1px;"><small>nb : Affichage des 20 premières notices uniquement...</small></p> ';
+}
+
+?>
+<br>
+<a href="<?php echo BASE_URL."/admin/catalogue/edit?id_catalogue=".$this->id_catalogue; ?>">&raquo;&nbsp;Modifier la définition du catalogue</a>
+
+<?php
+
+// Fonction affichage d'une ligne d'infos
+function ligneInfos($masque,$valeur)
+{
+	print('<span class="accueil">');
+	if($masque) print($masque.'&nbsp;:&nbsp;');
+	if($valeur) print('<b>'.$valeur.'</b>');
+	print('</span>'.BR);
+}
+
+?>

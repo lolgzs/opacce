@@ -1,0 +1,35 @@
+<div class="formTable">
+	<form id="form" method="post" action="<?php echo BASE_URL ?>/admin/profil/genres">
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td width="30px">Picto.</td>
+		<td width="100%">Libellé</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="separ"></td>
+	</tr>
+
+<?php
+$ligne=0;
+foreach($this->genres as $genre)
+{
+	if ($ligne & 1) $class="first"; else $class="second";
+	echo '<tr class="'.$class.'" style="height:30px" width="30px">';
+		echo '<td align="center">';
+			if(!$genre["picto"]) $genre["picto"]="_vide.gif";
+			echo $this->ChoixPictogramme("genres","genre_".$genre["id_genre"],1,$genre["picto"]);
+		echo '</td>';
+		echo '<td>'.$genre["libelle"].'</td>';
+	print('</tr>');
+	$ligne ++ ;
+}
+
+?>
+
+</table>
+<br />
+<div align="center">
+	<?php echo $this->bouton('type=V') ?>
+</div>
+</form>
+</div>

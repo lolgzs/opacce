@@ -1,0 +1,91 @@
+<transitions>
+
+	<transition name = 'slideFormLeft' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'Quintic' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+	<transition name = 'slideFormRight' > 
+		<x value = '2000' time = '1' easing = 'easeOut' motion = 'Quintic' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+	<transition name = 'slideFormTop' > 
+		<x value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<y value = '-1200' time = '1' easing = 'easeOut' motion = 'Quintic' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+	<transition name = 'slideFormBottom' > 
+		<x value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<y value = '2000' time = '1' easing = 'easeOut' motion = 'Quintic' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+
+	<transition name = 'slideFromLeftBlur' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'Cubic' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'none' />
+		<blurX value = '100' time = '1' easing = 'easeOut' motion = 'Linear' />
+		<blurY value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+	<transition name = 'slideFromRightBlur' > 
+		<x value = '1200' time = '1' easing = 'easeOut' motion = 'Cubic' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'none' />
+		<blurX value = '100' time = '1' easing = 'easeOut' motion = 'Linear' />
+		<blurY value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+
+
+	<transition name = 'slideFromTopBlur' > 
+		<x value = '1200' time = '1' easing = 'easeOut' motion = 'Cubic' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'none' />
+		<blurX value = '100' time = '1' easing = 'easeOut' motion = 'none' />
+		<blurY value = '100' time = '1' easing = 'easeOut' motion = 'Cubic' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+
+</transitions>

@@ -1,0 +1,16 @@
+<?php if (!$this->profil->isNew()) { ?>
+
+<div class="profils form" >
+	<ul>
+		<?php
+			echo $this->partial('profil/_profil_row.phtml', 
+													array('profil' => $this->profil,
+																'item_class' => ''));
+			?>
+	</ul>
+	<div class="clear"></div>
+</div>
+
+<?php } ?>
+
+

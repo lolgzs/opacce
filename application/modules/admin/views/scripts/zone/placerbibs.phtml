@@ -1,0 +1,232 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS ?>color_picker/jquery.vreboton.ColorPicker.css">
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS?>jquery_ui/css/jquery.ui.all.css" />
+
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>color_picker/jquery.vreboton.ColorPicker.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>jquery_ui/jquery.ui.core.min.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>jquery_ui/jquery.ui.widget.min.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>jquery_ui/jquery.ui.mouse.min.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>jquery_ui/jquery.ui.draggable.min.js"> </script>
+<script src="<?php echo URL_ADMIN_JS; ?>jquery_ui/jquery.ui.slider.min.js" type="text/javascript"> </script>
+
+<script type="text/javascript">
+var current_index=0;
+// Color picker
+	jQuery(function($)
+	{
+		$("#couleur_texte").attachColorPicker();
+		$("#couleur_texte").change(function()	{	$('span').css('color',$('#couleur_texte').val()) });
+		$("#couleur_ombre").attachColorPicker();
+		$("#couleur_ombre").change(function()	{	$('span').css('text-shadow','1px 0px 5px ' + $('#couleur_ombre').val()) });
+	});
+
+// Change valeur proprietes
+	$(function()
+	{
+		$('#posPoint_aff').change(function()
+		{
+			$('#posPoint_'+current_index).attr('value',$(this).val());
+			memoPos(current_index,parseInt($('#bib'+current_index).css('left')),parseInt($('#bib'+current_index).css('top')));
+		});
+
+		$('#select_clef_profil').change(function()
+		{
+			$('#profilID_'+current_index).attr('value',$(this).val());
+		});
+
+		$('#libelle_aff').keyup(function()
+		{
+			$('#libelle_'+current_index).attr('value',$(this).val());
+			$('#bib'+current_index).text($(this).val());
+			memoPos(current_index,parseInt($('#bib'+current_index).css('left')),parseInt($('#bib'+current_index).css('top')));
+		});
+	});
+
+// Memo coordonnees
+	function memoPos(index,nX,nY)
+	{
+		// Memo des coordonnées
+		var posContainer=$('#image_container').offset();
+		$('#posX_'+index).attr('value',parseInt(nX-posContainer.left));
+		$('#posY_'+index).attr('value',parseInt(nY-posContainer.top));
+
+		// Positionnement du point
+		var oPoint=$('#point_'+index);
+		var hauteur_point=oPoint.outerHeight(true);
+		var largeur_point=oPoint.outerWidth(true);
+		var hauteur=$('#bib'+index).outerHeight(true);
+		var largeur=$('#bib'+index).outerWidth(true);
+		var position=$('#posPoint_'+index).val();
+
+		//		if(position=="dessus") par défaut
+		pointY=nY-hauteur_point;
+		pointX=nX+(largeur/2)-(largeur_point/2);
+
+		if(position=="dessous")
+		{
+			pointY=nY+hauteur;
+			pointX=nX+(largeur/2)-(largeur_point/2);
+		}
+		if(position=="droite")
+		{
+			pointY=nY+(hauteur/2)-(hauteur_point/2);
+			pointX=nX+largeur+2;
+		}
+		if(position=="gauche")
+		{
+			pointY=nY+(hauteur/2)-(hauteur_point/2);
+			pointX=nX-largeur_point-2;
+		}
+		oPoint.css('left',parseInt(pointX)+'px');
+		oPoint.css('top',parseInt(pointY)+'px');
+	}
+
+	// Changement de la fonte
+	function changeFonte()
+	{
+		$('span').css('font-size',$('#taille_fonte').val()+'px');
+		$('span').each(function (i)
+		{
+			memoPos(i,parseInt(this.style.left),parseInt(this.style.top));
+		});
+	}
+</script>
+
+<?php 
+echo '<h3>Territoire : '.$this->zone->LIBELLE.'</h3>';
+
+echo '<div class="form" align="center">';
+echo '<div id="image_container" style="width:'.$this->image[0].'px;height:'.$this->image[1].'px;background-image:url(\''.$this->image["url"].'\');" align="left">';
+if($this->bibs)
+{
+	$index=0;
+	$hidden='';
+	foreach($this->bibs as $bib)
+	{
+		// Proprietes
+		$props=ZendAfi_Filters_Serialize::unserialize($bib["AFF_ZONE"]);
+		if (!$libelle = $props["libelle"]) $libelle=$bib["VILLE"];
+		if (!$posX = $props["posX"]) $posX=0;
+		if (!$posY = $props["posY"]) $posY=12*$index;
+		if (!$posPoint = $props["posPoint"]) $posPoint="gauche";
+		if (!$profilID = $props["profilID"]) $profilID = 1;
+		if($index==0){$libelle_aff=$libelle; $posPoint_aff=$posPoint;$nomBib_aff=$bib["LIBELLE"];}
+
+		// Champ draggable
+		echo'<span id="bib'.$index.'" style="position:absolute;cursor:pointer;font-family:Verdana;font-size:'.$this->zone->TAILLE_FONTE.'px;font-weight:bold;color:'.$this->zone->COULEUR_TEXTE.';white-space:nowrap;text-shadow: 1px 0px 5px '.$this->zone->COULEUR_OMBRE.'">'.$libelle.'</span>';
+
+		// Champs du post
+		$hidden.='<input id="idbib_'.$index.'" name="idbib_'.$index.'" type="hidden" value="'.$bib["ID_SITE"].'">';
+		$hidden.='<input id="nomBib_'.$index.'" type="hidden" value="'.$bib["LIBELLE"].'">';
+		$hidden.='<input id="posX_'.$index.'" name="posX_'.$index.'" type="hidden" value="'.$posX.'">';
+		$hidden.='<input id="posY_'.$index.'" name="posY_'.$index.'" type="hidden" value="'.$posY.'">';
+		$hidden.='<input id="libelle_'.$index.'" name="libelle_'.$index.'" type="hidden" value="'.$libelle.'">';
+		$hidden.='<input id="posPoint_'.$index.'" name="posPoint_'.$index.'" type="hidden" value="'.$posPoint.'">';
+		$hidden.='<input id="profilID_'.$index.'" name="profilID_'.$index.'" type="hidden" value="'.$profilID.'">';
+		$hidden.='<img id="point_'.$index.'" src="'.URL_ADMIN_IMG.'picto/point_map.png" style="position:absolute;">';
+
+		// Javascript d'initialisation
+		?>
+			<script>
+			$(function()
+			{
+				posContainer=$('#image_container').offset();
+				posX=parseInt(<?php echo $posX ?>+posContainer.left);
+				posY=parseInt(<?php echo $posY ?>+posContainer.top);
+				memoPos(<?php echo $index ?>,posX,posY)
+				oObj=$('#bib<?php echo $index ?>');
+				oObj.draggable
+				({
+					containment: 'parent',
+					drag: function(event, ui)
+					{	memoPos(<?php echo $index ?>,ui.position.left,ui.position.top)}
+				})
+				.css('left',posX+'px')
+				.css('top',posY+'px')
+				.mousedown(function()
+				{
+					$('#nomBib_aff').attr('value',$('#nomBib_<?php echo $index ?>').val());
+					$('#libelle_aff').attr('value',$('#libelle_<?php echo $index ?>').val());
+
+					var valeur=$('#posPoint_<?php echo $index ?>').val();
+					$('#posPoint_aff > option').attr('selected','');
+					$('#posPoint_aff option[value='+valeur+']').attr('selected','selected');
+
+					var profil_id=$('#profilID_<?php echo $index ?>').val();
+					$('#select_clef_profil option').attr('selected', '');
+					$('#select_clef_profil option[value='+profil_id+']').attr('selected','selected');
+
+					current_index=<?php echo $index ?>;
+				});
+			});
+
+			</script>
+		<?php
+		$index++;
+	}
+	echo '</div>';
+	?>
+
+<br />
+<form name="form" action="<?php echo BASE_URL ?>/admin/zone/placerbibs/id_zone/<?php echo $this->zone->ID_ZONE; ?>" method="post">
+<fieldset>
+	<legend>Propriétés</legend>
+	<table>
+		<tr>
+			<td class="droite" style="width:150px">Bibliothèque</td>
+			<td class="gauche"><input type="text" id="nomBib_aff" size="40" value="<?php echo $nomBib_aff ?>" readonly="readonly"></td>
+		</tr>
+		<tr>
+			<td class="droite">Libellé à afficher</td>
+			<td class="gauche"><input type="text" id="libelle_aff" size="40" value="<?php echo $libelle_aff ?>"></td>
+		</tr>
+		<tr>
+			<td class="droite">Position du point</td>
+			<td class="gauche"><?php echo $this->formSelect("posPoint_aff",$posPoint_aff,"",array("dessus" => "au dessus","gauche"=>"à gauche","droite"=>"à droite","dessous"=>"en dessous"))?></td>
+		</tr>
+		<tr>
+			<td class="droite">Lien vers la page</td>
+			<td class="gauche"><?php echo $this->comboProfils(); ?></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><h3>Etiquettes</h3></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Taille de la police</td>
+			<td class="gauche"><?php echo $this->tagSlider("taille_fonte",$this->zone->TAILLE_FONTE,5,40,1,"changeFonte();") ?></td>
+		</tr>
+		
+		<tr>
+			<td class="droite">Couleur du texte</td>
+			<td class="gauche"><input type="text" id="couleur_texte" name="couleur_texte" size="8" value="<?php echo $this->zone->COULEUR_TEXTE;?>" /></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Couleur de l'ombre</td>
+			<td class="gauche"><input type="text" id="couleur_ombre" name="couleur_ombre" size="8" value="<?php echo $this->zone->COULEUR_OMBRE;?>" /></td>
+		</tr>
+
+	</table>
+</fieldset>
+
+	<?php echo $hidden; ?>
+		<table>
+			<tr>
+				<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+				<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/zone','largeur=120px'); ?></td>
+			</tr>
+		</table>
+	</form>
+	<?php
+}
+else
+{
+	echo '</div>';
+	echo BR.BR.'<p class="error">Il n\'y a aucune bibliothèque visible dans ce territoire.</p>';
+	echo BR.'<div align="center">'.$this->bouton('id=29','picto=retour.gif','texte=Retour','url='.BASE_URL.'/admin/zone','largeur=120px').'</div>'.BR;
+}
+echo '</div>';
+
+
+?>

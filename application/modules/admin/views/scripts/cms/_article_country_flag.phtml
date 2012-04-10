@@ -1,0 +1,8 @@
+<span class="country_flag">
+	<?php
+		echo sprintf('<img src="%s" alt="%s" class="%s %s" />',
+                        URL_ADMIN_IMG.'flags/'.$this->article->getLangue().'.png',
+	                      $this->_('traduction %s', $this->article->getLangue()),
+								        $this->article->getLangue() == $this->current ? "selected" : '',
+	                      $this->article->isNew() ? "grayed" : ''); ?>
+</span>

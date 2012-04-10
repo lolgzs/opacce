@@ -1,0 +1,36 @@
+<center>
+<h1>Propriétés de la boite de connexion</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Titre&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="50" value="<?php print($this->preferences["titre"]); ?>"></td>
+    		</tr>
+
+    		<tr>
+    			<td class="droite">Libellé identifiant&nbsp;</td>
+    			<td class="gauche"><input type="text" name="identifiant" size="50" value="<?php print($this->preferences["identifiant"]); ?>"></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Libellé mot de passe &nbsp;</td>
+    			<td class="gauche"><input type="text" name="mot_de_passe" size="50" value="<?php print($this->preferences["mot_de_passe"]); ?>"></td>
+    		</tr>
+
+  		</table>
+			</fieldset>
+				
+		<?php echo $this->formSubmit("","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>
+</center>

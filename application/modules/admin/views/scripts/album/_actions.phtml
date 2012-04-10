@@ -1,0 +1,23 @@
+<div class="actions">
+	<?php 
+	 foreach($this->actions as $action) {
+		 if (!array_key_exists('action', $action))
+			 $link = '#';
+		 else
+			 $link = $this->url(array('action' => $action['action'], 
+																'id' => $this->id));
+
+		 $label = array_key_exists('label', $action) ? $action['label'] : '';
+
+		 $onclick = '';
+		 if (array_key_exists('onclick', $action))
+			 $onclick = " onclick=\"".$action['onclick']."\"";
+
+			echo $this->tagAnchor($link,
+														'<img 
+															src="'.URL_ADMIN_IMG.'ico/'.$action["icon"].'" 
+															alt="'.$action['help'].'"
+															title="'.$action['help'].'"	'.$onclick.' />'.$label);
+	 }
+ ?>
+</div>

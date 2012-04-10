@@ -1,0 +1,79 @@
+<settings>
+  <CoverFlow_Properties>
+    <type value="settings.xml"/>
+    <currentIndex value="0"/>
+    <planeAngle value="70"/>
+    <planeSeparation value="120"/>
+    <planeOffset value="10"/>
+    <planeOffsetZ value="-170"/>
+    <tweenTime value="0.8"/>
+    <functione value="Expo"/>
+    <method value="easeOut"/>
+  </CoverFlow_Properties>
+  <General_Properties>
+    <imagesXML value="images.xml"/>
+    <showAbout value="false"/>
+    <widthComponent value="600"/>
+    <heightComponent value="300"/>
+    <moveX value="0"/>
+    <moveY value="-60"/>
+    <backgroundColor value="0"/>
+    <cameraX value="0"/>
+    <cameraY value="0"/>
+    <cameraZ value="-347"/>
+    <cameraRotationX value="0"/>
+    <cameraRotationY value="0"/>
+    <cameraRotationZ value="0"/>
+    <cameraFocus value="170"/>
+    <cameraZoom value="1"/>
+    <cameraUpDown value="0"/>
+    <cameraLeftRight value="0"/>
+  </General_Properties>
+  <Scroll_Bar>
+    <type_Bar value="../../public/opac/flash/coverflow/toolbar/bar.xml"/>
+    <width value="400"/>
+    <positionY value="250"/>
+  </Scroll_Bar>
+  <Reflection_Properties>
+    <alpha value="30"/>
+    <ratio value="100"/>
+    <distance value="2"/>
+    <dropOff value="1"/>
+  </Reflection_Properties>
+  <Play_Settings>
+    <showPlay value="false"/>
+    <autoPlay value="true"/>
+    <slideShowTime value="3"/>
+    <ifLastPicture value="back"/>
+    <leftRightPlay value="right"/>
+    <hPosition value="center"/>
+    <vPosition value="top"/>
+    <hPadding value="0"/>
+    <vPadding value="8"/>
+    <playBtn value="../../public/opac/flash/coverflow/toolbar/play.png"/>
+    <pauseBtn value="../../public/opac/flash/coverflow/toolbar/pause.png"/>
+  </Play_Settings>
+  <ToolTip_Properties>
+    <type value="free"/>
+    <toolOffSet value="center"/>
+    <functionEasy value="Bounce"/>
+    <appearance value="topv"/>
+    <tweenTime value="1"/>
+    <position value="top"/>
+    <positionFreeX value="295"/>
+    <positionFreeY value="5"/>
+    <padding value="10"/>
+    <backColor value="16777215"/>
+    <backColor2 value="16777215"/>
+    <backAlpha value="0.8"/>
+    <cornerRadius value="3"/>
+    <toolDistance value="7"/>
+    <useHook value="true"/>
+    <hookSize value="5"/>
+    <borderThickness value="1"/>
+    <borderColor value="11583175"/>
+    <fontFace value="verdana"/>
+    <fontColor value="13910272"/>
+    <fontSize value="14"/>
+  </ToolTip_Properties>
+</settings>

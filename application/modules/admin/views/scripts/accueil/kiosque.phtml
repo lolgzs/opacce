@@ -1,0 +1,92 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS?>jquery_ui/css/jquery.ui.all.css" />
+<script src="<?php echo JQUERY; ?>" type="text/javascript"> </script>
+<script src="<?php echo URL_ADMIN_JS; ?>jquery_ui/jquery.ui.core.min.js" type="text/javascript"> </script>
+<script src="<?php echo URL_ADMIN_JS; ?>jquery_ui/jquery.ui.widget.min.js" type="text/javascript"> </script>
+<script src="<?php echo URL_ADMIN_JS; ?>jquery_ui/jquery.ui.mouse.min.js" type="text/javascript"> </script>
+<script src="<?php echo URL_ADMIN_JS; ?>jquery_ui/jquery.ui.slider.min.js" type="text/javascript"> </script>
+
+<center>
+<h1>Propriétés du Kiosque de notices</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite" valign="top">Style de représentation&nbsp;</td>
+    			<td class="gauche"><?php echo $this->TagObjetsImgProperties($this->styles_liste,$this->preferences)?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Titre de la boite&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="50" value="<?php print($this->preferences["titre"]); ?>"></td>
+    		</tr>
+
+					<tr>
+						<td class="droite">Proposer un fil Rss&nbsp;</td>
+						<td class="gauche">
+							<?php echo $this->formCheckbox('rss_avis', 
+																						 $this->preferences['rss_avis'], 
+																						 null, 
+																						 array('1', '0')) ?>
+						</td>
+					</tr>
+  		</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+			<legend>Type d'analyse</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite" width="40%">Tirage aléatoire&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("aleatoire",$this->preferences["aleatoire"],"",array("0" => "non","1"=>"oui")) ?></td>
+    		</tr>
+
+				<script type="text/javascript">
+					formSelectToggleVisibilityForElement("#aleatoire", "#nb_analyse_option", "1");
+				</script>
+
+    		<tr>
+    			<td class="droite">Tri du résultat&nbsp;</td>
+    			<td class="gauche">
+						<?php echo $this->formSelect("tri",$this->preferences["tri"],"",array("0" => "par ordre alphabétique","1"=>"par date de nouveauté","2"=>"par nombre de visualisations")) ?>
+					</td>
+    		</tr>
+    		
+				<tr>
+    			<td class="droite">Nombre à afficher&nbsp;</td>
+    			<td class="gauche">
+						<input type="text" name="nb_notices" size="2" maxlength="2" 
+									 value="<?php print($this->preferences["nb_notices"]); ?>">
+						<span id="nb_analyse_option" style="display:none">
+							parmi les
+							<input type="text" name="nb_analyse" size="2" maxlength="3" 
+										 value="<?php print($this->preferences["nb_analyse"]); ?>">
+							premières
+						</span>
+					</td>
+    		</tr>
+  		</table>
+			</fieldset>
+			<br />
+
+			<?php  
+			 echo $this->partial("accueil/_options_catalogue_panier.phtml",
+													 array('preferences' => $this->preferences,
+																 'catalogues' => $this->catalogues,
+																 'paniers' => $this->paniers));
+			?>
+
+		<?php echo $this->formSubmit("","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>
+</center>

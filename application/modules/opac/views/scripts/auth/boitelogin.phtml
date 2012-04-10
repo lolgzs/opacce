@@ -1,0 +1,41 @@
+<div class="form" align="center">
+	<?php
+	if($this->boite_login_message) echo '<p class="error">'.$this->boite_login_message.'</p>';
+
+	if($user = Class_Users::getLoader()->getIdentity())	{
+		echo sprintf("<div class='welcome'>%s %s </div>", $this->_("Bienvenue"), $user->getNomAff());
+		echo sprintf('<a href="%s/abonne/fiche" target="_parent">&raquo;&nbsp;%s</a>', BASE_URL, $this->_('Mon compte'));
+		if ($user->hasIdabon())
+			echo $this->ficheAbonneLinks($user->getNbEmprunts(), $user->getNbEmpruntsRetard(), $user->getNbReservations());
+		echo sprintf('<a href="%s/auth/logout" target="_parent">&raquo;&nbsp;%s</a>', BASE_URL, $this->_('Se déconnecter'));
+	} else	{
+	?>
+	<form id="login_form" name="form" action="<?php echo $this->url(array('controller' => 'auth', 'action' => 'boitelogin', 'id_module' => $this->id_module)); ?>"	method="post">
+		<table cellspacing="2">
+			<tr>
+				<td class="masque"><label for="auth_username"> <?php echo $this->preferences["identifiant"] ?>&nbsp;</label></td>
+				<td class="saisie"><input id="auth_username" type="text" size="15" name="username" value="" /></td>
+			</tr>
+
+			<tr>
+				<td class="masque"><label for="auth_password"><?php echo $this->preferences["mot_de_passe"] ?>&nbsp;</label></td>
+				<td class="saisie"><input id="auth_password" type="password" name="password" size="15" onkeypress="if (event.keyCode == 13) {this.form.submit()}" /></td>
+			</tr>
+
+			<tr>
+				<td colspan="2" align="center" class="masque">
+					<div align="left">
+						<a href="#" onclick="$(this).parents('form').submit();">&raquo;&nbsp;<?php echo $this->_("Se connecter");?></a>
+						<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'lostpass', 'id_module' => $this->id_module)); ?>">&raquo;&nbsp;<?php echo $this->_("Mot de passe oublié ?") ?></a>
+						<?php if (!Class_AdminVar::get('INTERDIRE_ENREG_UTIL')) {?>
+									<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'register', 'id_module' => $this->id_module)); ?>">&raquo;&nbsp;<?php echo $this->_("S'enregistrer")?></a>
+						<?php } ?>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+<?php
+	}
+?>
+</div>

@@ -1,0 +1,53 @@
+<settings>
+  <General_Properties>
+    <imagesXML value="../../../../temp/etageres/thumbs.xml?uid=1285859627222"/>
+    <direction value="horizontal"/>
+    <minThumbWidth value="110"/>
+    <minThumbHeight value="70"/>
+    <maxThumbWidth value="110"/>
+    <maxThumbHeight value="70"/>
+    <spacing value="8"/>
+    <expandingDirection value="up/right"/>
+    <easingSpeed value="0"/>
+    <imagesInfluence value="443"/>
+    <backgroundColor value="0xffffff"/>
+    <backgroundAlpha value="0"/>
+    <dockWidth value="200"/>
+    <dockHeight value="100"/>
+    <stretchWidth value="true"/>
+    <stretchHeight value="false"/>
+    <startingPixel value="0"/>
+  </General_Properties>
+  <Scrolling_Properties>
+    <scrollSpeed value="5"/>
+    <smoothScrolling value="false"/>
+    <autoScroll value="false"/>
+    <autoScrollSpeed value="0"/>
+    <onScrollEnd value=""/>
+  </Scrolling_Properties>
+  <Reflection_Properties>
+    <useReflection value="false"/>
+    <reflectionAlpha value="58"/>
+    <reflectionSpread value="58"/>
+    <reflectionDistance value="0"/>
+  </Reflection_Properties>
+  <Roll_Over_Properties>
+    <rollOverBehavior value="max"/>
+    <brightnessOver value="25"/>
+    <brightnessOut value="-25"/>
+    <brightnessSpeed value="7"/>
+  </Roll_Over_Properties>
+  <Tooltip_Properties>
+    <position value="top"/>
+    <appearance value="top"/>
+    <backColor value="0x222222"/>
+    <backColor2 value="0x000000"/>
+    <backAlpha value="90"/>
+    <cornerRadius value="3"/>
+    <easingFunction value="Strong"/>
+    <easingDuration value="0.5"/>
+    <fontFace value="Verdana"/>
+    <fontSize value="13"/>
+    <fontColor value="0xffffff"/>
+  </Tooltip_Properties>
+</settings>

@@ -1,0 +1,22 @@
+<li>
+  <?php 
+		 echo sprintf("<div></div><div>%s</div>", $this->formation->getLibelle()); 
+		 echo sprintf("<div class='actions'>%s %s %s</div>", 
+									$this->tagAnchor(array('action' => 'edit',
+																				 'id' => $this->formation->getId()),
+																	 $this->boutonIco("type=edit")),
+
+									$this->tagAnchor(array('action' => 'session_add',
+																				 'formation_id' => $this->formation->getId()),
+																	 $this->boutonIco("type=add")),
+
+									$this->tagAnchor(array('action' => 'delete',
+																				 'id' => $this->formation->getId()),
+																	 $this->boutonIco("type=del")));
+	   echo sprintf('<ul>%s</ul>',
+									$this->partialCycle('formation/_session.phtml',
+																			'session',
+																			$this->formation->getSessions(),
+																			array('first', 'second')));
+	?>
+</li>

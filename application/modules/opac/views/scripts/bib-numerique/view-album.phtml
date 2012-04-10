@@ -1,0 +1,7 @@
+<?php $this->openBoite($this->album->getLibelle()); ?>
+<?php 
+echo $this->partial('bib-numerique/_breadcrum.phtml', 
+										array('parents' => $this->album->getHierarchy(),
+													'action' => 'view-categorie'));
+echo $this->renderAlbum($this->album);
+?>

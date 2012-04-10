@@ -1,0 +1,107 @@
+/*
+	* Boite drag and drop profil/portail
+*/
+
+.modules td.cfg_accueil{font-size:10pt;color:#FF6600;}
+	#footer{
+		clear:both;
+	}
+	#footer form{
+		margin:0px;
+		margin-top:2px;
+	}
+	#dhtmlgoodies_dragDropContainer ul{	/* General rules for all <ul> */
+		margin-top:0px;
+		margin-left:0px;
+		margin-bottom:0px;
+		padding:4px;
+	}
+	
+	#dhtmlgoodies_dragDropContainer li,#dragContent li,li#indicateDestination{	/* Movable items, i.e. <LI> */
+		list-style-type:none;
+		background-color:#FFFFFF;
+		border:1px solid #738EAD;
+		padding:2px;
+		margin-bottom:2px;
+		cursor:pointer;
+		font-size:0.9em;
+	}
+
+	li#indicateDestination{	/* Box indicating where content will be dropped - i.e. the one you use if you don't use arrow */
+		border:1px solid #738EAD;	
+		background-color:#FFF;
+	}
+				
+	div#dhtmlgoodies_listOfItems div{
+		width: 100%;	/* IE 5.x */
+        border: 1px solid #738EAD;
+	}
+	
+	#dhtmlgoodies_listOfItems div p{	/* Heading above left column */
+		margin:0px;	
+		font-weight:bold;
+		padding-left:12px;
+		background-color:#738EAD;	
+		color:#FFF;
+		margin-bottom:5px;
+	}
+	/* END LEFT COLUMN CSS */
+	
+	#dhtmlgoodies_dragDropContainer .mouseover{	/* Mouse over effect DIV box in right column */
+		border:1px solid #738EAD;
+	}
+	
+	/* Start main container CSS */
+
+	#dhtmlgoodies_mainContainer div{	/* Parent <div> of small boxes */
+		margin-bottom:10px;
+		margin-top:0px;
+		border:1px solid #738EAD;
+	}
+		
+	#dhtmlgoodies_mainContainer div p{	/* Heading above small boxes */
+		margin:0px;
+		padding:0px;
+		padding-left:12px;
+		font-weight:bold;
+		background-color:#738EAD;	
+		color:#FFF;	
+		margin-bottom:5px;
+	}
+	
+	#dhtmlgoodies_mainContainer ul{	/* Small box in right column ,i.e <ul> */
+		height:80px;	
+		border:0px;	
+		margin-bottom:0px;
+		overflow:hidden;
+		
+	}
+	
+	#dragContent{	/* Drag container */
+		position:absolute;
+		width:180px;
+		height:20px;
+		display:none;
+		margin:0px;
+		padding:0px;
+		z-index:2000;
+	}
+
+	#dragDropIndicator{	/* DIV for the small arrow */
+		position:absolute;
+		width:7px;
+		height:10px;
+		display:none;
+		z-index:1000;
+		margin:0px;
+		padding:0px;
+	}
+
+
+  #dhtmlgoodies_mainContainer #box1, #dhtmlgoodies_mainContainer #box2, #dhtmlgoodies_mainContainer #box3 {
+			height: 280px;
+	}
+
+  #dhtmlgoodies_mainContainer #box4 {
+			height: 60px;
+	}

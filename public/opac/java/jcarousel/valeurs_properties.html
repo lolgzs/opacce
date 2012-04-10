@@ -1,0 +1,23 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="120px">Animation&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_auto",$preferences["op_auto"],"",array("0" => "aucune","1"=>"intevalle 1 sec.","2"=>"intervalle : 2 secs.","3" => "intervalle : 3 secs.")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Défilement&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_scroll",$preferences["op_scroll"],"",array("1" => "image par image","2"=>"2 par 2","3"=>"3 par 3","4" => "4 par 4")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Largeur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_largeur_img",$preferences["op_largeur_img"],80,150,5) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Hauteur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_hauteur_img",$preferences["op_hauteur_img"],80,150,5) ?></td>
+	</tr>
+
+</table>

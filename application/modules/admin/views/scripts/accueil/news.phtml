@@ -1,0 +1,71 @@
+<center>
+	<h1>Propriétés du module Articles</h1><br>
+	<div class="formTable">
+		<form class="news" method="post" action="<?php echo $this->url ?>">
+
+			<fieldset>
+				<legend>Affichage</legend>
+				<table cellspacing="2">
+
+					<tr>
+						<td class="droite">Style de boite&nbsp;</td>
+						<td class="gauche"><?php echo $this->combo_templates ?></td>
+					</tr>
+
+				</table>
+			</fieldset>
+			<br />
+
+			<fieldset>
+				<legend>Généralités</legend>
+				<table cellspacing="2">
+					<tr>
+						<td class="droite">Titre&nbsp;</td>
+						<td class="gauche">
+							<input type="text" name="titre" size="55" value='<?php print htmlspecialchars($this->preferences["titre"], ENT_QUOTES) ?>' >
+						</td>
+					</tr>
+					<tr>
+						<td class="droite">Proposer un fil Rss&nbsp;</td>
+						<td class="gauche">
+							<?php echo $this->formCheckbox('rss_avis', 
+																						 $this->preferences['rss_avis'], 
+																						 null, 
+																						 array('1', '0')) ?>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<?php 
+				 echo $this->partial("modules/_options_cms.phtml", 
+														 array('preferences' => $this->preferences,
+																	 'id_bib' => $this->id_bib,
+																	 'form_selector' => 'form.news'));
+			?>
+
+			<fieldset>
+				<legend>Mode d'affichage</legend>
+				<table cellspacing="2" width="100%">
+					<tr>
+						<td class="droite">Titres seulement&nbsp;</td>
+						<td class="gauche">
+            <?php echo $this->formCheckbox('display_titles_only', 
+                                           $this->preferences['display_titles_only'], 
+                                           null, 
+                                           array('1', '0')) ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="droite" valign="top">Style de représentation&nbsp;</td>
+						<td class="gauche"><?php echo $this->imageViewersOptions($this->preferences); ?></td>
+    		</tr>
+				</table>
+				
+			</fieldset>
+			<br />
+
+			<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+		</form>
+	</div>
+</center>

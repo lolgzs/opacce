@@ -1,0 +1,17 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+			
+<br>
+<fieldset>
+	<legend>Définition du profil</legend>
+	<table cellspacing="2">
+
+		<tr>
+			<td class="droite">Profil&nbsp;</td>
+			<td class="gauche"><?php echo $this->ComboProfils("ALL","ALL",$this->preferences["clef_profil"]) ?></td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php echo $this->render('menus/_fin.phtml'); ?>
+

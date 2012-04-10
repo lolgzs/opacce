@@ -1,0 +1,39 @@
+<?php
+// Ajout des balises pour la vignette dans facebook
+echo '<link rel="image_src" href="'.$this->url_image["vignette"].'">';
+
+// Toolbar
+echo $this->toolbar("Notice",$this->url_retour,true);
+
+// Corps
+echo '<div class="pave">';
+echo '<table cellspacing="0" cellpadding="0">';
+echo'<tr>';
+
+// Vignette et bloc entete
+$notice_html=new Class_NoticeHtml($this->notice);
+if(strpos("vide.",$this->url_image["vignette"]) === false) $url=BASE_URL."/recherche/grandeimage/id_notice/".$this->notice["id_notice"]."?url=".$this->url_image["image"];
+else $url="#";
+echo '<td valign="top"><a href="'.$url.'"><img src="'.$this->url_image["vignette"].'" width="90px"></a></td>';
+echo '<td valign="top"><h1>'.$this->notice["titre_principal"].'</h1>';
+echo '<table>';
+print( $notice_html->getEntete());
+echo '</td>';
+echo '</tr>';
+echo '</table>';
+
+// Blocs
+foreach($this->notice["blocs"] as $bloc) {
+	if($num<7) 
+		echo sprintf('<a href="%s"><div class="fonction">%s</div></a>',
+								 $this->url(array('controller' => 'recherche',
+																	'action' => $bloc["type"],
+																	'id_notice' => $this->notice["id_notice"])),
+								 $bloc["titre"]);
+	$num++;
+}
+
+// Fin
+echo '</div>'.BR;
+
+?>

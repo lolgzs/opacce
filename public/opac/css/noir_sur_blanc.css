@@ -1,0 +1,16 @@
+body {
+		background-image: none !important;
+		background-color: #FFF !important;
+		color: #000;
+}
+
+body * {
+		background-image: none !important;
+		background-color: #FFF  !important;
+		color: #000  !important;
+}
+
+
+div#open_accessibility {
+		background-image: url(../images/accessibilite.png) !important;
+}

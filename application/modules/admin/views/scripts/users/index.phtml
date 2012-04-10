@@ -1,0 +1,51 @@
+<?php 
+echo $this->profileSelect('users',$this->id_zone,$this->id_bib,'zb',0,true,true,true);
+echo ('<center><div align="center"><br>'.$this->bouton('id=19','picto=add.gif','texte='.$this->traduire('Ajouter un utilisateur').'','url='.BASE_URL.'/admin/users/add/','largeur=210px').'</div></center>');
+if(!$this->users)
+{
+    echo ("<br><p align='center' class='error'>Aucun utilisateur trouvé pour les critères spécifiés</b></p>");
+}
+else
+{
+?>
+<br />
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td width="18%"><?php echo $this->traduire('Identifiant'); ?></td>
+		<td width="23%"><?php echo $this->traduire('Nom'); ?></td>
+		<td width="16%"><?php echo $this->traduire('Prénom'); ?></td>
+		<td width="23%" style="white-space: nowrap"><?php echo $this->traduire('Rôle'); ?></td>
+		<td width="10%"><?php echo $this->traduire('Bibliothèque'); ?></td>
+		<td colspan="2" style="width:10%;"><?php echo $this->traduire('Action'); ?></td>
+	</tr>
+	<tr>
+		<td colspan="10"  class="separ"></td>
+	</tr>
+<?php 
+
+$acl = new  ZendAfi_Acl_AdminControllerRoles();
+
+$ligne=0;
+foreach($this->users as $user)
+{
+    $ligne ++ ;
+    if ($ligne & 1) $class="first"; else $class="second"; 
+    if ($user["ID_SITE"] =="0") $nom_bib="Portail"; 
+    else $nom_bib=fetchOne("select nom_court from int_bib where id_bib=".$user["ID_SITE"]);
+		if (strlen($user["LOGIN"])>=15) $login= substr($user["LOGIN"],0,15).'...'; else $login=$user["LOGIN"];
+		if (strlen($nom_bib)>=40) $nom_bib_r= substr($nom_bib,0,40).'...'; else $nom_bib_r=$nom_bib;
+		echo('<tr class="'.$class.'">');
+		echo('<td valign="top">'.$login.'</td>');
+		echo('<td valign="top">'.$user["NOM"].'</td>');
+		echo('<td valign="top">'.$user["PRENOM"].'</td>');
+		echo('<td valign="top">'.$acl->getLibelleRole($user["ROLE_LEVEL"]).'</td>');
+		echo('<td valign="top">'.$nom_bib_r.'</td>');
+		echo('<td valign="top"><a href="'.BASE_URL.'/admin/users/edit/id/'.$user["ID_USER"].'">'.$this->boutonIco("type=edit").'</a>&nbsp;&nbsp; <a href="'.BASE_URL.'/admin/users/delete/id/'.$user["ID_USER"].'">');
+		if ($user["ID_USER"] != '1') echo $this->boutonIco("type=del");
+		echo('</a></td></tr>');
+    
+}
+echo ('</table>');
+echo BR.'<div align="center" style="width:100%">'.$this->pager($this->nombre,$this->nb_par_page,$this->page,$this->url).'</div>';
+}
+?>

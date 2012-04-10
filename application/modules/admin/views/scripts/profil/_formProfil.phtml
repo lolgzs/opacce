@@ -1,0 +1,372 @@
+<?php
+Class_ScriptLoader::getInstance()
+->addStylesheet(URL_ADMIN_JS.'color_picker/jquery.vreboton.ColorPicker')
+->addAdminScript('color_picker/jquery.vreboton.ColorPicker')
+->addInlineStyle('div.ColorPickerDivSample {margin-top:4px; margin-right:0px}')
+->addJQueryReady('$(".colorpicker").attachColorPicker()');
+
+Class_ScriptLoader::getInstance()
+->addAdminScript('tag_selection')
+->addInlineScript("	function changeBrowser(sBrowser){
+		if (sBrowser=='telephone')	{
+		  $('.only_browser').hide();
+		}	else	{
+		  $('.only_browser').show();
+		}
+	}
+
+	$(function() {
+	   changeBrowser($('select#browser').val());
+  });");
+?>
+
+
+<?php echo $this->partial('profil/_profil_panel.phtml',
+													array('profil' => $this->profil)); ?>
+
+<div class="form" align="center" >
+	<form name="form" action="<?php print(BASE_URL.'/admin/profil/'.$this->action.'/id_profil/'.$this->profil->getId()) ?>" method="post">
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Profil'); ?> </legend>
+			<?php
+			if($this->profil->hasErrors())	{
+				echo '<ul class="errors">';
+				foreach($this->profil->getErrors() as $erreur) 
+				  echo '<li>'.$erreur.'</li>';
+				echo '</ul>';
+			}
+			?>
+			<table>
+				<tr>
+					<td class="droite"><?php echo $this->traduire('Libelle'); ?></td>
+					<td class="gauche"><input type="text" name="libelle" style="width:100%" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape(trim($this->profil->getLibelle()));?>" maxlength="50"/></td>
+				</tr>
+
+				<tr>
+					<td align="right"><?php echo $this->traduire("Type d'interface"); ?></td>
+					<td class="gauche"><?php echo $this->formSelect('browser', 
+																													$this->profil->getBrowser(),
+																													array("onchange" => "changeBrowser(this.value)"),
+																													array("opac" => "ordinateur",
+																																"telephone" => "téléphone")) ?></td>
+				</tr>
+
+
+				<tr>
+		      <td align="right" style="width:20%"><?php echo $this->traduire("Niveau d'accès requis"); ?></td>
+					<td class="gauche"><?php echo $this->formSelect('access_level', 
+																													$this->profil->getAccessLevel(),
+																													null,
+																													$this->profil->getAllAccessLevels()); ?></td>
+				</tr>
+
+				<tr>
+					<td class="droite"><?php echo $this->traduire('E-mail du Webmestre'); ?></td>
+					<td class="gauche"><input type="text" style="width:100%" name="mail_site" value="<?php echo $this->escape(trim($this->profil->getMailSite()));?>" maxlength="50"/></td>
+				</tr>
+			</table>
+		</fieldset>
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Bannière'); ?> </legend>
+			<table>
+				<tr>
+					<td align="right"><?php echo $this->traduire('Image de fond'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<?php 
+							echo $this->coreFiveFileInput('header_img', $this->profil->getHeaderImg(), 'bannieres');
+						?>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Défilement des images'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<?php 
+              echo $this->formCheckbox(  'header_img_cycle', 
+							                           null,
+																				 array('checked' => $this->profil->getHeaderImgCycle()));								
+						?>
+					</td>
+				</tr>
+
+
+				<script type="text/javascript">
+					checkBoxToggleVisibilityForElement("#header_img_cycle", "input[name=header_img]", false);
+				</script>
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Icône du navigateur'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<?php echo $this->coreFiveFileInput('favicon', $this->profil->getFavicon(), 'bannieres') ?>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Logo gauche'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<?php echo $this->coreFiveFileInput('logo_gauche_img', $this->profil->getLogoGaucheImg(), 'bannieres') ?>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Lien logo gauche'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<input type="text" class="normal" name="logo_gauche_link" size="50" value="<?php echo $this->profil->getLogoGaucheLink()?>">
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Logo droite'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<?php echo $this->coreFiveFileInput('logo_droite_img', $this->profil->getLogoDroiteImg(), 'bannieres') ?>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><?php echo $this->traduire('Lien logo droite'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<input type="text" class="normal" name="logo_droite_link" size="50" value="<?php echo $this->profil->getLogoDroiteLink()?>">
+					</td>
+				</tr>
+
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Hauteur'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<input type="text" class="normal" name="hauteur_banniere" size="3" maxlength="3" value="<?php echo $this->profil->getHauteurBanniere()?>">pixels
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Couleur du texte'); ?></td>
+					<td class="gauche">
+						<input type="text" class="colorpicker" name="couleur_texte_bandeau" size="7" maxlength="7" value="<?php echo $this->profil->getCouleurTexteBandeau()?>">
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Couleur des liens'); ?></td>
+					<td class="gauche">
+						<input type="text" class="colorpicker" name="couleur_lien_bandeau" size="7" maxlength="7" value="<?php echo $this->profil->getCouleurLienBandeau()?>">
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Boite de recherche'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox( 'boite_recherche_simple_in_banniere', 
+																				 null, 
+																				 array('checked' => $this->profil->getBoiteRechercheSimpleInBanniere()));
+						?>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Boite de connexion'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox( 'boite_login_in_banniere', 
+																				 null, 
+																				 array('checked' => $this->profil->getBoiteLoginInBanniere()));
+						?>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Aspect du site'); ?> </legend>
+			<table border="0" cellpadding="5" cellspacing="0">
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Thème'); ?></td>
+					<td class="gauche">
+						<?php
+							  echo $this->formSelect('skin', 
+																			 $this->profil->getSkin(), 
+																			 null, 
+																			 $this->profil->getAvailableSkins());
+						?>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="droite"><?php echo $this->traduire('CSS'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+	          <?php echo $this->coreFiveFileInput('header_css', $this->profil->getHeaderCss(), 'css', 'File') ?>
+					</td>
+				</tr>
+
+
+				<tr class="only_browser">
+					<td align="right" style="width:25%"><?php echo $this->traduire('Largeur totale du site'); ?></td>
+					<td>
+						<input type="text" name="largeur_site" size="4" maxlength="4" value="<?php print($this->profil->getLargeurSite()) ?>" style="width:40px">
+						<span class="info" style="color:#575757">&nbsp;pixels</span>
+					</td>
+				</tr>
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Nombre de divisons'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+						<select name="nb_divisions">
+							<option value="1"  <?php if($this->profil->getNbDivisions() == 1) echo 'selected="selected"';?>>1 Division</option>
+							<option value="2"  <?php if($this->profil->getNbDivisions() == 2) echo 'selected="selected"';?>>2 Divisions</option>
+							<option value="3"  <?php if($this->profil->getNbDivisions() == 3) echo 'selected="selected"';?>>3 Divisions</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td colspan="2">
+						<div style="width:300px;margin-left:139px">
+							<table>
+								<tr>
+									<td>&nbsp;</td>
+									<td colspan="2"><span class="info">Largeur</span></td>
+									<td colspan="2"><span class="info">Marge interne</span></td>
+								</tr>
+								<tr>
+									<td align="right">Divison 1</td>
+									<td width="10px"><input type="text" class="normal" name="largeur_division1" size="3" maxlength="3" value="<?php echo $this->profil->getLargeurDivision1()?>"></td><td class="normal" width="10px">pixels&nbsp;</td>
+									<td width="10px"><input type="text" class="normal" name="marge_division1" size="2" maxlength="2" value="<?php echo $this->profil->getMargeDivision1()?>"></td><td class="normal">pixels</td>
+								</tr>
+								<tr>
+									<td align="right">Divison 2</td>
+									<td width="10px"><input type="text" class="normal" name="largeur_division2" size="3" maxlength="3" value="<?php echo $this->profil->getLargeurDivision2()?>"></td><td class="normal" width="10px">pixels&nbsp;</td>
+									<td width="10px"><input type="text" class="normal" name="marge_division2" size="2" maxlength="2" value="<?php echo $this->profil->getMargeDivision2()?>"></td><td class="normal">pixels</td>
+								</tr>
+								<tr>
+									<td align="right">Divison 3</td>
+									<td width="10px"><input type="text" class="normal" name="largeur_division3" size="3" maxlength="3" value="<?php echo $this->profil->getLargeurDivision3()?>"></td><td class="normal" width="10px">pixels&nbsp;</td>
+									<td width="10px"><input type="text" class="normal" name="marge_division3" size="2" maxlength="2" value="<?php echo $this->profil->getMargeDivision3()?>"></td><td class="normal">pixels</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Afficher le menu horizontal'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox(  'menu_haut_on', 
+																				 null, 
+																				 array('checked' => $this->profil->getMenuHautOn()));
+						?>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Afficher la barre de navigation'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox( 'barre_nav_on', 
+																				 null, 
+																				array('checked' => $this->profil->getBarreNavOn()));
+						?>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Interdire les liens sortants'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox( 'liens_sortants_off', 
+																				 null, 
+																				array('checked' => $this->profil->getLiensSortantsOff()));
+						?>
+						<span class="info">&nbsp; Sert à interdire d'aller sur internet pour les Opac internes à la bibliothèque.</span>
+					</td>
+				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Activer les outils d\'accessibilité'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox(  'accessibilite_on', 
+							                           null,
+																				 array('checked' => $this->profil->getAccessibiliteOn()));
+						?>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Référencement'); ?> </legend>
+			<table>
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Commentaire'); ?></td>
+					<td class="gauche">
+						<TEXTAREA name="commentaire" rows="2" cols="42" title="<?php echo $this->traduire('Ceci apparaîtra sous le nom de votre site dans les moteurs de recherche');?>"><?php echo $this->escape(trim($this->profil->getCommentaire()));?>
+						</TEXTAREA>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="info"><?php echo $this->traduire('Entrez la liste des mots-clef et expressions qui caractérisent votre site séparés par des virgules.');?></td>
+				</tr>
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Mots-clef'); ?></td>
+					<td class="gauche" style="align:left">
+					  <TEXTAREA name="ref_tags" rows="1" cols="42" title="<?php echo $this->traduire("Facilite l'indexation de votre site dans les moteurs de recherche");?>"><?php echo $this->escape(trim($this->profil->getRefTags()));?>
+					  </TEXTAREA>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Filtrage des données'); ?> </legend>
+			<table>
+
+				<tr>
+					<td class="droite" style="width:130px;"><?php echo $this->traduire('Bibliothèque'); ?></td>
+					<td class="gauche">
+						<?php
+						$class_bib = new Class_Bib();
+						$combo_bib = $class_bib->getComboBib($this->profil->getIdSite(), $this->id_zone, true, 'id_site');
+						$user_login = Zend_Auth::getInstance()->getIdentity();
+						if ($user_login->ROLE_LEVEL <=4)
+						{
+							$bib = $class_bib->getBib($this->profil->getIdSite());
+							echo '<select disabled="disabled"><option selected="selected" value="'.$user_login->ID_SITE.'">'.$bib["LIBELLE"].'</option></select><input type="hidden" value="'.$user_login->ID_SITE.'" name="id_site" id="id_site"/>';
+						}
+						else echo $combo_bib;
+						?>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Sections'); ?></td>
+					<td class="gauche"><?php echo $this->TagListeCoches("section","sel_section",$this->profil->getSelSection()); ?></td>
+				</tr>
+
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Types de documents'); ?></td>
+					<td class="gauche"><?php echo $this->TagListeCoches("type_doc","sel_type_doc",$this->profil->getSelTypeDoc()); ?></td>
+				</tr>
+
+			</table>
+		</fieldset>
+
+		<table>
+			<tr>
+				<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+				<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/profil/','largeur=120px'); ?></td>
+			</tr>
+		</table>
+	</form>
+</div>
+

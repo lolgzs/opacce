@@ -1,0 +1,25 @@
+<?php $this->openBoite("Export de panier")?>
+</center>
+<table width="10%">
+	<tr>
+		<td style="padding-right:5px;padding-left:5px;width:50px"><?php echo $this->_('Panier :') ?></td>
+		<td><b><?php print($this->panier["libelle"]); ?></b></td>
+		<td width="auto">&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="padding-right:5px;;padding-left:5px"><?php echo $this->_('Notices :') ?></td>
+		<td><b><?php print($this->panier["nombre"]); ?></b></td> 
+		<td width="auto">&nbsp;</td>
+	</tr>
+</table>
+<?php 
+$this->closeBoite();
+
+print('<center><br>');
+print('<table width="70%">');
+print('<tr><td><a href="'.$this->panier["fic_liste"].'">&raquo;&nbsp;'.$this->_('Télécharger au format liste (clic droit puis enregistrer sous)').'</a></td></tr>');
+print('<tr><td><a href="'.$this->panier["fic_unimarc"].'">&raquo;&nbsp;'.$this->_('Télécharger au format unimarc (clic droit puis enregistrer sous)').'</a></td></tr>');
+?>
+</table>
+<br/><br/>
+<input type="button" onclick="document.location.replace('<?php print($this->url_retour); ?>')" value="<?php echo $this->_('Retour aux paniers') ?>" style="cursor:pointer">

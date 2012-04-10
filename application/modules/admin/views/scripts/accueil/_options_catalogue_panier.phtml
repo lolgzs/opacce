@@ -1,0 +1,20 @@
+<fieldset>
+	<legend>Sélection</legend>
+	<table cellspacing="2">
+
+		<tr>
+    	<td class="droite">Vignettes&nbsp;</td>
+    	<td class="gauche"><?php echo $this->formSelect("only_img",$this->preferences["only_img"],"",array("0" => "afficher le titre dans une image","1"=>"Afficher les notices avec vignettes uniquement")) ?></td>
+    </tr> 
+		<tr>
+			<td class="droite">Catalogue&nbsp;</td>
+			<td class="gauche"><?php echo $this->formSelect("id_catalogue",$this->preferences["id_catalogue"],array("onchange"=>"$('#id_panier').val('')"),$this->catalogues) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Panier de notices&nbsp;</td>
+			<td class="gauche"><?php echo $this->formSelect("id_panier",$this->preferences["id_panier"],array("onchange"=>"$('#id_catalogue').val('')"),$this->paniers) ?></td>
+		</tr>
+
+  </table>
+</fieldset>

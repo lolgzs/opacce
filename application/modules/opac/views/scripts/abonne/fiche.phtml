@@ -1,0 +1,75 @@
+<?php
+$this->openBoite($this->_("Votre fiche"));
+
+$url_modifier_fiche = $this->url(array('controller' => 'abonne', 'action' => 'edit'));
+
+if (!$this->user_info_popup_url) {
+	$tag_for_info_user = $this->tagAnchor($url_modifier_fiche,
+																				$this->boutonIco("type=edit").$this->_(' Modifier ma fiche'));
+}
+else {
+	$tag_for_info_user = sprintf('<a onclick="openIFrameDialog(\'%s\');">%s</a>',
+															 $this->user_info_popup_url,
+															 $this->boutonIco("type=edit").$this->_(' Modifier ma fiche'));
+}
+
+echo sprintf('<div class="abonneTitre">%s<span>%s</span></div>', 				
+						 $this->fiche["nom_aff"],
+						 $tag_for_info_user);
+
+if($this->abonnement) echo '<div class="abonneFiche">'.$this->abonnement.'</div>';
+if($this->nb_prets) echo sprintf('<div class="abonneFiche">%s</div>', $this->nb_prets);
+if($this->nb_resas) echo '<div class="abonneFiche">'.$this->nb_resas.'</div>';
+if($this->nb_paniers) echo '<div class="abonneFiche">'.$this->nb_paniers.'</div>';
+if ($this->error) echo sprintf('<div class="error">%s</div>', $this->error);
+
+
+if (count(Class_Newsletter::getLoader()->findAll()) > 0) {
+	$newsletter_info = $this->_("Vous n'êtes abonné à aucune lettre d'information");
+
+	if (count($this->user->getNewsletters()) > 0) {
+		$titres = $this->user->getTitresNewsletters();
+
+		$newsletter_info = $this->_('Vous êtes abonné');
+		$newsletter_info .= count($titres) > 1 ? $this->_(" aux lettres d'information: ") : $this->_(" à la lettre d'information: ");
+		$newsletter_info .= implode(', ', $titres);
+	}
+
+	echo '<div class="abonneFiche">'.
+			'<p>'.$newsletter_info.'</p>'.
+		  $this->tagAnchor($url_modifier_fiche,$this->_('Modifier mes abonnements')).
+		'</div>';
+}
+
+
+if (Class_AdminVar::isFormationEnabled() and $this->user->hasRightSuivreFormation()) {
+	echo '<div class="abonneFiche">';
+	echo $this->tagAnchor($this->url(array('controller' => 'abonne',
+																				 'action' => 'formations'), 
+																	 null, 
+																	 true),
+												$this->_("S'inscrire à une formation"));
+
+	echo '<ul>';
+	
+	foreach ($this->user->getSessionFormations() as $session) {
+		echo sprintf('<li><a href="%s">%s, %s</li>', 
+								 $this->url(array('controller' => 'abonne',
+																	'action' => 'detail_session',
+																	'id' => $session->getId(),
+																	'retour' => 'fiche'),
+														null,
+														true),
+								 $session->getLibelleFormation(),
+								 $this->humanDate($session->getDateDebut(), 'd MMMM YYYY'));
+	}
+
+	echo '</ul>';
+
+	echo '</div>';
+}
+
+$this->closeBoite();
+?>
+
+

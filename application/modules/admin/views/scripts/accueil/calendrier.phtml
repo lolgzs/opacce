@@ -1,0 +1,91 @@
+<center>
+<h1>Propriétés du calendrier</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+				
+				<tr>
+					<td class="droite">Style de boite&nbsp;</td>
+					<td class="gauche"><?php echo $this->combo_templates ?></td>
+				</tr>
+				
+			</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset>
+			<legend>Généralités</legend>
+			<table cellspacing="2">
+				<tr>
+					<td class="droite">Titre&nbsp;</td>
+					<td class="gauche"><input type="text" name="titre" size="55" value="<?php print($this->preferences["titre"]); ?>"></td>
+				</tr>
+				<tr>
+					<td class="droite">Proposer un fil Rss&nbsp;</td>
+					<td class="gauche">
+						<?php echo $this->formCheckbox('rss_avis', 
+																					 $this->preferences['rss_avis'], 
+																					 null, 
+																					 array('1', '0')) ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="droite">Afficher les prochains rendez-vous&nbsp;</td>
+					<td class="gauche">
+						<?php echo $this->formCheckbox('display_next_event', 
+																					 $this->preferences['display_next_event'], 
+																					 null, 
+																					 array('1', '0')) ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="droite">Afficher&nbsp;</td>
+					<td class="gauche">
+						<?php 
+							echo $this->formRadioButtons("display_event_info", 
+																					 $this->preferences["display_event_info"], 
+																					 array(
+																								 "bib" => "Nom de la bibliothèque",
+																								 "cat" => "Catégorie de l'article",
+																								 "none"=> "Titre seulement"));
+						?>
+					</td>
+				</tr>
+			</table>
+			</fieldset>
+			<br/>
+
+			<fieldset>
+				<legend>Filtrage des catégories</legend>
+				<table cellspacing="2">
+					<tr>
+						<td class="droite">Afficher sélection</td>
+						<td class="gauche">
+								<?php	$checked = $this->preferences["display_cat_select"] ? "checked='checked'" : ""; ?>
+								<input type="checkbox" name="display_cat_select" <?php echo $checked ?> >
+						</td>
+					</tr>
+				</table>
+				<div id='table_selection'>
+					 <?php	
+								echo $this->treeSelect(
+																			 '',
+																			 $this->preferences["id_categorie"],
+																			 true,
+																			 $this->url(array('module' => 'admin',
+																												'controller' => 'bib',
+																												'action' => 'articles',
+																												'id_bib' => $this->id_bib,
+																												'categories_only' => 1)),
+																			 "form");
+					 ?>
+				</div>
+			</fieldset>
+
+			<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+	</form>
+ </div>
+</center>

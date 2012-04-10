@@ -1,0 +1,35 @@
+<li class='album'>
+    <div><img src="<?php echo URL_ADMIN_IMG ?>ico/liste.gif" alt="Catégorie" /></div>
+    <div><?php echo $this->album->getTitre(); ?></div>
+		<?php
+			$album_actions = array(
+				array(
+					'action' => 'edit_album',
+					'icon' => 'edit.gif',
+					'help' => "Modifier l'album"
+				),
+				array(
+					'action' => 'edit_images',
+					'icon' => 'album_images.png',
+					'help' => "Gérer les médias",
+					'label' => sprintf('%03d', $this->album->getRessourcesCount())
+				),
+				array(
+					'action' => 'preview_album',
+					'icon' => 'show.gif',
+					'help' => "Visualisation de l'album"
+				),
+				array(
+					'action' => 'delete_album',
+					'icon' => 'del.gif',
+					'help' => "Supprimer l'album",
+					'onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer cet album');"
+				)
+			);
+
+      echo $this->partial('album/_actions.phtml',
+                           array('actions' => $album_actions,
+                                 'id' => $this->album->getId()));
+	 ?>
+
+</li>

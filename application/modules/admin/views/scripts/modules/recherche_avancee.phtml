@@ -1,0 +1,21 @@
+<?php include("..".URL_ADMIN_HTML."modules/_debut.phtml");?>
+			
+<br>
+<fieldset>
+	<legend>Généralités</legend>
+	<table cellspacing="2">
+
+		<tr>
+			<td class="droite">Titre&nbsp;</td>
+			<td class="gauche"><input type="text" name="titre" size="55" value="<?php print($this->preferences["titre"]); ?>"></td>
+		</tr>
+		
+		<tr>
+			<td class="droite">Proposer la sélection de bibliothèques&nbsp;</td>
+			<td class="gauche"><?php echo $this->formSelect("select_bib",$this->preferences["select_bib"],"",array("1" => "oui","0"=>"non")) ?></td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php include("..".URL_ADMIN_HTML."modules/_fin.phtml");?>

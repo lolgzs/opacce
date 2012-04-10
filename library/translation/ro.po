@@ -1,0 +1,4834 @@
+# Copyright (C) 2011 Agence Française Informatique.
+# This file is distributed under CeCILL License
+# Laurent Laffont <llaffont@afi-sa.fr>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-12-21 14:19+0100\n"
+"PO-Revision-Date: 2011-07-14 18:15+0200\n"
+"Last-Translator: Lupu Mariana <lupumariana@yahoo.com>\n"
+"Language-Team: Romanian\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:264
+#, php-format
+msgid " (%d en retard)"
+msgstr "(%d în întârziere)"
+
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:7
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:11
+msgid " (recherche élargie triée par pertinence)"
+msgstr "(căutare avansată prin triere în funcţie de pertinenţă)"
+
+#: ../../library/ZendAfi/View/Helper/TreeView.php:64
+msgid " Ajouter une catégorie"
+msgstr "Adaugă o categorie"
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:10
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:8
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:13
+msgid " Modifier ma fiche"
+msgstr "Modifică fişa mea"
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:28
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:34
+msgid " aux lettres d'information: "
+msgstr "la buletinele informative:"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:343
+#: ../../application/modules/opac/controllers/RechercheController.php:363
+#: ../../application/modules/opac/controllers/RechercheController.php:382
+msgid " commence par :"
+msgstr "începe cu :"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:343
+#: ../../application/modules/opac/controllers/RechercheController.php:363
+#: ../../application/modules/opac/controllers/RechercheController.php:382
+msgid " contient :"
+msgstr "conţine  :"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:342
+#: ../../application/modules/opac/controllers/RechercheController.php:362
+#: ../../application/modules/opac/controllers/RechercheController.php:381
+msgid " et "
+msgstr "şi"
+
+#: ../../application/modules/opac/controllers/UploadController.php:21
+#: ../../application/modules/opac/controllers/UploadController.php:24
+#, php-format
+msgid " et des dimensions se rapprochant de %s x %s pixels"
+msgstr "şi dimensiuni apropiindu-se de % x % pixeli"
+
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:20
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:20
+msgid " et profil"
+msgstr "şi profil"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:342
+#: ../../application/modules/opac/controllers/RechercheController.php:362
+#: ../../application/modules/opac/controllers/RechercheController.php:381
+msgid " ou "
+msgstr "sau"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:342
+#: ../../application/modules/opac/controllers/RechercheController.php:362
+#: ../../application/modules/opac/controllers/RechercheController.php:381
+msgid " sauf "
+msgstr "cu excepţia"
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:28
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:34
+msgid " à la lettre d'information: "
+msgstr "la buletinul informativ"
+
+#: ../../application/modules/admin/views/scripts/i18n/index.phtml:18
+#, php-format
+msgid "%.2f %%"
+msgstr "%.2f %%"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:76
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:77
+#, php-format
+msgid "%s "
+msgstr "%s "
+
+#: ../../library/Class/NoticeHtml.php:469
+#: ../../library/Class/NoticeHtml.php:476
+#: ../../library/Class/NoticeHtml.php:481
+#: ../../library/Class/NoticeHtml.php:472
+#, php-format
+msgid "%s livre"
+msgstr "%s carte"
+
+#: ../../library/Class/NoticeHtml.php:467
+#: ../../library/Class/NoticeHtml.php:474
+#: ../../library/Class/NoticeHtml.php:479
+#: ../../library/Class/NoticeHtml.php:470
+#, php-format
+msgid "%s livres"
+msgstr "%s cărţi"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:15
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:27
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:35
+#, php-format
+msgid "%s notices trouvées"
+msgstr "%s instrucţiuni găsite"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:64
+msgid "&nbsp;<small>"
+msgstr "spaţiu insecabil;<mic>"
+
+msgid ""
+"'%hostname%' does not appear to have a valid MX record for the email address "
+"'%value%'"
+msgstr ""
+"'%hostname%' nu apare cu o înregistrare MX validă pentru adresa de email "
+"'%valoare%'"
+
+msgid "'%hostname%' is not a valid hostname for email address '%value%'"
+msgstr ""
+"'%hostname%' nu este un hostname valid pentru adresa de email '%valoare%'"
+
+# nu sunt sigura de cuvantul rezolvata
+msgid ""
+"'%hostname%' is not in a routable network segment. The email address '%value"
+"%' should not be resolved from public network."
+msgstr ""
+"'%hostname%' nu este un segment de reţea rutabil. Adresa email '%valoare%' "
+"nu trebuie rezolvată din reţeaua publică. "
+
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr "'%localPart%' nu poate fi comparat cu formatul dot-atom "
+
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr "'%localPart%' nu poate fi comparat cu formatul quoted-string "
+
+msgid "'%localPart%' is no valid local part for email address '%value%'"
+msgstr ""
+"'%localPart%' nu este o parte locală validă pentru adresa de email '%valoare"
+"%'"
+
+msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+"'%localPart%' pare a fi un hostname DNS dar nu se poate extrage rădăcina TLD"
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"list"
+msgstr ""
+"'%valoare%' pare a fi un hostname DNS dar nu s-a găsit rădăcina TLD în lista "
+"rădăcinilor cunoscute"
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%tld%'"
+msgstr ""
+"'%valoare%' pare a fi un hostname DNS dar nu poate fi comparat cu schema "
+"hostname pentru TLD '%tld%'"
+
+msgid ""
+"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"position"
+msgstr ""
+"'%valoare%' pare a fi un hostname DNS dar conţine o liniuţă într-o poziţie "
+"invalidă"
+
+msgid ""
+"'%value%' appears to be a DNS hostname but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+"'%valoare%' pare a fi un hostname DNS dar eticheta punycode dată nu poate fi "
+"decodată "
+
+msgid ""
+"'%value%' appears to be a local network name but local network names are not "
+"allowed"
+msgstr ""
+"'%valoare%' pare a fi o reţea locală dar numele de reţele locale nu sunt "
+"permise"
+
+msgid "'%value%' appears to be an IP address, but IP addresses are not allowed"
+msgstr "'%valoare%' pare a fi o adresă IP, dar adresele IP nu sunt permise"
+
+msgid "'%value%' does not appear to be a valid local network name"
+msgstr "'%valoare%' nu pare un nume de reţea locală valid "
+
+msgid "'%value%' does not appear to be an integer"
+msgstr "'%valoare%' nu pare a fi un număr întreg"
+
+msgid "'%value%' does not match the expected structure for a DNS hostname"
+msgstr "'%valoare%' nu corespunde structurii obişnuite a unui hostname DNS "
+
+msgid "'%value%' exceeds the allowed length"
+msgstr "'%valoare%'depăşeşte lungimea permisă "
+
+msgid "'%value%' is greater than %max% characters long"
+msgstr "'%valoare%' este mai mare decât %max% caractere"
+
+msgid "'%value%' is less than %min% characters long"
+msgstr " '%valoare%' este mai mică decât %max% caractere"
+
+msgid ""
+"'%value%' is not a valid email address in the basic format local-"
+"part@hostname"
+msgstr ""
+"'%valoare%' nu este o adresă de email valabilă în formatul de bază local-"
+"part@hostname"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:265
+#: ../../application/modules/opac/controllers/AbonneController.php:271
+#: ../../application/modules/opac/controllers/AbonneController.php:297
+#, php-format
+msgid "(%d en retard)"
+msgstr "(%d în întârziere)"
+
+#: ../../library/Class/Blog.php:78
+msgid "(ce commentaire a été signalé aux modérateurs)"
+msgstr "(acest comentariu a fost semnalat moderatorilor)"
+
+#: ../../application/modules/admin/controllers/BibController.php:529
+#: ../../application/modules/admin/controllers/BibController.php:537
+msgid "** nouveau plan **"
+msgstr "** nou plan **"
+
+#: ../../application/modules/admin/controllers/BibController.php:774
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:11
+#: ../../application/modules/admin/controllers/BibController.php:782
+msgid "** nouveau point **"
+msgstr "** nou punct **"
+
+#: ../../application/modules/admin/controllers/BibController.php:768
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:9
+#: ../../application/modules/admin/controllers/BibController.php:776
+msgid "** nouvelle couche **"
+msgstr "** nou strat **"
+
+#: ../../application/modules/admin/controllers/BibController.php:784
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:14
+#: ../../application/modules/admin/controllers/BibController.php:792
+msgid "** nouvelle info **"
+msgstr "** nouă informaţie **"
+
+#: ../../application/modules/admin/controllers/BibController.php:418
+#: ../../application/modules/admin/controllers/BibController.php:426
+msgid "** nouvelle localisation **"
+msgstr "** nouă localizare **"
+
+#: ../../application/modules/opac/controllers/UploadController.php:19
+#, php-format
+msgid ""
+"*NB : l'image doit être de type \"%s\", avoir une taille inférieure à %s ko"
+msgstr ""
+"*NB : imaginea trebuie să fie de tipul \"%s\", să aibă o dimensiune "
+"inferioară %s ko"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:344
+#: ../../application/modules/opac/controllers/RechercheController.php:364
+#: ../../application/modules/opac/controllers/RechercheController.php:383
+msgid ", Titre"
+msgstr ", Titlu"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:337
+#: ../../application/modules/opac/controllers/RechercheController.php:357
+#: ../../application/modules/opac/controllers/RechercheController.php:370
+#, php-format
+msgid ", type de document: %s"
+msgstr ", tip de document: %s"
+
+#: ../../application/modules/admin/views/scripts/footer.phtml:4
+#: ../../application/modules/opac/views/scripts/footer.phtml:17
+#: ../../application/modules/opac/views/scripts/footer.phtml:16
+msgid "- Tous droits réservés - Hébergement &amp; Conception graphique"
+msgstr "- Toate drepturile rezervate - Găzduire &amp; Concepţie grafică"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:114
+msgid "1 an"
+msgstr "1 an"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:111
+msgid "1 mois"
+msgstr "1 lună"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:13
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:32
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:26
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:31
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:39
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:40
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:34
+msgid "1 notice trouvée"
+msgstr "1 instrucţiune găsită"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:112
+msgid "3 mois"
+msgstr "3 luni"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:115
+msgid "5 ans"
+msgstr "5 ani"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:113
+msgid "6 mois"
+msgstr "6 luni"
+
+#: ../../library/Class/NoticeHtml.php:561
+#: ../../library/Class/NoticeHtml.php:568
+#: ../../library/Class/NoticeHtml.php:573
+#: ../../library/Class/NoticeHtml.php:564
+#, php-format
+msgid "<img src=\"%s\" border=\"0\" style=\"%s\" alt=\"%s\" />"
+msgstr "<img src=\"%s\" border=\"0\" style=\"%s\" alt=\"%s\" />"
+
+#: ../../application/modules/opac/views/scripts/head.phtml:46
+#: ../../application/modules/opac/views/scripts/head.phtml:47
+#, php-format
+msgid ""
+"<link rel=\"alternate stylesheet\" type=\"text/css\" href=\"\" title=\"%s\" /"
+">"
+msgstr ""
+
+#: ../../application/modules/opac/controllers/RssController.php:203
+#: ../../application/modules/opac/controllers/RssController.php:218
+msgid "A la Une"
+msgstr "Pe prima pagină"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:401
+#: ../../application/modules/opac/controllers/AbonneController.php:409
+#: ../../application/modules/opac/controllers/AbonneController.php:417
+#: ../../application/modules/opac/controllers/AbonneController.php:443
+msgid "Abonnement aux lettres d'information"
+msgstr "Abonament la buletinele informative"
+
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:58
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:56
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:59
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:69
+msgid "Abonné sigb"
+msgstr "Abonat sigb"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuHorizontalAdmin.php:8
+#: ../../library/ZendAfi/View/Helper/BarreNav.php:16
+#: ../../library/ZendAfi/View/Helper/ComboProfils.php:46
+#: ../../library/Class/MoteurRecherche.php:311
+#: ../../library/ZendAfi/View/Helper/Admin/MenuHorizontalAdmin.php:8
+#: ../../library/Class/MoteurRecherche.php:327
+#: ../../library/Class/MoteurRecherche.php:339
+msgid "Accueil"
+msgstr "Pagină iniţială"
+
+#: ../../application/modules/admin/views/scripts/index/index.phtml:33
+msgid "Accès"
+msgstr "Acces"
+
+#: ../../application/modules/opac/views/scripts/footer.phtml:5
+msgid "Accès pro."
+msgstr "Acces pro."
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:58
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:58
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:65
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:70
+msgid "Accès à Cosmogramme"
+msgstr "Acces la Cosmogramă "
+
+#: ../../application/modules/admin/views/scripts/users/index.phtml:19
+msgid "Action"
+msgstr "Acţiune"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:237
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:246
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:293
+msgid "Activer les outils d'accessibilité"
+msgstr "Activează instrumentele de acces"
+
+#: ../../application/modules/opac/views/scripts/bib/index.phtml:87
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:66
+#: ../../application/modules/opac/views/scripts/bib/index.phtml:89
+#: ../../application/modules/opac/views/scripts/bib/_articles_by_bib.phtml:1
+#: ../../application/modules/opac/views/scripts/bib/_articles_by_bib.phtml:2
+msgid "Actualités :"
+msgstr "Actualităţi :"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:49
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:49
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:56
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:61
+msgid "Administration du portail"
+msgstr "Administrarea portalului"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:40
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:44
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:128
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:39
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:43
+#: ../../application/modules/opac/controllers/IndexController.php:81
+msgid "Adresse"
+msgstr "Adresă "
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:38
+msgid "Adresse : "
+msgstr "Adresă:"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:122
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:121
+msgid "Adresse URL"
+msgstr "Adresă URL"
+
+#: ../../library/Class/Mail.php:38 ../../library/Class/Mail.php:48
+msgid "Adresse du destinataire absente."
+msgstr "Adresa destinatarului lipseşte."
+
+#: ../../application/modules/admin/views/scripts/modules/bib_all.phtml:3
+#, fuzzy
+msgid "Affichage"
+msgstr "Afişează Agenda"
+
+#: ../../application/modules/opac/controllers/IndexController.php:154
+msgid "Afficher Agenda"
+msgstr "Afişează Agenda"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:214
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:223
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:270
+msgid "Afficher la barre de navigation"
+msgstr "Afişează bara de navigaţie"
+
+#: ../../library/Class/NoticeHtml.php:359
+#: ../../library/Class/NoticeHtml.php:360
+#: ../../library/Class/NoticeHtml.php:364
+#: ../../library/Class/NoticeHtml.php:365
+#: ../../library/Class/NoticeHtml.php:366
+#: ../../library/Class/NoticeHtml.php:356
+#: ../../library/Class/NoticeHtml.php:357
+msgid "Afficher la carte"
+msgstr "Afişează harta"
+
+#: ../../library/Class/NoticeHtml.php:402
+#: ../../library/Class/NoticeHtml.php:403
+#: ../../library/Class/NoticeHtml.php:407
+#: ../../library/Class/NoticeHtml.php:408
+#: ../../library/Class/NoticeHtml.php:412
+#: ../../library/Class/NoticeHtml.php:413
+#: ../../library/Class/NoticeHtml.php:414
+#: ../../library/Class/NoticeHtml.php:404
+#: ../../library/Class/NoticeHtml.php:405
+msgid "Afficher la notice"
+msgstr "Afişează instrucţiunea"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:203
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:212
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:259
+msgid "Afficher le menu horizontal"
+msgstr "Afişează meniul orizontal"
+
+#: ../../library/Class/NoticeHtml.php:520
+#: ../../library/Class/NoticeHtml.php:527
+#: ../../library/Class/NoticeHtml.php:532
+#: ../../library/Class/NoticeHtml.php:523
+msgid "Afficher plus de notices..."
+msgstr "Afişează mai multe instrucţiuni"
+
+#: ../../library/Class/NoticeHtml.php:418
+#: ../../library/Class/NoticeHtml.php:423
+#: ../../library/Class/NoticeHtml.php:428
+#: ../../library/Class/NoticeHtml.php:429
+#: ../../library/Class/NoticeHtml.php:420
+msgid "Afficher toutes les éditions de ce document"
+msgstr "Afişează toate editările acestui document"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:87
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:92
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:118
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:112
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:108
+msgid "Agenda"
+msgstr "Agendă"
+
+#: ../../library/Class/NoticeHtml.php:658
+#: ../../library/Class/NoticeHtml.php:660
+#: ../../library/Class/NoticeHtml.php:665
+#: ../../library/Class/NoticeHtml.php:667
+#: ../../library/Class/NoticeHtml.php:676
+#: ../../library/Class/NoticeHtml.php:678
+#: ../../library/Class/NoticeHtml.php:669
+msgid "Agrandir l'image"
+msgstr "Măreşte imaginea"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:30
+msgid "Ajouter"
+msgstr "Adaugă"
+
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:21
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:25
+msgid "Ajouter au Panier"
+msgstr "Adaugă în coş"
+
+#: ../../application/modules/admin/views/scripts/album/edit-images.phtml:4
+msgid "Ajouter des medias par lot"
+msgstr "Adaugă fişiere multimedia în grup"
+
+#: ../../application/modules/admin/views/scripts/album/edit-images.phtml:5
+msgid "Ajouter des ressources"
+msgstr "Adaugă resurse"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:12
+msgid "Ajouter la notice au panier :"
+msgstr "Adaugă instrucţiunea în coş"
+
+#: ../../application/modules/admin/views/scripts/catalogue/index.phtml:2
+msgid "Ajouter un catalogue"
+msgstr "Adaugă un catalog"
+
+#: ../../application/modules/admin/views/scripts/profil/menusindex.phtml:11
+msgid "Ajouter un menu"
+msgstr "Adaugă un meniu"
+
+#: ../../application/modules/admin/views/scripts/bib/plans.phtml:6
+msgid "Ajouter un plan"
+msgstr "Adaugă un plan "
+
+#: ../../application/modules/admin/controllers/BibController.php:539
+#: ../../application/modules/admin/controllers/BibController.php:547
+#, php-format
+msgid "Ajouter un plan de la bibliothèque: %s"
+msgstr "Adaugă un plan al bibliotecii: %s"
+
+#: ../../application/modules/admin/views/scripts/profil/index.phtml:9
+msgid "Ajouter un profil"
+msgstr "Adaugă un profil"
+
+#: ../../application/modules/admin/views/scripts/zone/index.phtml:6
+msgid "Ajouter un territoire"
+msgstr "Adaugă un teritoriu"
+
+#: ../../application/modules/admin/views/scripts/users/index.phtml:3
+msgid "Ajouter un utilisateur"
+msgstr "Adaugă un utilizator"
+
+#: ../../application/modules/admin/views/scripts/bib/index.phtml:3
+#: ../../application/modules/admin/controllers/BibController.php:44
+#: ../../application/modules/admin/controllers/BibController.php:49
+msgid "Ajouter une bibliothèque"
+msgstr "Adaugă o bibliotecă "
+
+#: ../../application/modules/admin/views/scripts/album/index.phtml:4
+#: ../../application/modules/admin/views/scripts/cms/index.phtml:6
+#: ../../application/modules/admin/views/scripts/rss/index.phtml:9
+msgid "Ajouter une catégorie"
+msgstr "Adaugă o categorie"
+
+#: ../../application/modules/admin/views/scripts/album/index.phtml:4
+msgid "Ajouter une collection"
+msgstr "Adaugă o colecţie"
+
+#: ../../application/modules/admin/views/scripts/formation/index.phtml:5
+#, fuzzy
+msgid "Ajouter une formation"
+msgstr "Adaugă o localizare"
+
+#: ../../application/modules/admin/views/scripts/bib/localisations.phtml:6
+msgid "Ajouter une localisation"
+msgstr "Adaugă o localizare"
+
+#: ../../application/modules/opac/views/scripts/bib-numerique/view-categorie.phtml:19
+msgid "Album(s)"
+msgstr ""
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:28
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:28
+msgid "Albums multimédia"
+msgstr "Albume multimedia"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:19
+msgid "All copies are on loan to a customer whose loans are not reserved"
+msgstr ""
+
+#: ../../library/Class/Users.php:260 ../../library/Class/Users.php:274
+#: ../../library/Class/Users.php:349 ../../library/Class/Users.php:425
+#: ../../library/Class/Users.php:454
+msgid "Aller sur le portail"
+msgstr "Mergeţi pe portal"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:73
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:71
+msgid "Aller sur le site"
+msgstr "Mergeţi pe site"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:23
+msgid ""
+"Already exists at least one reservation for this customer for this notice"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:122
+msgid "Animation"
+msgstr "Animaţie"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:102
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:141
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:101
+msgid "Annexe"
+msgstr "Anexă"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:84
+msgid "Annexe :"
+msgstr "Anexă:"
+
+#: ../../application/modules/admin/views/scripts/bib/planaccesicone.phtml:26
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:48
+#: ../../library/ZendAfi/View/Helper/RenderForm.php:35
+#: ../../library/ZendAfi/View/Helper/RenderForm.php:55
+#: ../../library/ZendAfi/View/Helper/RenderForm.php:59
+msgid "Annuler"
+msgstr "Anulare"
+
+#: ../../library/Class/Codification.php:108
+#: ../../library/Class/Codification.php:110
+#: ../../library/Class/Codification.php:111
+msgid "Année"
+msgstr "An"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:51
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:47
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:44
+msgid "Année de parution - depuis"
+msgstr "An de publicaţie - din"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:93
+msgid "Année de publication"
+msgstr "An de publicare"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:42
+msgid "Année début"
+msgstr "An de debut"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:43
+msgid "Année fin"
+msgstr "An de sfârşit      "
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:13
+msgid "Aout"
+msgstr "August"
+
+#: ../../application/modules/admin/views/scripts/newsletter/preview.phtml:1
+msgid "Aperçu de la lettre: "
+msgstr "Vizualizarea scrisorii:"
+
+#: ../../application/modules/opac/views/scripts/auth/ajaxlostpass.phtml:27
+msgid ""
+"Après reconnaissance de votre identifiant, un mail vous sera envoyé avec vos "
+"paramètres de connexion."
+msgstr ""
+"Dupa identificare, vi se va trimite un email cu datele dvs. de conectare"
+
+#: ../../library/Class/Codification.php:142
+#: ../../library/Class/Codification.php:145
+#: ../../library/Class/Codification.php:147
+msgid "Archives vidéo"
+msgstr "Arhive video"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:115
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:36
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:120
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:146
+#: ../../application/modules/opac/views/scripts/cms/article_partial.phtml:6
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:140
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:31
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:136
+msgid "Article"
+msgstr "Articol"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:24
+#: ../../library/Class/NoticeHtml.php:222
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:24
+#: ../../library/Class/NoticeHtml.php:227
+#: ../../library/Class/NoticeHtml.php:218
+msgid "Articles"
+msgstr "Articole"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:132
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:141
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:188
+msgid "Aspect du site"
+msgstr "Aspectul sitului"
+
+#: ../../library/ZendAfi/View/Helper/AjaxMessage.php:16
+msgid "Attention..."
+msgstr "Atenţie..."
+
+#: ../../library/Class/NoticeHtml.php:223
+#: ../../library/Class/NoticeHtml.php:228
+#: ../../library/Class/NoticeHtml.php:219
+msgid "Aucun article n'a été trouvé"
+msgstr "Nu a fost găsit nici un articol"
+
+#: ../../application/modules/opac/views/scripts/cms/articlesview.phtml:5
+msgid "Aucun article trouvé"
+msgstr "Nici un articol găsit"
+
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:10
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:14
+#, php-format
+msgid "Aucun avis pour %s"
+msgstr "Nici o  părere pentru %s"
+
+#: ../../library/Class/NoticeHtml.php:846
+#: ../../library/Class/NoticeHtml.php:853
+#: ../../library/Class/NoticeHtml.php:864
+#: ../../library/Class/NoticeHtml.php:855
+msgid "Aucun avis pour le moment"
+msgstr "Nici o  părere pentru moment"
+
+#: ../../application/modules/opac/views/scripts/blog/viewavis.phtml:23
+msgid "Aucun commentaires..."
+msgstr "Nici un comentariu"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:75
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:73
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:59
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:35
+msgid "Aucun contenu"
+msgstr "Nici un conţinut"
+
+#: ../../application/modules/opac/views/scripts/java/mycarousel_vertical.phtml:20
+#: ../../application/modules/opac/views/scripts/java/protoflow.phtml:20
+#: ../../application/modules/opac/views/scripts/java/slide_show.phtml:11
+msgid "Aucun document n'a été trouvé"
+msgstr "Nu a fost găsit nici un document"
+
+#: ../../library/ZendAfi/View/Helper/admin/ComboMenus.php:19
+#: ../../library/ZendAfi/View/Helper/Admin/ComboMenus.php:19
+#: ../../library/ZendAfi/View/Helper/Admin/ComboMenus.php:18
+msgid "Aucun menu n'est paramétré pour ce profil"
+msgstr "Nici un meniu nu este setat pentru acest profil"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:23
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:22
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:36
+msgid "Aucun menu n'est paramétré pour ce profil."
+msgstr "Nici un meniu nu este setat pentru acest profil."
+
+#: ../../library/Class/MoteurRecherche.php:89
+#: ../../library/Class/MoteurRecherche.php:182
+#: ../../library/Class/MoteurRecherche.php:256
+#: ../../library/Class/NoticeOAI.php:208
+#: ../../library/Class/MoteurRecherche.php:104
+#: ../../library/Class/MoteurRecherche.php:198
+#: ../../library/Class/MoteurRecherche.php:272
+#: ../../library/Class/MoteurRecherche.php:112
+#: ../../library/Class/MoteurRecherche.php:206
+#: ../../library/Class/MoteurRecherche.php:280
+msgid "Aucun résultat trouvé"
+msgstr "Nici un rezultat găsit"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Critiques.php:36
+#: ../../library/ZendAfi/View/Helper/Accueil/Critiques.php:35
+msgid "Aucune critique récente"
+msgstr "Nici o critică recentă"
+
+#: ../../library/Class/Localisation.php:112
+msgid "Aucune donnée de localisation trouvée pour cet exemplaire"
+msgstr "Nici o dată de localizare nu a fost găsită pentru acest exemplar"
+
+#: ../../application/modules/opac/controllers/RssController.php:255
+#: ../../application/modules/opac/controllers/RssController.php:231
+#: ../../application/modules/opac/controllers/RssController.php:233
+msgid "Aucune donnée à modérer"
+msgstr "Nici o dată de moderat"
+
+#: ../../library/Class/NoticeHtml.php:199
+#: ../../library/Class/NoticeHtml.php:204
+#: ../../library/Class/NoticeHtml.php:195
+msgid "Aucune information n'a été trouvée"
+msgstr "Nu a fost găsită nici o informaţie"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Catalogue.php:33
+msgid "Aucune notice n'a été trouvée"
+msgstr "Nu a fost găsită nici o instrucţiune"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:31
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:25
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:30
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:38
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:39
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:33
+msgid "Aucune notice trouvée"
+msgstr "Nici o instrucţiune găsită"
+
+#: ../../library/Class/NoticeHtml.php:650
+#: ../../library/Class/NoticeHtml.php:657
+#: ../../library/Class/NoticeHtml.php:661
+#: ../../library/Class/NoticeHtml.php:652
+msgid "Aucune photo n'a été trouvée"
+msgstr "Nu a fost găsită nici o fotografie"
+
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:343
+msgid "Aucune ressource correspondante"
+msgstr ""
+
+#: ../../library/Class/NoticeHtml.php:609
+#: ../../library/Class/NoticeHtml.php:616
+#: ../../library/Class/NoticeHtml.php:621
+#: ../../library/Class/NoticeHtml.php:612
+msgid "Aucune vidéo n'a été trouvée."
+msgstr "Nu a fost găsită nici o înregistrare video"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:9
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:83
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:35
+#: ../../library/Class/Codification.php:97
+#: ../../library/Class/MoteurRecherche.php:344
+#: ../../library/Class/NoticeHtml.php:243
+#: ../../library/Class/Codification.php:99
+#: ../../library/Class/NoticeHtml.php:248
+#: ../../library/Class/Codification.php:100
+#: ../../library/Class/MoteurRecherche.php:360
+#: ../../library/Class/MoteurRecherche.php:372
+#: ../../library/Class/NoticeHtml.php:239
+msgid "Auteur"
+msgstr "Autor"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:23
+msgid "Auteur :"
+msgstr "Autor :"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:455
+#: ../../application/modules/opac/controllers/RechercheController.php:488
+#: ../../application/modules/opac/controllers/RechercheController.php:513
+#, php-format
+msgid "Auteur : %s"
+msgstr "Autor : %s"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:92
+msgid "Auteur et titre"
+msgstr "Autor şi titlu"
+
+#: ../../library/Class/Codification.php:97
+#: ../../library/Class/Codification.php:99
+#: ../../library/Class/Codification.php:100
+msgid "Auteur(s)"
+msgstr "Autor(i)"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:30
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:104
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:101
+msgid "Auteurs"
+msgstr "Autori"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:160
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:165
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:191
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:185
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:181
+msgid "Autoriser les commentaires d'internautes (Mode blog) ?"
+msgstr "Autorizaţi comentariile utilizatorilor (Mod blog) ?"
+
+#: ../../application/modules/opac/views/scripts/bib-numerique/view-album.phtml:39
+#, fuzzy
+msgid "Autre(s) fichier(s)"
+msgstr "Fişa dvs.       "
+
+#: ../../library/Class/Codification.php:132
+#: ../../library/Class/Codification.php:135
+#: ../../library/Class/Codification.php:137
+msgid "Avis"
+msgstr "Aviz"
+
+#: ../../application/modules/opac/views/scripts/blog/readavis.phtml:2
+#, php-format
+msgid "Avis sur la notice: %s"
+msgstr "Aviz asupra instrucţiunii: %s"
+
+#: ../../library/Class/Moderer.php:114 ../../library/Class/Moderer.php:105
+msgid "Avis sur les articles"
+msgstr "Aviz asupra articolelor"
+
+#: ../../library/Class/Moderer.php:110 ../../library/Class/Moderer.php:101
+msgid "Avis sur les notices"
+msgstr "Aviz asupra instrucţiunilor"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:9
+msgid "Avr."
+msgstr "Aprilie"
+
+#: ../../library/Class/Codification.php:140
+#: ../../library/Class/Codification.php:143
+#: ../../library/Class/Codification.php:145
+msgid "Bande-annonce"
+msgstr "Trailer"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:75
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:72
+msgid "Bannière"
+msgstr "Banner"
+
+#: ../../library/Class/Codification.php:138
+#: ../../library/Class/Codification.php:141
+#: ../../library/Class/Codification.php:143
+msgid "Bibliographies"
+msgstr "Bibliografii"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:15
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:282
+#: ../../application/modules/admin/views/scripts/users/index.phtml:18
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:10
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:23
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:37
+#: ../../library/Class/Codification.php:98
+#: ../../library/Class/MoteurRecherche.php:343
+#: ../../library/Class/NoticeHtml.php:292
+#: ../../library/Class/NoticeHtml.php:293
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:37
+#: ../../library/Class/Codification.php:100
+#: ../../library/Class/NoticeHtml.php:297
+#: ../../library/Class/NoticeHtml.php:298
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:14
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:291
+#: ../../library/Class/Codification.php:101
+#: ../../library/Class/MoteurRecherche.php:359
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:338
+#: ../../library/Class/MoteurRecherche.php:371
+#: ../../library/Class/NoticeHtml.php:288
+#: ../../library/Class/NoticeHtml.php:289
+msgid "Bibliothèque"
+msgstr "Bibliotecă"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:17
+msgid "Bibliothèque : "
+msgstr "Bibliotecă :"
+
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:29
+msgid "Bibliothèque numérique"
+msgstr "Bibliotecă digitală"
+
+#: ../../library/Class/Codification.php:98
+#: ../../library/Class/Codification.php:100
+#: ../../library/Class/Codification.php:101
+msgid "Bibliothèque(s)"
+msgstr "Bibliotecă(i)"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:51
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:50
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:94
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:51
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:58
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:63
+msgid "Bibliothèques"
+msgstr "Biblioteci"
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:6
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:7
+msgid "Bienvenue"
+msgstr "Bine aţi venit"
+
+#: ../../library/Class/Codification.php:136
+#: ../../library/Class/Codification.php:139
+#: ../../library/Class/Codification.php:141
+msgid "Biographies"
+msgstr "Biografii"
+
+#: ../../application/modules/opac/views/scripts/head.phtml:41
+#: ../../application/modules/opac/views/scripts/head.phtml:42
+msgid "Blanc sur noir"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/head.phtml:45
+#: ../../application/modules/opac/views/scripts/head.phtml:46
+msgid "Bleu sur jaune"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:117
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:126
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:173
+msgid "Boite de connexion"
+msgstr "Căsuţă de conectare"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:106
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:115
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:162
+msgid "Boite de recherche"
+msgstr "Căsuţă de căutare"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:42
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:75
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:85
+msgid "Boite par défaut de la division"
+msgstr "Căsuţă setări iniţiale pentru diviziune"
+
+#: ../../library/Class/Users.php:252 ../../library/Class/Users.php:266
+#: ../../library/Class/Users.php:341 ../../library/Class/Users.php:417
+#: ../../library/Class/Users.php:446
+msgid "Bonjour,"
+msgstr "Bună ziua,"
+
+#: ../../library/Class/Users.php:316 ../../library/Class/Users.php:330
+#: ../../library/Class/Users.php:405 ../../library/Class/Users.php:481
+#: ../../library/Class/Users.php:510
+msgid "Bonne navigation sur le portail"
+msgstr "Navigare plăcută pe portal"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:147
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:156
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:203
+msgid "CSS"
+msgstr "CSS"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:61
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:61
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:68
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:73
+msgid "Cache des images"
+msgstr "Ascunde imagini"
+
+#: ../../application/modules/admin/views/scripts/modules/bib_all.phtml:6
+#, fuzzy
+msgid "Cacher les articles"
+msgstr "Ultimele articole"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:2
+msgid "Calendrier"
+msgstr "Calendar"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:62
+msgid "Carte"
+msgstr "Harta"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/CarteZones.php:24
+msgid "Carte des zones"
+msgstr "Harta zonelor"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:9
+#: ../../application/modules/opac/views/scripts/catalogue/index.phtml:1
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:6
+msgid "Catalogue"
+msgstr "Catalog"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:25
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:25
+msgid "Catalogues dynamiques"
+msgstr "Cataloguri dinamice"
+
+#: ../../application/modules/opac/views/scripts/etagere/appelmenu.phtml:1
+msgid "Catalogues jeunesse"
+msgstr "Cataloguri tineret"
+
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:7
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:56
+#: ../../application/modules/admin/views/scripts/rss/catform.phtml:5
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:14
+#: ../../application/modules/admin/views/scripts/sito/catform.phtml:6
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:10
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:61
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:8
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:65
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:59
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:55
+#: ../../library/Class/Calendar.php:182
+msgid "Catégorie"
+msgstr "Categorie"
+
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:18
+msgid "Catégorie parente"
+msgstr "Categorie înrudită"
+
+#: ../../application/modules/opac/views/scripts/bib-numerique/view-categorie.phtml:7
+#, fuzzy
+msgid "Catégorie(s)"
+msgstr "Categorie"
+
+#: ../../library/ZendAfi/View/Helper/AjaxMessage.php:38
+msgid "Cause"
+msgstr "Cauză"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:28
+#: ../../library/ZendAfi/View/Helper/MenuHorizontal.php:46
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:27
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:45
+#: ../../library/ZendAfi/View/Helper/MenuHorizontal.php:49
+msgid "Ce menu ne contient aucune entrée."
+msgstr "Acest meniu nu conţine date"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:104
+msgid "Ce panier est vide"
+msgstr "Acest coş este gol"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:257
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:266
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:313
+msgid "Ceci apparaîtra sous le nom de votre site dans les moteurs de recherche"
+msgstr "Se va afişa sub numele site-ului dvs. în motoarele de cautare"
+
+#: ../../library/Class/Codification.php:102
+#: ../../library/Class/Codification.php:104
+#: ../../library/Class/Codification.php:105
+#: ../../library/Class/MoteurRecherche.php:362
+#: ../../library/Class/MoteurRecherche.php:374
+msgid "Centre d'intérêt"
+msgstr "Centru de interes"
+
+#: ../../library/Class/Codification.php:102
+#: ../../library/Class/Codification.php:104
+#: ../../library/Class/Codification.php:105
+msgid "Centre(s) d'intérêt"
+msgstr "Centru(e) de interes"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:97
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:101
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:124
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:52
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:121
+msgid "Centres d'intérêt"
+msgstr "Centre de interes"
+
+#: ../../library/Class/Users.php:215 ../../library/Class/Users.php:229
+#: ../../library/Class/Users.php:304 ../../library/Class/Users.php:380
+#: ../../library/Class/Users.php:409
+msgid "Cet identifiant existe déjà."
+msgstr "Acest nume de utilizator există deja."
+
+#: ../../application/modules/opac/controllers/PanierController.php:119
+msgid "Cette notice figure déjà dans le panier sélectionné."
+msgstr "Această instrucţiune se află deja în coşul selectat."
+
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:262
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:270
+msgid "Cette notice n'a pas d'auteur"
+msgstr "Aceasta instrucţiune nu are autor"
+
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:408
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:416
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:437
+msgid "Cette notice n'a pas d'auteur."
+msgstr "Această instrucţiune nu are autor"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagSelectionChamps.php:42
+#: ../../library/ZendAfi/View/Helper/Admin/TagSelectionChamps.php:42
+msgid "Champs disponibles"
+msgstr "Câmpuri disponibile"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagSelectionChamps.php:34
+#: ../../library/ZendAfi/View/Helper/Admin/TagSelectionChamps.php:34
+msgid "Champs sélectionnés"
+msgstr "Câmpuri selectate"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:131
+#: ../../library/Class/NoticeHtml.php:81
+#: ../../library/Class/NoticeHtml.php:122
+#: ../../library/Class/NoticeHtml.php:176
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:159
+#: ../../library/Class/NoticeHtml.php:181
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:167
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:183
+#: ../../library/Class/NoticeHtml.php:172
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:182
+msgid "Chargement en cours"
+msgstr "Încărcare in curs"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:121
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:122
+msgid "Chargement en cours..."
+msgstr "Încărcare în curs"
+
+#: ../../application/modules/admin/views/scripts/album/edit-images.phtml:7
+msgid "Choisir des medias"
+msgstr "Alegeţi media"
+
+#: ../../application/modules/admin/views/scripts/index/adminvar.phtml:3
+msgid "Clef"
+msgstr "Cheie"
+
+#: ../../library/Class/NoticeHtml.php:703
+#: ../../library/Class/NoticeHtml.php:721
+#: ../../library/Class/NoticeHtml.php:710
+#: ../../library/Class/NoticeHtml.php:728
+#: ../../library/Class/NoticeHtml.php:739
+#: ../../library/Class/NoticeHtml.php:712
+#: ../../library/Class/NoticeHtml.php:730
+msgid "Clip vidéo"
+msgstr "Videoclip"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:130
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:135
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:161
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:155
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:151
+msgid "Cliquez ici pour modifier"
+msgstr "Faceţi clic aici pentru a modifica"
+
+#: ../../library/Class/Etagere.php:47
+msgid "Cliquez sur l'image"
+msgstr "Faceţi clic pe imagine"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:36
+msgid "Code Anti-spam :"
+msgstr "Cod Anti-spam"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:48
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:47
+#: ../../application/modules/opac/controllers/IndexController.php:84
+msgid "Code postal"
+msgstr "Cod poştal"
+
+#: ../../library/Class/Codification.php:105
+#: ../../library/Class/Codification.php:107
+#: ../../library/Class/Codification.php:108
+msgid "Collation"
+msgstr "Comparare"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:39
+#: ../../library/Class/Codification.php:99
+#: ../../library/Class/Codification.php:101
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:74
+#: ../../library/Class/Codification.php:102
+msgid "Collection"
+msgstr "Colecţie"
+
+#: ../../library/Class/Codification.php:99
+#: ../../library/Class/Codification.php:101
+#: ../../library/Class/Codification.php:102
+msgid "Collection(s)"
+msgstr "Colecţie(i)"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:85
+msgid "Commence par"
+msgstr "Ȋncepe cu"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:98
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:97
+msgid "Comment se procurer ce document "
+msgstr "Cum să obţii acest document"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:255
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:27
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:22
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:264
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:311
+msgid "Commentaire"
+msgstr "Comentariu"
+
+#: ../../application/modules/opac/views/scripts/blog/viewavis.phtml:22
+msgid "Commentaires :"
+msgstr "Comentarii :"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:72
+msgid "Conditions inscription :"
+msgstr "Condiţii de înscriere"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:114
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:113
+msgid "Configuration"
+msgstr "Configurare"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:45
+msgid "Confirmer"
+msgstr "Confirmă"
+
+#: ../../application/modules/opac/views/scripts/auth/register.phtml:19
+msgid "Confirmer votre mot de passe"
+msgstr "Confirmare parolă"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:386
+#: ../../application/modules/opac/controllers/AbonneController.php:394
+#: ../../application/modules/opac/controllers/AbonneController.php:402
+#: ../../application/modules/opac/controllers/AbonneController.php:428
+msgid "Confirmez le mot de passe"
+msgstr "Confirmaţi parola"
+
+#: ../../application/modules/admin/controllers/BibController.php:566
+#: ../../application/modules/admin/controllers/BibController.php:574
+msgid "Constitution du plan d'accès"
+msgstr "Constituire a planului de acces"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/viewnotice.phtml:12
+msgid "Consultation"
+msgstr "Consultare"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:79
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:116
+msgid "Coord."
+msgstr "Coord."
+
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:28
+msgid "Coordonnées carte"
+msgstr "Coordonate hartă"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Kiosque.php:103
+#: ../../library/ZendAfi/View/Helper/Accueil/Kiosque.php:107
+msgid "Copier le code suivant sur le site où vous voulez afficher le kiosque"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/auth/register.phtml:29
+msgid "Copiez le code anti-spam"
+msgstr "Copiaţi codul anti-spam"
+
+#: ../../library/Class/NoticeHtml.php:297
+#: ../../library/Class/NoticeHtml.php:302
+#: ../../library/Class/NoticeHtml.php:293
+msgid "Cote"
+msgstr "Cota"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:61
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:57
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:54
+msgid "Cote - depuis"
+msgstr "Cota - începând cu"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:457
+#: ../../application/modules/opac/controllers/RechercheController.php:490
+#: ../../application/modules/opac/controllers/RechercheController.php:515
+#, php-format
+msgid "Cote : %s"
+msgstr "Cota : %s"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:156
+msgid "Cotes - depuis"
+msgstr "Cote - începând cu"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:57
+msgid "Couche"
+msgstr "Strat"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:99
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:108
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:155
+msgid "Couleur des liens"
+msgstr "Culoarea adreselor"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:92
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:101
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:148
+msgid "Couleur du texte"
+msgstr "Culoarea textului"
+
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:22
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:24
+msgid "Couleur légende"
+msgstr "Culoarea legendei"
+
+#: ../../application/modules/opac/views/scripts/blog/viewavis.phtml:6
+msgid "Critique"
+msgstr "Critică"
+
+#: ../../application/modules/opac/controllers/RssController.php:321
+#: ../../application/modules/opac/controllers/RssController.php:259
+#: ../../application/modules/opac/controllers/RssController.php:256
+#: ../../application/modules/opac/controllers/RssController.php:258
+#, php-format
+msgid "Critiques de la sélection: %s"
+msgstr "Critici ale selecţiei"
+
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:2
+msgid "Critiques rédigées par "
+msgstr "Critici redactate de "
+
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:2
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:6
+#, php-format
+msgid "Critiques rédigées par %s"
+msgstr "Critici redactate de %s"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:74
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:78
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:96
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:93
+msgid "Critères d'indexation"
+msgstr "Criterii de indexare"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:132
+msgid "Critères de reconnaissance"
+msgstr "Criterii de recunoaştere"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:13
+msgid "Critères de sélection"
+msgstr "Criterii de selecţie"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:28
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:25
+msgid "Critères généraux"
+msgstr "Criterii generale"
+
+#: ../../application/modules/admin/views/scripts/newsletter/index.phtml:4
+msgid "Créer une lettre d'information"
+msgstr "Crearea unui buletin informativ"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:26
+msgid "Customer has no valid subscription"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:21
+msgid "Customer has overdue loans"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:27
+msgid "Customer has overdue payments"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:22
+msgid "Customer has reached maximum number of reservations"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:10
+msgid "Dans ce territoire."
+msgstr "În acest teritoriu     "
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:15
+msgid "Dans cette bibliothèque."
+msgstr "În această bibliotecă."
+
+#: ../../application/modules/opac/views/scripts/bib/index.phtml:13
+msgid "Dans tous les territoires."
+msgstr "În toate teritoriile."
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:95
+msgid "Date de nouveauté"
+msgstr "Dată noutăţi"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:5
+msgid "Demande de réservation d'un document du réseau:"
+msgstr "Cerere de rezervare a unui document din reţea:"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:466
+#: ../../application/modules/opac/controllers/RechercheController.php:469
+#: ../../application/modules/opac/controllers/RechercheController.php:499
+#: ../../application/modules/opac/controllers/RechercheController.php:502
+#: ../../application/modules/opac/controllers/RechercheController.php:524
+#: ../../application/modules/opac/controllers/RechercheController.php:527
+msgid "Demande de réservation de document"
+msgstr "Cerere de rezervare a unui document"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:30
+#: ../../library/Class/Moderer.php:124
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:30
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:32
+#: ../../library/Class/Moderer.php:115
+msgid "Demandes d'inscription"
+msgstr "Cereri de înscriere"
+
+#: ../../application/modules/opac/controllers/CmsController.php:145
+#: ../../application/modules/opac/controllers/CmsController.php:129
+#: ../../application/modules/opac/controllers/CmsController.php:128
+msgid "Derniers Articles"
+msgstr "Ultimele Articole"
+
+#: ../../application/modules/opac/controllers/RssController.php:94
+#: ../../application/modules/opac/controllers/RssController.php:99
+msgid "Derniers Fils RSS"
+msgstr "Ultimele Fluxuri RSS"
+
+#: ../../application/modules/opac/controllers/SitoController.php:48
+msgid "Derniers Sites"
+msgstr "Ultimele Site-uri"
+
+#: ../../application/modules/opac/controllers/RssController.php:273
+#: ../../application/modules/opac/controllers/RssController.php:288
+msgid "Derniers articles"
+msgstr "Ultimele articole"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:35
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:33
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:34
+msgid "Derniers fils RSS ajoutés"
+msgstr "Ultimele fluxuri RSS adăugate"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:39
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:37
+msgid "Derniers sites ajoutés"
+msgstr "Ultimele site-uri adăugate"
+
+#: ../../application/modules/admin/views/scripts/cms/_newsform_head.phtml:30
+#: ../../application/modules/admin/views/scripts/cms/_newsform_head.phtml:29
+#, fuzzy
+msgid "Dernière modification"
+msgstr "Criterii de indexare"
+
+#: ../../application/modules/opac/controllers/BlogController.php:59
+#: ../../application/modules/opac/controllers/RssController.php:333
+#: ../../application/modules/opac/controllers/BlogController.php:63
+#: ../../application/modules/opac/controllers/RssController.php:271
+#: ../../application/modules/opac/controllers/BlogController.php:62
+msgid "Dernières critiques"
+msgstr "Ultimele critici"
+
+#: ../../application/modules/opac/controllers/RssController.php:334
+#: ../../application/modules/opac/controllers/RssController.php:272
+msgid "Dernières critiques dans le catalogue du portail"
+msgstr "Ultimele critici în catalogul portalului"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:101
+#: ../../application/modules/admin/views/scripts/bib/plansmaj.phtml:21
+#: ../../application/modules/admin/views/scripts/profil/menusmaj.phtml:21
+msgid "Description"
+msgstr "Descriere"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:37
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:40
+#: ../../library/Class/Codification.php:100
+#: ../../library/Class/MoteurRecherche.php:345
+#: ../../library/Class/Codification.php:102
+#: ../../library/Class/Codification.php:103
+#: ../../library/Class/MoteurRecherche.php:361
+#: ../../library/Class/MoteurRecherche.php:373
+msgid "Dewey"
+msgstr "Dewey"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:52
+msgid "Dewey / pcdm4"
+msgstr "Dewey / pcdm4"
+
+#: ../../library/Class/NoticeHtml.php:751
+#: ../../library/Class/NoticeHtml.php:758
+#: ../../library/Class/NoticeHtml.php:769
+#: ../../library/Class/NoticeHtml.php:760
+msgid "Discographie complète de"
+msgstr "Discografie completă aparţinând lui"
+
+#: ../../library/Class/NoticeHtml.php:298
+#: ../../library/Class/NoticeHtml.php:303
+#: ../../library/Class/NoticeHtml.php:294
+msgid "Disponibilité"
+msgstr "Disponibilitate"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:353
+#: ../../application/modules/opac/controllers/RechercheController.php:373
+#: ../../application/modules/opac/controllers/RechercheController.php:398
+msgid "Documents parus "
+msgstr "Documente apărute"
+
+#: ../../library/Class/NoticeHtml.php:798
+#: ../../library/Class/NoticeHtml.php:805
+#: ../../library/Class/NoticeHtml.php:816
+#: ../../library/Class/NoticeHtml.php:807
+msgid "Donnez ou modifiez votre avis"
+msgstr "Exprimaţi-vă sau modificaţi-vă părerea"
+
+#: ../../application/modules/admin/views/scripts/index/index.phtml:44
+#: ../../application/modules/opac/controllers/RssController.php:240
+#: ../../application/modules/opac/controllers/RssController.php:216
+#: ../../application/modules/opac/controllers/RssController.php:218
+msgid "Données en attente de modération"
+msgstr "Date în aşteptarea moderării"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:67
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:65
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:30
+#: ../../library/ZendAfi/View/Helper/TagArticleEvent.php:32
+#, php-format
+msgid "Du %s au %s"
+msgstr "De la %s la %s"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:17
+msgid "Déc."
+msgstr "Dec."
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:85
+#, fuzzy
+msgid "Défilement des images"
+msgstr "defilare la dreapta"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:360
+#: ../../application/modules/opac/controllers/AbonneController.php:368
+#: ../../application/modules/opac/controllers/AbonneController.php:376
+#: ../../application/modules/opac/controllers/AbonneController.php:402
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: ../../application/modules/opac/views/scripts/auth/register.phtml:24
+#: ../../application/modules/opac/controllers/IndexController.php:92
+msgid "E-mail"
+msgstr "E-mail"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:68
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:65
+msgid "E-mail du Webmestre"
+msgstr "E-mailul administratorului"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:84
+msgid "Echelle"
+msgstr "Scară"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:38
+#: ../../library/Class/Codification.php:101
+#: ../../library/Class/Codification.php:103
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:63
+#: ../../library/Class/Codification.php:104
+msgid "Editeur"
+msgstr "Editor"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:24
+msgid "Editeur :"
+msgstr "Editor :"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:456
+#: ../../application/modules/opac/controllers/RechercheController.php:489
+#: ../../application/modules/opac/controllers/RechercheController.php:514
+#, php-format
+msgid "Editeur : %s"
+msgstr "Editor : %s"
+
+#: ../../library/Class/Codification.php:101
+#: ../../library/Class/Codification.php:103
+#: ../../library/Class/Codification.php:104
+msgid "Editeur(s)"
+msgstr "Editor(i)"
+
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:17
+#: ../../library/ZendAfi/View/Helper/Telephone/ListeNotices.php:25
+msgid "Elargir la recherche sur tous les mots"
+msgstr "Extindeţi căutarea la toate cuvintele"
+
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:24
+msgid "Email"
+msgstr "Email"
+
+#: ../../library/Class/NoticeHtml.php:295
+#: ../../library/Class/NoticeHtml.php:300
+#: ../../library/Class/NoticeHtml.php:291
+msgid "Emplacement"
+msgstr "Amplasare"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:151
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:88
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:85
+msgid "Emplacements"
+msgstr "Amplasări"
+
+#: ../../library/ZendAfi/View/Helper/Avis.php:103
+#: ../../library/ZendAfi/View/Helper/Avis.php:105
+#: ../../library/ZendAfi/View/Helper/Avis.php:107
+msgid "En attente de modération"
+msgstr "În aşteptarea moderării"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:419
+#: ../../application/modules/opac/controllers/AbonneController.php:427
+#: ../../application/modules/opac/controllers/AbonneController.php:435
+#: ../../application/modules/opac/controllers/AbonneController.php:461
+msgid "Enregistrer"
+msgstr "Înregistrare"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:263
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:272
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:319
+msgid ""
+"Entrez la liste des mots-clef et expressions qui caractérisent votre site "
+"séparés par des virgules."
+msgstr ""
+"Introduceţi lista cuvintelor-cheie şi a expresiilor care caracterizează site-"
+"ul dvs. separate de virgule."
+
+#: ../../application/modules/opac/controllers/AuthController.php:30
+msgid "Entrez votre identifiant S.V.P."
+msgstr "Vă rugăm să vă identificaţi"
+
+#: ../../application/modules/admin/views/scripts/auth/login.phtml:8
+msgid "Entrez votre identité S.V.P."
+msgstr "Vă rugăm să vă identificaţi"
+
+#: ../../application/modules/opac/controllers/AuthController.php:33
+msgid "Entrez votre mot de passe S.V.P."
+msgstr "Introduceţi parola"
+
+#: ../../application/modules/admin/controllers/AuthController.php:39
+msgid "Entrez votre nom d'utilisateur puis validez S.V.P."
+msgstr "Vă rugăm să introduceţi numele de utilizator şi apoi să validaţi "
+
+#: ../../application/modules/admin/views/scripts/profil/menusmaj.phtml:38
+msgid "Entrées"
+msgstr "Intrări"
+
+#: ../../library/Class/Bib.php:38 ../../library/Class/Bib.php:39
+#: ../../library/Class/Bib.php:46 ../../library/Class/Bib.php:47
+#: ../../library/Class/Bib.php:78
+msgid "Envoie des données"
+msgstr "Trimite date"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:46
+msgid "Envoyer"
+msgstr "Trimiteţi"
+
+#: ../../application/modules/admin/controllers/BibController.php:337
+#: ../../application/modules/admin/controllers/BibController.php:345
+msgid "Envoyer la photo sur le serveur"
+msgstr "Trimiteţi fotografia pe server"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:65
+msgid "Envoyer par mail"
+msgstr "Trimiteţi prin email"
+
+#: ../../application/modules/opac/controllers/RssController.php:40
+#: ../../application/modules/opac/controllers/RssController.php:45
+msgid "Erreur"
+msgstr "Eroare"
+
+#: ../../application/modules/admin/controllers/BibController.php:317
+#: ../../application/modules/opac/controllers/UploadController.php:74
+#: ../../application/modules/opac/controllers/UploadController.php:83
+#: ../../application/modules/admin/controllers/BibController.php:325
+msgid "Erreur au transfert du fichier vers userfiles"
+msgstr "Eroare la transferul fişierului către fişierele utilizatorilor"
+
+#: ../../application/modules/admin/controllers/BibController.php:302
+#: ../../application/modules/opac/controllers/UploadController.php:50
+#: ../../application/modules/opac/controllers/UploadController.php:57
+#: ../../application/modules/admin/controllers/BibController.php:310
+msgid ""
+"Erreur au téléchargement du fichier : L'image que vous essayez de "
+"télécharger est trop volumineuse ou inaccessible."
+msgstr ""
+"Eroare la descărcarea fişierului: Imaginea pe care încercaţi să o descărcaţi "
+"este prea mare sau inaccesibilă."
+
+#: ../../application/modules/opac/views/scripts/index/formulairecontacterror.phtml:3
+#, fuzzy
+msgid "Erreur d'envoi: problème de configuration"
+msgstr "Eroare de configurare"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:94
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:115
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:125
+msgid "Erreur de configuration"
+msgstr "Eroare de configurare"
+
+#: ../../application/modules/opac/controllers/IndexController.php:141
+msgid "Erreur à l'envoi du mail: destinataire non configuré"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:9
+msgid "Etat"
+msgstr "Stare"
+
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:55
+msgid "Etes vous sûr de vouloir supprimer cette réservation ?"
+msgstr "Sunteţi sigur(ă) că vreţi să ştergeţi această rezervare?"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:12
+msgid "Etes-vous sur de vouloir supprimer ce point ?"
+msgstr "Sunteţi sigur(ă) că vreţi să suprimaţi acest punct?"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:16
+msgid "Etes-vous sur de vouloir supprimer cette couche ?"
+msgstr "Sunteţi sigur(ă) că vreţi să suprimaţi acest strat?"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:43
+msgid "Etes-vous sûr de vouloir supprimer ce panier ?"
+msgstr "Sunteţi sigur(ă) că vreţi să suprimaţi acest coş?"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:94
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:95
+msgid "Etes-vous sûr de vouloir supprimer cette notice du panier ?"
+msgstr "Sunteţi sigur(ă) că vreţi să suprimaţi această instrucţiune a coşului?"
+
+#: ../../library/Class/Codification.php:133
+#: ../../library/Class/NoticeHtml.php:296
+#: ../../library/Class/Codification.php:136
+#: ../../library/Class/NoticeHtml.php:301
+#: ../../library/Class/Codification.php:138
+#: ../../library/Class/NoticeHtml.php:292
+msgid "Exemplaires"
+msgstr "Exemplare"
+
+#: ../../library/ZendAfi/View/Helper/CoreFiveFileInput.php:26
+#: ../../library/ZendAfi/View/Helper/CoreFiveFileInput.php:32
+msgid "Explorer le serveur"
+msgstr "Explorare server"
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:1
+msgid "Export de panier"
+msgstr "Export de coş"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:72
+msgid "Exporter ce panier"
+msgstr "Exportă acest coş"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:12
+msgid "Expression recherchée"
+msgstr "Expresie căutată"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/index.phtml:9
+msgid "Expression à rechercher"
+msgstr "Expresie de căutat"
+
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:6
+msgid "Exprimez votre avis."
+msgstr "Exprimaţi-vă părerea."
+
+#: ../../application/modules/opac/controllers/EtagereController.php:130
+#: ../../application/modules/opac/controllers/RechercheController.php:322
+#: ../../application/modules/opac/controllers/RechercheController.php:342
+#: ../../application/modules/opac/controllers/EtagereController.php:107
+#: ../../application/modules/opac/controllers/RechercheController.php:355
+#, php-format
+msgid "Facettes : %s"
+msgstr "Faţete : %s"
+
+#: ../../application/modules/opac/controllers/CatalogueController.php:103
+#: ../../application/modules/opac/controllers/CatalogueController.php:114
+#: ../../application/modules/opac/controllers/CatalogueController.php:108
+#, php-format
+msgid "Facettes: %s"
+msgstr "Faţete : %s"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:268
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:277
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:324
+msgid "Facilite l'indexation de votre site dans les moteurs de recherche"
+msgstr "Facilitează indexarea site-ului dvs. în motoarele de căutare"
+
+#: ../../library/ZendAfi/View/Helper/TagUploadMultiple.php:59
+msgid "Fermer"
+msgstr "Închidere"
+
+#: ../../library/Class/NoticeHtml.php:188
+#: ../../library/Class/NoticeHtml.php:193
+#: ../../library/Class/NoticeHtml.php:184
+msgid "Fermer les onglets"
+msgstr "Închideţi taburile"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:28
+msgid "Fiche de la bibliothèque :"
+msgstr "Fişă bibliotecă:     "
+
+#: ../../application/modules/opac/views/scripts/upload/upload.phtml:6
+msgid "Fichier"
+msgstr "Fişier"
+
+#: ../../application/modules/admin/controllers/BibController.php:297
+#: ../../application/modules/admin/controllers/BibController.php:305
+#, php-format
+msgid "Fichier photo : %s"
+msgstr "Fişier fotografie : %s"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:26
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:26
+msgid "Fils RSS"
+msgstr "Fluxuri RSS"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:278
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:287
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:334
+msgid "Filtrage des données"
+msgstr "Filtrare a datelor"
+
+#: ../../application/modules/admin/views/scripts/i18n/index.phtml:26
+msgid "Filtrer"
+msgstr "Filtrează"
+
+#: ../../library/ZendAfi/View/Helper/TreeView.php:34
+msgid "Filtrer par statut : "
+msgstr "Filtrează în funcţie de statut"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:94
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:93
+msgid "Fonds"
+msgstr "Fonduri"
+
+#: ../../application/modules/opac/views/scripts/abonne/formations.phtml:2
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:36
+#, fuzzy
+msgid "Formations"
+msgstr "Informaţie"
+
+#: ../../application/modules/opac/views/scripts/index/formulairecontact.phtml:2
+#: ../../application/modules/opac/views/scripts/index/formulairecontacterror.phtml:2
+#: ../../application/modules/opac/views/scripts/index/formulairecontactsent.phtml:2
+msgid "Formulaire de contact"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:7
+msgid "Fév."
+msgstr "Feb."
+
+#: ../../library/Class/Codification.php:103
+#: ../../library/Class/MoteurRecherche.php:349
+#: ../../library/Class/Codification.php:105
+#: ../../library/Class/Codification.php:106
+#: ../../library/Class/MoteurRecherche.php:366
+#: ../../library/Class/MoteurRecherche.php:378
+msgid "Genre"
+msgstr "Gen"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:41
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:37
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:34
+msgid "Genres"
+msgstr "Genuri"
+
+#: ../../application/modules/admin/controllers/BibController.php:29
+msgid "Gestion des bibliothèques"
+msgstr "Gestionare biblioteci"
+
+#: ../../application/modules/admin/views/scripts/users/delete.phtml:1
+msgid "Gestion des utilisateurs"
+msgstr "Gestionare utilizatori"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:23
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:23
+msgid "Gestionnaire de contenu"
+msgstr "Administrator de conţinut"
+
+#: ../../application/modules/admin/views/scripts/album/edit-images.phtml:15
+msgid "Gérer les medias"
+msgstr "Gestionare media"
+
+#: ../../application/modules/admin/views/scripts/album/edit-images.phtml:10
+msgid "Gérer les ressources"
+msgstr "Gestionare a resurselor"
+
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:57
+#: ../../application/modules/opac/views/scripts/blog/viewavis.phtml:15
+msgid "HAUT"
+msgstr "SUS"
+
+#: ../../application/modules/opac/views/scripts/bib/mapview.phtml:51
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:18
+#: ../../application/modules/opac/views/scripts/cms/articleview.phtml:8
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:85
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:83
+#: ../../application/modules/opac/views/scripts/cms/articleview.phtml:9
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:70
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:22
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:46
+msgid "Haut"
+msgstr "Sus"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:85
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:94
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:141
+msgid "Hauteur"
+msgstr "Înălţime"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:106
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:105
+msgid "Horaire"
+msgstr "Orar"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:66
+msgid "Horaires :"
+msgstr "Orare :"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:122
+msgid "Icone"
+msgstr "Icon:"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:86
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:101
+msgid "Icône du navigateur"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/auth/login.phtml:11
+#: ../../application/modules/admin/views/scripts/users/index.phtml:14
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:21
+#: ../../application/modules/opac/views/scripts/auth/ajaxlostpass.phtml:35
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:20
+#: ../../application/modules/opac/views/scripts/auth/lostpass.phtml:21
+#: ../../application/modules/opac/views/scripts/auth/register.phtml:9
+#: ../../library/Class/Codification.php:104
+#: ../../library/Class/Codification.php:106
+#: ../../application/modules/opac/views/scripts/auth/lostpass.phtml:19
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:18
+#: ../../library/Class/Codification.php:107
+msgid "Identifiant"
+msgstr "Nume de utilizator"
+
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:63
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:63
+msgid "Identifiant commence par"
+msgstr "Numele de utilizator începe cu     "
+
+#: ../../application/modules/opac/controllers/AuthController.php:50
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "Numele de utilizator sau parola incorecte    "
+
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:11
+msgid "Identification"
+msgstr "Identificare"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:72
+#: ../../application/modules/opac/controllers/AbonneController.php:76
+#: ../../application/modules/opac/controllers/AbonneController.php:101
+msgid "Il faut compléter tous les champs."
+msgstr "Trebuie completate toate câmpurile"
+
+#: ../../application/modules/opac/views/scripts/recherche/guidee.phtml:15
+msgid "Il n'y a plus de sous-niveau"
+msgstr "Nu mai există sub-nivel"
+
+#: ../../library/Class/MoteurRecherche.php:62
+#: ../../library/Class/MoteurRecherche.php:151
+#: ../../library/Class/NoticeOAI.php:190
+#: ../../library/Class/MoteurRecherche.php:166
+#: ../../library/Class/MoteurRecherche.php:70
+#: ../../library/Class/MoteurRecherche.php:174
+msgid "Il n'y aucun mot assez significatif pour la recherche"
+msgstr "Nu există nici un cuvânt destul de semnifivativ pentru căutare"
+
+#: ../../application/modules/opac/controllers/RssController.php:179
+#: ../../application/modules/opac/controllers/RssController.php:195
+#: ../../application/modules/opac/views/scripts/rss/view-raw-rss.phtml:5
+#: ../../application/modules/opac/controllers/RssController.php:197
+msgid "Il y a un problème avec l'adresse du flux RSS"
+msgstr "Este o problemă cu adresa fluxului RSS"
+
+#: ../../application/modules/admin/views/scripts/bib/plansmaj.phtml:28
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:29
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:35
+msgid "Image"
+msgstr "Imagine"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:78
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:75
+msgid "Image de fond"
+msgstr "Imagine de fond"
+
+#: ../../application/modules/admin/controllers/BibController.php:755
+#: ../../application/modules/opac/controllers/IndexController.php:26
+#: ../../application/modules/opac/controllers/IndexController.php:86
+#: ../../application/modules/admin/controllers/BibController.php:763
+msgid "Impossible d'afficher la carte"
+msgstr "Imposibil de afişat harta"
+
+#: ../../application/modules/opac/controllers/RssController.php:34
+#: ../../application/modules/opac/controllers/RssController.php:39
+msgid "Impossible de lire le flux rss"
+msgstr "Imposibil de citit fluxul rss"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:15
+msgid "Impossible de trouver cette adresse"
+msgstr "Imposibil de găsit această adresă"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:171
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:176
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:202
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:195
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:191
+msgid "Indexer l'article dans le catalogue ?"
+msgstr "Se indexează articolul din catalog?"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:87
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:91
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:114
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:111
+msgid "Indices Dewey"
+msgstr "Indicii Dewey"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:176
+msgid "Info"
+msgstr "Info"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:82
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:81
+msgid "Information"
+msgstr "Informaţie"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:155
+msgid "Infos"
+msgstr "Informaţii"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:86
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:85
+msgid "Inscription"
+msgstr "Înscriere"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:225
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:234
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:281
+msgid "Interdire les liens sortants"
+msgstr "Interzicere linkuri outbound"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:126
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:125
+msgid "Interdire les réservations"
+msgstr "Interzicerea rezervărilor"
+
+msgid "Invalid type given, value should be a string"
+msgstr "Tip dat invalid, valoarea trebuie să fie un şir"
+
+#: ../../library/Class/Bib.php:36 ../../library/Class/Bib.php:37
+#: ../../library/Class/Bib.php:44 ../../library/Class/Bib.php:45
+#: ../../library/Class/Bib.php:76
+msgid "Invisible"
+msgstr "Invizibil"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:6
+msgid "Janv."
+msgstr "Ian."
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:12
+msgid "Juil."
+msgstr "Iul."
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:11
+msgid "Juin"
+msgstr "Iun."
+
+#: ../../application/modules/opac/controllers/JavaController.php:48
+#: ../../application/modules/opac/controllers/JavaController.php:47
+msgid "Kiosque de notices"
+msgstr "Chioşc de instrucţiuni"
+
+#: ../../application/modules/opac/controllers/FlashController.php:316
+#: ../../application/modules/opac/controllers/FlashController.php:318
+msgid "Kiosque de notices, carousel horizontal"
+msgstr "Chioşc de instrucţiuni, carusel orizontal"
+
+#: ../../application/modules/opac/views/scripts/index/sitedown.phtml:7
+msgid ""
+"L'accès au site est momentanément bloqué.<br><br> Veuillez essayez plus tard."
+msgstr ""
+"Accesul la site este blocat momentan. <br><br> Vă rugăm să încercaţi mai "
+"târziu."
+
+#: ../../application/modules/opac/controllers/RssController.php:128
+#: ../../application/modules/opac/controllers/RssController.php:144
+#: ../../application/modules/opac/views/scripts/rss/view-raw-rss.phtml:3
+#: ../../application/modules/opac/controllers/RssController.php:146
+msgid "L'adresse du flux RSS n'est plus valide."
+msgstr "Adresa fluxului RSS nu mai este valabilă"
+
+#: ../../library/Class/Users.php:225 ../../library/Class/Users.php:239
+#: ../../library/Class/Users.php:314 ../../library/Class/Users.php:390
+#: ../../library/Class/Users.php:419
+msgid "L'adresse e-mail est invalide ou est déjà utilisée."
+msgstr "Adresa e-mail este invalidă sau este deja utilizată."
+
+#: ../../application/modules/opac/controllers/AbonneController.php:70
+#: ../../application/modules/opac/controllers/AbonneController.php:74
+#: ../../application/modules/opac/controllers/AbonneController.php:99
+#, php-format
+msgid "L'avis doit avoir une longueur comprise entre %d et %d caractères"
+msgstr ""
+"Părerea dvs. trebuie să aibă o lungime cuprinsă între %d şi %d caractere"
+
+#: ../../library/Class/AvisNotice.php:238
+#, php-format
+msgid "L'avis doit avoir une longueur comprise entre %s et %s caractères"
+msgstr ""
+"Părerea dvs. trebuie să aibă o lungime cuprinsă între %d şi %d caractere"
+
+#: ../../library/Class/Users.php:162 ../../library/Class/Users.php:176
+#: ../../library/Class/Users.php:251 ../../library/Class/Users.php:327
+#: ../../library/Class/Users.php:356
+msgid "L'identifiant que vous avez choisi existe déjà."
+msgstr "Numele de utilizator ales există deja."
+
+#: ../../application/modules/admin/controllers/BibController.php:508
+#: ../../application/modules/admin/controllers/BibController.php:516
+msgid "L'image du plan est obligatoire."
+msgstr "Imaginea planului este obligatorie."
+
+#: ../../application/modules/opac/controllers/UploadController.php:60
+#: ../../application/modules/opac/controllers/UploadController.php:69
+#, php-format
+msgid ""
+"L'image que vous avez sélectionnée est trop volumiseuse. Taille maximum : %d "
+"ko"
+msgstr ""
+"Imaginea pe care aţi selectat-o este prea mare. Dimensiunea maximă : %d ko"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:13
+#, php-format
+msgid "La bibliothèque contient %s notices."
+msgstr "Biblioteca conţine %s instrucţiuni."
+
+#: ../../library/Class/Users.php:170 ../../library/Class/Users.php:184
+#: ../../library/Class/Users.php:259 ../../library/Class/Users.php:335
+#: ../../library/Class/Users.php:364
+#, php-format
+msgid "La bibliothèque est obligatoire pour le rôle : %s"
+msgstr "Biblioteca este obligatorie pentru rol : %s"
+
+#: ../../application/modules/admin/controllers/BibController.php:309
+#: ../../application/modules/admin/controllers/BibController.php:317
+#, php-format
+msgid ""
+"La photo que vous avez sélectionnée doit être de type : 'image/jpg' et pas "
+"de type : %s"
+msgstr ""
+"Fotografia pe care aţi ales-o trebuie să fie de tipul :  'imagine/jpg' şi nu "
+"de tipul : %s"
+
+#: ../../application/modules/admin/controllers/BibController.php:310
+#: ../../application/modules/admin/controllers/BibController.php:318
+#, php-format
+msgid "La photo que vous avez sélectionnée est trop volumiseuse : %d ko"
+msgstr "Fotografia pe care aţi selectat-o este prea mare: %d ko"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:15
+msgid "La prolongation a échoué"
+msgstr "Prelungire nereuşită"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:22
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:21
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:29
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:28
+msgid "Lancement de la recherche élargie à tous les mots en cours..."
+msgstr "Lansarea căutarii extinsă la toate cuvintele în curs..."
+
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:76
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:76
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:136
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:146
+msgid "Lancer la recherche"
+msgstr "Lansare căutare"
+
+#: ../../library/Class/Codification.php:106
+#: ../../library/Class/MoteurRecherche.php:348
+#: ../../library/Class/Codification.php:108
+#: ../../library/Class/Codification.php:109
+#: ../../library/Class/MoteurRecherche.php:365
+#: ../../library/Class/MoteurRecherche.php:377
+msgid "Langue"
+msgstr "Limba "
+
+#: ../../library/Class/Codification.php:106
+#: ../../library/Class/Codification.php:108
+#: ../../library/Class/Codification.php:109
+msgid "Langue(s)"
+msgstr "Limba(i)"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:46
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:42
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:39
+msgid "Langues"
+msgstr "Limbi"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:156
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:165
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:212
+msgid "Largeur totale du site"
+msgstr "Dimensiune totală a site-ului"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:25
+#: ../../library/ZendAfi/View/Helper/TagArticleEvent.php:27
+#, php-format
+msgid "Le %s"
+msgstr "%s"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Compteurs.php:16
+#: ../../library/ZendAfi/View/Helper/Accueil/Compteurs.php:17
+#, php-format
+msgid "Le catalogue contient %s notices."
+msgstr "Catalogul conţine %s instrucţiuni."
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:4
+msgid "Le catalogue de cette bibliothèque n'est pas encore intégré au portail"
+msgstr "Catalogul acestei biblioteci nu este încă integrat portalului"
+
+#: ../../library/Class/Users.php:158 ../../library/Class/Users.php:172
+#: ../../library/Class/Users.php:247 ../../library/Class/Users.php:323
+#: ../../library/Class/Users.php:352
+msgid "Le champ 'Identifiant' doit être inférieur à 50 caractères"
+msgstr "Câmpul 'Nume de utilizator' trebuie să nu depăşească 50 de caractere"
+
+#: ../../library/Class/Users.php:166 ../../library/Class/Users.php:180
+#: ../../library/Class/Users.php:255 ../../library/Class/Users.php:331
+#: ../../library/Class/Users.php:360
+msgid "Le champ 'Mot de passe' doit être inférieur à 50 caractères"
+msgstr "Câmpul 'Parola' nu trebuie să depăşească 50 de caractere"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:434
+#: ../../application/modules/opac/controllers/RechercheController.php:467
+#: ../../application/modules/opac/controllers/RechercheController.php:492
+msgid "Le code anti-spam est incorrect."
+msgstr "Codul anti-spam este incorect."
+
+#: ../../library/Class/Users.php:232 ../../library/Class/Users.php:246
+#: ../../library/Class/Users.php:321 ../../library/Class/Users.php:397
+#: ../../library/Class/Users.php:426
+msgid "Le code anti-spam est invalide."
+msgstr "Codul anti-spam este invalid."
+
+#: ../../application/modules/admin/controllers/BibController.php:301
+#: ../../application/modules/opac/controllers/UploadController.php:49
+#: ../../application/modules/opac/controllers/UploadController.php:56
+#: ../../application/modules/admin/controllers/BibController.php:309
+msgid "Le fichier que vous avez sélectionné est vide."
+msgstr "Fişierul pe care l-aţi selectat este gol."
+
+#: ../../application/modules/opac/views/scripts/index/formulairecontactsent.phtml:3
+msgid "Le message a bien été envoyé"
+msgstr ""
+
+#: ../../library/Class/Users.php:222 ../../library/Class/Users.php:236
+#: ../../library/Class/Users.php:311 ../../library/Class/Users.php:387
+#: ../../library/Class/Users.php:416
+msgid "Le mot de passe est obligatoire."
+msgstr "Parola este obligatorie."
+
+#: ../../library/Class/Users.php:175 ../../library/Class/Users.php:189
+#: ../../library/Class/Users.php:264 ../../library/Class/Users.php:340
+#: ../../library/Class/Users.php:369
+msgid ""
+"Le numéro de carte est obligatoire pour les abonnés identifiés dans un sigb."
+msgstr ""
+"Numărul de card este obligatoriu pentru abonaţii identificaţi într-un sistem "
+"de bibliotecă integrat."
+
+#: ../../application/modules/opac/controllers/RssController.php:36
+#: ../../application/modules/opac/controllers/RssController.php:41
+msgid "Le ou les flux demandés ne sont plus valides"
+msgstr "Fluxul sau fluxurile solicitate nu mai sunt valide"
+
+#: ../../application/modules/opac/views/scripts/album/index.phtml:2
+msgid "Le patrimoine en images"
+msgstr "Patrimoniul în imagini"
+
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:8
+#, php-format
+msgid "Le territoire contient %s notices"
+msgstr "Teritoriul conţine %s instrucţiuni"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:381
+#: ../../application/modules/opac/controllers/AbonneController.php:391
+#: ../../application/modules/opac/controllers/AbonneController.php:389
+#: ../../application/modules/opac/controllers/AbonneController.php:399
+#: ../../application/modules/opac/controllers/AbonneController.php:397
+#: ../../application/modules/opac/controllers/AbonneController.php:407
+#: ../../application/modules/opac/controllers/AbonneController.php:423
+#: ../../application/modules/opac/controllers/AbonneController.php:433
+msgid "Les mots de passe ne correspondent pas"
+msgstr "Parolele nu corespund"
+
+#: ../../application/modules/opac/controllers/CmsController.php:46
+msgid "Les rendez-vous"
+msgstr "Întâlnirile"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:33
+msgid "Lettres d'information"
+msgstr "Buletine informative"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:20
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:45
+#: ../../application/modules/admin/views/scripts/profil/accueil.phtml:19
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:17
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:42
+msgid "Libelle"
+msgstr "Specificaţie"
+
+#: ../../application/modules/admin/views/scripts/profil/menusmaj.phtml:26
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:28
+msgid "Libellé"
+msgstr "Specificaţie"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:75
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:74
+msgid "Lien cartographique"
+msgstr "Link cartografic"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:61
+msgid "Lien cartographique :"
+msgstr "Link cartografic :"
+
+#: ../../library/Class/Codification.php:115
+#: ../../library/Class/Codification.php:118
+#: ../../library/Class/Codification.php:120
+msgid "Lien internet"
+msgstr "Link internet"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:133
+msgid "Lien logo droite"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:117
+msgid "Lien logo gauche"
+msgstr ""
+
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:49
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:54
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:51
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:56
+#: ../../library/ZendAfi/View/Helper/Permalink.php:13
+#: ../../library/ZendAfi/View/Helper/Permalink.php:15
+#: ../../library/ZendAfi/View/Helper/Permalink.php:18
+msgid "Lien permanent"
+msgstr "Link permanent"
+
+#: ../../library/Class/Codification.php:115
+#: ../../library/Class/Codification.php:118
+#: ../../library/Class/Codification.php:120
+msgid "Liens internet"
+msgstr "Linkuri internet"
+
+#: ../../application/modules/opac/views/scripts/cms/article_partial.phtml:21
+#: ../../library/ZendAfi/View/Helper/Accueil/News.php:86
+#: ../../library/ZendAfi/View/Helper/Accueil/News.php:73
+#: ../../application/modules/opac/views/scripts/cms/article_partial.phtml:32
+#: ../../library/ZendAfi/View/Helper/Accueil/News.php:75
+#: ../../application/modules/opac/views/scripts/cms/article_partial.phtml:35
+msgid "Lire l'article complet"
+msgstr "Citiţi articolul complet"
+
+#: ../../library/ZendAfi/View/Helper/Avis.php:69
+#: ../../library/ZendAfi/View/Helper/Avis.php:71
+#: ../../library/ZendAfi/View/Helper/Avis.php:73
+msgid "Lire la suite"
+msgstr "Citiţi continuarea"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:39
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:37
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:38
+msgid "Liste des derniers fils RSS ajoutés"
+msgstr "Lista ultimelor fluxuri RSS adăugate"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:43
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:41
+msgid "Liste des derniers sites ajoutés"
+msgstr "Lista ultimelor site-uri adăugate"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:195
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:198
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:226
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:234
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:269
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:267
+msgid "Livre"
+msgstr "Carte"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:85
+#: ../../library/ZendAfi/View/Helper/admin/BarreLocalisation.php:15
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:19
+#: ../../library/Class/NoticeHtml.php:428
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:19
+#: ../../library/ZendAfi/View/Helper/Admin/BarreLocalisation.php:15
+#: ../../library/Class/NoticeHtml.php:433
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:1
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:22
+#: ../../library/Class/NoticeHtml.php:438
+#: ../../application/modules/admin/views/scripts/cms/_newsform_head.phtml:1
+#: ../../library/Class/NoticeHtml.php:439
+#: ../../library/Class/NoticeHtml.php:430
+msgid "Localisation"
+msgstr "Localizare"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:74
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:71
+#, fuzzy
+msgid "Localisations"
+msgstr "Localizare"
+
+#: ../../application/modules/admin/controllers/BibController.php:378
+#: ../../application/modules/admin/controllers/BibController.php:386
+#, php-format
+msgid "Localisations de la bibliothèque: %s"
+msgstr "Localizare a bibliotecii: %s"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:125
+msgid "Logo droite"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:109
+msgid "Logo gauche"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/bib/index.phtml:22
+msgid "Légende"
+msgstr "Legendă"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:10
+msgid "Mai"
+msgstr "Mai"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:60
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:52
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:59
+msgid "Mail"
+msgstr "Email"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:51
+msgid "Mail : "
+msgstr "Email:"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:8
+msgid "Mars"
+msgstr "Martie"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:82
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:86
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:109
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:106
+msgid "Matières / sujets"
+msgstr "Domenii/subiecte"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:15
+#, fuzzy
+msgid "Maximum amount of reservation for this document"
+msgstr "Cerere de rezervare a unui document"
+
+#: ../../application/modules/opac/controllers/RssController.php:37
+#: ../../application/modules/opac/controllers/RssController.php:42
+msgid "Merci de le signaler à un responsable de la bibliothèque."
+msgstr "Vă rugăm să semnalaţi responsabilului bibliotecii."
+
+#: ../../application/modules/opac/controllers/IndexController.php:103
+#, fuzzy
+msgid "Message"
+msgstr "Mesaj..."
+
+#: ../../application/modules/opac/controllers/RechercheController.php:459
+#: ../../application/modules/opac/controllers/RechercheController.php:492
+#: ../../application/modules/opac/controllers/RechercheController.php:517
+msgid "Message du demandeur :"
+msgstr "Mesaj al solicitantului :"
+
+#: ../../library/ZendAfi/View/Helper/AjaxMessage.php:19
+msgid "Message..."
+msgstr "Mesaj..."
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:34
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:34
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:36
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:41
+msgid "Mise en page"
+msgstr "Punere în pagină"
+
+#: ../../application/modules/admin/controllers/BibController.php:443
+#: ../../application/modules/admin/controllers/BibController.php:451
+msgid "Mise à jour de la localisation"
+msgstr "Actualizare a localizării"
+
+#: ../../application/modules/opac/views/scripts/abonne/edit.phtml:1
+msgid "Modification de votre fiche"
+msgstr "Modificarea fişei dvs."
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:35
+msgid "Modifier"
+msgstr "Modificare"
+
+#: ../../application/modules/admin/controllers/BibController.php:243
+#: ../../application/modules/admin/controllers/BibController.php:249
+#, php-format
+msgid "Modifier la bibliothèque: %s"
+msgstr "Modificare bibliotecă: %s"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:70
+msgid "Modifier le titre du panier"
+msgstr "Modificare titlu coş"
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:34
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:40
+msgid "Modifier mes abonnements"
+msgstr "Modificarea abonamentelor mele"
+
+#: ../../application/modules/admin/controllers/BibController.php:541
+#: ../../application/modules/admin/controllers/BibController.php:549
+#, php-format
+msgid "Modifier un plan de la bibliothèque: %s"
+msgstr "Modifică un plan al bibliotecii: %s"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:29
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:29
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:31
+msgid "Modération"
+msgstr "Moderare"
+
+#: ../../application/modules/admin/views/scripts/modo/alert.phtml:1
+msgid "Modération des alertes"
+msgstr "Moderare alerte"
+
+#: ../../application/modules/admin/views/scripts/modo/aviscms.phtml:1
+msgid "Modération des avis sur les articles"
+msgstr "Moderarea părerilor asupra articolelor"
+
+#: ../../application/modules/admin/views/scripts/modo/avisnotice.phtml:3
+msgid "Modération des avis sur les notices"
+msgstr "Moderarea părerilor asupra instrucţiunilor"
+
+#: ../../application/modules/admin/views/scripts/modo/tagnotice.phtml:1
+msgid "Modération des tags sur les notices"
+msgstr "Moderarea tag-urilor privind instrucţiunile"
+
+#: ../../application/modules/opac/controllers/RssController.php:239
+#: ../../application/modules/opac/controllers/RssController.php:215
+#: ../../application/modules/opac/controllers/RssController.php:217
+msgid "Modérations"
+msgstr "Moderări"
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:8
+msgid "Mon compte"
+msgstr ""
+
+#: ../../library/Class/Codification.php:139
+#: ../../library/Class/Codification.php:142
+#: ../../library/Class/Codification.php:144
+msgid "Morceaux"
+msgstr "Fragmente"
+
+#: ../../application/modules/admin/views/scripts/auth/login.phtml:15
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:26
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:25
+#: ../../application/modules/opac/views/scripts/auth/register.phtml:14
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:23
+msgid "Mot de passe"
+msgstr "Parolă"
+
+#: ../../application/modules/opac/views/scripts/auth/ajaxlostpass.phtml:11
+msgid "Mot de passe oublié"
+msgstr "Aţi uitat parola"
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:29
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:32
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:32
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:30
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:30
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:31
+msgid "Mot de passe oublié ?"
+msgstr "Aţi uitat parola ?"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:266
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:275
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:322
+msgid "Mots-clef"
+msgstr "Cuvinte-cheie"
+
+#: ../../library/Class/Bib.php:37 ../../library/Class/Bib.php:38
+#: ../../library/Class/Bib.php:45 ../../library/Class/Bib.php:46
+#: ../../library/Class/Bib.php:77
+msgid "N'envoie pas de données"
+msgstr "Nu trimite date"
+
+#: ../../application/modules/admin/controllers/BibController.php:335
+#: ../../application/modules/admin/controllers/BibController.php:343
+msgid ""
+"NB : l'image doit être de type \".jpg\", avoir une taille inférieure à 100 "
+"ko et des dimensions se rapprochant de 180 / 140 pixels"
+msgstr ""
+"NB : imaginea trebuie să fie de tip \".jpg\", să nu depaşească 100 ko şi "
+"dimensiuni apropiindu-se de 180 / 140 pixeli"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:60
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:57
+msgid "Niveau d'accès requis"
+msgstr "Nivel de acces necesar"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:14
+msgid "No copies allowed for this document"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:20
+msgid "No copies available to reserve because of the availability of copies"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:16
+msgid "No copy or copy cannot be reserved, none on order"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:18
+msgid "No copy, on order but cannot be reserved"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:32
+msgid "No valid customer subscription or payments overdue"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:25
+msgid ""
+"No withdrawal possible : subscription problem, no available copy to reserve"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/head.phtml:43
+#: ../../application/modules/opac/views/scripts/head.phtml:44
+#, fuzzy
+msgid "Noir sur blanc"
+msgstr "Vedeţi planul"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:19
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:12
+#: ../../application/modules/admin/views/scripts/rss/catform.phtml:10
+#: ../../application/modules/admin/views/scripts/sito/catform.phtml:11
+#: ../../application/modules/admin/views/scripts/users/index.phtml:15
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:18
+#: ../../application/modules/opac/controllers/AbonneController.php:357
+#: ../../application/modules/opac/controllers/AbonneController.php:365
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:20
+#: ../../application/modules/admin/views/scripts/cms/catform.phtml:11
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:18
+#: ../../application/modules/opac/controllers/AbonneController.php:373
+#: ../../application/modules/opac/controllers/AbonneController.php:399
+#: ../../application/modules/opac/controllers/IndexController.php:71
+msgid "Nom"
+msgstr "Nume"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:31
+msgid "Nom :"
+msgstr "Nume :"
+
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:67
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:67
+msgid "Nom commence par"
+msgstr "Numele începe cu"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:23
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:22
+msgid "Nom du responsable"
+msgstr "Numele responsabilului"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:451
+#: ../../application/modules/opac/controllers/RechercheController.php:484
+#: ../../application/modules/opac/controllers/RechercheController.php:509
+#, php-format
+msgid "Nom et prénom : %s"
+msgstr "Nume şi prenume : %s"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:163
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:172
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:219
+msgid "Nombre de divisons"
+msgstr "Număr de diviziuni"
+
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:23
+msgid "Note"
+msgstr "Notă"
+
+#: ../../library/Class/Codification.php:109
+#: ../../library/Class/Codification.php:111
+#: ../../library/Class/Codification.php:112
+msgid "Notes"
+msgstr "Note"
+
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:2
+msgid "Notice"
+msgstr "Instrucţiune"
+
+#: ../../library/Class/Codification.php:131
+#: ../../library/Class/Codification.php:134
+#: ../../library/Class/Codification.php:136
+msgid "Notice détaillée"
+msgstr "Instrucţiune detaliată"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:453
+#: ../../application/modules/opac/controllers/RechercheController.php:486
+#: ../../application/modules/opac/controllers/RechercheController.php:511
+msgid "Notice réservée : "
+msgstr "Instrucţiune rezervată :"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:33
+msgid "Notice's document family cannot be reserved"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:29
+msgid "Notices"
+msgstr "Instrucţiuni"
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:10
+msgid "Notices :"
+msgstr "Instrucţiuni"
+
+#: ../../library/Class/Codification.php:137
+#: ../../library/Class/Codification.php:140
+#: ../../library/Class/Codification.php:142
+msgid "Notices similaires"
+msgstr "Instrucţiuni similare"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:376
+#: ../../application/modules/opac/controllers/AbonneController.php:384
+#: ../../application/modules/opac/controllers/AbonneController.php:392
+#: ../../application/modules/opac/controllers/AbonneController.php:418
+msgid "Nouveau mot de passe"
+msgstr "Parolă nouă"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:68
+msgid "Nouveau titre"
+msgstr "Titlu nou"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:44
+msgid "Nouveautés"
+msgstr "Noutăţi"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:107
+msgid "Nouveautés de moins de"
+msgstr "Noutăţi de mai puţin de"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:70
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:66
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:63
+msgid "Nouveautés uniquement"
+msgstr "Doar noutăţi"
+
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:16
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:24
+msgid "Nouvelle recherche"
+msgstr "Nouă căutare"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:16
+msgid "Nov."
+msgstr "Nov."
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:68
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:105
+msgid "Numéro"
+msgstr "Număr"
+
+#: ../../library/ZendAfi/View/Helper/TagObjetsImgProperties.php:76
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:48
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:51
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:53
+msgid "Objets flash"
+msgstr "Obiecte flash"
+
+#: ../../library/ZendAfi/View/Helper/TagObjetsImgProperties.php:69
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:46
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:49
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:51
+msgid "Objets java-script"
+msgstr "Obiecte java-script"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:15
+msgid "Oct."
+msgstr "Oct."
+
+#: ../../library/ZendAfi/View/Helper/Avis.php:26
+#: ../../library/ZendAfi/View/Helper/Avis.php:28
+msgid "Oeuvre non trouvée"
+msgstr "Lucrarea nu a fost găsită"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:140
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:145
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:171
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:165
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:161
+msgid "Options"
+msgstr "Opţiuni"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:79
+msgid "Options de la recherche :"
+msgstr "Opţiuni de căutare"
+
+#: ../../application/modules/admin/views/scripts/i18n/index.phtml:38
+msgid "Original"
+msgstr "Original"
+
+#: ../../library/Class/NoticeHtml.php:237
+#: ../../library/Class/NoticeHtml.php:242
+#: ../../library/Class/NoticeHtml.php:233
+msgid "Pagination"
+msgstr "Paginaţie"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:45
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:45
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:52
+msgid "Palmarès des réservations"
+msgstr "Palmaresul rezervărilor"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:43
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:43
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:50
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:55
+msgid "Palmarès des visualisations"
+msgstr "Palmaresul vizualizărilor"
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:5
+msgid "Panier :"
+msgstr "Coş :"
+
+#: ../../application/modules/admin/views/scripts/index/index.phtml:15
+msgid "Paramètres du site"
+msgstr "Parametrii site-ului"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:138
+msgid "Pays"
+msgstr "Ţara"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:92
+#: ../../library/Class/Codification.php:110
+#: ../../library/Class/MoteurRecherche.php:346
+#: ../../library/Class/Codification.php:112
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:96
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:119
+#: ../../library/Class/Codification.php:113
+#: ../../library/Class/MoteurRecherche.php:363
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:116
+#: ../../library/Class/MoteurRecherche.php:375
+msgid "Pcdm4"
+msgstr "Pcdm4"
+
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:50
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:52
+msgid "Permalink"
+msgstr "Permalink"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:30
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:169
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:168
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:29
+msgid "Photo"
+msgstr "Fotografie"
+
+#: ../../library/Class/Codification.php:141
+#: ../../library/Class/Codification.php:144
+#: ../../library/Class/Codification.php:146
+msgid "Photos"
+msgstr "Fotografii"
+
+#: ../../application/modules/admin/views/scripts/profil/menusmaj.phtml:30
+msgid "Pictogramme"
+msgstr "Pictogramă"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:36
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:36
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:38
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:43
+msgid "Pictogrammes des genres"
+msgstr "Pictograme ale genurilor"
+
+#: ../../application/modules/admin/views/scripts/zone/placerbibs.phtml:95
+msgid "Placement des bibliothèques sur la carte"
+msgstr "Plasarea bibliotecilor pe hartă"
+
+#: ../../application/modules/admin/views/scripts/bib/plansmaj.phtml:6
+#: ../../library/Class/NoticeHtml.php:301
+#: ../../library/Class/NoticeHtml.php:306
+#: ../../library/Class/NoticeHtml.php:297
+msgid "Plan"
+msgstr "Plan"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:106
+msgid "Plan associé"
+msgstr "Plan asociat"
+
+#: ../../application/modules/opac/controllers/IndexController.php:20
+#: ../../application/modules/opac/views/scripts/bib/mapview.phtml:22
+#: ../../application/modules/opac/views/scripts/index/planaccess.phtml:28
+msgid "Plan d'accès"
+msgstr "Plan de acces"
+
+#: ../../application/modules/admin/controllers/BibController.php:491
+#: ../../application/modules/admin/controllers/BibController.php:499
+#, php-format
+msgid "Plans de la bibliothèque: %s"
+msgstr "Plan al bibliotecii: %s"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:95
+msgid "Point"
+msgstr "Punct"
+
+#: ../../library/ZendAfi/View/Helper/admin/BarreLocalisation.php:16
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:151
+#: ../../library/ZendAfi/View/Helper/ComboProfils.php:24
+#: ../../library/Class/Cms.php:538
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:151
+#: ../../library/ZendAfi/View/Helper/Admin/BarreLocalisation.php:16
+#: ../../library/Class/Cms.php:448
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:8
+#: ../../library/ZendAfi/View/Helper/Admin/BarreLocalisation.php:17
+msgid "Portail"
+msgstr "Portal"
+
+#: ../../library/Class/Users.php:254 ../../library/Class/Users.php:268
+#: ../../library/Class/Users.php:343 ../../library/Class/Users.php:419
+#: ../../library/Class/Users.php:448
+msgid "Pour activer votre compte, merci de cliquer sur le lien suivant :"
+msgstr "Pentru a vă activa contul, vă rugăm să faceţi clic pe linkul următor :"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:8
+msgid ""
+"Pour réserver un ou des document(s), veuillez remplir le formulaire ci-"
+"dessous."
+msgstr ""
+"Pentru a rezerva unul sau mai multe documente, vă rugăm să completaţi "
+"formularul de mai jos."
+
+#: ../../library/Class/Calendar.php:351 ../../library/Class/Calendar.php:368
+#: ../../library/Class/Calendar.php:379
+msgid "Prochains rendez-vous"
+msgstr "Următoarele întâlniri"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:34
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:46
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:46
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:31
+msgid "Profil"
+msgstr "Profil"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:35
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:35
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:37
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:42
+msgid "Profils"
+msgstr "Profiluri"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:29
+msgid "Prolonger"
+msgstr "Prelungiţi"
+
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:2
+#: ../../library/Class/NoticeHtml.php:870
+#: ../../library/Class/NoticeHtml.php:877
+#: ../../library/Class/NoticeHtml.php:888
+#: ../../library/Class/NoticeHtml.php:879
+msgid "Proposer des tags pour cette notice"
+msgstr "Propuneţi taguri pentru această instrucţiune"
+
+#: ../../library/ZendAfi/View/Helper/TagObjetsImgProperties.php:55
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:115
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:118
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:120
+msgid "Propriétés de l'objet"
+msgstr "Proprietăţile obiectului"
+
+#: ../../library/ZendAfi/View/Helper/FonctionsAdmin.php:34
+#: ../../library/ZendAfi/View/Helper/FonctionsAdmin.php:35
+msgid "Propriétés du module"
+msgstr "Proprietăţile modulului"
+
+#: ../../application/modules/admin/views/scripts/users/index.phtml:16
+#: ../../application/modules/opac/controllers/AbonneController.php:358
+#: ../../application/modules/opac/controllers/AbonneController.php:366
+#: ../../application/modules/opac/controllers/AbonneController.php:374
+#: ../../application/modules/opac/controllers/AbonneController.php:400
+#: ../../application/modules/opac/controllers/IndexController.php:76
+msgid "Prénom"
+msgstr "Prenume"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:90
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:89
+msgid "Prêt"
+msgstr "Împrumut"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:323
+#: ../../application/modules/opac/controllers/AbonneController.php:331
+#: ../../application/modules/opac/controllers/AbonneController.php:338
+#: ../../application/modules/opac/controllers/AbonneController.php:364
+msgid "Prêt prolongé"
+msgstr "Împrumut prelungit"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:1
+msgid "Prêts en cours"
+msgstr "Împrumuturi în curs"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:78
+msgid "Prêts et réservations :"
+msgstr "Împrumuturi şi rezervări"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:359
+#: ../../application/modules/opac/controllers/AbonneController.php:367
+#: ../../application/modules/opac/controllers/AbonneController.php:375
+#: ../../application/modules/opac/controllers/AbonneController.php:401
+msgid "Pseudo"
+msgstr "Pseudonim"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:31
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:61
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:36
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:66
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:40
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:92
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:34
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:86
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:30
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:82
+msgid "Publication"
+msgstr "Publicare"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:25
+msgid "Publié en :"
+msgstr "Publicat pe:"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:101
+msgid "Publié entre (Année sous forme 1980)"
+msgstr "Publicat între (An în forma 1980)"
+
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:10
+msgid "RSS"
+msgstr "RSS"
+
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:10
+msgid "Rang"
+msgstr "Rang"
+
+#: ../../library/ZendAfi/View/Helper/Telephone/RechSimple.php:17
+#: ../../library/ZendAfi/View/Helper/Telephone/RechSimple.php:18
+msgid "Recherche"
+msgstr "Căutare"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/index.phtml:2
+msgid "Recherche OAI"
+msgstr "Căutare OAI"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:84
+msgid "Recherche par mots contenus"
+msgstr "Căutare după cuvintele conţinute"
+
+#: ../../library/ZendAfi/View/Helper/TreeView.php:29
+msgid "Rechercher"
+msgstr "Căutare"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:2
+#: ../../application/modules/opac/views/scripts/bib/index.phtml:7
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:3
+msgid "Rechercher un livre, un disque, une vidéo"
+msgstr "Căutaţi o carte, un disc, un document video"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:41
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:41
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:48
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:53
+msgid "Recherches infructueuses"
+msgstr "Căutare fără rezultat"
+
+#: ../../application/modules/opac/controllers/IndexController.php:126
+#, fuzzy
+msgid "Recopiez le code"
+msgstr "Copiaţi codul anti-spam"
+
+#: ../../library/Class/NoticeHtml.php:189
+#: ../../library/Class/NoticeHtml.php:194
+#: ../../library/Class/NoticeHtml.php:185
+msgid "Refermer"
+msgstr "Închidere"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:55
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:56
+msgid "Relancer cette recherche"
+msgstr "Relansaţi această căutare"
+
+#: ../../application/modules/opac/views/scripts/cms/articleview.phtml:7
+msgid "Reload"
+msgstr "Reîncărcaţi"
+
+#: ../../library/ZendAfi/View/Helper/AjaxMessage.php:44
+msgid "Reméde"
+msgstr "Remediu"
+
+#: ../../library/Class/NoticeHtml.php:708
+#: ../../library/Class/NoticeHtml.php:709
+#: ../../library/Class/NoticeHtml.php:726
+#: ../../library/Class/NoticeHtml.php:727
+#: ../../library/Class/NoticeHtml.php:715
+#: ../../library/Class/NoticeHtml.php:716
+#: ../../library/Class/NoticeHtml.php:733
+#: ../../library/Class/NoticeHtml.php:734
+#: ../../library/Class/NoticeHtml.php:744
+#: ../../library/Class/NoticeHtml.php:745
+#: ../../library/Class/NoticeHtml.php:717
+#: ../../library/Class/NoticeHtml.php:718
+#: ../../library/Class/NoticeHtml.php:735
+#: ../../library/Class/NoticeHtml.php:736
+msgid "Replier"
+msgstr "Retragere"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:29
+msgid "Reservation limit reached"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:31
+msgid "Reservation limit reached for this annexe"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:30
+msgid "Reservation limit reached for this document type"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:13
+msgid "Reservation not allowed to public"
+msgstr ""
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:62
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:62
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:69
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:74
+msgid "Ressources OAI"
+msgstr "Resurse OAI"
+
+#: ../../library/Class/Codification.php:148
+#, fuzzy
+msgid "Ressources numériques"
+msgstr "Resurse OAI"
+
+#: ../../application/modules/admin/controllers/BibController.php:323
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:54
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:50
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:116
+#: ../../application/modules/opac/views/scripts/bib/mapview.phtml:50
+#: ../../application/modules/opac/views/scripts/blog/viewavis.phtml:14
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:84
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:19
+#: ../../application/modules/opac/views/scripts/upload/upload.phtml:17
+#: ../../library/ZendAfi/View/Helper/Bouton.php:59
+#: ../../library/Class/Etagere.php:46 ../../library/Class/NoticeHtml.php:299
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:82
+#: ../../application/modules/opac/views/scripts/cms/articleview.phtml:7
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:51
+#: ../../application/modules/admin/controllers/BibController.php:331
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:73
+#: ../../application/modules/opac/views/scripts/cms/articleview.phtml:8
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:69
+#: ../../library/Class/NoticeHtml.php:304
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:45
+#: ../../library/Class/NoticeHtml.php:295
+msgid "Retour"
+msgstr "Întoarcere"
+
+#: ../../library/Class/Etagere.php:69
+msgid "Retour au niveau superieur"
+msgstr "Întoarcere la nivelul superior "
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuHorizontalAdmin.php:11
+#: ../../library/ZendAfi/View/Helper/Admin/MenuHorizontalAdmin.php:11
+msgid "Retour au site"
+msgstr "Întoarcere la site "
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:25
+msgid "Retour aux paniers"
+msgstr "Întoarcere la coş"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:11
+msgid "Retour prévu"
+msgstr "Întoarcere prevăzută"
+
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:20
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:24
+msgid "Retour à la liste"
+msgstr "Întoarcere la listă"
+
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:15
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:22
+msgid "Retour à la notice"
+msgstr "Întoarcere la instrucţiuni"
+
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:14
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:20
+msgid "Retour à la recherche initiale"
+msgstr "Întoarcere la căutarea iniţială"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:252
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:261
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:308
+msgid "Référencement"
+msgstr "Referinţă"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:7
+#, fuzzy
+msgid "Réservation impossible"
+msgstr "Rezervări de instrucţiuni"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:44
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:44
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:51
+msgid "Réservations de notices"
+msgstr "Rezervări de instrucţiuni"
+
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:1
+msgid "Réservations en cours"
+msgstr "Rezervări în curs"
+
+#: ../../library/Class/NoticeHtml.php:302
+#: ../../library/Class/NoticeHtml.php:376
+#: ../../library/Class/NoticeHtml.php:377
+#: ../../library/Class/NoticeHtml.php:385
+#: ../../library/Class/NoticeHtml.php:386
+#: ../../library/Class/NoticeHtml.php:381
+#: ../../library/Class/NoticeHtml.php:382
+#: ../../library/Class/NoticeHtml.php:390
+#: ../../library/Class/NoticeHtml.php:391
+#: ../../library/Class/NoticeHtml.php:307
+#: ../../library/Class/NoticeHtml.php:387
+#: ../../library/Class/NoticeHtml.php:395
+#: ../../library/Class/NoticeHtml.php:396
+#: ../../library/Class/NoticeHtml.php:388
+#: ../../library/Class/NoticeHtml.php:397
+#: ../../library/Class/NoticeHtml.php:298
+#: ../../library/Class/NoticeHtml.php:378
+#: ../../library/Class/NoticeHtml.php:379
+msgid "Réserver"
+msgstr "Rezervare"
+
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:6
+#: ../../application/modules/opac/views/scripts/recherche/resultatRecherche.phtml:8
+msgid "Résultat de la recherche"
+msgstr "Rezultatul căutarii"
+
+#: ../../library/ZendAfi/View/Helper/Telephone/Pager.php:31
+#: ../../library/ZendAfi/View/Helper/Telephone/Pager.php:30
+msgid "Résultats précédents"
+msgstr "Rezultatele precedente"
+
+#: ../../library/ZendAfi/View/Helper/Telephone/Pager.php:36
+#: ../../library/ZendAfi/View/Helper/Telephone/Pager.php:35
+msgid "Résultats suivants"
+msgstr "Rezultatele următoare"
+
+#: ../../library/Class/Codification.php:111
+#: ../../library/Class/NoticeHtml.php:249
+#: ../../library/Class/Codification.php:113
+#: ../../library/Class/NoticeHtml.php:254
+#: ../../library/Class/Codification.php:114
+#: ../../library/Class/NoticeHtml.php:245
+msgid "Résumé"
+msgstr "Rezumat"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:128
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:47
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:133
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:159
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:153
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:42
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:149
+msgid "Résumé pour la page d'accueil"
+msgstr "Rezumat pentru pagina iniţială"
+
+#: ../../library/Class/Codification.php:134
+#: ../../library/Class/Codification.php:137
+#: ../../library/Class/Codification.php:139
+msgid "Résumés, analyses"
+msgstr "Rezumate, analize"
+
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:29
+#: ../../application/modules/admin/views/scripts/users/index.phtml:17
+msgid "Rôle"
+msgstr "Rol"
+
+#: ../../application/modules/opac/views/scripts/blog/viewauteur.phtml:5
+msgid "S'abonner au flux RSS"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:32
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:33
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:33
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:34
+msgid "S'enregistrer"
+msgstr "Înregistrare"
+
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:34
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:32
+msgid "S'inscrire sur le portail"
+msgstr "Înscriere la portal"
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:27
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:14
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:28
+#: ../../application/modules/opac/views/scripts/auth/login.phtml:12
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:29
+msgid "Se connecter"
+msgstr "Conectare "
+
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:7
+#: ../../library/ZendAfi/View/Helper/admin/MenuHorizontalAdmin.php:14
+#: ../../library/ZendAfi/View/Helper/Admin/MenuHorizontalAdmin.php:14
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:8
+#: ../../application/modules/opac/views/scripts/auth/boitelogin.phtml:9
+msgid "Se déconnecter"
+msgstr "Deconectare"
+
+#: ../../library/Class/Codification.php:112
+#: ../../library/Class/MoteurRecherche.php:350
+#: ../../library/Class/NoticeHtml.php:294
+#: ../../library/Class/Codification.php:114
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:124
+#: ../../library/Class/NoticeHtml.php:299
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:134
+#: ../../library/Class/Codification.php:115
+#: ../../library/Class/MoteurRecherche.php:367
+#: ../../library/Class/MoteurRecherche.php:379
+#: ../../library/Class/NoticeHtml.php:290
+msgid "Section"
+msgstr "Secţie"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:146
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:31
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:299
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:78
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:308
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:75
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:355
+msgid "Sections"
+msgstr "Secţii"
+
+#: ../../application/modules/opac/views/scripts/cms/articleviewbydate.phtml:14
+msgid "Sept."
+msgstr "Sept."
+
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:269
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:289
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:374
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:418
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:277
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:297
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:382
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:426
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:403
+#: ../../application/modules/opac/controllers/NoticeajaxController.php:447
+msgid "Service non disponible"
+msgstr "Serviciu indisponibil"
+
+#: ../../library/Class/Users.php:258 ../../library/Class/Users.php:272
+#: ../../library/Class/Users.php:347 ../../library/Class/Users.php:423
+#: ../../library/Class/Users.php:452
+msgid ""
+"Si vous n'êtes pas à l'origine de cette demande d'inscription, merci de ne "
+"pas tenir compte de cet e-mail, et l'inscription ne sera pas activée."
+msgstr ""
+"Dacă nu dvs. aţi făcut această cerere de înscriere, vă rugăm să ignoraţi "
+"acest email şi înscrierea nu va fi activată."
+
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:17
+msgid "Signature"
+msgstr "Semnatură"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:57
+#: ../../library/Class/MoteurRecherche.php:351
+#: ../../library/Class/Codification.php:116
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:128
+#: ../../library/Class/Codification.php:118
+#: ../../library/Class/MoteurRecherche.php:368
+#: ../../library/ZendAfi/View/Helper/Accueil/RechSimple.php:38
+#: ../../library/Class/MoteurRecherche.php:380
+msgid "Site"
+msgstr "Site"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:374
+#: ../../application/modules/opac/controllers/RechercheController.php:393
+#, fuzzy, php-format
+msgid "Site : %s"
+msgstr "Titlu : %s"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:56
+msgid "Site internet :"
+msgstr "Site internet :"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:83
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:80
+#, fuzzy
+msgid "Sites"
+msgstr "Site"
+
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:6
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:27
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:27
+msgid "Sitothèque"
+msgstr "Sitotecă"
+
+#: ../../library/Class/NoticeHtml.php:344
+#: ../../library/Class/NoticeHtml.php:349
+#: ../../library/Class/NoticeHtml.php:350
+#: ../../library/Class/NoticeHtml.php:341
+msgid "Situer cet exemplaire dans la bibliothèque"
+msgstr "Situează acest exemplar în bibliotecă"
+
+#: ../../library/Class/NoticeHtml.php:346
+#: ../../library/Class/NoticeHtml.php:351
+#: ../../library/Class/NoticeHtml.php:352
+#: ../../library/Class/NoticeHtml.php:343
+msgid "Situer en exemplaire"
+msgstr "Situaţi ca exemplar"
+
+#: ../../library/Class/NoticeHtml.php:300
+#: ../../library/Class/NoticeHtml.php:305
+#: ../../library/Class/NoticeHtml.php:296
+msgid "Situer."
+msgstr "Situare."
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/index.phtml:14
+#: ../../library/Class/NoticeHtml.php:446
+#: ../../library/Class/NoticeHtml.php:539
+#: ../../library/Class/NoticeHtml.php:594
+#: ../../library/Class/NoticeHtml.php:632
+#: ../../library/Class/NoticeHtml.php:679
+#: ../../library/Class/NoticeHtml.php:451
+#: ../../library/Class/NoticeHtml.php:546
+#: ../../library/Class/NoticeHtml.php:601
+#: ../../library/Class/NoticeHtml.php:639
+#: ../../library/Class/NoticeHtml.php:686
+#: ../../library/Class/NoticeHtml.php:456
+#: ../../library/Class/NoticeHtml.php:551
+#: ../../library/Class/NoticeHtml.php:606
+#: ../../library/Class/NoticeHtml.php:644
+#: ../../library/Class/NoticeHtml.php:697
+#: ../../library/Class/NoticeHtml.php:457
+#: ../../library/Class/NoticeHtml.php:448
+#: ../../library/Class/NoticeHtml.php:542
+#: ../../library/Class/NoticeHtml.php:597
+#: ../../library/Class/NoticeHtml.php:635
+#: ../../library/Class/NoticeHtml.php:688
+msgid "Source"
+msgstr "Sursă"
+
+#: ../../application/modules/opac/views/scripts/rechercheoai/resultat.phtml:28
+msgid "Source :"
+msgstr "Sursă :"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:40
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:40
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:47
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:52
+msgid "Statistiques"
+msgstr "Statistici"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:71
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:65
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:61
+msgid "Statut"
+msgstr "Statut"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:118
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:117
+msgid "Statut de la bib"
+msgstr "Statut al bib"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:36
+#: ../../library/Class/Codification.php:107
+#: ../../library/Class/MoteurRecherche.php:347
+#: ../../library/Class/Codification.php:109
+#: ../../library/Class/Codification.php:110
+#: ../../library/Class/MoteurRecherche.php:364
+#: ../../application/modules/opac/controllers/IndexController.php:98
+#: ../../library/Class/MoteurRecherche.php:376
+msgid "Sujet"
+msgstr "Subiect"
+
+#: ../../library/Class/Codification.php:107
+#: ../../library/Class/NoticeHtml.php:260
+#: ../../library/Class/Codification.php:109
+#: ../../library/Class/NoticeHtml.php:265
+#: ../../library/Class/Codification.php:110
+#: ../../library/Class/NoticeHtml.php:256
+msgid "Sujet(s)"
+msgstr "Subiect(e)"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:41
+msgid "Sujets"
+msgstr "Subiecte"
+
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:33
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:169
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:172
+#: ../../library/Class/NoticeHtml.php:500
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:200
+#: ../../library/Class/NoticeHtml.php:507
+#: ../../library/Class/NoticeHtml.php:512
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:208
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:37
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:242
+#: ../../library/Class/NoticeHtml.php:503
+#: ../../library/ZendAfi/View/Helper/IconeSupport.php:19
+msgid "Support"
+msgstr "Suport"
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:84
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:11
+msgid "Suppr."
+msgstr "Ştergere"
+
+#: ../../library/Class/Cms.php:612 ../../library/Class/Cms.php:540
+msgid ""
+"Suppression non autorisée : cette catégorie contient encore des articles"
+msgstr "Ştergere neautorizată : această categorie nu conţine încă articole"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:40
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:44
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:96
+#: ../../library/ZendAfi/Form/Decorator/DeleteButton.php:15
+msgid "Supprimer"
+msgstr "Ştergere"
+
+#: ../../library/Class/Cms.php:613 ../../library/Class/Cms.php:614
+#: ../../library/Class/Cms.php:541 ../../library/Class/Cms.php:542
+msgid "Supprimer catégorie"
+msgstr "Ștergere categorie"
+
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:56
+msgid "Supprimer cette réservation"
+msgstr "Ștergeţi această rezervare"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:57
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:57
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:64
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:69
+msgid "Système"
+msgstr "Sistem"
+
+#: ../../application/modules/opac/controllers/IndexController.php:133
+msgid "Sécurité"
+msgstr ""
+
+#: ../../application/modules/opac/views/scripts/bib/selection.phtml:2
+msgid "Sélection de bibliothèques"
+msgstr "Selecţie de biblioteci"
+
+#: ../../application/modules/opac/controllers/SitoController.php:63
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:28
+#: ../../application/modules/opac/controllers/SitoController.php:64
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:26
+msgid "Sélection de sites"
+msgstr "Selecţie de site-uri"
+
+#: ../../library/Class/Codification.php:114
+#: ../../library/Class/Codification.php:117
+#: ../../library/Class/Codification.php:119
+msgid "Tag"
+msgstr "Tag"
+
+#: ../../library/Class/Codification.php:114
+#: ../../library/Class/Codification.php:117
+#: ../../library/Class/Codification.php:119
+msgid "Tag(s)"
+msgstr "Tag(uri)"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:151
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:35
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:30
+#: ../../library/Class/Codification.php:135
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:156
+#: ../../library/Class/Codification.php:138
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:182
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:176
+#: ../../library/Class/Codification.php:140
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:172
+msgid "Tags"
+msgstr "Taguri"
+
+#: ../../library/Class/Moderer.php:119 ../../library/Class/Moderer.php:110
+msgid "Tags sur les notices"
+msgstr "Taguri privind instrucţiunile"
+
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:102
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:106
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:129
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:126
+msgid "Tags utilisateur"
+msgstr "Taguri de utilizator"
+
+#: ../../application/modules/opac/views/scripts/upload/upload.phtml:10
+msgid "Taille :"
+msgstr "Dimensiune :"
+
+#: ../../library/Class/MoteurRecherche.php:33
+msgid "Tapez une expression &agrave; rechercher"
+msgstr "Tastaţi o expresie &accent grav; căutare"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:46
+msgid "Tel. :"
+msgstr "Tel. :"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:67
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:71
+#: ../../application/modules/admin/views/scripts/zone/_form.phtml:14
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:28
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:28
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:66
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:70
+msgid "Territoire"
+msgstr "Teritoriu"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:50
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:50
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:57
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:62
+msgid "Territoires"
+msgstr "Teritorii"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:60
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:60
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:67
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:72
+msgid "Test des web-services"
+msgstr "Test servicii web"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:55
+msgid "Tester"
+msgstr "Testare"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:187
+msgid "Texte"
+msgstr "Text"
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:28
+msgid ""
+"The notice's document type for reservation does not belong to any document "
+"family"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:17
+msgid "This document does not belong to any document family"
+msgstr ""
+
+#: ../../library/Class/WebService/SIGB/Carthame/Service.php:24
+msgid "This notice is already on loan to this customer"
+msgstr ""
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:135
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:144
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:191
+msgid "Thème"
+msgstr "Temă"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:74
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:111
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:182
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:34
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:18
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:14
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:27
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:8
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:82
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:34
+#: ../../library/Class/Codification.php:113
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:21
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:39
+#: ../../library/Class/Codification.php:115
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:43
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:8
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:91
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:37
+#: ../../application/modules/admin/views/scripts/cms/traductionform.phtml:16
+#: ../../library/Class/Codification.php:116
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:33
+msgid "Titre"
+msgstr "Titlu"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:454
+#: ../../application/modules/opac/controllers/RechercheController.php:487
+#: ../../application/modules/opac/controllers/RechercheController.php:512
+#, php-format
+msgid "Titre : %s"
+msgstr "Titlu : %s"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:47
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:52
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:56
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:50
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:46
+msgid "Titre caché"
+msgstr "Titlu ascuns"
+
+#: ../../library/Class/Codification.php:113
+#: ../../library/Class/Codification.php:115
+#: ../../library/Class/Codification.php:116
+msgid "Titre(s)"
+msgstr "Titlu(ri)"
+
+#: ../../application/modules/opac/views/scripts/recherche/readnotice.phtml:1
+#, php-format
+msgid "Titre: %s"
+msgstr "Titlu: %s"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:19
+msgid "Titres"
+msgstr "Titluri"
+
+#: ../../library/ZendAfi/View/Helper/TreeView.php:36
+msgid "Tous"
+msgstr "Toţi"
+
+#: ../../application/modules/opac/views/scripts/bib/selection.phtml:7
+msgid "Tout cocher"
+msgstr "Bifează tot"
+
+#: ../../application/modules/opac/views/scripts/bib/selection.phtml:8
+msgid "Tout décocher"
+msgstr "Deselectează tot"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:64
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:64
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:70
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:72
+msgid "Tout effacer"
+msgstr "Șterge tot"
+
+#: ../../application/modules/opac/controllers/RssController.php:289
+msgid "Toute l'actualité de votre portail"
+msgstr "Toată actualitatea portalului dvs."
+
+#: ../../application/modules/opac/controllers/RssController.php:204
+#: ../../application/modules/opac/controllers/RssController.php:219
+#: ../../application/modules/opac/controllers/RssController.php:274
+msgid "Toute l'actualité du portail"
+msgstr "Toată actualitatea portalului"
+
+#: ../../library/Class/Bib.php:157 ../../library/Class/Bib.php:158
+#: ../../library/Class/Bib.php:165 ../../library/Class/Bib.php:182
+#: ../../library/Class/Bib.php:213
+msgid "Toutes"
+msgstr "Toate"
+
+#: ../../application/modules/admin/views/scripts/i18n/index.phtml:39
+msgid "Traduction"
+msgstr "Traducere"
+
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:41
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:46
+msgid "Traductions"
+msgstr "Traduceri"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:89
+msgid "Trier par"
+msgstr "Selectaţi după"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:11
+msgid "Type"
+msgstr "Tip"
+
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:50
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:47
+msgid "Type d'interface"
+msgstr "Tip de interfaţă"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:49
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:89
+msgid "Type de doc."
+msgstr "Tip de doc."
+
+#: ../../library/ZendAfi/View/Helper/Accueil/RechSimple.php:28
+#: ../../library/ZendAfi/View/Helper/Accueil/RechSimple.php:35
+#: ../../library/Class/MoteurRecherche.php:342
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:94
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:120
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:121
+#: ../../library/Class/Codification.php:117
+#: ../../library/Class/MoteurRecherche.php:358
+#: ../../library/ZendAfi/View/Helper/Accueil/RechSimple.php:27
+#: ../../library/ZendAfi/View/Helper/Accueil/RechSimple.php:34
+#: ../../library/Class/MoteurRecherche.php:370
+msgid "Type de document"
+msgstr "Tip de document"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:330
+#: ../../application/modules/opac/controllers/RechercheController.php:350
+#: ../../application/modules/opac/controllers/RechercheController.php:370
+#: ../../application/modules/opac/controllers/RechercheController.php:363
+#: ../../application/modules/opac/controllers/RechercheController.php:389
+#, php-format
+msgid "Type de document : %s"
+msgstr "Tip de document : %s "
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:82
+msgid "Type de recherche"
+msgstr "Tip de căutare"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:136
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:36
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:304
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:32
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:313
+#: ../../library/Class/Codification.php:117
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:29
+#: ../../application/modules/admin/views/scripts/profil/_formProfil.phtml:360
+msgid "Types de documents"
+msgstr "Tipuri de documente"
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:20
+msgid "Télécharger au format liste (clic droit puis enregistrer sous)"
+msgstr ""
+"Descărcaţi în formatul listă (faceţi clic dreapta apoi înregistraţi ca)"
+
+#: ../../application/modules/opac/views/scripts/panier/export.phtml:21
+msgid "Télécharger au format unimarc (clic droit puis enregistrer sous)"
+msgstr ""
+"Descărcaţi în formatul unimarc (faceţi clic dreapta apoi înregistraţi ca)"
+
+#: ../../library/ZendAfi/View/Helper/TagUploadMultiple.php:58
+msgid "Télécharger plusieurs fichiers"
+msgstr "Descărcaţi mai multe fişiere"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:56
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:25
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:55
+msgid "Téléphone"
+msgstr "Telefon"
+
+#: ../../library/Class/Users.php:321 ../../library/Class/Users.php:335
+#: ../../library/Class/Users.php:410 ../../library/Class/Users.php:486
+#: ../../library/Class/Users.php:515
+msgid "Un mail vient de vous être envoyé avec vos paramètres de connexion."
+msgstr "Tocmai v-a fost trimis un email cu datele dvs. de conectare."
+
+#: ../../library/Class/CommSigb.php:23 ../../library/Class/CommSigb.php:25
+msgid ""
+"Une erreur de communication avec le serveur a fait échouer la réservation. "
+"Merci de signaler ce problème à la bibliothèque."
+msgstr ""
+"Rezervare eşuată din cauza unei erori de comunicare cu serverul. Vă rugăm să "
+"semnalaţi această problemă la bibliotecă."
+
+#: ../../application/modules/admin/views/scripts/rss/rssform.phtml:22
+#: ../../application/modules/admin/views/scripts/sito/sitoform.phtml:18
+msgid "Url"
+msgstr "Url"
+
+#: ../../library/Class/Users.php:255 ../../library/Class/Users.php:269
+#: ../../library/Class/Users.php:344 ../../library/Class/Users.php:420
+#: ../../library/Class/Users.php:449
+#, php-format
+msgid "Url d'activation : %s"
+msgstr "Url de activare : %s"
+
+#: ../../application/modules/admin/views/scripts/index/index.phtml:34
+#: ../../application/modules/admin/views/scripts/users/_form.phtml:9
+msgid "Utilisateur"
+msgstr "Utilizator"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:52
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:52
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:59
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:64
+msgid "Utilisateurs"
+msgstr "Utilizatori"
+
+#: ../../application/modules/admin/views/scripts/index/adminvar.phtml:4
+msgid "Valeur"
+msgstr "Valoare"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:50
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:27
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:37
+#: ../../application/modules/opac/views/scripts/auth/ajaxlostpass.phtml:42
+#: ../../library/ZendAfi/View/Helper/Bouton.php:52
+msgid "Valider"
+msgstr "Validare"
+
+#: ../../application/modules/opac/views/scripts/bib/selection.phtml:6
+msgid "Valider la sélection"
+msgstr "Validare selecţie"
+
+#: ../../library/Class/Users.php:257 ../../library/Class/Users.php:271
+#: ../../library/Class/Users.php:346 ../../library/Class/Users.php:422
+#: ../../library/Class/Users.php:451
+msgid "Valider mon inscription"
+msgstr "Validare înscriere"
+
+msgid "Value is empty, but a non-empty value is required"
+msgstr "Valoarea este goală şi este nevoie de o valoare care nu este goală"
+
+#: ../../application/modules/admin/views/scripts/index/adminvaredit.phtml:5
+msgid "Variable"
+msgstr "Variabilă"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:59
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:59
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:66
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:71
+msgid "Variables"
+msgstr "Variabile"
+
+#: ../../application/modules/admin/views/scripts/index/index.phtml:11
+msgid "Version"
+msgstr "Versiune"
+
+#: ../../library/Class/NoticeHtml.php:82
+#: ../../library/Class/NoticeHtml.php:123
+#: ../../library/Class/NoticeHtml.php:177
+#: ../../library/Class/NoticeHtml.php:182
+#: ../../library/Class/NoticeHtml.php:173
+msgid "Veuillez patienter : lecture en cours..."
+msgstr "Vă rugăm să aşteptaţi : citire în curs..."
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:132
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:160
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:168
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:184
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:183
+msgid "Veuillez patienter : traitement en cours"
+msgstr "Vă rugăm să aşteptaţi: procesare în curs"
+
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:50
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:54
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:158
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:160
+#: ../../library/Class/NoticeHtml.php:492
+#: ../../library/Class/NoticeHtml.php:564
+#: ../../library/Class/NoticeHtml.php:762
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:55
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:188
+#: ../../library/Class/NoticeHtml.php:499
+#: ../../library/Class/NoticeHtml.php:571
+#: ../../library/Class/NoticeHtml.php:769
+#: ../../library/Class/NoticeHtml.php:504
+#: ../../library/Class/NoticeHtml.php:576
+#: ../../library/Class/NoticeHtml.php:780
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:196
+#: ../../application/modules/opac/views/scripts/recherche/viewnotice.phtml:59
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:228
+#: ../../library/Class/NoticeHtml.php:495
+#: ../../library/Class/NoticeHtml.php:567
+#: ../../library/Class/NoticeHtml.php:771
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:227
+msgid "Vignette"
+msgstr "Etichetă"
+
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:52
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:133
+#: ../../application/modules/admin/views/scripts/bib/_form.phtml:51
+#: ../../application/modules/opac/controllers/IndexController.php:89
+msgid "Ville"
+msgstr "Oraş"
+
+#: ../../library/ZendAfi/View/Helper/admin/MenuGaucheAdmin.php:42
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:42
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:49
+#: ../../library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php:54
+msgid "Visualisations de notices"
+msgstr "Vizualizare instrucţiuni"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:60
+msgid "Visualiser"
+msgstr "Vizualizare"
+
+#: ../../library/Class/NoticeHtml.php:303
+#: ../../library/Class/NoticeHtml.php:308
+#: ../../library/Class/NoticeHtml.php:299
+msgid "Voir"
+msgstr "Vedeţi"
+
+#: ../../library/ZendAfi/View/Helper/Avis.php:51
+#: ../../library/ZendAfi/View/Helper/Avis.php:53
+#: ../../library/ZendAfi/View/Helper/Avis.php:55
+msgid "Voir la notice"
+msgstr "Vedeţi instrucţiunea"
+
+#: ../../application/modules/opac/views/scripts/bib/bibview.phtml:104
+msgid "Voir le plan"
+msgstr "Vedeţi planul"
+
+#: ../../application/modules/opac/views/scripts/sito/viewsitos.phtml:13
+msgid "Voir le site"
+msgstr "Vedeţi site-ul"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:24
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:22
+#: ../../library/ZendAfi/View/Helper/Accueil/Rss.php:20
+msgid "Voir les fils RSS sélectionnés"
+msgstr "Vedeţi fluxurile RSS selectate"
+
+#: ../../library/Class/NoticeHtml.php:704
+#: ../../library/Class/NoticeHtml.php:722
+#: ../../library/Class/NoticeHtml.php:711
+#: ../../library/Class/NoticeHtml.php:729
+#: ../../library/Class/NoticeHtml.php:740
+#: ../../library/Class/NoticeHtml.php:713
+#: ../../library/Class/NoticeHtml.php:731
+msgid "Voir vidéo"
+msgstr "Vedeţi înregistrarea video"
+
+#: ../../library/Class/NoticeHtml.php:695
+#: ../../library/Class/NoticeHtml.php:706
+#: ../../library/Class/NoticeHtml.php:697
+#, php-format
+msgid "Volume n° %s"
+msgstr "Volum n° %s"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:24
+msgid "Vos Nom et Prénom : "
+msgstr "Numele şi Prenumele dvs :"
+
+#: ../../application/modules/opac/controllers/IndexController.php:115
+#, fuzzy
+msgid "Vos coordonnées"
+msgstr "Coordonate hartă"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:7
+msgid "Vos dernières recherches"
+msgstr "Ultimele dvs. căutari "
+
+#: ../../application/modules/opac/controllers/PanierController.php:49
+msgid "Vos paniers"
+msgstr "Coşurile dvs."
+
+#: ../../application/modules/opac/views/scripts/panier/index.phtml:3
+msgid "Vos paniers de documents"
+msgstr "Coşurile dvs. de documente"
+
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:7
+msgid "Vos propositions"
+msgstr "Propunerile dvs."
+
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:11
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:17
+#: ../../application/modules/opac/views/scripts/abonne/tagnotice.phtml:21
+msgid "Votre Tag"
+msgstr "Tagul dvs."
+
+#: ../../application/modules/opac/controllers/AbonneController.php:255
+#: ../../application/modules/opac/controllers/AbonneController.php:257
+#: ../../application/modules/opac/controllers/AbonneController.php:263
+#: ../../application/modules/opac/controllers/AbonneController.php:290
+#, php-format
+msgid "Votre abonnement est terminé depuis le %s."
+msgstr "Abonamentul dvs. s-a terminat începând cu %s.      "
+
+#: ../../application/modules/opac/controllers/AbonneController.php:257
+#: ../../application/modules/opac/controllers/AbonneController.php:259
+#: ../../application/modules/opac/controllers/AbonneController.php:265
+#: ../../application/modules/opac/controllers/AbonneController.php:288
+#, php-format
+msgid "Votre abonnement est valide jusqu'au %s."
+msgstr "Abonamentul dvs. este valabil până la %s."
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:32
+msgid "Votre adresse E-mail :"
+msgstr "Adresa dvs. de e-mail :"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:432
+#: ../../application/modules/opac/controllers/RechercheController.php:465
+#: ../../application/modules/opac/controllers/RechercheController.php:490
+msgid "Votre adresse e-mail est incorrecte."
+msgstr "Adresa dvs. de e-mail este incorectă."
+
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:31
+#: ../../application/modules/opac/views/scripts/abonne/avis_partial.phtml:12
+msgid "Votre avis"
+msgstr "Părerea dvs."
+
+#: ../../application/modules/opac/controllers/AuthController.php:196
+#: ../../application/modules/opac/views/scripts/auth/activeuser.phtml:2
+#: ../../application/modules/opac/controllers/AuthController.php:198
+msgid "Votre demande d'inscription"
+msgstr "Solicitarea dvs. de înscriere  "
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:2
+msgid "Votre fiche"
+msgstr "Fişa dvs.       "
+
+#: ../../library/Class/Users.php:314 ../../library/Class/Users.php:328
+#: ../../library/Class/Users.php:403 ../../library/Class/Users.php:479
+#: ../../library/Class/Users.php:508
+#, php-format
+msgid "Votre identifiant : %s"
+msgstr "Numele dvs. de utilizator: %s"
+
+#: ../../application/modules/opac/views/scripts/auth/ajaxlogin.phtml:17
+#: ../../application/modules/opac/views/scripts/auth/ajaxlostpass.phtml:31
+msgid "Votre identité s.v.p."
+msgstr "Vă rugăm să vă identificaţi"
+
+#: ../../application/modules/opac/controllers/IndexController.php:120
+#, fuzzy
+msgid "Votre message"
+msgstr "Mesajul dvs. :"
+
+#: ../../application/modules/opac/views/scripts/recherche/reservation.phtml:28
+msgid "Votre message :"
+msgstr "Mesajul dvs. :"
+
+#: ../../library/Class/Users.php:315 ../../library/Class/Users.php:329
+#: ../../library/Class/Users.php:404 ../../library/Class/Users.php:480
+#: ../../library/Class/Users.php:509
+#, php-format
+msgid "Votre mot de passe : %s"
+msgstr "Parola dvs. :%s"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:528
+#: ../../application/modules/opac/controllers/RechercheController.php:565
+#: ../../application/modules/opac/controllers/RechercheController.php:587
+msgid "Votre réservation est enregistrée."
+msgstr "Rezervarea dvs. a fost înregistrată."
+
+#: ../../application/modules/opac/controllers/AbonneController.php:287
+#: ../../application/modules/opac/controllers/AbonneController.php:294
+#: ../../application/modules/opac/controllers/AbonneController.php:300
+#: ../../application/modules/opac/controllers/AbonneController.php:326
+#, php-format
+msgid "Vous avez %d panier de notices"
+msgstr "Aveţi %d coş de instrucţiuni"
+
+#: ../../application/modules/opac/controllers/PanierController.php:55
+#, php-format
+msgid "Vous avez %d panier(s)"
+msgstr "Aveţi %d coş(uri)"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:288
+#: ../../application/modules/opac/controllers/AbonneController.php:295
+#: ../../application/modules/opac/controllers/AbonneController.php:301
+#: ../../application/modules/opac/controllers/AbonneController.php:327
+#, php-format
+msgid "Vous avez %d paniers de notices"
+msgstr "Aveţi %d coş de instrucţiuni"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:269
+#: ../../application/modules/opac/controllers/AbonneController.php:270
+#: ../../application/modules/opac/controllers/AbonneController.php:276
+#: ../../application/modules/opac/controllers/AbonneController.php:302
+#, php-format
+msgid "Vous avez %d prêt en cours"
+msgstr "Aveţi %d împrumut în curs"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:270
+#: ../../application/modules/opac/controllers/AbonneController.php:271
+#: ../../application/modules/opac/controllers/AbonneController.php:277
+#: ../../application/modules/opac/controllers/AbonneController.php:303
+#, php-format
+msgid "Vous avez %d prêts en cours"
+msgstr "Aveţi %d împrumuturi în curs"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:277
+#: ../../application/modules/opac/controllers/AbonneController.php:278
+#: ../../application/modules/opac/controllers/AbonneController.php:284
+#: ../../application/modules/opac/controllers/AbonneController.php:310
+#, php-format
+msgid "Vous avez %d réservation en cours"
+msgstr "Aveţi %d rezervare în curs"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:278
+#: ../../application/modules/opac/controllers/AbonneController.php:279
+#: ../../application/modules/opac/controllers/AbonneController.php:285
+#: ../../application/modules/opac/controllers/AbonneController.php:311
+#, php-format
+msgid "Vous avez %d réservations en cours"
+msgstr "Aveţi %d  rezervări în curs"
+
+#: ../../library/Class/Users.php:253 ../../library/Class/Users.php:267
+#: ../../library/Class/Users.php:342 ../../library/Class/Users.php:418
+#: ../../library/Class/Users.php:447
+msgid "Vous avez fait une demande d'inscription sur le portail."
+msgstr "Aţi făcut o cerere de înscriere pe portal."
+
+#: ../../library/Class/Users.php:313 ../../library/Class/Users.php:327
+#: ../../library/Class/Users.php:402 ../../library/Class/Users.php:478
+#: ../../library/Class/Users.php:507
+msgid "Vous avez fait une demande de mot de passe sur le portail."
+msgstr "Aţi făcut o cerere de parolă pe portal."
+
+#: ../../library/Class/Users.php:157 ../../library/Class/Users.php:171
+#: ../../library/Class/Users.php:246 ../../library/Class/Users.php:322
+#: ../../library/Class/Users.php:351
+msgid "Vous devez compléter le champ 'Identifiant'"
+msgstr "Trebuie să completaţi câmpul ‘Nume de utilizator’"
+
+#: ../../library/Class/Users.php:165 ../../library/Class/Users.php:179
+#: ../../library/Class/Users.php:254 ../../library/Class/Users.php:330
+#: ../../library/Class/Users.php:359
+msgid "Vous devez compléter le champ 'Mot de passe'"
+msgstr "Trebuie să completaţi câmpul ‘Parolă’"
+
+#: ../../library/Class/Bib.php:104 ../../library/Class/Bib.php:105
+#: ../../library/Class/Bib.php:112 ../../library/Class/Bib.php:130
+#: ../../library/Class/Bib.php:161
+msgid "Vous devez compléter le champ 'Nom'"
+msgstr "Trebuie să completaţi câmpul ‘Nume’"
+
+#: ../../library/Class/Bib.php:107 ../../library/Class/Bib.php:108
+#: ../../library/Class/Bib.php:115 ../../library/Class/Bib.php:133
+#: ../../library/Class/Bib.php:164
+msgid "Vous devez compléter le champ 'Ville'"
+msgstr "Trebuie să completaţi câmpul ‘Oraş’"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:380
+#: ../../application/modules/opac/controllers/AbonneController.php:388
+#: ../../application/modules/opac/controllers/AbonneController.php:396
+#: ../../application/modules/opac/controllers/AbonneController.php:422
+msgid "Vous devez confirmer le mot de passe"
+msgstr "Trebuie să confirmaţi parola"
+
+#: ../../application/modules/opac/controllers/AbonneController.php:390
+#: ../../application/modules/opac/controllers/AbonneController.php:398
+#: ../../application/modules/opac/controllers/AbonneController.php:406
+#: ../../application/modules/opac/controllers/AbonneController.php:432
+msgid "Vous devez saisir un mot de passe"
+msgstr "Trebuie să introduceţi o parolă "
+
+#: ../../library/Class/AvisNotice.php:240
+msgid "Vous devez saisir un titre"
+msgstr "Trebuie să introduceţi un titlu         "
+
+#: ../../application/modules/opac/controllers/UploadController.php:48
+#: ../../application/modules/opac/controllers/UploadController.php:55
+msgid "Vous devez sélectionner une image en cliquant sur le bouton : parcourir"
+msgstr "Trebuie să selectaţi o imagine făcând clic pe buton : căutare"
+
+#: ../../application/modules/admin/controllers/BibController.php:300
+#: ../../application/modules/admin/controllers/BibController.php:308
+msgid "Vous devez sélectionner une photo en cliquant sur le bouton : parcourir"
+msgstr "Trebuie să selectaţi o fotografie făcând clic pe buton: căutare"
+
+#: ../../library/Class/Users.php:365 ../../library/Class/Users.php:379
+#: ../../library/Class/Users.php:454 ../../library/Class/Users.php:532
+#: ../../library/Class/Users.php:561
+msgid ""
+"Vous devez vous connecter en tant qu'abonné de la bibliothèque pour obtenir "
+"plus d'informations."
+msgstr ""
+"Trebuie să vă conectaţi în calitate de abonat al bibliotecii pentru a obţine "
+"mai multe informaţii."
+
+#: ../../library/Class/CommSigb.php:111 ../../library/Class/CommSigb.php:115
+#: ../../library/Class/CommSigb.php:121
+msgid "Vous devez vous connecter pour réserver un document."
+msgstr "Trebuie să vă conectaţi pentru a rezerva un document."
+
+#: ../../library/Class/CommSigb.php:113 ../../library/Class/CommSigb.php:117
+#: ../../library/Class/CommSigb.php:123
+msgid ""
+"Vous devez vous connecter sous votre numéro de carte pour effectuer une "
+"réservation."
+msgstr ""
+"Trebuie să vă conectaţi folosind numărul dvs. de card pentru a efectua o "
+"rezervare."
+
+#: ../../application/modules/opac/controllers/AbonneController.php:286
+#: ../../application/modules/opac/controllers/AbonneController.php:293
+#: ../../application/modules/opac/controllers/AbonneController.php:299
+#: ../../application/modules/opac/controllers/AbonneController.php:325
+msgid "Vous n'avez aucun panier de notices."
+msgstr "Nu aveţi nici un coş de instrucţiuni."
+
+#: ../../application/modules/opac/controllers/PanierController.php:53
+msgid "Vous n'avez aucun panier."
+msgstr "Nu aveţi nici un coş."
+
+#: ../../application/modules/opac/controllers/AbonneController.php:268
+#: ../../application/modules/opac/controllers/AbonneController.php:269
+#: ../../application/modules/opac/controllers/AbonneController.php:275
+#: ../../application/modules/opac/controllers/AbonneController.php:301
+msgid "Vous n'avez aucun prêt en cours."
+msgstr "Nu aveţi nici un împrumut în curs. "
+
+#: ../../application/modules/opac/controllers/AbonneController.php:276
+#: ../../application/modules/opac/controllers/AbonneController.php:277
+#: ../../application/modules/opac/controllers/AbonneController.php:283
+#: ../../application/modules/opac/controllers/AbonneController.php:309
+msgid "Vous n'avez aucune réservation en cours."
+msgstr "Nu aveţi nici o rezervare în curs. "
+
+#: ../../library/Class/Users.php:227 ../../library/Class/Users.php:241
+#: ../../library/Class/Users.php:316 ../../library/Class/Users.php:392
+#: ../../library/Class/Users.php:421
+msgid "Vous n'avez pas saisi d'E-mail."
+msgstr "Nu aţi introdus o adresă  de e-mail. "
+
+#: ../../application/modules/opac/controllers/RechercheController.php:430
+#: ../../application/modules/opac/controllers/RechercheController.php:463
+#: ../../application/modules/opac/controllers/RechercheController.php:488
+msgid "Vous n'avez pas saisi de demande :"
+msgstr "Nu aţi introdus o solicitare."
+
+#: ../../library/Class/Users.php:217 ../../library/Class/Users.php:231
+#: ../../library/Class/Users.php:306 ../../library/Class/Users.php:382
+#: ../../library/Class/Users.php:411
+msgid "Vous n'avez pas saisi de login."
+msgstr "Nu aţi introdus un nume de utilizator."
+
+#: ../../library/Class/Users.php:230 ../../library/Class/Users.php:244
+#: ../../library/Class/Users.php:319 ../../library/Class/Users.php:395
+#: ../../library/Class/Users.php:424
+msgid "Vous n'avez pas saisi le code anti-spam."
+msgstr "Nu aţi introdus codul anti-spam."
+
+#: ../../library/Class/Users.php:220 ../../library/Class/Users.php:234
+#: ../../library/Class/Users.php:309 ../../library/Class/Users.php:385
+#: ../../library/Class/Users.php:414
+msgid "Vous n'avez pas saisi les mêmes mots de passe."
+msgstr "Nu aţi introdus aceleaşi parole."
+
+#: ../../application/modules/opac/controllers/RechercheController.php:428
+#: ../../application/modules/opac/controllers/RechercheController.php:461
+#: ../../application/modules/opac/controllers/RechercheController.php:486
+msgid "Vous n'avez pas saisi vos Nom et Prénom :"
+msgstr "Nu aţi introdus Numele şi Prenumele dvs. :       "
+
+#: ../../application/modules/admin/controllers/BibController.php:757
+#: ../../application/modules/admin/controllers/BibController.php:765
+msgid "Vous n'avez saisi aucune clef."
+msgstr "Nu aţi introdus nici o cheie."
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:22
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:28
+msgid "Vous n'êtes abonné à aucune lettre d'information"
+msgstr "Nu sunteţi abonat la nici un buletin informativ    "
+
+#: ../../application/modules/opac/views/scripts/bib/selection.phtml:4
+msgid ""
+"Vous pouvez sélectionner une ou plusieurs bibliothèques pour effectuer une "
+"recherche "
+msgstr "Puteţi selecta una sau mai multe biblioteci pentru a efectua o căutare"
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:13
+msgid ""
+"Vous venez de supprimer de dernier point de cette couche. Un nouveau point "
+"va être créé au centre de la couche."
+msgstr ""
+"Tocmai aţi şters ultimul punct al acestui strat. Un nou punct va fi creat în "
+"centrul stratului."
+
+#: ../../application/modules/admin/views/scripts/bib/planacces.phtml:10
+msgid ""
+"Vous venez de supprimer la dernière couche de la carte. Une nouvelle couche "
+"va être créée."
+msgstr "Tocmai aţi şters ultimul strat al cardului. Un nou strat va fi creat."
+
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:27
+#: ../../application/modules/opac/views/scripts/abonne/fiche.phtml:33
+msgid "Vous êtes abonné"
+msgstr "Sunteţi abonat"
+
+#: ../../application/modules/opac/views/scripts/bib/zoneview.phtml:26
+msgid "Web"
+msgstr "Web"
+
+#: ../../application/modules/admin/views/scripts/index/adminvar.phtml:5
+msgid "action"
+msgstr "acţiune"
+
+#: ../../library/ZendAfi/View/Helper/HistoriqueRecherche.php:45
+msgid "année début"
+msgstr "an de început"
+
+#: ../../application/modules/opac/views/scripts/recherche/readnotice.phtml:5
+#, php-format
+msgid "année: %s"
+msgstr "an: %s"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:42
+#: ../../library/Class/Calendar.php:42 ../../library/Class/Calendar.php:43
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:47
+msgid "août"
+msgstr "august"
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:73
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:99
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:78
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:104
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:130
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:98
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:124
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:94
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:120
+msgid "au"
+msgstr "la"
+
+#: ../../application/modules/opac/controllers/CatalogueController.php:102
+#: ../../application/modules/opac/controllers/EtagereController.php:129
+#: ../../application/modules/opac/controllers/CatalogueController.php:113
+#: ../../application/modules/opac/controllers/CatalogueController.php:107
+#: ../../application/modules/opac/controllers/EtagereController.php:106
+msgid "aucune"
+msgstr "nici o"
+
+#: ../../application/modules/opac/views/scripts/recherche/readnotice.phtml:3
+#, php-format
+msgid "auteur: %s"
+msgstr "autor: %s"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:38
+#: ../../library/Class/Calendar.php:38 ../../library/Class/Calendar.php:39
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:43
+msgid "avril"
+msgstr "aprilie"
+
+#: ../../application/modules/opac/views/scripts/banniere.phtml:4
+#: ../../library/ZendAfi/View/Helper/TagBanniere.php:43
+msgid "banniere du site"
+msgstr "banner site"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:14
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:14
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:20
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:16
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:22
+msgid "commence par"
+msgstr "începe cu"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:15
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:15
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:17
+msgid "contient"
+msgstr "conţine"
+
+#: ../../library/Class/Calendar.php:27 ../../library/Class/Calendar.php:28
+msgid "dim"
+msgstr "dum"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:30
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:35
+msgid "dim."
+msgstr "dum."
+
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:63
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:89
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:68
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:94
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:120
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:88
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:114
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:84
+#: ../../application/modules/admin/views/scripts/cms/newsform.phtml:110
+msgid "du"
+msgstr "de la"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:46
+#: ../../library/Class/Calendar.php:46 ../../library/Class/Calendar.php:47
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:51
+msgid "décembre"
+msgstr "decembrie"
+
+#: ../../application/modules/opac/views/scripts/java/slide_show.phtml:25
+msgid "défilement à droite"
+msgstr "defilare la dreapta"
+
+#: ../../application/modules/opac/views/scripts/java/slide_show.phtml:24
+msgid "défilement à gauche"
+msgstr "defilare la stânga"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:119
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:147
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:155
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:171
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:170
+msgid "déplier"
+msgstr "depliere"
+
+#: ../../application/modules/opac/controllers/RechercheController.php:355
+#: ../../application/modules/opac/controllers/RechercheController.php:375
+#: ../../application/modules/opac/controllers/RechercheController.php:400
+#, php-format
+msgid "entre %s et %s"
+msgstr "între %s şi %s"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:14
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:25
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:36
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:47
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:58
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:69
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:103
+msgid "et"
+msgstr "şi"
+
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:56
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:58
+#: ../../library/ZendAfi/View/Helper/Permalink.php:20
+msgid "fermer cette fenêtre"
+msgstr "închideţi această fereastră"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:168
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:201
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:208
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:218
+#: ../../library/ZendAfi/View/Helper/Accueil/Base.php:233
+#, php-format
+msgid "flux RSS de la boite %s"
+msgstr "flux RSS al casetei %s"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:36
+#: ../../library/Class/Calendar.php:36 ../../library/Class/Calendar.php:37
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:41
+msgid "février"
+msgstr "februarie"
+
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:32
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:33
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:39
+msgid "icone"
+msgstr "icon "
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:23
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:30
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:23
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:30
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:29
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:36
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:38
+msgid "indice commence par"
+msgstr "indiciul începe cu "
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:35
+#: ../../library/Class/Calendar.php:35 ../../library/Class/Calendar.php:36
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:40
+msgid "janvier"
+msgstr "ianuarie"
+
+#: ../../library/Class/Calendar.php:31 ../../library/Class/Calendar.php:32
+msgid "jeu"
+msgstr "joi"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:27
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:32
+msgid "jeu."
+msgstr "joi."
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:41
+#: ../../library/Class/Calendar.php:41 ../../library/Class/Calendar.php:42
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:46
+msgid "juillet"
+msgstr "iulie"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:40
+#: ../../library/Class/Calendar.php:40 ../../library/Class/Calendar.php:41
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:45
+msgid "juin"
+msgstr "iunie"
+
+#: ../../application/modules/admin/views/scripts/bib/localisationsmaj.phtml:161
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:56
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:66
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:52
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:62
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:49
+#: ../../application/modules/admin/views/scripts/catalogue/form.phtml:59
+msgid "jusqu'à"
+msgstr "până la"
+
+#: ../../application/modules/admin/controllers/BibController.php:394
+#: ../../application/modules/admin/controllers/BibController.php:507
+#: ../../application/modules/admin/controllers/BibController.php:402
+#: ../../application/modules/admin/controllers/BibController.php:515
+msgid "le libellé est obligatoire."
+msgstr "specificaţia este obligatorie."
+
+#: ../../application/modules/opac/views/scripts/blog/readavis.phtml:10
+#, php-format
+msgid "le: %s"
+msgstr "în data de: %s"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:24
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:24
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:30
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:37
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:32
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:39
+msgid "libellé commence par"
+msgstr "specificaţia începe cu"
+
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:25
+#: ../../library/ZendAfi/View/Helper/admin/TagListeSuggestion.php:32
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:25
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:32
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:31
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:38
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:33
+#: ../../library/ZendAfi/View/Helper/Admin/TagListeSuggestion.php:40
+msgid "libellé contient"
+msgstr "specificaţia conţine"
+
+#: ../../library/Class/Calendar.php:28 ../../library/Class/Calendar.php:29
+msgid "lun"
+msgstr "lun"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:24
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:29
+msgid "lun."
+msgstr "lun."
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:39
+#: ../../library/Class/Calendar.php:39 ../../library/Class/Calendar.php:40
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:44
+msgid "mai"
+msgstr "mai"
+
+#: ../../library/Class/Calendar.php:29 ../../library/Class/Calendar.php:30
+msgid "mar"
+msgstr "mar"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:25
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:30
+msgid "mar."
+msgstr "mar."
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:37
+#: ../../library/Class/Calendar.php:37 ../../library/Class/Calendar.php:38
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:42
+msgid "mars"
+msgstr "martie"
+
+#: ../../library/Class/Calendar.php:30 ../../library/Class/Calendar.php:31
+msgid "mer"
+msgstr "mie"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:26
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:31
+msgid "mer."
+msgstr "mie."
+
+#: ../../application/modules/opac/views/scripts/blog/readavis.phtml:15
+#, php-format
+msgid "note: %s"
+msgstr "notă: %"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:33
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:32
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:40
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:41
+msgid "notices trouvées"
+msgstr "instrucţiuni găsite"
+
+#: ../../application/modules/opac/controllers/PanierController.php:62
+msgid "nouveau panier"
+msgstr "coş nou"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:45
+#: ../../library/Class/Calendar.php:45 ../../library/Class/Calendar.php:46
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:50
+msgid "novembre"
+msgstr "noiembrie"
+
+#: ../../application/modules/opac/views/scripts/abonne/prets.phtml:7
+#: ../../library/Class/NoticeHtml.php:291
+#: ../../application/modules/opac/views/scripts/abonne/reservations.phtml:7
+#: ../../library/Class/NoticeHtml.php:296
+#: ../../library/Class/NoticeHtml.php:287
+msgid "n°"
+msgstr "nr."
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:44
+#: ../../library/Class/Calendar.php:44 ../../library/Class/Calendar.php:45
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:49
+msgid "octobre"
+msgstr "octombrie"
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:15
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:26
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:37
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:48
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:59
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:70
+msgid "ou"
+msgstr "sau"
+
+#: ../../application/modules/opac/views/scripts/blog/readavis.phtml:6
+#, php-format
+msgid "par: %s"
+msgstr "de: %s"
+
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:33
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:34
+#: ../../library/ZendAfi/View/Helper/ReseauxSociaux.php:40
+msgid "partager sur"
+msgstr "împărtăşiţi pe "
+
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:146
+#: ../../library/ZendAfi/View/Helper/MenuHorizontal.php:33
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:145
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:159
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:214
+#: ../../library/ZendAfi/View/Helper/MenuHorizontal.php:36
+#: ../../library/ZendAfi/View/Helper/Accueil/MenuVertical.php:246
+#, php-format
+msgid "pictogramme pour %s"
+msgstr "pentru %s"
+
+#: ../../library/ZendAfi/View/Helper/TagObjetsImgProperties.php:29
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:109
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:112
+#: ../../library/ZendAfi/View/Helper/Admin/ImageViewersOptions.php:114
+msgid "propriétés de l'objet"
+msgstr "proprietăţi ale obiectului"
+
+#: ../../library/Class/Calendar.php:33 ../../library/Class/Calendar.php:34
+msgid "sam"
+msgstr "sâm"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:29
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:34
+msgid "sam."
+msgstr "sâm."
+
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:16
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:27
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:38
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:49
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:60
+#: ../../application/modules/opac/views/scripts/recherche/avancee.phtml:71
+msgid "sauf"
+msgstr "cu excepţia"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:43
+#: ../../library/Class/Calendar.php:43 ../../library/Class/Calendar.php:44
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:48
+msgid "septembre"
+msgstr "septembrie"
+
+#: ../../library/Class/NoticeHtml.php:753
+#: ../../library/Class/NoticeHtml.php:760
+#: ../../library/Class/NoticeHtml.php:771
+#: ../../library/Class/NoticeHtml.php:762
+msgid "source"
+msgstr "sursă"
+
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:71
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:123
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:99
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:151
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:107
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:159
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:108
+#: ../../library/ZendAfi/View/Helper/ListeNotices.php:175
+msgid "support"
+msgstr "suport"
+
+#: ../../library/ZendAfi/View/Helper/admin/ProfileSelect.php:146
+#: ../../library/ZendAfi/View/Helper/ComboCodification.php:40
+#: ../../library/ZendAfi/View/Helper/Admin/ProfileSelect.php:146
+msgid "toutes"
+msgstr "toate"
+
+#: ../../application/modules/admin/views/scripts/cms/_article_country_flag.phtml:5
+#, php-format
+msgid "traduction %s"
+msgstr "traducere %s"
+
+#: ../../library/Class/Calendar.php:32 ../../library/Class/Calendar.php:33
+msgid "ven"
+msgstr "vin"
+
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:28
+#: ../../library/ZendAfi/View/Helper/DatePicker.php:33
+msgid "ven."
+msgstr "vin."
+
+#: ../../library/ZendAfi/View/Helper/Avis.php:50
+#: ../../library/ZendAfi/View/Helper/Avis.php:52
+#: ../../library/ZendAfi/View/Helper/Avis.php:54
+msgid "vignette de la notice"
+msgstr "etichetă a instrucţiunii"
+
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:78
+#: ../../library/ZendAfi/View/Helper/Accueil/Sito.php:76
+#, php-format
+msgid "vignette du site %s"
+msgstr "etichetă a sitului"
+
+#: ../../library/ZendAfi/View/Helper/BoutonIco.php:74
+msgid "Êtes vous sûr de vouloir supprimer cet élément ?"
+msgstr "Sunteţi sigur(ă) că vreţi să ştergeţi acest element ?"
+
+#: ../../library/Class/Cms.php:617 ../../library/Class/Cms.php:545
+msgid "êtes vous sûr de vouloir supprimer cette catégorie ?"
+msgstr "Sunteţi sigur(ă) că vreţi să ştergeţi această categorie?"

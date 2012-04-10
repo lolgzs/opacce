@@ -1,0 +1,11 @@
+<script>
+	parent.hidePopWin(false);
+	<?php
+		if($this->reload=="SITE") print('parent.window.location=parent.document.location.href;');
+		else 
+		{
+			$args= $this->id_module.',"'.$this->libelle.'","'.$this->picto.'","'.$this->properties.'"';	
+			echo 'parent.retourMajProprietes('.$args.')';
+		}
+	?>
+</script>

@@ -1,0 +1,7 @@
+<?php foreach($this->sitos as $sito)
+{
+	$this->openBoite($sito["TITRE"]);
+  printf('%s<br/><br/><a href="%s" target="_blank">%s</a>', $sito["DESCRIPTION"], $sito["URL"], $this->_('Voir le site'));
+	$this->closeBoite();
+}
+?>

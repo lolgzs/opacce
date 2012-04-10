@@ -1,0 +1,31 @@
+<?php if (!empty($this->articles)) { ?>
+	<h2><?php echo $this->_('Actualités :') ?> </h2>
+
+	<?php
+	$news_bib = array();
+
+	foreach($this->articles as $article) {
+		// Nom de la ville
+		if ($bib = $article->getBib())
+			$ville = $bib->getVille();
+		else 
+			$ville = "Portail";
+
+		if (!array_key_exists($ville, $news_bib))
+			$news_bib[$ville] = array();
+
+		$news_bib[$ville][] = $article;
+	}
+
+	ksort($news_bib);
+
+	foreach($news_bib as $bib => $events)	{
+		echo ('<ul><h2>'.$bib.'</h2>');
+		foreach($events as $art) 	{
+			echo sprintf('<li><a href="%s" target="_parent">%s</a></li>',
+									 $this->url($art->getUrl()),
+									 $art->getTitre());
+		}
+		echo('</ul>');
+	}
+}?>

@@ -1,0 +1,41 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS ?>rating/jquery.rating.css">
+<script src="<?php echo JQUERY; ?>" type="text/javascript"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>rating/jquery.rating.pack.js"> </script>
+
+<center>
+	<h1><?php echo $this->_("Exprimez votre avis."); ?></h1>
+	<br>
+	<div class="formTable">
+		<?php if($this->message)echo '<p class="error">'.$this->message.'</p>'; ?>
+		<form name="form" id="form" action="<?php echo $this->action ?>" method="post">
+			<fieldset>
+				<legend><?php echo $this->_('Votre avis') ?></legend>
+				<br>
+				<table cellspacing="2">
+
+					<tr>
+            <td class="droite"><?php echo $this->_("Signature"); ?></td>
+            <td class="gauche"><input type="text" size="30"	value="<?php echo $this->avisSignature; ?>" name="avisSignature">
+							<input type="hidden" value="<?php echo $this->id; ?>" name="id" />
+						</td>
+					</tr>
+					<tr>
+            <td class="droite"><?php echo $this->_("Note"); ?></td>
+						<td class="gauche"><?php echo $this->tagRating("avisNote", $this->avisNote,"false") ?></td>
+					</tr>
+					<tr>
+            <td class="droite"><?php echo $this->_("Titre"); ?></td>
+            <td class="gauche"><input type="text" size="50" value="<?php echo $this->avisEntete; ?>" name="avisEntete"></td>
+					</tr>
+					<tr>
+            <td class="droite" valign="top"><?php echo $this->_("Votre avis"); ?></td>
+            <td class="gauche"><textarea cols="40" rows="4" name="avisTexte"><?php echo $this->avisTexte; ?></textarea></td>
+					</tr>
+
+				</table>
+			</fieldset>
+			<?php echo $this->formSubmit("","Valider",array("class" => "bouton")) ?>
+		</form>
+		<br>
+	</div>
+</center>

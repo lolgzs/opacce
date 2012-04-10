@@ -1,0 +1,74 @@
+<?php 
+echo '<link rel="stylesheet" type="text/css" media="screen" href="'. URL_ADMIN_CSS.'subModal.css" />';
+echo '<script type="text/javascript">sPathIco="'.$this->path_img.'";nIdProfil='.$this->id_profil.';nIdBib='.($this->id_bib == 'ALL' ? 'null' : $this->id_bib).'</script>';
+echo '<script type="text/javascript" src="'. URL_ADMIN_JS.'common.js"> </script>';
+echo '<script type="text/javascript" src="'.URL_ADMIN_JS.'subModal.js'.'" > </script>';
+echo '<script type="text/javascript" src="'.URL_ADMIN_JS.'controle_maj.js"></script>';
+echo '<script type="text/javascript" src="'.URL_ADMIN_JS.'config_menu.js'.'"> </script>';
+
+// Parametres des modules
+$cls_menu=new Class_Systeme_ModulesMenu();
+echo '<script type="text/javascript">'.$cls_menu->getStructureJavaScript().'</script>';
+
+?>
+
+<?php echo $this->partial('profil/_profil_panel.phtml',
+													array('profil' => $this->profil)); ?>
+
+<div class="form" align="center">
+<form id="form_menu" name="form" action="<?php echo $this->url(array('action' => 'menusmaj', 'id_menu' => $this->id_menu, 'mode' => 'valider')); ?>" method="post">
+	
+<fieldset><legend><?php echo $this->traduire('Description'); ?> </legend>
+	<br/>
+	<div class="formTable">
+		<table>
+			<tr>
+				<td class="droite" style="width:120px;"><?php echo $this->traduire('Libellé'); ?></td>
+				<td class="gauche"><input type="text" name="libelle" size="50" maxlength="70" value="<?php echo $this->menu["libelle"] ?>" /></td>
+			</tr>
+			<tr>
+				<td class="droite" style="width:120px;"><?php echo $this->traduire('Pictogramme'); ?></td>
+				<td><?php echo $this->ChoixPictogramme("menus","picto",$this->id_profil,$this->menu["picto"]); ?></td>
+			</tr>
+		</table>
+	</div>
+</fieldset>
+
+<br/>
+<fieldset><legend><?php echo $this->traduire('Entrées'); ?> </legend>
+	<br/>
+	<div class="formTable" id="menu_container">
+		<div class="fonction_menu" onclick="addMenu()">&raquo;&nbsp;Ajouter une entrée</div>
+<?php
+
+// Affichage des 
+if(!array_isset('menus', $this->menu) or !count($this->menu["menus"]))
+	$menus[0]=array("picto" => "vide.gif","libelle" => "** nouvelle entrée **","type_menu" => "MENU");
+else 
+	$menus=$this->menu["menus"];
+
+foreach($menus as $menu) 
+	echo $this->blocMenu($this->path_img,"module",$menu,false,$this->browser);
+
+?>
+	</div>
+</fieldset>
+
+<br/>
+<table>
+	<tr>		
+    <td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V',"javascript=saveMenu();"); ?> </td>
+		<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.$this->url(array('action' => 'menusindex')), 'largeur=120px'); ?></td>
+	</tr>
+</table>
+
+</form>
+</div>
+
+
+<?php
+// Creer un menu et un sous_menu vide
+print($this->blocMenu($this->path_img,"menu_vide",array("picto" => "vide.gif","libelle" => "** nouvelle entrée **","type_menu" =>"MENU"),false,$this->browser));
+print($this->blocMenu($this->path_img,"sous_menu_vide",array("picto" => "vide.gif","libelle" => "** nouveau sous-menu **","type_menu" =>"ACCUEIL"),true,$this->browser));
+
+?>

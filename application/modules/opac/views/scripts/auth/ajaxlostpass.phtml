@@ -1,0 +1,48 @@
+<script>
+function getUsername()
+{
+    oUser = document.getElementById('username');
+    username = oUser.value;
+    var url = window.location.href="lostpass?id="+username;
+    return(url);
+}
+</script>
+<center>
+<h1><?php echo $this->_('Mot de passe oublié') ?></h1>
+<div class="formTable">
+<?php
+// Message final
+if($this->message_mail)
+{
+	echo '<div align="center">'.$this->message_mail;
+	echo '<input type="button" value="Ok" class="bouton" onclick="parent.window.hidePopWin(false);">';
+	echo '</div>';
+}
+
+// Saisie nom d'utilisateur
+else
+{
+	if($this->message) echo '<p class="erreur">'.$this->message.'</p>'; else echo BR;
+?>
+	<p style="margin-top:0px"><?php echo $this->_('Après reconnaissance de votre identifiant, un mail vous sera envoyé avec vos paramètres de connexion.') ?></p>
+	<form name="form" action="<?php echo BASE_URL ?>/opac/auth/ajaxlostpass"	method="post">
+
+	<fieldset>
+			<legend><?php echo $this->_('Votre identité s.v.p.') ?></legend>
+			<table cellspacing="2">
+    		
+    		<tr height="50px">
+    			<td class="droite" width="35%"><?php echo $this->_('Identifiant') ?>&nbsp;</td>
+    			<td class="gauche"><input type="text" name="username" id="username" value=""></td>
+    		</tr>
+			
+			</table>
+	</fieldset>
+<?php
+	echo $this->formSubmit("",$this->_("Valider"),array("class" => "bouton"));
+}
+?>
+
+</form>
+</div>
+</center>

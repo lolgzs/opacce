@@ -1,0 +1,43 @@
+<li class='categorie'>
+		<div><img src="<?php echo URL_ADMIN_IMG ?>ico/cat.gif" alt="Catégorie" /></div>
+		<div><?php echo $this->categorie->getLibelle(); ?></div>
+		<?php 
+			$cat_actions = array(
+													 array('action' => 'add_categorie_to', 'icon' => 'add_cat.gif', 'help' => 'Ajouter une sous catégorie'),
+													 array('action' => 'add_album_to', 'icon' => 'add_news.gif', 'help' => 'Ajouter un album'),
+													 array('action' => 'edit_categorie', 'icon' => 'edit.gif', 'help' => 'Modifier la catégorie'));
+
+		  $delete_action = array('icon' => 'del.gif', 'help' => 'Supprimer la catégorie');
+			if (!$this->categorie->hasSousCategories() and !$this->categorie->hasAlbums())
+			  $delete_action['action'] = 'delete_categorie';
+			else
+			  $delete_action['onclick'] = "alert('Suppression non autorisée: cette catégorie n\'est pas vide')";
+
+			$cat_actions []= $delete_action;
+
+			echo $this->partial('album/_actions.phtml', 
+													 array('actions' => $cat_actions, 
+																 'id' => $this->categorie->getId()));
+
+
+		 if ($categories = $this->categorie->getSousCategories()) {
+				echo '<ul>';
+				echo $this->partialCycle('album/_categorie.phtml', 
+																 'categorie',
+																 $categories,
+																 array('first', 'second')); 
+				echo '</ul>';
+			}
+
+
+		 if ($albums = $this->categorie->getAlbums()) {
+			 echo '<ul>';
+			 echo $this->partialCycle('album/_album.phtml', 
+																'album',
+																$albums,
+																array('first', 'second')); 
+			 echo '</ul>';
+	 }
+ ?>
+</li>
+

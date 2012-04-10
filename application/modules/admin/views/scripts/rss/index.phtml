@@ -1,0 +1,24 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS?>popup.css" />
+<script src="<?php echo URL_ADMIN_JS?>rss.js"> </script>
+
+<?php
+echo $this->profileSelect('rss',$this->id_zone,$this->id_bib,'zb',0,true,false);
+
+// Messages
+if(!$this->id_bib) echo ("<br /><p align='center' class='error'>Aucune bibliothèque trouvée dans ce territoire</b></p>");
+else echo ('<center><div align="center"><br />'.$this->bouton('id=c_19','picto=add.gif','texte='.$this->traduire('Ajouter une catégorie').'','url='.BASE_URL.'/admin/rss/catadd','largeur=220px').'</div></center>');
+if(!$this->rss and $this->id_bib) echo ("<br /><p align='center' class='error'>Aucune catégorie trouvée pour le critères spécifiés.</b></p>");
+echo $this->rss;
+
+if($_SESSION["MENU_DEPLOY"]["RSS"])
+{
+    $menus = array_reverse($_SESSION["MENU_DEPLOY"]["RSS"]);
+    echo '<script>';
+    foreach($menus as $menu_deploy)
+    {
+        echo "show('sm_".$menu_deploy."');";
+    }
+    echo '</script>';
+}
+?>
+<div id="ajax"></div>

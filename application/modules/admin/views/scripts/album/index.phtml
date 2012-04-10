@@ -1,0 +1,22 @@
+<?php
+echo $this->bouton('id=add_category',
+									 'picto=add.gif',
+									 'texte=' . $this->traduire('Ajouter une collection'),
+									 'url=' . $this->url(array('action' => 'add_categorie',
+																					 'id' => null))
+);
+
+
+echo $this->form_import_ead;
+?>
+
+
+
+<ul class="tree">
+	<?php
+		echo $this->partialCycle('album/_categorie.phtml',
+														 'categorie',
+														 $this->categories,
+														 array('first', 'second'));
+	?>
+</ul>

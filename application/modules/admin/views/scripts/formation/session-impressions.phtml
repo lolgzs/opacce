@@ -1,0 +1,35 @@
+<?php
+echo $this->partial('formation/_formation_panel.phtml',
+										array('formation' => $this->session->getFormation()));
+?>
+
+<div class="impressions tree">
+	<?php foreach($this->impressions as $libelle => $impressions) { ?>
+	<div><?php echo $libelle ?>
+		<span class="actions">
+		<?php
+			 echo $this->tagAnchor('#', $this->boutonIco("type=edit"));
+			 echo $this->tagAnchor(array('action' => $impressions['action']),
+															 $this->boutonIco("picto=picto/printer.png", "bulle=Imprimer"));
+		?>
+		</span>
+
+		<?php 
+			echo sprintf('<div class="fusion_form" style="display:none">%s</div>', 
+									 $this->renderForm($impressions['form'])); 
+		?>
+	</div>
+  <?php } ?>
+</div>
+
+
+<?php
+Class_ScriptLoader::getInstance()->addJQueryReady(
+'$("div.impressions .actions a:first-child").click(function(event){
+    event.preventDefault();
+    $(this).closest("div").find(".fusion_form").slideToggle();
+});
+
+$("div.impressions .actions a:first-child + a").attr("target", "_blank")'
+);
+?>

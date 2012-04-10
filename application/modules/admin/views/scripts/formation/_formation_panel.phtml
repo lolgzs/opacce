@@ -1,0 +1,17 @@
+<?php
+if ($this->formation) {
+?>
+
+<div class="formations form">
+	 <ul class="tree">
+		 <?php
+				echo $this->partial('formation/_formation.phtml',
+		                        array('formation' => $this->formation));
+		 ?>
+	 </ul>
+	 <div class="clear"></div>
+</div>
+
+<?php
+}
+?>

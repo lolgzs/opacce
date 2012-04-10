@@ -1,0 +1,67 @@
+<?php
+if (!isset($this->show_content)) {
+	$this->show_content = 'FullContent';
+}
+
+$titre = '';
+
+if (
+		('FullContent' != $this->show_content)
+		|| !$this->article->getCacherTitre()
+		) {
+	$titre = $this->tagAnchor($this->url($this->article->getUrl()),	 
+														$this->article->getTitre());
+}
+
+echo $this->openBoite($titre);
+echo $this->tagEditArticle($this->article);
+?>
+
+<div class="auto_resize">
+	<?php
+		
+	echo $this->readSpeaker(
+													'cms',
+													'articleread',
+													array('id' => $this->article->getId())
+													);
+	echo $this->tagArticleEvent($this->article);
+
+	if ($this->show_content == 'Summary') { ?>
+	<?php echo $this->article->getSummary();?>
+	<br /><?php
+		echo $this->tagAnchor(
+													$this->url($this->article->getUrl()),
+													$this->_("Lire l'article complet")
+	);?>
+	<?php }
+
+	if ($this->show_content == 'FullContent') { ?>
+	<?php echo $this->article->getFullContent();?>
+	<?php } ?>
+	<!-- RSPEAK_STOP -->
+
+	<?php if ($this->show_content == 'FullContent') { ?>
+	<div id="reseaux-sociaux-<?php echo $this->article->getId();?>">
+	<?php echo $this->tagImg(URL_IMG . 'patience.gif');?>
+</div>
+<script type="text/javascript">
+			$('#reseaux-sociaux-<?php echo $this->article->getId();?>').load('<?php
+				echo $this->url(array(
+					'controller'	=> 'cms',
+					'action'			=> 'reseau',
+					'id_article'	=> $this->article->getId()
+				));
+			?>');
+		</script>
+	<?php } ?>
+
+	<?php if (1 == $this->article->getAvis()) { ?>
+		<?php
+		$class_avis = new Class_Avis();
+		echo $class_avis->rendHtmlBlockAvis($this->article->getId());
+		?>
+	<?php } ?>
+</div>
+
+<?php echo $this->closeBoite(); ?>

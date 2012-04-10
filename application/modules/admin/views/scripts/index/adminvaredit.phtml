@@ -1,0 +1,30 @@
+<center>
+<div class="form" align="center">
+<form name="form" action="<?php echo BASE_URL ?>/admin/index/adminvaredit" method="post">
+<fieldset>
+<legend><?php echo $this->traduire('Variable'); ?></legend>
+<br />
+<div class="formTable">
+<table cellspacing="2">
+  <tr>
+    <td class="droite"><?php echo $this->var_cle; ?></td>
+    <td class="gauche"><?php echo $this->tuto;?></td>
+  </tr>
+   <tr>
+    <td class="droite">Nouvelle valeur</td>
+    <td class="gauche"><textarea rows="10" name="valeur"><?php echo $this->var_valeur; ?></textarea></td>
+  </tr>
+</table><br />
+</div>
+<input type="hidden" name="cle" value="<?php echo $this->var_cle; ?>" />
+</fieldset><br>
+
+<table>
+<tr>
+    <td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+    <td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/index/adminvar','largeur=120px'); ?></td>
+</tr>
+</table>
+</form>
+</div>
+</center>

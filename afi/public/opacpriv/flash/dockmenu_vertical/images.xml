@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+This is the XML from which the SWF file reads the following data:
+
+image - the thumb image in the menu.
+bigimage - the big image shown in Lightbox;  ignore it if you're not using Lightbox
+url - the address to go to when clicking the image
+target - _self - opens the url in the same browser page
+	 - _blank - opens the url in a new browser page
+	- a number - executes _root.gotoAndPlay(number); in Flash - available only in the commercial package
+lightboxInfo - the description for the bigimage;  ignore it if you're not using Lightbox
+
+The tooltip text is recorded as CDATA. You can use HTML tags like "<br>"
+-->
+<dockmenu>
+	<photo image="images/01.jpg" bigimage="images/big/01.jpg" url="javascript:GroupDelegate('img1')" target="_self" lightboxInfo="Optional description for image 1"><![CDATA[Hello!]]></photo>
+	<photo image="images/02.jpg" bigimage="images/big/02.jpg" url="javascript:GroupDelegate('img2')" target="_self" lightboxInfo="Optional description for image 2"><![CDATA[Download the new<br>Dock Menu]]></photo>
+	<photo image="images/03.jpg" bigimage="images/big/03.jpg" url="javascript:GroupDelegate('img3')" target="_self" lightboxInfo="Optional description for image 3"><![CDATA[for FREE]]></photo>
+	<photo image="images/04.jpg" bigimage="images/big/04.jpg" url="javascript:GroupDelegate('img4')" target="_self" lightboxInfo="Optional description for image 4"><![CDATA[This menu has a bunch<br>of options]]></photo>
+	<photo image="images/05.jpg" bigimage="images/big/05.jpg" url="javascript:GroupDelegate('img5')" target="_self" lightboxInfo="Optional description for image 5"><![CDATA[Test them below]]></photo>
+	<photo image="images/06.jpg" bigimage="images/big/06.jpg" url="javascript:GroupDelegate('img6')" target="_self" lightboxInfo="Optional description for image 6"><![CDATA[You can customize it<br>completely without Flash...]]></photo>
+	<photo image="images/07.jpg" bigimage="images/big/07.jpg" url="javascript:GroupDelegate('img7')" target="_self" lightboxInfo="Optional description for image 7"><![CDATA[through FlashVars in HTML]]></photo>
+</dockmenu>

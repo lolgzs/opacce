@@ -1,0 +1,100 @@
+<table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+	<tr>
+		<td width="24%" rowspan="2"><img src="<?php echo $this->global_map_path; ?>" height="390" border="0" usemap="#Map"></td>
+		<td width="76%" valign="top" align="right">
+			<br>
+
+			<?php $this->openBoite($this->_("Rechercher un livre, un disque, une vidéo")); ?>
+			<form action="<?php echo BASE_URL; ?>/recherche/simple?geo_zone=reset" method="post" name="recherche" id="recherche" style="text-align:left">
+				<input type="textfield" name="expressionRecherche" id="expressionRecherche" value="" style="width:250px;"/>
+				&nbsp;
+				<input name="button" type="submit" class="submit" value=""/>
+				<br />
+				<?php echo $this->_('Dans tous les territoires.') ?>
+			</form>
+			<?php $this->closeBoite(); ?>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" align="right"> 
+			<br />
+
+			<?php $this->openBoite("Légende")?>
+
+			<table width="98%" border="0" cellspacing="3" cellpadding="0">
+				<tr>
+					<td width="50%">
+						<table>
+							<?php
+								foreach($this->zones as $zone)
+								{
+									echo'<tr>';
+									echo'<td width="25px"><div style="width:20px;height:20px;background-color:'.$zone->getCouleur().'"></div></td>';
+									echo sprintf('<td><a class="tooltip_bib%d" href="%s">%s</a></td>',
+															 $zone->getId(),
+															 $this->url(array('action' => 'zoneview', 
+																								'id' => $zone->getId())),
+															 $zone->getLibelle());
+									echo'</tr>';
+								}
+							?>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<?php $this->closeBoite(); ?>
+
+		</td>
+	</tr>
+</table>
+<div id="navtxt" style="position:absolute; top:-100px; left:0px; visibility:hidden;width:300px;" class="navtext"></div>
+
+
+<map name="Map">
+	<?php 
+		foreach($this->zones as $i => $zone) 
+			echo sprintf('<area class="tooltip_bib%d" shape="poly" coords="%s" href="%s"></area>',
+									 $i+1,
+									 $zone->getMapCoords(),
+									 $this->url(array('action' => 'zoneview', 'id' => $zone->getId())));
+	?>
+</map>
+
+<link rel="stylesheet" href="<?php echo URL_ADMIN_JS?>tooltip/jquery.tooltip.css" />
+<script src="<?php echo URL_ADMIN_JS ?>tooltip/jquery.js" type="text/javascript"></script>
+<script src="<?php echo URL_ADMIN_JS ?>tooltip/jquery.bgiframe.js" type="text/javascript"></script>
+<script src="<?php echo URL_ADMIN_JS ?>tooltip/jquery.dimensions.js" type="text/javascript"></script>
+<script src="<?php echo URL_ADMIN_JS ?>tooltip/jquery.tooltip.min.js" type="text/javascript"></script>
+
+<script type='text/javascript'>
+		var setTooltip = function(element, text) {
+			$(element).tooltip({ 
+				bodyHandler: function() { 
+						return text; 
+					}, 
+				showURL: false,
+				blocked: true
+			}) 
+		}
+
+		$(document).ready(function() {
+		    <?php
+				foreach($this->zones as $i => $zone) {
+					$visible_bibs= $zone->getVisibleBibs();
+					$legend = '';
+					foreach ($visible_bibs as $bib)
+						$legend .= sprintf('<a href="%s"><b>%s</b></a><br />', 
+															 $bib->getUrl(),
+															 addslashes($bib->getLibelle()));
+					echo sprintf("setTooltip($('.tooltip_bib%d'), '%s');", $i+1, $legend);
+				}
+				?>
+		});
+</script>
+
+<br /><br />
+
+<?php
+	echo $this->partial('bib/_articles_by_bib.phtml', 
+											array('articles' => $this->articles));
+?>

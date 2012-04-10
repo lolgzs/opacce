@@ -1,0 +1,22 @@
+<center>
+<h1>Propriétés de l'entrée de menu</h1><br>
+<div class="formTable">
+	<?php if($this->erreur) echo '<p class="erreur">'.$this->erreur.'</p>'; ?>
+	<form method="post" action="<?php echo htmlspecialchars($this->url) ?>">
+			
+			<fieldset>
+			<legend>Ligne de menu</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Libellé&nbsp;</td>
+    			<td class="gauche"><input type="text" name="libelle" size="40" value="<?php print($this->libelle); ?>"></td>
+    		</tr>
+    		
+    		<tr>
+    			<td valign="top" class="droite">Pictogramme&nbsp;</td>
+    			<td><?php echo $this->ChoixPictogramme("menus","picto",$this->id_profil_maj,$this->picto); ?></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>

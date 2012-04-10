@@ -1,0 +1,44 @@
+<center>
+<div class="form" align="center" >
+	<form name="form" action="<?php print(BASE_URL.'/admin/bib/plansmaj/id_plan/'.$this->id_plan.'?id_bib='.$this->id_bib) ?>" method="post">
+
+		<fieldset>
+			<legend><?php echo $this->traduire('Plan'); ?> </legend>
+			<?php
+			if($this->erreurs)
+			{
+				echo '<p class="error">';
+				foreach($this->erreurs as $erreur) print($erreur.BR);
+				echo '</p>';
+			}
+			?>
+			<table border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td class="droite" style="width:150px;">Libellé</td>
+					<td class="gauche"><input type="text" name="LIBELLE"style="width:100%" value="<?php echo $this->escape(trim($this->plan["LIBELLE"]));?>" maxlength="100"/></td>
+				</tr>
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Description'); ?></td>
+					<td class="gauche"><TEXTAREA name="DESCRIPTION" rows="4" cols="42"><?php echo $this->escape(trim($this->plan["DESCRIPTION"]));?></TEXTAREA></td>
+				</tr>
+				</table>
+		</fieldset>
+
+				<fieldset>
+				<legend><?php echo $this->traduire('Image'); ?></legend>
+				<table>
+					<tr>
+						<td class="droite"><?php echo $this->tagUpload("IMAGE","plan_bib",$this->plan["IMAGE"]) ?></td>
+					</tr>
+				</table>
+			</fieldset>
+
+		<table>
+			<tr>
+				<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+				<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=29','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/bib/plans?id_bib='.$this->id_bib,'largeur=120px'); ?></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</center>

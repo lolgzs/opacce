@@ -1,0 +1,41 @@
+<p style="color:#0058A5;font-weight:bold;margin-top:20px"><?php echo $this->_('Localisation') . ' : ' . $this->category->getBib()->getLibelle(); ?></p>
+<center>
+	<div class="form" style="text-align:center;">
+		<div class="formTable">
+			<form name="form" action="<?php echo $this->url();?>" method="post">
+			<span class="error"><?php echo implode('<br/>', $this->category->getErrors()); ?></span>
+			<fieldset>
+				<legend><?php echo $this->traduire('Catégorie'); ?></legend>
+				<table>
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Nom'); ?>*</td>
+						<td class="gauche">
+							<input type="text" id="libelle" name="libelle" maxlength="80" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape(trim($this->category->getLibelle()));?>" style="width:536px;"/>
+						</td>
+					</tr>
+					<?php if ($this->combo_cat) { ?>
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Catégorie parente') ?></td>
+						<td class="gauche"><?php echo $this->combo_cat ;?></td>
+					</tr>
+					<?php } ?>
+					<tr>
+						<td colspan="2" align="center">
+							<table>
+								<tr>
+									<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+									<td align="left" style="padding-left:5px;"> <?php	echo $this->bouton('id=c_2', 'picto=del.gif', 'texte=Annuler', 'url='.BASE_URL.'/admin/cms', 'largeur=120px'); ?></td>
+								</tr>
+							</table>
+						</tr>
+					</table>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</center>
+
+<script>
+oField = document.getElementById('libelle');
+oField.focus();
+</script>

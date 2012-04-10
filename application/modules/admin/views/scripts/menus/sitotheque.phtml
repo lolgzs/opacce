@@ -1,0 +1,25 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+			
+<br>
+<fieldset>
+	<legend>Sites</legend>
+	<div	id="table_selection">
+		<?php	
+			 echo $this->treeSelect(
+													$this->preferences["id_items"],
+													$this->preferences["id_categorie"],
+													true,
+													BASE_URL.'/admin/bib/allitems?id_bib='.$this->id_bib.'&type=sito',
+													"form");
+		?>							
+	</div>
+	<table cellspacing="2">
+		<tr>
+			<td class="droite">Nbre à afficher&nbsp;</td>
+			<td class="gauche"><input type="text" name="nb" size="2" maxlength="2" value="<?php print($this->preferences["nb"]); ?>"></td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php echo $this->render('menus/_fin.phtml'); ?>

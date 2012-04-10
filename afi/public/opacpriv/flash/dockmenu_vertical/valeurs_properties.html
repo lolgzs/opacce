@@ -1,0 +1,13 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="140px">Animation automatique&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_autoScroll",$preferences["op_autoScroll"],"",array("false" => "non","true"=>"oui")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Zoom des images&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_imagesInfluence",$preferences["op_imagesInfluence"],100,500,5) ?></td>
+	</tr>
+
+</table>

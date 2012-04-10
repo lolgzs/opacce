@@ -1,0 +1,59 @@
+<?php $this->openBoite($this->_('Réservations en cours'));?>
+
+<div class="abonneTitre"><?php echo $this->escape($this->fiche["nom_aff"]);?></div>
+
+<table width="100%">
+	<tr>
+		<th style="text-align:left"><?php echo $this->_('n°');?></th>
+		<th style="text-align:left"><?php echo $this->_('Titre');?></th>
+		<th style="text-align:left"><?php echo $this->_('Auteur');?></th>
+		<th style="text-align:left"><?php echo $this->_('Etat');?></th>
+		<th style="text-align:center"><?php echo $this->_('Rang');?></th>
+		<th style="text-align:center;width:20px"><?php echo $this->_('Suppr.');?></th>
+	</tr>
+	<?php if ($this->fiche["message"]) { ?>
+	<tr>
+		<td colspan="5"><p class="error"><?php echo $this->fiche["message"];?></p></td>
+	</tr>
+	<?php } ?>
+	<?php if ($this->fiche["erreur"]) { ?>
+	<tr>
+		<td colspan="5"><p class="error"><?php echo $this->fiche["erreur"];?></p></td>
+	</tr>
+	<?php } ?>
+	<?php
+	if ($this->fiche["fiche"])	{
+		$resas = $this->fiche["fiche"]->getReservations();
+		$num=1;
+		foreach($resas as $resa)	{ ?>
+		<tr>
+		  <td width="15px" align="center"><b><?php echo $num++;?></b></td>
+			<td>
+						<?php echo $this->tagAnchor($this->url(array('controller' => 'recherche', 
+																											 'action' => 'viewnotice', 
+																											 'id' => $resa->getNoticeOPACId())), 
+																				 $resa->getTitre());
+						?>
+			</td>
+			<td><?php echo $this->escape(strip_tags($resa->getAuteur()));?></td>
+			<td style="text-align:left"><?php echo $this->escape($resa->getEtat());?></td>
+			<td style="text-align:center"><?php echo $this->escape($resa->getRang());?></td>
+			<td style="text-align:center">
+			  <?php
+			  echo $this->tagAnchor(
+															$this->url(array('id_delete' => $resa->getId())),
+															$this->tagImg(URL_IMG . 'bouton/cancel.gif', array(
+																									 'onclick' => 'return confirm(\''. str_replace("'", "\\'", $this->_('Etes vous sûr de vouloir supprimer cette réservation ?')) . '\')',
+																									 'title'		=> $this->_('Supprimer cette réservation'))));
+				?>
+			</td>
+			</tr>
+ <?php }}	?>
+</table>
+
+<?php $this->closeBoite();?>
+<div style="margin-top:5px">
+	<a href="<?php echo BASE_URL ?>/abonne/fiche"><?php echo $this->_('Retour') ?></a>
+</div>
+<br/>
+<br/>

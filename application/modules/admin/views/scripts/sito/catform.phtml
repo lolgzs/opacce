@@ -1,0 +1,35 @@
+<?php echo $this->BarreLocalisation($this->id_zone,$this->id_bib); ?>
+<center><div class="form" style="text-align:center;">
+<div class="formTable">
+<form name="form" action="<?php echo BASE_URL ?>/admin/sito/cat<?php echo $this->action; ?>" method="post">
+	<fieldset>
+	<legend><?php echo $this->traduire('Catégorie'); ?></legend>
+	<span id="abonne_erreur" class="abonne"><?php echo $this->message; ?></span>
+    <br />
+	<table>
+		<tr>
+			<td class="droite"><?php echo $this->traduire('Nom'); ?> *</td>
+			<td class="gauche"><input type="text" id="libelle" name="libelle" maxlength="80" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape(trim($this->cat->LIBELLE));?>" style="width:536px;" /></td>
+		</tr>
+        <tr>
+            <?php echo $combo_move; ?>
+        </tr>
+		<tr>
+			<td colspan="2" align="center"> <br />
+            <table>
+            <tr>
+                <td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+                <td align="left" style="padding-left:5px;">  <?php $url = 'url='.BASE_URL.'/admin/sito?z='.$this->sess_id_zone.'&b='.$this->sess_id_site; echo $this->bouton('id=c_2','picto=del.gif','texte=Annuler',$url,'largeur=120px'); ?></td>
+            </tr>
+            </table>
+		</tr>
+	</table>
+	<input type="hidden" name="id_cat" value="<?php echo $this->cat->ID_CAT; ?>" />
+	<input type="hidden" name="id_cat_mere" value="<?php echo $this->cat->ID_CAT_MERE; ?>" />
+	<br /></fieldset>
+</form></div></div><br></center>
+
+<script>
+oField = document.getElementById('libelle');
+oField.focus();
+</script>

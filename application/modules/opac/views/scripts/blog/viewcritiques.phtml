@@ -1,0 +1,13 @@
+<?php  
+$this->openBoite($this->title);
+if(is_array($this->liste_avis)) 
+{
+	$avis_to_show = array_slice($this->liste_avis, 0, $this->nb_aff);
+	$html_avis = array();
+	foreach($avis_to_show as $avis)
+		$html_avis []= $this->avis($avis);
+	echo implode('<div class="separator"></div>', $html_avis);
+}
+
+$this->closeBoite();
+?>

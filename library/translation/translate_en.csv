@@ -1,0 +1,907 @@
+// Site
+- Tous droits réservés - Hébergement & Conception graphique;- All Rights Reserved - 
+Accueil;Home
+Admin;Admin
+Bienvenue;Welcome
+Configuration;Configuration
+Entrez votre identifiant puis validez S.V.P.;Please provide a user name
+Entrez votre identité S.V.P.;Please login
+Erreur;Error
+Identifiant;User Name
+Il n'y a pas de contenu à afficher.;There is no content to display.
+L'accès au site est momentanément bloqué. Essayer plus tard.;Sorry, the site is down. Try again later.
+Ma belle bibliothèque;My beautiful library
+Menu de navigation;Navigation Menu
+Mises à jour;Update
+Modules;Modules
+Mot de passe incorrect;Login failed
+Mot de passe oublié ?;Lost password ?
+Mot de passe;Password
+Non;No
+Oui;Yes
+Personnalisation;Customize
+Problème d'accès à la base de données;Problem accessing the Database
+Recherche Avancée;Advanced Search
+Recherche Simple;Simple Search
+Recherche avancée;Advanced search
+Recherche;Search
+Retour au site;Back to the site
+S'enregistrer;Register
+S'identifier;Login
+Se connecter;Sign in
+Se déconnecter;Logout
+Statistiques;Statistics
+Système;System
+Valider;OK
+Veuillez vous adresser à un responsable de la bibliothèque.;Please notify a librarian.
+Votre bibliothèque;Your library
+Vous n'avez pas les privilèges appropriés;You don't have the appropriate privileges
+erreur;error
+non;no
+
+
+
+
+// User
+'Numéro de carte' et 'Ordre' ne sont pas valide;'Card Number' and 'Order' are not valid
+Action;Action
+Ajouter Utilisateurs;Add New Users
+Ajouter;Add
+Annuler;Cancel
+Cet identifiant existe déjà;That user name already exists
+Envoyer;Submit
+Gestion des utilisateurs;Manage Users
+Le champ 'Identifiant' doit être inférieur à 50 caractères;'User Name' needs to be less than 50 characters long
+Le champ 'Mot de passe' doit être inférieur à 50 caractères;'Password' needs to be less than 50 characters long
+Le champ 'Nom' doit être inférieur à 50 caractères;'Real Name' needs to be less than 50 characters long
+Modifier Utilisateurs;Modify Users
+Modifier;Edit
+Ne peut pas trouver l'utilisateur;Can not find the user
+Nom;Name
+Rôle;Role
+Supprimer Utilisateurs;Delete Users
+Supprimer;Delete
+Texte de défaut dans l'editeur;Default text in editor
+Utilisateurs;Users
+Vous devez compléter le champ 'Identifiant';You need to complete the 'User Name' field
+Vous devez compléter le champ 'Mot de passe';You need to complete the 'Password' field
+Vous devez compléter le champ 'Nom';You need to complete the 'Real Name' field
+admin;admin
+invité;guest
+membre;member
+Êtes vous sûr que vous voulez supprimer;Are you sure that you want to delete
+
+
+
+//CMS
+Ajouter Article;Add Article
+Ajouter Catégorie;Add Category
+Articles;Articles
+Catégorie;Category
+Contenu;Content
+Début;Start
+Evénement;Event
+Fin;End
+Gestionnaire de contenu;Manage Content
+La date de 'Début' n'est pas valide;'Start' date is not valid
+La date de 'Evénement' n'est pas valide;'Event' date is not valid
+La date de 'Fin' n'est pas valide;'End' date is not valid
+La date n'est pas valide;The date is not valid
+Le champ 'Nom de la catégorie' doit être inférieur à 50 caractères;'Name of the category' needs to be less than 50 characters long
+Le champ 'Titre' doit être inférieur à 100 caractères;'Title' needs to be less than 100 characters long
+Modifier Article;Modify Article
+Modifier Catégorie;Modify Category
+Nom de la catégorie;Name of the category
+Supprimer Article;Delete Article
+Supprimer Catégorie;Delete Category
+Séparer les mots-clés avec une virgule.;Seperate the keywords with a comma. 
+Titre;Title
+Vous devez compléter le champ 'Contenu';You need to complete the 'Content' field
+Vous devez compléter le champ 'Nom de la catégorie';You need to complete the 'Name of the category' field
+Vous devez compléter le champ 'Titre';You need to complete the 'Title' field
+août;August
+avril;April
+dim.;Sun
+décembre;December
+et tous les articles dans le categorie;and all the articles in the category
+février;February
+janvier;January
+jeu.;Thu
+juillet;July
+juin;June
+lun.;Mon
+mai;May
+mar.;Tue
+mars;March
+mer.;Wed
+novembre;November
+octobre;October
+sam.;Sat
+septembre;September
+ven.;Fri
+
+
+
+//MENU
+Abonné;Subscriber
+Abonnés;Subscribers
+Afficher Menu;Show Menu
+Ajouter Menu Pavé;Add Menu Group
+Ajouter Menu;Add Menu
+Ajouter Sous Menu;Add Sub Menu
+Autre menu;Other Menu
+Bas;Down
+Catalogue Guidée;Catalog Guide
+Catalogue guidée;Catalog Guide
+Catalogues thématiques;Themed catalogs
+Default Titre;Default Title
+Derniers Emprûnts;Recently Borrowed
+Derniers avis bibliothècaires;Latest librarian reviews
+Derniers avis lecteurs;Latest subscriber reviews
+Fiche Lecteur;Your account
+Fils RSS;RSS Feeds
+Gestion du menu;Manage Menus
+Haut;Up
+Historique de Recherche;Search History
+Historique de recherche;Search History
+Historique des Prêts;Borrowed Items History
+Historique des prêts;Borrowed Items History
+Il n'y a pas de contenu pour afficher.;There is no content to display.
+Insérer un lien de type;Insert URL of type
+Liste de Sitothèque;List of Internet Resources
+Liste de flux RSS;List of RSS feeds
+Liste de vos agendas;List of your agendas
+Liste de vos articles;List of your articles
+Listes thématiques;Themed lists
+Menu horizontal;Horizontal Menu
+Menu vertical;Vertical Menu
+Menu;Menu
+Menus AFI;AFI Menu Items
+Menus;Menus
+Modifier le menu horizontal;Modify Horizontal Menu
+Modifier le menu vertical;Modify Vertical Menu
+Ordre;Order
+Panier;Basket
+Plan d'Accès;Map
+Prolonger vos prêts;Renew your borrowed items
+Prêts en Cours;Borrowed Items
+Prêts en cours;Borrowed Items
+Recherche Avancée;Advanced Search
+Recherche Simple;Simple Search
+Recherche simple;Simple search
+Recherche;Search
+Revues et Magazines;Reviews and Magazines
+Revues et magazines;Reviews and Magazines
+Se Connecter;Sign In
+Suggestion d'Achat;Recommended Purchases
+Suggestions d'achat;Recommended Purchases
+Suggérer un achat;Suggest a purchase
+Vider l'historique;Empty the history
+Visite Virtuelle;Virtual Visit
+Vos réservations;Your reservations
+Votre Compte;My Account
+Votre compte;My Account
+Votre panier;My Basket
+libre;free
+votre panier;my basket
+
+
+
+//Portail
+Barre navigation;Navigation Bar
+Boîtes d'infos;Info Boxes
+Gestion des portails;Manage portals
+Modifier le portail;Modify portal
+News;News
+Options;Options
+Portail;Portal
+
+
+
+
+
+//PROFILE
+ Durée' n'est pas valide; Duration' is not valid
+ Nombre' n'est pas valide; Quantity' is not valid
+ Par Carte' n'est pas valide; Per Card' is not valid
+ Par Document' n'est pas valide; Per Document' is not valid
+'E-mail du Webmestre' n'est pas valide;'Webmaster Email' is not valid
+'Liste d'autorités' n'est pas valide;'List of authors' is not valid
+'Liste de Prêts en cours et historique' n'est pas valide;'List of borrowed items and history' is not valid
+'Liste de numéros' n'est pas valide;'List of numbers' is not valid
+'Liste de tomes d'une série' n'est pas valide;'List of volumes in a series' is not valid
+'Liste des chapeaux' n'est pas valide;'List of volumes' is not valid
+'Listes de notices' n'est pas valide;'Lists of notices' is not valid
+'Nombre maxi de réservations par abonné' n'est pas valide;'Maximum number of reservations per subscriber' is not valid
+'Nouveautés Bibliothèque, Durée de vie' n'est pas valide;'New at the Library, Duration' is not valid
+'Nouveautés Bibliothèque, Nombre par carte' n'est pas valide;'New at the Library, Number per card' is not valid
+'Nouveautés Bibliothèque, Nombre par document' n'est pas valide;'New at the Library, Number per document' is not valid
+'Nouveautés de parution, Durée de vie' n'est pas valide;'New releases, Duration' is not valid
+'Nouveautés de parution, Nombre par carte' n'est pas valide;'New releases, Number per card' is not valid
+'Nouveautés de parution, Nombre par document' n'est pas valide;'New releases, Number per document' is not valid
+**tous**;**all**
+**toutes**;**all**
+Adultes;Adults
+Afficher la localisation des exemplaires en prêt;Rules for showing the locality of borrowed items
+Afficher la section;Show the section
+Afficher le site ou l'annexe;Show the site or annex
+Ajouter Règles de réservation pour les nouveautés;Add Reservation rules for new items
+Ajouter un profil;Add Profile
+Annexe;Annex
+Autoriser l'abonné à prolonger ses prêts;Authorize a subscriber to renew their borrowed items
+Autoriser la réservation de documents disponibles;Authorize reservation of available documents
+Cette description apparaitra sous le nom de votre site dans les moteurs de recherche;This description will appear with the name of your site in search engines
+Commentaire;Comments
+Cédérom;CD
+Cédéroms;CD-ROM
+Description du site;Description of the site
+Doc. sonore;Sound Document
+Documents Sonores;Sound Documents
+Documents Vidéo;Video Documents
+Durée de vie;Duration
+Durée;Duration
+E-mail du Webmestre;Webmaster Email
+Entrez la liste des mots-clef et expressions qui caractérisent votre site. Entrez un mot ou une expression par ligne;Enter a list of keywords or expressions that characterize your site.  Enter a word or expression per line.
+Gestion de Options de Recherche;Manage Search Options
+Gestion des Listes;Manage Listes
+Gestion des localisations;Manage Localizations
+Gestion des nouveautés;Manage Newly Released Items
+Gestion des profils;Manage Profiles
+Gestion des règles de réservations;Manage reservation rules
+Il n'y a pas de contenu à afficher;There is no visible content to display
+Infos site;Website Info
+Jeunes;Children
+Le champ 'Commentaire' doit être inférieur à 250 caractères;'Comments' needs to be less than 250 characters long
+Le champ 'E-mail du Webmestre' doit être inférieur à 50 caractères;'Webmaster Email' needs to be less than 50 characters long
+Le champ 'Libelle' doit être inférieur à 50 caractères;'Description' needs to be less than 50 characters long
+Le champ 'Nom du site' doit être inférieur à 50 caractères;'Name of the site' needs to be less than 50 characters long
+Libelle;Description
+Liens sortant;External links
+Liste d'autorités;List of authors
+Liste de Prêts en cours et historique;List of borrowed items and history
+Liste de numéros;List of numbers
+Liste de tomes d'une série;List of volumes in a series
+Liste des chapeaux;List of volumes
+Liste des profils;Profiles
+Listes de notices;List of notices
+Listes;Lists
+Livre;Book
+Livres;Books
+Localisations;Localities
+Maxi par carte;Max per card
+Maxi par doc.;Max per doc.
+Modifier Localisations;Modify Localities
+Modifier Options de Recherche;Modify Search Options
+Modifier Profil;Modify Profile
+Modifier Prolongations de prêts;Modify Renewal of borrowed items
+Modifier Règles de réservation pour les nouveautés;Modify Reservation rules for new items
+Modifier Règles de réservation pour les nouveautés;Modify Reservation rules for new items
+Modifier Règles de réservations;Modify Reservation Rules
+Modifier Réglage des nombres de lignes par page dans les listes;Modify Number of lines per page in lists
+Mots-clef;Keywords
+Ne pas prolonger les documents réservés;Do not renew reserved documents 
+Ne pas prolonger si rappel en cours sur la carte;Do not renew if card has late items
+Nom du site;Name of the site
+Nombre maxi de réservations par abonné;Maximum number of reservations per subscriber
+Nombre par carte;Number per card
+Nombre par document;Number per document
+Nombre;Quantity
+Nouveau Profil;New Profile
+Nouveautés Bibliothèque;New at the Library
+Nouveautés de parution;New releases
+Nouveautés;Newly Received
+Nouvelle règle de réservation pour les nouveautés;New reservation rule for new items
+Options de Recherche;Search Options
+Par Carte;Per Card
+Par Document;Per Document
+Profil;Profile
+Profils;Profiles
+Prolongations de prêts;Renewal of borrowed items
+Périodique;Magazine
+Périodiques;Periodicals
+Règles d'affichage de la localisation des exemplaires;Rules for showing the locality of items
+Règles de prolongations de prêts;Rules of renewing borrowed items
+Règles de réservation pour les nouveautés;Reservation rules for new items
+Règles de réservation pour les nouveautés;Reservation rules for new items
+Règles de réservations;Reservation Rules
+Règles par supports;Rules per support
+Réglage des nombres de lignes par page dans les listes;Number of lines per page in lists
+Réservation;Reservation
+Réservations;Reservations
+Section;Section
+Site Principal
+Site Principal;Main Site
+Site;Site
+Support;Support
+Thème;Theme
+Un règle de réservation existe déjà pour 'Site', 'Section' et 'Support';A rule already exists for that 'Site', 'Section' and 'Support'
+Vidéo;Video
+Vous devez compléter le champ 'E-mail du Webmestre';You need to complete the 'Webmaster Email' field
+Vous devez compléter le champ 'Libelle';You need to complete the 'Description' field
+Vous devez compléter le champ 'Nom du site';You need to complete the 'Name of the site' field
+inconnu;unknown
+
+
+
+
+
+//RSS
+Ajouter RSS Categorie;Add RSS Category
+Ajouter RSS;Add RSS
+Ajouter un fil RSS de Club Pergame;Add a RSS feed from Club Pergame
+Ajouter une catégorie;Add Category
+Confirmer tous les flux RSS;Confirm all RSS feeds
+Gestionnaire de RSS;Manage RSS
+Il y a un problème avec l'adresse du flux RSS;Their is a problem with the RSS Url
+Le champ 'Url' doit être inférieur à 250 caractères;'Url' needs to be less than 250 characters long
+Le flux RSS est vide pour l'instant;The RSS is empty at the moment
+Liens Morts;Broken Links
+Liens RSS Morts;Broken RSS
+Liens Sito Morts;Broken URLs
+Modifier RSS Categorie;Modify RSS Category
+Modifier RSS;Modify RSS
+RSS Catégorie;RSS Category
+Vous devez compléter le champ 'Url';You need to complete the 'Url' field
+
+
+
+
+//SITO
+Ajouter Sitothèque Categorie;Add Internet Resources Category
+Ajouter Sitothèque;Add Internet Resource
+Confirmer tous les liens;Confirm all links
+Gestionnaire de Sitothèque;Manage Internet Resources
+Il y a un problème avec l'URL;The URL is not valid
+Modifier Sitothèque Categorie;Modify Internet Resources Category
+Modifier Sitothèque;Modify Internet Resource
+Sitothèque Catégorie;Internet Resources Category
+Sitothèque;Internet Resources
+
+
+
+
+//DATA
+Continuer;Continue
+Data;Data
+Date;Date
+Error reading from Entete;Error reading from Entete
+Etat;State
+Failed to seek to pointer;Failed to seek to pointer
+Heure;Time
+Il n'y a aucune données à importer;There is no data to import
+Il y a des données à importer;There is data to import
+Import Réussi;Import Finished
+Import des Données;Data Import
+Import finished successfully, but we could not update Journal status;Import finished successfully, but we could not update Journal status
+Import finished, but we could not update Entete status;Import finished, but we could not update Entete status
+Import incrémentiel;Incremental Import
+Import total;Total Import
+Import;Import
+Importer;Import
+Impossible d'ouvrir le fichier;Can not open the file
+Impossible d'écrire le fichier;Can not write the file
+Impossible de créer le fichier;Can not create the file
+Impossible de créer le répertoire;Can not create the directory
+Informations sur les mises à jour;Database Update Summary
+Journal des transferts;Transfer Journal
+L'import a fini en ;Import Finished in 
+L'import a été déjà faite;Import has already been done
+La commande SQL a réussi;SQL Command Successfully Executed
+Le fichier a un format incorrect;The file has an invalid format
+Modifier une commande SQL;Modify SQL
+Please wait before starting the import;Please wait before starting the import
+Sauter;Skip
+Temps;Elapsed Time
+minutes;minutes
+seconds;seconds
+
+
+
+
+
+//MOVEMENT
+Export Erreur;Export Error
+Export Reussi;Export Successful
+Export des Données;Data Export
+Exporter;Export
+Il n'y a aucun événement en attente d'export;There are no events waiting to be exported
+Il n'y a aucun événement en attente d'intégration par Pergame;There are no events waiting to be integrated by Pergame
+Il y a des événements en attente d'export;There are events waiting to be exported
+Il y a événements en attente d'intégration par Pergame;There are events waiting to be intergrated by Pergame
+Informations sur les mises à jour;Update Information
+Les événements n'ont jamais été exportées;Events have never been exported
+Les événements ont été intégrées par Pergame le;The events were integrated by Pergame
+Nouvelles réservations;New Reservations
+Nouvelles suggestions de commandes;New Suggested Items
+Réponses aux Suggestions de commandes;Responses to Suggested Items
+Réservations supprimées;Deleted Reservations
+Suggestions de commandes supprimées;Deleted Suggested Items
+Une erreur s'est produite lors du dernier export de événements;There was an error during the last export of events
+
+
+
+//MODERER
+Abonné Message;Subscriber Announcement
+Abonnés avec un message;Subscribers with an Announcement
+Accepter Tous;Accept All
+Afficher tous les abonnés avec un message;Show all subscribers with an announcement
+Ajouter Abonné Message;Add Subscriber Announcement
+Analyse des suggestions de commandes;Analyze Order Suggestions
+Avis d'abonnés à Modérer;Subscriber Reviews to Moderate
+Avis en attente;Reviews waiting to be moderated
+Avis;Reviews
+CMS Avis à Modérer;CMS Reviews to Moderate
+CMS Avis;CMS Reviews
+Id;Id
+Il n'y a aucune abonné avec un message;There are no subscribers with an announcement
+Informations sur Modération;Moderation Summary
+Le champ 'Entete' doit être inférieur à 100 caractères;'Summary' needs to be less than 100 characters long
+Message Action;Announcement Action
+Message;Announcement
+Modération;Moderate
+Modérer Abonné Message;Moderate Subscriber Announcement
+Modérer Avis;Moderate Reviews
+Modérer CMS Avis;Moderate CMS Reviews
+Modérer Tags;Moderate Tags
+Modérer;Moderate
+Prenom;First Name
+Précédent;Previous
+Rechercher Abonnés;Search Subscribers
+Rechercher Abonnés;Search Subscribers
+Réponse;Response
+Suggestion;Suggestion
+Suggestions en attente;Suggestions waiting for a response
+Suggestions à Modérer;Suggestions to Moderate
+Suggestions;Suggestions
+Suivant;Next
+Tags en attente;Tags waiting to be moderated
+Tags à Modérer;Tags to Moderate
+Tags;Tags
+Vous devez compléter le champ 'Avis';You need to complete the 'Opinion' field
+Vous devez compléter le champ 'Entete';You need to complete the 'Summary' field
+Vous devez compléter le champ 'Message';You need to complete the 'Message' field
+Vous devez compléter le champ 'Nom' ou le champ 'Id';You need to complete either the 'Name' or 'Id' field
+Vous devez compléter le champ 'Résponse';You need to complete the 'Response' field
+
+
+
+
+//Plan Access
+** nouveau point **;** new point **
+** nouvelle couche **;** new layer **
+** nouvelle info **;** new info **
+Adresse;Address
+Après l'avoir obtenue vous devrez l'enregistrer dans Pergame en cliquant le lien ci-dessous.;To register your key in Pergame, click the following link.
+Clef google-map;Google-map key
+Constitution du plan d'accès;Create Access Map
+Coord.;Coord.
+Couche;Layer
+Echelle;Scale
+Enregistrer ma clef Google-map dans Pergame;Save my Google-map key in Pergame
+Etes-vous sur de vouloir supprimer ce point?;Are you sure you want to delete this point?
+Etes-vous sur de vouloir supprimer cette couche ?;Are you sure you want to delete this point?
+Impossible d'afficher la carte;Impossible to display the map
+Impossible de trouver cette adresse;Can't find this address
+Info;Info
+Infos;Info
+Numéro;Number
+Obtenir la clef Google-map pour mon site;Obtain a Google-map key for my site
+Pays;Country
+Photo;Photo
+Plan d'accès;Access Map
+Point;Point
+Texte;Text
+Ville;City
+Votre clef d'accès Google-map n'est pas valide sur ce site.;Your Google-map access key is not valid for this site.
+Vous devez compléter le champ 'clef';You need to complete the 'key' field
+Vous pouvez obtenir cette clef sur simple demande à Google. Il suffit d'indiquer l'adresse url complète de votre site.;You can obtain a key by a simple demand from Google.  You will need to give them the complete URL of your site.
+Vous venez de supprimer de dernier point de cette couche. Un nouveau point va être créé au centre de la couche.;You have deleted the last point in this layer. A new point will be created in the center of the layer.
+Vous venez de supprimer la dernière couche de la carte. Une nouvelle couche va être créée.;You have deleted the last layer. A new layer will be created.
+clef;key
+
+
+
+
+// PanierController
+Ajouter Catalogue;Add Catalogue
+Ajouter Catalogues dynamiques;Add Dynamic Catalogues
+Catalogue dynamique;Dynamic Catalogue
+Catalogues dynamiques;Dynamic Catalogues
+Centre d'intérêt;Center of Interest
+Dewey;Dewey
+Genre;Genre
+Gestionnaire des Catalogues dynamiques;Manage Dynamic Catalogues
+Le champ 'Dewey' doit être inférieur à 9 caractères;'Dewey' needs to be less than 50 characters long
+Limite;Limit
+Liste de vos catalogues dynamiques;List of your dynamic catalogues
+Modifier Catalogues dynamiques;Modify Dynamic Catalogues
+Mot matière;Keyword
+Top_20;Top 20
+
+
+
+
+//Agenda 
+Afficher Agenda;Display Agenda
+Agenda;Agenda
+Ajouter Agenda;Add Agenda
+Gestion d'agenda;Manage Agendas
+Google ID de l’agenda;Agenda Google ID
+Gérer votre calendrier Google;Manage your Google Calendar
+La semaine commence le;The weeks starts the
+Le champ 'Google ID de l’agenda' doit être inférieur à 100 caractères;The field 'Agenda Google ID' needs to be less than 100 characters long
+Le champ 'Titre de l'agenda' doit être inférieur à 100 caractères;The field 'Title of the agenda' needs to be less than 100 characters long
+Modifier Agenda;Modify Agenda
+Titre de l'agenda;Title of the agenda
+
+
+
+// OPAC
+// Plan d'Access
+Impossible d'afficher la carte;Impossible to display the map
+
+
+
+//Abonne
+(jj-mm-aaaa);(dd-mm-yyyy)
+Ajout effectué;Add successful
+Ajout non effectué;Add unsuccessful
+Ce document est déjà dans ;This document is already in 
+Date de naissance;Date of birth
+Il est en retard !;It is late !
+Il faut completer tous les champs.;You need to complete all fields.
+Il y en a ;There are 
+Ils sont tous en retard !;They are all late !
+Numéro de carte;Card Number
+Sélectionnez un autre document.;Select another document.
+Votre abonnement est terminé depuis le;Your subscription expired the
+Votre abonnement est terminé depuis le;Your subscription has expired since
+Votre abonnement est valide jusqu'au;Your subscription is valid until
+Votre abonnement est valide jusqu'au;Your subscription is valid until
+Vous avez ;You have 
+Vous avez émis ;You have sent 
+Vous n'avez aucun prêt en cours.;You don't have any borrowed items.
+Vous n'avez aucune réservation en cours.;You don't have any reservations at the moment.
+Vous n'avez aucune suggestion d'achat en cours.;You don't have any suggested purchases at the moment.
+Vous n'avez émis aucune suggestion d'achat.;You haven't sent any purchase suggestions
+de commande.;for purchase.
+en cours.;currently.
+en retard !;late !
+prêt en cours;borrowed item
+prêt; borrowed item
+prêts en cours;borrowed items
+réservation en cours.;reservation made.
+réservations en cours.;reservations made.
+suggestion de commande.;purchase suggestion.
+suggestion;suggestion
+suggestions de commande.;purchase suggestions.
+
+
+
+//prolonger
+ car : soit vous avez atteint le nombre maximum de prolongations autorisé pour le type de document, soit le document est réservé. ; because: either you have reached the maximum number of renewals for this type of document or the document is already reserved.
+ car vous avez atteint le nombre maximum de prolongations autorisé pour le type de document.; because you have reached the maximum number of renewals for this type of document.
+ car vous avez reçu une lettre de rappel à laquelle vous n'avez pas donné suite.; because you received a reminder letter which you have not responded to.
+ prêts ont été prolongés.; items were renewed.
+1 prêt a été prolongé.;One item was renewed.
+Aucun prêt n'a pu être prolongé !;None of your borrowed items could be renewed!
+La bibliothèque n'autorise plus la prolongation de prêts.;The library no longer allows renewal of borrowed items.
+La prolongation n'a pas été effectuée;The renewal could not be done
+Le prêt ci-dessous n'a pas pu être prolongé;The item below could not be renewed.
+Les prêts ci-dessous n'ont pas pu être prolongés;The items below could not be renewed.
+Votre prêt n'a pas pu être prolongé !;Your borrowed item could not be renewed!
+Vous n'avez aucun prêt en cours sur votre fiche.;You don't have any borrowed items.
+Vous n'avez aucun prêt en retard.;You don't have any late items.
+
+
+
+
+//pretencours
+A retourner le;Return date
+Document;Document
+Retard;Late
+Type;Type
+
+
+//prethistorique
+Emprunté le;Date Borrowed
+Vos derniers emprunts;Borrowed items history
+
+
+//listreservations
+Disponible;Available
+Réservé le;Date Reserved
+
+
+//panier
+Etes-vous sûr de vouloir supprimer ce document ?;Are you sure you want to delete this document?
+Votre panier de documents est vide.;Your basket is empty.
+Votre panier de documents;Your basket of items
+
+
+//listreservations
+Etes-vous sûr de vouloir supprimer cette réservation ?;Are you sure you want to delete this reservation?
+
+
+//creersuggestion
+Suggestion de commande;Purchase suggestion
+Veuillez saisir votre suggestion l'exprimer le plus précisément possible en mentionnant, si vous les connaissez : le titre, l'auteur, ou le sujet souhaité.;Please enter your suggestion with the most precise information possible about the title, author or subject.
+Votre suggestion n'est pas assez précise.;Your suggestion is not precise enough.
+
+
+
+//avis
+Exprimez votre avis sur ce document.;Write your review of this document.
+Note;Note
+Signature;Signature
+Votre avis;Your review
+
+
+
+//listsuggestionsachat
+Emise le;Date sent
+Réponse de la bibliothèque;Librarian's response
+Votre suggestion;Your suggestion
+Votre suggestions d'achat;Your purchase suggestions
+
+
+
+//tagnotice
+Proposer des tags pour ce document.;Propose tags for this document.
+Votre Tag;Your Tag
+
+
+
+
+//Regles Pret
+ fois.; times.
+Ce document a été emprunté ;This document has been borrowed 
+Ce document n'a jamais été emprunté.;This document has never been borrowed.
+
+
+//RECHERCHE
+Afficher la fiche détaillée;Show details
+Document(s);Document(s)
+Documents;Documents
+Il n'y a pas de résultat à afficher.;There are no results to display.
+Indiquez un ou plusieurs mots dans une ou plusieurs des zones de recherche : titre, auteur, centre d'intérêt, sujet ou collection, puis relancez la recherche.;Enter one or more words in one or more search zone and the restart the search.
+Indiquez un ou plusieurs mots désignant le titre, l'auteur ou le sujet des documents que vous recherchez, puis relancez la recherche.;Enter one or more words indicating title, author or subject then restart the search.
+L'historique de recherche est vide;The search history is empty.
+La recherche n'a pas abouti;The search was not successful
+Résultat;Results
+Veuillez patienter : recherche d'informations en cours...;Please wait : searching for information
+Vous n'avez tapé aucune indication dans aucune des zones de recherche.;You have not entered anything in the search zones
+
+
+
+
+
+//avancee
+** tous **;** All **
+** toutes **;** All **
+Auteur;Author
+Avancée;Advanced
+Centre d'intérêt;Center of interest
+Collection;Collection
+Lancer la recherche;Start Search
+Matière / Sujet;Subject matter
+Recherche de fiches Auteurs;Search Authors
+Recherche de fiches Centres d'intérêt;Search Centers of Interest
+Recherche de fiches Collections;Search Collections
+Recherche de fiches Matières / Sujets;Search Subject matters
+Tapez les mots les plus significatifs du titre, de l'auteur, de la collection ou du sujet que vous recherchez dans la zone adéquate, puis cliquez sur : Lancer la recherche.;Type in the most significant words for title, author, collection or subject in the appropriate areas then click on : Start Search.
+Vous pouvez cliquer sur la loupe pour effectuer une recherche dans les catégories.;You can click on a magnifying glass to search in one of the categories.
+
+
+
+
+//periodiquehapeaux
+Afficher le site internet;Open the internet site
+Consulter le fil RSS;View the RSS feed
+Il n'y a aucun résultat à partir de la lettre : ;There are no results after the letter : 
+Public visé : ;Concerned public : 
+
+
+
+//periodiquesections
+Abonnements;Subscriptions
+Le coin des périodiques;The periodicals corner
+
+
+
+//simple
+Expression à rechercher;Search
+Rechercher;Search
+
+
+//MoteurRecherche
+Aucun résultat n'a été trouvé pour les critères spécifiés;No results were found for the specified criterias
+Indiquez des mots de plus de 2 lettres dans un des critères, puis relancez la recherche;Try using words longer then 2 letters in one of the criterias, then try restarting the search
+Indiquez des mots un peu plus longs dans un des critères, puis relancez la recherche;Try using longer words in one of the criterias, then restart the search
+Saisissez un ou plusieurs mots dans la zone;Enter one or more words in the zone
+Vous n'avez rien saisi dans la zone;You have not entered anything in the zone
+Vous n'avez tapé aucun mot assez significatif dans votre demande.;You haven't entered any significant words in your search.
+Vérifiez l'orthographe de votre demande ou essayez avec une autre expression;Check the spelling of your request or try another search
+orthographe approchante;similar spelling
+résultats trouvés pour;results found for
+
+
+
+
+// NOTICE
+A consulter sur place;To be consulted at the library
+A la reliure;Being rebound
+Aucune réservation en cours;No reservations yet
+Cet exemplaire est disponible;This document is available
+Document non traité;Document not treated
+Ecouter un extrait;Listen to an extract
+En réserve: le demander;Reserved: please demand
+Impossible de trouver la notice;Impossible to find the notice
+La notice a été supprimée.;The notice has been deleted.
+Momentanément indisponible;Momentarily unavailable
+N'est plus à la Médiathèque;No longer in the library
+Réservé au Comité de Lecture;Reserved to the Comité de Lecture
+Réservé au Prix Ado;Reserved to the Prix Ado
+Télécharger Real player one;Download Real Player
+au;to
+disponible;available
+du;from
+réservation(s) en cours;current reservation(s)
+
+
+
+
+//tomes
+Tome;Volume
+
+
+//NoticeHtml
+Afficher la notice détaillée;Display the notice details
+Ajouter à mon panier;Add to my basket
+Article(s);Article(s)
+Avis des lecteurs;Reader Reviews
+Bande-annonce;Movie Trailer
+Biographie;Biography
+Ce document est une nouveauté;This is a new document
+Disponibilité;Availability
+Il s'agit d'une série. Vous pouvez;It is part of a serie
+Ils ont aimé aussi...;They also liked...
+Localisation;Locality
+Numéros;Number
+Photos;Photos
+Réserver ce document;Reserve this document
+Résumés;Summary
+Situé en;Situated
+Série;Serie
+Veuillez patienter : lecture en cours...;Please wait : getting information
+consulter la liste des tomes;consult the list of volumes
+
+
+
+//Periodique
+hors-série;out of series
+normal;normal
+normaux;normal
+pratique;practical
+pratiques;practical
+spécial;special
+spéciaux;special
+
+
+
+//Reservation
+Ce document a déjà atteint le nombre maximum de réservations de nouveautés autorisé.;This document has reached the maximum number of reservations for a new item.
+Ce document est disponible;This document is available
+Ce document est une nouveauté et vous avez atteint le maximum de réservations de nouveautés possibles sur votre carte.;This document is a new item and you have reached the maximum number of new items on your card.
+Ce document n'est pas accessible à la réservation;This document can not be reserved
+Il s'agit d'un chapeau de périodique, consultez la liste des numéros.;This is a volume of a periodical.  Please see the list of numbers.
+Il s'agit d'un titre de série, consultez la liste des tomes;This is a title of a series. Please see the list of volumes
+Le nombre de réservations maximum a été atteint pour ce document.;The maximum number of reservations have been reached for this document.
+Maintenant;Now
+Réservation enregistrée;Reservation saved
+Réservation non autorisée;Reservation not authorized
+Vous avez atteint le maximum de réservations possibles sur votre carte.;You have reached the maximum possible reservations on your card.
+Vous avez atteint le nombre maximum de réservations pour les;You have reached the maximum number of reservations for
+Vous avez déjà réservé ce document.;You already have this document in your reservation list.
+Vous n'êtes momentanément pas autorisé à effectuer de réservation.;You are momentarily unauthorized to make this reservation.
+Vous pourrez l'emprunter directement dès son retour dans la bibliothèque.;You can borrow it directly when you return to the library.
+Vous pouvez contrôler sa disponibilité ou la supprimer en consultant;You can check it's availability or delete it by consulting
+Vous pouvez en supprimer certaines en consultant votre liste de réservations.;You can delete some by consulting your list of reserved items.
+Vous pouvez en supprimer certaines en consultant;You can delete some by consulting
+Vous pouvez vérifier;You can verify
+contient;contains
+document;document
+en consultant votre fiche.;by consulting your account.
+votre liste de réservations;your list of reservations
+
+
+
+
+
+//Suggestions
+Votre suggestion de commande est acceptée et enregistrée.;Your purchase suggestion has been accepted and saved.
+Votre suggestion n'est pas assez précise.;Your suggestion is not precise enough.
+Vous pourrez consulter la réponse de la bibliothèque dans votre liste de suggestions dans quelques jours.;You can consult the library's response in your list of suggestions after a few days.
+
+
+
+
+
+//NoticeAutorite
+Aucune information n'a été trouvée.;No information was found.
+La clef google n'est pas renseignée. Merci de signaler ce problème à la bibliothèque.;The google key has not been set.  Please inform a librarian.
+fermer les onglets;close the tabs
+
+
+
+
+//Noticeopac2
+Aucun avis pour le moment...;No reviews at this time
+Aucun livre n'a été trouvé...;No books were found...
+Aucune analyse n'a été trouvée...;No review was found...
+Aucune bande-annonce n'a été trouvée;No movie trailers were found...
+Aucune photo n'a été trouvée...;No photos were found...
+Avis des bibliothècaires;Librarian reviews
+Avis des lecteurs Amazon;Amazon reader reviews
+Avis des lecteurs de la bibliothèque;Library subscriber reviews
+Bibliothècaires;Librarian
+Ceux qui ont emprunté ce livre ont emprunté aussi...;Those who borrowed this book also borrowed...
+Donnez votre avis;Write a review
+Emprunté;Borrowed
+Lecteurs Amazon;Amazon readers
+Lecteurs de la bibliothèque;Library subscribers
+Proposer un tag;Suggest a tag
+Source;Source
+Voir les avis;Show reviews
+aucune évaluation;no reviews
+aussi;also
+fois;times
+évaluation;review
+évaluations;reviews
+
+
+
+//AjaxMessage
+Attention...;Attention...
+Cause;Cause
+Message...;Message...
+Reméde;Solution
+
+
+//Xml
+Impossible d'accéder à l'url;Impossible to access the url
+
+
+//Post-It
+en savoir plus;read more
+
+//CONSOLE
+//Admin
+Impossible d'ouvrir patch;Impossible to open the patch
+Impossible de parcourir le fichier RSS;Impossible to open the RSS
+L'utilisateur ou le mot de passe sont incorrects.;Username or password are incorrect.
+Le patch a déjà été installer;Patch has already been installed
+
+
+
+//Error
+Regardez le registre d'erreurs;Regard the error log
+
+
+//RSS
+Pas de nouvelle;Nothing to report
+VOIR TOUS LES RESULTATS;VIEW ALL RESULTS
+
+//ABBREVIATIONS
+
+//jours;days
+jrs.;days
+
+//Prolong;Renew
+Prol.;Renew
+
+//Supprime/Delete
+Suppr.;Del.
+
+//numéro/number
+n°;n°

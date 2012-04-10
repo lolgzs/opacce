@@ -1,0 +1,46 @@
+<table>
+	<tr>
+		<td style="text-align:right">Type de document : </td>
+		<td style="text-align:left" width="70%"><?php echo $this->ComboCodification('type_doc', $_REQUEST["type_doc"],'onchange="window.location.replace(\''.BASE_URL.'/admin/stat/palmaresreservationnotice?type_doc=\' + this.value);"'); ?></td>
+	</tr>
+</table>
+
+<br/>
+<table class="stat">
+	<tr>
+		<th class="stat" width="1%">Rang</th>
+		<th class="stat" width="1%">&nbsp;</th>
+		<th class="stat" width="50%">Titre</th>
+		<th class="stat" width="40%">Auteur</th>
+		<th class="stat" width="9%">Réservée</th>
+	</tr>
+<?php
+$rang=0;
+$last_nombre=0;
+if($this->table_stat)
+{
+	foreach($this->table_stat as $notice)
+	{
+		// Calcul n° de rang
+		if($notice["nombre"] != $last_nombre)
+		{
+			$last_nombre=$notice["nombre"];
+			$rang++;
+		}
+		
+		// Html
+		print('<tr>');
+		print('<td class="stat_nombre" style="text-align:center"><B>'.$rang.'</b></td>');
+		print('<td class="stat_libelle"><img src="'.URL_ADMIN_IMG.'supports/support_'.$notice["type_doc"].'.gif" border="0"></td>');
+		print('<td class="stat_libelle">'.$notice["titre"].'</td>');
+		print('<td class="stat_libelle">'.$notice["auteur"].'</td>');
+		print('<td class="stat_nombre">'.$notice["nombre"].'&nbsp;fois</td>');
+		print('</tr>');
+	}
+}
+print('</table>');
+;
+
+?>
+
+<br>

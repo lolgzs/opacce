@@ -1,0 +1,20 @@
+<?php 
+
+echo '<h1>'.$this->traduire('Modération des avis sur les notices').'</h1>'; 
+
+if(!count($this->list_avis)) {
+	echo '<br><p align="center" class="error">Il n\'y a aucun avis à modérer.</b></p>';
+} else {
+	$this->getHelper('avis')->setActions(array('validate', /*'edit',*/ 'del'));
+	echo $this->partialCycle('modo/_avis_partial.phtml', 
+													 'avis',
+													 $this->list_avis,
+													 array('first', 'second')); 
+}
+?> 
+
+<script type='text/javascript'>
+	$(document).ready(function() {
+			$('.critique a:not(.actions a)').attr('target', '_blank');
+		});
+</script>

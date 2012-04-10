@@ -1,0 +1,27 @@
+<?php echo $this->render('head.phtml'); ?>
+<body>
+<?php	echo $this->mapEvents(); ?>
+<center>
+<div class="main" align="center">
+<table cellspacing="0" cellpadding="0">
+  <tr> 
+    <td><img src="<?php echo URL_ADMIN_IMG?>ban_1024.jpg" width="990"></td>
+  </tr>
+  <tr> 
+    <td class="barre_nav"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td width="74%"><div class="barre_nav" style="float:left"><?php echo $this->barreNav();?></div></td>
+		<td width="26%"><div style="float:right;"><?php echo $this->barreNavNom();?></div></td>
+	  </tr>
+	</table></td>
+  </tr>
+</table>
+
+<table cellspacing="0" cellpadding="0">
+ 	<tr> 
+<td colspan="2" class="content"><?php echo $this->render($this->actionScript); ?></td>	
+  	</tr>
+</table>
+</div>
+</center>
+<?php echo $this->render('footer.phtml'); ?>

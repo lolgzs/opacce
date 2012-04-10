@@ -1,0 +1,68 @@
+<?php	 
+$user = Zend_Auth::getInstance()->getIdentity(); 
+$class_user = new Class_Users();
+$class_blog = new Class_Blog();
+
+$this->openBoite('Critique');
+echo $this->avis($this->avis);
+$this->closeBoite();
+?>
+
+<div class='commentaires_critiques conteneur_simple'>
+<table style="width:100%">
+<tr>
+		<td style="text-align:left"><a href="javascript:history.back()"><?php echo $this->_('Retour') ?></a></td>
+		<td style="text-align:right"><a href="#Top"><?php echo $this->_('HAUT') ?></a></td>
+	</tr>
+</table>
+
+<?php
+if(false and is_array($this->commentaires))
+{
+		echo('<table style="width:100%" celppading="5" cellspacing="3"><tr><td style="border-bottom:1px solid #CACFD5;"><h2>'.$this->_('Commentaires :').'</h2></td></tr>');
+		if(count($this->commentaires) == 0){ echo('<tr><td>'.$this->_('Aucun commentaires...').'</td></tr>');}
+		$i=0;
+		foreach($this->commentaires as $cmt)
+		{
+				$text_alert = $class_blog->getTexteAlert($cmt["ID_NOTICE"].'-'.$cmt["ID_USER"].'-'.$cmt["ID_CMT"],"cmt");
+				
+				if($i & 1) $style_css = "listeImpaire"; else $style_css = "listePaire";
+				$zendDate =	 new Zend_Date($cmt["DATE_CMT"]);
+				$date_cmt = $zendDate->toString('dd-MM-yyyy HH:m');
+				echo('<tr><td class="'.$style_css.'">'.$class_blog->cmsIt($cmt["CMT"]).'<br />par : <b>'.$class_user->getNomAff($cmt["ID_USER"]).'</b> le '.$date_cmt.' | '.$text_alert.' <br /><br /></td></tr>');
+				$i++;
+		}
+		echo ('</table>');
+}
+
+
+if (false and ($this->modo_blog == 0 || $this->user_co == 1)) {
+	$pseudo = '';
+	if($this->user_co !==0)
+		$pseudo = $class_user->getNomAff($this->user->ID_USER);
+
+
+	echo 
+			'<div class="commentaire_critique">'.
+				'<form name="form_commentaire"	action="'.BASE_URL.'/blog/addcmt" method="post">'.
+					'<fieldset>'.
+						'<legend>Votre commentaire :</legend>'.
+						'<textarea rows="7" id="cmt" name="cmt"></textarea>'.
+						'<input type="hidden" value="'.$this->id_avis.'" id="id_avis" name="id_avis"/>'.
+						'<input type="hidden" value="'.$this->type.'" id="type" name="type"/>'.
+					'</fieldset>'.
+					'<fieldset>'.
+					 '<legend>Votre pseudo :</legend>'.
+					 '<input type="text" value="'.$pseudo.'" id="pseudo" name="pseudo" />'.
+					'</fieldset>'.
+					'<div>'.$this->bouton('type=V','largeur=100px', 'form=form_commentaire').'</div>'.
+				'</form>'.
+			'</div>';
+}
+else
+{
+	//		echo('<div align="center"><a href="'.BASE_URL.'/auth/login">Se connecter</a></div>');
+}
+?>
+
+</div>

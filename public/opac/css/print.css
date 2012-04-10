@@ -1,0 +1,39 @@
+.boiteBanniereGauche,
+.boiteBanniereDroite,
+#menu_horizontal,
+.barre_nav,
+.colGauche,
+.colDroite,
+.footer,
+#popupContainer,
+.readspeaker,
+.article_edit,
+.rss,
+.configuration_module {
+		display: none !important;
+}
+
+
+.colMilieu,
+.colContenu {
+		width: 100% !important;
+		max-width: 100% !important;
+}
+
+
+.liste_vignette {
+		margin-bottom: 10px !important;
+}
+
+.view_notice table .onglet {
+		display:none !important;
+}
+
+.notice_bloc_titre {
+		font-size: 1.1em !important;
+}
+
+
+a {
+		text-decoration: none !important;
+}

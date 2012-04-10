@@ -1,0 +1,10 @@
+<?php echo $this->render('head.phtml'); ?>
+
+<body class="main" <?php echo $this->bodyParam; ?>>
+	<img src="<?php  echo $this->profil->getHeaderImg(); ?>" width="100%">
+			<div class="main">
+				<?php 
+					echo $this->render($this->actionScript);
+				?>
+		</div>
+<?php echo $this->render('footer.phtml'); ?>

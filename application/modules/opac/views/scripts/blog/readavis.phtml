@@ -1,0 +1,24 @@
+<p>
+<?php echo $this->_("Avis sur la notice: %s", $this->avis->getFirstNotice()->getTitrePrincipal()) ?>.
+</p>
+
+<p>
+<?php echo $this->_("par: %s", $this->avis->getUserName()) ?>.
+</p>
+
+<p>
+<?php echo $this->_("le: %s", $this->avis->getReadableDateAvis()) ?>.
+</p>	
+
+
+<p>
+<?php echo $this->_("note: %s", $this->avis->getNote()) ?>.
+</p>	
+
+<p>
+ <?php echo $this->avis->getEntete() ?>
+</p>
+
+<p>
+ <?php echo $this->avis->getAvis() ?>
+</p>

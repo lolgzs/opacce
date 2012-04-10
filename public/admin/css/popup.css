@@ -1,0 +1,84 @@
+/*  BOITES POPUP */
+
+div.popup
+{
+	position:absolute;
+	z-index:1000;
+	display:none;
+}
+
+.rss_popup
+{
+	border:1px solid #a0a0a0;
+	background-color:#fff;
+	width:600px;
+	display:block;
+	float: left;
+	position: absolute;
+	/* -moz-box-shadow: 0px 5px 10px #888; */
+	/* -webkit-box-shadow: 0px 5px 10px #888; */
+}
+
+.rss_popup div.header
+{
+	background-color:#fff;
+	font-size: 12pt;
+	font-weight:bold;
+	color:#666;
+	padding:5px;
+}
+
+.rss_popup div.header img
+{
+	float: right;
+}
+
+.rss_popup div.content
+{
+	background-color:#ffffff;
+	padding-bottom:7px;
+	padding-top:0px;
+	overflow-y: auto;
+	height: 400px;
+
+}
+
+td.popup_titre
+{
+	font-size: 8pt;
+	color:#fff;
+	background-color:#fff;
+	font-weight:bold;
+	padding:5px;
+	border-top: 1px dashed #666;
+}
+
+
+td.popup_ligne
+{
+	font-size: 8pt;
+	color:#666666;
+	padding:5px;
+	padding-top:12px;
+	padding-bottom:12px;
+}
+
+.popup a:link
+{
+	color:#0970B2 ;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+.popup a:visited
+{
+	color:#0970B2;
+	text-decoration:none;
+	font-weight:bold;
+}
+.popup a:hover.
+{
+	color:#0970B2;
+	text-decoration:none;
+	font-weight:bold;
+}

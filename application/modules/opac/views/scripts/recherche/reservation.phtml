@@ -1,0 +1,52 @@
+<div id="resa">
+<form action="<?php echo BASE_URL;?>/opac/recherche/reservation" method="post" id="envoiemail" name="envoiemail" >
+<table width="630" border="0" cellspacing="1" cellpadding="3">
+    <tr>
+      <td colspan="2"><h1><?php echo $this->_("Demande de réservation d'un document du réseau:") ?></h1><br />
+	  
+		<?php
+				$this->openBoite("Pour réserver un ou des document(s), veuillez remplir le formulaire ci-dessous.");
+        echo ($this->condition_resa);
+        $this->closeBoite(); 
+     ?>
+        <br /><br /></td>
+    </tr>
+    <tr>
+      <td width="177" valign="top" colspan="2" style="text-align:center;font-weight:bold;"><?php echo $this->errorMessage; ?></td>
+    <tr>
+      <td width="177" align="right" valign="top"><div align="right"><?php echo $this->_('Bibliothèque : ') ?></div></td>
+      <td width="438">
+
+	  <input type="text" disabled="disabled" value="<?php echo $this->nom_bib; ?>" style="width:400px;" name="bib_name" id="bib_name">
+	  </td>
+    </tr>
+    <tr>
+      <td align="right" valign="top"><div align="right"><?php echo $this->_('Vos Nom et Prénom : ') ?></div></td>
+      <td><input type="text" value="<?php echo $this->user_name; ?>" style="width:400px;" name="user_name" id="user_name">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="right" valign="top"><div align="right"><?php echo $this->_('Votre message :') ?></div></td>
+      <td><textarea style="width:400px;height:150px;" name="demande" id="demande"><?php echo $this->demande; ?></textarea></td>
+    </tr>
+    <tr>
+      <td align="right" valign="top"><div align="right"><?php echo $this->_('Votre adresse E-mail :') ?></div></td>
+      <td><input type="text" value="<?php echo $this->user_mail; ?>" style="width:400px;" name="user_mail" id="user_mail"></td>
+    </tr>
+	 <tr>
+      <td align="right" valign="top"><div align="right"><?php echo $this->_('Code Anti-spam :') ?></div></td>
+      <td><div align="center" style="float:left;width:100px;"><img src='<?php echo BASE_URL;?>/opac/auth/generatecaptcha' border='0' /></div>
+      <div style="width:404px;text-align:right" align="right"><input type="text" value="" style="width:295px;height:15px;" name="code_saisi" id="code_saisi"></div></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right" valign="top"><div align="center">
+	  <input type="hidden" value="<?php echo $this->id_notice; ?>" name="id_notice" id="id_notice">
+	  <input type="hidden" value="<?php echo $this->id_bib; ?>" name="id_bib" id="id_bib">
+	  <input type="hidden" value="<?php echo $this->mail_bib; ?>" name="mail_bib" id="mail_bib">
+      <input type="hidden" value="<?php echo $this->cote; ?>" name="cote" id="cote">
+	  <br /><input type="submit" value="<?php echo $this->_('Envoyer') ?>"/>
+	  &nbsp;-&nbsp;
+	  <input type="button" value="<?php echo $this->_('Annuler') ?>" onclick="window.location='<?php echo BASE_URL.'/recherche/viewnotice/id/'.$this->id_notice ;?>'"/></div></td>
+    </tr>
+  </table>
+  </form>
+</div>

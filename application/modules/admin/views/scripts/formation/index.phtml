@@ -1,0 +1,21 @@
+<?php
+
+echo $this->bouton('id=add_formation',
+									 'picto=add.gif',
+									 'texte=' . $this->traduire('Ajouter une formation'),
+									 'url=' . $this->url(array('action' => 'add',
+																						 'id' => null))
+									 );
+
+foreach($this->formations_by_year as $year => $formations) {
+	echo '<div class="formations">';
+	echo sprintf('<h2>%s</h2>', $year);
+	echo sprintf('<ul class="tree">%s</ul>',
+							 $this->partialCycle('formation/_formation.phtml',
+																	 'formation',
+																	 $formations,
+																	 array('first', 'second')));
+	echo '</div>';
+}
+?>
+

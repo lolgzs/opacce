@@ -1,0 +1,2 @@
+pictureDistance=10
+columns=7

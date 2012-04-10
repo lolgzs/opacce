@@ -1,0 +1,10 @@
+<script src="<?php echo URL_ADMIN_JS?>sito.js"> </script>
+
+<?php print('<h1>'.$this->sito->TITRE.'</h1>'); 	
+
+echo '<p>'.$this->sito->DESCRIPTION.'<br /><br />';
+echo '<a href="'.$this->sito->URL.'" target="_blank">voir le site</a></p>';
+$url = 'url='.BASE_URL.'/admin/sito?z='.$this->sess_id_zone.'&b='.$this->sess_id_site; 
+
+echo '<br /><center><div align="center">'.$this->bouton('id=c_2','picto=back.gif','texte=Retour',$url,'largeur=100px').'</div></center>';
+?>

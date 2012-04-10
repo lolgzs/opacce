@@ -1,0 +1,14 @@
+<?php echo $this->render('head.phtml'); ?>
+
+<body>
+		<div class="main" align="center">
+			<div id='banniere'><img src="<?php echo URL_ADMIN_IMG?>portailbandeauafi.png" width="990" alt="bannière" /></div>
+			<div class="barre_nav"></div>
+			<div class="modules" style="width:100%">
+				<h1><?php echo $this->traduire($this->titre) ?></h1> 
+				<?php	echo $this->render($this->actionScript); ?>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+<?php echo $this->render('footer.phtml'); ?>

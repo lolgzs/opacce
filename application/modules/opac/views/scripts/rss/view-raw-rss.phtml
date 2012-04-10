@@ -1,0 +1,23 @@
+<?php 
+if ($this->invalidRss)
+  echo $this->_('L\'adresse du flux RSS n\'est plus valide.');
+elseif ($this->invalidRssUrl) 
+  echo $this->_('Il y a un problème avec l\'adresse du flux RSS');
+else { 
+?>
+
+<ul class="view-raw-rss">
+	<?php	foreach ($this->feed_items as $item) {?>
+	  <li class="rss-item">
+			<div class="rss-date"><?php echo $item->getDate();?></div>
+			<div class="rss-title">
+				 <?php	echo $this->tagAnchor(
+									 $item->getLink(),
+									 $item->getTitle(),
+									 array('onclick' => 'window.open(this.href);return false;'));?>
+			</div>
+			<div class="rss-description"><?php echo $this->subwords($item->getDescription(), 10);?></div>
+		</li>
+	<?php } ?>
+</ul>
+<?php } ?>

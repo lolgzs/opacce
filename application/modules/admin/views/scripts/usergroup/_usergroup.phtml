@@ -1,0 +1,29 @@
+<?php
+  $url_edit_members = $this->url(array('action' => 'editmembers',
+																			 'id' => $this->group->getId()));
+
+  $url_edit_group = $this->url(array('action' => 'edit',
+																		 'id' => $this->group->getId()));
+
+  echo sprintf('<tr class="%s"><td>%s</td><td>%s</td><td>%s</td><td>%s %s %s</td></tr>', 
+							 $this->item_class,
+							 
+							 $this->tagAnchor($url_edit_group,
+																$this->group->getLibelle()),
+							 
+							 $this->tagAnchor($url_edit_members,
+																count($this->group->getUsers())),
+							 
+							 $this->tagAnchor($url_edit_group,
+																implode(', ', $this->group->getRightsLibelles())),
+
+							 $this->tagAnchor($url_edit_group,
+																$this->boutonIco("type=edit")),
+
+							 $this->tagAnchor($url_edit_members,
+																$this->boutonIco("picto=picto/abonnes.gif", "bulle=Membres")),
+
+							 $this->tagAnchor($this->url(array('action' => 'delete',
+																								 'id' => $this->group->getId())),
+																$this->boutonIco("type=del")));
+?>

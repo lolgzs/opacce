@@ -1,0 +1,33 @@
+<table cellspacing="0" cellpadding="0">
+      <tr class="soustitre">
+        <td style="width:28%"><?php echo $this->traduire('Clef'); ?></td>
+        <td style="width:70%;"><?php echo $this->traduire('Valeur'); ?></td>
+        <td style="width:2%;text-align:center"><?php echo $this->traduire('action'); ?></td>
+      </tr>
+      <tr>
+      	<td colspan="3"  class="separ"></td>
+      </tr>
+<?php 
+// Afficher
+$ligne = 0;
+foreach($this->vars as $var)
+{
+	if ($var->getId() == 'GOOGLE_ANALYTICS')
+		$value = htmlspecialchars($var->getValeur());
+	else if(preg_match('^%0D%0A^',$var->getValeur()))
+		$value = urldecode(str_replace('%0D%0A','<br />',$var->getValeur()));
+	else
+		$value = urldecode($var->getValeur());
+	
+
+	$ligne ++ ;
+	if ($ligne & 1) $class="first"; else $class="second";    
+	echo ('<tr class="'.$class.'">');
+	echo ('<td style="vertical-align:top;">'.$var->getId().'</td>');
+	echo ('<td>'.wordwrap($value, 40, "<br />", 1).'</td>');
+	echo ('<td style="width:2%;text-align:center"><a href="'.BASE_URL.'/admin/index/adminvaredit/cle/'.$var->getId().'">'.$this->boutonIco("type=edit").'</a></td>');
+	echo ('</tr>');
+}
+
+echo ('</table>');
+?>

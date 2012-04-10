@@ -1,0 +1,18 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="120px">Effet de transition&nbsp;</td>
+		<td class="gauche"><?php $this->view->formSelect("op_transition",$preferences["op_transition"],"",array("zoom" => "Zoom","fade"=>"fading","turnDown"=>"pivot vers le bas","curtainX" => "volet horizontal")) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Hauteur de la boite&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_hauteur_boite",$preferences["op_hauteur_boite"],80,300,5) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Largeur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_largeur_img",$preferences["op_largeur_img"],50,200,5) ?></td>
+	</tr>
+
+</table>

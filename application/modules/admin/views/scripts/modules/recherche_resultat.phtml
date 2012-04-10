@@ -1,0 +1,115 @@
+<?php 
+echo '<script src="'.URL_ADMIN_JS.'drag_and_drop.js'.'" type="text/javascript"> </script>';
+echo '<script src="'.URL_ADMIN_JS.'selection_champs.js'.'" type="text/javascript"> </script>';
+echo '<link rel="stylesheet" type="text/css" media="screen" href="'.URL_ADMIN_CSS.'drag_and_drop.css" />';
+echo $this->tagSelectionChamps("libelles");
+
+?>
+<center>
+<h1>Propriétés de la liste : <?php echo $this->titre ?></h1>
+<div class="formTable">
+	<?php if($this->erreur) echo '<p class="erreur">'.$this->erreur.'</p>'; ?>
+	<form method="post" action="<?php echo $this->url ?>">
+			<fieldset>
+				<legend>Généralités</legend>
+				<table cellspacing="2">
+					<tr>
+						<td class="droite">Titre&nbsp;</td>
+						<td class="gauche"><input type="text" name="titre" size="55" value="<?php print($this->preferences["titre"]); ?>"></td>
+					</tr>
+
+					<tr>
+						<td class="droite">Style de boite&nbsp;</td>
+						<td class="gauche"><?php echo $this->combo_templates ?></td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<fieldset>
+			<legend>Liste</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Format&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("liste_format",$this->preferences["liste_format"],"",array("1" => "Tableau","2"=>"Liste en mode accordéon","3" => "Vignettes")) ?></td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Nombre de notices par page&nbsp;</td>
+    			<td class="gauche"><input type="text" name="liste_nb_par_page" id="liste_nb_par_page" size="5" value="<?php echo $this->preferences["liste_nb_par_page"] ?>"></td>
+  			</tr>
+  			<tr>
+    			<td class="droite" valign="top">Champs à afficher&nbsp;</td>
+    				<?php 
+    				$data=$this->tagSelectionChamps("liste",$this->preferences["liste_codes"]); echo $data["codes_dispo"];
+    				echo '<td class="gauche">';   				
+    				echo $data["champ_code"].$data["champ_libelle"].$data["bloc_saisie"]; 
+    				?>  				
+    			</td>
+  			</tr>
+  		</table>
+			</fieldset>
+		</div>
+		<div style="width:90%"><br>
+			<fieldset>
+			<legend>Facettes</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Affichage&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("facettes_actif",$this->preferences["facettes_actif"],"",array("0" => "Ne pas afficher","1"=>"Afficher les facettes")) ?></td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Nombre d'éléments par facette&nbsp;</td>
+    			<td class="gauche"><input type="text" name="facettes_nombre" id="facettes_nombre" size="5" value="<?php echo $this->preferences["facettes_nombre"] ?>"></td>
+  			</tr>
+  			<tr>
+    			<td class="droite" valign="top">Facettes à afficher&nbsp;</td>
+    			<?php 
+    				$data=$this->tagSelectionChamps("facettes",$this->preferences["facettes_codes"]); echo $data["codes_dispo"];
+    				echo '<td class="gauche">';   				
+    				echo $data["champ_code"].$data["champ_libelle"].$data["bloc_saisie"]; 
+    				?>
+  				</td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Message au dessus de la boite&nbsp;</td>
+    			<td class="gauche"><input type="text" name="facettes_message" id="facettes_message" size="50" maxlength="50" value="<?php echo $this->preferences["facettes_message"] ?>"></td>
+  			</tr>
+  		</table>
+			</fieldset>
+		</div>
+		<div style="width:90%"><br>
+			<fieldset>
+			<legend>Nuages de tags</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Affichage&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("tags_actif",$this->preferences["tags_actif"],"",array("0" => "Ne pas afficher les tags","1"=>"Afficher les tags")) ?></td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Position&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("tags_position",$this->preferences["tags_position"],"",array("2" => "A côté de la liste","1"=>"Sous la liste")) ?></td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Mode de calcul des tranches&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("tags_calcul",$this->preferences["tags_calcul"],"",array("0" => "Par répartition","1"=>"Par écart à la moyenne","2" => "Par écart à la moyenne pondéré")) ?></td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Nombre de tags à afficher&nbsp;</td>
+    			<td class="gauche"><input type="text" name="tags_nombre" id="tags_nombre" size="5" value="<?php echo $this->preferences["tags_nombre"] ?>"></td>
+  			</tr>
+  			<tr>
+    			<td class="droite" valign="top">Types de tags&nbsp;</td>
+    			<?php 
+    				$data=$this->tagSelectionChamps("tags",$this->preferences["tags_codes"]); echo $data["codes_dispo"];
+    				echo '<td class="gauche">';   				
+    				echo $data["champ_code"].$data["champ_libelle"].$data["bloc_saisie"]; 
+    				?>
+  				</td>
+  			</tr>
+  			<tr>
+    			<td class="droite">Message au dessus de la boite&nbsp;</td>
+    			<td class="gauche"><input type="text" name="tags_message" id="tags_message" size="50" maxlength="50" value="<?php echo $this->preferences["tags_message"] ?>"></td>
+  			</tr>
+  		</table>
+			</fieldset>
+
+		<?php include("..".URL_ADMIN_HTML."modules/_fin.phtml");?>

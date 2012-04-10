@@ -1,0 +1,260 @@
+/* Simulation iphone sur un ecran normal */
+body.iphone
+{
+    background: transparent url(../images/boites/gradient_fond_site.gif) repeat-x scroll bottom;
+    font: 14px Helvetica,Arial;
+    margin: 0px;
+    padding: 0px;
+}
+
+body.iphone>div:first-child {
+		float: left;
+		width: 300px;
+}
+div.iphone_container
+{
+  background: transparent url(../images/systeme/iphone_container.jpg) no-repeat;
+  margin:0 auto;
+  padding:135px 0px 0px 1px;
+  width:390px;
+  min-height: 700px;
+	
+}
+
+div.embed_hint {
+		clear:left;
+		margin: 50px 10px;
+		padding: 5px;
+		background-color: #ddd;
+		border: 2px solid #555;
+		border-radius: 5px;
+		width: 300px;
+}
+
+
+div.iphone_application{
+		background: rgb(197,204,211) url(../images/fond_site.png);width:320px;height:416px;overflow:auto;
+		margin: 0 auto;
+}
+
+
+/* Sprecifique au mode telephone reel */
+body.main
+{
+    background: rgb(197,204,211) url(../images/fond_site.png);
+    font: 14px Helvetica,Arial;
+    color: rgb(76,86,108);
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* tags de base */
+img{border:none;}
+a{color:rgb(76,86,108); text-decoration:none;}
+a:hover{color:rgb(76,86,108); text-decoration:none;}
+a:visited{color:rgb(76,86,108); text-decoration:none;}
+h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
+
+.toolbar
+{
+    background: rgb(109,133,163) url(../images/systeme/barre_nav.png) repeat-x top;
+    border-top: 1px solid rgb(205,213,223);
+    border-bottom: 1px solid rgb(46,55,68);
+    padding: 0px;
+    margin: 0px;
+    height: 44px;
+    vertical-align:middle;
+}
+
+.toolbar h1
+{
+    color: #fff;
+    font-weight: bold;
+    font-size:20px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0px 3px 0px 3px;
+    margin-top:5px;
+}
+.toolbar td.gauche{padding-left:5px; padding-top:7px;vertical-align: middle;text-align: left;width: 25%}
+.toolbar td.droite{padding-right:5px; padding-top:7px;vertical-align: middle;text-align: right;width: 25%}
+.boite_saisie
+{
+    border-top:1px solid #D8D8D8;
+    margin:0px;
+    width:100%;
+}
+
+
+.boite_saisie table {
+		width: 100%;
+}
+
+.boite_saisie form{
+   background: #FFFFFF url(../images/boites/gradient_gris.png) repeat-x scroll bottom;
+    padding-bottom:10px;
+    padding-top:10px;
+}
+
+.boite_saisie h2
+{
+    font-size:14px;
+    font-weight:bold;
+    margin:0.2em 5px 0.3em;
+    padding:0.3em 10px;
+}
+.boite_saisie td.titre{}
+.boite_saisie td.contenu{}
+
+/* Listes */
+.liste{}
+.liste ul
+{
+    color: black;
+    background: #ffffff;
+    border: 1px solid #B4B4B4;
+    font: bold 14px Helvetica,Arial;
+    padding: 0;
+    margin: 15px 6px 17px 6px;
+		-webkit-border-radius: 8px;
+		-moz-border-radius : 8px;
+}
+
+.liste li
+{
+    color: #666666;
+    border-top: 1px solid #B4B4B4;
+    list-style-type: none;
+    padding: 10px 10px 10px 10px;
+}
+
+.liste li:first-child
+{
+		border-top:none;
+}
+
+.liste li.lien
+{
+    background-image: url(../images/systeme/chevron.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+/* Bloc pavé interne */
+.pave
+{
+	background-color:#FFFFFF;
+	margin: 6px 6px 17px 6px;
+	border: 1px solid #B4B4B4;
+	padding:3px;color: rgb(76,86,108);
+	-webkit-border-radius: 8px;
+	-moz-border-radius : 8px;
+	overflow: hidden;
+}
+.pave h1{font: bold 14px Helvetica,Arial; padding: 2px;}
+.pave td{font: normal 12px Helvetica,Arial; padding: 2px;}
+.pave div.blank{color: #666666;padding:5px 0px 3px 3px;}
+.pave div.fonction
+{
+    color: #666666;
+    border-top: 1px solid #B4B4B4;
+    background-image: url(../images/systeme/chevron.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    overflow:hidden;
+    font-weight:bold;
+    padding:10px 0px 10px 3px;
+    font-weight: normal;
+}
+.pave img.grande_image{max-width: 100%}
+.pave td.notice_info_titre{font: bold 12px Helvetica,Arial; padding: 2px;}
+.pave td.notice_info_ligne_titre{font: bold 12px Helvetica,Arial; padding: 2px;}
+
+.pager
+{
+	background: transparent url(../images/systeme/pager.png) repeat-x;width:100%;height:30px;
+	font: bold 12px Helvetica,Arial;
+	text-align:center;
+	color:#ffffff;
+	padding-top:5px;
+}
+.pager a{color:#ffffff;}
+
+
+.titre 
+{
+		height: 7px;
+}
+
+.titre h2 
+{
+		padding:  5px 0px 2px 10px;
+		margin: 0px;
+}
+
+
+/* CMS  */
+
+.article 
+{
+		padding: 5px;
+}
+
+.article object 
+{
+
+}
+
+.articles a 
+{
+		display: table-row; 
+		padding: 5px;
+		width: 100%;
+}
+
+.articles li img 
+{
+		width: 60px;
+		padding-right: 5px;
+		display: table-cell;
+}
+
+.articles li a span 
+{
+		display: table-cell;
+		vertical-align: middle;
+		padding-right: 7px;
+}
+
+
+
+/* Lien retour au site en mode simulation */
+
+
+#retour_accueil {
+		padding: 10px;
+		float: left;
+}
+
+#retour_accueil img {
+		vertical-align: middle;
+}  
+
+#retour_accueil a {
+		display: block;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		padding: 5px;
+		font-weight: bold;
+		background-color: #EEE;
+		color: #555;
+}
+
+#retour_accueil a:hover {
+		background-color: #aaa;
+		color: #FFF;
+
+}

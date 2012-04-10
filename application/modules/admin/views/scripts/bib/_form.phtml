@@ -1,0 +1,140 @@
+<?php
+$zoneClass = new Class_Zone();
+
+$bibClass = new Class_Bib();
+$combo_statut_bib = $bibClass->getComboStatutBib($this->bib->VISIBILITE);
+?>
+
+<center><div class="form" style="text-align:center;">
+		<div class="formTable">
+			<form name="form" action="<?php echo BASE_URL ?>/admin/bib/<?php echo $this->action; ?>/id/<?php echo $this->id; ?>" method="post">
+
+				<fieldset>
+					<span id="abonne_erreur" class="abonne"><?php echo $this->message; ?></span>
+					<legend><?php echo $this->traduire('Bibliothèque'); ?></legend>
+					<br />
+					<table>
+						<tr>
+							<td class="droite" style="width:120px;"><?php echo $this->traduire('Nom'); ?> *</td>
+							<td class="gauche"><input type="text" id="libelle" name="libelle"  value="<?php echo $this->escape(trim($this->bib->LIBELLE)); ?>" style="width:100%;" maxlength="70"/></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Nom du responsable'); ?></td>
+							<td class="gauche"><input type="text" id="responsable" name="responsable"  value="<?php echo $this->escape(trim($this->bib->RESPONSABLE)); ?>" style="width:100%;" maxlength="50"/></td>
+						</tr>
+					</table>
+				</fieldset><br />
+
+				<fieldset>
+					<legend><?php echo $this->traduire('Photo'); ?></legend>
+					<table>
+						<tr>
+							<td><iframe style="height:180px;width:650px;overflow:hidden" frameborder="0" src="<?php print(BASE_URL) ?>/admin/bib/photo?id=<?php echo $this->id; ?>"></iframe></td>
+						</tr>
+
+					</table>
+				</fieldset><br />
+
+				<fieldset>
+					<legend><?php echo $this->traduire('Adresse'); ?></legend>
+					<br />
+					<table>
+						<tr>
+							<td class="droite" style="width:120px;"><?php echo $this->traduire('Adresse'); ?></td>
+							<td class="gauche"><textarea id="adresse" name="adresse" cols="35"><?php echo $this->escape(trim($this->bib->ADRESSE)); ?></textarea></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Code postal'); ?></td>
+							<td class="gauche"><input type="text" id="cp" name="cp"  value="<?php echo $this->escape(trim($this->bib->CP)); ?>" style="width:100%;"/></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Ville'); ?> *</td>
+							<td class="gauche"><input type="text" id="ville" name="ville"  value="<?php echo $this->escape(trim($this->bib->VILLE)); ?>" style="width:100%;"/></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Téléphone'); ?></td>
+							<td class="gauche"><input type="text" id="tel" name="tel"  value="<?php echo $this->escape(trim($this->bib->TELEPHONE)); ?>" style="width:100%;"/></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Mail'); ?></td>
+							<td class="gauche"><input type="text" id="mail" name="mail"  value="<?php echo $this->escape(trim($this->bib->MAIL)); ?>" style="width:100%;"/></td>
+						</tr>
+					</table>
+				</fieldset><br />
+
+				<fieldset>
+					<legend><?php echo $this->traduire('Territoire'); ?></legend>
+					<br />
+					<table>
+						<tr>
+							<td class="droite" style="width:120px;"><?php echo $this->traduire('Territoire'); ?></td>
+							<td class="gauche"><?php echo $this->combo_zone; ?></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Lien cartographique'); ?></td>
+							<td class="gauche"><input type="text" id="carto" name="carto"  value="<?php echo $this->escape(trim($this->bib->LIEN_CARTO)); ?>" style="width:530px;"/></td>
+						</tr>
+					</table>
+				</fieldset><br />
+
+				<fieldset>
+					<legend><?php echo $this->traduire('Information'); ?></legend>
+					<br />
+					<table>
+						<tr>
+							<td class="droite" style="width:120px;"><?php echo $this->traduire('Inscription'); ?></td>
+							<td class="gauche"><textarea  id="inscription" name="inscription" cols="35" ><?php echo $this->escape(trim(urldecode($this->bib->INSCRIPTION))); ?> </textarea></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Prêt'); ?></td>
+							<td class="gauche"><textarea id="pret" name="pret"  cols="35"><?php echo $this->escape(trim(urldecode($this->bib->PRET))); ?> </textarea></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Fonds'); ?></td>
+							<td class="gauche"><textarea type="text" id="fond" name="fond" cols="35"><?php echo $this->escape(trim(urldecode($this->bib->FOND))); ?> </textarea></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Comment se procurer ce document '); ?></td>
+							<td class="gauche"><textarea type="text" id="procur" name="procur" cols="35" ><?php echo $this->escape(trim(urldecode($this->bib->PROCURE))); ?> </textarea></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Annexe'); ?></td>
+							<td class="gauche"><textarea type="text" id="annexe" name="annexe"  cols="35"><?php echo $this->escape(trim(urldecode($this->bib->ANNEXE))); ?> </textarea></td>
+						</tr>
+						<tr>
+							<td class="droite" style="width:120px;"><?php echo $this->traduire('Horaire'); ?></td>
+							<td class="gauche"><textarea  id="horaire" name="horaire" cols="35" ><?php echo $this->escape(trim(urldecode($this->bib->HORAIRE))); ?> </textarea></td>
+						</tr>
+					</table>
+					<input type="hidden" id="photo" name="photo"  value="<?php echo $this->escape(trim($this->bib->PHOTO)); ?>"/>
+				</fieldset><br />
+
+				<fieldset>
+					<legend><?php echo $this->traduire('Configuration'); ?></legend>
+					<br />
+					<table>
+						<tr>
+							<td class="droite" style="width:160px;"><?php echo $this->traduire('Statut de la bib'); ?></td>
+							<td class="gauche"><?php echo $combo_statut_bib; ?></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Adresse URL'); ?></td>
+							<td class="gauche"><input type="text" id="url" name="url"  value="<?php echo $this->escape(trim($this->bib->URL_WEB)); ?>" style="width:100%;"/></td>
+						</tr>
+						<tr>
+							<td class="droite"><?php echo $this->traduire('Interdire les réservations'); ?></td>
+							<td class="gauche">
+								<?php echo $this->formSelect("interdire_resa", $this->bib->INTERDIRE_RESA, "", array("0" => "non", "1" => "oui")) ?>
+							</td>
+						</tr>
+					</table>
+				</fieldset><br />
+				<table>
+					<tr>
+						<td align="right" style="padding-right:5px;"> <?php echo $this->bouton('type=V'); ?></td>
+						<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=c_29', 'picto=del.gif', 'texte=Annuler', 'url=' . BASE_URL . '/admin/bib', 'largeur=120px'); ?></td>
+					</tr>
+				</table>
+				<input type="hidden" name="id_bib" id="id_bib" value="<?php echo $this->bib->ID_SITE; ?>" />
+			</form></div></div><br>
+</center>

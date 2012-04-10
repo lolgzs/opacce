@@ -1,0 +1,67 @@
+<?php echo $this->partial('profil/_profil_panel.phtml',
+													array('profil' => $this->profil)); ?>
+
+
+
+<center>
+	<div align="center"><br\>
+	<?php 
+		echo $this->bouton('id=creer',
+											 'picto=add.gif',
+											 'texte='.$this->traduire('Ajouter un menu').'',
+											 'url='.$this->url(array('action' => 'menusmaj', 
+																							 'id_profil' => $this->profil->getId(),
+																							 'mode' => 'add')),
+											 'largeur=170px') 
+	 ?>
+	</div>
+</center>
+
+
+<br />
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td width="30px">Picto.</td>
+		<td>Libellé</td>
+		<td width="20px">&nbsp;</td>
+		<td width="20px">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="separ"></td>
+	</tr>
+	
+<?php
+$ligne=0;
+foreach($this->menus as $id_menu => $menu)
+{
+	if ($ligne & 1) $class="first"; else $class="second";
+	echo '<tr class="'.$class.'" style="height:30px">';
+		echo '<td align="center">';
+			echo '<img src="'.$this->path_img.$menu["picto"].'">';
+		echo '</td>';
+		echo '<td>'.$menu["libelle"].'</td>';
+		echo '<td align="center"><a href="'.$this->url(array('action' => 'menusmaj', 
+																												 'id_profil' => $this->profil->getId(),
+																												 'id_menu' => $id_menu, 
+																												 'mode' => 'edit')).'">'.
+			$this->boutonIco("type=edit").
+			'</a></td>';
+
+		if($id_menu=="H") 
+			echo '<td align="center">-</td>';
+		else 
+			echo '<td align="center"><a href="'.$this->url(array('action' => 'menusmaj', 
+																													 'id_profil' => $this->profil->getId(),
+																													 'id_menu' => $id_menu, 
+																													 'mode' => 'delete')).'">' . 
+				$this->boutonIco("type=del") . 
+				'</a></td>';
+	print('</tr>');
+	$ligne ++ ;
+}
+	
+?>
+	
+</table>
+<br />
+

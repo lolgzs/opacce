@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+
+	<responseDate>2010-05-26T08:07:13Z</responseDate>
+	<request verb="ListSets">
+	http://oai.bnf.fr/oai2/OAIHandler</request>
+	<ListSets>
+		<set>
+			<setSpec>banqueimages</setSpec>
+			<setName>Banque d'images</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:affiches</setSpec>
+			<setName>Banque d'images : affiches</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:batiments</setSpec>
+			<setName>Banque d'images : bâtiments de la BnF</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:cartes</setSpec>
+			<setName>Banque d'images : cartes géographiques, atlas et
+			globes</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:costumes</setSpec>
+			<setName>Banque d'images : costumes et accessoires de scène,
+			maquettes de décors</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:dessins</setSpec>
+			<setName>Banque d'images : dessins</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:disques</setSpec>
+			<setName>Banque d'images : disques et cassettes</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:ephemeres</setSpec>
+			<setName>Banque d'images : éphémères</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:estampes</setSpec>
+			<setName>Banque d'images : estampes</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:imprimes</setSpec>
+			<setName>Banque d'images : textes imprimés et illustrés</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:manuscrits</setSpec>
+			<setName>Banque d'images : manuscrits et tapuscrits
+			d'auteurs</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:manuscritspeints</setSpec>
+			<setName>Banque d'images : manuscrits à peinture</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:medailles</setSpec>
+			<setName>Banque d'images : médailles et jetons</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:monnaies</setSpec>
+			<setName>Banque d'images : monnaies</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:objets</setSpec>
+			<setName>Banque d'images : objets d'art et d'artisanat</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:partitions</setSpec>
+			<setName>Banque d'images : partitions musicales</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:peintures</setSpec>
+			<setName>Banque d'images : tableaux et peintures</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:photographies</setSpec>
+			<setName>Banque d'images : photographies, cartes postales
+			photographiques</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:plans</setSpec>
+			<setName>Banque d'images : plans</setName>
+		</set>
+		<set>
+			<setSpec>banqueimages:reliures</setSpec>
+			<setName>Banque d'images : reliures</setName>
+		</set>
+		<set>
+			<setSpec>gallica</setSpec>
+			<setName>Gallica</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Gallica est la bibliothÃ¨que
+					numÃ©rique de la BibliothÃ¨que nationale de France (BnF),
+					disponible Ã tous depuis 1997. Cette collection tient lieu
+					d'encyclopÃ©die numÃ©rique, regroupant des documents imprimÃ©s
+					(livres, revues, journaux, partitions musicales etc.) aussi bien
+					que des images (estampes, cartes, photographies etc.) et des
+					enregistrements sonores. Gallica permet de trouver des sources
+					rares, originales, Ã©puisÃ©es ou simplement difficiles d'accÃ¨s.
+					Ces documents sont libres de droit pour un usage strictement
+					privÃ©. Actuellement, la bibliothÃ¨que numÃ©rique contient plus de
+					70 000 volumes de textes imprimÃ©s, de 80 000 images fixes, et 30
+					heures d'enregistrements sonores. Pour en savoir plus :
+					http://gallica.bnf.fr</dc:description>
+					<dc:description xml:lang="eng">Gallica is the digital library of
+					the BibliothÃ¨que Nationale de France (BnF), open to the general
+					public around the world since 1997. It serves as a digital
+					encyclopedia and consists of printed materials (books, journals,
+					newspapers, printed music, and other documents), graphic materials
+					(engravings, maps, photographs, and others), and sound recordings.
+					Gallica makes it possible to find sources that are rare, unusual,
+					out-of-print, or difficult, if not impossible, to access. These
+					materials are royalty-free and available free of charge when used
+					strictly for private purposes. Today, this digital library includes
+					more than 70,000 volumes of digitized texts, 80,000 still images,
+					and 30 hours of sound recordings. More information at
+					http://www.bnf.fr/pages/zNavigat/frame/version_anglaise.htm?ancre=english.htm</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:afrique</setSpec>
+			<setName>Gallica : voyages en Afrique</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					documents du dossier "Voyages en Afrique". Pour en savoir plus :
+					http://gallica.bnf.fr/VoyagesEnAfrique/</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					documents from the "Voyages en Afrique" collection ("Travels in
+					Africa"). More information (in French) at :
+					http://gallica.bnf.fr/VoyagesEnAfrique/</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:amerique</setSpec>
+			<setName>Gallica : France en Amérique</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					documents du dossier "France en AmÃ©rique / France in America".
+					Pour en savoir plus :
+					http://gallica.bnf.fr/VoyagesEnAfrique/</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					documents from the "France en AmÃ©rique / France in America"
+					collection. More information at :
+					http://gallica.bnf.fr/FranceAmerique/page.asp?/en/T1-1-Intro.htm?</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:anville</setSpec>
+			<setName>Gallica : fonds d'Anville</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux cartes
+					et plans du fonds Jean-Baptiste Bourguignon d'Anville. Pour en
+					savoir plus :
+					http://gallica.bnf.fr/themes/ImaXVIII.htm</dc:description>
+					<dc:description xml:lang="eng">This set provides access to maps and
+					plans from the Jean-Baptiste Bourguignon d'Anville collection. More
+					information (in French) at :
+					http://gallica.bnf.fr/themes/ImaXVIII.htm</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:ArchAcSci</setSpec>
+			<setName>Gallica : originaux conservés aux archives de l'Académie
+			des sciences</setName>
+		</set>
+		<set>
+			<setSpec>gallica:audio</setSpec>
+			<setName>Gallica : documents sonores</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					enregistrements sonores de Gallica. Pour en savoir plus :
+					http://gallica.bnf.fr/ArchivesParole/</dc:description>
+					<dc:description xml:lang="eng">This set provides access to sound
+					recordings in Gallica. More information (in French) at :
+					http://gallica.bnf.fr/ArchivesParole/</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:BibENPC</setSpec>
+			<setName>Gallica : originaux conservés à la Bibliothèque de l'École
+			nationale des ponts et chaussées</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BibHEy</setSpec>
+			<setName>Gallica : originaux conservés à la Bibliothèque H. Ey (C.
+			H. Sainte-Anne, Paris)</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BibMuHom</setSpec>
+			<setName>Gallica : originaux conservés à la Bibliothèque du Musée
+			de l'Homme</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BibMusHN</setSpec>
+			<setName>Gallica : originaux conservés à la Bib. centrale du Muséum
+			d'Histoire naturelle</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BibPoly</setSpec>
+			<setName>Gallica : originaux conservés à la Bibliothèque de l'École
+			Polytechnique</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BMClermont</setSpec>
+			<setName>Gallica : originaux conservés à la BM de
+			Clermont-Ferrand</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BMLyon</setSpec>
+			<setName>Gallica : originaux conservés à la BM de Lyon
+			Part-Dieu</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BMSedan</setSpec>
+			<setName>Gallica : originaux conservés à la Médiathèque de
+			Sedan</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BMVersailles</setSpec>
+			<setName>Gallica : originaux conservés à la BM de
+			Versailles</setName>
+		</set>
+		<set>
+			<setSpec>gallica:bresil</setSpec>
+			<setName>Gallica : France au Brésil</setName>
+		</set>
+		<set>
+			<setSpec>gallica:BUOrsay</setSpec>
+			<setName>Gallica : originaux conservés à la BU de Paris XI
+			Orsay</setName>
+		</set>
+		<set>
+			<setSpec>gallica:caraibes</setSpec>
+			<setName>Gallica : Caraïbes</setName>
+			<setDescription>Aire géographique Antilles et Guyanes. Sélection de
+			documents numérisés</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes</setSpec>
+			<setName>Gallica : documents cartographiques</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					documents cartographiques de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					cartographic resources in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:atlas</setSpec>
+			<setName>Gallica : documents cartographiques : atlas</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux atlas
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to atlases
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:carte</setSpec>
+			<setName>Gallica : documents cartographiques : carte</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux cartes
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to maps in
+					Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:coupe</setSpec>
+			<setName>Gallica : documents cartographiques : coupes</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux coupes
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to sections
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:diagramme</setSpec>
+			<setName>Gallica : documents cartographiques : diagrammes</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					diagrammes de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to diagrams
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:globe</setSpec>
+			<setName>Gallica : documents cartographiques : globes</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux globes
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to globes
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:maquette</setSpec>
+			<setName>Gallica : documents cartographiques : maquette</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					maquettes de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to models
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:plan</setSpec>
+			<setName>Gallica : documents cartographiques : plans</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux plans
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to palns in
+					Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:teledetection</setSpec>
+			<setName>Gallica : documents cartographiques : image de
+			télédétection</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux images
+					de tÃ©lÃ©dÃ©tection de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to remote
+					sensing images in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:cartes:vue</setSpec>
+			<setName>Gallica : documents cartographiques : vues</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux vues
+					de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to views in
+					Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:corpus</setSpec>
+			<setName>Gallica : corpus</setName>
+		</set>
+		<set>
+			<setSpec>gallica:corpus:sinica</setSpec>
+			<setName>Gallica : corpus : Sinica - collection de sinologie
+			française</setName>
+		</set>
+		<set>
+			<setSpec>gallica:france</setSpec>
+			<setName>Gallica : voyages en France</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					documents du dossier "Voyages en France". Pour en savoir plus :
+					http://gallica.bnf.fr/voyagesenfrance/</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					documents from the "Voyages en France" collection ("Travels in
+					France"). More information (in French) at :
+					http://gallica.bnf.fr/voyagesenfrance/</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:images</setSpec>
+			<setName>Gallica : images</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux images
+					fixes de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to still
+					images in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:images:cartes</setSpec>
+			<setName>Gallica : images : cartes et plans</setName>
+		</set>
+		<set>
+			<setSpec>gallica:images:dessins</setSpec>
+			<setName>Gallica : images : dessins</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					dessins de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to drawings
+					in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:images:estampes</setSpec>
+			<setName>Gallica : images : estampes</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					estampes de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					engravings in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:images:photographies</setSpec>
+			<setName>Gallica : images : photographies</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					photographies de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					photographs in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:italie</setSpec>
+			<setName>Gallica : voyages en Italie</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					documents du dossier "Voyages en Italie". Pour en savoir plus :
+					http://gallica.bnf.fr/VoyagesEnItalie/</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					documents from the "Voyages en Italie" collection ("Travels in
+					Italy"). More information (in French) at :
+					http://gallica.bnf.fr/VoyagesEnItalie/</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:manuscrits</setSpec>
+			<setName>Gallica : manuscrits</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					manuscrits de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					manuscripts in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:martinet</setSpec>
+			<setName>Gallica : fonds Hautecoeur-Martinet</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					estampes du fonds de "Galeries thÃ©Ã¢trales" Hautecoeur-Martinet.
+					Pour en savoir plus :
+					http://gallica.bnf.fr/Martinet.htm</dc:description>
+					<dc:description xml:lang="eng">This set provides access to
+					engravings from the Hautecoeur-Martinet's "Galeries thÃ©Ã¢trales"
+					collection. More information (in French) at :
+					http://gallica.bnf.fr/Martinet.htm</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:monographies</setSpec>
+			<setName>Gallica : monographies imprimées</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:musiciens</setSpec>
+			<setName>Gallica : fonds des portraits de musiciens</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					dessins et gravures du fonds des portraits de
+					musiciens.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to drawings
+					and engravings from the musicians' portraits
+					collection.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:partitions</setSpec>
+			<setName>Gallica : partitions</setName>
+		</set>
+		<set>
+			<setSpec>gallica:periodiques</setSpec>
+			<setName>Gallica : périodiques imprimés</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					journaux, revues et autres publications pÃ©riodiques imprimÃ©es de
+					Gallica.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed press, journals and serials in Gallica.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:periodiques:fascicules</setSpec>
+			<setName>Gallica : périodiques imprimés : Fascicules</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					journaux, revues et autres publications pÃ©riodiques imprimÃ©es de
+					Gallica, avec une notice par fascicule numÃ©risÃ©.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed press, journals and serials in Gallica, with one record for
+					each volume.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:periodiques:titres</setSpec>
+			<setName>Gallica : périodiques imprimés : Titres</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					journaux, revues et autres publications pÃ©riodiques imprimÃ©es de
+					Gallica, dÃ©crits au niveau du titre.</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed press, journals and serials in Gallica, on title
+					basis.</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:philidor</setSpec>
+			<setName>Gallica : collection Philidor</setName>
+		</set>
+		<set>
+			<setSpec>gallica:philidor:livrets</setSpec>
+			<setName>Gallica : collection Philidor : livrets</setName>
+		</set>
+		<set>
+			<setSpec>gallica:philidor:partitions</setSpec>
+			<setName>Gallica : collection Philidor : partitions
+			manuscrites</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocAquitaine</setSpec>
+			<setName>Gallica : sociétés savantes d'Aquitaine</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocBourgogne</setSpec>
+			<setName>Gallica : sociétés savantes de Bourgogne</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocBretagne</setSpec>
+			<setName>Gallica : sociétés savantes de Bretagne</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocLorraine</setSpec>
+			<setName>Gallica : sociétés savantes de Lorraine</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocPaysLoire</setSpec>
+			<setName>Gallica : sociétés savantes des Pays de la Loire</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocPicardie</setSpec>
+			<setName>Gallica : sociétés savantes de Picardie</setName>
+		</set>
+		<set>
+			<setSpec>gallica:SocPoitou</setSpec>
+			<setName>Gallica : sociétés savantes de Poitou-Charentes</setName>
+		</set>
+		<set>
+			<setSpec>gallica:0</setSpec>
+			<setName>Gallica : généralités</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 000 Ã 099 :
+					GÃ©nÃ©ralitÃ©s</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 000 to 099 : General works</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:00</setSpec>
+			<setName>Gallica : généralités : généralités sur le savoir et le
+			livre</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 001 Ã 009 : GÃ©nÃ©ralitÃ©s sur le savoir
+					et le livre</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 001 to 009 : General works about knowledge
+					and books</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:01</setSpec>
+			<setName>Gallica : généralités : bibliographies</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 010 Ã 019 :
+					Bibliographies</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 010 to 019 :
+					Bibliographies</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:02</setSpec>
+			<setName>Gallica : généralités : bibliothéconomie et sciences de
+			l'information</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 020 Ã 029 : BibliothÃ©conomie et sciences
+					de l'information</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 020 to 029 : Library and information
+					sciences</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:03</setSpec>
+			<setName>Gallica : généralités : encyclopédies générales</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 030 Ã 039 : EncyclopÃ©dies
+					gÃ©nÃ©rales</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 030 to 039 : Encyclopedia</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:05</setSpec>
+			<setName>Gallica : généralités : publications en série d'ordre
+			général</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 050 Ã 059 : Publications en sÃ©rie d'ordre
+					gÃ©nÃ©ral</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 050 to 059 : Magazines, journals and
+					serials</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:06</setSpec>
+			<setName>Gallica : généralités : organisations générales et
+			muséologie</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 060 Ã 069 : Organisations gÃ©nÃ©rales et
+					musÃ©ologie</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 060 to 069 : Associations, organizations
+					and museums</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:07</setSpec>
+			<setName>Gallica : généralités : médias documentaires, journalisme,
+			édition</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 070 Ã 079 : MÃ©dias documentaires,
+					journalisme, Ã©dition</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 070 to 079 : News media, journalism and
+					publishing</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:08</setSpec>
+			<setName>Gallica : généralités : recueils généraux</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 080 Ã 089 : Recueils
+					gÃ©nÃ©raux</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 080 to 089 : Quotations</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:0:09</setSpec>
+			<setName>Gallica : généralités : manuscrits et livres
+			rares</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 090 Ã 099 : Manuscrits et livres
+					rares</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 090 to 099 : Manuscripts and rare
+					books</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1</setSpec>
+			<setName>Gallica : philosophie</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 100 Ã 199 :Philosophie et
+					psychologie</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 100 to 199 : Philosophy and
+					psychology</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:10</setSpec>
+			<setName>Gallica : philosophie : généralités</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 100 Ã 109 : GÃ©nÃ©ralitÃ©s de la
+					philosophie</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 100 to 109 : Philosophy (general
+					works)</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:11</setSpec>
+			<setName>Gallica : philosophie : métaphysique</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 110 Ã 119 : MÃ©taphysique</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 110 to 119 : Metaphysics</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:12</setSpec>
+			<setName>Gallica : philosophie : épistémologie, causalité, genre
+			humain</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 120 Ã 129 : EpistÃ©mologie, causalitÃ©,
+					genre humain</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 120 to 129 : Epistemology</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:13</setSpec>
+			<setName>Gallica : philosophie : parapsychologie et
+			occultisme</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 130 Ã 139 : Parapsychologie et
+					occultisme</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 130 to 139 : Parapsychology and
+					occultism</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:14</setSpec>
+			<setName>Gallica : philosophie : les divers systèmes et écoles
+			philosophiques</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 140 Ã 149 : Les divers systÃ¨mes et
+					Ã©coles philosophiques</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 140 to 149 : Philosophical schools of
+					thought</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:15</setSpec>
+			<setName>Gallica : philosophie : psychologie</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 150 Ã 159 : Psychologie</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 150 to 159 : Psychology</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:16</setSpec>
+			<setName>Gallica : philosophie : logique</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 160 Ã 169 : Logique</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 160 to 169 : Logic</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:17</setSpec>
+			<setName>Gallica : philosophie : éthique</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 170 Ã 179 : Ethique</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 170 to 179 : Ethics</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:18</setSpec>
+			<setName>Gallica : philosophie : philosophie antique, médiévale et
+			orientale</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 180 Ã 189 : Philosophie antique,
+					mÃ©diÃ©vale et orientale</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 180 to 189 : Ancient, medieval and eastern
+					philosophy</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:1:181</setSpec>
+			<setName>Gallica : philosophie : philosophie orientale, ancienne et
+			moderne</setName>
+		</set>
+		<set>
+			<setSpec>gallica:1:189</setSpec>
+			<setName>Gallica : philosophie : philosophie du Moyen Âge</setName>
+		</set>
+		<set>
+			<setSpec>gallica:1:19</setSpec>
+			<setName>Gallica : philosophie : philosophie occidentale
+			moderne</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 190 Ã 199 : Philosophie occidentale
+					moderne</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 190 to 199 : Modern western
+					philosophy</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:2</setSpec>
+			<setName>Gallica : religion</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 200 Ã 299 : Religion</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 200 to 299 : Religion</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<set>
+			<setSpec>gallica:2:20</setSpec>
+			<setName>Gallica : religion : généralités</setName>
+			<setDescription>
+				<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+									 xmlns:dc="http://purl.org/dc/elements/1.1/">
+					<dc:description xml:lang="fre">Cet ensemble donne accÃ¨s aux
+					ouvrages imprimÃ©s de Gallica indexÃ©s suivant la Classification
+					dÃ©cimale Dewey, classes 200 Ã 209 : GÃ©nÃ©ralitÃ©s de la
+					religion</dc:description>
+					<dc:description xml:lang="eng">This set provides access to the
+					printed books and serials in Gallica indexed with Dewey Decimal
+					Classification, classes 200 to 209 : Religion (general
+					works)</dc:description>
+				</oai_dc:dc>
+			</setDescription>
+		</set>
+		<resumptionToken expirationDate="2010-05-26T09:07:13Z"
+										 completeListSize="208" cursor="0">
+		1274861233188!100!208</resumptionToken>
+	</ListSets>
+</OAI-PMH>

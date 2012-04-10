@@ -1,0 +1,23 @@
+<script src="<?php echo URL_ADMIN_JS?>rss.js"> </script>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>popup.css" />
+
+<?php 
+foreach($this->rss as $item)
+{
+	$this->openBoite($item["TITRE"]);
+	print($this->escape($item["DESCRIPTION"]).BR.BR);
+	print('<a id="rss_a_'.$item["ID_RSS"].'" href="javascript:requestRss(\''.$item["ID_RSS"].'\');">&raquo;&nbsp;Afficher le contenu du fil RSS</a>');
+	$this->closeBoite();
+}
+
+if (count($this->rss) == 1) {
+	echo 
+		"<script type='text/javascript'>".
+	  	"$(document).ready(function(){".
+ 		    "requestRss('".$this->rss[0]["ID_RSS"]."');".
+		  "})".
+		"</script>";
+}
+?>
+
+<div id="ajax"></div>

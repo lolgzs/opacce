@@ -1,0 +1,15 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+<br/>
+<fieldset>
+	<legend>Affichage</legend>
+	<table cellspacing="2">
+		<tr>
+			<td class="droite">Album&nbsp;</td>
+			<td class="gauche">
+				<?php echo $this->formSelect('album_id', $this->preferences['album_id'], null, $this->albums); ?>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+<?php echo $this->render('menus/_fin.phtml'); ?>
+

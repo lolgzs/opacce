@@ -1,0 +1,53 @@
+<transitions>
+
+	<transition name = 'rotateFromTL' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '160' time = '1' easing = 'easeOut' motion = 'Elastic' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'tl' />
+	</transition>
+
+
+	<transition name = 'rotateFromBR' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '160' time = '1' easing = 'easeOut' motion = 'Elastic' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'br' />
+	</transition>
+
+
+	<transition name = 'rotateFromTR' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '160' time = '1' easing = 'easeOut' motion = 'Elastic' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'tr' />
+	</transition>
+
+	<transition name = 'rotateFromBL' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '160' time = '1' easing = 'easeOut' motion = 'Elastic' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'bl' />
+	</transition>
+
+</transitions>

@@ -1,0 +1,37 @@
+<div id="cms_edit_head"><?php echo $this->_('Localisation') . ' : ' . $this->article->getBibLibelle(); ?>
+	<?php if (!$this->article->isNew())  { 
+		  $article_url = $this->url(array('module' => 'opac', 
+																			'controller' => 'cms', 
+																			'action' => 'articleview', 
+																			'id' => $this->article->getId()));
+	    $title = "Visualisation de l'article: ".$this->article->getTitre(); ?>
+			<a rel="prettyPhoto" href="<?php echo $article_url ?>&amp;iframe=true&amp;width=80%&amp;height=80%" title="<?php echo $title ?>">
+					 <img
+							 src="<?php echo URL_ADMIN_IMG ?>picto/find.gif" 
+							 title="<?php echo $title ?>"
+							 alt="Visualisation de l'article: <?php echo $this->article->getTitre() ?>" />
+			</a>
+		 <?php 
+			 echo $this->permalink($article_url); 
+		 ?> 
+
+	<?php }?>
+
+	<?php
+		 echo $this->partial('cms/_traduction_navigator.phtml',
+												 array('article' => $this->article));
+	?>
+
+<?php 
+
+if ($this->article->hasDateMaj())  {
+  echo sprintf('<br/><br/>%s : %s', 
+               $this->_("Dernière modification"), 
+               $this->humanDate($this->article->getDateMaj())); 
+}
+?>
+
+</div>
+
+
+

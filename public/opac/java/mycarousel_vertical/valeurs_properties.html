@@ -1,0 +1,23 @@
+<table cellspacing="2" width="100%">
+
+	<tr>
+		<td class="droite" width="160px">Vitesse de défilement&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_speed",$preferences["op_speed"],100,1000,10) ?></td>
+	</tr>
+
+		<tr>
+		<td class="droite">Nbre d'images en hauteur&nbsp;</td>
+		<td class="gauche"><?php $this->view->comboNombres("op_visible",$preferences["op_visible"],2,5,1) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Largeur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_largeur_img",$preferences["op_largeur_img"],50,200,5) ?></td>
+	</tr>
+
+	<tr>
+		<td class="droite">Hauteur de l'image&nbsp;</td>
+		<td class="gauche"><?php $this->view->tagSlider("op_hauteur_img",$preferences["op_hauteur_img"],50,200,5) ?></td>
+	</tr>
+
+</table>

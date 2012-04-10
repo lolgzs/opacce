@@ -1,0 +1,83 @@
+<?php 
+$this->openBoite("Notice");
+
+$script_loader = Class_ScriptLoader::getInstance()
+	->cssAddLine(sprintf('<link rel="image_src" href="%s" />', // Ajout des balises pour la vignette dans facebook
+											 $this->url_img["vignette"]))
+
+	->addStyleSheet(URL_ADMIN_JS.'slimbox/slimbox2')
+	->addAdminScript('slimbox/slimbox2')
+
+	->addStyleSheet(URL_ADMIN_JS.'rating/jquery.rating')
+	->addAdminScript('rating/jquery.rating.pack')
+
+	->addSkinstylesheet('recherche')
+	->addOpacScript('recherche');
+
+$notice_html=new Class_NoticeHtml($this->notice);
+?>
+
+<div class="view_notice">
+	<div>
+		<div>
+			<a href="<?php if(!$this->url_retour) print(BASE_URL); else print($this->url_retour); ?>">&raquo;&nbsp;<?php echo $this->_('Retour à la liste') ?></a>
+			<span id="bloc_panier"><a href="<?php echo $this->url_panier ?>">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Ajouter au Panier') ?></a></span>
+		</div>
+
+		<div style="background:transparent url(<?php echo URL_IMG ?>separ.gif) repeat-x scroll center bottom; width:100%; height:5px; margin-bottom:5px"></div>
+	</div>
+
+	<div> 
+			<div style="width:30px; align:center; float: left">
+	      <?php echo $this->iconeSupport($this->notice["type_doc"]) ?>
+				<?php if($this->picto_genre) echo BR.BR.'<img src="'.URL_IMG.'genres/'.$this->picto_genre.'" alt="Genre" />'?>
+			</div>
+			<div style="float: left">
+					<div>
+            <h1 style="margin:0px; white-space:normal">
+	             <?php echo $this->notice["titre_principal"];
+										 echo $this->readSpeaker('recherche', 
+																						 'readnotice', 
+																						 array("id" => $this->notice["id_notice"]))	 ?></h1></div>
+	         <div><h1 style="margin:0px"><?php echo $this->notice["auteur_principal"] ?></h1></div>
+			</div>
+
+
+			<div style="width:120px; height: 0px; float:right; ">
+				<?php
+					if($this->url_img["image"])
+					{
+						printf('<a id="vignette" href="%s" title="%s">', $this->url_img["image"], $this->notice["titre_principal"]);
+						printf('<img src="%s" width="100" border="0" alt="%s" />', $this->url_img["vignette"], $this->_('Vignette'));
+						echo '</a>';
+						echo '<script type="text/javascript">$("a[id=\'vignette\']").slimbox({}, null, null)</script>';
+					}
+					else 
+						printf('<img src="%s" width="100" border="0" alt="%s" /> ', $this->url_img["vignette"], $this->_('Vignette'));
+				?>
+
+				<div id="reseaux-sociaux"></div>
+				<?php
+					$script_loader
+	            ->addJQueryReady(sprintf('$("#reseaux-sociaux").load("%s")',
+																			 $this->url(array('controller' => 'recherche', 
+																												'action' => 'reseau',
+																												'id_notice' => $this->notice['id_notice'],
+																												'type_doc' => $this->notice["type_doc"]))));
+				?>
+			</div>
+      <div class="clear"></div>
+	</div>
+</div>
+<?php
+	// Entete Notice
+	 echo sprintf('<div style="margin-left: 30px; margin-right:130px">%s</div><div  style="padding-right: 120px">%s</div><div>%s</div>',
+								$notice_html->getEntete().BR,
+								$notice_html->getBlocs().BR,
+								$notice_html->getOnglets());
+
+	// Javascript pour deployer les blocs
+	print($notice_html->getJavaScriptAuto());
+	$this->closeBoite();
+?>
+

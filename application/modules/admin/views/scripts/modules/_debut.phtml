@@ -1,0 +1,22 @@
+<center>
+<h1>Propriétés du module : <?php echo $this->titre_module ?></h1><br>
+<div class="formTable">
+	<?php if($this->erreur) echo '<p class="erreur">'.$this->erreur.'</p>'; ?>
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Module</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Texte du fil d'ariane&nbsp;</td>
+    			<td class="gauche"><input name="barre_nav" size="25" maxlength="30" value="<?php echo $this->preferences["barre_nav"] ?>"></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>

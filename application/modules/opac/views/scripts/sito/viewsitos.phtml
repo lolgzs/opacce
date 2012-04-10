@@ -1,0 +1,18 @@
+<?php 
+foreach($this->sitos as $sito) {
+	$thumb_url = $this->webThumbnail($sito["URL"]);
+
+	$this->openBoite($sito["TITRE"]);
+	echo "<div class='sitotheque'>";
+
+	if ($thumb_url)
+		printf('<img src="%s">', $thumb_url);
+
+  echo $sito["DESCRIPTION"];
+
+	printf('<div><a href="%s" target="_blank">%s</a></div>', $sito["URL"], $this->_('Voir le site'));
+	$this->closeBoite();
+
+	echo "</div>";
+}
+?>

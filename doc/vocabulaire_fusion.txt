@@ -1,0 +1,67 @@
+session_formation
+  effectif_min
+	effectif_max
+	cout
+	duree
+	contenu
+	objectif
+	lieu
+	horaires
+  date_debut_texte
+	formation*
+	stagiaires* (liste)
+	intervenants* (liste)
+	
+formation
+  libelle
+	description
+	sessions* (liste)
+
+
+stagiaire 
+	  (comme intervenant)
+	
+intervenant
+	  nom
+		prenom
+		naissance
+		login
+		mail
+		telephone
+		date_debut : date debut abonnement
+		date_fin  : date fin abonnement
+		bib*
+
+		
+bib
+	  libelle
+		adresse
+		cp
+		ville
+		telephone
+		url_web
+		horaire
+		mail
+		responsable
+
+	
+Exemple:
+
+Formation: {session_formation.formation.libelle}
+
+Liste des stagiaires pour la session du {session_formation.date_debut_texte}
+
+{session_formation.stagiaires["Nom":nom, "Prénom":prenom, "Bibliothèque":bib.libelle, "Téléphone":telephone, "Présent"]}
+
+Intervenants
+
+{session_formation.intervenants["Nom":nom, "Prénom":prenom, "Courriel": mail]}
+
+Autres sessions:
+{session_formation.formation.sessions["Date":date_debut_texte, "Durée":duree]}
+
+
+
+
+Pour les tableaux (stagiaires / intervenants / sessions):
+{liste["En tête colonne 1":champ1, "En tête colonne 2":champ2, "En tête colonne vide"]}

@@ -1,0 +1,91 @@
+/* GOOGLE MAP */
+
+/* Table qui contient tous les élements du plan */
+table.map
+{
+	/* border:1px solid; */
+	/* border-color:#e0e0e0; */
+	/* background-color:#FFFFCC; */
+}
+/* Conteneur de la carte seule */
+div.map
+{
+	width:760px;
+	height:490px;
+}
+
+/* Liste des couches en dessous de la carte */
+ul.map
+{
+	list-style-image: url("../images/fleche_verte.gif");
+	font-size:10pt;
+	font-weight:bold;
+	margin-left:30;
+	margin-top:0;
+	margin-bottom:0;
+}
+
+/* BULLE d'infos */
+
+/* Entete de la bulle d'infos */
+td.map_entete
+{
+	font-size:12pt;
+	font-weight:bold;
+	color:#C36200;
+	padding-bottom:10;
+}
+/* Cellule bulle d'infos */
+td.map
+{
+	vertical-align:top;
+	padding-left:10;
+	font-size:10pt;
+	color:#476777;
+}
+/* Petit titre dans bulle d'infos */
+span.map_titre
+{
+	font-size:10pt;
+	color:#0042A5;
+	font-weight:bold;
+}
+
+/* Pour la constitution du plan */
+td.map_saisie_map
+{
+	border:1px solid;
+	border-color:#e0e0e0;
+}
+
+table.map_saisie
+{
+	border:1px solid;
+	border-color:#e0e0e0;
+	background-color:#FFFAD6;
+}
+td.map_saisie_titre
+{
+	font-size:10pt;
+	color:#0042A5;
+	font-weight:bold;
+	text-indent:10;
+	vertical-align:middle;
+	height:30;
+	background-color:#efefef;
+}
+td.map_saisie
+{
+	font-size:10pt;
+	color:#476777;
+	vertical-align:middle;
+	padding-right:5;
+	text-align:right;
+	width:90;
+}
+fieldset.map_saisie
+{
+	border: 1px solid;
+	border-color:blue;
+	color:red;
+}

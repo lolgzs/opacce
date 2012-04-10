@@ -1,0 +1,33 @@
+<script src="<?php echo JQUERY; ?>" type="text/javascript"> </script>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>global.css">
+<script>
+	function effacerImage()
+	{
+		$('img').attr('src','');
+		window.parent.getId('<?php echo $this->input_name ?>').value='';
+	}
+</script>
+
+<form name="form" action="<?php echo $this->url ?>" enctype="multipart/form-data" method="post">
+	<table>
+		<tr>
+			<td style="padding:5px;width:<?php echo $this->largeur_vignette +10 ?>px">
+				<div style="border:1px solid #dddddd;background-color:#ffffff;width:<?php echo $this->largeur_vignette ?>px;min-height:100px">
+						<img src="<?php echo $this->image ?>?<?php echo time()?>" width="<?php echo $this->largeur_vignette ?>" style="display:block">
+				</div>
+			</td>
+			<td style="padding-left:10px;padding-top:10px" valign="top">
+				<span style="font-size:12px"><?php echo $this->conseil ?></span>
+				<br><br>
+				<div style="width:100%" align="center">
+					<input type="file" name="photo" class="bouton" enctype="multipart/form-data">
+					<br><br>
+					<input type="submit" class="bouton" value="Envoyer sur le serveur">&nbsp;
+					<input type="button" class="bouton" value="Effacer l'image" onclick="effacerImage();">
+				</div>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<script>window.parent.getId('<?php echo $this->input_name ?>').value='<?php echo $this->filename ?>'</script>

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+
+	<responseDate>2010-05-26T15:14:54Z</responseDate>
+	<request resumptionToken="229!2448454!2459420!2459392!800!814!oai_dc"
+					 verb="ListRecords">http://oai.bnf.fr/oai2/OAIHandler</request>
+	<ListRecords>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5684135f</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:8:80</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5684135f</dc:identifier>
+					<dc:title>Voyages et aventures d'un Portugais [F. Mendes Pinto],
+					racontés par lui-même</dc:title>
+					<dc:creator>Pinto, Fernão Mendes (1514?-1583)</dc:creator>
+					<dc:publisher>Barbou frères (Limoges)</dc:publisher>
+					<dc:date>1865</dc:date>
+					<dc:format>In-8° , 100 p., planche</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30925115v/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-OZ-138
+					(B)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5435273x</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5435273x</dc:identifier>
+					<dc:title>Dieu du sol dans l'ancienne religion chinoise</dc:title>
+					<dc:contributor>Chavannes, Édouard (1865-1918). Éditeur
+					scientifique</dc:contributor>
+					<dc:publisher>E. Leroux (Paris)</dc:publisher>
+					<dc:date>1901</dc:date>
+					<dc:format>In-8° , 22 p.</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb302312960/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-1126</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5609112s</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5609112s</dc:identifier>
+					<dc:title>Historique de la Chine, par Cl. Madrolle</dc:title>
+					<dc:creator>Madrolle, Claudius</dc:creator>
+					<dc:publisher>Comité de l'Asie française (Paris)</dc:publisher>
+					<dc:date>1904</dc:date>
+					<dc:format>In-12, 48 p.</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30856254q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-1559</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5609148d</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5609148d</dc:identifier>
+					<dc:title>Le Fleuve bleu. Voyage dans la Chine occidentale, par
+					Gaston de Bézaure,...</dc:title>
+					<dc:creator>Bézaure, Gaston de</dc:creator>
+					<dc:publisher>E. Plon (Paris)</dc:publisher>
+					<dc:date>1879</dc:date>
+					<dc:format>In-18, 312 p., pl. et 1 carte</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb301019279/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-668</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b59631099</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:images:estampes</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b59631099</dc:identifier>
+					<dc:title>Airs chinois / [tirés du P. Duhalde]</dc:title>
+					<dc:creator>Du Halde, Jean-Baptiste (1674-1743). Auteur
+					adapté</dc:creator>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>1735</dc:date>
+					<dc:subject xml:lang="fre">Musique -- Chine</dc:subject>
+					<dc:coverage>Chine</dc:coverage>
+					<dc:format>1 est. ; 40,5 x 28 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Appartient à : Collection d'Anville ;
+					07269</dc:relation>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40666477w/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">estampe</dc:type>
+					<dc:type xml:lang="eng">engraving</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5440993t</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:90</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5440993t</dc:identifier>
+					<dc:title>Chronique de Moldavie depuis le milieu du XIVe siècle
+					jusqu'à l'an 1594 / par Grégoire Urechi ; texte roumain avec
+					traduction française, notes historiques, tableaux généalogiques,
+					glossaire et table par Émile Picot</dc:title>
+					<dc:creator>Ureche, Grigore (1590-1647)</dc:creator>
+					<dc:contributor>Picot, Émile (1844-1918). Éditeur scientifique.
+					Traducteur</dc:contributor>
+					<dc:publisher>E. Leroux (Paris)</dc:publisher>
+					<dc:date>1878-1886</dc:date>
+					<dc:description>Collection : Publications de l'École des langues
+					orientales vivantes ; 9</dc:description>
+					<dc:format>XXVIII-662 p. ; gr. in-8°</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb31513446q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 4-O2-545
+					(9)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5460350j</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5460350j</dc:identifier>
+					<dc:title>Tam Tu Kinh, ou Le Livre des phrases de trois caractères
+					: texte, transcription annamite et chinoise, explication littérale
+					et trad. complètes / Abel Des Michels,... ; commentaire de Vương
+					Tâń Thăng</dc:title>
+					<dc:creator>Wang Po-Heou</dc:creator>
+					<dc:contributor>Des Michels, Abel (1833-1910). Éditeur
+					scientifique</dc:contributor>
+					<dc:contributor>Wang Jinsheng. Collaborateur</dc:contributor>
+					<dc:publisher>E. Leroux (Paris)</dc:publisher>
+					<dc:date>1882</dc:date>
+					<dc:description>Collection : Publications de l'École des langues
+					orientales vivantes ; 17</dc:description>
+					<dc:format>IX-271-IV-181 p. ; 26 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30333151d/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 4-O2-545
+					(17)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5425532r</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5425532r</dc:identifier>
+					<dc:title>Les Mémoires historiques. 3, Chapitres
+					XIII-XXII["Che-ki"] de Se-ma Ts'ien. Traduits et annotés par
+					Edouard Chavannes...</dc:title>
+					<dc:creator>Sseu-ma Ts'ien</dc:creator>
+					<dc:publisher>Librairie d'Amérique et d'Orient
+					(Paris)</dc:publisher>
+					<dc:date>1967</dc:date>
+					<dc:format>23 cm, II-672 p., carte h.-t. [D. L.
+					11767-68]</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb33181463v/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-3067
+					(3)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k54213426</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k54213426</dc:identifier>
+					<dc:title>Un Français en Chine, pendant les années 1850 à 1856, par
+					J.-J.-E. Roy</dc:title>
+					<dc:creator>Roy, Just-Jean-Étienne (1794-1871?)</dc:creator>
+					<dc:publisher>A. Mame (Tours)</dc:publisher>
+					<dc:date>1857</dc:date>
+					<dc:format>In-8° , 188 p., planche</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb312648786/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-157</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5421331d</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5421331d</dc:identifier>
+					<dc:title>Les Origines de deux établissements français dans
+					l'Extrême-Orient : Chang-Haï, Ning-Po, documents inédits, publiés,
+					avec une introduction et des notes, par Henri
+					Cordier,...</dc:title>
+					<dc:date>1896</dc:date>
+					<dc:subject xml:lang="fre">Cambodge (+* 1863......- 1953......+
+					:1863-1953 :)</dc:subject>
+					<dc:subject xml:lang="fre">Cambodge</dc:subject>
+					<dc:subject xml:lang="fre">Laos</dc:subject>
+					<dc:subject xml:lang="fre">France -- Colonies</dc:subject>
+					<dc:format>Gr. in-8°</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb341374115/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 4-LK10-371</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5421449f</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5421449f</dc:identifier>
+					<dc:title>L'Annam, le Tonkin et l'intervention de la France en
+					Extrême-Orient, par Paul Antonini...</dc:title>
+					<dc:creator>Antonini, Paul</dc:creator>
+					<dc:publisher>Bloud et Barral (Paris)</dc:publisher>
+					<dc:date>1889</dc:date>
+					<dc:format>In-8°</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb300231808/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-LK10-268</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5408212b</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5408212b</dc:identifier>
+					<dc:title>Histoire anté-diluvienne de la Chine, ou Histoire de la
+					Chine dans les tems antérieurs à l'an 2298 avant notre ère / par M.
+					le marquis de Fortia d'Urban,...</dc:title>
+					<dc:creator>Fortia d'Urban,
+					Agricol-Joseph-François-Xavier-Pierre-Esprit-Simon-Paul-Antoine
+					(1756-1843)</dc:creator>
+					<dc:publisher>impr. de Fournier (Paris)</dc:publisher>
+					<dc:date>1838</dc:date>
+					<dc:subject xml:lang="fre">Chine -- Histoire</dc:subject>
+					<dc:format>1 vol. (XXIV-139 p.) ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb304512346/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-219</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5415915b</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:95</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5415915b</dc:identifier>
+					<dc:title>Histoire des relations politiques de la Chine avec les
+					puissances occidentales, depuis les temps les plus anciens jusqu'à
+					nos jours ; suivie du Cérémonial observé à la cour de Pé-King pour
+					la réception des ambassadeurs... / par G. Pauthier</dc:title>
+					<dc:creator>Pauthier, Guillaume (1801-1873)</dc:creator>
+					<dc:publisher>Firmin-Didot frères, fils et Cie
+					(Paris)</dc:publisher>
+					<dc:date>1859</dc:date>
+					<dc:format>1 vol. (238 p.) ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb310694001/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2N-230</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5425179s</identifier>
+				<datestamp>2010-05-23</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:corpus:sinica</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5425179s</dc:identifier>
+					<dc:title>Un touriste dans l'Extrême-Orient ; Japon, Chine,
+					Indo-Chine et Tonkin (4 août 1881-24 janvier 1882), par Edmond
+					Cotteau,...</dc:title>
+					<dc:creator>Cotteau, Edmond (1833-1896)</dc:creator>
+					<dc:publisher>Hachette (Paris)</dc:publisher>
+					<dc:date>1884</dc:date>
+					<dc:format>In-16, 448 p., fig.</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30277135s/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-O2-686</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<resumptionToken expirationDate="2010-05-26T16:14:54Z"
+										 completeListSize="814" cursor="800"></resumptionToken>
+	</ListRecords>
+</OAI-PMH>

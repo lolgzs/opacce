@@ -1,0 +1,58 @@
+<?php 
+$limit_day = getVar('MAX_DAY_INVALID_MEMBRE');
+if(!$limit_day) $limit_day=30;
+
+$ligne=0;
+if($this->liste_user)
+{
+	echo '
+	<form name="form" action="updatemembre" method="post">
+		<table cellpadding="5px" cellspacing="0">
+		<tr class="soustitre">
+      <td style="width:30%;">Login</td>
+			<td style="width:40%;">E-mail</td>
+      <td style="width:22%;">Date</td>
+      <td style="width:8%">Action</td>
+		</tr>
+		<tr>
+			<td colspan="6"  class="separ"></td>
+		</tr>';
+
+	foreach($this->liste_user as $user)
+	{
+		$date=substr($user["DATE"],0,10);
+		$date_controle=time()-($limit_day * 86400);
+		$date_controle=date("Y-m-d",$date_controle);
+		if($date < $date_controle)
+		{
+			$color = 'style="background-color:#FF0000;"';
+			$sel_2 ='selected="selected"';
+			$sel_3= '';
+		}
+		else
+		{
+			$color = '';
+			$sel_2 ="";
+			$sel_3= 'selected="selected"';
+		}
+		$ligne ++ ;
+		if ($ligne & 1) $class="first"; else $class="second";
+		print('<tr class="'.$class.'">');
+		echo '<td valign="top"><b>'.$user["LOGIN"].'</b></td>';
+		echo '<td valign="top"><b>'.$user["MAIL"].'</b></td>';
+		echo '<td valign="top" '.$color.'><b>'.$date.'</b>';
+
+		// Action
+		print('<td valign="top"><select name="user['.$ligne.']">');
+		print('<option value="2_'.$user["ID_USER"].'" '.$sel_2.'>Supprimer</option>');
+		print('<option value="0_'.$user["ID_USER"].'" '.$sel_3.'>Ne rien faire</option>');
+		print('</select>');
+		print('</td>');
+		print('</tr>');
+	}
+	print('</table>');
+	print('<br><center><div>' . $this->bouton('type=V') . '</div>');
+	print('</form>');
+}
+else print('<br><p align="center" class="error">Il n\'y a aucune demande d\'inscription en attente</b></p>');
+?>

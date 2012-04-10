@@ -1,0 +1,31 @@
+<center>
+	<h1><?php echo $this->_('Proposer des tags pour cette notice') ?></h1>
+	<div class="formTable">
+							<?php if($this->message) echo '<p class="erreur">'.$this->message.'</p>'; else echo BR?>
+		<form name="form" id="form" action="<?php echo BASE_URL ?>/opac/abonne/tagnotice?id_notice=<?php echo $this->id ?>" method="post">
+			<fieldset>
+				<legend><?php echo $this->_('Vos propositions') ?></legend>
+				<table cellspacing="2">
+
+					<tr style="height:40px">
+						<td class="droite"><?php echo $this->traduire("Votre Tag"); ?></td>
+						<td class="gauche"><input type="text" size="40" maxlength="50" name="abonneTag1" />
+							<input type="hidden" value="<?php echo $this->id; ?>" name="id" />
+						</td>
+					</tr>
+					<tr style="height:40px">
+						<td class="droite"><?php echo $this->traduire("Votre Tag"); ?></td>
+						<td class="gauche"><input type="text" size="40" maxlength="50" name="abonneTag2" /></td>
+					</tr>
+					<tr style="height:40px">
+						<td class="droite"><?php echo $this->traduire("Votre Tag"); ?></td>
+						<td class="gauche"><input type="text" size="40" maxlength="50" name="abonneTag3" /></td>
+					</tr>
+
+				</table>
+			</fieldset>
+		  <?php echo $this->formSubmit("", $this->_("Valider"),array("class" => "bouton")) ?>
+		</form>
+	</div>
+</center>
+<br /><br />

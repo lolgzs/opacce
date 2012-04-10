@@ -1,0 +1,29 @@
+<?php
+ob_start();
+echo '<body '.$this->bodyParam.'>';
+?>
+
+<div id="site_web_wrapper" style="width:<?php echo $this->profil->getLargeurSite(); ?>px; margin-left:auto; margin-right:auto">
+	<div class="siteWeb portail_background_img">
+		<div id="site_web_content">
+			<?php	echo $this->partial("banniere.phtml", array("profil" => $this->profil));	?>	
+
+			<div id="col_wrapper" style="overflow:hidden;width:<?php echo $this->profil->getLargeurSite(); ?>px">
+				<div class="colContenu">
+					<?php echo $this->render($this->actionScript); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php 
+echo $this->render('footer.phtml');
+
+$html = ob_get_contents();
+ob_end_clean();
+
+echo $this->partial('head.phtml', 
+										array_merge($this->profil->getCfgSiteAsArray(), 
+																array('titre' => $this->getTitre())));
+echo $html;
+?>

@@ -1,0 +1,52 @@
+<?php $this->openBoite("Catalogues jeunesse"); ?>
+<script src="<?php echo URL_JS?>recherche.js" type="text/javascript"> </script>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>recherche.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>nuage_tags.css" />
+
+<script type="text/javascript" src="<?php echo URL_JS ?>swfobject.js"></script>
+	<script type="text/javascript">
+	var flashvars = {};
+	flashvars.settingsXML = "../../../../userfiles/etageres/<?php echo $this->id_etagere ?>/settings.xml";
+	flashvars.folderPath = "<?php echo BASE_URL ?>/public/opac/flash/image_submenu/";
+	var params = {};
+	params.scale = "noscale";
+	params.salign = "tl";
+	params.wmode = "transparent";
+	var attributes = {};
+	swfobject.embedSWF("<?php echo URL_FLASH ?>image_submenu/ImageSubMenuFX.swf", "etagere_div", "95%", "310", "9.0.0", false, flashvars, params, attributes);
+</script>
+<br>
+<div width="100%" align="center" >
+<div id="etagere_div"></div>
+</div>
+
+<?php
+if($this->id_kiosque)
+{
+	?>
+	<script type="text/javascript">
+	var flashvars = {};
+	flashvars.settingsXML = "kiosque_settings_<?php echo $this->id_kiosque ?>.xml";
+	flashvars.folderPath = "<?php echo BASE_URL?>/userfiles/etageres/";
+	var params = {};
+	params.scale = "noscale";
+	params.salign = "tl";
+	params.wmode = "transparent";
+	var attributes = {};
+	swfobject.embedSWF("<?php echo URL_FLASH ?>dockmenu_horizontal/dockmenu.swf", "dockmenuDiv", "100%", "200", "9.0.0", false, flashvars, params, attributes);
+</script>
+<div class="titre" style="text-align: left">
+	<div class="titreInner">
+		<h1><?php echo $this->titre_kiosque ?></h1>
+	</div>
+	<?php if($this->description_kiosque) echo '<p style="padding:10px">'.$this->description_kiosque.'</p>'?>
+</div>
+	<div id="dockmenuDiv"></div>
+
+<script type="text/javascript">
+	window.scrollTo(0,200);
+</script>
+<?php
+}
+$this->closeBoite();
+?>

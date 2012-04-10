@@ -1,0 +1,23 @@
+<?php
+echo $this->toolbar("Exemplaires",$this->url_retour,true);
+echo '<h1>'.$this->titre.'</h1>';
+if($this->exemplaires)
+{
+	$num=0;
+	foreach($this->exemplaires as $ex)
+	{
+		echo '<div class="pave">';
+		echo '<table>';
+		echo '<tr><td colspan="2"><b>n° '.++$num.'</b></td></tr>';
+		echo '<tr><td align="right">Bibliothèque : </td><td>'.trim(fetchOne("select LIBELLE from bib_c_site where ID_SITE='".$ex["id_bib"]."'")).'</td></tr>';
+		echo '<tr><td align="right">Nombre : </td><td>'.$ex["count(*)"].' ex.</td></tr>';
+		echo '<tr><td align="right">Situé en : </td><td>'.$ex["cote"].'</td></tr>';
+		echo '<tr><td align="right">Disponibilité : </td><td>'."non connue".'</td></tr>';
+			//$html.='<td class="exemplaires" style="text-align:center;"><a href="'.BASE_URL.'/bib/mapview?id='.$ex["id_bib"].'&r=notice"><img src="'.URL_ADMIN_IMG.'picto/website.gif" border="0" alt="Voir le plan" title="Voir le plan"/></a></td>';
+			//$html.='<td class="exemplaires" style="text-align:center;"><a href="'.BASE_URL.'/recherche/reservation?b='.$ex["id_bib"].'&amp;n='.$id_notice.'&amp;cote='.$ex["cote"].'"><img src="'.URL_IMG.'resa.gif" border="0" alt="Réserver" title="Réserver"/></a></td>';
+		echo '</table>';
+		echo '</div>';
+	}
+}
+echo BR;
+?>

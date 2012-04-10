@@ -1,0 +1,33 @@
+<script src="<?php echo URL_ADMIN_JS?>jquery-1.6.4.min"> </script>
+<script src="<?php echo URL_ADMIN_JS?>cacheimages.js"> </script>
+
+<?php 
+echo'<h2>Base de données</h2>';
+ligneInfos("Nombre de vignettes reconnues",$this->nb_reconnu);
+ligneInfos("Nombre de vignettes non reconnues",$this->nb_pas_reconnu);
+ligneInfos("Nombre de notices hors cache",$this->nb_notices-($this->nb_reconnu + $this->nb_pas_reconnu));
+
+echo'<h2>Cache des images (fichiers)</h2>';
+ligneInfos("Nombre d'images dans le cache",$this->nb_cache);
+ligneInfos("Espace occupé dans le cache",$this->taille_cache."&nbsp;ko");
+
+echo'<h2>Actions</h2>';
+ligneInfos("",'<a href="'.BASE_URL.'/admin/systeme/cacheimages?mode=reset_all">&raquo;&nbsp;Vider la totalité du cache</a>');
+ligneInfos("",'<a href="'.BASE_URL.'/admin/systeme/cacheimages?mode=reset_no">&raquo;&nbsp;Réinitialiser les vignettes non reconnues</a>');
+ligneInfos("",'<a href="javascript:makeCacheImages()">&raquo;&nbsp;Constitution du cache</a>');
+
+// Constitution du cache des images
+echo BR.BR.'<div id="bloc_restantes" align="center" style="display:none">';
+echo '<h2>Constitution du cache en cours...</h2>';
+echo '<h3>Notices à traiter : <span id="restantes"></span></h3>';
+echo '</div>';
+
+// Fonction affichage d'une ligne d'infos
+function ligneInfos($masque,$valeur)
+{
+	print('<span class="accueil">');
+	if($masque) print($masque.'&nbsp;:&nbsp;');
+	if($valeur) print('<b>'.$valeur.'</b>');
+	print('</span>'.BR);
+}
+?>

@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>global.css">
+
+<div style="width:100%" align="center">
+	<table>
+		<tr>
+			<td><?php echo $this->_('Fichier') ?></td>
+			<td>: <b><?php echo $this->fichier["name"] ?></b></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->_('Taille :') ?></td>
+			<td>: <b><?php echo (int)($this->fichier["size"]/1024) ?>&nbsp;ko</b></td>
+		</tr>
+	</table>
+	<br/>
+	<div class="error"><?php echo $this->erreur ?></div>
+	<br/><br/>
+	<input type="button" class="bouton" value="<?php echo $this->_('Retour') ?>" onclick="window.location='<?php echo $this->url_retour ?>'">
+</div>

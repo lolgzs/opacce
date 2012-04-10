@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SETTINGS>
+<General_Properties>
+	<rotationAngle value="0" />
+	<rotationAngleType value="path" />
+	<thumbWidth value="100" />
+	<thumbHeight value="130" />
+	<radiusX value="260" />
+	<radiusY value="80" />
+	<centerX value="290" />
+	<centerY value="130" />
+	<perspective value="50" />
+	<useBlur value="false" />
+	<blurIntensity value="6" />
+	<useAlpha value="true" />
+	<alphaIntensity value="9" />
+	<backgroundColor value="0" />
+	<carouselWidth value="600" />
+	<carouselHeight value="450" />
+	<showCenteredImage value="false" />
+	<centeredImageAlpha value="50" />
+	<imagesXML value="images.xml" />
+	<useMouseWheel value="true" />
+</General_Properties>
+
+<Rotation_Properties>
+	<rotateOnRollOver value="both" />
+	<onRollOverSpeed value="25" />
+	<onRollOutSpeed value="5" />
+	<stoppingSpeed value="20" />
+	<stopOnRollOver value="false" />
+	<inverseRotation value="none" />
+	<buttonsX value="110" />
+	<buttonsY value="310" />
+	<buttonsDistance value="300" />
+	<buttonSymbol value="but1" />
+</Rotation_Properties>
+
+<Reflection_Properties>
+	<useReflection value="true" />
+	<reflectionAlpha value="30" />
+	<reflectionSpread value="30" />
+	<reflectionDistance value="1" />
+</Reflection_Properties>
+
+<Roll_Over_Properties>
+	<rollOverBehavior value="none" />
+	<brightnessOver value="100" />
+	<brightnessOut value="-25" />
+	<brightnessSpeed value="7" />
+</Roll_Over_Properties>
+
+<Tooltip_Properties>
+	<visibility value="mouseover" />
+	<position value="bottom" />
+	<appearance value="top" />
+	<backColor value="0xffffff" />
+	<backAlpha value="0" />
+	<cornerRadius value="3" />
+	<easingFunction value="Bounce" />
+	<easingDuration value="0.5" />
+	<fontFace value="Verdana" />
+	<fontSize value="14" />
+	<fontColor value="0x000000" />
+	<embedFont value="false"/>
+</Tooltip_Properties>
+
+<Frame_Properties>
+	<imageFrames value="selected" />
+	<frameThickness value="7" />
+	<frameColor value="0xffffff" />
+	<frameAlpha value="100" />
+	<frameRadius value="3" />
+</Frame_Properties>
+</SETTINGS>

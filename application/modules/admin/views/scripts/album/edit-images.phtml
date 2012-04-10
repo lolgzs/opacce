@@ -1,0 +1,123 @@
+<?php
+echo $this->partial('album/_album_panel.phtml', 
+										array('album' => $this->album));
+?>
+
+<center>
+	<div class="form" style="text-align:center;">
+		<fieldset>
+			<legend><?php echo $this->traduire('Ajouter des medias par lot'); ?></legend>
+			<div><?php echo $this->tagUploadMultiple(
+							'albumRessourcesUpload',
+							$this->traduire('Choisir des medias'),
+							array('modelClass' => 'Class_Album',
+										'modelId' => $this->album->getId())
+						);?></div>
+		</fieldset>
+
+		<?php if ($this->ressources) { ?>
+		<fieldset>
+				<legend><?php echo $this->traduire('Gérer les medias'); ?></legend>
+        <?php 	
+
+				echo $this->tagAnchor(array('action' => 'sortressources'),
+															sprintf('%s Réordonner par nom de fichier',
+																			$this->tagImg(
+																										URL_ADMIN_IMG . 'ico/sort.gif',
+																										array('alt' => 'Trier ce media',
+																													'title' => 'Trier ce media',
+																													'class' => 'sort-handler')
+																										)),
+															array('class' => 'sort_ressources'));
+				?>
+        <button class="bouton switchview"><?php echo $this->traduire('Changer la disposition'); ?></button>
+			  <div class='clear'></div>
+				<script type="text/javascript">
+				$(function() {
+					$('.tree')
+						.sortable({
+							opacity: 0.6,
+							handle: '.sort-handler',
+							stop: function(event, ui) {
+								var sourceId		= parseInt(ui.item.attr('id'));
+								var previousId	= 0;
+								if (0 < ui.item.prev().length) {
+									previousId = parseInt(ui.item.prev().first().attr('id'));
+								}
+								$.ajax({url: baseUrl+'/admin/album/move-image/id/' + sourceId
+																											+ '/after/' + previousId});
+							}
+						})
+						.disableSelection();
+
+						$('.switchview').click(function() {$('fieldset ul.tree').toggleClass('thumbwall')})
+				});
+				</script>
+				<ul class="tree">
+				<?php foreach ($this->ressources as $ressource) { ?>
+					<li class="ressource" id="<?php echo $ressource->getId();?>">
+						<div style="width:50px;"><?php
+						if ($ressource->isImage()) {
+							echo sprintf('<a rel="prettyPhoto" href="%s" title="%s">%s</a>', 
+													 $ressource->getOriginalUrl(),
+													 $ressource->getTitre(),
+													 $this->tagImg(
+																				 $ressource->getThumbnailUrl(),
+																				 array('style' => 'width:50px')
+																				 ));
+						}
+						?></div>
+
+						<div class="info">
+						 <?php if ($ressource->hasTitre()) echo $ressource->getTitre().'<br/>';?>
+						 <?php echo $this->fileInfos($ressource->getOriginalPath());?>
+						 </div>
+
+						<div class="actions">
+							<?php echo $this->tagImg(
+								URL_ADMIN_IMG . 'ico/sort.gif',
+									array('alt' => 'Trier ce media',
+												'title' => 'Trier ce media',
+												'class' => 'sort-handler')
+							);?>
+							<?php
+							echo $this->tagAnchor(
+								$this->url(
+									array('action' => 'edit_ressource',	'id' => $ressource->getId())
+								),
+								$this->tagImg(
+									URL_ADMIN_IMG . 'ico/edit.gif',
+									array('alt' => 'Modifier ce media',
+																								'title' => 'Modifier ce media')
+								)
+							);
+
+							echo $this->tagAnchor(
+								$this->url(
+									array('action' => 'delete_image',	'id' => $ressource->getId())
+								),
+								$this->tagImg(
+									URL_ADMIN_IMG . 'ico/del.gif',
+									array('alt' => "Supprimer ce média",
+																								'title' => 'Supprimer ce media')
+								),
+								array('onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer ce media ?');")
+							);
+							?>
+						</div>
+					</li>
+					<?php } ?>
+				</ul>
+			</fieldset>
+			<?php } ?>
+	</div>
+
+	<?php 
+		echo $this->bouton('id=c_2',
+											 'picto=del.gif',
+											 'texte=Fermer',
+											 'url='.$this->url(array('controller' => 'album',
+																							 'action' => 'index')),
+											 'largeur=120px');
+	?>
+</center>

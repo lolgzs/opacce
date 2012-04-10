@@ -1,0 +1,20 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+			
+<br>
+<fieldset>
+	<legend>Définition du lien</legend>
+	<table cellspacing="2">
+
+		<tr>
+			<td class="droite">Url&nbsp;</td>
+			<td class="gauche"><input type="text" name="url" size="60" value="<?php print($this->preferences["url"]); ?>"></td>
+		</tr>
+		<tr>
+			<td class="droite">Navigation&nbsp;</td>
+			<td class="gauche"><?php echo $this->formSelect("target",$this->preferences["target"],"",array("0" => "Ouvrir dans un nouvel onglet","1"=>"Rester sur le même onglet")) ?></td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php echo $this->render('menus/_fin.phtml'); ?>

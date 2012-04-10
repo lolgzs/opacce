@@ -1,0 +1,53 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS ?>slimbox/slimbox2.css">
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>slimbox/slimbox2.js"> </script>
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>slimbox/autoload_image_simple.js"> </script>
+
+<?php
+echo ('<center><div align="center"><br/>'.$this->bouton('id=19','picto=add.gif','texte='.$this->traduire('Ajouter un territoire').'','url='.BASE_URL.'/admin/zone/add','largeur=220px').'</div></center>'); ?>
+<br /><table cellpadding="0" cellspacing="0">
+<tr class="soustitre">    
+	<td style="width:5%">&nbsp;</td>
+	<td style="width:auto;"> Libelle</td>
+	<td style="width:20%" align="center"> Image</td>
+	<td style="width:9%" colspan="3"> Action</td>
+</tr>
+<tr>
+	<td colspan="5"  class="separ"> </td>
+</tr>
+
+<?php
+	 $ligne = 0;
+	 foreach ($this->zone_array as $zone) {
+		 $image_zone=$zone->getImageZone();
+		 $ligne ++ ;
+		 if ($ligne & 1) $class="first"; else $class="second";
+		 $class_bib = new Class_Bib();
+		 $nb_bib = fetchOne("select count(*) from bib_c_site where ID_ZONE=".$zone->getId());
+		 if($nb_bib >= 1 ) $img_del ='<img src="'.URL_ADMIN_IMG.'ico/del.gif" border="0" onclick="alert(\'Il y a encore '.$nb_bib.' bibliothèque(s) attachée(s) au territoire '.$zone->getLibelle().', suppression interdite\');" style="cursor:pointer;"/>';
+		 else $img_del ='<a href="'.BASE_URL.'/admin/zone/delete/id_zone/'.$zone->getId().'">'.$this->boutonIco("type=del").'</a>';
+
+		 echo '<tr class="'.$class.'">';
+		 echo '<td align="center"><div style="background-color:'.$zone->getCouleur().';width:20px;height:20px"></div></td>';
+		 echo '<td>'.$zone->getLibelle().'</td>';
+		 echo '<td align="center" width="100px">';
+		 if(strpos($image_zone,"blank.gif") === false)
+			 {
+				 echo'
+			<a href="'.$image_zone.'" rel="lightbox" title="'.$zone->getLibelle().'">
+				<img src="'.$image_zone.'" width="100" height="auto" border="0">
+			</a>';
+				 // Lien placer sur la carte
+				 $placer='<a href="'.BASE_URL.'/admin/zone/placerbibs/id_zone/'.$zone->getId().'"><img src="'.URL_ADMIN_IMG.'picto/map.gif" border="0" title="placer les bibliothèques sur la carte"></a>';
+			 }
+		 else $placer="-";
+
+		 echo '</td>
+		<td align="center"><a href="'.BASE_URL.'/admin/zone/edit/id/'.$zone->getId().'">'.$this->boutonIco("type=edit").'</a></td>
+    <td		align="center">'.$img_del.'</td>
+		<td align="center">'.$placer.'</td>
+    </tr>';
+	 }
+echo ('</table>');
+?> <br />
+<?php echo $this->message; ?>
+

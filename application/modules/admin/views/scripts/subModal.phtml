@@ -1,0 +1,12 @@
+<?php 
+$this->headScript()
+      ->appendFile(URL_ADMIN_JS.'onload_utils.js')
+      ->appendFile(JQUERY)
+			->appendFile(URL_ADMIN_JS.'global.js');
+
+$this->headLink()
+      ->appendStylesheet(URL_ADMIN_CSS.'subModalContenu.css');
+
+
+echo $this->render($this->actionScript); 
+?>

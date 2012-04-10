@@ -1,0 +1,9 @@
+<?php
+echo $this->toolbar("Résumés",$this->url_retour,true);
+echo '<h1>'.$this->notice["T"].'</h1>';
+echo '<div class="pave">';
+$notice_html=new Class_NoticeHtml($this->notice);
+$notice_html->notice=$this->notice;
+echo $notice_html->getResume($this->avis);
+echo '</div>'.BR;
+?>

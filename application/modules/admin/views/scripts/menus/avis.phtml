@@ -1,0 +1,17 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+			
+<br>
+<fieldset>
+	<legend>Avis</legend>
+	<table cellspacing="2">
+
+		<tr>
+			<td class="droite">Nombre d'avis à afficher&nbsp;</td>
+			<td class="gauche"><input type="text" name="nb" size="2" maxlength="2" value="<?php print($this->preferences["nb"]); ?>"></td>
+		</tr>
+
+	</table>
+</fieldset>
+				
+<?php echo $this->render('menus/_fin.phtml'); ?>
+

@@ -1,0 +1,33 @@
+<?php 
+$this->openBoite($this->_("Sélection de bibliothèques"))?>
+
+<p><span class="textDef" style="padding-left:15px;"><?php echo $this->_('Vous pouvez sélectionner une ou plusieurs bibliothèques pour effectuer une recherche ') ?></span></p>
+<p>
+	<input type="button" name="Valider" value="<?php echo $this->_('Valider la sélection'); ?> " onclick="envoie('<?php echo $this->url_retour; ?>');" />&nbsp;&nbsp;
+	<a href="javascript:selectall()"><?php echo $this->_('Tout cocher') ?></a> - 
+	<a href="javascript:deselectall()"><?php echo $this->_('Tout décocher') ?></a>
+</p>
+<br><br>
+<form name="selection">
+<?php
+foreach($this->territoire as $zone )
+{
+    echo ('<h2>'.$zone->LIBELLE.'</h2><br />');
+    $bib_array = $this->bib->getAllBibByIdZone($zone->ID_ZONE);
+    if($bib_array)
+    {
+        foreach ($bib_array as $bib)
+        {
+ 						if($bib["VISIBILITE"] != "2") continue;
+            $coche="";
+            if($this->sel_bib == "all") $coche="checked";
+            elseif($this->sel_bib[$bib["ID_SITE"]] == true) $coche="checked"; 
+            echo ('<input type="checkbox" name="'.$bib["ID_SITE"].'" '.$coche.'/>&nbsp;'.$bib["LIBELLE"].'<br />');
+        }
+    }
+    echo('<br />');
+}
+print('</form>');
+
+$this->closeBoite();
+?>

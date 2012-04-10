@@ -1,0 +1,29 @@
+<?php 
+print($this->profileSelect('profil',$this->id_zone,$this->id_bib,'zb',0,true));
+
+// Role admin portail -> on peut creer des profils
+if ($this->can_add_profil) 
+	echo 
+		'<center>'.
+		  '<div align="center">'.
+    		$this->bouton('id=c_19','picto=add.gif','texte='.$this->traduire('Ajouter un profil').'','url='.BASE_URL.'/admin/profil/add','largeur=170px').
+		  '</div>'.
+		'</center>';
+
+// Affichage des bibs selectionnées dans le filtre
+foreach ($this->profils_by_bib as $bib_libelle => $profils) { ?>
+
+<div class="profils">
+	<h2><?php echo $bib_libelle ?></h2>
+	<ul>
+		<?php
+			echo $this->partialCycle('profil/_profil_row.phtml', 
+															 'profil',
+															 $profils,
+															 array('first', 'second')); 
+			?>
+	</ul>
+	<div class="clear"></div>
+</div>
+
+<?php } ?>

@@ -1,0 +1,110 @@
+/** Contenu du submodal **/
+
+body {
+		background: url(../images/fond_admin.png) repeat-x top;
+		background-color:#C0DDE7;
+		font-family:Verdana;
+		font-size:10pt;
+		margin:0px;
+}
+
+form{margin-bottom:0px;}
+
+img{border:none;}
+
+h1{color:#FF6600;font-size:13pt;margin-bottom:2px;}
+
+div{font-size:10pt;}
+
+p {color:#3C5188}
+
+input {width:auto}
+
+div.formTable {
+		width:90%;
+}
+
+td {font-size:8pt;}
+
+span {font-size:8pt;}
+
+fieldset {
+		font-weight:bold;
+		color:#3C5188;
+		border:1px solid #bbbbbb;
+}
+
+td.droite {
+		text-align:right;
+		font-weight: normal;
+		white-space:nowrap;
+}
+
+td.gauche {
+		text-align:left;
+		width:100%;
+		white-space:nowrap;
+}
+
+input.bouton {
+		background-color:#eeeeee;
+		color:#3C5188;
+		width:120px;
+		font-weight:bold;
+		font-size:11px;
+		text-align:center;
+		padding:0;
+		padding-top:3px;
+		padding-bottom:4px;
+		border:1px solid #ffffff;
+		outline:1px solid #bbbbbb;
+		text-decoration:none;
+		margin:15px;
+		cursor:pointer;
+}
+
+p.erreur {
+		background-color:red;
+		color:#FFFFFF;
+		font-weight:bold;
+}
+
+p.error {
+		color:red;
+		font-weight:bold;
+}
+
+div#table_selection {
+		clear: both; 
+		width:100%; 
+		text-align: left;
+}
+
+div.formTable table {
+		text-align: left;
+		width: 100%;
+}
+
+
+.icon_loading {
+		text-align: center;
+}
+.icon_loading img {
+		margin-left: 5px;
+		margin-bottom: 2px;
+		height: 16px;
+		vertical-align: middle;
+}
+
+
+
+
+.ardans_help  {
+		float: right;
+		margin-right: 10px;
+}
+
+
+#liste_picto_picto {
+		z-index: 10;
+}

@@ -1,0 +1,2 @@
+largeur_img=90
+hauteur_img=110

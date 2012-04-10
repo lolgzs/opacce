@@ -1,0 +1,12 @@
+<?php
+echo $this->partial('album/_album_panel.phtml', 
+										array('album' => $this->ressource->getAlbum()));
+
+echo sprintf('<div>Permalien: <input class="permalink" value="%s" readonly="true" size="100"/></div>', 
+						 $this->absoluteUrl($this->ressource->getPermalink(), null, true));
+
+if ($this->errors) {
+	echo $this->htmlList($this->errors, false, array('class' => 'errors'));
+}
+
+echo $this->renderForm($this->form);?>

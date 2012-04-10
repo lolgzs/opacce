@@ -1,0 +1,74 @@
+<?php include("..".URL_ADMIN_HTML."modulesnotice/_debut.phtml");?>
+
+<br>
+<fieldset>
+	<legend>Présentation</legend>
+	<table cellspacing="2" width="100%">
+
+		<tr>
+			<td class="droite" width="20%">Style</td>
+			<td class="gauche"><?php echo $this->formSelect("grouper",$this->preferences["grouper"],"",array("0" => "Grouper par bibliothèques et par cote","1"=>"Afficher une ligne par exemplaire")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite" width="20%">Libellé pour document en prêt</td>
+			<td class="gauche"><input type="text" name="en_pret" size="25" maxlength="25" value="<?php echo $this->preferences["en_pret"] ?>"></td>
+		</tr>
+
+	</table>
+</fieldset>
+
+<br>
+<fieldset>
+	<legend>Colonnes à afficher</legend>
+	<table cellspacing="2" width="100%">
+
+		<tr>
+			<td class="droite" width="35%">Bibliothèque</td>
+			<td class="gauche"><?php echo $this->formSelect("bib",$this->preferences["bib"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite" width="35%">Annexe</td>
+			<td class="gauche"><?php echo $this->formSelect("annexe",$this->preferences["annexe"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Section</td>
+			<td class="gauche"><?php echo $this->formSelect("section",$this->preferences["section"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Emplacement</td>
+			<td class="gauche"><?php echo $this->formSelect("emplacement",$this->preferences["emplacement"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Disponibilité</td>
+			<td class="gauche"><?php echo $this->formSelect("dispo",$this->preferences["dispo"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Date de retour</td>
+			<td class="gauche"><?php echo $this->formSelect("date_retour",$this->preferences["date_retour"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+		
+		<tr>
+			<td class="droite">Localisation sur le plan</td>
+			<td class="gauche"><?php echo $this->formSelect("localisation",$this->preferences["localisation"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Plan d'accès google-map</td>
+			<td class="gauche"><?php echo $this->formSelect("plan",$this->preferences["plan"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+		<tr>
+			<td class="droite">Réservation</td>
+			<td class="gauche"><?php echo $this->formSelect("resa",$this->preferences["resa"],"",array("0" => "non","1"=>"oui")) ?></td>
+		</tr>
+
+	</table>
+</fieldset>
+
+<?php include("..".URL_ADMIN_HTML."modulesnotice/_fin.phtml");?>

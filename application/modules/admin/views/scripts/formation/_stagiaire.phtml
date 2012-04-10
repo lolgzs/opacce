@@ -1,0 +1,14 @@
+<?php
+
+$delete_url = $this->url(array('delete' => $this->stagiaire->getId()));
+if ($_GET)
+	$delete_url .= '?'.http_build_query($_GET);
+
+echo sprintf('<tr class="%s"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+						 $this->item_class,
+						 $this->stagiaire->getNom(),
+						 $this->stagiaire->getPrenom(),
+						 $this->stagiaire->getLogin(),
+						 $this->tagAnchor($delete_url,
+															$this->boutonIco("type=del")));
+?>

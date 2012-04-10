@@ -1,0 +1,15 @@
+<?php if (Class_AdminVar::isTranslationEnabled()) { ?>
+
+	<div class="traduction_navigator"><span>Traductions:</span>
+		<?php
+			foreach(Class_AdminVar::getLangues() as $langue) {
+				echo $this->tagAnchor($this->url(array('lang' => $langue)),
+															$this->partial('cms/_article_country_flag.phtml', 
+																						 array('article' => $this->article->getOrCreateTraductionLangue($langue),
+																									 'current' => $this->article->getLangue()))); 
+			}
+		?>
+	</div>
+
+<?php } ?>
+

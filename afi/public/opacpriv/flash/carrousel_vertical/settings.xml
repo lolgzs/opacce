@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SETTINGS>
+<General_Properties>
+	<rotationAngle value="92" />
+	<rotationAngleType value="path" />
+	<thumbWidth value="90" />
+	<thumbHeight value="110" />
+	<radiusX value="232" />
+	<radiusY value="0" />
+	<centerX value="80" />
+	<centerY value="300" />
+	<perspective value="0" />
+	<useBlur value="false" />
+	<blurIntensity value="6" />
+	<useAlpha value="false" />
+	<alphaIntensity value="9" />
+	<backgroundColor value="0" />
+	<carouselWidth value="250" />
+	<carouselHeight value="600" />
+	<showCenteredImage value="false" />
+	<centeredImageAlpha value="50" />
+	<imagesXML value="images.xml" />
+	<useMouseWheel value="true" />
+</General_Properties>
+
+<Rotation_Properties>
+	<rotateOnRollOver value="both" />
+	<onRollOverSpeed value="25" />
+	<onRollOutSpeed value="5" />
+	<stoppingSpeed value="20" />
+	<stopOnRollOver value="true" />
+	<inverseRotation value="none" />
+	<buttonsX value="-205" />
+	<buttonsY value="286" />
+	<buttonsDistance value="1000" />
+	<buttonSymbol value="but1" />
+</Rotation_Properties>
+
+<Reflection_Properties>
+	<useReflection value="true" />
+	<reflectionAlpha value="30" />
+	<reflectionSpread value="30" />
+	<reflectionDistance value="1" />
+</Reflection_Properties>
+
+<Roll_Over_Properties>
+	<rollOverBehavior value="none" />
+	<brightnessOver value="45" />
+	<brightnessOut value="-25" />
+	<brightnessSpeed value="7" />
+</Roll_Over_Properties>
+
+<Tooltip_Properties>
+	<visibility value="frontmost" />
+	<position value="bottom" />
+	<appearance value="bottom" />
+	<backColor value="0x333333" />
+	<backAlpha value="100" />
+	<cornerRadius value="3" />
+	<easingFunction value="Bounce" />
+	<easingDuration value="0.5" />
+	<fontFace value="Arial" />
+	<fontSize value="14" />
+	<fontColor value="0xffffff" />	
+</Tooltip_Properties>
+
+<Frame_Properties>
+	<imageFrames value="selected" />
+	<frameThickness value="7" />
+	<frameColor value="0xffffff" />
+	<frameAlpha value="100" />
+	<frameRadius value="3" />
+</Frame_Properties>
+</SETTINGS>

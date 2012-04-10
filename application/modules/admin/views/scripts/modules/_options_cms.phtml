@@ -1,0 +1,57 @@
+<fieldset>
+	<legend>Articles à afficher</legend>
+	<div	id="table_selection">
+		<?php	
+			echo $this->treeSelect(
+												$this->preferences["id_items"],
+												$this->preferences["id_categorie"],
+												true,
+												$this->url(array('module' => 'admin',
+																				 'controller' => 'bib',
+																				 'action' => 'articles',
+																				 'id_bib' => $this->id_bib)),
+												$this->form_selector);
+		?>							
+	</div>
+
+	<table cellspacing="2" width="100%">
+		<tr>
+			<td class="droite">Ordre d'affichage&nbsp;</td>
+			<td class="gauche">
+			<?php 
+				echo $this->formRadioButtons("display_order", 
+																		 $this->preferences["display_order"], 
+																		 array(
+																						"Selection" => "Par ordre de sélection",
+																						"DateCreationDesc" => "Par date de création (plus récent en premier)",
+																						"DebutPublicationDesc" => "Par date de début de publication (plus récent en premier)",
+																						"EventDebut" => "Par date de début d'événement (plus ancien en premier)",
+																						"Random" => "Par ordre aléatoire"));
+			?>
+			</td>
+		</tr>
+
+		<script type="text/javascript">
+			formSelectToggleVisibilityForElement("input.display_order", "#nb_analyse_option", "Random");
+			formSelectToggleVisibilityForElement("input.display_order", 
+																					 "#options_nb_articles", 
+																					 ["DateCreationDesc", "DebutPublicationDesc", "EventDebut", "Random"]);
+		</script>
+		<tr id="options_nb_articles">
+			<td class="droite" width="100px">Afficher&nbsp;</td>
+			<td class="gauche">
+				<span id="nb_articles_aff">
+					<input type="text" name="nb_aff" size="2" maxlength="2" 
+								 value="<?php print($this->preferences["nb_aff"]); ?>">
+					articles
+				</span>
+				<span id="nb_analyse_option" style="display:none">
+					parmi les
+					<input type="text" name="nb_analyse" size="2" maxlength="3" 
+								 value="<?php print($this->preferences["nb_analyse"]); ?>">
+					plus récents
+				</span>
+			</td>
+		</tr>
+	</table>
+</fieldset>

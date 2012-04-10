@@ -1,0 +1,12 @@
+watch('.*Test\.php') do |md|
+  #puts "\e[H\e[2J" #clear console
+	system("XDEBUG_CONFIG='idekey=emacs' phpunit")
+end
+
+watch('../library/*/(.*)\.php') do |md| # runs test/Class/* whenever lib/class.php is changed
+  #puts "\e[H\e[2J" #clear console
+	puts "changed: #{md}"
+  testpath = md[1].sub(/./) { |s| s.upcase }
+	puts "test: #{testpath}"
+  system("phpunit --colors #{testpath}")
+end

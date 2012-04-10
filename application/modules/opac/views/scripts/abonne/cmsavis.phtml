@@ -1,0 +1,14 @@
+<?php
+echo $this->partial("abonne/avis_partial.phtml", 
+										array(
+													'message' => $this->message,
+													'action' => $this->url(array('controller' => 'abonne', 
+																											 'action' => 'cmsavis', 
+																											 'id' => $this->id)),
+													'id' => $this->id,
+													'avisSignature' => $this->avisSignature,
+													'avisEntete' => $this->avisEntete,
+													'avisTexte' => $this->avisTexte,
+													'avisNote' => $this->avisNote,
+													));  
+?>

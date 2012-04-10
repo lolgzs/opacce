@@ -1,0 +1,27 @@
+"Invalid type given, value should be a string";"Type invalide, chaîne attendue"
+"'%value%' is not a valid email address in the basic format local-part@hostname";"'%value%' n'est pas un email valide dans le format local-part@hostname"
+"'%hostname%' is not a valid hostname for email address '%value%'";"'%hostname%' n'est pas un nom d'hôte valide pour l'adresse email '%value%'"
+"'%hostname%' does not appear to have a valid MX record for the email address '%value%'";"'%hostname%' ne semble pas avoir d'enregistrement MX valide pour l'adresse email '%value%'"
+"'%hostname%' is not in a routable network segment. The email address '%value%' should not be resolved from public network.";"'%hostname%' n'est pas dans un segment réseau routable. L'adresse email '%value%' ne devrait pas être résolue depuis un réseau public."
+"'%localPart%' can not be matched against dot-atom format";"'%localPart%' ne correspond pas au format dot-atom"
+"'%localPart%' can not be matched against quoted-string format";"'%localPart%' ne correspond pas au format quoted-string"
+"'%localPart%' is no valid local part for email address '%value%'";"'%localPart%' n'est pas une partie locale valide pour l'adresse email '%value%'"
+"'%value%' exceeds the allowed length";"'%value%' excède la taille autorisée"
+
+"Invalid type given, value should be a string";"Type de donnée non valide : chaîne attendue"
+"'%value%' appears to be an IP address, but IP addresses are not allowed";"'%value%' semble être une IP valide mais celles-ci ne sont pas autorisées"
+"'%value%' appears to be a DNS hostname but cannot match TLD against known list";"'%value%' semble être un nom d'hôte DNS mais son extension TLD semble inconnue"
+"'%value%' appears to be a DNS hostname but contains a dash in an invalid position";"'%value%' semble être un nom d'hôte DNS mais il contient un tiret à une position invalide"
+"'%value%' appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%'";"'%value%' semble être un nom d'hôte DNS valide mais ne correspond pas au schéma de l'extension TLD '%tld%'"
+"'%value%' appears to be a DNS hostname but cannot extract TLD part";"'%value%' semble être un nom d'hôte DNS mais l'extension TLD ne peut être extraite"
+"'%value%' does not match the expected structure for a DNS hostname";"'%value%' ne correspond pas à la structure d'un nom d'hôte DNS valide"
+"'%value%' does not appear to be a valid local network name";"'%value%' ne semble pas être une adresse réseau local valide"
+"'%value%' appears to be a local network name but local network names are not allowed";"'%value%' semble être un nom réseau local mais les noms locaux sont interdits"
+"'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded";"'%value%' semble être un DNS valide mais le code n'a pu être décodé"
+
+
+"Value is empty, but a non-empty value is required";"Une valeur est requise"
+"'%value%' does not appear to be an integer";"'%value%' n'est pas un nombre entier"
+
+"'%value%' is less than %min% characters long";"'%value%' contient moins de %min% caractères"
+"'%value%' is greater than %max% characters long";"'%value%' contient plus de %max% caractères"

@@ -1,0 +1,42 @@
+
+	<li id="page_<?php echo $this->profil->getId()?>" <?php if ($this->selected) echo "class='selected'" ?> >
+		<div><img src="<?php echo URL_ADMIN_IMG.$this->icon ?>" title="Page" alt="Page"/></div>
+
+		<div>		
+			<a 
+				  href="<?php echo BASE_URL.'/admin/profil/accueil/id_profil/'. $this->profil->getId() ?>"
+			    title="Modifier la page">
+					<?php echo $this->libelle; ?>
+			</a>
+		</div>
+
+		<div class="actions">
+			<a href="<?php echo BASE_URL.'/admin/profil/accueil/id_profil/'.$this->profil->getId() ?>">
+			  <?php echo $this->boutonIco("type=edit") ?>
+			</a>
+
+			<?php $pp_link_title = sprintf("Visualisation de la page '%s'", $this->profil->getLibelle()); ?>
+			<a rel="prettyPhoto" 
+				 href="<?php echo BASE_URL.'?id_profil='. $this->profil->getId().'&amp;iframe=true&amp;width=100%&amp;height=100%' ?>"
+			   title="<?php echo $pp_link_title ?>" >
+			<?php 
+				echo sprintf('<img src="%s" title="%s" alt="%s" />',
+										 URL_ADMIN_IMG.'picto/find.gif',
+										 $pp_link_title,
+										 $pp_link_title); 
+			?>
+			</a>
+
+			<a href="<?php echo BASE_URL.'/admin/profil/copy/id_profil/'.$this->profil->getId() ?>">
+				 <?php echo '<img src="'.URL_ADMIN_IMG.'ico/page_copy.png'.'" alt="Dupliquer la page" title="Dupliquer la page"/>'; ?>
+			</a>
+
+			<?php if ($this->include_delete_action) { ?>
+			<a href="<?php echo BASE_URL.'/admin/profil/delete/id_profil/'.$this->profil->getId() ?>">
+			  <?php echo $this->boutonIco("type=del") ?>
+			</a>
+			<?php } ?>
+
+
+		</div>
+	</li>

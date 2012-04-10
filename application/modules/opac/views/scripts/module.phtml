@@ -1,0 +1,38 @@
+<?php
+ob_start();
+echo '<body '.$this->bodyParam.'>';
+?>
+
+<div id="site_web_wrapper" style="width:<?php echo $this->profil->getLargeurSite(); ?>px; margin-left:auto; margin-right:auto">
+	<div class="siteWeb module_background_img module">
+		<div id="site_web_content">
+	
+			<?php	echo $this->partial("banniere.phtml", array("profil" => $this->profil));	?>
+
+
+			<div id="col_wrapper">
+				<?php
+					$content = $this->fonctionsAdmin("module_standard").$this->render($this->actionScript);
+
+					if ($this->profil->getNbDivisions() == 1) {
+						echo $this->division($this->profil, 1, 'colContenu', $content);
+					} else {
+						echo $this->division($this->profil, 1, 'colGauche');
+						echo $this->division($this->profil, 2, 'colContenu', $content);
+					}
+				?>
+				<div class="clear"></div>
+			</div> <!-- col_wrapper -->
+		</div> <!-- site_web_content -->
+	</div> <!-- siteWeb -->
+<?php 
+echo $this->render('footer.phtml'); 
+
+$html = ob_get_contents();
+ob_end_clean();
+
+echo $this->partial('head.phtml', 
+										array_merge($this->profil->getCfgSiteAsArray(), 
+																array('titre' => $this->getTitre())));
+echo $html;
+?>

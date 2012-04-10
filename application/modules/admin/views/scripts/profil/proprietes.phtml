@@ -1,0 +1,37 @@
+<?php
+echo '<link rel="stylesheet" type="text/css" media="screen" href="'. URL_ADMIN_CSS.'subModal.css">';
+echo '<script src="'. URL_ADMIN_JS.'common.js"> </script>';
+echo '<script src="'.URL_ADMIN_JS.'subModal.js'.'" type="text/javascript"> </script>';
+
+?>
+
+<?php echo $this->partial('profil/_profil_panel.phtml',
+													array('profil' => $this->profil)); ?>
+
+
+<table cellspacing="0" cellpadding="0">
+	<tr class="soustitre">
+		<td>Blocs et onglets des notices</td>
+		<td width="20px">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="separ"></td>
+	</tr>
+	
+<?php
+$ligne=0;
+foreach($this->modules as $id_module => $module) {
+	if ($ligne & 1) $class="first"; else $class="second";
+	echo '<tr class="'.$class.'" style="height:20px">';
+		echo '<td>'.$module["libelle"].'</td>';
+		$onclick="showPopWin('".BASE_URL."/admin/modulesnotice/".strtolower($id_module)."?id_profil=".$this->profil->getId()."&config=admin',".$module['popup_width'].",".$module['popup_height'].",null)";
+		echo '<td align="center"><img class="ico" src="'.URL_ADMIN_IMG.'ico/edit.gif" onclick="'.$onclick.'" title="Modifier" style="cursor:pointer"></td>';
+	print('</tr>');
+	$ligne ++ ;
+}
+	
+?>
+	
+</table>
+<br>
+

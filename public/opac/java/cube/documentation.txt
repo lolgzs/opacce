@@ -1,0 +1,52 @@
+http://keith-wood.name/imageCube.html
+Image Cube for jQuery v1.2.1.
+Written by Keith Wood (kbwood{at}iinet.com.au) June 2008.
+Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
+MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
+Please attribute the author if you use it.
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+OPTIONS
+----------------------------------------------------------------------------------------------------------------------------------------------
+direction	string	'random' :	The direction in which to rotate the cube. Possible values are 'random', 'up', 'down', 'left', 'right'. Random chooses one of randomSelection for each transition.
+
+randomSelection	string[] 	['up', 'down', 'left', 'right'] 	If the direction is 'random', then select one of these directions for each rotation of the cube. Possible values are 'up', 'down', 'left', 'right'.
+
+speed	number	2000 	The number of milliseconds that it takes for each rotation to complete.
+
+easing	string	'linear' 	The name of the easing to use for the rotation animation. This can be one of the jQuery UI effects when this code is included.
+
+repeat	boolean	true 	Set to true to automatically rotate the cube to a new image after pausing the time below. Set to false to only rotate on demand.
+
+pause	number	2000 	The number of milliseconds to pause between rotations of the cube.
+
+selection	string	'forward' 	Determine how the next image to be shown is selected. The value should be one of 'forward', 'backward', or 'random'.
+
+shading	boolean	true 	Set to true to add the shading for enhancing the 3D effects. Set to false to not apply shading.
+
+opacity	number	0.8 	The maximum opacity for the highlight and shadow. Valid values are 0.0 to 1.0.
+
+imagePath	string	'' 	Any extra path information required to locate the highlight and shadow images used by IE for the shading effects.
+
+full3D	boolean	true 	Set to true to display a full 3D cube with perspective. Set to false to use the original ("flat") transition.
+
+segments	number	20 	The number of segments to use for the full3D effect. A higher number gives a smoother look to the cube but means more work for the animation.
+
+reduction	number	30 	The number of pixels by which the back edges of the cube are reduced for the full3D effect.
+
+expansion	number	10 	The number of pixels by which the front edge of the cube is expanded for the full3D effect.
+
+lineHeight	number[2]	[0.0, 1.25] 	The minimum and maximum line height (em) to use when "rotating" text.
+
+letterSpacing	number[2]	[-0.4, 0.0] 	The minimum and maximum letter spacing (em) to use when "rotating" text.
+
+beforeRotate	function	null 	A callback made just before each rotation starts. The function receives the current (shown) and next (to be shown) elements as parameters, while this refers to the containing division.
+
+afterRotate	function	null 	A callback made just after each rotation ends. The function receives the current (just hidden) and next (just displayed) elements as parameters, while this refers to the containing division.
+
+$(selector).imagecube({afterRotate: endedRotate}); 
+     
+function endedRotate(current, next) { 
+    $('#rotateStatus').text('ended ' + $(current).attr('title') + 
+        ' ? ' + $(next).attr('title')); 
+}

@@ -1,0 +1,110 @@
+<?php 
+print('<link rel="stylesheet" type="text/css" media="screen" href="'.URL_ADMIN_CSS.'statistique.css" />');
+print('<h4>Nombre de recherches infructueuses : '.$this->nombre_total.'</h4>');
+
+// Entete
+print('<table class="stat" style="width:740px" border="0">');
+print('<tr>');
+print('<th class="stat">Date</th>');
+print('<th class="stat">Type</th>');
+print('<th class="stat">Expression recherchée</th>');
+print('<th class="stat">Critères de sélection</th>');
+print('</tr>');
+
+// Lignes
+foreach($this->liste as $ligne)
+{
+	$expression="";
+	addCritere("RESET","","");
+	$criteres="";
+	addSelection("RESET","","");
+	$crit="";
+	$date=substr($ligne["date_recherche"],8,2).substr($ligne["date_recherche"],4,4).substr($ligne["date_recherche"],0,4);
+	$crit=ZendAfi_Filters_Serialize::unserialize($ligne["criteres"]);
+	switch($ligne["type_recherche"])
+	{
+		case 1: // recherche simple
+			$type="simple";
+			$expression=$crit["expressionRecherche"];
+			break;
+		case 2: // recherche avancée
+			$type="avancée";
+			// expression recherche
+			$expression=addCritere("Titre",$crit["operateur_titres"],$crit["rech_titres"]);
+			$expression=addCritere("Auteur",$crit["operateur_auteurs"],$crit["rech_auteurs"]);
+			$expression=addCritere("Sujet",$crit["operateur_matieres"],$crit["rech_matieres"]);
+			$expression=addCritere("Dewey",$crit["operateur_dewey"],$crit["rech_dewey"]);
+			$expression=addCritere("Editeur",$crit["operateur_editeur"],$crit["rech_editeur"]);
+			$expression=addCritere("Collection",$crit["operateur_collection"],$crit["rech_collection"]);
+			$expression=addCritere("Dewey",$crit["operateur_dewey"],$crit["rech_dewey"]);
+			// criteres de selection
+			$criteres=addSelection("Année début",$crit["annee_debut"]);
+			$criteres=addSelection("Année fin",$crit["annee_fin"]);
+			$criteres=addSelection("Nouveautés",$crit["nouveaute"]);
+			$criteres=addSelection("année début",$crit["annee_debut"]);
+			break;
+	}
+	// Criteres de selection communs
+	$criteres=addSelection("Type de doc.",$crit["type_doc"]);
+	$criteres=addSelection("Bibliothèques",$crit["selection_bib"]);
+	
+	print('<tr>');
+	print('<td valign="top" style="text-align:center">'.$date.'</td>');
+	print('<td valign="top">'.$type.'</td>');
+	print('<td valign="top">'.$expression.'</td>');
+	print('<td valign="top">'.$criteres.'</td>');
+	print('</tr>');
+}
+
+// Fini
+print('</table>');
+$pager=$this->Pager($this->nombre_total,$this->nb_par_page,$this->page,BASE_URL."/admin/stat/rechercheinfructueuse");
+print('<div style="width:740px"><center>'.$pager.'</div>');
+
+// Fonctions
+function addCritere($libelle,$operateur,$texte)
+{
+	global $expression;
+	if($libelle == "RESET"){ $expression=""; return; }
+	if(!$texte) return $expression;
+	if($expression) $expression.=BR;
+	switch($operateur)
+	{
+		case "or": $expression.="ou "; break;
+		case "not": $expression.="sauf "; break;
+	}
+	$expression.=$libelle;
+	$expression.="=".$texte;
+	return $expression;
+}
+
+function addSelection($libelle,$valeur)
+{
+	global $criteres;
+	if($libelle == "RESET"){ $criteres=""; return; }
+	if(!trim($valeur)) return $criteres;
+	if($libelle == "Type de doc.")
+	{
+		if(!$valeur or $valeur == "0") return $criteres;
+		$valeur=Class_Codification::getLibelleFacette("T".$valeur);
+	}
+	if($libelle == "Bibliothèques" and trim($valeur) > "" )
+	{
+		$bibs=explode(" ",$valeur);
+		$valeur="";
+		foreach($bibs as $bib)
+		{
+			if(!trim($bib)) continue;
+			$id_bib=substr(trim($bib),1);
+			$lib=fetchOne("select nom_court from int_bib where id_bib=$id_bib");
+			if($valeur) $valeur.=", ";
+			$valeur.=$lib;
+		}
+	}
+	if($criteres) $criteres.=BR;
+	$criteres.=$libelle."=".$valeur;
+	return $criteres;
+}
+?>
+
+<br>

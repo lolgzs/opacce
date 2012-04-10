@@ -1,0 +1,40 @@
+<script>
+function getUsername()
+{
+    oUser = document.getElementById('username');
+    username = oUser.value;
+    var url = window.location.href="ajaxlostpass?id="+username;
+    return(url);
+}
+</script>
+<center>
+<h1><?php echo $this->_('Identification') ?></h1>
+<div class="formTable">
+	<?php if($this->message) echo '<p class="erreur">'.$this->message.'</p>'; else echo BR?>
+	<form name="form" action="<?php echo BASE_URL ?>/opac/auth/ajaxlogin"	method="post">
+
+	<fieldset>
+			<legend><?php echo $this->_('Votre identité s.v.p.') ?></legend>
+			<table cellspacing="2">
+    		
+    		<tr height="50px">
+    			<td class="droite" width="35%"><?php echo $this->_('Identifiant') ?>&nbsp;</td>
+    			<td class="gauche"><input type="text" name="username" id="username" value=""></td>
+    		</tr>
+			
+				<tr>
+    			<td class="droite"><?php echo $this->_('Mot de passe') ?>&nbsp;</td>
+    			<td class="gauche"><input type="password" name="password"></td>
+    		</tr>
+
+				<tr height="45px">
+					<td colspan="2" style="text-align:center">
+						<a  href="#" onclick="getUsername();">&raquo;&nbsp;<?php echo $this->_('Mot de passe oublié ?') ?></a> &nbsp;&nbsp;
+						<a href="<?php echo BASE_URL; ?>/auth/register" target="_parent">&raquo;&nbsp;<?php echo $this->_("S'enregistrer") ?></a>
+				</tr>
+			</table>
+	</fieldset>
+	<?php echo $this->formSubmit("",$this->_("Valider"),array("class" => "bouton")) ?>
+	</form>
+</div>
+</center>

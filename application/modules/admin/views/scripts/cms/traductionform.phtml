@@ -1,0 +1,57 @@
+<?php echo $this->partial('cms/_newsform_head.phtml', array('article' => $this->article)); ?>
+
+<div class="clear"></div>
+
+<form 
+	 id="news_form" 
+	 class="form"
+	 name="form"
+	 action="<?php echo $this->url(); ?>" 
+	 method="post">
+
+	 <span class="error"><?php echo implode('<br/>', $this->article->getErrors()); ?></span>
+
+
+	 <fieldset>
+		 <legend><?php echo $this->traduire('Titre'); ?></legend>
+		 <div class="art_original">
+			 <?php echo $this->article->getArticleOriginal()->getTitre(); ?>
+		 </div>
+		 <input 
+				 type="text" 
+				 name="titre"
+				 id="titre"
+				 value="<?php echo $this->escape($this->article->getTitre());?>" 
+				 size="115"
+				 maxlength="<?php echo Class_Article::TITLE_MAX_LENGTH ?>">
+	 </input>
+ </fieldset>
+
+ <fieldset>
+	 <legend><?php echo $this->traduire('Article'); ?></legend>
+	 <div class="art_original">
+		 <?php echo $this->article->getArticleOriginal()->getContenu(); ?>
+	 </div>
+	 <?php echo $this->ckEditor($this->article->getContenu(), 'contenu') ?>
+ </fieldset>
+
+
+
+ <?php if ($description_original = $this->article->getArticleOriginal()->getDescription()) {?>
+	 <fieldset>
+		 <legend><?php echo $this->traduire("Résumé pour la page d'accueil") ?></legend>
+		 <div class="art_original">
+			 <?php echo $description_original; ?>
+		 </div>
+		 <?php echo $this->ckEditor($this->article->getDescription(), 'description') ?>
+	 </fieldset>
+ <?php } ?>
+
+	<?php echo $this->partial('cms/_newsform_buttons.phtml'); ?>
+</form>
+
+
+<script type="text/javascript">
+	oField = document.getElementById('titre');
+	oField.focus();
+</script>

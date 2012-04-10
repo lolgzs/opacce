@@ -1,0 +1,19 @@
+<?php
+
+//Déplacement des pages d'un profil à l'autre 
+Class_ScriptLoader::getInstance()->addJQueryReady(
+
+<<<EOJS
+			$("[id^=profil_]").sortable({
+				connectWith: ".profil_pages",
+				stop: function(event, ui) {
+					var profil_id = ui.item.attr('id').split('_')[1];
+					var target_id = ui.item.parent('[id^=profil_]').attr('id').split('_')[1];
+					$.ajax({url: baseUrl+'/admin/profil/move/id_profil/'+profil_id+'/to/'+target_id});
+				}
+			}).disableSelection();
+EOJS
+
+);
+
+?>

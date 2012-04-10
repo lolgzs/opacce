@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SETTINGS>
+<General_Properties>
+        <imagesXML value="images.xml" />
+        <direction value="horizontal" />
+        <minThumbWidth value="50" />
+        <minThumbHeight value="50" />
+        <maxThumbWidth value="100" />
+        <maxThumbHeight value="120" />
+        <spacing value="5" />
+        <expandingDirection value="center" />
+        <imagesEasingSpeed value="70" />
+        <imagesInfluence value="200" />
+        <backgroundColor value="0" />
+        <dockWidth value="570" />
+        <dockHeight value="200" />
+		<startingPixel value="0" />
+		<gotoStartingPixelOnRollOut value="false" />
+</General_Properties>
+<Scrolling_Properties>
+        <scrollSpeed value="25" />
+        <smoothScrolling value="true" />
+        <autoScroll value="false" />
+        <autoScrollSpeed value="10" />
+        <onScrollEnd value="goBackwards" />
+</Scrolling_Properties>
+<Reflection_Properties>
+        <useReflection value="true" />
+        <reflectionAlpha value="30" />
+        <reflectionSpread value="30" />
+        <reflectionDistance value="1" />
+</Reflection_Properties>
+<Roll_Over_Properties>
+        <rollOverBehavior value="smooth" />
+        <brightnessOver value="25" />
+        <brightnessOut value="-25" />
+        <brightnessSpeed value="7" />
+</Roll_Over_Properties>
+<Tooltip_Properties>
+        <position value="bottom" />
+        <appearance value="centerv" />
+        <backColor value="0xffffee" />
+		<backColor2 value="0xffffee" /> <!-- available only in AS3 version -->
+        <backAlpha value="100" />
+        <cornerRadius value="3" />
+        <easingFunction value="Regular" />
+        <easingDuration value="0.5" />
+        <fontFace value="Verdana" />
+        <fontSize value="12" />
+        <fontColor value="0xd44100" />
+</Tooltip_Properties>
+</SETTINGS>

@@ -1,0 +1,7 @@
+<script>
+	parent.hidePopWin(false);
+	<?php
+		if($this->reload=="SITE") print('parent.window.location=parent.document.location.href;');
+		else 	print('parent.window.hidePopWin(false);');
+	?>
+</script>

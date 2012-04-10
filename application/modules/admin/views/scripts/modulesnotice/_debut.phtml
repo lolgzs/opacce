@@ -1,0 +1,5 @@
+<center>
+<h1>Propriétés du bloc : <?php echo $this->titre_module ?></h1><br>
+<div class="formTable">
+	<?php if($this->erreur) echo '<p class="erreur">'.$this->erreur.'</p>'; ?>
+	<form method="post" action="<?php echo $this->url ?>">

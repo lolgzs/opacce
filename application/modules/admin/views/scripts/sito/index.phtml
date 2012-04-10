@@ -1,0 +1,22 @@
+<script src="<?php echo URL_ADMIN_JS?>sito.js"> </script>
+<?php
+echo $this->profileSelect('sito',$this->id_zone,$this->id_bib,'zb',0,true,false);
+
+// Messages
+if(!$this->id_bib) echo ("<br /><p align='center' class='error'>Aucune bibliothèque trouvée dans ce territoire</b></p>");
+else echo ('<center><div align="center"><br>'.$this->bouton('id=19','picto=add.gif','texte=Ajouter une catégorie','url='.BASE_URL.'/admin/sito/catadd','largeur=220px').'</div></center><br>');
+if(!$this->sites and $this->id_bib) echo ("<br /><p align='center' class='error'>Aucune catégorie trouvée pour le critères spécifiés.</b></p>");
+echo $this->sites;
+
+if($_SESSION["MENU_DEPLOY"]["SITO"])
+{
+    $menus = array_reverse($_SESSION["MENU_DEPLOY"]["SITO"]);
+    echo '<script>';
+    foreach($menus as $menu_deploy)
+    {
+        echo "show('sm_".$menu_deploy."');";
+    }
+    echo '</script>';
+}
+?>
+<div id="ajax" style="display:none;position:absolute;"></div>

@@ -1,0 +1,164 @@
+<?php
+if ($this->statut == "saisie") {
+	$this->openBoite($this->current_module["preferences"]["titre"]);
+	?>
+	<form method="post" action="<?php print(BASE_URL); ?>/opac/recherche/avancee" name="recherche_avancee" class="recherche_avancee">
+		<div class="contenu">
+			<table style="border-collapse: collapse;">
+				<tr><td><?php if ($this->current_module["preferences"]["select_bib"] == 1) echo $_SESSION["selection_bib"]["html"] ?></td></tr>
+				<tr><td>
+						<table style="width: 600px;">
+							<tr>
+								<td>
+									<select name="operateur_titres" style="width:50px">
+										<option value="and" <?php if ($this->operateur_titres == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_titres == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_titres == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_('Titres') ?></td>
+								<td><input type="text" name="rech_titres" size="50" value="<?php echo $this->rech_titres; ?>"/></td>
+							</tr>
+							<tr>
+								<td>
+									<select name="operateur_auteurs" style="width:50px">
+										<option value="and" <?php if ($this->operateur_auteurs == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_auteurs == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_auteurs == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_('Auteurs'); ?></td>
+								<td><input type="text" name="rech_auteurs" size="50" value="<?php echo $this->rech_auteurs; ?>"/></td>
+							</tr>
+							<tr>
+								<td>
+									<select name="operateur_matieres" style="width:50px">
+										<option value="and" <?php if ($this->operateur_matieres == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_matieres == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_matieres == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_('Sujets'); ?></td>
+								<td><input type="text" name="rech_matieres" size="50" value="<?php echo $this->rech_matieres; ?>"/></td>
+							</tr>
+							<tr>
+								<td>
+									<select name="operateur_dewey" style="width:50px">
+										<option value="and" <?php if ($this->operateur_dewey == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_dewey == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_dewey == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_("Centres d'intérêt"); ?></td>
+								<td><input type="text" name="rech_dewey" size="50" value="<?php echo $this->rech_dewey; ?>"/></td>
+							</tr>
+							<tr>
+								<td>
+									<select name="operateur_editeur" style="width:50px">
+										<option value="and" <?php if ($this->operateur_editeur == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_editeur == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_editeur == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_('Editeur'); ?></td>
+								<td><input type="text" name="rech_editeur" size="50" value="<?php echo $this->rech_editeur; ?>"/></td>
+							</tr>
+							<tr>
+								<td>
+									<select name="operateur_collection" style="width:50px">
+										<option value="and" <?php if ($this->operateur_collection == "and") print('selected="selected"'); ?>><?php echo $this->_('et'); ?></option>
+										<option value="or" <?php if ($this->operateur_collection == "or") print('selected="selected"'); ?>><?php echo $this->_('ou'); ?></option>
+										<option value="and not" <?php if ($this->operateur_collection == "and not") print('selected="selected"'); ?>><?php echo $this->_('sauf'); ?></option>
+									</select>
+								</td>
+								<td><?php echo $this->_('Collection'); ?></td>
+								<td><input type="text" name="rech_collection" size="50" value="<?php echo $this->rech_collection; ?>"/></td>
+							</tr>
+						</table>
+						<br />
+						<h2><?php echo $this->_('Options de la recherche :')?></h2>
+						<table style="width: 600px;">
+							<tr>
+								<td style="width: 200px;"><?php echo $this->_('Type de recherche'); ?></td>
+								<td><select name="type_recherche" style="width:190px">
+	                  <option value="fulltext" <?php if ($this->type_recherche == "fulltext") print('selected="selected"'); ?>><?php echo $this->_('Recherche par mots contenus');?></option>
+	                  <option value="commence" <?php if ($this->type_recherche == "commence") print('selected="selected"'); ?>><?php echo $this->_('Commence par');?></option>
+	                </select></td>
+							</tr>
+							<tr>
+								<td><?php echo $this->_('Trier par');?></td>
+								<td><select name="tri" style="width:190px">
+										<option value="alpha_titre" <?php if ($this->tri == "alpha_titre") print('selected="selected"'); ?>><?php echo $this->_('Titre');?></option>
+										<option value="alpha_auteur,alpha_titre" <?php if ($this->tri == "alpha_auteur,alpha_titre") print('selected="selected"'); ?>><?php echo $this->_('Auteur et titre');?></option>
+										<option value="annee desc" <?php if ($this->tri == "annee desc") print('selected="selected"'); ?>><?php echo $this->_('Année de publication');?></option>
+										<option value="type_doc,alpha_titre" <?php if ($this->tri == "type_doc,alpha_titre") print('selected="selected"'); ?>><?php echo $this->_('Type de document');?></option>
+										<option value="date_creation desc" <?php if ($this->tri == "date_creation desc") print('selected="selected"'); ?>><?php echo $this->_('Date de nouveauté');?></option>
+	                </select></td>
+							</tr>
+						</table>
+						<table style="width: 600px;">
+							<tr>
+								<td style="width: 200px;"><?php echo $this->_('Publié entre (Année sous forme 1980)');?></td>
+								<td><input type="text" name="annee_debut" value="<?php echo $this->annee_debut; ?>" maxlength="4" size="5" onkeyup="chiffres(this)" onkeydown="chiffres(this)"/>
+									&nbsp;&nbsp;<?php echo $this->_('et');?>&nbsp;&nbsp;
+									<input type="text" name="annee_fin" value="<?php echo $this->annee_fin; ?>" maxlength="4" size="5" onkeyup="chiffres(this)" onkeydown="chiffres(this)"/></td>
+							</tr>
+							<tr>
+								<td><?php echo $this->_('Nouveautés de moins de');?></td>
+								<td>
+									<select name="nouveaute" id="nouveaute" style="width:200px;">
+										<option value=""></option>
+										<option value="1"><?php echo $this->_('1 mois');?></option>
+										<option value="3"><?php echo $this->_('3 mois');?></option>
+										<option value="6"><?php echo $this->_('6 mois');?></option>
+										<option value="12"><?php echo $this->_('1 an');?></option>
+										<option value="60"><?php echo $this->_('5 ans');?></option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<td><?php echo $this->_('Type de document');?></td>
+								<td><?php echo $this->ComboCodification('type_doc', $this->type_doc); ?></td>
+							</tr>
+							<?php
+							if($this->annexes)
+							{
+								echo '<tr>';
+								echo '<td>'.$this->_('Site').'</td>';
+								echo '<td>'.$this->formSelect('annexe',$this->annexe,'',$this->annexes).'</td>';
+								echo '</tr>';
+							}
+							?>
+							<tr>
+								<td><?php echo $this->_('Section');?></td>
+								<td><?php echo $this->ComboCodification('section', $this->section); ?></td>
+							</tr>
+						</table>
+
+					</td></tr>
+
+			</table>
+			<div style="text-align: right;width: 600px;padding-right:20px;padding-top:10px;">
+				<table style="width: 100%">
+					<tr>
+						<td style="text-align:center">
+							<input style="cursor:pointer" type="submit" class="bouton" value="<?php echo $this->_('Lancer la recherche');?>"/></td>
+					</tr>
+				</table></div>
+		</div>
+	</form>
+
+	<?php
+	$this->closeBoite();
+
+	// Historique des recherches
+	if (array_key_exists("histo_recherche", $_SESSION)) {
+		echo '<div class="conteneur_simple">';
+		$this->historiqueRecherche();
+		echo '</div>';
+	}
+} else {
+	echo $this->render("recherche/resultatRecherche.phtml");
+}
+?>

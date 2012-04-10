@@ -1,0 +1,51 @@
+/*************************
+******** Arrows **********
+**************************/	
+div.jMyCarousel .prev{
+	background: url('arrow_left.gif') center center no-repeat;
+	width:44px;
+	height:61px;
+	border:0px;
+	cursor:pointer;
+}
+div.jMyCarousel .next{
+	background: url('arrow_right.gif') center center no-repeat;
+	width:38px;
+	height:61px;
+	border:0px;
+	cursor:pointer;
+}
+div.jMyCarousel .up{
+	background: url('arrow_up.gif') center center no-repeat;
+	width:61px;
+	height:40px;
+	border:0px;
+	cursor:pointer;
+}
+
+div.jMyCarousel .down{
+	background: url('arrow_down.gif') center center no-repeat;
+	width:47px;
+	height:61px;
+	border:0px;
+	cursor:pointer;
+}
+
+
+/** carousel 1 **/
+div.jMyCarousel ul li{
+	border: 1px solid #B0BEC7;
+	margin-left:5px;
+	margin-bottom:3px;
+	line-height:0px;
+}
+
+div.jMyCarousel ul li a{ /* in case of link */
+	display:block;
+	border:0px;
+}
+
+div.jMyCarousel ul li a img{
+	display:block;
+	border:0px;
+}

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<groups>
+		<group snapToCell="true" gridPosition="CL" cellPosition="CL">
+			<button out="assets/skin1/left.png" action="prev" tooltip="" />
+		</group>
+		<group snapToCell="true" gridPosition="CR" cellPosition="CR">
+			<button out="assets/skin1/right.png" action="next" tooltip="" />
+		</group>
+	</groups>
+</data>

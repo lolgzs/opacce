@@ -1,0 +1,12 @@
+<li>
+  <?php 
+		 echo sprintf("<div></div><div>%s</div><div></div><div>%s</div>", 
+									$this->formation->getLibelle(),
+									$this->formation->getDescription()); 
+	   echo sprintf('<ul>%s</ul>',
+									$this->partialCycle('abonne/_session.phtml',
+																			'session',
+																			$this->formation->getSessions(),
+																			array('first', 'second')));
+	?>
+</li>

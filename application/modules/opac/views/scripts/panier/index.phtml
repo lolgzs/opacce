@@ -1,0 +1,110 @@
+<?php if ($this->biblioMessageArray) echo '<br />' . $this->ajaxMessage($this->biblioMessageArray); ?>
+
+<?php $this->openBoite("Vos paniers de documents"); ?>
+
+<span id="abonne_erreur" class="abonne"><?php if ($this->message != '')echo $this->traduire($this->message); ?></span>
+
+<?php
+// Choix du panier pour ajouter 1 notice
+if($this->url_creer_panier)
+{
+	print('<form method="post" action="'.$this->url_creer_panier.'" name="form">');
+	print('<span>&nbsp;&nbsp;&nbsp;&raquo;&nbsp;'.$this->_('Ajouter la notice au panier :').' </span>');
+	print($this->combo);
+	print('&nbsp;&nbsp;');
+	print('<input name="button" type="submit" class="submit" value=""/>');
+	print('</form>');
+}
+?>
+<a href="<?php print($this->url_retour); ?>">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Retour') ?></a>
+
+<?php $this->closeBoite();?>
+
+<table width=90%>
+
+	<tr class="soustitre">
+		<th width="5%">n°</th>
+		<th width="15%">Date</th>
+		<th width="65%" style="text-align:left"><?php echo $this->_('Libellé') ?></th>
+		<th width="10%" style="text-align:right"><?php echo $this->_('Notices') ?></th>
+		<th width="5%">Suppr.</th>
+	</tr>
+	<tr><td colspan="3"  class="separ"> </td></tr>
+
+	<?php $ligne=0; foreach($this->listePanier as $pan) : ?>
+	<?php $ligne ++ ;
+	if ($ligne & 1) $class="first"; else $class="second"; ?>
+	<tr class="<?php echo $class; ?>">
+		<td style="text-align:right"><?php echo $pan["ID_PANIER"]; ?></td>
+		<td style="text-align:center"><?php echo $pan["DATE_MAJ"]; ?></td>
+		<td style="text-align:left"><a href="<?php echo BASE_URL.'/opac/panier?id_panier='.$pan["ID_PANIER"].'&id_notice='.$this->id_notice.'">'.$pan["LIBELLE"]; ?> </a></td>
+		<td style="text-align:right"><?php echo $pan["nombre"]; ?></td>
+		<td style="text-align:center">
+			<a href="<?php echo BASE_URL; ?>/opac/panier/supprimerpanier?id_panier=<?php echo $pan["ID_PANIER"]; ?>" onclick="return confirm('<?php echo $this->traduire("Etes-vous sûr de vouloir supprimer ce panier ?"); ?>')"> 
+					<img border="0" title="<?php echo $this->_('Supprimer') ?>"	src="<?php echo URL_IMG; ?>suppression.gif" /> 
+			</a>
+		</td>
+	</tr>
+	<?php endforeach; ?>
+
+</table>
+
+<?php
+
+// Panier courant
+if($this->panier_courant)
+{
+	print(BR.BR);
+	switch($this->panier_courant["nombre"])
+	{
+		case 0: $msg=""; break;
+		case 1: $msg=" - (1 notice)"; break;
+		default:$msg=" - (".$this->panier_courant["nombre"]." notices)"; break;
+	}
+	$this->openBoite($this->panier_courant["LIBELLE"]."&nbsp;<small>".$msg."</small>");
+	
+	// Formulaire modif du libelle
+	print('<div style="display:none" id="maj_titre">');
+	print('<form method="post" action="'.BASE_URL.'/opac/panier/majtitrepanier">'.$this->_('Nouveau titre').'<input type="text" size="40" maxlength="40" id="new_libelle" name="new_libelle" value="'.htmlspecialchars($this->panier_courant["LIBELLE"]).'">');
+	print('&nbsp;&nbsp;<input name="button" type="submit" class="submit" value=""/></form><br></div>');
+	print('<a href="#" onclick="document.getElementById(\'maj_titre\').style.display=\'block\';">&raquo;&nbsp;'.$this->_('Modifier le titre du panier').'</a>');
+	if($this->panier_courant["nombre"] > 0) 
+    print('<a href="'.BASE_URL.'/opac/panier/export?id_panier='.$this->panier_courant["ID_PANIER"]. '">&nbsp;&nbsp;&raquo;&nbsp;'.$this->_('Exporter ce panier').'</a>');
+	
+	$this->closeBoite();
+	
+	// Contenu panier
+	if($this->panier_courant["nombre"] > 0)
+	{
+		print('<table width="90%">');
+		print('<tr>');
+		print('<th width="1%">&nbsp;</th>');
+		printf('<th style="text-align:left">%s</th>', $this->_('Titre'));
+		printf('<th style="text-align:left">%s</th>', $this->_('Auteur'));
+		printf('<th width="5%%">%s</th>', $this->_('Suppr.'));
+		print('</tr>');
+		foreach($this->panier_courant["NOTICES"] as $notice)
+		{
+			//get($notice);
+            print('<tr>');
+			print('<td><img src="'.URL_IMG.'supports/support_'.$notice["type_doc"].'.gif" border="0"></td>');
+			print('<td><a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"]."?type_doc=".$notice['type_doc'].'">'.$notice["titre"].'</a></td>');
+			print('<td>'.$notice["auteur"].'</td>');
+			?>
+				<td style="text-align:center">
+					<a href="<?php echo BASE_URL; ?>/opac/panier/paniersupprimernotice?id_notice=<?php echo $notice["id_notice"]; ?>" onclick="return confirm('<?php echo $this->traduire("Etes-vous sûr de vouloir supprimer cette notice du panier ?"); ?>')"> 
+						<img border="0" title="<?php echo $this->_('Supprimer') ?>"	src="<?php echo URL_IMG; ?>suppression.gif" /> 
+					</a>
+				</td>
+			<?php
+			print('</tr>');
+		}
+		print('</table>');
+	}
+	else print(BR.$this->_("Ce panier est vide"));
+}
+
+// Message d'erreur
+print('</center>');
+if($this->erreur) print('<script>alert("'.$this->erreur.'");</script>');
+?>

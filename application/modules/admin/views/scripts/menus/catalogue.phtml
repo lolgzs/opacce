@@ -1,0 +1,54 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+			
+<br>
+<fieldset>
+			<legend>Type d'analyse</legend>
+			<table cellspacing="2">
+
+				<tr>
+    			<td class="droite" width="35%">Titre&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="50" maxlength="50" value="<?php print($this->preferences["titre"]); ?>"></td>
+    		</tr>
+
+    		<tr>
+    			<td class="droite">Tirage aléatoire&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("aleatoire",$this->preferences["aleatoire"],"",array("0" => "non","1"=>"oui")) ?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Tri du résultat&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("tri",$this->preferences["tri"],"",array("0" => "par ordre alphabétique","1"=>"par date de nouveauté","2"=>"par nombre de visualisations")) ?></td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Nombre à afficher&nbsp;</td>
+    			<td class="gauche"><input type="text" name="nb_notices" size="4" maxlength="4" value="<?php print($this->preferences["nb_notices"]); ?>">&nbsp;&nbsp;(0=pas de limite)</td>
+    		</tr>
+    		
+    		<tr>
+    			<td class="droite">Nombre à analyser&nbsp;</td>
+    			<td class="gauche"><input type="text" name="nb_analyse" size="4" maxlength="4" value="<?php print($this->preferences["nb_analyse"]); ?>">&nbsp;&nbsp;(pour le mode aléatoire)</td>
+    		</tr>
+		 		
+  		</table>
+			</fieldset>
+			
+			<br>
+			<fieldset>
+			<legend>Sélection</legend>
+			<table cellspacing="2">
+
+				<tr>
+    			<td class="droite">Catalogue&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("id_catalogue",$this->preferences["id_catalogue"],array("onchange"=>"$('#id_panier').val('')"),$this->catalogues) ?></td>
+    		</tr>
+
+				<tr>
+    			<td class="droite">Panier de notices&nbsp;</td>
+    			<td class="gauche"><?php echo $this->formSelect("id_panier",$this->preferences["id_panier"],array("onchange"=>"$('#id_catalogue').val('')"),$this->paniers) ?></td>
+    		</tr>
+
+  		</table>
+			</fieldset>
+
+<?php echo $this->render('menus/_fin.phtml'); ?>				

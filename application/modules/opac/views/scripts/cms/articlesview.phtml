@@ -1,0 +1,19 @@
+<div class='articles'>
+
+<?php
+if (0 == count($this->articles)) {
+	 echo $this->_('Aucun article trouvé');
+}
+
+foreach ($this->articles as $article) {
+	echo $this->partial(
+		'cms/article_partial.phtml',
+		array(
+			'article'				=> $article,
+			'show_content'	=> $this->show_content
+		)
+	);
+}
+?>
+
+</div>

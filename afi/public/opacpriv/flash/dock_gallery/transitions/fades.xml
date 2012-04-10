@@ -1,0 +1,27 @@
+<transitions>
+
+	<transition name = 'blurFadeIn' > 
+		<x value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'Cubic' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'Linear' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'Linear' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+	<transition name = 'fadeIn' > 
+		<x value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '-6' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'Cubic' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+</transitions>

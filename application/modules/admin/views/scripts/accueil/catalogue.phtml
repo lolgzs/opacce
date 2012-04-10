@@ -1,0 +1,94 @@
+<center>
+<h1>Propriétés d'affichage des catalogues</h1><br>
+	<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+		
+			<fieldset>
+			<legend>Généralités</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Message du dessus&nbsp;</td>
+    			<td class="gauche"><input type="text" name="message" size="50" value="<?php print($this->preferences["message"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite" valign="top">Types de notices&nbsp;</td>
+    			<td class="gauche">
+    				<select name="notices" id="notices">
+    					<option value="0" <?php if($this->preferences["notices"]==0) print(" selected"); ?>>Toutes</option>
+    					<option value="1" <?php if($this->preferences["notices"]==1) print(" selected"); ?>>Les plus consultées</option>
+    					<option value="2" <?php if($this->preferences["notices"]==2) print(" selected"); ?>>Les nouveautés</option>
+    				</select>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td class="droite" valign="top">Format d'affichage</td>
+    			<td class="gauche">
+    				<select name="notices" id="format">
+    					<option value="4" <?php if($this->preferences["format"]==4) print(" selected"); ?>>Images pages tournantes</option>
+    				</select>
+    			</td>
+  			</tr>
+  			<tr>
+    			<td class="droite" valign="top">Notices</td>
+    			<td class="gauche">
+    				<select name="notices" id="ordre">
+    					<option value="" <?php if($this->preferences["ordre"]=='') print(" selected"); ?>>Les plus pertinentes</option>
+    					<option value="1" <?php if($this->preferences["ordre"]=='') print(" selected"); ?>>Afficher aléatoirement</option>
+    				</select>
+    			</td>
+  			</tr>
+  		</table>
+			</fieldset>
+
+		
+		<br>
+			<fieldset>
+			<legend>Critères de sélection</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Type de document&nbsp;</td>
+    			<td class="gauche"><input type="text" name="type_doc" size="40" value="<?php print($this->preferences["type_doc"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Section&nbsp;</td>
+    			<td class="gauche"><input type="text" name="section" size="40" value="<?php print($this->preferences["section"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Genre&nbsp;</td>
+    			<td class="gauche"><input type="text" name="genre" size="40" value="<?php print($this->preferences["genre"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Indices Dewey&nbsp;</td>
+    			<td class="gauche"><input type="text" name="dewey" size="40" value="<?php print($this->preferences["dewey"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Indices Pcdm4&nbsp;</td>
+    			<td class="gauche"><input type="text" name="pcdm4" size="40" value="<?php print($this->preferences["pcdm4"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Sujet&nbsp;</td>
+    			<td class="gauche"><input type="text" name="matiere" size="40" value="<?php print($this->preferences["matiere"]); ?>"></td>
+    		</tr>
+    	</table>
+    	</fieldset>
+		
+		<br>
+			<fieldset>
+			<legend>Limites</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Nombre de notices à analyser (mode aléatoire)&nbsp;</td>
+    			<td class="gauche"><input type="text" name="nb_requete" size="4" value="<?php print($this->preferences["nb_requete"]); ?>"></td>
+    		</tr>
+    		<tr>
+    			<td class="droite">Nombre de notices à afficher dans la liste&nbsp;</td>
+    			<td class="gauche"><input type="text" name="nb_aff" size="4" value="<?php print($this->preferences["nb_aff"]); ?>"></td>
+    		</tr>
+    	</table>
+    	</fieldset>
+
+				
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>
+

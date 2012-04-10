@@ -1,0 +1,35 @@
+<?php 
+print('<h2 class="stat">'.$this->periode.", ".number_format($this->table_stat["total"], 0, ',', ' ').' notices ont été visualisées</h2>');
+print('<h3 class="stat">Détail par années</h3>');
+printBlocStat("Année",$this->table_stat["annees"],$this->table_stat["graphes"]["annees"]);
+print('<h3 class="stat">Détail par mois</h3>');
+printBlocStat("Mois",$this->table_stat["mois"],$this->table_stat["graphes"]["mois"]);
+
+// Bloc stat : tableau et graphe
+function printBlocStat($titre,$table,$graphe)
+{
+	if (!$table)
+		return;
+	// container principal
+	print('<table><tr><td valign="top">');
+	// Tableau
+	print('<table class="stat" style="width:180px;margin-left:10px"><tr>');
+	print('<th class="stat" width="70%">'.$titre.'</th>');
+	print('<th class="stat" width="30%">Nombre</th>');
+	print('</tr>');
+	foreach($table as $libelle => $nombre)
+	{
+		print('<tr>');
+		print('<td class="stat_libelle">'.$libelle.'</td>');
+		print('<td class="stat_nombre">'.$nombre.'</td>');
+		print('</tr>');
+	}
+	print('</table></td>');
+	// Graphe
+	print('<td>'.$graphe.'</td>');
+	// Fini
+	print('</tr></table>');
+}
+?>
+
+<br>

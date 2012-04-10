@@ -1,0 +1,31 @@
+<?php echo $this->render('head.phtml'); ?>
+
+<body	 class="iphone" <?php echo $this->bodyParam; ?>>
+<div>
+	<div id='retour_accueil'>
+	 <a href='<?php echo BASE_URL."?id_profil=1" ?>'>
+		 <img src='<?php echo URL_IMG."go_back.png" ?>'>Retour au site
+	 </a>
+	</div>
+
+	 <div class="embed_hint">
+		 <p>Vous pouvez embarquer la version smartphone sur un site externe en intégrant le code suivant:</p>
+
+		 <textarea rows="4" cols="40"><?php 
+		 echo htmlspecialchars(sprintf('<iframe src="http://%s" width="300" height="400" frameborder="0" scrolling="auto"></iframe>',
+																	 $_SERVER['HTTP_HOST'].$this->url(array('module' => 'embed'), null, true)));
+		 ?>
+		 </textarea>
+	 </div>
+ </div>
+
+ <div id="iphone_container" class="iphone_container" onclick="clickContainer(event)">
+	 <div class="iphone_application" align="left">
+		 <img src="<?php echo $this->profil->getHeaderImg(); ?>" width="100%">
+		 <div style="background-color: transparent">
+			 <?php echo $this->render($this->actionScript);?>
+		 </div>
+	 </div>
+ </div>
+	
+<?php echo $this->render('footer.phtml'); ?>

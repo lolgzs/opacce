@@ -1,0 +1,101 @@
+<?php print('<h1>'.$this->traduire('Modération des avis sur les articles').'</h1>'); 
+print('<br>');
+if(!count($this->liste_avis_abo) && !count($this->liste_avis_bib))
+{
+	print('<h4>Il n\'y a aucun avis à modérer</h4>');
+}
+else
+{
+?>
+<form name="form" action="<?php echo BASE_URL ?>/admin/modo/updateaviscms" method="post">
+<table cellpadding="5px" cellspacing="0">
+   <tr class="soustitre">  
+   		<td style="width:2%;">&nbsp;</td>
+      <td style="width:90%;">Avis</td>
+      <td style="width:8%">Action</td>
+  </tr>
+  <tr>
+	 	<td colspan="3"  class="separ"> </td>
+  </tr>
+    
+<?php
+}
+
+$art_loader = Class_Article::getLoader();
+
+if(is_array($this->liste_avis_bib))
+{
+    foreach ($this->liste_avis_bib as $avis)
+    {
+        $news = $art_loader->find($avis["ID_CMS"]);
+        $article = '<b> Article : </b><a href="'.BASE_URL.'/admin/cms/viewcms?id='.$news->ID_ARTICLE.'" target="_blank">'.$news->TITRE.'</a>';
+        
+        $class_user = new Class_Users(); $user = $class_user->getUser($avis["ID_USER"]);
+        if(trim($user["PSEUDO"]) == "") {$pseudo = $user["LOGIN"];} else {$pseudo = $user["PSEUDO"];}
+        $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+        print('<tr class="'.$class.'">');
+        print('<td valign="top">'.$ligne.'</td>');
+        
+        // Bloc avis
+        print('<td valign="top">');
+        print("<b>Le : </b>". substr($avis["DATE_AVIS"],0,10)."<b>&nbsp;&nbsp;Par : </b>".$pseudo.BR);
+        print($article.'<br><br>');
+        print('<b>Note : </b>'.$avis["NOTE"].'</b>');
+        print('&nbsp;&nbsp;<b>Titre : </b>'.$avis["ENTETE"].'</b><br>');
+        print('<b>Avis : </b>'.$avis["AVIS"].'</b>');
+        print('</td>');
+            
+        // Action
+        $value=$avis["ID_USER"]."_".$avis["ID_CMS"];
+        print('<td valign="top"><select name="avis['.$ligne.']">');
+        print('<option value="1_'.$value.'">Valider</option>');
+        print('<option value="2_'.$value.'">Supprimer</option>');
+        print('<option value="0_'.$value.'" selected>Ne rien faire</option>');
+        print('</select>');
+        print('</td>');
+        print('</tr>');
+    }
+}
+
+if(is_array($this->liste_avis_abo))
+{
+    foreach ($this->liste_avis_abo as $avis)
+    {
+        $news = $art_loader->find($avis["ID_CMS"]);
+        $article = '<b> Article : </b><a href="'.BASE_URL.'/admin/cms/viewcms?id='.$news->ID_ARTICLE.'" target="_blank">'.$news->TITRE.'</a>';
+        
+        $class_user = new Class_Users(); $user = $class_user->getUser($avis["ID_USER"]);
+        if(trim($user["PSEUDO"]) == "") {$pseudo = $user["LOGIN"];} else {$pseudo = $user["PSEUDO"];}
+        $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+        print('<tr class="'.$class.'">');
+        print('<td valign="top">'.$ligne.'</td>');
+        
+        // Bloc avis
+        print('<td valign="top">');
+        print("<b>Le : </b>". substr($avis["DATE_AVIS"],0,10)."<b>&nbsp;&nbsp;Par : </b>".$pseudo.BR);
+        print($article.'<br><br>');
+        print('<b>Note : </b>'.$avis["NOTE"].'</b>');
+        print('&nbsp;&nbsp;<b>Titre : </b>'.$avis["ENTETE"].'</b><br>');
+        print('<b>Avis : </b>'.$avis["AVIS"].'</b>');
+        print('</td>');
+            
+        // Action
+        $value=$avis["ID_USER"]."_".$avis["ID_CMS"];
+        print('<td valign="top"><select name="avis['.$ligne.']">');
+        print('<option value="1_'.$value.'">Valider</option>');
+        print('<option value="2_'.$value.'">Supprimer</option>');
+        print('<option value="0_'.$value.'" selected>Ne rien faire</option>');
+        print('</select>');
+        print('</td>');
+        print('</tr>');
+    }
+}
+print('</table>');
+if (count($this->liste_avis_bib) > 0 || count($this->liste_avis_abo) > 0) print('<br><center><div>' . $this->bouton('type=V') . '</div>');
+print('</form>');
+
+?> 
+<br>
+<?php echo $this->message; ?>
+
+<div id="ajax"></div>

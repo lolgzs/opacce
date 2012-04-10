@@ -1,0 +1,211 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS?>subModal.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_CSS;?>map.css" />
+<script src="<?php echo URL_ADMIN_JS?>common.js"> </script>
+<script src="<?php echo URL_ADMIN_JS?>subModal.js"> </script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->googleKey?>" type="text/javascript"></script>
+<script src="<?php echo URL_ADMIN_JS?>plan_acces_conception.js"> </script>
+
+<script>
+setPlanAccessTranslateText("<?php echo $this->traduire('** nouvelle couche **');?>",
+"<?php echo $this->traduire('Vous venez de supprimer la dernière couche de la carte. Une nouvelle couche va être créée.');?>",
+"<?php echo $this->traduire('** nouveau point **');?>",
+"<?php echo $this->traduire('Etes-vous sur de vouloir supprimer ce point ?');?>",
+"<?php echo $this->traduire('Vous venez de supprimer de dernier point de cette couche. Un nouveau point va être créé au centre de la couche.');?>",
+"<?php echo $this->traduire('** nouvelle info **');?>",
+"<?php echo $this->traduire('Impossible de trouver cette adresse');?>",
+"<?php echo $this->traduire('Etes-vous sur de vouloir supprimer cette couche ?');?>");
+</script>
+
+<script type="text/javascript">
+function initOCouches() 
+{
+    <?php echo $this->oCouches ?>
+    return oCouches;
+}
+
+function initHIcone()
+{
+    <?php echo $this->hIcone ?>
+    return hIcone;
+}
+</script>
+
+<script Language="JavaScript">
+<!--
+function newwindow(w,h,webaddress) {
+
+    var viewimageWin = window.open(webaddress,'New_Window','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=Yes,resizable=no,copyhistory=no,width='+w+',height='+h);
+
+    viewimageWin.moveTo(screen.availWidth/2-(w/2),screen.availHeight/2-(h/2));
+
+}
+//-->
+</script>
+
+<table cellspacing="5" cellpadding="0">
+	<tr>
+		<td class="map_saisie_map">
+		<div id="map" style="width: 630px; height: 570px"></div>
+		</td>
+		<td>
+		<table class="map_saisie" cellspacing="0">
+
+<!-----------------------------------------------------------------------------------	
+<! Couche		
+<!----------------------------------------------------------------------------------->
+			<tr>
+				<td class="map_saisie_titre"><?php echo $this->traduire('Couche'); ?></td>
+				<td class="map_saisie_titre">&nbsp; <a href="javascript:creer_couche()">
+				<img src="<?php echo URL_ADMIN_IMG?>ico/add.gif" border="0" title="Créer une nouvelle couche"></a>&nbsp;&nbsp; <a
+					href="javascript:supprimer_couche()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/del.gif" border="0"
+					title="Supprimer cette couche"></a>&nbsp;&nbsp; <a
+					href="javascript:point_centrage()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/centrer.gif" border="0"
+					title="Fixer le point de centrage de départ"></a></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Numéro'); ?></td>
+				<td><select id="couche" size="1"
+					onChange="afficher_couche(document.getElementById('couche').value)">
+				</select></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Titre'); ?></td>
+				<td><input type="text" id="couche_titre" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Coord.'); ?></td>
+				<td><input type="text" id="couche_long" size="13" disabled> <input
+					type="text" id="couche_lat" size="13" disabled></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Echelle'); ?></td>
+				<td><input type="text" id="couche_echelle" size="2" disabled></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="map_saisie">&nbsp;</td>
+			</tr>
+
+<!-----------------------------------------------------------------------------------	
+<! Point
+<!----------------------------------------------------------------------------------->
+			<tr>
+				<td class="map_saisie_titre"><?php echo $this->traduire('Point'); ?></td>
+				<td class="map_saisie_titre">&nbsp; <a
+					href="javascript:creer_point()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/add.gif" border="0"
+					title="Créer un nouveau point"></a>&nbsp;&nbsp; <a
+					href="javascript:supprimer_point()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/del.gif" border="0"
+					title="Supprimer ce point"></a>&nbsp;&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Numéro'); ?></td>
+				<td ><select id="point" size="1"
+					onChange="afficher_point()">
+				</select></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Titre'); ?></td>
+				<td><input type="text" id="point_titre" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Coord.'); ?></td>
+				<td><input type="text" id="point_long" size="13" disabled> <input
+					type="text" id="point_lat" size="13" disabled></td>
+			</tr>
+
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Icone'); ?></td>
+				<td>
+					<input type="text" id="point_icone" size="2" style="cursor:pointer" "onMouseDown= "setInputName('point_icone'); showPopWin('<?php echo BASE_URL . '/admin/bib/planaccesicone'; ?>', 200, 430, null)" onChange="changer_icone()">
+				</td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Adresse'); ?></td>
+				<td><input type="text" id="point_adresse" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Ville'); ?></td>
+				<td><input type="text" id="point_ville" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Pays'); ?></td>
+				<td><input type="text" id="point_pays" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" value="Chercher"
+					onclick="cherche_adresse()"></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="map_saisie">&nbsp;</td>
+			</tr>
+
+<!-----------------------------------------------------------------------------------	
+<! Infos
+<!----------------------------------------------------------------------------------->
+			<tr>
+				<td class="map_saisie_titre"><?php echo $this->traduire('Infos'); ?></td>
+				<td class="map_saisie_titre">&nbsp; <a
+					href="javascript:creer_info()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/add.gif" border="0"
+					title="Créer une nouvelle info"></a>&nbsp;&nbsp; <a
+					href="javascript:supprimer_info()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/del.gif" border="0"
+					title="Supprimer cette info"></a>&nbsp;&nbsp; <a
+					href="javascript:copier_adresse_info()"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/copier.gif" border="0"
+					title="Copier l'adresse dans cette info"></a>&nbsp;&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Photo'); ?></td>
+				<td><input type="text" id="point_photo" size="15" disabled>&nbsp;
+					<a href ="javascript:BrowseServer('point_photo')"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/add.gif" border="0"></a>
+					<a href ="javascript:ClearPhoto('point_photo')"><img
+					src="<?php echo URL_ADMIN_IMG?>ico/del.gif" border="0"></a></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Info'); ?></td>
+				<td ><select id="info" size="1"
+					onChange="afficher_info()">
+				</select></td>
+			</tr>
+			<tr>
+				<td class="map_saisie"><?php echo $this->traduire('Titre'); ?></td>
+				<td><input type="text" id="info_titre" size="30"
+					onchange="reprendre_valeurs()"></td>
+			</tr>
+			<tr>
+				<td class="map_saisie" style="vertical-align:top"><?php echo $this->traduire('Texte'); ?></td>
+				<td><textarea id="info_texte" cols="30" rows="2" onchange="reprendre_valeurs()"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="map_saisie">&nbsp;</td>
+			</tr>
+			<tr>
+				<td align="center" class="map_saisie_titre">
+				</td>
+				<td align="center" class="map_saisie_titre">
+					<input type="button" value="Valider la carte" onclick="valider_carte()">
+					<input type="button" value="Retour" onclick="window.location='<?php echo BASE_URL?>/admin/bib'">
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+<form method="post" action="<?php echo (BASE_URL . '/admin/bib/planaccesssave');?>">
+    <input type="hidden" id="champ_data" name="map_data">
+    <input type="hidden" id="id_bib" name="id_bib" value="<?php echo $this->id_bib; ?>">
+</form>
+</body>
+</html>

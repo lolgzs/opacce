@@ -1,0 +1,4 @@
+largeur_img=90
+hauteur_img=110
+speed=400
+visible=3

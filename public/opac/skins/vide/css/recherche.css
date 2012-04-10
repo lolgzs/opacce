@@ -1,0 +1,311 @@
+/*    Focntions de recherches et affichage des résultats */
+div.liste_vignette
+{
+	border:1px solid;
+	border-color:#bfbfbf;
+	border-left:none;
+	border-right:none;
+	border-top:none;
+	margin-bottom:5px;
+	padding:5px;
+}
+
+/* Corps de la notice */
+div.notice
+{
+	display:none;
+	border:1px solid;
+	border-color:#bfbfbf;
+}
+div.notice_bloc_titre
+{
+	margin-top:3px;
+	padding-left:7px;
+	color:#B73901;
+	font-size:13px;
+	font-weight:bold;
+	cursor:pointer;
+}
+table.notice
+{
+	background-color:#f4f4f4;
+	border:1px solid;
+	border-color:#bfbfbf;
+	width:100%;
+}
+table.exemplaires
+{
+	width:100%;
+	border:1px solid;
+	border-color:#B7BFC7;
+}
+th.exemplaires
+{
+	background-color:#FFF4B3;
+	color:#073777;
+	font-size:8pt;
+	height:15;
+	text-align:left;
+}
+td.exemplaires
+{
+	background-color:#FBFFE3;
+	text-align:left;
+	font-size:8pt;
+	color:#073777;
+}
+td.notice_rubrique
+{
+	background-image: url("../images/fonction_notice.gif");
+	background-repeat:no-repeat;
+	background-position:top-right;
+	vertical-align:top;
+	text-align:right;
+	color:#073777;
+}
+
+/* ONGLETS ET BLOCS FONCTIONS */
+
+td.onglet {
+	background-repeat: repeat-x;
+	background-position: top;
+	border:1px solid;
+	border-color:#B7BFC7;
+	color:#073777;
+	padding-right:5px;
+	padding-left:5px;
+	padding-bottom:2px;
+	font-size:8pt;
+	text-align:center;
+	height:14px;
+	cursor:pointer;
+}
+
+td.onglet_select {
+	background-repeat: repeat-x;
+	background-position: bottom;
+	border-top:1px solid;
+	border-left:1px solid;
+	border-right:1px solid;
+	border-color:#B7BFC7;
+	color:#C36200;
+	padding-right:5px;
+	padding-left:5px;
+	padding-bottom:2;
+	height:14px;
+	font-size:8pt;
+	text-align:center;
+	font-weight:bold;
+	cursor:pointer;
+}
+td.onglet_vide
+{
+	border-bottom:1px solid;
+	border-color:#B7BFC7;
+	font-size:6pt;
+	height:18px;
+}
+
+/* Contenu */
+div.notice_bloc
+{
+	border:none;
+	border-color:#B7BFC7;
+	display:none;
+	padding:3px;
+	margin-left:5px;
+	margin-bottom:5px;
+}
+
+div.onglet
+{
+	display:none;
+	padding:3px;
+}
+table.onglet
+{
+	border-left:1px solid;
+	border-right:1px solid;
+	border-bottom:1px solid;
+	border-color:#B7BFC7;
+	background-color:#f8f8f8;
+	width:100%;
+}
+
+
+td.notice_patience
+{
+	font-size:10pt;
+	color:#CF6707;
+}
+td.notice_info
+{
+	font-size:8pt;
+	padding-top:10;
+	padding-bottom:20;
+	padding-left:7;
+	padding-right:7;
+	color:#476777;
+}
+/*entete grand titre */
+td.notice_info_entete
+{
+	font-size:10pt;
+	font-weight:bold;
+	padding:5;
+	padding-right:10;
+	color:#476777;
+	background-color:#C7DAFF;
+	border-top:1px solid;
+	border-color:#3CBEFF;
+}
+/* Sous-titre */
+td.notice_info_titre
+{
+	font-size:10pt;
+	font-weight:bold;
+	padding:5;
+	padding-right:5;
+	color:#476777;
+	background-color:#DFE7EF;
+}
+
+/* Lignes de type bloc */
+table.notice_info_ligne
+{
+	margin-bottom:15;
+	width:100%;
+}
+
+td.notice_info_ligne
+{
+	font-size:10pt;
+	color:#476777;
+	vertical-align:top;
+}
+
+td.notice_info_ligne_titre
+{
+	font-size:10pt;
+	font-weight:bold;
+	padding-right:10;
+	padding-bottom:7;
+	color:#C36200;
+	vertical-align:top;
+}
+
+ul.notice_info {
+	font-size:10pt;
+	margin-left:30;
+	margin-bottom:0;
+}
+
+li.notice_liste {
+	font-size:8pt;
+	margin-left:15;
+	margin-bottom:5;
+}
+
+/* LIENS */
+a:link.notice{color:#B73901;font-size:8pt;font-weight:inherit;}
+a:visited.notice{color:#B73901;font-size:8pt;font-weight:inherit;}
+a:hover.notice{color:#B73901;font-size:8pt;font-weight:inherit;text-decoration:none;}
+
+/* GRANDE IMAGE NOTICE */
+
+div.notice_img
+{
+	position:absolute;
+	display:none;
+	background-color:#ffffff;
+}
+
+/* PHOTOS DANS ONGLET */
+table.photo_onglet
+{
+	width:25%;
+	width:100%;
+	margin-top:5px;
+	margin-bottom:5px;
+	background-color:#f8f8f8;
+	vertical-align:middle;
+}
+td.photo_onglet
+{
+	background-color:#eaeaea;
+	vertical-align:middle;
+	text-align:center;
+}
+img.photo
+{
+	width:100px;
+}
+
+/* NAVIGATION CATALOGUES */
+
+/* Bloc complet */
+table.catalogue
+{
+	background-color:#f4f4f4;
+	border:1px solid;
+	border-color:#bfbfbf;
+	width:95%;
+}
+/* Table des rubriques */
+table.catalogue_rubriques
+{
+	width:100%;
+}
+/* Barre de nav  */
+div.catalogue
+{
+	background-color:#DFE7EF;
+	padding:5;
+	font-size:8pt;
+	font-weight:bold;
+	color:#0058A5;
+}
+
+/* CATALOGUES THEMATIQUES (PANIERS) */
+
+/* Liste des catalogues */
+table.panier
+{
+	background-color:#f4f4f4;
+	/*border:1px solid;*/
+	/*border-color:#bfbfbf;*/
+	border:none;
+	padding:20px;
+	width:90%;
+	margin-bottom:15px;
+}
+td.panier_titre
+{
+	font-size:12pt;
+	font-weight:bold;
+	color:#C36200;
+}
+td.panier_texte
+{
+	font-size:10pt;
+	background-color:#DFE7EF;
+	color:#274FA7;
+}
+
+
+/* ALPHABET POUR ACCES DIRECT LISTES */
+
+div.alphabet
+{
+	align:middle;
+}
+a:link.alphabet{font-weight:bold;font-size:12pt;}
+a:visited.alphabet{font-weight:bold;font-size:12pt;}
+a:hover.alphabet{font-weight:bold;font-size:12pt;color:#CF6707;text-decoration:none;}
+
+/* Facettes */ 
+div.facette{padding-left:5px;padding-top:0px; border:1px solid #BFBFBF;}
+td.facette_titre{text-decoration:underline;font-weight:bold;padding-top:6px;}
+.facette_element a{color:#0066CC; text-decoration:none;}
+.facette_element a:hover{color:#0066CC; text-decoration:none;}
+.facette_element a:visited{color:#0066CC;text-decoration:none;}

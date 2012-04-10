@@ -1,0 +1,64 @@
+<transitions>
+
+	<transition name = 'stretchFormLeft' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'Exponential' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'l' />
+	</transition>
+
+<transition name = 'stretchFormRight' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'Exponential' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'r' />
+	</transition>
+
+	<transition name = 'stretchFormTop' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'Exponential' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 't' />
+	</transition>
+
+<transition name = 'stretchFormBottom' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'Exponential' />
+		<scaleY value = '0' time = '1.5' easing = 'easeInOut' motion = 'None' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'None' />
+		<blurX value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '20' time = '1' easing = 'easeOut' motion = 'None' />
+		<registrationPoint value = 'b' />
+	</transition>
+
+	
+	<transition name = 'CubicStretchFormCenter' > 
+		<x value = '-1200' time = '1' easing = 'easeOut' motion = 'None' />
+		<y value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<scaleX value = '0' time = '1' easing = 'easeInOut' motion = 'Elastic' />
+		<scaleY value = '0' time = '1' easing = 'easeInOut' motion = 'Elastic' />
+		<rotation value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<alpha value = '0' time = '1' easing = 'easeout' motion = 'none' />
+		<blurX value = '25' time = '1' easing = 'easeOut' motion = 'None' />
+		<blurY value = '0' time = '1' easing = 'easeOut' motion = 'none' />
+		<registrationPoint value = 'c' />
+	</transition>
+
+</transitions>

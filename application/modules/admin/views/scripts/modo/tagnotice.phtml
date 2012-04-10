@@ -1,0 +1,51 @@
+<?php print('<h1>'.$this->traduire('Modération des tags sur les notices').'</h1>'); 
+print('<br>');
+if(!count($this->liste_tags))
+{
+	print('<br><p align="center" class="error">Il n\'y a aucun tag à modérer.</b></p>');
+}
+else
+{
+?>
+<form name="form" action="<?php echo BASE_URL ?>/admin/modo/updatetagnotice" method="post">
+<table cellpadding="5px" cellspacing="0">
+   <tr class="soustitre">  
+   		<td style="width:2%;">&nbsp;</td>
+      <td style="width:90%;">Tag</td>
+      <td style="width:8%">Action</td>
+  </tr>
+  <tr>
+	 	<td colspan="3"  class="separ"> </td>
+  </tr>
+    
+<?php
+} 
+foreach ($this->liste_tags as $tag)
+{
+    $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
+    print('<tr class="'.$class.'">');
+    print('<td valign="top">'.$ligne.'</td>');
+   	
+   	// Bloc avis
+    print('<td valign="top">');
+    print('<span class="avis_notice">'.$tag["NOTICE"].'</span><br><br>');
+    print('<b>Tag : </b>'.$tag["libelle"].'</b>');
+		print('</td>');
+		
+		// Action
+		$value=$tag["id_tag"]."_".$tag["id_notice"];
+		print('<td valign="top"><select name="tag['.$ligne.']">');
+		print('<option value="1_'.$value.'">Valider</option>');
+		print('<option value="2_'.$value.'">Supprimer</option>');
+		print('<option value="0_'.$value.'" selected>Ne rien faire</option>');
+		print('</select>');
+		print('</td>');
+    print('</tr>');
+}
+print('</table>');
+if (count($this->liste_tags) > 0) print('<br><center><div>' . $this->bouton('type=V') . '</div>');
+print('</form>');
+
+?> 
+<br>
+

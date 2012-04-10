@@ -1,0 +1,26 @@
+	<div class="footer" style="overflow:hidden;clear:both;width:<?php echo $this->portail_cfg_site["largeur_site"] ?>px">
+		<table cellspacing="0" cellpadding="5" width="100%">
+			<tr>
+				<td style="padding-left:15px;">
+					<a href="<?php echo BASE_URL; ?>/admin"><?php echo $this->_('Accès pro.') ?></a>
+				</td>
+				<?php
+					// Combo des profils pour les admins
+					if(Class_Users::getLoader()->isCurrentUserCanAccesBackend()) {
+						echo '<td style="text-align:center">'.$this->ComboProfils("ALL","ALL",Class_Profil::getCurrentProfil()->getId(),true).'</td>';
+					}
+				?>
+				<td style="text-align:right;padding-right:10px">
+					<div class="credit">
+						&copy; 2006-<?php print(date("Y")); ?>
+						<?php echo $this->traduire('- Tous droits réservés - Hébergement &amp; Conception graphique');?>
+						<a href="http://www.afi-sa.net" target="_blank">AFI</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+  <?php echo getVar('GOOGLE_ANALYTICS'); ?>
+</body>
+</html>

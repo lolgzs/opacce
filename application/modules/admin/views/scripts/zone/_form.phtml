@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_ADMIN_JS ?>color_picker/jquery.vreboton.ColorPicker.css">
+<script type="text/javascript" src="<?php echo URL_ADMIN_JS?>color_picker/jquery.vreboton.ColorPicker.js"> </script>
+<script type="text/javascript">
+	jQuery(function($) {
+           $("#couleur").attachColorPicker();
+        });
+</script>
+
+<center>
+	<div class="form" style="text-align:center;">
+		<form name="form" action="<?php echo $this->url() ?>" method="post">
+
+			<fieldset>
+				<legend><?php echo $this->traduire('Territoire'); ?></legend>
+				<span id="abonne_erreur" class="abonne">
+				  <?php echo implode('<br/>', $this->zone->getErrors()); ?>
+				</span>
+				<table>
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Nom'); ?> *</td>
+						<td class="gauche"><input type="text" id="libelle" name="libelle" size="70" maxlength="50" onkeypress="if (event.keyCode == 13) {javascript:PicToolbarOver( getElementById('menu_item975'), 'menu_item975');this.form.submit();return false;}" value="<?php echo $this->escape(trim($this->zone->LIBELLE));?>" /></td>
+					</tr>
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Couleur légende'); ?> *</td>
+						<td class="gauche"><input type="text" id="couleur" name="couleur" size="8" value="<?php echo $this->zone->COULEUR;?>" /></td>
+					</tr>
+					<tr>
+						<td class="droite"><?php echo $this->traduire('Coordonnées carte'); ?></td>
+						<td class="gauche"><input type="text" id="map_coords" name="map_coords" size="70" value="<?php echo $this->zone->getMapCoords();?>" /></td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo $this->traduire('Image'); ?></legend>
+				<table>
+					<tr>
+						<td class="droite"><?php echo $this->tagUpload("image","territoire",$this->zone->IMAGE) ?></td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<table>
+				<tr>
+					<td align="right" style="padding-right:5px;"><?php echo $this->bouton('type=V'); ?> </td>
+					<td align="left" style="padding-left:5px;"> <?php echo $this->bouton('id=c_2','picto=del.gif','texte=Annuler','url='.BASE_URL.'/admin/zone','largeur=120px'); ?></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</center>

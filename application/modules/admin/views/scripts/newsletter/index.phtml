@@ -1,0 +1,54 @@
+<?php
+	echo $this->bouton('id=_create_newsletter',
+										 'picto=add.gif',
+										 'texte='.$this->traduire("Créer une lettre d'information"),
+										 'url='.$this->url(array('action' => 'add', 'id' => null)));
+?>
+
+<table id='newsletters' class='models'>
+	 <thead>
+		 <tr>
+			<th>Titre</th>
+			<th>Dernière distribution</th>
+			<th colspan='5' class="actions">Action</th>
+		 </tr>
+	 </thead>
+	 <tbody>
+	 <?php 
+		 echo $this->partialCycle('newsletter/_newsletter_row.phtml', 
+															'newsletter',
+															$this->newsletters,
+															array('first', 'second')); 
+	 ?>
+	 </tbody>
+</table>
+
+
+<?php
+  if (isset($this->subview))
+		echo "<div class='subview'>".$this->subview."</div>";
+?>
+
+<script type="text/javascript">
+	 function sendNewsletterClick(event) {
+		 var target = $(event.target).closest('a');
+		 event.preventDefault();
+
+		 var answer = confirm("Envoyer la lettre d'information ?");
+		 if (answer == false) return;
+
+		 var url = target.attr('href');
+		 var icon_loading = $("<div class='icon_loading_16'></div>");
+
+		 target.replaceWith(icon_loading);
+		 icon_loading.load(url, '', function(data) {
+				 icon_loading.replaceWith(target);
+				 alert(data);
+				 window.location.reload();
+		 });
+	 }
+
+	 $(document).ready(function() {
+			 $("td[rel='send'] a").click(sendNewsletterClick);
+		 });
+</script>

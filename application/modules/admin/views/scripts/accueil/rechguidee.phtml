@@ -1,0 +1,34 @@
+<center>
+<h1>Propriétés de la recherche guidée</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+			<legend>Généralités</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Titre&nbsp;</td>
+    			<td class="gauche"><input type="text" name="titre" size="55" value="<?php print($this->preferences["titre"]); ?>"></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>
+				
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>
+

@@ -1,0 +1,54 @@
+<center>
+<h1>Propriétés du menu vertical</h1><br>
+<div class="formTable">
+	<form method="post" action="<?php echo $this->url ?>">
+			
+			<fieldset>
+			<legend>Affichage</legend>
+			<table cellspacing="2">
+    		
+    		<tr>
+    			<td class="droite">Style de boite&nbsp;</td>
+    			<td class="gauche"><?php echo $this->combo_templates ?></td>
+    		</tr>
+    		
+  		</table>
+			</fieldset>
+			<br>
+			
+			<fieldset>
+			<legend>Menu</legend>
+			<table cellspacing="2">
+    		<tr>
+    			<td class="droite">Afficher le titre du menu&nbsp;</td>
+    			<td>
+					<?php
+						echo $this->formCheckbox('afficher_titre', 
+																			null, 
+																		  array('checked' => $this->preferences["afficher_titre"]));
+					?>
+    		</tr>
+
+
+    		<tr>
+    			<td class="droite">Menu deplié par défaut&nbsp;</td>
+    			<td>
+					<?php
+						echo $this->formCheckbox('menu_deplie', 
+																			null, 
+																		  array('checked' => $this->preferences["menu_deplie"]));
+					?>
+    		</tr>
+
+
+    		<tr>
+    			<td class="droite">Menu à afficher&nbsp;</td>
+    			<td><?php echo $this->comboMenus($this->id_profil,$this->preferences["menu"]) ?></td>
+    		</tr>
+  		</table>
+			</fieldset>
+				
+		<?php echo $this->formSubmit("Valider","Valider",array("class" => "bouton")) ?>
+ 	</form>
+ </div>
+</center>

@@ -1,0 +1,39 @@
+<?php $this->openBoite($this->categorie->getLibelle()); ?>
+<?php echo $this->partial('bib-numerique/_breadcrum.phtml', 
+                          array('parents' => $this->categorie->getHierarchy(),
+																'action' => 'view-categorie'));?>
+<?php if (0 < count($this->subCategories)) { ?>
+<div class="bibnumerique-categories">
+	<h3><?php echo $this->_('Catégorie(s)');?></h3>
+	<ul>
+	<?php foreach ($this->subCategories as $categorie) { ?>
+		<li><?php echo $this->tagAnchor($this->url(array('action' => 'view-categorie', 
+																					 'id' => $categorie->getId())),
+													$categorie->getLibelle());?></li>
+	<?php } ?>
+	</ul>
+</div>
+<?php } ?>
+<?php if (0 < count($this->albums)) { ?>
+<div class="bibnumerique-albums">
+	<h3><?php echo $this->_('Album(s)');?></h3>
+	<ul>
+	<?php foreach ($this->albums as $album) { ?>
+	  <li>
+			<?php if ('' != ($thumbUrl = $album->getThumbnailUrl())) { ?>
+			<?php echo $this->tagImg($thumbUrl);?>
+			<?php } ?>
+			<?php echo $this->tagAnchor(
+				$this->url(array('action' => 'view-album', 
+												 'id' => $album->getId())),
+				$album->getTitre()
+			);?>
+			<p><?php if ('' != $album->getDescription()) {
+				echo $this->subwords($album->getDescription(), 20);
+			}?></p>
+		</li>
+	<?php } ?>
+	</ul>
+</div>
+<?php } ?>
+<?php $this->closeBoite(); ?>

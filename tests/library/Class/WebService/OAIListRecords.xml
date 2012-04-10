@@ -1,0 +1,3621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+
+	<responseDate>2010-05-26T07:23:04Z</responseDate>
+	<request metadataPrefix="oai_dc" verb="ListRecords" set="gallica">
+	http://oai.bnf.fr/oai2/OAIHandler</request>
+	<ListRecords>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k852111</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k852111</dc:identifier>
+					<dc:title>Voyages en Égypte et en Nubie... suivis d'un voyage sur
+					la côte de la mer Rouge et à l'oasis de Jupiter Ammon. [Volume 2] /
+					par G. Belzoni ; traduits de l'anglais et accompagnés de notes par
+					G.B. Depping...</dc:title>
+					<dc:creator>Belzoni, Giovanni Battista (1778-1823)</dc:creator>
+					<dc:contributor>Depping, Georges Bernard
+					(1784-1853)</dc:contributor>
+					<dc:publisher>Librairie française et étrangère
+					(Paris)</dc:publisher>
+					<dc:description>Titre original : Narrative of the operations and
+					recent discoveries within the pyramids... in Egypt and
+					Nubia...</dc:description>
+					<dc:date>1821</dc:date>
+					<dc:format>5 + 4 microfiches acétate de 98 images, diazoïques :
+					ill. ; 105 * 148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb345801779/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, 8-O3b-39</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k85210p</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k85210p</dc:identifier>
+					<dc:title>Voyages en Égypte et en Nubie... suivis d'un voyage sur
+					la côte de la mer Rouge et à l'oasis de Jupiter Ammon. [Volume 1] /
+					par G. Belzoni ; traduits de l'anglais et accompagnés de notes par
+					G.B. Depping...</dc:title>
+					<dc:creator>Belzoni, Giovanni Battista (1778-1823)</dc:creator>
+					<dc:contributor>Depping, Georges Bernard
+					(1784-1853)</dc:contributor>
+					<dc:publisher>Librairie française et étrangère
+					(Paris)</dc:publisher>
+					<dc:description>Titre original : Narrative of the operations and
+					recent discoveries within the pyramids... in Egypt and
+					Nubia...</dc:description>
+					<dc:date>1821</dc:date>
+					<dc:format>5 + 4 microfiches acétate de 98 images, diazoïques :
+					ill. ; 105 * 148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb345801779/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, 8-O3b-39</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k836271</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:3:32</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k836271</dc:identifier>
+					<dc:title>De la nécessité de l'instruction dans une république /
+					par Amédée Lamarle,...</dc:title>
+					<dc:creator>Lamarle, Amédée</dc:creator>
+					<dc:publisher>impr. A. Caron fils (Amiens)</dc:publisher>
+					<dc:date>1872</dc:date>
+					<dc:description>Collection : Publication de l'Union républicaine de
+					la Somme ; 4</dc:description>
+					<dc:format>36 p.</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb36065334s/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Lb57-1294
+					(4)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k283631</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:6:60</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k283631</dc:identifier>
+					<dc:title>Rapport sur le concours pour le percement des puits forés
+					suivant la méthode artésienne / fait à la Société royale et
+					centrale d'agriculture, dans sa séance publique du 26 avril 1835 ;
+					par MM. Girard (de l'Institut), Chevreul, le vicomte Héricart de
+					Thury, rapporteur</dc:title>
+					<dc:contributor>Girard, Pierre-Simon. Rédacteur</dc:contributor>
+					<dc:contributor>Chevreul, Eugène. Rédacteur</dc:contributor>
+					<dc:contributor>Héricart-Ferrand de Thury, Louis-Étienne-François
+					(1776-1854). Rédacteur</dc:contributor>
+					<dc:creator>Société royale et centrale d'agriculture
+					(France)</dc:creator>
+					<dc:publisher>impr. Huzard (Paris)</dc:publisher>
+					<dc:date>1835</dc:date>
+					<dc:format>17 p. ; 22 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb372516745/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k701371</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k701371</dc:identifier>
+					<dc:title>Les premières oeuvres de M. Régnier. Au Roy</dc:title>
+					<dc:creator>Régnier, Mathurin (1573-1613)</dc:creator>
+					<dc:publisher>T. Du Bray (Paris)</dc:publisher>
+					<dc:date>1608</dc:date>
+					<dc:format>45 ff. ; in-4</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb311894280/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Rés.
+					Ye-603</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k116574j</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k116574j</dc:identifier>
+					<dc:title>Les Boers / Jules Leclercq ; [précédé d'une notice par
+					Charles Simond]</dc:title>
+					<dc:creator>Leclercq, Jules (1848-1928)</dc:creator>
+					<dc:contributor>Van Cleemputte, Paul Adolphe (1837-1916).
+					Préfacier</dc:contributor>
+					<dc:publisher>Plon (Paris)</dc:publisher>
+					<dc:date>1899</dc:date>
+					<dc:subject xml:lang="fre">Afrikaners</dc:subject>
+					<dc:subject xml:lang="fre">Afrique du Sud -- Descriptions et
+					voyages</dc:subject>
+					<dc:format>32 p. : fig., carte ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb307664382/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-G-2705
+					(74)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k91258x</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k91258x</dc:identifier>
+					<dc:title>L'auberge des Adrets : histoire véridique de Robert
+					Macaire et de son ami Bertrand / [Benjamin Antier, Amand Lacoste,
+					Alexandre Chapponnier] ; préf. de Jules Lermina,...</dc:title>
+					<dc:creator>Antier, Benjamin (1787-1870)</dc:creator>
+					<dc:creator>Saint-Amand (1797-1885)</dc:creator>
+					<dc:creator>Polyanthe</dc:creator>
+					<dc:contributor>Lermina, Jules (1839-1915).
+					Préfacier</dc:contributor>
+					<dc:publisher>Mousseau (Paris)</dc:publisher>
+					<dc:date>1887</dc:date>
+					<dc:format>104 p. : ill. ; in-16</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb33250943x/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Y2-40444</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k40928n</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k40928n</dc:identifier>
+					<dc:title>Grand et véritable détail de ce qui s'est passé hier aux
+					Tuileries : insurrection générale du peuple, siège au château...
+					([Reprod.]) / [signé : Hébert]</dc:title>
+					<dc:creator>Hébert, Jacques-René (1757-1794)</dc:creator>
+					<dc:publisher>[de l'impr. de la rue Sainte-Barbe]
+					([Paris])</dc:publisher>
+					<dc:date>1792</dc:date>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 6.2.1394</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb372375320/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Lb39-10791</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k82961s</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:94</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k82961s</dc:identifier>
+					<dc:title>Memoria dirigida al Sr. Marquez de Loreto,... sobre los
+					obstáculos que han encontrado, y las ventajas que prometen los
+					establecimientos proyectados en la costa Patagónica / por D.
+					Francisco de Viedma,...</dc:title>
+					<dc:creator>Viedma, Francisco de (1737-1809)</dc:creator>
+					<dc:publisher>Impr. del Estado (Buenos Aires)</dc:publisher>
+					<dc:date>1836</dc:date>
+					<dc:subject xml:lang="fre">Patagonie (Argentine)</dc:subject>
+					<dc:description>Collection : Colección de obras y documentos
+					relativos a la historia antigua y moderna de las provincias del Río
+					de La Plata ; t. 1, VIII</dc:description>
+					<dc:format>III-26-II p. ; in-4</dc:format>
+					<dc:language>spa</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb31574027t/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 4-PQ-42 (1,
+					8)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k109340z</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k109340z</dc:identifier>
+					<dc:title>Christianismi restitutio. Totius ecclesiae apostolicae
+					est ad sua limina vocatio, in integrum restituta cognitione Dei,
+					fidei Christi, justificationis nostrae regenerationis baptismi et
+					coenae Domini manducationis, restituto denique nobis regno
+					coelesti, Babylonis impiae captivitate soluta, et Antichristo cum
+					suis penitus destructo...</dc:title>
+					<dc:creator>Servet, Michel (1511-1553)</dc:creator>
+					<dc:publisher>[B. Arnollat] ([Vienne en Dauphiné])</dc:publisher>
+					<dc:date>1553</dc:date>
+					<dc:format>1 vol. (734 p.) ; in-8</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb313565137/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Réserve
+					des livres rares, RES-D2-11274</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k55208h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:3:33</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k55208h</dc:identifier>
+					<dc:title>Économie de l'histoire : théorie de l'évolution / par G.
+					de Molinari,...</dc:title>
+					<dc:creator>Molinari, Gustave de (1819-1912)</dc:creator>
+					<dc:publisher>F. Alcan (Paris)</dc:publisher>
+					<dc:date>1908</dc:date>
+					<dc:subject xml:lang="fre">Histoire économique</dc:subject>
+					<dc:format>1 vol. (260 p.) ; in-16</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30959238c/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-R-22093</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b7711393v</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:cartes:carte</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b7711393v</dc:identifier>
+					<dc:title>Carte des marais et coûtières depuis Beaucaire jusques a
+					Aigues Mortes et a Pérols, et d'enclos des Salines de
+					Pecais</dc:title>
+					<dc:creator>Charpentier, P. (15..-16.. ). Graveur</dc:creator>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>1750</dc:date>
+					<dc:subject xml:lang="fre">Fortifications</dc:subject>
+					<dc:subject xml:lang="fre">Marais salants</dc:subject>
+					<dc:subject xml:lang="fre">Beaucaire -- Environs</dc:subject>
+					<dc:subject xml:lang="fre">Arles -- Environs</dc:subject>
+					<dc:subject xml:lang="fre">Camargue, Plaine de la</dc:subject>
+					<dc:subject xml:lang="fre">Rhône, Delta du</dc:subject>
+					<dc:subject xml:lang="fre">Repaus, Étang du</dc:subject>
+					<dc:subject xml:lang="fre">Mauguio, Étang de</dc:subject>
+					<dc:coverage />
+					<dc:coverage>France – Languedoc-Roussillon – Gard</dc:coverage>
+					<dc:coverage>France – Provence-Alpes-Côte d'Azur –
+					Bouches-du-Rhône</dc:coverage>
+					<dc:coverage>France – Rhône-Alpes – Rhône</dc:coverage>
+					<dc:coverage>France – Languedoc-Roussillon – Hérault</dc:coverage>
+					<dc:format>1 carte ; 28 x 69,5 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Appartient à : Collection d'Anville ; 01445
+					B</dc:relation>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40585137t/description</dc:relation>
+					<dc:type xml:lang="eng">cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique</dc:type>
+					<dc:type xml:lang="eng">map</dc:type>
+					<dc:type xml:lang="fre">carte</dc:type>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k539068</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k539068</dc:identifier>
+					<dc:title>Speculum stultorum ([Reprod.]) / Wirecker
+					Nigellus</dc:title>
+					<dc:creator>Nigellus Wireker</dc:creator>
+					<dc:publisher>Philippe Pigouchet (Paris)</dc:publisher>
+					<dc:date>1490</dc:date>
+					<dc:description>Collection : French books before 1601 ;
+					354.2</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb372554450/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k1078946</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:7:70</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k1078946</dc:identifier>
+					<dc:title>La critique scientifique / par Emile Hennequin</dc:title>
+					<dc:creator>Hennequin, Émile (1858-1888)</dc:creator>
+					<dc:publisher>Perrin (Paris)</dc:publisher>
+					<dc:date>1888</dc:date>
+					<dc:subject xml:lang="fre">Critique d'art -- Méthodologie -- 19e
+					siècle</dc:subject>
+					<dc:subject xml:lang="fre">Littérature -- Histoire et critique --
+					Théorie, etc. -- 19e siècle</dc:subject>
+					<dc:subject xml:lang="fre">Esthétique -- 19e siècle</dc:subject>
+					<dc:format>246 p. ; in-16</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30591674j/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-R-8671</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6918066c</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6918066c</dc:identifier>
+					<dc:title>Championnat du monde [de terre battue, à la Faisanderie],
+					Gore : [photographie de presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1912</dc:date>
+					<dc:subject xml:lang="fre">Gore</dc:subject>
+					<dc:subject xml:lang="fre">Joueurs de tennis</dc:subject>
+					<dc:subject xml:lang="fre">Tennis -- Compétitions --
+					France</dc:subject>
+					<dc:subject xml:lang="fre">Saint-Cloud (Hauts-de-Seine) -- La
+					Faisanderie</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					21020</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb404520100/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6923565d</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6923565d</dc:identifier>
+					<dc:title>Général Michel [portrait du général assis derrière son
+					bureau] : [photographie de presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1913</dc:date>
+					<dc:subject xml:lang="fre">Michel, Victor-Constant (1850-1937) --
+					Portraits</dc:subject>
+					<dc:subject xml:lang="fre">Généraux -- Portraits</dc:subject>
+					<dc:subject xml:lang="fre">France. Armée -- Officiers</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					28093</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb404729190/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b69085499</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b69085499</dc:identifier>
+					<dc:title>Ferme incendiée à Nogeon [au cours de la bataille de
+					l'Ourcq, commune de Réez-Fosse-Martin] : [photographie de presse] /
+					[Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1915</dc:date>
+					<dc:subject xml:lang="fre">Incendies</dc:subject>
+					<dc:subject xml:lang="fre">Guerre mondiale (1914-1918) --
+					Destruction et pillage -- France -- Réez-Fosse-Martin</dc:subject>
+					<dc:subject xml:lang="fre">Maisons rurales -- France --
+					Réez-Fosse-Martin</dc:subject>
+					<dc:subject xml:lang="fre">Dommages de guerre -- France --
+					Réez-Fosse-Martin</dc:subject>
+					<dc:subject xml:lang="fre">Réez-Fosse-Martin</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					45183</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb405632198/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France, [Rol,
+					45183]</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b7000183h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:dessins</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b7000183h</dc:identifier>
+					<dc:title>[Esquisse de décor non identifié]</dc:title>
+					<dc:date>18</dc:date>
+					<dc:format>1 dess. : crayon et fusain ; 318 x 465 mm</dc:format>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb39751056q/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">dessin</dc:type>
+					<dc:type xml:lang="eng">drawing</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k66376q</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k66376q</dc:identifier>
+					<dc:title>Mariage civil (10e éd.) / Gyp</dc:title>
+					<dc:creator>Gyp (1849-1932)</dc:creator>
+					<dc:publisher>C. Lévy (Paris)</dc:publisher>
+					<dc:date>1892</dc:date>
+					<dc:format>300 p. ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30566000x/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Y2-22379</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6901711c</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:dessins</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6901711c</dc:identifier>
+					<dc:title>Plan de la ville et chasteau des Baux, en Provence,
+					proche Arles : [dessin] / [Louis Boudan?]</dc:title>
+					<dc:creator>Boudan, Louis (16..-17.. ; dessinateur et graveur).
+					Dessinateur</dc:creator>
+					<dc:description>Collectionneur : Gaignières, Roger de
+					(1642-1715)</dc:description>
+					<dc:subject xml:lang="fre">Alpilles (Bouches-du-Rhône ;
+					massif)</dc:subject>
+					<dc:subject xml:lang="fre">Les Baux-de-Provence --
+					Plans</dc:subject>
+					<dc:description>Référence bibliographique : Gaignières,
+					5742</dc:description>
+					<dc:type>Vues à vol d'oiseau -- 17e siècle</dc:type>
+					<dc:format>Aquarelle ; 33,8 x 30,2 cm (f.), 29,5 x 26,3 cm (tr.
+					c.)</dc:format>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40559593r/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">dessin</dc:type>
+					<dc:type xml:lang="eng">drawing</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k69505g</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:80</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k69505g</dc:identifier>
+					<dc:title>Travaux littéraires et historiques de
+					Charles-Marie-Gabriel Bréchillet-Jourdain</dc:title>
+					<dc:creator>Jourdain, Charles (1817-1886)</dc:creator>
+					<dc:publisher>impr. de P. Dupont (Paris)</dc:publisher>
+					<dc:date>18..</dc:date>
+					<dc:format>3 p. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb306633753/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Z-9890 (5)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b67000041</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:amerique</setSpec>
+				<setSpec>gallica:cartes:carte</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b67000041</dc:identifier>
+					<dc:title>L'Amerique divisée en ses principaux états, assujetie aux
+					observations astronomiques / par le Sr. Janvier</dc:title>
+					<dc:creator>Janvier, Jean (17..-17..? ; éditeur).
+					Cartographe</dc:creator>
+					<dc:creator>Choffard, Pierre-Philippe (1731-1809).
+					Dessinateur</dc:creator>
+					<dc:publisher>chés Lattré graveur (A Paris)</dc:publisher>
+					<dc:date>1760</dc:date>
+					<dc:subject xml:lang="fre">Cartouches (ornement)</dc:subject>
+					<dc:subject xml:lang="fre">Arbres</dc:subject>
+					<dc:subject xml:lang="fre">Végétation</dc:subject>
+					<dc:subject xml:lang="fre">Divisions politiques et
+					administratives</dc:subject>
+					<dc:subject xml:lang="fre">Amérique -- Divisions politiques et
+					administratives</dc:subject>
+					<dc:coverage>Amérique</dc:coverage>
+					<dc:description>Échelle(s) : [ca 1:31 000 000 à
+					l'Equateur]</dc:description>
+					<dc:format>1 carte : ill., contours col. ; 66 x 47,5 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Appartient à : Collection d'Anville ; 08510
+					B</dc:relation>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40595487d/description</dc:relation>
+					<dc:type xml:lang="eng">cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique</dc:type>
+					<dc:type xml:lang="eng">map</dc:type>
+					<dc:type xml:lang="fre">carte</dc:type>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k50553z</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:0:03</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k50553z</dc:identifier>
+					<dc:title>Supplément à l'"Encyclopédie ou Dictionnaire raisonné des
+					sciences, des arts et des métiers". Tome 4, N-Z / par une société
+					de gens de lettres ; mis en ordre et publié par M***</dc:title>
+					<dc:contributor>Robinet, Jean-Baptiste-René (1735-1820). Éditeur
+					scientifique</dc:contributor>
+					<dc:publisher>M. M. Rey (Amsterdam)</dc:publisher>
+					<dc:date>1776-1777</dc:date>
+					<dc:subject xml:lang="fre">Sciences -- Encyclopédies -- Ouvrages
+					avant 1800</dc:subject>
+					<dc:subject xml:lang="fre">Arts -- Encyclopédies -- Ouvrages avant
+					1800</dc:subject>
+					<dc:subject xml:lang="fre">Métiers -- Encyclopédies -- Ouvrages
+					avant 1800</dc:subject>
+					<dc:description>Collection : Archives de la linguistique française
+					; 119</dc:description>
+					<dc:format>122 microfiches acétate de 32 images, diazoïques ; 105 *
+					148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb34559188h/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k50550x</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:0:03</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k50550x</dc:identifier>
+					<dc:title>Supplément à l'"Encyclopédie ou Dictionnaire raisonné des
+					sciences, des arts et des métiers". Tome 1, A-Blomkrabbe / par une
+					société de gens de lettres ; mis en ordre et publié par
+					M***</dc:title>
+					<dc:contributor>Robinet, Jean-Baptiste-René (1735-1820). Éditeur
+					scientifique</dc:contributor>
+					<dc:publisher>M. M. Rey (Amsterdam)</dc:publisher>
+					<dc:date>1776-1777</dc:date>
+					<dc:subject xml:lang="fre">Sciences -- Encyclopédies -- Ouvrages
+					avant 1800</dc:subject>
+					<dc:subject xml:lang="fre">Arts -- Encyclopédies -- Ouvrages avant
+					1800</dc:subject>
+					<dc:subject xml:lang="fre">Métiers -- Encyclopédies -- Ouvrages
+					avant 1800</dc:subject>
+					<dc:description>Collection : Archives de la linguistique française
+					; 119</dc:description>
+					<dc:format>122 microfiches acétate de 32 images, diazoïques ; 105 *
+					148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb34559188h/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b69103146</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b69103146</dc:identifier>
+					<dc:title>M. Doumergue et M. Henot [?] président de la maison de
+					retraite des artistes français, 1908. [à Montlignon] :
+					[photographie de presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1908</dc:date>
+					<dc:subject xml:lang="fre">Doumergue, Gaston
+					(1863-1937)</dc:subject>
+					<dc:subject xml:lang="fre">Ministres</dc:subject>
+					<dc:subject xml:lang="fre">Maisons de retraite</dc:subject>
+					<dc:subject xml:lang="fre">Montlignon (Val-d'Oise)</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					1209</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb404510295/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k122849g</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:80</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k122849g</dc:identifier>
+					<dc:title>L'Uranie ou Nouveau recueil de chansons spirituelles et
+					chrestiennes, comprinses en cinq livres et accommodées pour la
+					pluspart au chant des Pseaumes de David</dc:title>
+					<dc:publisher>pour Jaques Chouët ([Genève])</dc:publisher>
+					<dc:date>1591</dc:date>
+					<dc:format>1 vol. ; in-16</dc:format>
+					<dc:language>frm</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb33636837f/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Réserve
+					des livres rares, RES-YE-2689</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k71519f</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:85</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k71519f</dc:identifier>
+					<dc:title xml:lang="ita">Ercole amante : representata per le nozze
+					delle Maestà christianissime / [compositore Francesco Cavalli] ;
+					[librettista Francesco Buti] ; [trad. Camillo]</dc:title>
+					<dc:title xml:lang="fre">Hercule amoureux : tragédie représentée
+					pour les nopces de leurs Majestez tres-chrestiennes / [compositeur
+					Francesco Cavalli] ; [librettiste Francesco Buti] ; [traduit par
+					Camille]</dc:title>
+					<dc:creator>Cavalli, Francesco (1602-1676)</dc:creator>
+					<dc:contributor>Buti, Francesco (1604-1682).
+					Librettiste</dc:contributor>
+					<dc:contributor>Camillo (16..-16.. ; traducteur).
+					Traducteur</dc:contributor>
+					<dc:publisher>par R. Ballard (Paris)</dc:publisher>
+					<dc:date>1662</dc:date>
+					<dc:format>117 p. ; in-fol.</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb373006204/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Rés. Yf-60</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k717984</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:7:70</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k717984</dc:identifier>
+					<dc:title>Le Ballet de l'Illusionsera dansé au College de Clermont
+					de la Compagnie de Jesus</dc:title>
+					<dc:creator>Lucas, Jean (1638-1716 ; jésuite)</dc:creator>
+					<dc:contributor>Collège de Louis-le-Grand (Paris). Éditeur
+					scientifique</dc:contributor>
+					<dc:publisher>[Paris.] Le troisiéme jour d'aoust
+					M.DC.LXII</dc:publisher>
+					<dc:description>[Programme. 1672-08-03. Paris, Collège de Louis le
+					Grand de la Compagnie de Jésus]</dc:description>
+					<dc:description>[Programme. Théâtre de collège. Paris, Collège de
+					Louis le Grand de la Compagnie de Jésus.
+					1672-08-03]</dc:description>
+					<dc:date>1672</dc:date>
+					<dc:format>4 p. ; in-4</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb332548459/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Rés.
+					Yf-2574</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k200717j</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k200717j</dc:identifier>
+					<dc:title>Paris-Salon / par Louis Enault</dc:title>
+					<dc:creator>Énault, Louis (1824-1900)</dc:creator>
+					<dc:publisher>E. Bernard (Paris)</dc:publisher>
+					<dc:date>1881-1883</dc:date>
+					<dc:subject xml:lang="fre">Salon (1881 ; Paris)</dc:subject>
+					<dc:subject xml:lang="fre">Salon (1883 ; Paris)</dc:subject>
+					<dc:format>2 vol. (132, XX-80 p.) ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40373933m/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k527112</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k527112</dc:identifier>
+					<dc:title>L'univers ou Discours des parties et de la nature du
+					monde ([Reprod.]) / [par Pontus de Tyard]</dc:title>
+					<dc:creator>Tyard, Pontus de (1521-1605)</dc:creator>
+					<dc:publisher>par Jean de Tournes (Lion)</dc:publisher>
+					<dc:publisher>Guil. Gazeau (Lion)</dc:publisher>
+					<dc:date>1557</dc:date>
+					<dc:subject xml:lang="fre">Cosmogonie -- Ouvrages avant
+					1800</dc:subject>
+					<dc:description>Collection : French books before 1601 ;
+					95.1</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>frm</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37250375f/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b65002314</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:cartes</setSpec>
+				<setSpec>gallica:italie</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b65002314</dc:identifier>
+					<dc:title>Explication du plan de Catania</dc:title>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>1700-1799</dc:date>
+					<dc:subject xml:lang="fre">Catane -- Plans de ville</dc:subject>
+					<dc:coverage>Italie – Sicile</dc:coverage>
+					<dc:format>1 carte ; 19 x 25 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Appartient à : Collection d'Anville ;
+					05732</dc:relation>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb405909340/description</dc:relation>
+					<dc:type xml:lang="eng">cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique</dc:type>
+					<dc:type xml:lang="eng">printed cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique imprimé</dc:type>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k45303v</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:27</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k45303v</dc:identifier>
+					<dc:title>Lettre de M. Laurent, curé d'Huillaux, à ses paroissiens,
+					arrondissement des paroisses ([Reprod.])</dc:title>
+					<dc:creator>Laurent, François (17..-....)</dc:creator>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>1791</dc:date>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 8.433</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb372350444/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Ld4-3214</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k395523h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:partitions</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k395523h</dc:identifier>
+					<dc:title>Azyiadée : alla mazurka pour piano : op. 35 / par Aimé
+					Chéniaux</dc:title>
+					<dc:creator>Chéniaux, Aimé (18..-19.. ; compositeur).
+					Compositeur</dc:creator>
+					<dc:publisher>l'auteur (Nogent-sur-Marne)</dc:publisher>
+					<dc:description>Titre uniforme : [Azyiadée. Piano. Op.
+					35]</dc:description>
+					<dc:date>1902</dc:date>
+					<dc:subject xml:lang="fre">Piano, Musique de -- 20e
+					siècle</dc:subject>
+					<dc:subject xml:lang="fre">Mazurkas (piano) -- 20e
+					siècle</dc:subject>
+					<dc:format>[3] p. ; 36 cm</dc:format>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb41239877j/description</dc:relation>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Musique,
+					N-11545</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b69270707</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b69270707</dc:identifier>
+					<dc:title>7-9-13, [match d'aviron Paris contre Francfort sur le
+					bassin de Courbevoie] équipe de Francfort : [photographie de
+					presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1913</dc:date>
+					<dc:subject xml:lang="fre">Aviron -- Équipes -- Allemagne --
+					Francfort-sur-le-Main (Allemagne)</dc:subject>
+					<dc:subject xml:lang="fre">Rameurs</dc:subject>
+					<dc:subject xml:lang="fre">Courbevoie (Hauts-de-Seine)</dc:subject>
+					<dc:subject xml:lang="fre">Seine (France ; cours
+					d'eau)</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					32728</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb404853376/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k65959j</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k65959j</dc:identifier>
+					<dc:title>Les "séducteurs !" (8e éd.) / par Gyp</dc:title>
+					<dc:creator>Gyp (1849-1932)</dc:creator>
+					<dc:publisher>C. Lévy (Paris)</dc:publisher>
+					<dc:date>1888</dc:date>
+					<dc:format>301 p. ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb305660556/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Y2-20478</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b70008687</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:dessins</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b70008687</dc:identifier>
+					<dc:title>[Esquisse de décor non identifié / Napoléon
+					Sacchetti]</dc:title>
+					<dc:creator>Sacchetti, Napoléon (18..-18.. ; décorateur de
+					théâtre). Dessinateur</dc:creator>
+					<dc:date>18</dc:date>
+					<dc:format>1 dess. : plume et encre avec mesures ; 336 x 462
+					mm</dc:format>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb39751741m/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">dessin</dc:type>
+					<dc:type xml:lang="eng">drawing</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k70301k</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:80</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k70301k</dc:identifier>
+					<dc:title>Les vies et motz dorez des Sept Sages de Grèce. ;
+					Ensemble le Miroer de prudence / Le tout mis en françoys, avec une
+					briève et familière exposition sur chacune autorité et
+					sentence</dc:title>
+					<dc:publisher>par Estienne Groulleau (A Paris)</dc:publisher>
+					<dc:date>1554</dc:date>
+					<dc:format>112 f. : grav. ; in-16</dc:format>
+					<dc:language>frm</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb33645029k/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Réserve
+					des livres rares, Rés. p-Z-491</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k625033</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k625033</dc:identifier>
+					<dc:title>L'image sainte : histoire byzantine du VIIIe siècle /
+					Lucien Vigneron ; illustrations de F. Martineau...</dc:title>
+					<dc:creator>Vigneron, Lucien (1848-19..)</dc:creator>
+					<dc:publisher>Delhomme et Briguet (Paris)</dc:publisher>
+					<dc:date>1896</dc:date>
+					<dc:format>1 vol. (286 p.) : ill. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb31576966p/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Y2-49545</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b69090138</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b69090138</dc:identifier>
+					<dc:title>20-10-15, explosion rue de Tolbiac [décombres de l'usine
+					Billant] : [photographie de presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1915</dc:date>
+					<dc:subject xml:lang="fre">Usines -- Accidents -- France -- Paris
+					(France)</dc:subject>
+					<dc:subject xml:lang="fre">Explosions -- France -- Paris
+					(France)</dc:subject>
+					<dc:subject xml:lang="fre">Paris (France) -- Rue de
+					Tolbiac</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					45675</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40565369k/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France, [Rol,
+					45675]</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486291g</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486291g</dc:identifier>
+					<dc:date>1855</dc:date>
+					<dc:description>1855 (T2)-1857.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k35276k</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:france</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k35276k</dc:identifier>
+					<dc:title>Une journée à Saint-Franc (Savoie) : impressions et
+					souvenirs / par Victor François,...</dc:title>
+					<dc:creator>François, Victor</dc:creator>
+					<dc:publisher>B. Conte-Grand (Chambéry)</dc:publisher>
+					<dc:date>1874</dc:date>
+					<dc:subject xml:lang="fre">Savoie (France) -- Descriptions et
+					voyages -- 19e siècle</dc:subject>
+					<dc:format>41 p. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30459455n/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France,
+					8-Lk7-17818</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486292v</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486292v</dc:identifier>
+					<dc:date>1859</dc:date>
+					<dc:description>1859 (T3)-1863.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k4862950</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k4862950</dc:identifier>
+					<dc:date>1875</dc:date>
+					<dc:description>1875 (T6)-1880.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b78456209</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:amerique</setSpec>
+				<setSpec>gallica:images:dessins</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b78456209</dc:identifier>
+					<dc:title>Plan du fort Pontchartrain en Canada // situé sur le bord
+					du détroit Erié // 1732 : [dessin]</dc:title>
+					<dc:date>1732</dc:date>
+					<dc:subject xml:lang="fre">Fortifications -- Etats-Unis -- Detroit
+					(Mich. ) (18e siècle)</dc:subject>
+					<dc:subject xml:lang="fre">Detroit -- Fort
+					Pontchartrain</dc:subject>
+					<dc:type>Dessins et plans -- 18e siècle</dc:type>
+					<dc:format>1 dess. : plume, lavis d'encre de Chine et aquarelle ;
+					41 x 53,3 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40492674q/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">dessin</dc:type>
+					<dc:type xml:lang="eng">drawing</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k4863009</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k4863009</dc:identifier>
+					<dc:date>1900</dc:date>
+					<dc:description>1900 (SER2,T3)-1907.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486299h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486299h</dc:identifier>
+					<dc:date>1897</dc:date>
+					<dc:description>1897 (SER2,T2)-1899.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k204308f</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k204308f</dc:identifier>
+					<dc:title>Molière et le Misanthrope / par C.
+					Coquelin,...</dc:title>
+					<dc:creator>Coquelin, Constant (1841-1909)</dc:creator>
+					<dc:publisher>P. Ollendorff (Paris)</dc:publisher>
+					<dc:date>1881</dc:date>
+					<dc:subject xml:lang="fre">Molière (1622-1673). Le
+					misanthrope</dc:subject>
+					<dc:format>83 p. ; in-16</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30268114v/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k72757s</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:27</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k72757s</dc:identifier>
+					<dc:title>Eremitae divinitus illuminati In Rhetoricen isagoge
+					perspicacibus ingeniis expectata. Vaenundantur in ascensianis
+					aedibus</dc:title>
+					<dc:creator>Lulle, Raymond (1233?-1315)</dc:creator>
+					<dc:publisher>[s.n.] (Paris)</dc:publisher>
+					<dc:date>1515</dc:date>
+					<dc:format>28 ff. non ch. : car. rom., à longues lignes, marque
+					typographique au titre ; in-8</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb308458438/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Réserve
+					des livres rares, Rés. Z-958</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486733q</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486733q</dc:identifier>
+					<dc:date>1847</dc:date>
+					<dc:description>1847 (T1)-1853.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k29318f</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:5:51</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k29318f</dc:identifier>
+					<dc:title>Théorie mathématique des effets du jeu de billard / par
+					G. Coriolis</dc:title>
+					<dc:creator>Coriolis, Gaspard-Gustave (1792-1843)</dc:creator>
+					<dc:publisher>Carilian-Goeury (Paris)</dc:publisher>
+					<dc:date>1835</dc:date>
+					<dc:subject xml:lang="fre">Billard</dc:subject>
+					<dc:format>1 vol. (VII-174 p.) ; 24 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30270501w/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486301p</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486301p</dc:identifier>
+					<dc:date>1908</dc:date>
+					<dc:description>1908 (SER2,T5)-1912.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k107036d</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:italie</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k107036d</dc:identifier>
+					<dc:title>Les deux Romes / par A. de Lamothe</dc:title>
+					<dc:creator>Lamothe, Alexandre de (1823-1897)</dc:creator>
+					<dc:publisher>C. Blériot (Paris)</dc:publisher>
+					<dc:date>1876</dc:date>
+					<dc:subject xml:lang="fre">Rome (Italie) -- Descriptions et voyages
+					-- 19e siècle</dc:subject>
+					<dc:format>318 p. ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb307295654/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Philosophie, histoire, sciences de l'homme, 8-K-21</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k4862937</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k4862937</dc:identifier>
+					<dc:date>1864</dc:date>
+					<dc:description>1864 (T4)-1869.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486297r</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486297r</dc:identifier>
+					<dc:date>1886</dc:date>
+					<dc:description>1886 (T8)-1889.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k51113v</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:6:61</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k51113v</dc:identifier>
+					<dc:title>De reconditum abscessum natura libri VIII ([Reprod.]) /
+					Marci Aurelii Severini,...</dc:title>
+					<dc:creator>Severino, Marco Aurelio (1580-1656)</dc:creator>
+					<dc:publisher>apud Octavium Beltranu</dc:publisher>
+					<dc:date>1632</dc:date>
+					<dc:subject xml:lang="fre">Médecine -- Ouvrages avant
+					1800</dc:subject>
+					<dc:description>Collection : Italian books 1601-1700 ;
+					21.4</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37254881q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486296c</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486296c</dc:identifier>
+					<dc:date>1882</dc:date>
+					<dc:description>1882 (T7)-1886.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/cb326811732/date</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:titres</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:identifier>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:date>1847-1912</dc:date>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:description>Etat de collection : 1847-1889 (T1-T8), 1896-1912
+					(S2, T1-T5)</dc:description>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k95886s</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:3:34</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k95886s</dc:identifier>
+					<dc:title>Recueil des traités conclus par la France en
+					Extrême-Orient : 1684-1902 ([Reprod.]) / L. de
+					Reinach,...</dc:title>
+					<dc:contributor>Reinach, Lucien de. Éditeur
+					scientifique</dc:contributor>
+					<dc:creator>France</dc:creator>
+					<dc:publisher>E. Leroux (paris)</dc:publisher>
+					<dc:description>[Traité. 1684-1902]</dc:description>
+					<dc:date>1902</dc:date>
+					<dc:subject xml:lang="fre">France -- Relations extérieures --
+					Traités</dc:subject>
+					<dc:subject xml:lang="fre">Asie orientale -- Relations extérieures
+					-- Traités</dc:subject>
+					<dc:subject xml:lang="fre">France -- Relations extérieures -- Asie
+					orientale</dc:subject>
+					<dc:format>5 microfiches ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37268030s/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6926031t</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6926031t</dc:identifier>
+					<dc:title>Dupré [portrait du cycliste sur son vélo] : [photographie
+					de presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1913</dc:date>
+					<dc:subject xml:lang="fre">Dupré, Victor (1884-1938) --
+					Portraits</dc:subject>
+					<dc:subject xml:lang="fre">Coureurs cyclistes --
+					Portraits</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					30943</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb404818902/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k486294m</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k486294m</dc:identifier>
+					<dc:date>1870</dc:date>
+					<dc:description>1870 (T5)-1873.</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k4862984</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k4862984</dc:identifier>
+					<dc:date>1896</dc:date>
+					<dc:description>1896 (SER2,T1).</dc:description>
+					<dc:title>Académie des sciences et lettres de Montpellier :
+					mémoires de la section des lettres</dc:title>
+					<dc:creator>Académie des sciences et lettres de
+					Montpellier</dc:creator>
+					<dc:publisher>[s.n.?] (Montpellier)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb326811732/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb326811732/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k686928</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k686928</dc:identifier>
+					<dc:title>La princesse nue / Catulle Mendès</dc:title>
+					<dc:creator>Mendès, Catulle (1841-1909)</dc:creator>
+					<dc:publisher>P. Ollendorff (Paris)</dc:publisher>
+					<dc:date>1890</dc:date>
+					<dc:format>1 vol. (330 p.) ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb309249959/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Littérature et art, 8-Y2-43395</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k51298b</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:85</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k51298b</dc:identifier>
+					<dc:title>Arte poetica di Benedetto Menzini ; con alcune canzoni et
+					elegie del medesimo autore non piu stampate ([Reprod.])</dc:title>
+					<dc:creator>Menzini, Benedetto</dc:creator>
+					<dc:publisher>per il Molo (In Roma)</dc:publisher>
+					<dc:date>1690</dc:date>
+					<dc:description>Collection : Italian books 1601-1700 ;
+					64.4</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>ita</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37253260v/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6924899j</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6924899j</dc:identifier>
+					<dc:title>1-5-13, Saint-Cloud [terrains du Stade français à la
+					Faisanderie], match Paris-Nord [tennis, photographie de groupe des
+					joueurs de tennis] : [photographie de presse] / [Agence
+					Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1913</dc:date>
+					<dc:subject xml:lang="fre">Joueurs de tennis</dc:subject>
+					<dc:subject xml:lang="fre">Tennis -- Compétitions --
+					France</dc:subject>
+					<dc:subject xml:lang="fre">Saint-Cloud (Hauts-de-Seine) -- La
+					Faisanderie</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					29096</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40478231c/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k71151t</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k71151t</dc:identifier>
+					<dc:title>Panégyric de M. Balduin sur le mariage du roy</dc:title>
+					<dc:creator>Bauduin, François (1520-1573)</dc:creator>
+					<dc:publisher>R. Picquenot (Angers)</dc:publisher>
+					<dc:date>1571</dc:date>
+					<dc:format>56 p. ; in-4</dc:format>
+					<dc:language>frm</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30067893b/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Lb33-288</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k54365167</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k54365167</dc:identifier>
+					<dc:date>1846-01</dc:date>
+					<dc:description>1846/01.</dc:description>
+					<dc:title>Société lyrique des Templiers. Publication
+					trimestrielle...</dc:title>
+					<dc:creator>Société lyrique des Templiers</dc:creator>
+					<dc:publisher>[s.n.?] (Paris)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb328703578/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb328703578/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k54291153</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k54291153</dc:identifier>
+					<dc:date>1845-10</dc:date>
+					<dc:description>1845/10.</dc:description>
+					<dc:title>Société lyrique des Templiers. Publication
+					trimestrielle...</dc:title>
+					<dc:creator>Société lyrique des Templiers</dc:creator>
+					<dc:publisher>[s.n.?] (Paris)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb328703578/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb328703578/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k365592</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k365592</dc:identifier>
+					<dc:title>Mémoires d'un prisonnier d'État. augmentée d'une
+					correspondance inédite de Confalonieri. 2 / par Alexandre
+					Andryane</dc:title>
+					<dc:creator>Andryane, Alexandre (1797-1863)</dc:creator>
+					<dc:contributor>Confalonieri, Federico (1785-1846). Auteur de
+					lettres</dc:contributor>
+					<dc:publisher>Gaume frères (Paris)</dc:publisher>
+					<dc:date>1850</dc:date>
+					<dc:format>2 vol. (508, 610 p.) ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30020454t/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k519419</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k519419</dc:identifier>
+					<dc:title>Un pam de nas, ou La sourtiletche lebat
+					([Reprod.])</dc:title>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>179.</dc:date>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 7.294</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>pro</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb372470246/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/cb328703578/date</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:titres</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/cb328703578/date</dc:identifier>
+					<dc:title>Société lyrique des Templiers. Publication
+					trimestrielle...</dc:title>
+					<dc:creator>Société lyrique des Templiers</dc:creator>
+					<dc:publisher>[s.n.?] (Paris)</dc:publisher>
+					<dc:date>1845</dc:date>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb328703578/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:description>Etat de collection : 1845-1846</dc:description>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k36558q</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k36558q</dc:identifier>
+					<dc:title>Mémoires d'un prisonnier d'État. augmentée d'une
+					correspondance inédite de Confalonieri. 1 / par Alexandre
+					Andryane</dc:title>
+					<dc:creator>Andryane, Alexandre (1797-1863)</dc:creator>
+					<dc:contributor>Confalonieri, Federico (1785-1846). Auteur de
+					lettres</dc:contributor>
+					<dc:publisher>Gaume frères (Paris)</dc:publisher>
+					<dc:date>1850</dc:date>
+					<dc:format>2 vol. (508, 610 p.) ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30020454t/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k57469r</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k57469r</dc:identifier>
+					<dc:title>Poésies diverses de M. de Brébeuf ([Reprod.])</dc:title>
+					<dc:creator>Brébeuf, Georges de</dc:creator>
+					<dc:publisher>chez Guillaume de Luyne (Paris)</dc:publisher>
+					<dc:date>1658</dc:date>
+					<dc:description>Collection : French books 1601-1700 ;
+					55.8</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37242980z/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/bpt6k5436515t</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:periodiques:fascicules</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k5436515t</dc:identifier>
+					<dc:date>1846-04</dc:date>
+					<dc:description>1846/04.</dc:description>
+					<dc:title>Société lyrique des Templiers. Publication
+					trimestrielle...</dc:title>
+					<dc:creator>Société lyrique des Templiers</dc:creator>
+					<dc:publisher>[s.n.?] (Paris)</dc:publisher>
+					<dc:type xml:lang="fre">texte</dc:type>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">publication en série imprimée</dc:type>
+					<dc:type xml:lang="eng">printed serial</dc:type>
+					<dc:language>fre</dc:language>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb328703578/description</dc:relation>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+					<dc:relation>
+					http://gallica.bnf.fr/ark:/12148/cb328703578/date</dc:relation>
+					<dc:format>application/pdf</dc:format>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k39674z</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:94</setSpec>
+				<setSpec>gallica:afrique</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k39674z</dc:identifier>
+					<dc:title>Aperçu historique, statistique et topographique sur
+					l'état d'Alger, à l'usage de l'armée expéditionnaire d'Afrique :
+					avec plans, vues et costumes, publié par ordre de Son Excellence le
+					ministre de la guerre (2e éd.) / [par le capitaine V.-Y.
+					Boutin]</dc:title>
+					<dc:creator>Boutin, Vincent-Yves (1772-1815)</dc:creator>
+					<dc:publisher>C. Picquet (Paris)</dc:publisher>
+					<dc:date>1830</dc:date>
+					<dc:subject xml:lang="fre">Colonisation -- Algérie --
+					Histoire</dc:subject>
+					<dc:subject xml:lang="fre">Alger (Algérie) -- 19e
+					siècle</dc:subject>
+					<dc:subject xml:lang="fre">Alger (Algérie) -- Descriptions et
+					voyages -- 19e siècle</dc:subject>
+					<dc:format>VIII-238 p. : ill. ; in-12</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30149881k/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, 8-Lk8-22
+					(A)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k2015655</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k2015655</dc:identifier>
+					<dc:title>Histoire des campagnes de 1814 et de 1815. 1e partie, T.
+					1 / , comprenant l'histoire politique et militaire des deux
+					invasions de la France... rédigée sur des matériaux authentiques ou
+					inédits, par M. Alphonse de Beauchamp,...</dc:title>
+					<dc:creator>Beauchamp, Alphonse de (1767-1832)</dc:creator>
+					<dc:publisher>Le Normant (Paris)</dc:publisher>
+					<dc:date>1816-1817</dc:date>
+					<dc:subject xml:lang="fre">France -- 1814-1815</dc:subject>
+					<dc:format>4 vol. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30071555q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k1103023</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:6:60</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k1103023</dc:identifier>
+					<dc:title>Ce qu'on peut faire avec des plaques voilées :
+					photocollographie avec des plaques voilées, moyen de rendre leur
+					sensibilité aux plaques voilées, plaques positives au chlorobromure
+					d'argent, papiers et plaques avec virage à l'encre de toutes
+					couleurs, etc. / par Max. Forest,...</dc:title>
+					<dc:creator>Forest, Max.</dc:creator>
+					<dc:publisher>Gauthier-Villars et fils (Paris)</dc:publisher>
+					<dc:date>1893</dc:date>
+					<dc:subject xml:lang="fre">Plaques photographiques</dc:subject>
+					<dc:description>Collection : Bibliothèque
+					photographique</dc:description>
+					<dc:format>VI-52 p. ; in-12</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30449408x/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Sciences
+					et techniques, 8-V-24432</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k2015689</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k2015689</dc:identifier>
+					<dc:title>Histoire des campagnes de 1814 et de 1815. 2nde partie,
+					T. 2 / , comprenant l'histoire politique et militaire des deux
+					invasions de la France... rédigée sur des matériaux authentiques ou
+					inédits, par M. Alphonse de Beauchamp,...</dc:title>
+					<dc:creator>Beauchamp, Alphonse de (1767-1832)</dc:creator>
+					<dc:publisher>Le Normant (Paris)</dc:publisher>
+					<dc:date>1816-1817</dc:date>
+					<dc:subject xml:lang="fre">France -- 1814-1815</dc:subject>
+					<dc:format>4 vol. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30071555q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b7759463n</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:afrique</setSpec>
+				<setSpec>gallica:cartes:carte</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b7759463n</dc:identifier>
+					<dc:title>[Plan des environs d'Alger, 16..]</dc:title>
+					<dc:date>1600-1699</dc:date>
+					<dc:subject xml:lang="fre">Alger -- Région</dc:subject>
+					<dc:coverage>Algérie</dc:coverage>
+					<dc:format>1 carte : ms., en coul. ; 48 x 75 cm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Appartient à : Collection d'Anville ; 08027
+					ter</dc:relation>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40592758x/description</dc:relation>
+					<dc:type xml:lang="eng">cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique</dc:type>
+					<dc:type xml:lang="eng">manuscript cartographic resource</dc:type>
+					<dc:type xml:lang="fre">document cartographique manuscrit</dc:type>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k201567x</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k201567x</dc:identifier>
+					<dc:title>Histoire des campagnes de 1814 et de 1815. 2nde partie,
+					T. 1 / , comprenant l'histoire politique et militaire des deux
+					invasions de la France... rédigée sur des matériaux authentiques ou
+					inédits, par M. Alphonse de Beauchamp,...</dc:title>
+					<dc:creator>Beauchamp, Alphonse de (1767-1832)</dc:creator>
+					<dc:publisher>Le Normant (Paris)</dc:publisher>
+					<dc:date>1816-1817</dc:date>
+					<dc:subject xml:lang="fre">France -- 1814-1815</dc:subject>
+					<dc:format>4 vol. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30071555q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b69178929</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b69178929</dc:identifier>
+					<dc:title>Exposition canine [22 mai 1912, au Jardin des Tuileries,
+					inauguration par le président Fallières] : [photographie de presse]
+					/ [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1912</dc:date>
+					<dc:subject xml:lang="fre">Fallières, Armand
+					(1841-1931)</dc:subject>
+					<dc:subject xml:lang="fre">Paris (France) -- Jardin des
+					Tuileries</dc:subject>
+					<dc:subject xml:lang="fre">Chiens -- Expositions -- France -- Paris
+					(France)</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					20735</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40451497r/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k201566j</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:944</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k201566j</dc:identifier>
+					<dc:title>Histoire des campagnes de 1814 et de 1815. 1e partie, T.
+					2 / , comprenant l'histoire politique et militaire des deux
+					invasions de la France... rédigée sur des matériaux authentiques ou
+					inédits, par M. Alphonse de Beauchamp,...</dc:title>
+					<dc:creator>Beauchamp, Alphonse de (1767-1832)</dc:creator>
+					<dc:publisher>Le Normant (Paris)</dc:publisher>
+					<dc:date>1816-1817</dc:date>
+					<dc:subject xml:lang="fre">France -- 1814-1815</dc:subject>
+					<dc:format>4 vol. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30071555q/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k72991h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k72991h</dc:identifier>
+					<dc:title>Discours prononcé par le R. P. Didon à la conférence
+					Saint-François de Sales, le 17 juin 1891, à l'occasion des fêtes du
+					centenaire de Saint-Bernard</dc:title>
+					<dc:creator>Didon, Henri (1840-1900)</dc:creator>
+					<dc:publisher>Impr. de E. Jobard (Dijon)</dc:publisher>
+					<dc:date>1891</dc:date>
+					<dc:subject xml:lang="fre">Bernard, Saint</dc:subject>
+					<dc:format>12 p. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb34149549t/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Ln27-40143</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k1037353</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:3:306</setSpec>
+				<setSpec>gallica:afrique</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k1037353</dc:identifier>
+					<dc:title>Les Achantis de l'Afrique équatoriale : septembre 1887 /
+					[signé : Fulbert-Dumonteil]</dc:title>
+					<dc:creator>Fulbert-Dumonteil, Jean-Camille
+					(1831-1912)</dc:creator>
+					<dc:publisher>impr. de Dubuisson (Paris)</dc:publisher>
+					<dc:date>1887</dc:date>
+					<dc:subject xml:lang="fre">Ashanti (peuple d'Afrique) -- Afrique
+					centrale -- 19e siècle</dc:subject>
+					<dc:format>48 p. : ill., couv. ill. ; in-16</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb304701928/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, 8-O3n-95</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k82955v</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:9:91</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k82955v</dc:identifier>
+					<dc:title>Viage á su costa del alcalde provincial del... cabildo de
+					la Concepción de Chile : desde el fuerte de Ballenar... por tierras
+					desconocidas... hasta la ciudad de Buenos-Aires... / D. Luis de La
+					Cruz</dc:title>
+					<dc:creator>Cruz, Luis de la (1768-1828)</dc:creator>
+					<dc:publisher>Impr. del Estado (Buenos Aires)</dc:publisher>
+					<dc:date>1835</dc:date>
+					<dc:subject xml:lang="fre">Chili -- Descriptions et
+					voyages</dc:subject>
+					<dc:description>Collection : Colección de obras y documentos
+					relativos á la historia antigua y moderna de las provincias del Rio
+					de la Plata ; I, 2</dc:description>
+					<dc:format>225 p. ; in-4</dc:format>
+					<dc:language>spa</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb307118336/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, 4-Pq-42(1,
+					2)</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k1273643</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:audio</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica2.bnf.fr/ark:/12148/bpt6k1273643</dc:identifier>
+					<dc:title>Viri Galilaei : extr. des Motets d'Attaingnant /
+					Couillard, comp. ; Arrang. de Smijers ; Chorale de la Cathédrale de
+					Strasbourg ; Abbé Alphonse Hoch, chef de choeur</dc:title>
+					<dc:creator>Couillart. Compositeur</dc:creator>
+					<dc:creator>Smijers, Albert (1888-1957). Arrangeur</dc:creator>
+					<dc:creator>Hoch, Alphonse (1900-1967). Direction de
+					chur</dc:creator>
+					<dc:creator>Chorale de la cathédrale Notre-Dame de Strasbourg.
+					Chur mixte</dc:creator>
+					<dc:creator>Chorale de la cathédrale Notre-Dame de Strasbourg.
+					Chur mixte</dc:creator>
+					<dc:description>Titre uniforme : [Viri Galilaei]</dc:description>
+					<dc:date>1940</dc:date>
+					<dc:identifier>Part 1196, Part 1197L'Oiseau-lyre</dc:identifier>
+					<dc:identifier>Numéro commercial : L'Oiseau-lyre
+					OL21</dc:identifier>
+					<dc:subject>musique ancienne</dc:subject>
+					<dc:subject>musique vocale avec choeur</dc:subject>
+					<dc:format>1 disque : 78 t ; 25 cm</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37944620z/description</dc:relation>
+					<dc:type xml:lang="eng">sound</dc:type>
+					<dc:type xml:lang="fre">document sonore</dc:type>
+					<dc:format xml:lang="eng">disc</dc:format>
+					<dc:format xml:lang="fre">disque pré-lp</dc:format>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>multipart/mixed</dc:format>
+					<dc:source>Bibliothèque nationale de France, département
+					Audiovisuel, C-1529</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k2094003</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k2094003</dc:identifier>
+					<dc:title>Oeuvres de J.-B. Rousseau. T. 4 / nouv. éd., avec un
+					commentaire historique et littéraire, précédé d'un nouvel essai sur
+					la vie et les écrits de l'auteur</dc:title>
+					<dc:creator>Rousseau, Jean-Baptiste (1670-1741)</dc:creator>
+					<dc:contributor>Amar Du Rivier, Jean-Augustin (1765-1837). Éditeur
+					scientifique. Préfacier</dc:contributor>
+					<dc:publisher>Lefèvre (Paris)</dc:publisher>
+					<dc:date>1820</dc:date>
+					<dc:format>5 vol. : portr. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb312569166/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k2093999</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k2093999</dc:identifier>
+					<dc:title>Oeuvres de J.-B. Rousseau. T. 3 / nouv. éd., avec un
+					commentaire historique et littéraire, précédé d'un nouvel essai sur
+					la vie et les écrits de l'auteur</dc:title>
+					<dc:creator>Rousseau, Jean-Baptiste (1670-1741)</dc:creator>
+					<dc:contributor>Amar Du Rivier, Jean-Augustin (1765-1837). Éditeur
+					scientifique. Préfacier</dc:contributor>
+					<dc:publisher>Lefèvre (Paris)</dc:publisher>
+					<dc:date>1820</dc:date>
+					<dc:format>5 vol. : portr. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb312569166/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k209398x</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k209398x</dc:identifier>
+					<dc:title>Oeuvres de J.-B. Rousseau. T. 2 / nouv. éd., avec un
+					commentaire historique et littéraire, précédé d'un nouvel essai sur
+					la vie et les écrits de l'auteur</dc:title>
+					<dc:creator>Rousseau, Jean-Baptiste (1670-1741)</dc:creator>
+					<dc:contributor>Amar Du Rivier, Jean-Augustin (1765-1837). Éditeur
+					scientifique. Préfacier</dc:contributor>
+					<dc:publisher>Lefèvre (Paris)</dc:publisher>
+					<dc:date>1820</dc:date>
+					<dc:format>5 vol. : portr. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb312569166/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k209401g</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k209401g</dc:identifier>
+					<dc:title>Oeuvres de J.-B. Rousseau. T. 5 / nouv. éd., avec un
+					commentaire historique et littéraire, précédé d'un nouvel essai sur
+					la vie et les écrits de l'auteur</dc:title>
+					<dc:creator>Rousseau, Jean-Baptiste (1670-1741)</dc:creator>
+					<dc:contributor>Amar Du Rivier, Jean-Augustin (1765-1837). Éditeur
+					scientifique. Préfacier</dc:contributor>
+					<dc:publisher>Lefèvre (Paris)</dc:publisher>
+					<dc:date>1820</dc:date>
+					<dc:format>5 vol. : portr. ; in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb312569166/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k1169276</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k1169276</dc:identifier>
+					<dc:title>Ballet de Villeneuve-Saint-George, dancé devant
+					Monseigneur, le premier septembre 1692, par l'Académie royale de
+					musique</dc:title>
+					<dc:creator>Banzy (16..-17..? ; librettiste)</dc:creator>
+					<dc:publisher>C. Ballard (Paris)</dc:publisher>
+					<dc:date>1692</dc:date>
+					<dc:format>21 p. ; in-4</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb300523550/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, département Réserve
+					des livres rares, RES-YF-1835</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k54069x</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:6:61</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k54069x</dc:identifier>
+					<dc:title>Bern. Gordonii opus lilium medicinae inscriptum de
+					morborum propem omnium curatione : septem particulis distributum
+					([Reprod.])</dc:title>
+					<dc:creator>Bernard de Gordon (12..-1320?)</dc:creator>
+					<dc:publisher>apud Gulielmum Rouillium (Lugduni)</dc:publisher>
+					<dc:date>1550</dc:date>
+					<dc:subject xml:lang="fre">Médecine -- Ouvrages avant
+					1800</dc:subject>
+					<dc:description>Collection : French books before 1601 ;
+					379.3</dc:description>
+					<dc:format>1 microfilm ; 35 mm</dc:format>
+					<dc:language>lat</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37249910g/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>
+				oai:bnf.fr:gallica/ark:/12148/btv1b6923593q</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:images:photographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/btv1b6923593q</dc:identifier>
+					<dc:title>Embarquement des canons de siège à Salonique [effectué
+					par des civils, surveillé par des militaires] : [photographie de
+					presse] / [Agence Rol]</dc:title>
+					<dc:creator>Agence Rol. Agence photographique</dc:creator>
+					<dc:date>1913</dc:date>
+					<dc:subject xml:lang="fre">Guerres balkaniques
+					(1912-1913)</dc:subject>
+					<dc:subject xml:lang="fre">Transports militaires --
+					Grèce</dc:subject>
+					<dc:subject xml:lang="fre">Canons</dc:subject>
+					<dc:subject xml:lang="fre">Thessalonique (Grèce)</dc:subject>
+					<dc:subject xml:lang="fre">Serbie. Armée -- Artillerie</dc:subject>
+					<dc:description>Référence bibliographique : Rol,
+					28121</dc:description>
+					<dc:type>Photographie de presse -- 1900-1945</dc:type>
+					<dc:format>1 photogr. nég. sur verre ; 13 x 18 cm
+					(sup.)</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb40477683g/description</dc:relation>
+					<dc:type xml:lang="fre">image fixe</dc:type>
+					<dc:type xml:lang="eng">image</dc:type>
+					<dc:type xml:lang="eng">still image</dc:type>
+					<dc:type xml:lang="fre">photographie</dc:type>
+					<dc:type xml:lang="eng">photograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>image/jpeg</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k47347z</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:3:33</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k47347z</dc:identifier>
+					<dc:title>De la nécessité et des moyens d'anéantir toutes les
+					exemptions en matière d'impôt ([Reprod.]) / par un citoyen de
+					Montpellier</dc:title>
+					<dc:creator>Mourgue, Jacques Antoine</dc:creator>
+					<dc:publisher>[s.n.]</dc:publisher>
+					<dc:date>1788</dc:date>
+					<dc:subject xml:lang="fre">Impôt -- France -- Ouvrages avant
+					1800</dc:subject>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 5.411</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37262746n/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k371983</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:84</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k371983</dc:identifier>
+					<dc:title>Le dangereux jeune homme / René Boylesve...</dc:title>
+					<dc:creator>Boylesve, René (1867-1926)</dc:creator>
+					<dc:publisher>Calmann-Lévy (Paris)</dc:publisher>
+					<dc:date>1921</dc:date>
+					<dc:format>267 p. ; in-18</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb31863200d/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k46575h</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k46575h</dc:identifier>
+					<dc:title>Lettres de Rallier, membre du Conseil des Anciens, au
+					citoyen Grégoire, membre du Conseil des Cinq-cents
+					([Reprod.])</dc:title>
+					<dc:creator>Rallier, Louis-Antoine-Esprit</dc:creator>
+					<dc:publisher>chez Desenne, impr.-libraire (Paris)</dc:publisher>
+					<dc:date>1796</dc:date>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 8.1738</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37235443w/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Ld4-7472</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k202750t</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:5:53</setSpec>
+				<setSpec>gallica:5:54</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k202750t</dc:identifier>
+					<dc:title>Physique et chimie populaires. T. 1 / par Alexis
+					Clerc</dc:title>
+					<dc:creator>Clerc, Alexis (1841-1894)</dc:creator>
+					<dc:publisher>J. Rouff (Paris)</dc:publisher>
+					<dc:date>1881-1883</dc:date>
+					<dc:subject xml:lang="fre">Physique -- Vulgarisation</dc:subject>
+					<dc:subject xml:lang="fre">Chimie -- Vulgarisation</dc:subject>
+					<dc:description>Collection : Sciences mises à la portée de
+					tous</dc:description>
+					<dc:format>3 vol. ; gr. in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb302502489/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k202752k</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:5:53</setSpec>
+				<setSpec>gallica:5:54</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k202752k</dc:identifier>
+					<dc:title>Physique et chimie populaires. T. 3 / par Alexis
+					Clerc</dc:title>
+					<dc:creator>Clerc, Alexis (1841-1894)</dc:creator>
+					<dc:publisher>J. Rouff (Paris)</dc:publisher>
+					<dc:date>1881-1883</dc:date>
+					<dc:subject xml:lang="fre">Physique -- Vulgarisation</dc:subject>
+					<dc:subject xml:lang="fre">Chimie -- Vulgarisation</dc:subject>
+					<dc:description>Collection : Sciences mises à la portée de
+					tous</dc:description>
+					<dc:format>3 vol. ; gr. in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb302502489/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k2027516</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:5:53</setSpec>
+				<setSpec>gallica:5:54</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k2027516</dc:identifier>
+					<dc:title>Physique et chimie populaires. T. 2 / par Alexis
+					Clerc</dc:title>
+					<dc:creator>Clerc, Alexis (1841-1894)</dc:creator>
+					<dc:publisher>J. Rouff (Paris)</dc:publisher>
+					<dc:date>1881-1883</dc:date>
+					<dc:subject xml:lang="fre">Physique -- Vulgarisation</dc:subject>
+					<dc:subject xml:lang="fre">Chimie -- Vulgarisation</dc:subject>
+					<dc:description>Collection : Sciences mises à la portée de
+					tous</dc:description>
+					<dc:format>3 vol. ; gr. in-8</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb302502489/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k715392</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:8:88</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k715392</dc:identifier>
+					<dc:title>Les fables et la vie d'Ésope,... / [par Planude] ;
+					traduites de nouveau en françois selon la vérité grecque,
+					nouvellement augmentéez et enrichies de plusieurs
+					figures...</dc:title>
+					<dc:creator>Ésope (0620?-0560? av. J.-C.)</dc:creator>
+					<dc:contributor>Planude, Maxime (1260?-1310). Éditeur
+					scientifique</dc:contributor>
+					<dc:publisher>chez H. de Marnef et la veufve de G. Cavellat
+					(Paris)</dc:publisher>
+					<dc:description>[Fables (français moyen). 1582]</dc:description>
+					<dc:date>1582</dc:date>
+					<dc:format>225 p. : fig. sur bois ; in-16</dc:format>
+					<dc:language>frm</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb30406078f/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Rés.
+					Yb-1016</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<record>
+			<header>
+				<identifier>oai:bnf.fr:gallica/ark:/12148/bpt6k45336t</identifier>
+				<datestamp>2009-01-08</datestamp>
+				<setSpec>gallica:2:20</setSpec>
+				<setSpec>gallica:monographies</setSpec>
+			</header>
+			<metadata>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+					<dc:identifier>
+					http://gallica.bnf.fr/ark:/12148/bpt6k45336t</dc:identifier>
+					<dc:title>Examen du serment des fonctionnaires publics du culte,
+					exigé par le décret de l'Assemblée nationale du 27 novembre 1790
+					([Reprod.]) / [Loiseau]</dc:title>
+					<dc:creator>Loyseau, Jean-René</dc:creator>
+					<dc:publisher>[de l'impr. d'A-J Gorsas] ([Paris])</dc:publisher>
+					<dc:date>1790</dc:date>
+					<dc:subject xml:lang="fre">Constitution civile du clergé (1790 ;
+					France) -- Ouvrages avant 1800</dc:subject>
+					<dc:description>Collection : Les archives de la Révolution
+					française ; 8.466</dc:description>
+					<dc:format>1 microfiche ; 105*148 mm</dc:format>
+					<dc:language>fre</dc:language>
+					<dc:relation>Notice du catalogue :
+					http://catalogue.bnf.fr/ark:/12148/cb37235500w/description</dc:relation>
+					<dc:type xml:lang="eng">text</dc:type>
+					<dc:type xml:lang="fre">monographie imprimée</dc:type>
+					<dc:type xml:lang="eng">printed monograph</dc:type>
+					<dc:rights xml:lang="fre">domaine public</dc:rights>
+					<dc:rights xml:lang="eng">public domain</dc:rights>
+					<dc:format>application/pdf</dc:format>
+					<dc:source>Bibliothèque nationale de France, Ld4-7218</dc:source>
+				</oai_dc:dc>
+			</metadata>
+		</record>
+		<resumptionToken expirationDate="2010-05-26T08:23:22Z"
+										 completeListSize="980266" cursor="0">
+		2!2!2758354!158!100!980266!oai_dc</resumptionToken>
+	</ListRecords>
+</OAI-PMH>

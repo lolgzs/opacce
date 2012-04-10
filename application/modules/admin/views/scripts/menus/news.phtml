@@ -1,0 +1,47 @@
+<?php echo $this->render('menus/_debut.phtml'); ?>
+		
+<?php 
+	echo $this->partial("modules/_options_cms.phtml", 
+											array('preferences' => $this->preferences,
+														'id_bib' => $this->id_bib,
+														'form_selector' => 'form'));
+?>
+
+<fieldset>
+	<legend>Mode d'affichage</legend>
+	<table>
+		<tr>
+			<td class="droite">Clic sur le menu ouvre</td>
+			<td class="gauche">
+					<?php 
+						 echo $this->formRadioButtons("display_mode", 
+																					$this->preferences["display_mode"], 
+																					array(
+																								"Submenu" => "Sous-menu",
+																								"Summary" => "Sommaire"));
+					?>
+			</td>
+		</tr>
+
+		<tr id="option_summary_content">
+			<td class="droite">Contenu du sommaire</td>
+			<td class="gauche">
+				<?php
+					 echo $this->formRadioButtons("summary_content", 
+																				$this->preferences["summary_content"], 
+																				array(
+																							"Summary" => "Résumés",
+																							"TitlesOnly" => "Titres seulement",
+																							"FullContent" => "Articles complets"));
+				?>
+			</td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		formSelectToggleVisibilityForElement("input.display_mode", 
+																				 "tr#option_summary_content", 
+																				 "Summary");
+	</script>
+</fieldset>
+				
+<?php echo $this->render('menus/_fin.phtml'); ?>

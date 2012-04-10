@@ -1,0 +1,153 @@
+div.nuage {
+		background-color:#FFFFFF;
+		overflow:hidden;
+		padding:5px;
+		text-align:left;
+}
+span.nuage {
+		padding-left:4px;
+		padding-right:4px;
+}
+a.nuage_niveau1:link {
+		font-size:10px;
+}
+a.nuage_niveau2:link {
+		color:#C42454;
+		font-size:11px;
+}
+a.nuage_niveau3:link {
+		color:#821CAC;
+		font-size:12px;
+}
+a.nuage_niveau4:link {
+		color:#482685;
+		font-size:13px;
+}
+a.nuage_niveau5:link {
+		color:#982C6A;
+		font-size:14px;
+}
+a.nuage_niveau6:link {
+		color:#E54801;
+		font-size:15px;
+}
+a.nuage_niveau7:link {
+		color:#9AC3B1;
+		font-size:16px;
+}
+a.nuage_niveau8:link {
+		color:#862960;
+		font-size:17px;
+}
+a.nuage_niveau9:link {
+		color:#CEE300;
+		font-size:18px;
+		font-weight:bold;
+}
+a.nuage_niveau10:link {
+		color:#9C9FD2;
+		font-size:19px;
+		font-weight:bold;
+}
+a.nuage_niveau1:visited {
+		color:#B8C9D6;
+		font-size:10px;
+}
+a.nuage_niveau2:visited {
+		color:#668AA8;
+		font-size:11px;
+}
+a.nuage_niveau3:visited {
+		color:#47657B;
+		font-size:12px;
+}
+a.nuage_niveau4:visited {
+		color:#E76300;
+		font-size:13px;
+}
+a.nuage_niveau5:visited {
+		color:#E76300;
+		font-size:14px;
+}
+a.nuage_niveau6:visited {
+		color:#E76300;
+		font-size:15px;
+}
+a.nuage_niveau7:visited {
+		color:#E76300;
+		font-size:16px;
+}
+a.nuage_niveau8:visited {
+		color:#E76300;
+		font-size:17px;
+}
+a.nuage_niveau9:visited {
+		color:#E76300;
+		font-size:18px;
+		font-weight:bold;
+}
+a.nuage_niveau10:visited {
+		color:#FF3300;
+		font-size:19px;
+		font-weight:bold;
+}
+a.nuage_niveau1:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:10px;
+		text-decoration:none;
+}
+a.nuage_niveau2:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:11px;
+		text-decoration:none;
+}
+a.nuage_niveau3:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:12px;
+		text-decoration:none;
+}
+a.nuage_niveau4:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:13px;
+		text-decoration:none;
+}
+a.nuage_niveau5:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:14px;
+		text-decoration:none;
+}
+a.nuage_niveau6:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:15px;
+		text-decoration:none;
+}
+a.nuage_niveau7:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:16px;
+		text-decoration:none;
+}
+a.nuage_niveau8:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:17px;
+		text-decoration:none;
+}
+a.nuage_niveau9:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:18px;
+		text-decoration:none;
+}
+a.nuage_niveau10:hover {
+		background-color:#668AA8;
+		color:white;
+		font-size:19px;
+		text-decoration:none;
+}

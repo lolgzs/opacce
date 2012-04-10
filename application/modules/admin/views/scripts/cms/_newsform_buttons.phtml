@@ -1,0 +1,13 @@
+<table style="width:auto; margin-left:auto; margin-right:auto">
+	<tr>
+		<td align="right" style="padding-right:5px;">
+			<?php echo $this->bouton('type=V','texte=Sauvegarder', 'largeur=130px'); ?>
+		</td>
+		<td>
+			<?php
+				$url = 'url='.BASE_URL.'/admin/cms?z='.$this->id_zone.'&amp;b='.$this->id_bib ;
+				echo $this->bouton('id=c_2','picto=del.gif','texte=Fermer',$url,'largeur=120px');
+			?>
+		</td>
+	</tr>
+</table>
