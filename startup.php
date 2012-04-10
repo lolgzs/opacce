@@ -45,7 +45,7 @@ function defineConstant($name, $value) {
 
 
 function setupConstants($cfg) {
-	defineConstant('VERSION_PERGAME','V-05.11.1 [r'.array_at(1, explode(' ', '$Revision: 1411 $')).']');
+	defineConstant('VERSION_PERGAME','V-05.11.1 [r'.array_at(1, explode(' ', '$Revision$')).']');
 
 	defineConstant('MODULEDIRECTORY','./application/modules');
 	defineConstant('LANG_DIR', './library/translation/');
