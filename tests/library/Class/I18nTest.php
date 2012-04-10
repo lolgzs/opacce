@@ -73,7 +73,6 @@ class ProfileI18nTest extends PHPUnit_Framework_TestCase {
 
 		$this->_i18n->setProfilExtractor($this->_extractor);
 		$this->_i18n->generate();
-
 		$this->assertEquals(I18nTestFixtures::createProfileStringsSerialization(), file_get_contents($this->_getFilePathFor(Class_I18n::MASTER_NAME)));
 
 	}

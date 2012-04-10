@@ -99,6 +99,8 @@ abstract class FormulaireContactValidPostTestCase extends AbstractControllerTest
 	protected $_mail;
 
 	public function sendValidMail() {
+		defineConstant('NOCAPTCHA', true);
+
 		$mock_transport = new MockMailTransport();
 		Zend_Mail::setDefaultTransport($mock_transport);
 
@@ -119,7 +121,7 @@ abstract class FormulaireContactValidPostTestCase extends AbstractControllerTest
 class FormulaireContactValidPostTest extends FormulaireContactValidPostTestCase {
 	public function setUp() {
 		parent::setUp();
-		defineConstant('NOCAPTCHA', true);
+
 		Class_Profil::getCurrentProfil()->setMailSite('laurent@afi-sa.fr');
 		$this->sendValidMail();
 	}

@@ -98,7 +98,7 @@ abstract class ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase extends
 		$this->profil_adulte = Class_Profil::getLoader()
 			->newInstanceWithId(6)
 			->setBrowser('opac')
-			->setSkin('astrolabe')
+			->setSkin('modele')
 			->setTitreSite('Médiathèque de Melun')
 			->setLibelle('Profil Adulte')
 			->setCfgMenus($cfg_menus_adulte);
@@ -181,7 +181,7 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestRender extends Profil
 
 	/** @test */
 	public function boiteMenuVerticalTitreShouldBePresent() {
-		$this->assertXPathContentContains("//div[@class='boiteGauche']//h1[@class='titre']", 'Mon menu');
+		$this->assertXPathContentContains("//div[@class='boiteGauche']//div[@class='titre']", 'Mon menu');
 	}
 
 
@@ -254,7 +254,8 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestSwitchPageMusiqueToPr
 	/** @test */
 	public function monMenuShouldBeDisplayedOnPageMusique() {
 		$this->dispatch('/opac?id_profil='.$this->page_musique->getId());
-		$this->assertXPathContentContains("//div[@class='boiteGauche']//h1[@class='titre']", 'Mon menu',
+		$this->assertXPathContentContains("//div[@class='boiteGauche']//div[@class='titre']", 
+																			'Mon menu',
 																			$this->_response->getBody());
 		$this->assertXPathContentContains("//ul[@class='menuGauche']//li", 'Pratique');
 		$this->assertXPathContentContains("//ul[@class='menuGauche']//li", 'Google');

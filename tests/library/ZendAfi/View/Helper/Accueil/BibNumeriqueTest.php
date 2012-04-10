@@ -600,7 +600,8 @@ class BibNumeriqueFixture {
 																Class_AlbumCategorie::getLoader()
 																->newInstanceWithId(3)
 																->setLibelle('Les plus belles calligraphies')
-																->setAlbums(array())));
+																->setAlbums(array())))
+			->setAlbums(array());
 	}
 
 	

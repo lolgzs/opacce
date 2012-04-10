@@ -55,7 +55,7 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 			->setTitreSite('Médiathèque de Melun')
 			->setLibelle('Profil Jeunesse')
 			->setCommentaire('Pour les jeunes')
-			->setSkin('astrolabe')
+			->setSkin('modele')
 			->setCfgSite(ZendAfi_Filters_Serialize::serialize($cfg_site))
 			->setCfgNotice($cfg_notice)
 			->setMailSite('tintin@herge.be')
@@ -175,7 +175,7 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 
 	/** @test */
 	public function skinAstrolabeShouldBeSelected() {
-		$this->assertXPath("//select[@name='skin']/option[@value='astrolabe'][@selected='selected']");
+		$this->assertXPath("//select[@name='skin']/option[@value='modele'][@selected='selected']");
 	}
 
 	/** @test */
