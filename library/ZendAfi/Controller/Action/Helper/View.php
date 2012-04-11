@@ -65,6 +65,8 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 	 */
 	public function _()	{
 		$args = func_get_args();
+		if ('' == $args[0]) 
+			return '';
 		return call_user_func_array(array($this->_translate(), '_'), $args);
   }
 
