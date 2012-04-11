@@ -20,8 +20,10 @@ if($this->url_creer_panier)
 
 <?php $this->closeBoite();?>
 
-<table width=90%>
 
+<?php $this->openBoite(''); ?>
+
+<table style="width:90%" class="panier_notices">
 	<tr class="soustitre">
 		<th width="5%">n°</th>
 		<th width="15%">Date</th>
@@ -49,6 +51,8 @@ if($this->url_creer_panier)
 
 </table>
 
+<?php $this->closeBoite(); ?>
+
 <?php
 
 // Panier courant
@@ -70,8 +74,6 @@ if($this->panier_courant)
 	print('<a href="#" onclick="document.getElementById(\'maj_titre\').style.display=\'block\';">&raquo;&nbsp;'.$this->_('Modifier le titre du panier').'</a>');
 	if($this->panier_courant["nombre"] > 0) 
     print('<a href="'.BASE_URL.'/opac/panier/export?id_panier='.$this->panier_courant["ID_PANIER"]. '">&nbsp;&nbsp;&raquo;&nbsp;'.$this->_('Exporter ce panier').'</a>');
-	
-	$this->closeBoite();
 	
 	// Contenu panier
 	if($this->panier_courant["nombre"] > 0)
@@ -102,6 +104,7 @@ if($this->panier_courant)
 		print('</table>');
 	}
 	else print(BR.$this->_("Ce panier est vide"));
+	$this->closeBoite();
 }
 
 // Message d'erreur
