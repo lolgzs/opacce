@@ -6,3 +6,6 @@ TAGS
 local.php
 config.ini
 index.php
+userfiles/image/*
+userfiles/bannieres/*
+userfiles/css/*
