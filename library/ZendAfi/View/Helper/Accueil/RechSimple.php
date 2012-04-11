@@ -76,7 +76,7 @@ class ZendAfi_View_Helper_Accueil_RechSimple extends ZendAfi_View_Helper_Accueil
 	private function getChampSaisie()
 	{
 		$ret= '<input type="text" id="expressionRecherche" name="expressionRecherche" value="" style="width:'.$this->preferences["largeur"].'px"
-							onkeypress="if (event.keyCode == 13) {this.form.submit();return false;}" />
+							onkeypress="if (event.keyCode == 13) {this.form.submit();return false;}" x-webkit-speech="x-webkit-speech" />
 						<input name="button" type="submit" class="submit" value="" />';
 
 		if ($this->preferences["exemple"])
