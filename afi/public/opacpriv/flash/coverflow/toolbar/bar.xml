@@ -1,3 +1,0 @@
-<bars>
-	<bar leftButton = "../../public/opac/flash/coverflow/toolbar/l_btn.png" rightButton = "../../public/opac/flash/coverflow/toolbar/r_btn.png" track = "../../public/opac/flash/coverflow/toolbar/track.png" scrollButton = "../../public/opac/flash/coverflow/toolbar/btn_track.png"></bar>
-</bars>

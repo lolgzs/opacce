@@ -1,5 +1,0 @@
-radiusX=240
-thumbWidth=90
-thumbHeight=110
-centerX=290
-centerY=130

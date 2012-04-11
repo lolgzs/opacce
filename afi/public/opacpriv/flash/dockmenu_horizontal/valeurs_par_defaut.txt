@@ -1,2 +1,0 @@
-autoScroll=false
-imagesInfluence=200

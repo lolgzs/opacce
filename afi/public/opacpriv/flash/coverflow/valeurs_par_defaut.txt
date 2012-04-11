@@ -1,6 +1,0 @@
-planeSeparation=80
-planeOffset=10
-planeAngle=80
-planeOffsetZ=-170
-positionFreeX=295
-width=400
