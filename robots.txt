@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /ckeditor/
+Disallow: /amber/
+Crawl-delay: 10 
