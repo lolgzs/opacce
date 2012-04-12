@@ -94,7 +94,7 @@ class BibControllerIndexActionTest extends AbstractControllerTestCase {
 	/** @test */
 	function setTooltipJSShouldBeGenerated() {
 		$this->assertTrue(false !== strpos($this->_response->getBody(),
-																			 "setTooltip($('.tooltip_bib3'), '<a href=\"/afi-opac3/bib/bibview/id/3\"><b>BibZone3</b></a><br />'"),
+																			 "setTooltip($('.tooltip_bib3'), '<a href=\"" . BASE_URL . "/bib/bibview/id/3\"><b>BibZone3</b></a><br />'"),
 											$this->_response->getBody());
 	}
 

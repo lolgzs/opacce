@@ -404,7 +404,7 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 									'events_debut' => '02/03/2011',
 									'events_fin' => '05/03/2011',
 									'contenu' => 'Ici: <img src="../../images/bonlieu.jpg" />',
-									'description' => 'Affiche: <img src="http://localhost/afi-opac3/images/concert.jpg" />');
+									'description' => 'Affiche: <img src="http://localhost' . BASE_URL . '/images/concert.jpg" />');
 
 		$this
 			->getRequest()
@@ -469,14 +469,14 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 
 	/** @test */
 	function contenuShouldHaveFixedImageURL() {
-		$this->assertEquals(sprintf('Ici: <img src="/afi-opac3/images/bonlieu.jpg" />'),
+		$this->assertEquals('Ici: <img src="' . BASE_URL . '/images/bonlieu.jpg" />',
 												$this->concert->getContenu());
 	}
 
 
 	/** @test */
 	function descriptionShouldHaveFixedImageURL() {
-		$this->assertEquals(sprintf('Affiche: <img src="/afi-opac3/images/concert.jpg" />'),
+		$this->assertEquals('Affiche: <img src="' . BASE_URL . '/images/concert.jpg" />',
 												$this->concert->getDescription());
 	}
 

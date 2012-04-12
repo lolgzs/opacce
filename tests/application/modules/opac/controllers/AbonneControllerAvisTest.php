@@ -466,7 +466,7 @@ class RssControllerViewAvisUserTest extends AvisControllersFixturesTestCase {
 	/** @test */
 	function linkShouldBeLocalhostAfiOpac3BlogRssUser123456() {
 		$this->assertXPathContentContains('//channel/link', 
-																			'http://localhost/afi-opac3/blog/viewauteur/id/123456', 
+																			'http://localhost' . BASE_URL . '/blog/viewauteur/id/123456', 
 																			$this->_response->getBody());
 	}
 
@@ -486,7 +486,7 @@ class RssControllerViewAvisUserTest extends AvisControllersFixturesTestCase {
 	/** @test */
 	function firstItemLinkShouldBeBlogViewAvisId13() {
 		$this->assertXPathContentContains('//channel/item/link', 
-																			"http://localhost/afi-opac3/opac/blog/viewavis/id/13");
+																			"http://localhost" . BASE_URL . "/opac/blog/viewavis/id/13");
 	}
 
 
@@ -499,7 +499,7 @@ class RssControllerViewAvisUserTest extends AvisControllersFixturesTestCase {
 	/** @test */
 	function firstItemNoteCritiqueShouldBeImgStars4Gif() {
 		$this->assertTrue(false !== strpos($this->_response->getBody(),
-																			 "src='http://localhost/afi-opac3/public/admin/images/stars/stars-4.gif'"));
+																			 "src='http://localhost" . BASE_URL . "/public/admin/images/stars/stars-4.gif'"));
 	}
 }
 

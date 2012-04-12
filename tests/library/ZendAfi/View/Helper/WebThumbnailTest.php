@@ -44,7 +44,7 @@ class ViewHelperWebThumbnailTestReturnedUrl extends ViewHelperTestCase {
 			->will($this->returnValue(true));
 
 		$url = $this->helper->webThumbnail('http://www.google.com');
-		$this->assertEquals('/afi-opac3/userfiles/web_thumbnails/www_google_com.jpg',
+		$this->assertEquals(BASE_URL . '/userfiles/web_thumbnails/www_google_com.jpg',
 												$url);
 	}
 
@@ -57,7 +57,7 @@ class ViewHelperWebThumbnailTestReturnedUrl extends ViewHelperTestCase {
 			->method('fetchUrlToFile');
 
 		$url = $this->helper->webThumbnail('http://www.google.com');
-		$this->assertEquals('/afi-opac3/userfiles/web_thumbnails/www_google_com.jpg',
+		$this->assertEquals(BASE_URL . '/userfiles/web_thumbnails/www_google_com.jpg',
 												$url);
 	}
 
@@ -70,7 +70,7 @@ class ViewHelperWebThumbnailTestReturnedUrl extends ViewHelperTestCase {
 			->will($this->returnValue(true));
 
 		$url = $this->helper->webThumbnail('http://www.google.fr/search?sourceid=chrome&ie=UTF-8&q=harry+potter');
-		$this->assertEquals('/afi-opac3/userfiles/web_thumbnails/www_google_fr_search_sourceid_chrome_ie_UTF-8_q_harry_potter.jpg',
+		$this->assertEquals(BASE_URL . '/userfiles/web_thumbnails/www_google_fr_search_sourceid_chrome_ie_UTF-8_q_harry_potter.jpg',
 												$url);
 	}
 
@@ -83,7 +83,7 @@ class ViewHelperWebThumbnailTestReturnedUrl extends ViewHelperTestCase {
 			->will($this->returnValue(true));
 
 		$url = $this->helper->webThumbnail('https://astrolabe.fr/my%20search');
-		$this->assertEquals('/afi-opac3/userfiles/web_thumbnails/astrolabe_fr_my_search.jpg',
+		$this->assertEquals(BASE_URL . '/userfiles/web_thumbnails/astrolabe_fr_my_search.jpg',
 												$url);
 	}
 

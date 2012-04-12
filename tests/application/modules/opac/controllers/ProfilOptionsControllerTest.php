@@ -75,7 +75,7 @@ class ProfilOptionsControllerTwitterLinkWithProfilAdulteTest extends ProfilOptio
 		$this->_mock_web_client
 			->whenCalled('open_url')
 			->with(sprintf('http://is.gd/api.php?longurl=%s', 
-										 urlencode('http://localhost/afi-opac3/index/index/id_profil/2')))
+										 urlencode('http://localhost' . BASE_URL . '/index/index/id_profil/2')))
 			->answers('http://is.gd/PkdNgD')
 			->beStrict();
 	}

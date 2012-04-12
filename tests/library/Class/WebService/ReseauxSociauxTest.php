@@ -34,13 +34,8 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function shortenUrlShouldReturnIsGdUrl() {
-		$this->_mock_web_client
-			->whenCalled('open_url')
-			->with(sprintf('http://is.gd/api.php?longurl=%s', 
-										 urlencode('http://www.institut-francais.com')))
-			->answers('http://is.gd/PkdNgD')
-			->beStrict();
-
+		$this->_expectClientOpenUrlWithLongUrlAndAnswer('http://www.institut-francais.com',
+																										'http://is.gd/PkdNgD');
 
 		$this->assertEquals('http://is.gd/PkdNgD',
 												$this->_rs->shortenUrl('http://www.institut-francais.com'));
@@ -50,13 +45,7 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function getTwitterUrlViewNoticeShouldReturnShortenUrlWithServerHost() {
 		$_SERVER["HTTP_HOST"] = 'localhost';
-
-		$this->_mock_web_client
-			->whenCalled('open_url')
-			->with('http://is.gd/api.php?longurl=http%3A%2F%2Flocalhost%2Fafi-opac3%2Frecherche%2Fviewnotice%2Fid%2F2')
-			->answers('http://is.gd/PkdNg2')
-			->beStrict();
-
+		$this->_expectClientOpenUrlForShortenViewNotice2();
 		$this->assertEquals(sprintf('http://twitter.com/home?status=%s', urlencode('http://is.gd/PkdNg2')),
 												$this->_rs->getUrl("twitter", '/recherche/viewnotice/id/2'));
 	}
@@ -65,13 +54,7 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function getTwitterUrlViewNoticeWithMessageShouldReturnShortenUrlWithServerHost() {
 		$_SERVER["HTTP_HOST"] = 'localhost';
-
-		$this->_mock_web_client
-			->whenCalled('open_url')
-			->with('http://is.gd/api.php?longurl=http%3A%2F%2Flocalhost%2Fafi-opac3%2Frecherche%2Fviewnotice%2Fid%2F2')
-			->answers('http://is.gd/PkdNg2')
-			->beStrict();
-
+		$this->_expectClientOpenUrlForShortenViewNotice2();
 		$this->assertEquals(sprintf('http://twitter.com/home?status=%s', urlencode('venez voir ! http://is.gd/PkdNg2')),
 												$this->_rs->getUrl("twitter", '/recherche/viewnotice/id/2', 'venez voir !'));
 	}
@@ -80,13 +63,7 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function getFacebookUrlViewNoticeShouldReturnShortenUrlWithServerHost() {
 		$_SERVER["HTTP_HOST"] = 'localhost';
-
-		$this->_mock_web_client
-			->whenCalled('open_url')
-			->with('http://is.gd/api.php?longurl=http%3A%2F%2Flocalhost%2Fafi-opac3%2Frecherche%2Fviewnotice%2Fid%2F2')
-			->answers('http://is.gd/PkdNg2')
-			->beStrict();
-
+		$this->_expectClientOpenUrlForShortenViewNotice2();
 		$this->assertEquals(sprintf('http://www.facebook.com/share.php?u=%s', urlencode('http://is.gd/PkdNg2')),
 												$this->_rs->getUrl("facebook", '/recherche/viewnotice/id/2'));
 	}
@@ -94,13 +71,8 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function shortenUrlWithErrorShouldReturnOriginalUrl() {
-			$this->_mock_web_client
-			->whenCalled('open_url')
-			->with(sprintf('http://is.gd/api.php?longurl=%s', 
-										 urlencode('http://www.institut-francais.com')))
-			->answers('Error')
-			->beStrict();
-
+		$this->_expectClientOpenUrlWithLongUrlAndAnswer('http://www.institut-francais.com', 
+																										'Error');
 
 		$this->assertEquals('http://www.institut-francais.com',
 												$this->_rs->shortenUrl('http://www.institut-francais.com'));	
@@ -109,16 +81,27 @@ class ReseauxSociauxTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function shortenUrlWithNullShouldReturnOriginalUrl() {
-			$this->_mock_web_client
-			->whenCalled('open_url')
-			->with(sprintf('http://is.gd/api.php?longurl=%s', 
-										 urlencode('http://www.institut-francais.com')))
-			->answers(null)
-			->beStrict();
-
+		$this->_expectClientOpenUrlWithLongUrlAndAnswer('http://www.institut-francais.com', 
+																										null);
 
 		$this->assertEquals('http://www.institut-francais.com',
 												$this->_rs->shortenUrl('http://www.institut-francais.com'));	
+	}
+
+
+	protected function _expectClientOpenUrlWithLongUrlAndAnswer($url, $answer) {
+			$this->_mock_web_client
+				->whenCalled('open_url')
+				->with(sprintf('http://is.gd/api.php?longurl=%s', urlencode($url)))
+				->answers($answer)
+				->beStrict();
+
+	}
+
+
+	protected function _expectClientOpenUrlForShortenViewNotice2() {
+		$this->_expectClientOpenUrlWithLongUrlAndAnswer('http://localhost'. BASE_URL .'/recherche/viewnotice/id/2',
+																										'http://is.gd/PkdNg2');
 	}
 }
 

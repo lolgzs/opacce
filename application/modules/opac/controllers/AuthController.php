@@ -191,7 +191,7 @@ class AuthController extends Zend_Controller_Action
 	function registerAction()	{
 		if (Class_AdminVar::get('INTERDIRE_ENREG_UTIL'))
 			$this->_redirect('/');
-		xdebug_break();
+
 		if ($this->_request->isPost())
 		{
 			// recup _post

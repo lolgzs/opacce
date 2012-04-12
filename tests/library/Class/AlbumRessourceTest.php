@@ -284,7 +284,7 @@ class AlbumRessourceTypeXMLTest extends ModelTestCase {
 
 	/** @test */
 	function thumbnailURLShouldReturnEarthLogo() {
-		$this->assertEquals('/afi-opac3/public/opac/images/earth-logo.jpg',
+		$this->assertEquals(BASE_URL . '/public/opac/images/earth-logo.jpg',
 												$this->resource->getThumbnailURL());
 	}
 }
@@ -319,7 +319,7 @@ class AlbumRessourceTypeSWFTest extends ModelTestCase {
 
 	/** @test */
 	function thumbnailURLShouldReturnFlashLogo() {
-		$this->assertEquals('/afi-opac3/public/opac/images/flash-logo.jpg',
+		$this->assertEquals(BASE_URL . '/public/opac/images/flash-logo.jpg',
 												$this->resource->getThumbnailURL());
 	}
 }
@@ -354,7 +354,7 @@ class AlbumRessourceTypeMOVTest extends ModelTestCase {
 
 	/** @test */
 	function thumbnailURLShouldReturnQuicktimeLogo() {
-		$this->assertEquals('/afi-opac3/public/opac/images/quicktime-logo.png',
+		$this->assertEquals(BASE_URL . '/public/opac/images/quicktime-logo.png',
 												$this->resource->getThumbnailURL());
 	}
 }
@@ -368,12 +368,7 @@ abstract class AlbumRessourceThumbnailTestCase extends ModelTestCase {
 
 	public function setUp() {
 		parent::setUp();
-
-		$this->_expected_filepath = USERFILESPATH.'/temp/'.$this->_expected_filename;
-		if (file_exists($this->_expected_filepath)) {
-			unlink($this->_expected_filepath);
-		}
-
+		
 		$this->_ressource = Class_AlbumRessource::getLoader()
 			->newInstanceWithId(1)
 			->setFichier('1.jpg')
@@ -382,6 +377,11 @@ abstract class AlbumRessourceThumbnailTestCase extends ModelTestCase {
 			->setAlbum(Class_Album::getLoader()
 								 ->newInstanceWithId(93)
 								 ->setRessources(array($this->_ressource)));
+
+		$this->_expected_filename = md5($this->_ressource->getOriginalPath().serialize($this->_size_params)).'.jpg';
+		$this->_expected_filepath = USERFILESPATH . '/temp/'.$this->_expected_filename;
+		if (file_exists($this->_expected_filepath))
+			unlink($this->_expected_filepath);
 
 		$this->_thumb_path = $this->_ressource->getThumbnailFilePath($this->_size_params);
 	}
@@ -404,7 +404,6 @@ abstract class AlbumRessourceThumbnailTestCase extends ModelTestCase {
 
 
 class AlbumRessourceThumbnailResizeHundredPerHundredTwentyTest extends AlbumRessourceThumbnailTestCase {
-	protected $_expected_filename = 'a05849302da9a6dbfc0176149184d5f6.jpg';
 	protected $_size_params = array('width' => 100,
 																	'height' => 120,
 																	'crop_left' => 2,
@@ -454,7 +453,6 @@ class AlbumRessourceThumbnailResizeHundredPerHundredTwentyTest extends AlbumRess
 
 
 class AlbumRessourceThumbnailResizeNoParamTest extends AlbumRessourceThumbnailTestCase {
-	protected $_expected_filename = '5c93c2fb3ba41d726d671bd360647b44.jpg';
 	protected $_size_params = array();
 
 	/** @test */
@@ -480,7 +478,6 @@ class AlbumRessourceThumbnailResizeNoParamTest extends AlbumRessourceThumbnailTe
 
 
 class AlbumRessourceThumbnailResizeNoWidthButCropParamTest extends AlbumRessourceThumbnailTestCase {
-	protected $_expected_filename = 'ee3c084f7413076c92893d9d2dc34d15.jpg';
 	protected $_size_params = array('width' => 100,
 																	'crop_left' => 2);
 

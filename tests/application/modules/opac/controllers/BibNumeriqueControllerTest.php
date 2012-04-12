@@ -155,7 +155,7 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 
 	/** @test */
 	function firstRessourceNavigatorThumbnailShouldPassResizeParamsOfRightPageCropTopFiveWidth50() {
-		$this->assertContains('/afi-opac3/userfiles/album/999/thumbs/media/1.jpg',
+		$this->assertContains(BASE_URL . '/userfiles/album/999/thumbs/media/1.jpg',
 													$this->json->album->ressources[0]->navigator_thumbnail);
 	}
 
@@ -195,7 +195,7 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 
 	/** @test */
 	function secondRessourceNavigatorThumbnailShouldPassResizeParamsOfLeftPageCropRightTenWidth50() {
-		$this->assertContains('/afi-opac3/public/opac/images/earth-logo.jpg',
+		$this->assertContains(BASE_URL . '/public/opac/images/earth-logo.jpg',
 													$this->json->album->ressources[1]->navigator_thumbnail);
 	}
 }
@@ -333,7 +333,7 @@ class BibNumeriqueControllerBookletTest extends AbstractBibNumeriqueControllerAl
 	/** @test */
 	function pageShouldContainsCodeToOpenBooklet() {
 		$this->assertXPathContentContains('//script', 
-																			"smalltalk.BibNumAlbum._load_in_scriptsRoot_('/bib-numerique/album/id/999.json', '#booklet_999', '/afi-opac3/amber/afi/souvigny/')",
+																			"smalltalk.BibNumAlbum._load_in_scriptsRoot_('/bib-numerique/album/id/999.json', '#booklet_999', '" . BASE_URL . "/amber/afi/souvigny/')",
 																			$this->_response->getBody());
 	}
 }

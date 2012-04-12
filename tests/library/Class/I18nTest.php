@@ -48,9 +48,7 @@ class ProfileI18nTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function generateShouldCreateMasterFile() {
 		$this->_i18n->generate();
-
 		$this->assertFileExists($this->_getFilePathFor(Class_I18n::MASTER_NAME));
-
 	}
 
 	/** @test */

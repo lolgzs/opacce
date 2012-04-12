@@ -102,14 +102,14 @@ class ScriptLoaderAmberDevelopmentModeTest extends AbstractScriptLoaderTestCase 
 
 	/** @test */
 	function commitPathJsShouldBeAmberCommitJs() {
-		$this->assertContains('"/afi-opac3/opac/amber/commitJs"',
+		$this->assertContains('"' . BASE_URL . '/opac/amber/commitJs"',
 													Class_ScriptLoader::getInstance()->html());
 	}
 
 
 	/** @test */
 	function commitPathStShouldBeAmberCommitSt() {
-		$this->assertContains('"/afi-opac3/opac/amber/commitSt"',
+		$this->assertContains('"' . BASE_URL . '/opac/amber/commitSt"',
 													Class_ScriptLoader::getInstance()->html());
 	}
 }

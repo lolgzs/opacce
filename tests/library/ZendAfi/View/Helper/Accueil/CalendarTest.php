@@ -262,7 +262,6 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 			->answers(array($this->nanook2, $this->opac4, $this->amber))
 			->getWrapper()
 			->beStrict();
-		xdebug_break();
 		$this->html = $helper->getBoite();
 	}
 

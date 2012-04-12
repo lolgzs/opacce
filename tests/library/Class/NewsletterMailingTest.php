@@ -288,7 +288,7 @@ class NewsletterConcertsTestPanier extends ModelTestCase {
 	}
 
 	public function testBodyTextContainsURLMillenium() {
-		$this->assertBodyTextContains("http://localhost/afi-opac3/recherche/viewnotice/id/345");
+		$this->assertBodyTextContains("http://localhost" . BASE_URL . "/recherche/viewnotice/id/345");
 	}
 
 	public function testBodyTextContainsPotter() {
@@ -300,7 +300,7 @@ class NewsletterConcertsTestPanier extends ModelTestCase {
 	}
 
 	public function testBodyTextContainsURLPotter() {
-		$this->assertBodyTextContains("http://localhost/afi-opac3/recherche/viewnotice/id/987");
+		$this->assertBodyTextContains("http://localhost" . BASE_URL . "/recherche/viewnotice/id/987");
 	}
 
 	public function testVignetteMilleniumInHTML() {
@@ -308,7 +308,7 @@ class NewsletterConcertsTestPanier extends ModelTestCase {
 	}
 
 	public function testLinkMillenium() {
-		$this->assertBodyHTMLContains('<a href="http://localhost/afi-opac3/recherche/viewnotice?id=345">');
+		$this->assertBodyHTMLContains('<a href="http://localhost' . BASE_URL . '/recherche/viewnotice?id=345">');
 	}
 
 	public function testBodyHTMLContainsPotter() {
@@ -324,7 +324,7 @@ class NewsletterConcertsTestPanier extends ModelTestCase {
 	}
 
 	public function testLinkPotter() {
-		$this->assertBodyHTMLContains('<a href="http://localhost/afi-opac3/recherche/viewnotice?id=987">');
+		$this->assertBodyHTMLContains('<a href="http://localhost' . BASE_URL . '/recherche/viewnotice?id=987">');
 	}
 }
 

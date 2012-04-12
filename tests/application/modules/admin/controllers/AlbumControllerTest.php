@@ -1177,7 +1177,7 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 
 	/** @test */
 	function imageOneDotPngShouldBeDisplayed() {
-		$this->assertXPath('//img[@src="/afi-opac3/userfiles/album/999/thumbs/media/1.png"]',
+		$this->assertXPath('//img[@src="' . BASE_URL . '/userfiles/album/999/thumbs/media/1.png"]',
 											 $this->_response->getBody());
 	}
 
@@ -1190,7 +1190,7 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 
 	/** @test */
 	function inputLinkToShouldContainsViewArticleTwo() {
-		$this->assertXPath('//input[@name="link_to"][@value="/afi-opac3/cms/viewarticle/id/2"]');
+		$this->assertXPath('//input[@name="link_to"][contains(@value, "cms/viewarticle/id/2")]');
 	}
 
 

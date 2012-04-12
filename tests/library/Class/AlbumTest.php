@@ -98,12 +98,12 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 
 	/** @test */
 	function basePathShouldBeUserfiles_Slash_Album_999() {
-		$this->assertEquals('../afi-opac3/userfiles/album/999/', $this->_album->getBasePath());
+		$this->assertEquals('..' . BASE_URL . '/userfiles/album/999/', $this->_album->getBasePath());
 	}
 
 	/** @test */
 	function thumbnailsPathShouldBeUserfiles_Slash_thumbs_999() {
-		$this->assertEquals('../afi-opac3/userfiles/album/999/thumbs/', $this->_album->getThumbnailsPath());
+		$this->assertEquals('..' . BASE_URL . '/userfiles/album/999/thumbs/', $this->_album->getThumbnailsPath());
 	}
 
 	/** @test */

@@ -1193,7 +1193,6 @@ class Admin_FormationControllerInscriptionsSessionPythonInscritAmadouAndAmandine
 
 	/** @test */
 	public function amandineShouldHasRightSuivreFormation() {
-		xdebug_break();
 		$this->assertTrue($this->_amandine->hasRightSuivreFormation());
 	}
 

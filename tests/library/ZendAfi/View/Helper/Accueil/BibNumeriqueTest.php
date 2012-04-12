@@ -542,7 +542,7 @@ class BibNumeriqueAlbumHarlockAsBookletTest extends AbstractBibNumeriqueViewHelp
 
 	/** @test */
 	function pageShouldContainsCodeToOpenBooklet() {
-		$this->assertContains("smalltalk.BibNumAlbum._load_in_scriptsRoot_('/afi-opac3/bib-numerique/album/id/99.json', '#booklet_12', '/afi-opac3/amber/afi/souvigny/')",
+		$this->assertContains("smalltalk.BibNumAlbum._load_in_scriptsRoot_('" . BASE_URL . "/bib-numerique/album/id/99.json', '#booklet_12', '" . BASE_URL . "/amber/afi/souvigny/')",
 													Class_ScriptLoader::getInstance()->html());
 	}
 

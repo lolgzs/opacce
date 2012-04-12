@@ -41,7 +41,7 @@ class AdminControllerSitoOKTest extends Admin_AbstractControllerTestCase {
 	}
 	
 	public function testMenuNewsletterLink() {
-		$this->assertXPathContentContains("//a[@href='/afi-opac3/admin/newsletter']", 
+		$this->assertXPathContentContains("//a[@href='" . BASE_URL . "/admin/newsletter']", 
 																			"Lettres d'information");
 	}
 
