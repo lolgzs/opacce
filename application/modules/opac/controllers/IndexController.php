@@ -161,6 +161,9 @@ class IndexController extends Zend_Controller_Action {
 				mkdir(PATH_CAPTCHA);
 
 		$pngs = glob( PATH_CAPTCHA.'*.png' );
+		if (!is_array($pngs))
+			return;
+
 		foreach ($pngs as $png) {
 			if ((time() - filemtime($png )) > 60 )
 				unlink($png);
