@@ -1024,7 +1024,7 @@ fullScreenStyle
 	}
 
 	.fullscreen.bk-widget .b-menu {
-		height: 45px;
+		height: 0px;
 	}
 
 	.fullscreen.bk-widget,
@@ -1052,6 +1052,16 @@ fullScreenStyle
 	.fullscreen .b-zoom-fullscreen a:hover {
 		background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;
 	}
+
+	.fullscreen h1.title {
+		font-size: 2em;
+		color: white;
+		border-bottom: 0px;
+		margin: 5px 0px 0px 0px;
+		text-align: center;
+	}
+
+	.fullscreen 
 '
 !
 
@@ -1265,7 +1275,7 @@ renderBook: aBook on: aBrush
 	
 	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
 	
-	isFullscreen ifTrue: [self renderBookNavigator]
+	isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle]
 !
 
 renderBookMenuOn: html
@@ -1276,7 +1286,7 @@ renderBookMenuOn: html
 
 renderBookNavigator
 	|navigatorDiv|
-	navigatorDiv := '<div></div>' asJQuery.
+	navigatorDiv := ('<div></div>') asJQuery.
 	navigatorDiv insertAfter: menuJQuery.
 
 	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
@@ -1306,6 +1316,12 @@ renderBookOn: html
                    		yourself.
                    
                    	self loadBookThenRenderOn: bookBrush]
+!
+
+renderBookTitle
+	|titleDiv|
+	titleDiv := ('<h1 class="title">', book title, ' ( ', book size ,' pages ) </h1>') asJQuery.
+	titleDiv insertBefore: menuJQuery.
 !
 
 renderDevToolsOn: html

@@ -1114,7 +1114,7 @@ smalltalk.method({
 selector: unescape('fullScreenStyle'),
 fn: function (){
 var self=this;
-return smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(unescape("%0A%09body.fullscreen%20%7B%0A%09%09overflow%3A%20hidden%3B%0A%09%7D%0A%0A%0A%09.fullscreen.bk-widget%20%7B%0A%09%09position%3A%20fixed%3B%0A%09%09width%3A%20100%25%3B%0A%09%09height%3A%20100%25%3B%0A%09%09z-index%3A%20200%3B%0A%09%09top%3A%200%3B%0A%09%09left%3A%200%3B%0A%09%09overflow-y%3A%20auto%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%20.b-menu%20%7B%0A%09%09height%3A%2045px%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%2C%0A%09.fullscreen.bk-widget%20.b-menu%20.b-selector%2C%0A%09.fullscreen.bk-widget%20.b-menu%20.b-selector%20ul%2C%0A%09.fullscreen.bk-widget%20.b-counter%20%7B%09%0A%09%09color%3A%20white%3B%0A%09%09background-color%3A%20black%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20%7B%0A%09%09position%3A%20absolute%3B%0A%09%09right%3A%200px%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%20.b-download-book%20a%20%7B%0A%09%09position%3A%20absolute%3B%0A%09%09right%3A%2060px%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20a%20%7B%0A%09%09background%3A%20url%28"), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/unexpand_black.png%29%20no-repeat%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20a%3Ahover%20%7B%0A%09%09background%3A%20url%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/unexpand_white.png%29%20no-repeat%3B%0A%09%7D%0A")]);
+return smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(unescape("%0A%09body.fullscreen%20%7B%0A%09%09overflow%3A%20hidden%3B%0A%09%7D%0A%0A%0A%09.fullscreen.bk-widget%20%7B%0A%09%09position%3A%20fixed%3B%0A%09%09width%3A%20100%25%3B%0A%09%09height%3A%20100%25%3B%0A%09%09z-index%3A%20200%3B%0A%09%09top%3A%200%3B%0A%09%09left%3A%200%3B%0A%09%09overflow-y%3A%20auto%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%20.b-menu%20%7B%0A%09%09height%3A%200px%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%2C%0A%09.fullscreen.bk-widget%20.b-menu%20.b-selector%2C%0A%09.fullscreen.bk-widget%20.b-menu%20.b-selector%20ul%2C%0A%09.fullscreen.bk-widget%20.b-counter%20%7B%09%0A%09%09color%3A%20white%3B%0A%09%09background-color%3A%20black%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20%7B%0A%09%09position%3A%20absolute%3B%0A%09%09right%3A%200px%3B%0A%09%7D%0A%0A%09.fullscreen.bk-widget%20.b-download-book%20a%20%7B%0A%09%09position%3A%20absolute%3B%0A%09%09right%3A%2060px%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20a%20%7B%0A%09%09background%3A%20url%28"), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/unexpand_black.png%29%20no-repeat%3B%0A%09%7D%0A%0A%09.fullscreen%20.b-zoom-fullscreen%20a%3Ahover%20%7B%0A%09%09background%3A%20url%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/unexpand_white.png%29%20no-repeat%3B%0A%09%7D%0A%0A%09.fullscreen%20h1.title%20%7B%0A%09%09font-size%3A%202em%3B%0A%09%09color%3A%20white%3B%0A%09%09border-bottom%3A%200px%3B%0A%09%09margin%3A%205px%200px%200px%200px%3B%0A%09%09text-align%3A%20center%3B%0A%09%7D%0A%0A%09.fullscreen%20%0A")]);
 return self;}
 }),
 smalltalk.BookWidget);
@@ -1338,7 +1338,7 @@ smalltalk.send(aBrush, "_contents_", [(function(html){return smalltalk.send(smal
 smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [unescape(".b-wrap-left")]), "_click_", [(function(){return smalltalk.send(self, "_zoomLeftPage", []);})]);
 smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [unescape(".b-wrap-right%2C%20.b-page-cover")]), "_click_", [(function(){return smalltalk.send(self, "_zoomRightPage", []);})]);
 smalltalk.send(smalltalk.send(self['@book'], "_downloadUrl", []), "_ifNotEmpty_", [(function(){return smalltalk.send(self['@downloadBrush'], "_contents_", [(function(html){return smalltalk.send(smalltalk.send(html, "_a", []), "_href_", [smalltalk.send(aBook, "_downloadUrl", [])]);})]);})]);
-((($receiver = self['@isFullscreen']).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(self, "_renderBookNavigator", []);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(self, "_renderBookNavigator", []);})]));
+((($receiver = self['@isFullscreen']).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function($rec){smalltalk.send($rec, "_renderBookNavigator", []);return smalltalk.send($rec, "_renderBookTitle", []);})(self);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return (function($rec){smalltalk.send($rec, "_renderBookNavigator", []);return smalltalk.send($rec, "_renderBookTitle", []);})(self);})]));
 return self;}
 }),
 smalltalk.BookWidget);
@@ -1378,6 +1378,19 @@ var self=this;
 (self['@bookContainer']=smalltalk.send(html, "_div", []));
 (function($rec){smalltalk.send($rec, "_class_", ["book"]);return smalltalk.send($rec, "_with_", [(function(){var bookBrush=nil;
 (self['@leftFolioBrush']=smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [unescape("b-counter")]));(self['@rightFolioBrush']=smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [unescape("b-counter")]));(bookBrush=(function($rec){smalltalk.send($rec, "_class_", [unescape("b-load")]);smalltalk.send($rec, "_with_", [(function(){return (function($rec){smalltalk.send($rec, "_class_", ["loading"]);return smalltalk.send($rec, "_with_", [(function(){return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(smalltalk.send(self, "_scriptsRoot", []), "__comma", [unescape("images/ajax-loader.gif")])]);})]);})(smalltalk.send(html, "_div", []));})]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(html, "_div", [])));return smalltalk.send(self, "_loadBookThenRenderOn_", [bookBrush]);})]);})(self['@bookContainer']);
+return self;}
+}),
+smalltalk.BookWidget);
+
+smalltalk.addMethod(
+unescape('_renderBookTitle'),
+smalltalk.method({
+selector: unescape('renderBookTitle'),
+fn: function (){
+var self=this;
+var titleDiv=nil;
+(titleDiv=smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(unescape("%3Ch1%20class%3D%22title%22%3E"), "__comma", [smalltalk.send(self['@book'], "_title", [])]), "__comma", [unescape("%20%28%20")]), "__comma", [smalltalk.send(self['@book'], "_size", [])]), "__comma", [unescape("%20pages%20%29%20%3C/h1%3E")]), "_asJQuery", []));
+smalltalk.send(titleDiv, "_insertBefore_", [self['@menuJQuery']]);
 return self;}
 }),
 smalltalk.BookWidget);
