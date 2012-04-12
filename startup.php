@@ -91,13 +91,6 @@ function setupConstants($cfg) {
 	defineConstant('PATH_FONTS', './public/opac/fonts/');
 	defineConstant('URL_CAPTCHA', BASE_URL . '/public/captcha/');
 	defineConstant('PATH_CAPTCHA', './public/captcha/');
-
-
-	defineConstant('GROUIK_LEVEL', 	$cfg->debug->level) ;
-	defineConstant('GROUIK_DEBUG', 	$cfg->debug->debug) ;
-	defineConstant('GROUIK_IP',  	$cfg->debug->ip) ;
-	defineConstant('GROUIK_PORT', 	$cfg->debug->port) ;
-	defineConstant('GROUIK_LOG_FILE', $cfg->debug->log_file) ;
 }
 
 
