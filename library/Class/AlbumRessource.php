@@ -217,8 +217,16 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 	 * @return Imagick
 	 */
 	public function getImage() {
-		if (!isset($this->_image))
-			$this->_image = new Imagick($this->getOriginalPath());
+		if (!isset($this->_image)) {
+			try {
+				$this->_image = new Imagick($this->getOriginalPath());
+			} catch (Exception $e) {
+				$this->_image = new Imagick();
+				$this->_image->newPseudoImage(50, 50, "canvas:black");
+				$this->_image->setImageFormat('jpg');
+			}
+		}
+
 		return $this->_image;
 	}
 
@@ -522,9 +530,15 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 
 	public function deleteFiles() {
 		if ('' != $this->getFichier()) {
-			unlink($this->getOriginalPath());
-			unlink($this->getThumbnailPath());
+			$this->unlink($this->getOriginalPath());
+			$this->unlink($this->getThumbnailPath());
 		}
+	}
+
+
+	public function unlink($filename) {
+		if (file_exists($filename))
+			unlink($filename);
 	}
 
 

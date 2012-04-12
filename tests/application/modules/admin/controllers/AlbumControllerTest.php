@@ -1231,7 +1231,7 @@ class Admin_AlbumControllerAlbumHarlockEditOtherRessourcesActionTest extends Adm
 
 	/** @test */
 	function ressourceInexistantShouldRedirectToAlbumIndex() {
-		$this->dispatch('/admin/album/edit_ressource/id/666');
+		$this->dispatch('/admin/album/edit_ressource/id/6666666666');
 		$this->assertRedirectTo('/admin/album');
 	}
 }

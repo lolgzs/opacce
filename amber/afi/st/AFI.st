@@ -1,20 +1,16 @@
 Smalltalk current createPackage: 'AFI' properties: #{}!
 Widget subclass: #AbstractBookNavigatorWidget
 	instanceVariableNames: 'book announcer'
-	category: 'AFI'!
+	package: 'AFI'!
 
 !AbstractBookNavigatorWidget methodsFor: 'accessing'!
-
-book: aBook
-	book := aBook
-!
 
 announcer
 	^ announcer ifNil: [announcer := Announcer new]
 !
 
-width
-	^ self class width
+book: aBook
+	book := aBook
 !
 
 style
@@ -48,6 +44,10 @@ style
 	margin: 0px;
 }
 '
+!
+
+width
+	^ self class width
 ! !
 
 !AbstractBookNavigatorWidget methodsFor: 'actions'!
@@ -57,15 +57,15 @@ highlightPage: aPage
 
 !AbstractBookNavigatorWidget methodsFor: 'announcement'!
 
+announcePageChange: aPage
+	self announcer announce: (PageChangeAnnouncement page: aPage)
+!
+
 onPageChangeDo: aBlockWithArg
 	self announcer 
 		on: PageChangeAnnouncement 
 		do: [:aPageChangeAnnouncement| 
 			aBlockWithArg value: aPageChangeAnnouncement page]
-!
-
-announcePageChange: aPage
-	self announcer announce: (PageChangeAnnouncement page: aPage)
 ! !
 
 !AbstractBookNavigatorWidget methodsFor: 'rendering'!
@@ -80,102 +80,306 @@ width
 	^ 160
 ! !
 
-Object subclass: #PageChangeAnnouncement
-	instanceVariableNames: 'page'
-	category: 'AFI'!
+AbstractBookNavigatorWidget subclass: #BookBookmarkNavigatorWidget
+	instanceVariableNames: 'bookmarkList'
+	package: 'AFI'!
 
-!PageChangeAnnouncement methodsFor: 'accessing'!
+!BookBookmarkNavigatorWidget methodsFor: 'accessing'!
 
-page: aPage
-	page := aPage
-!
+style
+	^ super style, '
+.b-navigator-bookmark {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-left: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	float: left;
+}
 
-page
-	^ page
+.b-navigator-bookmark ul {
+	list-style: square;
+	padding: 0px 10px 0px 15px;
+}
+
+.b-navigator-bookmark li {
+	margin: 5px;
+	padding: 0px;
+	text-align: left;
+	cursor: pointer;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+}
+
+.b-navigator-bookmark li.selected {
+	text-decoration: underline
+}
+
+.b-navigator-bookmark li:hover {
+	color: #aaa;
+}'
 ! !
 
-!PageChangeAnnouncement class methodsFor: 'instance creation'!
+!BookBookmarkNavigatorWidget methodsFor: 'actions'!
 
-page: aPage
-	^ self new page: aPage
+highlightPage: aPage
+	|pageTitle listItemIndex|
+	(bookmarkList find: 'li') removeClass: 'selected'.
+
+	pageTitle := aPage title ifEmpty: [ (book pageAt: (aPage pageNo - 1) ifAbsent: [aPage]) title].
+
+	pageTitle isEmpty ifFalse: [
+		(bookmarkList find: 'li:contains("', pageTitle, '")') addClass: 'selected'.
+	]
 ! !
 
-Object subclass: #BibNumLoader
-	instanceVariableNames: 'ajax'
-	category: 'AFI'!
+!BookBookmarkNavigatorWidget methodsFor: 'rendering'!
 
-!BibNumLoader methodsFor: 'accessing'!
+renderOn: html
+	html style: self style.
+	html div 
+		class: 'b-navigator-bookmark b-navigator';
+		with: [ |bookmarkSearchInput |
+			html div: 'Signets'.
 
-ajax
-	^ ajax ifNil: [ajax := Ajax new]
+			bookmarkSearchInput := html input asJQuery.
+			bookmarkList := (html ul: [self renderPagesOn: html ]) asJQuery.
+
+			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
+		]
 !
 
-ajax: anAjax
-	ajax := anAjax
+renderPagesOn: html
+	book pagesWithTitle do: [:aPage|
+		html li
+			with: aPage title;
+			onClick: [self announcePageChange: aPage]
+	]
 ! !
 
-!BibNumLoader methodsFor: 'loading'!
+AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
+	instanceVariableNames: 'bookmarkList'
+	package: 'AFI'!
 
-loadBookFromJSONOnSuccess: aBlock
-	self ajax
-		onSuccessDo: [:data| |book|
-							book := self buildBookFromJSon: data.
-							aBlock value: book];
-		send.
+!BookThumbnailNavigatorWidget methodsFor: 'actions'!
+
+highlightPage: aPage
+	|thumbnail listItemIndex|
+        listItemIndex := 0 max: (aPage pageNo - 2).
+        thumbnail := (bookmarkList find: 'li') get: listItemIndex.
+	bookmarkList scrollTop: (thumbnail offsetTop - (bookmarkList height / 2)).
+	(bookmarkList find: 'li') removeClass: 'selected'.
+	(window jQuery: thumbnail) addClass: 'selected'.
+! !
+
+!BookThumbnailNavigatorWidget methodsFor: 'css'!
+
+style
+	^ super style, '
+.b-navigator-thumbnail {
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-right: 0px;
+	margin-left: 10px;
+	margin-right: 0px;
+	float: right;
+}
+
+.b-navigator-thumbnail ul {
+	list-style: none;
+	padding: 0px;
+	float: right;
+}
+
+.b-navigator-thumbnail li {
+	float: left;
+	margin: 5px;
+	display: block;
+	overflow: hidden;
+	height: 70px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.b-navigator-thumbnail li>div>div{
+	display: none;
+	position: relative;
+	z-index: 2;
+	background-color: black;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+
+
+.b-navigator-thumbnail li.selected img,
+.b-navigator-thumbnail li.selected + li.odd img,
+.b-navigator-thumbnail .filtered li img,
+.b-navigator-thumbnail li:hover img {
+	opacity: 1;
+}
+
+.b-navigator-thumbnail li:hover {
+	overflow: visible;
+}
+
+.b-navigator-thumbnail li:hover>div>div{
+	display: block;
+}
+
+.b-navigator-thumbnail li>div {
+	width: 50px;
+  	-webkit-transition: all 0.1s ease-out;
+ 	-moz-transition: all 0.1s ease-out;
+}
+
+
+.b-navigator-thumbnail li:hover>div {
+   width: 100px;
+   position: relative;
+   box-shadow: 0px 0px 20px black;
+   z-index: 30;
+}
+
+
+.b-navigator-thumbnail li.odd:hover>div {
+   margin-left: -40px;
+}
+
+.b-navigator-thumbnail ul li:first-child:hover>div {
+   margin-right: -40px;
+   margin-left: 0px;
+   margin-top: 0px;
+}
+
+.b-navigator-thumbnail .filtered li.odd:hover>div {
+   margin-left: 0px;
+}
+
+.b-navigator-thumbnail .filtered li {
+   width: 100%;
+}
+
+.b-navigator-thumbnail li img {
+  	width: 100%;
+	display: block;
+	opacity: 0.6;
+}
+
+.b-navigator-thumbnail li:first-child + li{
+	clear: left;
+}
+
+.b-navigator-thumbnail li img {
+	cursor: pointer;
+}
+'
+! !
+
+!BookThumbnailNavigatorWidget methodsFor: 'rendering'!
+
+renderOn: html
+	html style: self style.
+	html div 
+		class: 'b-navigator-thumbnail  b-navigator';
+		with: [ |bookmarkSearchInput|
+			html div: 'Folios'.
+
+			bookmarkSearchInput := html input asJQuery.
+			bookmarkList := html ul 
+								with: [self renderPagesOn: html ]; 
+								asJQuery.
+
+			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
+	]
 !
 
-buildBookFromJSon: aJSONObject
-	|book album|
-	album := aJSONObject album.
-	book := Book new
-				title: album titre;
-				width: album width;
-				height: album height;
-				downloadUrl: (album at: 'download_url');
-				yourself.
-	album ressources do: [:aRessource| 
-        					book newPage
-                                			title: aRessource titre;
-                              				description: aRessource description;
-							thumbnailURL: aRessource thumbnail;
-                             				fullImageURL: aRessource original;
-							foliono: aRessource foliono;
-							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail')].
-	^ book
+renderPagesOn: html
+	|cycle|
+	cycle := Cycle with: #('odd' 'even').
+
+	book pages do: [:aPage|
+		html li
+			class: cycle next;
+			with: [ 	html div: [	html div: aPage foliono.
+						 		html img src: aPage navigatorThumbnailURL] ];
+			onClick: [self announcePageChange: aPage]
+	]
+! !
+
+Object subclass: #Ajax
+	instanceVariableNames: 'url settings options ajaxRequest'
+	package: 'AFI'!
+
+!Ajax methodsFor: 'accessing'!
+
+options
+	^ options ifNil: [options := HashedCollection new ]
 !
+
+url: aString
+	url := aString
+! !
+
+!Ajax methodsFor: 'actions'!
 
 abort
-	self ajax abort
+	ajaxRequest ifNotNil: [ajaxRequest abort]
+!
+
+send
+	ajaxRequest := jQuery ajax: url options: options.
+! !
+
+!Ajax methodsFor: 'callback'!
+
+onCompleteDo: aBlock
+	"A block to be called when the request finishes (after success and error callbacks are executed). Block arguments: jqXHR, textStatus"
+	self options at: 'complete' put: aBlock
+!
+
+onErrorDo: aBlock
+	"A block to be called if the request fails.Block arguments: jqXHR, textStatus, errorThrown"
+	self options at: 'error' put: aBlock
+!
+
+onSuccessDo: aBlock
+	"Set action to execute when Ajax request is successful. Pass received data as block argument. Block arguments: data, textStatus, jqXHR"
+	self options at: 'success' put: aBlock
+! !
+
+!Ajax class methodsFor: 'initialize'!
+
+url: aString
+	^ self new 
+		url: aString;
+		yourself
 ! !
 
 Object subclass: #BibNumAlbum
 	instanceVariableNames: 'container ajax url scriptsRoot bookWidget'
-	category: 'AFI'!
+	package: 'AFI'!
 
 !BibNumAlbum methodsFor: 'accessing'!
 
-url: aString
-	url := aString
+ajax
+	^ ajax ifNil: [ajax := Ajax url: self url]
 !
 
 ajax: anAjax
 	ajax := anAjax
-!
-
-container: aJQuery
-	container := aJQuery
 !
 
 container
 	^ container
 !
 
-ajax
-	^ ajax ifNil: [ajax := Ajax url: self url]
+container: aJQuery
+	container := aJQuery
 !
 
-url
-	^ url
+pages
+	^ bookWidget book pages
 !
 
 scriptsRoot
@@ -186,8 +390,12 @@ scriptsRoot: anUrl
 	scriptsRoot := anUrl
 !
 
-pages
-	^ bookWidget book pages
+url
+	^ url
+!
+
+url: aString
+	url := aString
 ! !
 
 !BibNumAlbum methodsFor: 'loading'!
@@ -218,60 +426,309 @@ load: anURLForJSON  in: aJQuerySelector scriptsRoot: anURL
 		load.
 ! !
 
-Object subclass: #Ajax
-	instanceVariableNames: 'url settings options ajaxRequest'
-	category: 'AFI'!
+Object subclass: #BibNumLoader
+	instanceVariableNames: 'ajax'
+	package: 'AFI'!
 
-!Ajax methodsFor: 'accessing'!
+!BibNumLoader methodsFor: 'accessing'!
 
-url: aString
-	url := aString
+ajax
+	^ ajax ifNil: [ajax := Ajax new]
 !
 
-options
-	^ options ifNil: [options := HashedCollection new ]
+ajax: anAjax
+	ajax := anAjax
 ! !
 
-!Ajax methodsFor: 'actions'!
-
-send
-	ajaxRequest := jQuery ajax: url options: options.
-!
+!BibNumLoader methodsFor: 'loading'!
 
 abort
-	ajaxRequest ifNotNil: [ajaxRequest abort]
-! !
-
-!Ajax methodsFor: 'callback'!
-
-onSuccessDo: aBlock
-	"Set action to execute when Ajax request is successful. Pass received data as block argument. Block arguments: data, textStatus, jqXHR"
-	self options at: 'success' put: aBlock
+	self ajax abort
 !
 
-onErrorDo: aBlock
-	"A block to be called if the request fails.Block arguments: jqXHR, textStatus, errorThrown"
-	self options at: 'error' put: aBlock
+buildBookFromJSon: aJSONObject
+	|book album|
+	album := aJSONObject album.
+	book := Book new
+				title: album titre;
+				width: album width;
+				height: album height;
+				downloadUrl: (album at: 'download_url');
+				yourself.
+	album ressources do: [:aRessource| 
+        					book newPage
+                                			title: aRessource titre;
+                              				description: aRessource description;
+							thumbnailURL: aRessource thumbnail;
+                             				fullImageURL: aRessource original;
+							foliono: aRessource foliono;
+							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail')].
+	^ book
 !
 
-onCompleteDo: aBlock
-	"A block to be called when the request finishes (after success and error callbacks are executed). Block arguments: jqXHR, textStatus"
-	self options at: 'complete' put: aBlock
+loadBookFromJSONOnSuccess: aBlock
+	self ajax
+		onSuccessDo: [:data| |book|
+							book := self buildBookFromJSon: data.
+							aBlock value: book];
+		send.
 ! !
 
-!Ajax class methodsFor: 'initialize'!
+BibNumLoader subclass: #SouvignyLoader
+	instanceVariableNames: 'pages links book'
+	package: 'AFI'!
+!SouvignyLoader commentStamp!
+I'm a loader dedicated to the Bible de Souvigny!
 
-url: aString
-	^ self new 
-		url: aString;
-		yourself
+!SouvignyLoader methodsFor: 'accessing'!
+
+baseURL
+	^ 'souvigny/B031906101_MS_001/'
+!
+
+book
+	^ book ifNil: [book := self class bookClass new
+                      					width: 390;
+                      					height: 594;
+                      					yourself				]
+!
+
+fullImagesURL
+	^ self baseURL, 'big/'
+!
+
+links
+	^ links ifNil: [links := Dictionary new]
+!
+
+metadataURL
+	^ 'souvigny/souvigny.json'.
+!
+
+parsePageNo: aString
+	^  (aString includesSubString: 'r') 
+			ifTrue: [aString allButLast asNumber * 2]
+			ifFalse: [  (aString includesSubString: 'v') 
+                                 		ifTrue: [aString allButLast asNumber * 2 + 1]
+                                 		ifFalse: [aString] ]
+!
+
+thumbsJSONURL
+	^ 'souvigny/thumbs.json'
+!
+
+thumbsURL
+	^ self baseURL, 'thumbs/'
+! !
+
+!SouvignyLoader methodsFor: 'loading'!
+
+loadBookFromJSONOnSuccess: aBlock
+	(self ajax url: self thumbsJSONURL) 
+		onSuccessDo: [:data|
+                              		self buildBookFromJSON: data.
+                              		self onMetadataLoadedDo: [
+                                          aBlock value: self book]]; 
+		send.
+!
+
+loadBookOnSuccess: aBlock
+	(Ajax url: self thumbsURL) 
+		onSuccessDo: [:data|
+                              		self buildBookFromHTML: data.
+                              		self onMetadataLoadedDo: [
+                                          aBlock value: self book]]; 
+		send.
+!
+
+onMetadataLoadedDo: aBlock
+	(Ajax url: self metadataURL)
+		onSuccessDo: [:data|
+                              		self initMetadata: data.
+                              		aBlock value];
+		send
+! !
+
+!SouvignyLoader methodsFor: 'page creation'!
+
+buildBookFromHTML: aHTMLString
+	|anchors|
+	anchors := (aHTMLString asJQuery find:'li a[href$="jpg"]').
+	anchors each: [:index :element| |fileName|
+                       fileName := (JQuery fromElement: element) attr: 'href'.
+                       self book newPage
+                       			fullImageURL: self fullImagesURL, fileName;
+                       			thumbnailURL: self thumbsURL, fileName.
+        ].
+!
+
+buildBookFromJSON: anArray
+	anArray do: [:fileName|
+                       self book newPage
+                       			fullImageURL: self fullImagesURL, fileName;
+                       			thumbnailURL: self thumbsURL, fileName.
+        ].
+!
+
+initMetadata: anArray
+	anArray do: [:aJSObject| |pageNo page|
+                     pageNo := <aJSObject.pageNo>.
+                     pageNo ifNotNil: [
+                   	page := self book pageAtFolio: pageNo.
+                     	page ifNotNil: [page initMetadata: aJSObject] ].
+        ]
+! !
+
+!SouvignyLoader class methodsFor: 'accessing'!
+
+bookClass
+	^SouvignyBible
+! !
+
+Object subclass: #Book
+	instanceVariableNames: 'pages title width height downloadUrl'
+	package: 'AFI'!
+
+!Book methodsFor: 'accessing'!
+
+downloadUrl
+	^ downloadUrl
+!
+
+downloadUrl: anUrl
+	downloadUrl := anUrl
+!
+
+height
+	^ height ifNil: [height := 400]
+!
+
+height: anInteger
+	height := anInteger
+!
+
+pageAt: aNumber
+	^ self pages at: aNumber
+!
+
+pageAt: aNumber ifAbsent: aBlock
+	^ self pages at: aNumber ifAbsent: aBlock
+!
+
+pageNo: aPage
+	^ self pages indexOf: aPage
+!
+
+pages
+	^ pages ifNil: [pages := Array new]
+!
+
+pagesWithTitle
+	^ self pages reject: [:aPage | aPage title isEmpty]
+!
+
+size
+	^ pages size
+!
+
+title
+	^ title
+!
+
+title: aString
+	title := aString
+!
+
+width
+	^ width ifNil: [width := 300]
+!
+
+width: anInteger
+	width := anInteger
+! !
+
+!Book methodsFor: 'adding'!
+
+addPage: aPage
+	self pages add: aPage.
+	aPage book: self.
+	^ aPage
+!
+
+newPage
+	^ self addPage: (self class pageClass new)
+! !
+
+!Book methodsFor: 'enumerating'!
+
+pageAt: pageNo do: aBlockWithArg
+	|page|
+	page := self pages at: pageNo ifAbsent: [nil].
+        page ifNotNil: [aBlockWithArg value: page].
+!
+
+pagesNo:  anArray do: aBlockWithArg
+	anArray do: [:pageNo|
+                 self pageAt: pageNo do: aBlockWithArg
+         ].
+!
+
+pagesNo: start to: end do: aBlockWithArg
+	start to: end do: [:pageNo|
+                 self pageAt: pageNo do: aBlockWithArg
+         ].
+! !
+
+!Book methodsFor: 'reset'!
+
+reset
+	self pages do: [:aPage| aPage reset]
+! !
+
+!Book class methodsFor: 'accessing'!
+
+pageClass
+	^ Page
+! !
+
+Book subclass: #SouvignyBible
+	instanceVariableNames: ''
+	package: 'AFI'!
+
+!SouvignyBible methodsFor: 'accessing'!
+
+pageAtFolio: aString
+	^ self pages at: (self parseFolioNo: aString) ifAbsent: [nil].
+!
+
+parseFolioNo: aString
+	"Folios are numbered 32r 32v as page 32 recto, page 32 verso. Excepted 3 first folios (6 pages)"
+	^(aString includesSubString: 'r') 
+			ifTrue: [aString allButLast asNumber * 2 + 5]
+			ifFalse: [  (aString includesSubString: 'v') 
+                                 		ifTrue: [aString allButLast asNumber * 2 + 1 + 5]
+                                 		ifFalse: [aString asNumber] ].
+!
+
+title
+	^ 'Bible de Souvigny'
+! !
+
+!SouvignyBible class methodsFor: 'accessing'!
+
+pageClass
+	^ SouvignyPage
 ! !
 
 Widget subclass: #BookWidget
 	instanceVariableNames: 'book currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader scriptsRoot bookContainer width rootBrush menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
-	category: 'AFI'!
+	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
+
+book
+	^ book
+!
 
 bookletOptions
 	^ HashedCollection new 
@@ -305,12 +762,20 @@ bookletOptions
                                yourself
 !
 
-leftPage
-	^ book pageAt: (currentPageNo - 1) ifAbsent: [Page new].
+currentPage
+	^ book pageAt: self currentPageNo ifAbsent: [book pages last]
 !
 
-rightPage
-	^ book pageAt: currentPageNo ifAbsent: [Page new].
+currentPageNo
+	^ currentPageNo ifNil: [currentPageNo := 1]
+!
+
+height
+	^ ((book height * self width / book width) / 2) rounded
+!
+
+leftPage
+	^ book pageAt: (currentPageNo - 1) ifAbsent: [Page new].
 !
 
 loader
@@ -321,30 +786,20 @@ loader: aBibNumLoader
 	loader := aBibNumLoader
 !
 
-scriptsRoot: anUrl
-	scriptsRoot := anUrl
+navigatorWidth
+	^ AbstractBookNavigatorWidget width
+!
+
+rightPage
+	^ book pageAt: currentPageNo ifAbsent: [Page new].
 !
 
 scriptsRoot
 	^ scriptsRoot ifNil: [scriptsRoot := '']
 !
 
-currentPageNo
-	^ currentPageNo ifNil: [currentPageNo := 1]
-!
-
-width
-	^ (isFullscreen 
-			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
-			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
-!
-
-height
-	^ ((book height * self width / book width) / 2) rounded
-!
-
-zoomControlWidth
-	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
+scriptsRoot: anUrl
+	scriptsRoot := anUrl
 !
 
 widgetClass
@@ -353,26 +808,17 @@ widgetClass
 		ifFalse: ['bk-widget']
 !
 
-book
-	^ book
+width
+	^ (isFullscreen 
+			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
+			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
 !
 
-navigatorWidth
-	^ AbstractBookNavigatorWidget width
-!
-
-currentPage
-	^ book pageAt: self currentPageNo ifAbsent: [book pages last]
+zoomControlWidth
+	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
 ! !
 
 !BookWidget methodsFor: 'announcements'!
-
-onPageChangeDo: aBlockWithArg
-	self announcer 
-		on: PageChangeAnnouncement 
-		do: [:aPageChangeAnnouncement| 
-			aBlockWithArg value: aPageChangeAnnouncement page]
-!
 
 announcePageChange: aPage
 	self announcer announce: (PageChangeAnnouncement page: aPage)
@@ -380,9 +826,22 @@ announcePageChange: aPage
 
 announcer
 	^ announcer ifNil: [announcer := Announcer new]
+!
+
+onPageChangeDo: aBlockWithArg
+	self announcer 
+		on: PageChangeAnnouncement 
+		do: [:aPageChangeAnnouncement| 
+			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !BookWidget methodsFor: 'callbacks'!
+
+afterPageChange: data
+	self updateFolioNumbers.
+	self openDescriptions.
+	self announcePageChange: self currentPage.
+!
 
 beforePageChange:data
 	self closeDescriptions.
@@ -390,10 +849,12 @@ beforePageChange:data
 	self closeZoom.
 !
 
-afterPageChange: data
-	self updateFolioNumbers.
-	self openDescriptions.
-	self announcePageChange: self currentPage.
+goToPageNo: pageNo
+	bookContainer asJQuery booklet:  (pageNo ).
+!
+
+openPage: aPage
+	self goToPageNo: aPage pageNo.
 !
 
 openPageNo: anInteger
@@ -411,26 +872,9 @@ toggleFullscreen
 	isFullscreen := isFullscreen not.
 	self loader abort.
 	self reloadWidget.
-!
-
-openPage: aPage
-	self goToPageNo: aPage pageNo.
-!
-
-goToPageNo: pageNo
-	bookContainer asJQuery booklet:  (pageNo ).
 ! !
 
 !BookWidget methodsFor: 'css'!
-
-style
-	^ String streamContents: [:aStream|
-                                  	aStream
-                                  		nextPutAll: self bookStyle;
-                                  		nextPutAll: self zoomControlsStyle;
-						nextPutAll: self fullScreenStyle
-          ]
-!
 
 bookStyle
 	^ '
@@ -560,6 +1004,64 @@ bookStyle
 				cursor: -webkit-zoom-in;
 			}
 '
+!
+
+fullScreenStyle
+	^ '
+	body.fullscreen {
+		overflow: hidden;
+	}
+
+
+	.fullscreen.bk-widget {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		z-index: 200;
+		top: 0;
+		left: 0;
+		overflow-y: auto;
+	}
+
+	.fullscreen.bk-widget .b-menu {
+		height: 45px;
+	}
+
+	.fullscreen.bk-widget,
+	.fullscreen.bk-widget .b-menu .b-selector,
+	.fullscreen.bk-widget .b-menu .b-selector ul,
+	.fullscreen.bk-widget .b-counter {	
+		color: white;
+		background-color: black;
+	}
+
+	.fullscreen .b-zoom-fullscreen {
+		position: absolute;
+		right: 0px;
+	}
+
+	.fullscreen.bk-widget .b-download-book a {
+		position: absolute;
+		right: 60px;
+	}
+
+	.fullscreen .b-zoom-fullscreen a {
+		background: url(', self scriptsRoot, 'images/unexpand_black.png) no-repeat;
+	}
+
+	.fullscreen .b-zoom-fullscreen a:hover {
+		background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;
+	}
+'
+!
+
+style
+	^ String streamContents: [:aStream|
+                                  	aStream
+                                  		nextPutAll: self bookStyle;
+                                  		nextPutAll: self zoomControlsStyle;
+						nextPutAll: self fullScreenStyle
+          ]
 !
 
 zoomControlsStyle
@@ -706,58 +1208,13 @@ zoomControlsStyle
 			  background: url(', self scriptsRoot, 'images/close_black28.png);
 			}
 '
-!
-
-fullScreenStyle
-	^ '
-	body.fullscreen {
-		overflow: hidden;
-	}
-
-
-	.fullscreen.bk-widget {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		z-index: 200;
-		top: 0;
-		left: 0;
-		overflow-y: auto;
-	}
-
-	.fullscreen.bk-widget .b-menu {
-		height: 45px;
-	}
-
-	.fullscreen.bk-widget,
-	.fullscreen.bk-widget .b-menu .b-selector,
-	.fullscreen.bk-widget .b-menu .b-selector ul,
-	.fullscreen.bk-widget .b-counter {	
-		color: white;
-		background-color: black;
-	}
-
-	.fullscreen .b-zoom-fullscreen {
-		position: absolute;
-		right: 0px;
-	}
-
-	.fullscreen.bk-widget .b-download-book a {
-		position: absolute;
-		right: 60px;
-	}
-
-	.fullscreen .b-zoom-fullscreen a {
-		background: url(', self scriptsRoot, 'images/unexpand_black.png) no-repeat;
-	}
-
-	.fullscreen .b-zoom-fullscreen a:hover {
-		background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;
-	}
-'
 ! !
 
 !BookWidget methodsFor: 'descriptions'!
+
+closeDescriptions
+	pageDescriptionsBrush asJQuery fadeOut.
+!
 
 openDescriptions
 	pageDescriptionsBrush asJQuery hide.
@@ -766,10 +1223,6 @@ openDescriptions
                		(html div asJQuery) html: self rightPage description.
         ].
 	pageDescriptionsBrush asJQuery fadeIn.
-!
-
-closeDescriptions
-	pageDescriptionsBrush asJQuery fadeOut.
 !
 
 updateFolioNumbers
@@ -797,11 +1250,104 @@ loadBookThenRenderOn: bookBrush
 
 !BookWidget methodsFor: 'rendering'!
 
+renderBook: aBook on: aBrush
+	book := aBook.
+
+	aBrush contents: [:html|
+		aBook pages do: [:aPage| 	aPage brush: (html div
+        		         								rel: aPage title;
+                                 								yourself)  ]	].
+	
+	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
+	(bookContainer asJQuery at: 'booklet') ifNotNil: [ bookContainer asJQuery booklet: (self bookletOptions) ].
+	(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
+	(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
+	
+	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
+	
+	isFullscreen ifTrue: [self renderBookNavigator]
+!
+
+renderBookMenuOn: html
+	menuJQuery := html div
+		class: 'book-menu';
+		asJQuery.
+!
+
+renderBookNavigator
+	|navigatorDiv|
+	navigatorDiv := '<div></div>' asJQuery.
+	navigatorDiv insertAfter: menuJQuery.
+
+	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
+		navigator := aNavigatorClass new
+						book: book;
+						appendToJQuery: navigatorDiv;
+						onPageChangeDo: [:aPage| self openPage: aPage];
+						highlightPage: self currentPage;
+						yourself.
+
+		self onPageChangeDo: [:aPage|  navigator highlightPage: aPage].
+	]
+!
+
+renderBookOn: html
+	bookContainer := html div.
+	bookContainer
+	    class: 'book';
+            with: [	|bookBrush|
+			leftFolioBrush := html div class: 'b-counter'.
+			rightFolioBrush := html div class: 'b-counter'.
+                   	bookBrush := html div 
+                   		class: 'b-load';
+                   		with: [html div
+                                          	class: 'loading';
+                                          	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
+                   		yourself.
+                   
+                   	self loadBookThenRenderOn: bookBrush]
+!
+
+renderDevToolsOn: html
+	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
+		 [   AFIIDETools 
+					addButton: 'Reload booklet' action: [ self reloadWidget ];
+					addButton: 'Inspect booklet' action: [ self inspect ];
+					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
+!
+
+renderDownloadBookOn: html
+	downloadBrush := html div class: 'b-download-book'
+!
+
+renderFullscreenControlsOn: html
+	html div 
+		class: 'b-zoom-fullscreen';
+		with: [ html a onClick: [self toggleFullscreen] ].
+!
+
 renderOn: html
         self renderDevToolsOn: html.
 	rootBrush := html root.
 	self renderWidgetOn: html.
-	window at:'onresize' put: [self reloadWidget].
+	"window at:'onresize' put: [self reloadWidget]."
+!
+
+renderPageDescriptionOn: html 	
+	pageDescriptionsBrush := html div 
+                                                               class: 'page-desc';
+                       						yourself.
+!
+
+renderScripts
+	|head|
+	head := 'head' asJQuery.
+	(head find: 'script[src*="booklet"]') length = 0 ifTrue: [
+		self renderScriptsOn: (HTMLCanvas onJQuery: head).
+          ].
+	isFullscreen 
+		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
+		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
 !
 
 renderScriptsOn: html
@@ -829,39 +1375,17 @@ renderScriptsOn: html
                                 src: self scriptsRoot, anUrl]
 !
 
-renderBookOn: html
-	bookContainer := html div.
-	bookContainer
-	    class: 'book';
-            with: [	|bookBrush|
-			leftFolioBrush := html div class: 'b-counter'.
-			rightFolioBrush := html div class: 'b-counter'.
-                   	bookBrush := html div 
-                   		class: 'b-load';
-                   		with: [html div
-                                          	class: 'loading';
-                                          	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
-                   		yourself.
-                   
-                   	self loadBookThenRenderOn: bookBrush]
-!
-
-renderBook: aBook on: aBrush
-	book := aBook.
-
-	aBrush contents: [:html|
-		aBook pages do: [:aPage| 	aPage brush: (html div
-        		         								rel: aPage title;
-                                 								yourself)  ]	].
-	
-	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
-	(bookContainer asJQuery at: 'booklet') ifNotNil: [ bookContainer asJQuery booklet: (self bookletOptions) ].
-	(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
-	(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
-	
-	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
-	
-	isFullscreen ifTrue: [self renderBookNavigator]
+renderWidgetOn: html
+	html div
+		class: self widgetClass; 
+		with: [	self 
+					renderScripts;
+                       			renderFullscreenControlsOn: html;
+					renderDownloadBookOn: html;
+                  			renderBookMenuOn: html;
+                       			renderZoomControlsOn: html;
+                  			renderBookOn: html;
+					renderPageDescriptionOn: html 	].
 !
 
 renderZoomControlsOn: html
@@ -876,77 +1400,6 @@ renderZoomControlsOn: html
 						class: 'b-zoom';
 						yourself.
                 ].
-!
-
-renderScripts
-	|head|
-	head := 'head' asJQuery.
-	(head find: 'script[src*="booklet"]') length = 0 ifTrue: [
-		self renderScriptsOn: (HTMLCanvas onJQuery: head).
-          ].
-	isFullscreen 
-		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
-		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
-!
-
-renderDevToolsOn: html
-	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
-		 [   AFIIDETools 
-					addButton: 'Reload booklet' action: [ self reloadWidget ];
-					addButton: 'Inspect booklet' action: [ self inspect ];
-					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
-!
-
-renderWidgetOn: html
-	html div
-		class: self widgetClass; 
-		with: [	self 
-					renderScripts;
-                       			renderFullscreenControlsOn: html;
-					renderDownloadBookOn: html;
-                  			renderBookMenuOn: html;
-                       			renderZoomControlsOn: html;
-                  			renderBookOn: html;
-					renderPageDescriptionOn: html 	].
-!
-
-renderFullscreenControlsOn: html
-	html div 
-		class: 'b-zoom-fullscreen';
-		with: [ html a onClick: [self toggleFullscreen] ].
-!
-
-renderBookMenuOn: html
-	menuJQuery := html div
-		class: 'book-menu';
-		asJQuery.
-!
-
-renderPageDescriptionOn: html 	
-	pageDescriptionsBrush := html div 
-                                                               class: 'page-desc';
-                       						yourself.
-!
-
-renderDownloadBookOn: html
-	downloadBrush := html div class: 'b-download-book'
-!
-
-renderBookNavigator
-	|navigatorDiv|
-	navigatorDiv := '<div></div>' asJQuery.
-	navigatorDiv insertAfter: menuJQuery.
-
-	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
-		navigator := aNavigatorClass new
-						book: book;
-						appendToJQuery: navigatorDiv;
-						onPageChangeDo: [:aPage| self openPage: aPage];
-						highlightPage: self currentPage;
-						yourself.
-
-		self onPageChangeDo: [:aPage|  navigator highlightPage: aPage].
-	]
 ! !
 
 !BookWidget methodsFor: 'show'!
@@ -965,12 +1418,12 @@ show
 
 !BookWidget methodsFor: 'testing'!
 
-isContainerSmall
-	^ rootBrush asJQuery width < 500
-!
-
 ifIE: aBlock ifNotIE: anotherBlock
 	self isIE ifTrue: aBlock ifFalse: anotherBlock
+!
+
+isContainerSmall
+	^ rootBrush asJQuery width < 500
 !
 
 isIE
@@ -1018,6 +1471,26 @@ closeZoomOr: aBlock
                                                 					self openDescriptions]
 !
 
+renderPage: aPage class: aCssClass on: html
+	(html div
+		class: aCssClass;
+		with:[	pageZoomWidget := PageWidget new
+										page: aPage;
+										renderOn: html;
+										onCloseDo: [	self 
+														closeZoom; 
+														openDescriptions];
+                                                                               	yourself 								];
+                asJQuery) fadeIn: 'slow'.
+!
+
+zoomLeftPage
+	self closeZoomOr: [
+          	self zoomPageNo: currentPageNo - 1 withClass: 'b-left'.
+          	zoomLeftPageAnchor addClass: 'active'.
+        ].
+!
+
 zoomPageNo: anInteger withClass: aCssClass
 	self closeDescriptions.
 
@@ -1030,292 +1503,106 @@ zoomPageNo: anInteger withClass: aCssClass
 								pageZoomBrush asJQuery show.												 	].
 !
 
-zoomLeftPage
-	self closeZoomOr: [
-          	self zoomPageNo: currentPageNo - 1 withClass: 'b-left'.
-          	zoomLeftPageAnchor addClass: 'active'.
-        ].
-!
-
 zoomRightPage
 	self closeZoomOr: [
           	self zoomPageNo: currentPageNo withClass: 'b-right'.
           	zoomRightPageAnchor addClass: 'active'.
         ].
-!
-
-renderPage: aPage class: aCssClass on: html
-	(html div
-		class: aCssClass;
-		with:[	pageZoomWidget := PageWidget new
-										page: aPage;
-										renderOn: html;
-										onCloseDo: [	self 
-														closeZoom; 
-														openDescriptions];
-                                                                               	yourself 								];
-                asJQuery) fadeIn: 'slow'.
 ! !
 
 !BookWidget class methodsFor: 'initialize release'!
 
-reset
-	^ self new reset.
-!
-
 open
 	^ self new show.
-! !
-
-Widget subclass: #PageWidget
-	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock'
-	category: 'AFI'!
-!PageWidget commentStamp!
-I display a full page with zoom controller and description!
-
-!PageWidget methodsFor: 'accessing'!
-
-page: aPage
-	page := aPage.
 !
-
-onCloseDo: aBlock
-	closeBlock := aBlock
-! !
-
-!PageWidget methodsFor: 'callback'!
-
-initIViewer: aViewer
-	inControl onClick: [<aViewer.zoom_by(1)>].
-	outControl onClick: [<aViewer.zoom_by(-1)>].
-	fitControl onClick: [aViewer fit].
-	zeroControl onClick: [<aViewer.set_zoom(100)>].
-!
-
-updateZoomStatus: newZoom
-	statusControl contents: 'x', (newZoom / 100  printShowingDecimalPlaces: 1).
-!
-
-close
-	closeBlock value.
-! !
-
-!PageWidget methodsFor: 'css'!
-
-style
-	^ '	.b-zoom .controls {
-			  height: auto;
-			  padding: 4px;
-			  margin: 0 4px;
-			  background-color: rgb(200,200,200);
-			  background-color: rgba(200,200,200,0.8);
-			  overflow: hidden;
-			  float: right;
-			  position: absolute;
-			  *position: relative;
-			  z-index: 1;
-			  text-align: center;
-			  width: 42px;
-                          right: 0px;
-			}
-'
-! !
-
-!PageWidget methodsFor: 'rendering'!
-
-renderOn: html
-	|iViewer|
-	html style: self style.
-	self renderControlsOn: html.
-	iViewer := html div 
-		class: 'iviewer';
-		asJQuery.
-	
-	page description ifNotEmpty: [iViewer addClass: 'iviewer_with_text'].
-
-	iViewer iviewer: (HashedCollection new
-                                               			at: 'src' put: page fullImageURL;
-                              					at: 'zoom' put: 'fit';
-                         					at: 'zoom_min' put: 10;
-                        					at: 'zoom_max' put: 400;
-	                     					at: 'ui_disabled' put: true;
-        	              					at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
-                            					at: 'onZoom' put: [:aString| self updateZoomStatus: aString];
-                              					yourself).
-
-        (html div class: 'page-desc';  asJQuery) html: page description.
-	html div class: 'clear'.
-!
-
-renderControlsOn: html
-	|addControl|
-	html div 
-		class: 'controls';
-		with: [
-          		addControl :=  [:name| html div 
-                                			class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button';
-                               				yourself].
-                  	closeControl := addControl value: 'close'.
-                  	closeControl onClick: [self close].
-               		inControl := addControl value: 'in'.
-          		outControl := addControl value: 'out'.
-          		zeroControl := addControl value: 'zero'.
-          		fitControl := addControl value: 'fit'.
-          		statusControl := addControl value: 'status'.
-        ].
-! !
-
-Object subclass: #Book
-	instanceVariableNames: 'pages title width height downloadUrl'
-	category: 'AFI'!
-
-!Book methodsFor: 'accessing'!
-
-pages
-	^ pages ifNil: [pages := Array new]
-!
-
-pageAt: aNumber
-	^ self pages at: aNumber
-!
-
-title
-	^ title
-!
-
-pageAt: aNumber ifAbsent: aBlock
-	^ self pages at: aNumber ifAbsent: aBlock
-!
-
-size
-	^ pages size
-!
-
-title: aString
-	title := aString
-!
-
-width
-	^ width ifNil: [width := 300]
-!
-
-width: anInteger
-	width := anInteger
-!
-
-height: anInteger
-	height := anInteger
-!
-
-height
-	^ height ifNil: [height := 400]
-!
-
-downloadUrl
-	^ downloadUrl
-!
-
-downloadUrl: anUrl
-	downloadUrl := anUrl
-!
-
-pageNo: aPage
-	^ self pages indexOf: aPage
-!
-
-pagesWithTitle
-	^ self pages reject: [:aPage | aPage title isEmpty]
-! !
-
-!Book methodsFor: 'adding'!
-
-addPage: aPage
-	self pages add: aPage.
-	aPage book: self.
-	^ aPage
-!
-
-newPage
-	^ self addPage: (self class pageClass new)
-! !
-
-!Book methodsFor: 'enumerating'!
-
-pagesNo: start to: end do: aBlockWithArg
-	start to: end do: [:pageNo|
-                 self pageAt: pageNo do: aBlockWithArg
-         ].
-!
-
-pageAt: pageNo do: aBlockWithArg
-	|page|
-	page := self pages at: pageNo ifAbsent: [nil].
-        page ifNotNil: [aBlockWithArg value: page].
-!
-
-pagesNo:  anArray do: aBlockWithArg
-	anArray do: [:pageNo|
-                 self pageAt: pageNo do: aBlockWithArg
-         ].
-! !
-
-!Book methodsFor: 'reset'!
 
 reset
-	self pages do: [:aPage| aPage reset]
+	^ self new reset.
 ! !
 
-!Book class methodsFor: 'accessing'!
+Object subclass: #Cycle
+	instanceVariableNames: 'elements counter'
+	package: 'AFI'!
 
-pageClass
-	^ Page
+!Cycle methodsFor: 'accessing'!
+
+elements: anArray
+	elements := anArray
+!
+
+next
+	counter := counter + 1.
+	^elements at: (counter \\ elements size) + 1.
+! !
+
+!Cycle methodsFor: 'initialize'!
+
+initialize
+	counter := -1
+! !
+
+!Cycle class methodsFor: 'instance creation'!
+
+with: anArray
+	^ self new elements: anArray
+! !
+
+Object subclass: #ListFilter
+	instanceVariableNames: 'book announcer jqueryInput jqueryList'
+	package: 'AFI'!
+
+!ListFilter methodsFor: 'callback'!
+
+filterListWithInputString
+	|searchString regExp matches items|
+	searchString := jqueryInput val.
+	regExp := <new RegExp(searchString, 'i')>.
+	items := jqueryList find: 'li'.
+	matches := items filter: [:anInteger| <regExp.test($(this).text())>].
+	items hide.
+	matches show.
+
+	searchString isEmpty ifTrue: [jqueryList removeClass: 'filtered'] ifFalse: [jqueryList addClass: 'filtered'].
+! !
+
+!ListFilter methodsFor: 'initialization'!
+
+filter: aJQueryList withInput: aJQueryInput
+	jqueryList := aJQueryList.
+	jqueryInput := aJQueryInput.
+	jqueryInput keyup: [self filterListWithInputString].
+! !
+
+!ListFilter class methodsFor: 'instance creation'!
+
+filter: aJQueryList withInput: aJQueryInput
+	^ self new filter: aJQueryList withInput: aJQueryInput
 ! !
 
 Object subclass: #Page
 	instanceVariableNames: 'brush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book'
-	category: 'AFI'!
+	package: 'AFI'!
 
 !Page methodsFor: 'accessing'!
 
-brush: aBrush
-	brush := aBrush
+book
+	^ book
+!
+
+book: aBook
+	book := aBook
 !
 
 brush
 	^ brush
 !
 
+brush: aBrush
+	brush := aBrush
+!
+
 description
 	^ description ifNil: [description := '']
-!
-
-initMetadata: aJSObject
-	description := <aJSObject.description>.
-	title := <aJSObject.book>.
-!
-
-title
-	^ title ifNil: [title := '']
-!
-
-title: aString
-	title := aString
-!
-
-thumbnailURL
-	^ thumbnailURL ifNil: [thumbnailURL := ''].
-!
-
-fullImageURL
-	^ fullImageURL ifNil: [fullImageURL := '']
-!
-
-fullImageURL: aString
-	fullImageURL := aString
-!
-
-thumbnailURL: aString
-	thumbnailURL := aString
 !
 
 description: aString
@@ -1330,24 +1617,45 @@ foliono: aString
 	foliono := aString
 !
 
-navigatorThumbnailURL: aString
-	navigatorThumbnailURL := aString
+fullImageURL
+	^ fullImageURL ifNil: [fullImageURL := '']
+!
+
+fullImageURL: aString
+	fullImageURL := aString
+!
+
+initMetadata: aJSObject
+	description := <aJSObject.description>.
+	title := <aJSObject.book>.
 !
 
 navigatorThumbnailURL
 	^ navigatorThumbnailURL ifNil: [navigatorThumbnailURL := ''].
 !
 
-book: aBook
-	book := aBook
+navigatorThumbnailURL: aString
+	navigatorThumbnailURL := aString
 !
 
 pageNo
 	^ book pageNo: self
 !
 
-book
-	^ book
+thumbnailURL
+	^ thumbnailURL ifNil: [thumbnailURL := ''].
+!
+
+thumbnailURL: aString
+	thumbnailURL := aString
+!
+
+title
+	^ title ifNil: [title := '']
+!
+
+title: aString
+	title := aString
 ! !
 
 !Page methodsFor: 'printing'!
@@ -1390,97 +1698,9 @@ isRendered
 	^ rendered ifNil: [rendered := false]
 ! !
 
-Object subclass: #ListFilter
-	instanceVariableNames: 'book announcer jqueryInput jqueryList'
-	category: 'AFI'!
-
-!ListFilter methodsFor: 'callback'!
-
-filterListWithInputString
-	|searchString regExp matches items|
-	searchString := jqueryInput val.
-	regExp := <new RegExp(searchString, 'i')>.
-	items := jqueryList find: 'li'.
-	matches := items filter: [:anInteger| <regExp.test($(this).text())>].
-	items hide.
-	matches show.
-
-	searchString isEmpty ifTrue: [jqueryList removeClass: 'filtered'] ifFalse: [jqueryList addClass: 'filtered'].
-! !
-
-!ListFilter methodsFor: 'initialization'!
-
-filter: aJQueryList withInput: aJQueryInput
-	jqueryList := aJQueryList.
-	jqueryInput := aJQueryInput.
-	jqueryInput keyup: [self filterListWithInputString].
-! !
-
-!ListFilter class methodsFor: 'instance creation'!
-
-filter: aJQueryList withInput: aJQueryInput
-	^ self new filter: aJQueryList withInput: aJQueryInput
-! !
-
-Object subclass: #Cycle
-	instanceVariableNames: 'elements counter'
-	category: 'AFI'!
-
-!Cycle methodsFor: 'accessing'!
-
-elements: anArray
-	elements := anArray
-!
-
-next
-	counter := counter + 1.
-	^elements at: (counter \\ elements size) + 1.
-! !
-
-!Cycle methodsFor: 'initialize'!
-
-initialize
-	counter := -1
-! !
-
-!Cycle class methodsFor: 'instance creation'!
-
-with: anArray
-	^ self new elements: anArray
-! !
-
-Book subclass: #SouvignyBible
-	instanceVariableNames: ''
-	category: 'AFI'!
-
-!SouvignyBible methodsFor: 'accessing'!
-
-pageAtFolio: aString
-	^ self pages at: (self parseFolioNo: aString) ifAbsent: [nil].
-!
-
-parseFolioNo: aString
-	"Folios are numbered 32r 32v as page 32 recto, page 32 verso. Excepted 3 first folios (6 pages)"
-	^(aString includesSubString: 'r') 
-			ifTrue: [aString allButLast asNumber * 2 + 5]
-			ifFalse: [  (aString includesSubString: 'v') 
-                                 		ifTrue: [aString allButLast asNumber * 2 + 1 + 5]
-                                 		ifFalse: [aString asNumber] ].
-!
-
-title
-	^ 'Bible de Souvigny'
-! !
-
-!SouvignyBible class methodsFor: 'accessing'!
-
-pageClass
-	^ SouvignyPage
-! !
-
 Page subclass: #SouvignyPage
 	instanceVariableNames: 'book icon letter subject'
-	category: 'AFI'!
+	package: 'AFI'!
 
 !SouvignyPage methodsFor: 'accessing'!
 
@@ -1498,341 +1718,134 @@ initMetadata: aJSObject
                                                      	]
 ! !
 
-BibNumLoader subclass: #SouvignyLoader
-	instanceVariableNames: 'pages links book'
-	category: 'AFI'!
-!SouvignyLoader commentStamp!
-I'm a loader dedicated to the Bible de Souvigny!
+Object subclass: #PageChangeAnnouncement
+	instanceVariableNames: 'page'
+	package: 'AFI'!
 
-!SouvignyLoader methodsFor: 'accessing'!
+!PageChangeAnnouncement methodsFor: 'accessing'!
 
-links
-	^ links ifNil: [links := Dictionary new]
+page
+	^ page
 !
 
-metadataURL
-	^ 'souvigny/souvigny.json'.
-!
-
-thumbsURL
-	^ self baseURL, 'thumbs/'
-!
-
-parsePageNo: aString
-	^  (aString includesSubString: 'r') 
-			ifTrue: [aString allButLast asNumber * 2]
-			ifFalse: [  (aString includesSubString: 'v') 
-                                 		ifTrue: [aString allButLast asNumber * 2 + 1]
-                                 		ifFalse: [aString] ]
-!
-
-book
-	^ book ifNil: [book := self class bookClass new
-                      					width: 390;
-                      					height: 594;
-                      					yourself				]
-!
-
-baseURL
-	^ 'souvigny/B031906101_MS_001/'
-!
-
-fullImagesURL
-	^ self baseURL, 'big/'
-!
-
-thumbsJSONURL
-	^ 'souvigny/thumbs.json'
+page: aPage
+	page := aPage
 ! !
 
-!SouvignyLoader methodsFor: 'loading'!
+!PageChangeAnnouncement class methodsFor: 'instance creation'!
 
-onMetadataLoadedDo: aBlock
-	(Ajax url: self metadataURL)
-		onSuccessDo: [:data|
-                              		self initMetadata: data.
-                              		aBlock value];
-		send
-!
-
-loadBookOnSuccess: aBlock
-	(Ajax url: self thumbsURL) 
-		onSuccessDo: [:data|
-                              		self buildBookFromHTML: data.
-                              		self onMetadataLoadedDo: [
-                                          aBlock value: self book]]; 
-		send.
-!
-
-loadBookFromJSONOnSuccess: aBlock
-	(self ajax url: self thumbsJSONURL) 
-		onSuccessDo: [:data|
-                              		self buildBookFromJSON: data.
-                              		self onMetadataLoadedDo: [
-                                          aBlock value: self book]]; 
-		send.
+page: aPage
+	^ self new page: aPage
 ! !
 
-!SouvignyLoader methodsFor: 'page creation'!
+Widget subclass: #PageWidget
+	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock rotateRightControl rotation'
+	package: 'AFI'!
+!PageWidget commentStamp!
+I display a full page with zoom controller and description!
 
-initMetadata: anArray
-	anArray do: [:aJSObject| |pageNo page|
-                     pageNo := <aJSObject.pageNo>.
-                     pageNo ifNotNil: [
-                   	page := self book pageAtFolio: pageNo.
-                     	page ifNotNil: [page initMetadata: aJSObject] ].
-        ]
+!PageWidget methodsFor: 'accessing'!
+
+onCloseDo: aBlock
+	closeBlock := aBlock
 !
 
-buildBookFromHTML: aHTMLString
-	|anchors|
-	anchors := (aHTMLString asJQuery find:'li a[href$="jpg"]').
-	anchors each: [:index :element| |fileName|
-                       fileName := (JQuery fromElement: element) attr: 'href'.
-                       self book newPage
-                       			fullImageURL: self fullImagesURL, fileName;
-                       			thumbnailURL: self thumbsURL, fileName.
-        ].
+page: aPage
+	page := aPage.
+! !
+
+!PageWidget methodsFor: 'callback'!
+
+close
+	closeBlock value.
 !
 
-buildBookFromJSON: anArray
-	anArray do: [:fileName|
-                       self book newPage
-                       			fullImageURL: self fullImagesURL, fileName;
-                       			thumbnailURL: self thumbsURL, fileName.
-        ].
+initIViewer: aViewer
+	inControl onClick: [<aViewer.zoom_by(1)>].
+	outControl onClick: [<aViewer.zoom_by(-1)>].
+	fitControl onClick: [aViewer fit].
+	zeroControl onClick: [<aViewer.set_zoom(100)>].
+	rotateRightControl onClick: [self rotateRight].
+!
+
+rotateRight
+	|rotationDeg|
+	rotation := (rotation ifNil:[0]) + 90 .
+	rotationDeg := 'rotate(',rotation asString, 'deg)'.
+	'.iviewer img' asJQuery
+		css: '-ms-transform' value: rotationDeg;
+		css: '-o-transform' value: rotationDeg;
+		css: '-moz-transform' value: rotationDeg;
+		css: '-webkit-transform' value: rotationDeg
+!
+
+updateZoomStatus: newZoom
+	statusControl contents: 'x', (newZoom / 100  printShowingDecimalPlaces: 1).
 ! !
 
-!SouvignyLoader class methodsFor: 'accessing'!
-
-bookClass
-	^SouvignyBible
-! !
-
-AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
-	instanceVariableNames: 'bookmarkList'
-	category: 'AFI'!
-
-!BookThumbnailNavigatorWidget methodsFor: 'actions'!
-
-highlightPage: aPage
-	|thumbnail listItemIndex|
-        listItemIndex := 0 max: (aPage pageNo - 2).
-        thumbnail := (bookmarkList find: 'li') get: listItemIndex.
-	bookmarkList scrollTop: (thumbnail offsetTop - (bookmarkList height / 2)).
-	(bookmarkList find: 'li') removeClass: 'selected'.
-	(window jQuery: thumbnail) addClass: 'selected'.
-! !
-
-!BookThumbnailNavigatorWidget methodsFor: 'css'!
+!PageWidget methodsFor: 'css'!
 
 style
-	^ super style, '
-.b-navigator-thumbnail {
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
-	border-right: 0px;
-	margin-left: 10px;
-	margin-right: 0px;
-	float: right;
-}
-
-.b-navigator-thumbnail ul {
-	list-style: none;
-	padding: 0px;
-	float: right;
-}
-
-.b-navigator-thumbnail li {
-	float: left;
-	margin: 5px;
-	display: block;
-	overflow: hidden;
-	height: 70px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.b-navigator-thumbnail li>div>div{
-	display: none;
-	position: relative;
-	z-index: 2;
-	background-color: black;
-	font-weight: bold;
-	font-size: 0.9em;
-}
-
-
-.b-navigator-thumbnail li.selected img,
-.b-navigator-thumbnail li.selected + li.odd img,
-.b-navigator-thumbnail .filtered li img,
-.b-navigator-thumbnail li:hover img {
-	opacity: 1;
-}
-
-.b-navigator-thumbnail li:hover {
-	overflow: visible;
-}
-
-.b-navigator-thumbnail li:hover>div>div{
-	display: block;
-}
-
-.b-navigator-thumbnail li>div {
-	width: 50px;
-  	-webkit-transition: all 0.1s ease-out;
- 	-moz-transition: all 0.1s ease-out;
-}
-
-
-.b-navigator-thumbnail li:hover>div {
-   width: 100px;
-   position: relative;
-   box-shadow: 0px 0px 20px black;
-   z-index: 30;
-}
-
-
-.b-navigator-thumbnail li.odd:hover>div {
-   margin-left: -40px;
-}
-
-.b-navigator-thumbnail ul li:first-child:hover>div {
-   margin-right: -40px;
-   margin-left: 0px;
-   margin-top: 0px;
-}
-
-.b-navigator-thumbnail .filtered li.odd:hover>div {
-   margin-left: 0px;
-}
-
-.b-navigator-thumbnail .filtered li {
-   width: 100%;
-}
-
-.b-navigator-thumbnail li img {
-  	width: 100%;
-	display: block;
-	opacity: 0.6;
-}
-
-.b-navigator-thumbnail li:first-child + li{
-	clear: left;
-}
-
-.b-navigator-thumbnail li img {
-	cursor: pointer;
-}
+	^ '	.b-zoom .controls {
+			  height: auto;
+			  padding: 4px;
+			  margin: 0 4px;
+			  background-color: rgb(200,200,200);
+			  background-color: rgba(200,200,200,0.8);
+			  overflow: hidden;
+			  float: right;
+			  position: absolute;
+			  *position: relative;
+			  z-index: 1;
+			  text-align: center;
+			  width: 42px;
+                          right: 0px;
+			}
 '
 ! !
 
-!BookThumbnailNavigatorWidget methodsFor: 'rendering'!
+!PageWidget methodsFor: 'rendering'!
 
-renderPagesOn: html
-	|cycle|
-	cycle := Cycle with: #('odd' 'even').
-
-	book pages do: [:aPage|
-		html li
-			class: cycle next;
-			with: [ 	html div: [	html div: aPage foliono.
-						 		html img src: aPage navigatorThumbnailURL] ];
-			onClick: [self announcePageChange: aPage]
-	]
+renderControlsOn: html
+	|addControl|
+	html div 
+		class: 'controls';
+		with: [
+          		addControl :=  [:name| html div 
+                                			class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button';
+                               				yourself].
+                  	closeControl := addControl value: 'close'.
+                  	closeControl onClick: [self close].
+               		inControl := addControl value: 'in'.
+          		outControl := addControl value: 'out'.
+          		zeroControl := addControl value: 'zero'.
+          		fitControl := addControl value: 'fit'.
+          		statusControl := addControl value: 'status'.
+          		rotateRightControl := addControl value: 'rotate_right'.
+        ].
 !
 
 renderOn: html
+	|iViewer|
 	html style: self style.
-	html div 
-		class: 'b-navigator-thumbnail  b-navigator';
-		with: [ |bookmarkSearchInput|
-			html div: 'Folios'.
+	self renderControlsOn: html.
+	iViewer := html div 
+		class: 'iviewer';
+		asJQuery.
+	
+	page description ifNotEmpty: [iViewer addClass: 'iviewer_with_text'].
 
-			bookmarkSearchInput := html input asJQuery.
-			bookmarkList := html ul 
-								with: [self renderPagesOn: html ]; 
-								asJQuery.
+	iViewer iviewer: (HashedCollection new
+                                               			at: 'src' put: page fullImageURL;
+                              					at: 'zoom' put: 'fit';
+                         					at: 'zoom_min' put: 10;
+                        					at: 'zoom_max' put: 400;
+	                     					at: 'ui_disabled' put: true;
+        	              					at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
+                            					at: 'onZoom' put: [:aString| self updateZoomStatus: aString];
+                              					yourself).
 
-			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
-	]
-! !
-
-AbstractBookNavigatorWidget subclass: #BookBookmarkNavigatorWidget
-	instanceVariableNames: 'bookmarkList'
-	category: 'AFI'!
-
-!BookBookmarkNavigatorWidget methodsFor: 'accessing'!
-
-style
-	^ super style, '
-.b-navigator-bookmark {
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border-left: 0px;
-	margin-left: 0px;
-	margin-right: 10px;
-	float: left;
-}
-
-.b-navigator-bookmark ul {
-	list-style: square;
-	padding: 0px 10px 0px 15px;
-}
-
-.b-navigator-bookmark li {
-	margin: 5px;
-	padding: 0px;
-	text-align: left;
-	cursor: pointer;
-	-webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-}
-
-.b-navigator-bookmark li.selected {
-	text-decoration: underline
-}
-
-.b-navigator-bookmark li:hover {
-	color: #aaa;
-}'
-! !
-
-!BookBookmarkNavigatorWidget methodsFor: 'actions'!
-
-highlightPage: aPage
-	|pageTitle listItemIndex|
-	(bookmarkList find: 'li') removeClass: 'selected'.
-
-	pageTitle := aPage title ifEmpty: [ (book pageAt: (aPage pageNo - 1) ifAbsent: [aPage]) title].
-
-	pageTitle isEmpty ifFalse: [
-		(bookmarkList find: 'li:contains("', pageTitle, '")') addClass: 'selected'.
-	]
-! !
-
-!BookBookmarkNavigatorWidget methodsFor: 'rendering'!
-
-renderOn: html
-	html style: self style.
-	html div 
-		class: 'b-navigator-bookmark b-navigator';
-		with: [ |bookmarkSearchInput |
-			html div: 'Signets'.
-
-			bookmarkSearchInput := html input asJQuery.
-			bookmarkList := (html ul: [self renderPagesOn: html ]) asJQuery.
-
-			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
-		]
-!
-
-renderPagesOn: html
-	book pagesWithTitle do: [:aPage|
-		html li
-			with: aPage title;
-			onClick: [self announcePageChange: aPage]
-	]
+        (html div class: 'page-desc';  asJQuery) html: page description.
+	html div class: 'clear'.
 ! !
 

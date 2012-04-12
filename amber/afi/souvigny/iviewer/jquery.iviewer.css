@@ -55,3 +55,7 @@
 div.iviewer_common:hover {
 		background-color: rgba(250,250,250, 0.8);
 }
+
+.iviewer_zoom_rotate_right { 
+		background: url(img/iviewer.zoom_rotate_right.png);
+}
