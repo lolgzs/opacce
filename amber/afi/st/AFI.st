@@ -446,22 +446,24 @@ abort
 	self ajax abort
 !
 
-buildBookFromJSon: aJSONObject
+buildBookFromJSon: aJSONObjectOrString
 	|book album|
-	album := aJSONObject album.
+	album := (aJSONObjectOrString isString 
+					ifTrue: [window JSON parse: aJSONObjectOrString] 
+					ifFalse: [aJSONObjectOrString]) album.
 	book := Book new
-				title: album titre;
-				width: album width;
-				height: album height;
+				title: (album at: 'titre');
+				width: (album at: 'width');
+				height: (album at: 'height');
 				downloadUrl: (album at: 'download_url');
 				yourself.
 	album ressources do: [:aRessource| 
         					book newPage
-                                			title: aRessource titre;
-                              				description: aRessource description;
-							thumbnailURL: aRessource thumbnail;
-                             				fullImageURL: aRessource original;
-							foliono: aRessource foliono;
+                                			title: (aRessource at: 'titre');
+                              				description: (aRessource at: 'description');
+							thumbnailURL: (aRessource at: 'thumbnail');
+                             				fullImageURL: (aRessource at: 'original');
+							foliono: (aRessource at: 'foliono');
 							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail')].
 	^ book
 !
@@ -592,7 +594,7 @@ Object subclass: #Book
 !Book methodsFor: 'accessing'!
 
 downloadUrl
-	^ downloadUrl
+	^ downloadUrl ifNil: [downloadUrl := '']
 !
 
 downloadUrl: anUrl

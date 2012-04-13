@@ -676,18 +676,18 @@ unescape('_buildBookFromJSon_'),
 smalltalk.method({
 selector: unescape('buildBookFromJSon%3A'),
 category: 'loading',
-fn: function (aJSONObject){
+fn: function (aJSONObjectOrString){
 var self=this;
 var book=nil;
 var album=nil;
-(album=smalltalk.send(aJSONObject, "_album", []));
-(book=(function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(album, "_titre", [])]);smalltalk.send($rec, "_width_", [smalltalk.send(album, "_width", [])]);smalltalk.send($rec, "_height_", [smalltalk.send(album, "_height", [])]);smalltalk.send($rec, "_downloadUrl_", [smalltalk.send(album, "_at_", ["download_url"])]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.Book || Book), "_new", [])));
-smalltalk.send(smalltalk.send(album, "_ressources", []), "_do_", [(function(aRessource){return (function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(aRessource, "_titre", [])]);smalltalk.send($rec, "_description_", [smalltalk.send(aRessource, "_description", [])]);smalltalk.send($rec, "_thumbnailURL_", [smalltalk.send(aRessource, "_thumbnail", [])]);smalltalk.send($rec, "_fullImageURL_", [smalltalk.send(aRessource, "_original", [])]);smalltalk.send($rec, "_foliono_", [smalltalk.send(aRessource, "_foliono", [])]);return smalltalk.send($rec, "_navigatorThumbnailURL_", [smalltalk.send(aRessource, "_at_", ["navigator_thumbnail"])]);})(smalltalk.send(book, "_newPage", []));})]);
+(album=smalltalk.send(((($receiver = smalltalk.send(aJSONObjectOrString, "_isString", [])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_JSON", []), "_parse_", [aJSONObjectOrString]);})() : (function(){return aJSONObjectOrString;})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_JSON", []), "_parse_", [aJSONObjectOrString]);}), (function(){return aJSONObjectOrString;})])), "_album", []));
+(book=(function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(album, "_at_", ["titre"])]);smalltalk.send($rec, "_width_", [smalltalk.send(album, "_at_", ["width"])]);smalltalk.send($rec, "_height_", [smalltalk.send(album, "_at_", ["height"])]);smalltalk.send($rec, "_downloadUrl_", [smalltalk.send(album, "_at_", ["download_url"])]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.Book || Book), "_new", [])));
+smalltalk.send(smalltalk.send(album, "_ressources", []), "_do_", [(function(aRessource){return (function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(aRessource, "_at_", ["titre"])]);smalltalk.send($rec, "_description_", [smalltalk.send(aRessource, "_at_", ["description"])]);smalltalk.send($rec, "_thumbnailURL_", [smalltalk.send(aRessource, "_at_", ["thumbnail"])]);smalltalk.send($rec, "_fullImageURL_", [smalltalk.send(aRessource, "_at_", ["original"])]);smalltalk.send($rec, "_foliono_", [smalltalk.send(aRessource, "_at_", ["foliono"])]);return smalltalk.send($rec, "_navigatorThumbnailURL_", [smalltalk.send(aRessource, "_at_", ["navigator_thumbnail"])]);})(smalltalk.send(book, "_newPage", []));})]);
 return book;
 return self;},
-args: ["aJSONObject"],
-source: unescape('buildBookFromJSon%3A%20aJSONObject%0A%09%7Cbook%20album%7C%0A%09album%20%3A%3D%20aJSONObject%20album.%0A%09book%20%3A%3D%20Book%20new%0A%09%09%09%09title%3A%20album%20titre%3B%0A%09%09%09%09width%3A%20album%20width%3B%0A%09%09%09%09height%3A%20album%20height%3B%0A%09%09%09%09downloadUrl%3A%20%28album%20at%3A%20%27download_url%27%29%3B%0A%09%09%09%09yourself.%0A%09album%20ressources%20do%3A%20%5B%3AaRessource%7C%20%0A%20%20%20%20%20%20%20%20%09%09%09%09%09book%20newPage%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09title%3A%20aRessource%20titre%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09description%3A%20aRessource%20description%3B%0A%09%09%09%09%09%09%09thumbnailURL%3A%20aRessource%20thumbnail%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09fullImageURL%3A%20aRessource%20original%3B%0A%09%09%09%09%09%09%09foliono%3A%20aRessource%20foliono%3B%0A%09%09%09%09%09%09%09navigatorThumbnailURL%3A%20%28aRessource%20at%3A%20%27navigator_thumbnail%27%29%5D.%0A%09%5E%20book%0A%0A%09'),
-messageSends: ["album", "title:", "titre", "width:", "width", "height:", "height", "downloadUrl:", "at:", "yourself", "new", "do:", "ressources", "description:", "description", "thumbnailURL:", "thumbnail", "fullImageURL:", "original", "foliono:", "foliono", "navigatorThumbnailURL:", "newPage"],
+args: ["aJSONObjectOrString"],
+source: unescape('buildBookFromJSon%3A%20aJSONObjectOrString%0A%09%7Cbook%20album%7C%0A%09album%20%3A%3D%20%28aJSONObjectOrString%20isString%20%0A%09%09%09%09%09ifTrue%3A%20%5Bwindow%20JSON%20parse%3A%20aJSONObjectOrString%5D%20%0A%09%09%09%09%09ifFalse%3A%20%5BaJSONObjectOrString%5D%29%20album.%0A%09book%20%3A%3D%20Book%20new%0A%09%09%09%09title%3A%20%28album%20at%3A%20%27titre%27%29%3B%0A%09%09%09%09width%3A%20%28album%20at%3A%20%27width%27%29%3B%0A%09%09%09%09height%3A%20%28album%20at%3A%20%27height%27%29%3B%0A%09%09%09%09downloadUrl%3A%20%28album%20at%3A%20%27download_url%27%29%3B%0A%09%09%09%09yourself.%0A%09album%20ressources%20do%3A%20%5B%3AaRessource%7C%20%0A%20%20%20%20%20%20%20%20%09%09%09%09%09book%20newPage%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09title%3A%20%28aRessource%20at%3A%20%27titre%27%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09description%3A%20%28aRessource%20at%3A%20%27description%27%29%3B%0A%09%09%09%09%09%09%09thumbnailURL%3A%20%28aRessource%20at%3A%20%27thumbnail%27%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09fullImageURL%3A%20%28aRessource%20at%3A%20%27original%27%29%3B%0A%09%09%09%09%09%09%09foliono%3A%20%28aRessource%20at%3A%20%27foliono%27%29%3B%0A%09%09%09%09%09%09%09navigatorThumbnailURL%3A%20%28aRessource%20at%3A%20%27navigator_thumbnail%27%29%5D.%0A%09%5E%20book%0A%0A%09'),
+messageSends: ["album", "ifTrue:ifFalse:", "isString", "parse:", "JSON", "title:", "at:", "width:", "height:", "downloadUrl:", "yourself", "new", "do:", "ressources", "description:", "thumbnailURL:", "fullImageURL:", "foliono:", "navigatorThumbnailURL:", "newPage"],
 referencedClasses: ["Book"]
 }),
 smalltalk.BibNumLoader);
@@ -700,7 +700,7 @@ category: 'loading',
 fn: function (aBlock){
 var self=this;
 (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){var book=nil;
-book=smalltalk.send(self, "_buildBookFromJSon_", [data]);return smalltalk.send(aBlock, "_value_", [book]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send(self, "_ajax", []));
+(book=smalltalk.send(self, "_buildBookFromJSon_", [data]));return smalltalk.send(aBlock, "_value_", [book]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send(self, "_ajax", []));
 return self;},
 args: ["aBlock"],
 source: unescape('loadBookFromJSONOnSuccess%3A%20aBlock%0A%09self%20ajax%0A%09%09onSuccessDo%3A%20%5B%3Adata%7C%20%7Cbook%7C%0A%09%09%09%09%09%09%09book%20%3A%3D%20self%20buildBookFromJSon%3A%20data.%0A%09%09%09%09%09%09%09aBlock%20value%3A%20book%5D%3B%0A%09%09send.'),
@@ -986,11 +986,11 @@ selector: unescape('downloadUrl'),
 category: 'accessing',
 fn: function (){
 var self=this;
-return self['@downloadUrl'];
+return (($receiver = self['@downloadUrl']) == nil || $receiver == undefined) ? (function(){return (self['@downloadUrl']="");})() : $receiver;
 return self;},
 args: [],
-source: unescape('downloadUrl%0A%09%5E%20downloadUrl'),
-messageSends: [],
+source: unescape('downloadUrl%0A%09%5E%20downloadUrl%20ifNil%3A%20%5BdownloadUrl%20%3A%3D%20%27%27%5D'),
+messageSends: ["ifNil:"],
 referencedClasses: []
 }),
 smalltalk.Book);

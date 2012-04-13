@@ -1,56 +1,70 @@
 Smalltalk current createPackage: 'AFI-Tests' properties: #{}!
-TestCase subclass: #CycleTest
-	instanceVariableNames: ''
-	category: 'AFI-Tests'!
+TestCase subclass: #BibNumAlbumTestCase
+	instanceVariableNames: 'ajax container album'
+	package: 'AFI-Tests'!
 
-!CycleTest methodsFor: 'tests'!
-
-testCycleWithTwoElements
-	|cycle|
-	cycle := Cycle with: #('one' 'two').
-	self assert: 'one' equals: cycle next.
-	self assert: 'two' equals: cycle next.
-	self assert: 'one' equals: cycle next.
-	self assert: 'two' equals: cycle next.
-!
-
-testCycleWithFourElements
-	|cycle|
-	cycle := Cycle with: #('one' 'two' 'three' 'four').
-	3 timesRepeat: [
-		self assert: 'one' equals: cycle next.
-		self assert: 'two' equals: cycle next.
-		self assert: 'three' equals: cycle next.
-		self assert: 'four' equals: cycle next ].
-! !
-
-TestCase subclass: #SouvignyBibleTest
-	instanceVariableNames: 'bible'
-	category: 'AFI-Tests'!
-
-!SouvignyBibleTest methodsFor: 'running'!
+!BibNumAlbumTestCase methodsFor: 'running'!
 
 setUp
-	bible := SouvignyBible new
-! !
+	window location hash: ' '.
+	ajax := AMockWrapper on: Ajax new.
+	ajax onMessage: 'send' answer: ajax.
 
-!SouvignyBibleTest methodsFor: 'tests'!
+	container := '<div></div>' asJQuery width: 500.
 
-testFolioOneShouldReturnPageOne
-	self assert: 1 equals: (bible parseFolioNo: '1')
+	album := BibNumAlbum new 
+		ajax: ajax;
+		container: container
 !
 
-testFolio150VShouldReturnPage306
-	self assert: 306 equals:(bible parseFolioNo: '150v').
-!
-
-testFolio151RShouldReturnPage307
-	self assert: 307 equals:(bible parseFolioNo: '151r').
+tearDown
+	container remove.
 ! !
 
-TestCase subclass: #BibNumAlbumTintinTest
+BibNumAlbumTestCase subclass: #BibNumAlbumDonjonTest
+	instanceVariableNames: 'ajax container album'
+	package: 'AFI-Tests'!
+
+!BibNumAlbumDonjonTest methodsFor: 'accessing'!
+
+donjonJSON
+	^   '{"album": {	"id":4, 
+					"titre":"Donjon Zenith", 
+					"description":"Une bonne bagarre",
+					"width": 200,
+					"height": 50,
+					"ressources":[ 
+                                                          				{	"id":1,
+                                                          					"titre": "Donjon",
+                                                          					"link_to":"",
+                                                          					"thumbnail":"userfiles/album/4/thumbs/media/1.jpg",
+                                                          					"navigator_thumbnail":"userfiles/album/4/thumbs/media/1_small.jpg",
+                                                          					"original":"bib-numerique/get-resource/id/4.jpg"}
+				]
+		} }'.
+! !
+
+!BibNumAlbumDonjonTest methodsFor: 'running'!
+
+setUp
+	super setUp.
+
+	album
+		url: 'donjon.json';
+		load.
+
+	(ajax options at: 'success')  value: self donjonJSON.
+! !
+
+!BibNumAlbumDonjonTest methodsFor: 'tests'!
+
+testAnchorToDownloadPDFShouldNotBePresent
+	self assert: 0 equals: ((container find: 'div.b-download-book a') at: 'size') value
+! !
+
+BibNumAlbumTestCase subclass: #BibNumAlbumTintinTest
 	instanceVariableNames: 'bible album container ajax'
-	category: 'AFI-Tests'!
+	package: 'AFI-Tests'!
 
 !BibNumAlbumTintinTest methodsFor: 'json'!
 
@@ -86,27 +100,37 @@ tintinJSON
 !BibNumAlbumTintinTest methodsFor: 'running'!
 
 setUp
-	window location hash: ' '.
-	ajax := AMockWrapper on: Ajax new.
-	ajax onMessage: 'send' answer: ajax.
+	super setUp.
 
-	container := '<div></div>' asJQuery width: 500.
-
-	album := BibNumAlbum new 
+	album
 		url: '/bib-numerique/album/id/2.json';
 		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
-		ajax: ajax;
-		container: container; 
 		load.
 
 	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
-!
-
-tearDown
-	container remove.
 ! !
 
 !BibNumAlbumTintinTest methodsFor: 'tests'!
+
+testAnchorToDownloadPDFShouldBePresent
+	self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )
+!
+
+testBookletJSShouldBeLoadedOnce
+	self assert: 1 equals: ( 'head' asJQuery find: 'script[src*="booklet.1.2.0.min.js"]') length
+!
+
+testBookletPluginShouldBeLoaded
+	self assert: ('body' asJQuery at: 'booklet') notNil
+!
+
+testChapterSelectorInitialHeightShouldBeZero
+	self assert: 0  equals: (container find: '.b-selector-chapter>ul')   height
+!
+
+testChapterSelectorShouldContainsLinkToFirstPage
+	self assert: 'Origins'  equals: (container find: '.b-selector-chapter #selector-page-1')   text
+!
 
 testDivBkWidgetShouldBePresent
 	|bkWidget|
@@ -120,35 +144,16 @@ testDivBookShouldBePresent
 	self assert: (0 < book length).
 !
 
-testBookletPluginShouldBeLoaded
-	self assert: ('body' asJQuery at: 'booklet') notNil
-!
-
-testBookletJSShouldBeLoadedOnce
-	self assert: 1 equals: ( 'head' asJQuery find: 'script[src*="booklet.1.2.0.min.js"]') length
-!
-
-testShouldContainsFourPages
-	"2 pages + covers"
-	self assert: 4 equals: (container find: '.b-page') length
+testFirstPageImageFolioNumberShouldBeTwelveR
+	self assert: '12R' equals: (container find: '.b-counter + .b-counter')  text
 !
 
 testFirstPageImageShouldLinkToOneDotJpg
 	self assert: 0 < (container find: 'img[src*="userfiles/album/2/thumbs/media/1.jpg"]')  length
 !
 
-testPageDescShouldContainsCreatedIn1929ByHerge
-	self assert: 'Created in 1929 by Herge' equals: (container find: '.page-desc') text
-!
-
-testPageWidthShouldBe165
-	"resize to its container width (500)  - margins (170)  / 2 pages"  
-	self assert: 165 equals: (container find: '.b-page')  width
-!
-
-testPageHeightShouldBe124
-	"the width of page (165) *  height of first image in json (300) / width of first image in json (400)"  
-	self assert: 124 equals: (container find: '.b-page')  height
+testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg
+	self assert: 'userfiles/album/2/thumbs/media/1_small.jpg' equals: album pages first navigatorThumbnailURL
 !
 
 testFirstPageZoomedImageShouldLinkToOneDotJpg
@@ -156,32 +161,80 @@ testFirstPageZoomedImageShouldLinkToOneDotJpg
 	self assert: 0 < (container find: '.iviewer img[src*="bib-numerique/get-resource/id/1.jpg"]')  length
 !
 
-testChapterSelectorShouldContainsLinkToFirstPage
-	self assert: 'Origins'  equals: (container find: '.b-selector-chapter #selector-page-1')   text
+testNextPageShouldSetMenuTextToFin
+	(container find: '.book') booklet: 'next'.
+	self assert: 'Fin' equals: (container find: '.b-current') text
 !
 
-testChapterSelectorInitialHeightShouldBeZero
-	self assert: 0  equals: (container find: '.b-selector-chapter>ul')   height
+testPageDescShouldContainsCreatedIn1929ByHerge
+	self assert: 'Created in 1929 by Herge' equals: (container find: '.page-desc') text
 !
 
-testFirstPageImageFolioNumberShouldBeTwelveR
-	self assert: '12R' equals: (container find: '.b-counter + .b-counter')  text
+testPageHeightShouldBe124
+	"the width of page (165) *  height of first image in json (300) / width of first image in json (400)"  
+	self assert: 124 equals: (container find: '.b-page')  height
+!
+
+testPageWidthShouldBe165
+	"resize to its container width (500)  - margins (170)  / 2 pages"  
+	self assert: 165 equals: (container find: '.b-page')  width
 !
 
 testSecondPageImageFolioNumberShouldBeXX
 	self assert: 'XX' equals: album pages last foliono
 !
 
-testAnchorToDownloadPDFShouldBePresent
-	self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )
+testShouldContainsFourPages
+	"2 pages + covers"
+	self assert: 4 equals: (container find: '.b-page') length
+! !
+
+TestCase subclass: #CycleTest
+	instanceVariableNames: ''
+	package: 'AFI-Tests'!
+
+!CycleTest methodsFor: 'tests'!
+
+testCycleWithFourElements
+	|cycle|
+	cycle := Cycle with: #('one' 'two' 'three' 'four').
+	3 timesRepeat: [
+		self assert: 'one' equals: cycle next.
+		self assert: 'two' equals: cycle next.
+		self assert: 'three' equals: cycle next.
+		self assert: 'four' equals: cycle next ].
 !
 
-testNextPageShouldSetMenuTextToFin
-	(container find: '.book') booklet: 'next'.
-	self assert: 'Fin' equals: (container find: '.b-current') text
+testCycleWithTwoElements
+	|cycle|
+	cycle := Cycle with: #('one' 'two').
+	self assert: 'one' equals: cycle next.
+	self assert: 'two' equals: cycle next.
+	self assert: 'one' equals: cycle next.
+	self assert: 'two' equals: cycle next.
+! !
+
+TestCase subclass: #SouvignyBibleTest
+	instanceVariableNames: 'bible'
+	package: 'AFI-Tests'!
+
+!SouvignyBibleTest methodsFor: 'running'!
+
+setUp
+	bible := SouvignyBible new
+! !
+
+!SouvignyBibleTest methodsFor: 'tests'!
+
+testFolio150VShouldReturnPage306
+	self assert: 306 equals:(bible parseFolioNo: '150v').
 !
 
-testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg
-	self assert: 'userfiles/album/2/thumbs/media/1_small.jpg' equals: album pages first navigatorThumbnailURL
+testFolio151RShouldReturnPage307
+	self assert: 307 equals:(bible parseFolioNo: '151r').
+!
+
+testFolioOneShouldReturnPageOne
+	self assert: 1 equals: (bible parseFolioNo: '1')
 ! !
 

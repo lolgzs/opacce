@@ -475,13 +475,13 @@ smalltalk.addMethod(
 unescape('_buildBookFromJSon_'),
 smalltalk.method({
 selector: unescape('buildBookFromJSon%3A'),
-fn: function (aJSONObject){
+fn: function (aJSONObjectOrString){
 var self=this;
 var book=nil;
 var album=nil;
-(album=smalltalk.send(aJSONObject, "_album", []));
-(book=(function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(album, "_titre", [])]);smalltalk.send($rec, "_width_", [smalltalk.send(album, "_width", [])]);smalltalk.send($rec, "_height_", [smalltalk.send(album, "_height", [])]);smalltalk.send($rec, "_downloadUrl_", [smalltalk.send(album, "_at_", ["download_url"])]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.Book || Book), "_new", [])));
-smalltalk.send(smalltalk.send(album, "_ressources", []), "_do_", [(function(aRessource){return (function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(aRessource, "_titre", [])]);smalltalk.send($rec, "_description_", [smalltalk.send(aRessource, "_description", [])]);smalltalk.send($rec, "_thumbnailURL_", [smalltalk.send(aRessource, "_thumbnail", [])]);smalltalk.send($rec, "_fullImageURL_", [smalltalk.send(aRessource, "_original", [])]);smalltalk.send($rec, "_foliono_", [smalltalk.send(aRessource, "_foliono", [])]);return smalltalk.send($rec, "_navigatorThumbnailURL_", [smalltalk.send(aRessource, "_at_", ["navigator_thumbnail"])]);})(smalltalk.send(book, "_newPage", []));})]);
+(album=smalltalk.send(((($receiver = smalltalk.send(aJSONObjectOrString, "_isString", [])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_JSON", []), "_parse_", [aJSONObjectOrString]);})() : (function(){return aJSONObjectOrString;})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_JSON", []), "_parse_", [aJSONObjectOrString]);}), (function(){return aJSONObjectOrString;})])), "_album", []));
+(book=(function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(album, "_at_", ["titre"])]);smalltalk.send($rec, "_width_", [smalltalk.send(album, "_at_", ["width"])]);smalltalk.send($rec, "_height_", [smalltalk.send(album, "_at_", ["height"])]);smalltalk.send($rec, "_downloadUrl_", [smalltalk.send(album, "_at_", ["download_url"])]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.Book || Book), "_new", [])));
+smalltalk.send(smalltalk.send(album, "_ressources", []), "_do_", [(function(aRessource){return (function($rec){smalltalk.send($rec, "_title_", [smalltalk.send(aRessource, "_at_", ["titre"])]);smalltalk.send($rec, "_description_", [smalltalk.send(aRessource, "_at_", ["description"])]);smalltalk.send($rec, "_thumbnailURL_", [smalltalk.send(aRessource, "_at_", ["thumbnail"])]);smalltalk.send($rec, "_fullImageURL_", [smalltalk.send(aRessource, "_at_", ["original"])]);smalltalk.send($rec, "_foliono_", [smalltalk.send(aRessource, "_at_", ["foliono"])]);return smalltalk.send($rec, "_navigatorThumbnailURL_", [smalltalk.send(aRessource, "_at_", ["navigator_thumbnail"])]);})(smalltalk.send(book, "_newPage", []));})]);
 return book;
 return self;}
 }),
@@ -494,7 +494,7 @@ selector: unescape('loadBookFromJSONOnSuccess%3A'),
 fn: function (aBlock){
 var self=this;
 (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){var book=nil;
-book=smalltalk.send(self, "_buildBookFromJSon_", [data]);return smalltalk.send(aBlock, "_value_", [book]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send(self, "_ajax", []));
+(book=smalltalk.send(self, "_buildBookFromJSon_", [data]));return smalltalk.send(aBlock, "_value_", [book]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send(self, "_ajax", []));
 return self;}
 }),
 smalltalk.BibNumLoader);
@@ -694,7 +694,7 @@ smalltalk.method({
 selector: unescape('downloadUrl'),
 fn: function (){
 var self=this;
-return self['@downloadUrl'];
+return (($receiver = self['@downloadUrl']) == nil || $receiver == undefined) ? (function(){return (self['@downloadUrl']="");})() : $receiver;
 return self;}
 }),
 smalltalk.Book);
