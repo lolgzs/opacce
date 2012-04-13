@@ -215,9 +215,16 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 
 
 	/** @test */
-	public function firstExemplaireShouldBeAvailable() {
-		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_LIBRE,
-														$this->_notice->exemplaireAt(0)->getDisponibilite());
+	public function firstExemplaireDisponibiliteShouldBeSeRenseigner() {
+		$this->assertEquals('Se renseigner a l\'accueil',
+												$this->_notice->exemplaireAt(0)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function firstExemplaireDisponibiliteLabelShouldBeSeRenseigner() {
+		$this->assertEquals('Se renseigner a l\'accueil',
+												$this->_notice->exemplaireAt(0)->getDisponibiliteLabel());
 	}
 
 
@@ -265,7 +272,7 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 
 
 	/** @test */
-	public function secondExemplaireDateRetourShould12_01_2029() {
+	public function secondExemplaireDateRetourShouldBe12012029() {
 		$this->assertEquals('12/01/2029',
 																$this->_notice->exemplaireAt(1)->getDateRetour());
 	}

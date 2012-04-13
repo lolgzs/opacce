@@ -91,6 +91,7 @@ class NanookFixtures {
 										<visible>1</visible>
 										<locationLabel>Annecy</locationLabel>
 										<locationId>3</locationId>
+                    <activityMessage>Se renseigner a l\'accueil</activityMessage>
 								</item>
 								<item>
 										<barcode>L-072666</barcode>

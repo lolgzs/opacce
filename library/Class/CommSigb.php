@@ -66,7 +66,7 @@ class Class_CommSigb {
 		$exemplaires = array();
 
 		foreach ($exemplaires_to_check as $exemplaire)	{
-			$exemplaire["dispo"]="non connue";
+			$exemplaire["dispo"] = "non connue";
 			$exemplaire["reservable"]=false;
 
 			$mode_comm=$this->getModeComm($exemplaire['id_bib']);

@@ -135,5 +135,14 @@ class Class_WebService_SIGB_Nanook_GetRecordsResponseReader {
 	public function endLocationId($data) {
 		$this->_current_item->setCodeAnnexe((int)$data);
 	}
+
+
+	/** 
+	 * @param string $data
+	 */
+	public function endActivityMessage($data) {
+		$this->_current_item->setDisponibiliteLabel($data);
+	}
 }
+
 ?>

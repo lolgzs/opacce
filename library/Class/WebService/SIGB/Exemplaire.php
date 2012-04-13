@@ -45,6 +45,8 @@ class Class_WebService_SIGB_Exemplaire {
 	protected $code_annexe;
 	protected $_notice_opac;
 	protected $_exemplaire_opac;
+	protected $_disponibiliteLabel;
+	protected $_isEnPret;
 
 
 	public static function newInstance() {
@@ -61,6 +63,8 @@ class Class_WebService_SIGB_Exemplaire {
 		$this->auteur = '';
 		$this->code_barre = '';
 		$this->visible_opac = true;
+		$this->_disponibiliteLabel = null;
+		$this->_isEnPret = false;
 	}
 
 
@@ -231,12 +235,17 @@ class Class_WebService_SIGB_Exemplaire {
 	 * @return string
 	 */
 	public function getDisponibilite() {
+		if ($this->_isEnPret)
+			return $this->disponibilite;
+		if (null !== $this->_disponibiliteLabel)
+			return $this->_disponibiliteLabel;
 		return $this->disponibilite;
 	}
 
 
 	public function setDisponibiliteEnPret() {
 		$this->setDisponibilite($this->getLibelleDispoEnPret());
+		$this->_isEnPret = true;
 		return $this;
 	}
 
@@ -282,6 +291,17 @@ class Class_WebService_SIGB_Exemplaire {
 	public function setDisponibilite($disponibilite){
 		$this->disponibilite = $disponibilite;
 		if ($this->disponibilite == "") $this->setDisponibiliteLibre();
+		return $this;
+	}
+
+
+	public function getDisponibiliteLabel() {
+		return $this->_disponibiliteLabel;
+	}
+
+
+	public function setDisponibiliteLabel($label) {
+		$this->_disponibiliteLabel = $label;
 		return $this;
 	}
 

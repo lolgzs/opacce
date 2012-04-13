@@ -78,6 +78,7 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 		$alice_merveilles = new Class_WebService_SIGB_Exemplaire('789');
 		$alice_merveilles
 			->setDisponibilite('Disponible')
+			->setDisponibiliteLabel('Sur demande calligraphiee')
 			->setReservable(false)
 			->setCodeAnnexe(8)
 			->setDateRetour('');
@@ -121,7 +122,7 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 																		'code_barres' => 'ALM',
 																		'id_bib' => 8,
 																		'annexe' => 8,
-																		'dispo' => 'Disponible',
+																		'dispo' => 'Sur demande calligraphiee',
 																		'reservable' => false,
 																		'date_retour' => '',
 																		'id_exemplaire' => '789'),
