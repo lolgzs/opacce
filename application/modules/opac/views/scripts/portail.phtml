@@ -38,7 +38,8 @@ echo '<body '.$this->bodyParam.'>';
 
 
 <?php 
-echo $this->render('footer.phtml');
+echo $this->partial('footer.phtml', 
+										array('portail_cfg_site' => $this->profil->getCfgSiteAsArray()));
 
 $html = ob_get_contents();
 ob_end_clean();

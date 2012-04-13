@@ -26,7 +26,9 @@ echo '<body '.$this->bodyParam.'>';
 		</div> <!-- site_web_content -->
 	</div> <!-- siteWeb -->
 <?php 
-echo $this->render('footer.phtml'); 
+echo $this->partial('footer.phtml', 
+										array('portail_cfg_site' => $this->profil->getCfgSiteAsArray()));
+
 
 $html = ob_get_contents();
 ob_end_clean();
