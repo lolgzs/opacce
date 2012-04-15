@@ -1,0 +1,24 @@
+	<div class="footer" style="overflow:hidden;clear:both;width:<?php echo Class_Profil::getCurrentProfil()->getLargeurSite() ?>px">
+		<table cellspacing="0" cellpadding="5" width="100%">
+			<tr>
+				<td style="padding-left:15px;">
+					<a href="<?php echo BASE_URL; ?>/admin"><?php echo $this->_('Accès pro.') ?></a>
+				</td>
+				<?php
+					// Combo des profils pour les admins
+					if(Class_Users::getLoader()->isCurrentUserCanAccesBackend()) {
+						echo '<td style="text-align:center">'.$this->ComboProfils("ALL","ALL",Class_Profil::getCurrentProfil()->getId(),true).'</td>';
+					}
+				?>
+				<td style="text-align:right;padding-right:10px">
+					<div class="credit">
+						Propulsé par <a href="http://afi-forge.afi-sa.fr/projects/opacce">AFI-OPAC2.0</href>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+  <?php echo getVar('GOOGLE_ANALYTICS'); ?>
+</body>
+</html>

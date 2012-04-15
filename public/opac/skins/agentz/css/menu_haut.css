@@ -1,0 +1,59 @@
+/*    FEUILLE DE STYLE pour les MENUS */
+
+table.menu_haut
+{
+	font-size:10pt;
+	font-weight:bold;
+	color:#3C3CFF;
+	width:auto;
+}
+tr.menu_haut
+{
+	
+}
+td.menu_titre_haut
+{
+	color:#ffffff;
+	padding-right:10;
+	padding-left:10;
+	cursor:pointer;
+}
+td.menu_titre_haut_over
+{
+	color:#ffffff;
+	padding-right:10;
+	padding-left:10;
+	cursor:pointer;
+}
+
+/* Bloc du sous-menu */
+div.menu_liste
+{
+	display:none;
+	position:absolute;
+	background-color:#B0BEC7;
+	border:1px solid #B0BEC7;
+}
+table.menu_liste
+{
+	background-color:#FFFFFF;
+	cursor:pointer;
+	width:auto;
+	color:#0058A5;
+}
+td.menu_item
+{
+	padding-right:10;
+	padding-left:10;
+	height:22;
+	color:#0058A5;
+}
+td.menu_item_over
+{
+	background-color:#B0BEC7;
+	color:blue;
+	padding-right:10;
+	padding-left:10;
+	height:22;
+	color:#0058A5;
+}
