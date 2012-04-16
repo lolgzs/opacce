@@ -50,7 +50,9 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'CACHE_ACTIF',
 		'WORKFLOW',
 		'BIBNUM',
-		'FORMATIONS'
+		'FORMATIONS',
+		'PCDM4_LIB',
+		'DEWEY_LIB'
 	);
 
 
