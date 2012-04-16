@@ -69,6 +69,7 @@ class IndexController extends Zend_Controller_Action {
 				$this->_sendFormulaireContact();
 				$this->_redirect('index/formulairecontactsent');
 			}	catch (Exception $e) {
+				$this->_helper->notify($e->getMessage());
 				$this->_redirect('index/formulairecontacterror');
 			}
 			return;
