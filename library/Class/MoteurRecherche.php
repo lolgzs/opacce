@@ -98,10 +98,8 @@ class Class_MoteurRecherche
 		}
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
 		if($selection_bib) $facette.="+(".$selection_bib.") ";
-		if($selection_sections)
-		{
-			$facette.="+(".str_replace(";"," S",$selection_sections).") ";
-		}
+		if($selection_sections)	$facette.="+(".str_replace(";"," S",$selection_sections).") ";
+		if($selection_annexe) $facette.="+(Y".str_replace(","," Y",$selection_annexe).") ";
 		if($facette) $conditions=" And MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($clef_chapeau) $where="where clef_chapeau='$clef_chapeau'";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
@@ -205,6 +203,7 @@ class Class_MoteurRecherche
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
 		if($selection_bib) $facette.="+(".$selection_bib.") ";
 		if($selection_sections) $facette.="+(".str_replace(";"," S",$selection_sections).") ";
+		if($selection_annexe) $facette.="+(Y".str_replace(","," Y",$selection_annexe).") ";
 		if($facette) $conditions.=" And MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		if($annee_debut) $conditions.=" and annee >='".$annee_debut."' ";
