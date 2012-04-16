@@ -347,6 +347,11 @@ Class_ScriptLoader::getInstance()
 						?>
 					</td>
 				</tr>
+				
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Sites (annexes)'); ?></td>
+					<td class="gauche"><?php echo $this->TagListeCoches("annexe","sel_annexe",$this->profil->getSelAnnexe()); ?></td>
+				</tr>
 
 				<tr>
 					<td class="droite" valign="top"><?php echo $this->traduire('Sections'); ?></td>

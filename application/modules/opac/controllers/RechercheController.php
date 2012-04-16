@@ -102,6 +102,10 @@ class RechercheController extends Zend_Controller_Action
 		// Selection de types de docs lies au profil
 		if($profil->getSelTypeDoc() and !$_SESSION["recherche"]["selection"]["type_doc"]) $_SESSION["recherche"]["selection"]["type_doc"]=str_replace(";",",",$profil->getSelTypeDoc());
 
+		// Selection de annexes liees au profil
+		unset($_SESSION["recherche"]["selection"]["selection_annexe"]);
+		if($profil->getSelAnnexe()) $_SESSION["recherche"]["selection"]["selection_annexe"]=str_replace(";",",",$profil->getSelAnnexe());
+
 		// Selection de sections liees au profil
 		unset($_SESSION["recherche"]["selection"]["selection_sections"]);
 		if($profil->getSelSection())	{
