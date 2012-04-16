@@ -190,6 +190,7 @@ class Class_Profil extends Storm_Model_Abstract {
 							'ref_tags' => '',
 							'id_site' => 0,
 							'sel_section' => '',
+							'sel_annexe' => '',
 							'sel_type_doc' => '',
 							'header_css' => null,
 							'header_img' => null,
