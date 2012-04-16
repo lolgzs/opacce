@@ -121,6 +121,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 			'AVIS_MAX_SAISIE'           => 'Nombre de caractères maximum autorisé à saisir dans les avis.',
 			'AVIS_MIN_SAISIE'           => 'Nombre de caractères minimum autorisé à saisir dans les avis.',
 			'BLOG_MAX_NB_CARAC'         => "Nombre de caractères maximum à afficher dans le bloc critiques.",
+			'PCDM4_LIB'									=> "Libellé affichage pour la PCDM4",
+			'DEWEY_LIB'									=> "Libellé affichage pour la Dewey",
 			'NB_AFFICH_AVIS_PAR_AUTEUR' => "Nombre d'avis maximum à afficher par utilisateur.",
 			'CLEF_GOOGLE_MAP'           => 'Clef d\'activation pour le plan d\'accès google map. <a target="_blank" href="http://code.google.com/apis/maps/signup.html">Obtenir la clé google map</a>',
 			'MODO_AVIS'                 => 'Modération des avis des lecteurs.<br /> 0 = Validation a priori<br /> 1 = Validation a posteriori.',

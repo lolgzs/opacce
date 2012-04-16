@@ -99,10 +99,10 @@ class RechercheController extends Zend_Controller_Action
 			foreach($bibs as $bib) $_SESSION["recherche"]["selection"]["selection_bib"].=" B".$bib;
 		}
 
-		// Selection de sections liee au profil
+		// Selection de types de docs lies au profil
 		if($profil->getSelTypeDoc() and !$_SESSION["recherche"]["selection"]["type_doc"]) $_SESSION["recherche"]["selection"]["type_doc"]=str_replace(";",",",$profil->getSelTypeDoc());
 
-		// Selection de types de docs liee au profil
+		// Selection de sections liees au profil
 		unset($_SESSION["recherche"]["selection"]["selection_sections"]);
 		if($profil->getSelSection())	{
 			$sections=explode(",",$profil->getSelSection());
