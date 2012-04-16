@@ -1,4 +1,4 @@
-
+<?php
 /**
  * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-<?php
+
 class ZendAfi_Form_Element_File extends Zend_Form_Element_Xhtml {
 	/** @var string Default view helper */
 	public $helper = 'formFile';

@@ -90,3 +90,5 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$request->setActionName($action);
 	}
 }
+
+?>

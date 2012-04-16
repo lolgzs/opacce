@@ -113,3 +113,5 @@ class ZendAfi_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Acti
 		$this->setNoRender();
 	}
 }
+
+?>
