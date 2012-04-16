@@ -64,7 +64,8 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		"ABON_PRETS" => array("libelle" => "Prêts en cours", "groupe" => "ABON", "phone" => false),
 		"ABON_RESAS" => array("libelle" => "Réservations en cours", "groupe" => "ABON", "phone" => false),
 		"ABON_FORMATIONS" => array("libelle" => "Formations", "groupe" => "ABON", "phone" => false),
-		"FORM_CONTACT" => array("libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false)
+		"FORM_CONTACT" => array("libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false), 
+		"VODECLIC" => array("libelle" => "Lien vers Vodeclic", "groupe" => "ABON", "phone" => false)
 	);
 
 	private $fonction_vide = array("action" => "index", "popup_width" => 550, "popup_height" => 215, "phone" => true);
@@ -76,6 +77,9 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 
 		if (!Class_AdminVar::isBibNumEnabled())
 			unset($this->fonctions['BIBNUM']);
+
+		if (!Class_AdminVar::isVodeclicEnabled())
+			unset($this->fonctions['VODECLIC']);
 	}
 
 
@@ -84,10 +88,9 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	 * @return array
 	 */
 	public function getFonction($type) {
-		$fonction = $this->fonctions[$type];
-		if (!$fonction)
-			$fonction = $this->fonction_vide;
-		return $fonction;
+		if (isset($this->fonctions[$type]))
+				return $this->fonctions[$type];
+		return $this->fonction_vide;
 	}
 
 	/**
@@ -208,6 +211,14 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 				break;
 			case "FORM_CONTACT": $url = BASE_URL . "/index/formulairecontact";
 				break;
+			case "VODECLIC": 
+				$url = BASE_URL . "/auth/login";
+				$target = 0;
+				if ($user = Class_Users::getLoader()->getIdentity()) {
+					$url = Class_VodeclicLink::forUser($user)->url();
+					$target = 1;
+				}
+				break;
 			default: $url = BASE_URL;
 				break;
 		}
@@ -224,8 +235,8 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 			'target' => 1, // Ouvrir dans un nouvel onglet ou pas
 			'url' => 'http://google.fr',
 		);
-
 	}
+
 
 	/**
 	 * @return array

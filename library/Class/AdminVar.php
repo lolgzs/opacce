@@ -52,7 +52,9 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'BIBNUM',
 		'FORMATIONS',
 		'PCDM4_LIB',
-		'DEWEY_LIB'
+		'DEWEY_LIB',
+		'VODECLIC_KEY',
+		'VODECLIC_ID'
 	);
 
 
@@ -155,6 +157,13 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		return self::isModuleEnabled('FORMATIONS');
 	}
 
+
+	/**
+	 * @return bool
+	 */
+	public static function isVodeclicEnabled() {
+		return ('' != self::get('VODECLIC_KEY'));
+	}
 
 	/**
 	 * @return array

@@ -27,39 +27,57 @@ class VodeclicLinkTest extends Storm_Test_ModelTestCase {
 			->setIdabon(34)
 			->setNom('Jean')
 			->setPrenom('Mardgay')
-			->setMail('jean@golf.fr');
+			->setMail('jean@golf.fr')
+			->setDateFin('2023-09-02');
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('VODECLIC_KEY')
+			->setValeur('2m5js1dPpFNrtAJbsfX1');
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('VODECLIC_ID')
+			->setValeur('bonlieu');
+
+		$this->encrypted_email = hash('sha256', 'jean@golf.fr2m5js1dPpFNrtAJbsfX1');
+		$this->encrypted_date = hash('sha256', date('dmY').'2m5js1dPpFNrtAJbsfX1');
+		$this->encrypted_id = hash('sha256', '34'.'2m5js1dPpFNrtAJbsfX1');
+
+		$this->_vodeclic = Class_VodeclicLink::forUser($this->_jean);
 	}
 
 
 	/** @test */
 	public function urlForJeanShouldBeBiblioSSO() {
-		$vodeclic = Class_VodeclicLink::forUser($this->_jean);
-		
 		$this->assertEquals('https://biblio.vodeclic.com/auth/biblio/sso', 
-												$vodeclic->baseUrl());
+												$this->_vodeclic->baseUrl());
 	}
 
 
 	/** @test */
 	public function withKey234UrlForJeanShouldContainsEncryptedId_Date_EMail() {
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('VODECLIC_KEY')
-			->setValeur('2m5js1dPpFNrtAJbsfX1');
-		$encrypted_email = hash('sha256', 'jean@golf.fr2m5js1dPpFNrtAJbsfX1');
-		$encrypted_date = hash('sha256', date('dmY').'2m5js1dPpFNrtAJbsfX1');
-		$encrypted_id = hash('sha256', '34'.'2m5js1dPpFNrtAJbsfX1');
-
-		$this->_vodeclic = Class_VodeclicLink::forUser($this->_jean);
 		$this->assertEquals(sprintf('https://biblio.vodeclic.com/auth/biblio/sso?'.
 																'email=jean%%2540golf.fr&encrypted_email=%s&'.
 																'id=34&encrypted_id=%s&'.
-																'd=%s',
-																$encrypted_email, 
-																$encrypted_id,
-																$encrypted_date), 
+																'd=%s&'.
+																'partenaire=bonlieu',
+																$this->encrypted_email, 
+																$this->encrypted_id,
+																$this->encrypted_date), 
 												$this->_vodeclic->url());
 	}
-	
+
+
+	/** @test */
+	public function withoutMailUrlShouldContainsEncryptedMail() {
+		$this->_jean->setMail('');
+
+		$this->assertEquals(sprintf('https://biblio.vodeclic.com/auth/biblio/sso?'.
+																'id=34&encrypted_id=%s&'.
+																'd=%s&'.
+																'partenaire=bonlieu',
+																$this->encrypted_id,
+																$this->encrypted_date), 
+												$this->_vodeclic->url());
+	}
 }
 
 ?>

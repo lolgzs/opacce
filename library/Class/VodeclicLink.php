@@ -39,13 +39,17 @@ class Class_VodeclicLink {
 
 	public function url() {
 		$hash = Class_Hash::sha256WithKey(Class_AdminVar::get('VODECLIC_KEY'));
-		$email = $this->_user->getMail();
+		$partenaire = Class_AdminVar::get('VODECLIC_ID');
 		$id = $this->_user->getIdabon();
-		$params = array('email' => urlencode($email),
-										'encrypted_email' => $hash->encrypt($email),
-										'id' => urlencode($id),
+		$params = array('id' => urlencode($id),
 										'encrypted_id' => $hash->encrypt($id),
-										'd' => $hash->encrypt(date('dmY')));
+										'd' => $hash->encrypt(date('dmY')),
+										'partenaire' => $partenaire);
+
+		if ($email = $this->_user->getMail())
+			$params = array_merge(array('email' => urlencode($email),
+																	'encrypted_email' => $hash->encrypt($email)),
+														$params);
 
 		return $this->baseUrl().'?'.http_build_query($params);
 	}

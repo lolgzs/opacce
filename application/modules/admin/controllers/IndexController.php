@@ -153,7 +153,9 @@ class Admin_IndexController extends Zend_Controller_Action {
 																					$this->view->url(array('action' => 'clearcache'))
 																				)
 																			)
-																	)
+																	 ),
+			'VODECLIC_KEY'              => 'Clé de sécurité Vodeclic',
+			'VODECLIC_ID'               => 'Identifiant partenaire Vodeclic'
 		);
 
 		if (!array_key_exists($name, $help)) {
