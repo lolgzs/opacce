@@ -66,16 +66,24 @@ function fetchAll($req,$num=false)
 // ---------------------------------------------------
 function getWhereSql($conditions)
 {
-	if(!$conditions) return "";
-	if(gettype($conditions)=="string") $conditions[0]=$conditions;
-	foreach($conditions as $condition)
-	{
-		if(!trim($condition)) continue;
-		if($where) $where.=" and ";
-		$where.=$condition;
+	$where = '';
+	if (!$conditions) 
+		return $where;
+
+	if ('string' == gettype($conditions)) 
+		$conditions[0] = $conditions;
+
+	$clauses = array();
+	foreach ($conditions as $condition) {
+		$trimmed = trim($condition);
+		if (!$trimmed) continue;
+		$clauses[] = $trimmed;
 	}
-	if(!$where) return "";
-	$where=" where ".$where;
+
+	if (0 == count($clauses))
+		return $where;
+
+	$where = " where " . implode(' and ', $clauses);
 	return $where;
 }
 
