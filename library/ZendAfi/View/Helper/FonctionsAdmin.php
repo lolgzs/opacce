@@ -29,14 +29,13 @@ class ZendAfi_View_Helper_FonctionsAdmin extends ZendAfi_View_Helper_BaseHelper
 //------------------------------------------------------------------------------------------------------
 // Main routine
 //------------------------------------------------------------------------------------------------------  
-	public function fonctionsAdmin($contexte,$type_doc=false,$type_module=false)
-	{
-		$user = Zend_Auth::getInstance()->getIdentity();
-		if (!$user) return false;
+	public function fonctionsAdmin($contexte,$type_doc=false,$type_module=false) {
+		if (!$user = Class_Users::getLoader()->getIdentity())
+			return false;
+		if (!$user->isAdmin())
+			return false;
 
-		if (null == $user) return false;
-		if($user->ROLE_LEVEL < 6 ) return false;
-		$this->id_profil=$_SESSION["id_profil"];
+		$this->id_profil = Class_Profil::getCurrentProfil()->getId();
 		
 		// Fonctions en accord avec le contexte
 		switch($contexte)

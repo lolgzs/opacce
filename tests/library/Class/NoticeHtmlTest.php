@@ -110,9 +110,7 @@ class NoticeHtmlGetExemplairesEmptyTest extends ModelTestCase {
 class NoticeHtmlGetExemplairesWithOneExemplaireNoWebServiceTest extends ModelTestCase {
 	public function setUp() {
 		parent::setUp();
-		$_SESSION['id_profil'] = 2;
-		Class_Profil::getLoader()->newInstanceWithId(2);
-
+		Class_Profil::setCurrentProfil(new Class_Profil());
 		$exemplaire = array('id_bib' => -1,
 												'id_notice' => '24765',
 												'annexe' => 'MOUL',

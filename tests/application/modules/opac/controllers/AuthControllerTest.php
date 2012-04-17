@@ -219,7 +219,7 @@ class AuthControllerNobodyLoggedAndNoRegistrationTest extends AuthControllerNobo
 class AuthControllerAdminIsLoggedTest extends PortailWithOneLoginModuleTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
-		$account->ROLE_LEVEL = 7;
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
 		$account->ID_USER = "1";
 		$account->PSEUDO = "sysadm";
 	}
@@ -229,7 +229,7 @@ class AuthControllerAdminIsLoggedTest extends PortailWithOneLoginModuleTestCase 
 		$this->sysadm = new Class_Users();
 		$this->sysadm
 			->setPseudo('sysadm')
-			->setRoleLevel(3)
+			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL)
 			->setRole('super_admin')
 			->setLogin('sysadm')
 			->setPassword('pafgjl')

@@ -76,9 +76,8 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		$account->confirmed    = true;
 		$account->enabled      = true;
 
-		Class_Users::getLoader()
-			->newInstanceWithId(666)
-			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB);
+		$user = Class_Users::getLoader()
+			->newInstanceWithId(666);
 
 		Class_Bib::getLoader()
 			->newInstanceWithId(1)
@@ -86,6 +85,7 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 
 		$this->_loginHook($account);
 
+		$user->setRoleLevel($account->ROLE_LEVEL);
 		Zend_Auth::getInstance()->getStorage()->write($account);
 	}
 
