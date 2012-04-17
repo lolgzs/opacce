@@ -20,20 +20,41 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class RechercheControllerViewNoticeTest extends AbstractControllerTestCase {
+abstract class RechercheControllerNoticeTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->notice = Class_Notice::getLoader()->findFirstBy(array());
-		$this->assertNotEmpty($this->notice, "Pas de notice dans la base. TODO => faire des mocks");
 	}
+}
 
-	protected function dispatchViewNotice() {
+
+
+class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch(sprintf('recherche/reseau/id_notice/%d/type_doc/1', 
+														$this->notice->getId()));
+	}
+	
+
+	/** @test */
+	public function getResauShouldReturnTwitterLink() {
+		$this->assertXPath('//img[contains(@src, "twitter.gif")]', $this->_response->getBody());
+	}
+}
+
+
+
+
+class RechercheControllerViewNoticeTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()));
 	}
 
+
 	/** @test */
-	function titleShouldBeDisplayed() {
-		$this->dispatchViewNotice();
+	public function titleShouldBeDisplayed() {
 		$this->assertXPathContentContains('//h1',
 																			array_first(explode('<br />', $this->notice->getTitrePrincipal())),
 																			$this->_response->getBody());
@@ -41,23 +62,13 @@ class RechercheControllerViewNoticeTest extends AbstractControllerTestCase {
 
 
 	/** @test */
-	function tagReseauSociauxShouldBePresent() {
-		$this->dispatchViewNotice();
+	public function tagReseauSociauxShouldBePresent() {
 		$this->assertXPath('//div[@id="reseaux-sociaux"]');
 	}
 
 
 	/** @test */
-	function getResauShouldReturnTwitterLink() {
-		$this->dispatch(sprintf('recherche/reseau/id_notice/%d/type_doc/1', 
-														$this->notice->getId()));
-		$this->assertXPath('//img[contains(@src, "twitter.gif")]', $this->_response->getBody());
-	}
-
-
-	/** @test */
-	function headShouldContainsRechercheJS() {
-		$this->dispatchViewNotice();
+	public function headShouldContainsRechercheJS() {
 		$this->assertXPath('//head//script[contains(@src,"public/opac/js/recherche.js")]');
 	}
 }

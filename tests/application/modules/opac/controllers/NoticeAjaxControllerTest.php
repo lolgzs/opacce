@@ -215,4 +215,53 @@ class NoticeAjaxControllerResumeAlbumTest extends AbstractControllerTestCase {
 	}
 }
 
+
+
+class NoticeAjaxControllerExemplairesTest extends AbstractControllerTestCase {
+	protected $_notice;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_notice = Class_Notice::getLoader()
+			->newInstanceWithId(123)
+			->beLivreNumerique()
+			->setExemplaires(array());
+		
+		$mock_sql = Storm_Test_ObjectWrapper::on(Zend_Registry::get('sql'));
+		Zend_Registry::set('sql', $mock_sql);
+
+		$exemplaires = array(array('id_bib' => 99,
+															 'id_notice' => 123,
+															 'id' => '6778778778',
+															 'annexe' => 'MOUL',
+															 'section' => 'A9',
+															 'emplacement' => 'emplacement de test',
+															 'count(*)' => 3,
+															 'cote' => 'VOD-T-DLJ',
+															 'dispo' => 'Disponible',
+															 'date_retour' => 'En mai',
+															 'code_barres' => '7777734343488'));
+
+		$mock_sql
+			->whenCalled('fetchAll')
+			->with('Select id_notice,id_bib,cote,count(*) from exemplaires  where id_notice=123 group by 1,2,3',
+						 false)
+			->answers($exemplaires);
+
+		$this->dispatch('noticeajax/exemplaires?id_notice=123');
+	}
+
+
+	/** @test */
+	public function shouldRenderNumber() {
+		$this->assertXPathContentContains('//td', '1');
+	}
+
+
+	/** @test */
+	public function shouldRenderCote() {
+		$this->assertXPathContentContains('//td', 'VOD-T-DLJ');
+	}
+}
 ?>

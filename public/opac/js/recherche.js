@@ -333,3 +333,12 @@ function reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe)
 			alert(data);
 	});
 }
+
+
+function reservationPickupAjax(oImg,nIdBib,sIdOrigine,sCodeAnnexe)
+{
+	var sUrl=baseUrl+'/recherche/reservation-pickup-ajax?id_bib='+nIdBib+"&id_origine="+sIdOrigine+"&code_annexe="+sCodeAnnexe;
+	var saveImg=$(oImg).attr('src');
+	$(oImg).attr('src',imagesUrl+'patience.gif');
+	showPopWin(sUrl, 500, 345, null);
+}

@@ -102,56 +102,62 @@ class NoticeAjaxController extends Zend_Controller_Action
 		}
 
 		// Condition oeuvre ou id_notice
-		$clef_oeuvre=fetchOne("select CLEF_OEUVRE from notices where id_notice=".$this->id_notice);
-		if($_REQUEST["data"]=="OEUVRE")
-		{
-			$aff="oeuvre";
-			$nb_notices_oeuvre=0;
-			$notices=fetchAll("select id_notice from notices where clef_oeuvre='$clef_oeuvre' and id_notice!=".$this->id_notice);
-			if($notices)
-			{
-				foreach($notices as $notice)
-				{
-					if($insql) $insql.=",";
-					$insql.=$notice["id_notice"];
+		$clef_oeuvre=fetchOne("select CLEF_OEUVRE from notices where id_notice=" . $this->id_notice);
+		if (array_key_exists('data', $_REQUEST) 
+				&& $_REQUEST["data"]=="OEUVRE") {
+			$aff = "oeuvre";
+			$nb_notices_oeuvre = 0;
+			$notices = fetchAll("select id_notice from notices where clef_oeuvre='$clef_oeuvre' and id_notice!=" . $this->id_notice);
+			if ($notices) {
+				foreach ($notices as $notice) {
+					if ($insql)
+						$insql .= ',';
+					$insql .= $notice["id_notice"];
 				}
 			}
-			$cond[]="id_notice in(".$insql.")";
-		}
-		else
-		{
-			$aff="normal";
-			$nb_notices_oeuvre=fetchOne("select count(*) from notices where clef_oeuvre='$clef_oeuvre' and id_notice!=".$this->id_notice);
-			$cond[]="id_notice=".$this->id_notice;
+			$cond[] = "id_notice in(" . $insql . ")";
+		} else {
+			$aff = "normal";
+			$nb_notices_oeuvre = fetchOne("select count(*) from notices where clef_oeuvre='$clef_oeuvre' and id_notice!=" . $this->id_notice);
+			$cond[] = "id_notice=" . $this->id_notice;
 		}
 
 		// Conditions liees au profil
 		$sel_section = Class_Profil::getCurrentProfil()->getSelSection();
 
-		if($sel_section) $cond[]="section in(".implode(',',explode(';',$sel_section)).")";
-		$sel_bib=$_SESSION["selection_bib"]["id_bibs"];
-		if($sel_bib) $cond[]="id_bib in(".$sel_bib.")";
-		$where=getWhereSql($cond);
+		if ($sel_section)
+			$cond[] = "section in(" . implode(',', explode(';', $sel_section)) . ")";
 
-		// Lire les notices groupees ou pas
-		if($this->notice_html->preferences["exemplaires"]["grouper"]==0) $data = fetchAll("Select id_notice,id_bib,cote,count(*) from exemplaires ".$where." group by 1,2,3" );
+		if (array_key_exists('selection_bib', $_SESSION)
+				&& array_key_exists('id_bibs', $_SESSION['selection_bib'])) {
+			$sel_bib = $_SESSION["selection_bib"]["id_bibs"];
+			if ($sel_bib)
+				$cond[] = "id_bib in(" . $sel_bib . ")";
+		}
+		$where = getWhereSql($cond);
 
-		else $data = fetchAll("Select * from exemplaires ".$where);
-		if(!$data)
-		{
-			$where=" where ".$cond[0];
-			if($this->notice_html->preferences["exemplaires"]["grouper"]==0) 
-				$data = fetchAll("Select id_notice,id_bib,cote,count(*) from exemplaires ".$where." group by 1,2,3" );
-			else 
-				$data = fetchAll("Select * from exemplaires ".$where);
+		$data = $this->_loadExemplaireWhere($where);
+		if (!$data) {
+			$where = " where " . $cond[0];
+			$data = $this->_loadExemplaireWhere($where);
 		}
 
 		// Tableau
 		$html=$this->notice_html->getExemplaires($data,$nb_notices_oeuvre,$aff);
-		
 
 		$this->getResponse()->setBody($html);
 	}
+
+
+	protected function _loadExemplaireWhere($where) {
+		// Lire les notices groupees ou pas
+		if (0 == $this->notice_html->preferences["exemplaires"]["grouper"])
+			return fetchAll("Select id_notice,id_bib,cote,count(*) from exemplaires " . $where . " group by 1,2,3" );
+		
+		return fetchAll("Select * from exemplaires " . $where);
+	}
+
+
 
 //------------------------------------------------------------------------------------------------------
 // Localisation sur le plan

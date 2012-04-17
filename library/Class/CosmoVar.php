@@ -37,6 +37,11 @@ class Class_CosmoVar extends Storm_Model_Abstract {
 			return null;
 		return $var->getValeur();
 	}
+
+
+	public static function isSiteRetraitResaEnabled() {
+		return (1 === (int)self::get('site_retrait_resa'));
+	}
 }
 
 ?>

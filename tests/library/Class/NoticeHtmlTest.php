@@ -137,8 +137,9 @@ class NoticeHtmlGetExemplairesWithOneExemplaireNoWebServiceTest extends ModelTes
 
 
 
+abstract class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase extends ModelTestCase {
+	protected $exemplaire;
 
-class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 		$_SESSION['id_profil'] = 4;
@@ -174,7 +175,7 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 																							 ->answers(true)
 																							 ->getWrapper());
 
-		$exemplaire = array('id' => 12,
+		$this->exemplaire = array('id' => 12,
 												'id_bib' => 1,
 												'id_notice' => '24765',
 												'id_origine' => '666',
@@ -184,9 +185,20 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 												'dispo' => "Disponible",
 												'code_barres' => "12345",
 												'section' => 3,
-												'emplacement' => 2); 
+												'emplacement' => 2);
+	}
+}
+
+
+
+
+class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest 
+  extends NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase {
+
+	public function setUp() {
+		parent::setUp();
 		$notice_html = new Class_NoticeHtml();
-		$this->html = $notice_html->getExemplaires(array($exemplaire));
+		$this->html = $notice_html->getExemplaires(array($this->exemplaire));
 	}
 
 
@@ -196,4 +208,25 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 	}
 }
 
+
+
+class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceAndPickupActiveTest
+  extends NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase {
+	
+
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()->newInstanceWithId('site_retrait_resa')
+			->setValeur('1');
+
+		$notice_html = new Class_NoticeHtml();
+		$this->html = $notice_html->getExemplaires(array($this->exemplaire));
+	}
+
+
+	/** @test */
+	public function shouldRenderReservationPickup() {
+		$this->assertContains("reservationPickupAjax(this,'1','12', 'MOUL')", $this->html);
+	}
+}
 ?>

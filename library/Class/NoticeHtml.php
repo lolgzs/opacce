@@ -308,13 +308,16 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------
 	public function getExemplaires($exemplaires,$nb_notices_oeuvre=0,$aff="normal")
 	{
-    if(!$exemplaires) return false;
-		$preferences=$this->preferences["exemplaires"];
+    if (!$exemplaires)
+			return false;
+		$preferences = $this->preferences["exemplaires"];
+
 		// Recup des donnees de dispo et reservable
-		if($preferences["grouper"]==1)
-		{
-			$cls_comm=new Class_CommSigb();
-			$exemplaires=$cls_comm->getDispoExemplaires($exemplaires);
+
+		$cls_comm = null;
+		if ($preferences["grouper"] == 1) {
+			$cls_comm = new Class_CommSigb();
+			$exemplaires = $cls_comm->getDispoExemplaires($exemplaires);
 		}
 
 		$html=$this->haut_onglet;
@@ -394,41 +397,11 @@ class Class_NoticeHtml
 				else $html.='&nbsp;';
 				$html.='</td>';
 			}
+
 			// Réservation
-			if($preferences["resa"]==1 and $aff=="normal")
-			{
-				if($bib["INTERDIRE_RESA"]==1) $html.='&nbsp;';
-				else
-				{
-					$html.='<td class="exemplaires" style="text-align:center;">';
-
-					if(isset($cls_comm)) {
-						$type_comm=$cls_comm->getTypeComm($ex["id_bib"]); 
-					}
-					else 
-						$type_comm="";
-
-					if(!$type_comm) 
-						$html .= sprintf('<a href="%s"><img src="%s" border="0" title="%s" alt="%s"/></a>',
-														 BASE_URL.'/recherche/reservation?b='.$ex["id_bib"].'&amp;n='.$ex["id_notice"].'&amp;cote='.$ex["cote"],
-														 URL_IMG.'resa.gif',
-														 $this->_translate->_('Réserver'),
-														 $this->_translate->_('Réserver'));
-					else
-					{
-						if($ex["reservable"]==true)
-						{
-							$onclick="reservationAjax(this,'".$ex["id_bib"]."','".$ex["id"]."', '".$ex["code_annexe"]."')";
-							$html.= sprintf('<img src="%s" border="0" alt="%s" title="%s" onclick="%s" style="cursor:pointer" />',
-															URL_IMG.'resa.gif',
-															$this->_translate->_('Réserver'),
-															$this->_translate->_('Réserver'),
-															$onclick);
-						}
-						else $html.='&nbsp;';
-					}
-				}
-				$html.='</td>';
+			if ($preferences["resa"]==1 and $aff=="normal") {
+				$html = NoticeReservationRenderer::newWith($bib, $cls_comm, $this->_translate->_('Réserver'))
+					->renderItemOn($ex, $html);
 			}
 
 			// Lien vers notice en affichage oeuvre
@@ -912,5 +885,89 @@ class Class_NoticeHtml
 									 $url,
 									 $this->_translate->_('Proposer des tags pour cette notice'));
 		return $html;
+	}
+}
+
+
+class NoticeReservationRenderer {
+	const HOLD_IMG = 'resa.gif';
+
+	protected $_bib;
+	protected $_commClass;
+	protected $_holdLabel;
+	
+	public static function newWith($bib, $commClass, $holdLabel) {
+		$instance = new NoticeReservationRenderer();
+		$instance->_bib = $bib;
+		$instance->_commClass = $commClass;
+		$instance->_holdLabel = $holdLabel;
+		return $instance;
+	}
+
+
+	/**
+	 * @param $ex array
+	 * @param $html string
+	 * @return string modified html
+	 */
+	public function renderItemOn($ex, $html) {
+		$html .= '<td class="exemplaires" style="text-align:center;">';
+
+		if (1 == $this->_bib['INTERDIRE_RESA'])
+			return $html .= '&nbsp;</td>';
+
+		$type_comm = (null != $this->_commClass) ? $this->_commClass->getTypeComm($ex['id_bib']) : '';
+		
+		if (!$type_comm)
+			return $this->_renderStandardOn($ex, $html);
+
+		if (!$ex['reservable'])
+			return $html . '&nbsp;</td>';
+ 
+		if (Class_CosmoVar::isSiteRetraitResaEnabled())
+			return $this->_renderPickupAjaxOn($ex, $html);
+
+		return $this->_renderAjaxOn($ex, $html);
+	}
+
+
+	/** @return string */
+	protected function getHoldImage() {
+		return URL_IMG . self::HOLD_IMG;
+	}
+
+
+	/** @return string */
+  protected function _renderStandardOn($ex, $html) {
+    $html .= sprintf('<a href="%s"><img src="%s" border="0" title="%s" alt="%s"/></a>',
+										 BASE_URL . '/recherche/reservation?b=' . $ex["id_bib"] . '&amp;n=' . $ex["id_notice"] . '&amp;cote=' . $ex["cote"],
+										 URL_IMG . self::HOLD_IMG,
+										 $this->_holdLabel,
+										 $this->_holdLabel);
+		return $html . '</td>';
+  }
+
+
+	/** @return string */
+	protected function _renderAjaxOn($ex, $html) {
+		return $this->_renderAjaxLinkOn($ex, $html, 'reservation');
+	}
+
+
+	/** @return string */
+	protected function _renderPickupAjaxOn($ex, $html) {
+		return $this->_renderAjaxLinkOn($ex, $html, 'reservationPickup');
+	}
+
+
+	/** @return string */
+	protected function _renderAjaxLinkOn($ex, $html, $functionName) {
+		$onclick = $functionName . "Ajax(this,'" . $ex["id_bib"] . "','" . $ex["id"] . "', '" . $ex["code_annexe"] . "')";
+		$html .= sprintf('<img src="%s" border="0" alt="%s" title="%s" onclick="%s" style="cursor:pointer" />',
+										 URL_IMG . self::HOLD_IMG,
+										 $this->_holdLabel,
+										 $this->_holdLabel,
+										 $onclick);
+		return $html .= '</td>';
 	}
 }
