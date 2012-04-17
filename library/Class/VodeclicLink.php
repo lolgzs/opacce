@@ -41,15 +41,21 @@ class Class_VodeclicLink {
 		$hash = Class_Hash::sha256WithKey(Class_AdminVar::get('VODECLIC_KEY'));
 		$partenaire = Class_AdminVar::get('VODECLIC_ID');
 		$id = $this->_user->getIdabon();
-		$params = array('id' => urlencode($id),
+		$params = array('id' => $id,
 										'encrypted_id' => $hash->encrypt($id),
 										'd' => $hash->encrypt(date('dmY')),
 										'partenaire' => $partenaire);
 
 		if ($email = $this->_user->getMail())
-			$params = array_merge(array('email' => urlencode($email),
+			$params = array_merge(array('email' => $email,
 																	'encrypted_email' => $hash->encrypt($email)),
 														$params);
+
+		if ($nom = $this->_user->getNom())
+			$params['nom'] = $nom;
+
+		if ($prenom = $this->_user->getPrenom())
+			$params['prenom'] = $prenom;
 
 		return $this->baseUrl().'?'.http_build_query($params);
 	}

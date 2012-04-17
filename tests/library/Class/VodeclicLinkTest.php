@@ -25,8 +25,8 @@ class VodeclicLinkTest extends Storm_Test_ModelTestCase {
 		$this->_jean = Class_Users::getLoader()
 			->newInstanceWithId(4)
 			->setIdabon(34)
-			->setNom('Jean')
-			->setPrenom('Mardgay')
+			->setPrenom('Jean')
+			->setNom('Mardgay')
 			->setMail('jean@golf.fr')
 			->setDateFin('2023-09-02');
 
@@ -55,10 +55,12 @@ class VodeclicLinkTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	public function withKey234UrlForJeanShouldContainsEncryptedId_Date_EMail() {
 		$this->assertEquals(sprintf('https://biblio.vodeclic.com/auth/biblio/sso?'.
-																'email=jean%%2540golf.fr&encrypted_email=%s&'.
+																'email=jean%%40golf.fr&encrypted_email=%s&'.
 																'id=34&encrypted_id=%s&'.
 																'd=%s&'.
-																'partenaire=bonlieu',
+																'partenaire=bonlieu&'.
+																'nom=Mardgay&'.
+																'prenom=Jean',
 																$this->encrypted_email, 
 																$this->encrypted_id,
 																$this->encrypted_date), 
@@ -68,7 +70,7 @@ class VodeclicLinkTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function withoutMailUrlShouldContainsEncryptedMail() {
-		$this->_jean->setMail('');
+		$this->_jean->setMail('')->setNom('')->setPrenom('');
 
 		$this->assertEquals(sprintf('https://biblio.vodeclic.com/auth/biblio/sso?'.
 																'id=34&encrypted_id=%s&'.
