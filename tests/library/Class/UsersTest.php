@@ -213,7 +213,8 @@ class UsersTestSave extends ModelTestCase {
 												 'date_fin' => '',
 												 'naissance' => '',
 												 'date_debut' => 0,
-												 'telephone' => ''));
+												 'telephone' => '',
+												 'mail' => ''));
 
 		$coltrane = new Class_Users();
 		$coltrane
