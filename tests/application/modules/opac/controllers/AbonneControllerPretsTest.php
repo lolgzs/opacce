@@ -133,13 +133,16 @@ class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPret
 
 
 class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerPretsTestCase {
+	protected $_potter;
+
 	public function setUp() {
 		parent::setUp();
 
 		$potter = new Class_WebService_SIGB_Reservation('12', new Class_WebService_SIGB_Exemplaire(123));
-		$potter->getExemplaire()->setTitre('Potter');
+		$this->_potter = $potter->getExemplaire()->setTitre('Potter');
 		$potter->parseExtraAttributes(array('Etat' => 'Réservation émise',
-																				'Rang' => '2'));
+																				'Rang' => '2',
+																				'Bibliotheque' => 'Tombouctou'));
 
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Florence');
 		$emprunteur->reservationsAddAll(array($potter));
@@ -197,6 +200,13 @@ class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerP
 	public function linkToDeleteShouldBeAsExpected() {
 		$this->assertXPath("//tr[2]//td//a[@href='/abonne/reservations/id_delete/12']");
 	}
+
+
+	/** @test */
+	public function bibliothequeShouldBeTombouctou() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Tombouctou', $this->_response->getBody());
+	}
+
 }
 
 
