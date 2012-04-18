@@ -486,6 +486,12 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 
 
 	/** @test */
+	public function firstReservationEtasShouldBeEmpty() {
+		$this->assertEquals('', $this->_emprunteur->getReservationAt(0)->getEtat());
+	}
+
+
+	/** @test */
 	public function secondReservationIdShouldBe14586() {
 		$this->assertEquals('14586', $this->_emprunteur->getReservationAt(1)->getId());
 	}
@@ -515,6 +521,12 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 	/** @test */
 	public function secondReservationRangShouldBeFourtyNine() {
 		$this->assertEquals('49', $this->_emprunteur->getReservationAt(1)->getRang());
+	}
+
+
+	/** @test */
+	public function secondReservationEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', $this->_emprunteur->getReservationAt(1)->getEtat());
 	}
 }
 

@@ -167,6 +167,7 @@ class NanookFixtures {
       <author>Olympe Bhêly-Quénum</author>
       <locationLabel>Site Principal</locationLabel>
 			<priority>49</priority>
+      <available>1</available>
     </hold>
     <hold>
       <bibId>19954</bibId>

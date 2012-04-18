@@ -186,6 +186,16 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader {
 		$this->_getCurrentOperation()->setRang($data);
 	}
 
+
+	/** 
+	 * @param string $data 
+	 */
+	public function endAvailable($data) {
+		if (1 == (int)$data)
+			$this->_currentHold->setEtat('Disponible');
+	}
+
+
 	/**
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */
