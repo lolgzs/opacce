@@ -542,7 +542,9 @@ class Admin_AlbumControllerAddAlbumToPatrimoineTest extends Admin_AlbumControlle
 
 	/** @test */
 	public function fieldForFichierShouldStateLimitedFilesExtensions() {
-		$this->assertXPathContentContains('//form[@id="album"]//td', '(jpg, gif, png)');
+		$this->assertXPathContentContains('//form[@id="album"]//td', 
+																			'(jpg, gif, png)', 
+																			$this->_response->getBody());
 	}
 
 
