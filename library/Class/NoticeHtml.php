@@ -191,10 +191,13 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------
 	public function getJavaScriptAuto()
 	{
-		if(!$this->java_script_auto) return false;
-		$html.='<script type="text/javascript">';
-		foreach($this->java_script_auto as $js) $html.=$js.";";
-		$html.='</script>';
+		if (!$this->java_script_auto)
+			return false;
+
+		$html ='<script type="text/javascript">';
+		foreach($this->java_script_auto as $js)
+			$html .= $js . ";";
+		$html .='</script>';
 		return $html;
 	}
 	
@@ -831,7 +834,10 @@ class Class_NoticeHtml
 		$html.='</ul></td></tr>';
 
 		// Avis page courante
-		$source=$_REQUEST["cherche"];
+		$source = null;
+		if (array_key_exists('cherche', $_REQUEST))
+			$source = $_REQUEST["cherche"];
+
 		if(!$source) {
 			if($avis["bib"]["nombre"] > 0) $source="bib";
 			elseif($avis["abonne"]["nombre"] > 0) $source="abonne";

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /**
  * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
@@ -147,7 +147,7 @@ class Class_Notice extends Storm_Model_Abstract
 						'nombre' => count($avis_abon),
 						'titre' => 'Lecteurs du portail'));
 
-		foreach (array(Class_WebService_Babelio, Class_WebService_Amazon) as $provider_class)
+		foreach (array('Class_WebService_Babelio', 'Class_WebService_Amazon') as $provider_class)
 		{
 			$provider = new $provider_class();
 			$source = strtolower(array_last(explode('_', $provider_class)));
