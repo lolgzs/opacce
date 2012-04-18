@@ -212,10 +212,10 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 			case "FORM_CONTACT": $url = BASE_URL . "/index/formulairecontact";
 				break;
 			case "VODECLIC": 
-				$url = BASE_URL . "/auth/login";
+				$url = BASE_URL . '/auth/login';
 				$target = 0;
 				if ($user = Class_Users::getLoader()->getIdentity()) {
-					$url = Class_VodeclicLink::forUser($user)->url();
+					$url = $this->getVodeclicUrlForUser($user);
 					$target = 1;
 				}
 				break;
@@ -224,8 +224,16 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		}
 
 		return array("url" => $url, "target" => $target);
-
 	}
+
+
+	public function getVodeclicUrlForUser($user) {
+		if ($user->isAbonne() && $user->isAbonnementValid()) 
+			return Class_VodeclicLink::forUser($user)->url();
+	
+		return 'javascript:alert(\'Votre abonnement est terminé\')';
+	}
+
 
 	/**
 	 * @return array

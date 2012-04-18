@@ -56,17 +56,40 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
-	public function vodeclicUrlWithUserLoggedShouldBeVodeclicSSO() {
+	protected function _logUserGaston() {
 		$account = new stdClass();
-		$account->username     = 'jean';
+		$account->username     = 'gaston';
 		$account->password     = 'password';
 		$account->ID_USER      = 34;
 		
-		Class_Users::getLoader()->newInstanceWithId(34)->setIdabon(34);
 		Zend_Auth::getInstance()->getStorage()->write($account);
+
+		return Class_Users::getLoader()
+			->newInstanceWithId(34)
+			->setIdabon(34)
+			->setNom('Lagaffe')
+			->setPrenom('Gaston');
+	}
+
+
+	/** @test */
+	public function vodeclicUrlWithUserLoggedShouldBeVodeclicSSO() {
+		$this->_logUserGaston()
+			->setDateDebut('1999-02-10')
+			->setDateFin('2025-09-12');
+		
 		$menu_url = $this->module_menu->getUrl('VODECLIC', array());
 		$this->assertContains('vodeclic', $menu_url['url']);
+		$this->assertEquals('1', $menu_url['target']);
+	}
+
+
+	/** @test */
+	public function vodeclicUrlWithAbonnementInvalidShouldBeJSAlertAbonnementInvalid() {
+		$this->_logUserGaston();
+
+		$menu_url = $this->module_menu->getUrl('VODECLIC', array());
+		$this->assertContains('javascript:alert(\'Votre abonnement est terminé\')', $menu_url['url']);
 		$this->assertEquals('1', $menu_url['target']);
 	}
 }
