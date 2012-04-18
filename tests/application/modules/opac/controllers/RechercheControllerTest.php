@@ -75,6 +75,42 @@ class RechercheControllerViewNoticeTest extends RechercheControllerNoticeTestCas
 
 
 
+class RechercheControllerReservationPickupAjaxActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findAllBy')
+			->with(array('no_pickup' => '0',
+									 'order' => 'libelle'))
+			->answers(array(Class_CodifAnnexe::getLoader()->newInstanceWithId(2)
+											->setLibelle('Annecy')
+											->setCode('ANN'),
+											Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
+											->setLibelle('Cran')
+											->setCode('CRN')));
+
+		$this->dispatch('recherche/reservation-pickup-ajax?id_bib=2&id_origine=12&code_annexe=ANN');
+	}
+
+
+	/** @test */
+	public function shouldRenderAnnecyCheckedRadio() {
+		$this->assertXPath('//input[@name="code_annexe"][@value="ANN"][@checked="checked"]');
+	}
+
+
+	/** @test */
+	public function shouldRenderCranRadio() {
+		$this->assertXPath('//input[@name="code_annexe"][@value="CRN"]');
+	}
+
+
+	/** @test */
+	public function layoutShouldBeEmpty() {
+		$this->assertNotXPath('//div[@id="banniere"]');
+	}
+
+}
 
 ?>

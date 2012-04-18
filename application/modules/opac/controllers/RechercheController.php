@@ -621,4 +621,32 @@ class RechercheController extends Zend_Controller_Action
 		print(json_encode($message));
 		exit;
 	}
+
+
+	public function reservationPickupAjaxAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('iframe.phtml');
+		Class_ScriptLoader::getInstance()
+			->loadJQuery()
+			->addAdminScript('onload_utils')
+			->addOPACStyleSheet('global')
+			->addSkinStyleSheet('global');
+
+		$annexes = Class_CodifAnnexe::findAllByPickup();
+
+		$form = $this->view->newForm(array('id' => 'pickup',
+																			 'class' => 'zend_form'))
+			->setMethod(Zend_Form::METHOD_POST)
+			->addElement('Radio', 'code_annexe', array('required' => true,
+																								 'allowEmpty' => false))
+			->addDisplayGroup(array('code_annexe'), 'group', array('legend' => 'Site de retrait'))
+			->addElement('Submit', 'Valider', array('onclick' => 'javascript:parent.reservationPickupAjaxConfirm(this.form);return false;'))
+			->addElement('Submit', 'Annuler', array('onclick' => 'javascript:parent.reservationPickupAjaxCancel();return false;'));
+			
+		$radio = $form->getElement('code_annexe');
+		foreach ($annexes as $annexe)
+			$radio->addMultiOption($annexe->getCode(), $annexe->getLibelle());
+		$radio->setValue($this->_getParam('code_annexe'));
+
+		$this->view->form = $form;
+	}
 }

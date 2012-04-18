@@ -28,14 +28,38 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 			->addAdminScript('controle_maj')
 			->addJQueryReady('$("form input").change(function(){setFlagMaj(true)})');
 
+		$form->setAttrib('class', trim($form->getAttrib('class').' form'));
+
 		// compatibilité avec les tables admin standard
+		$this->setupTableDecoratorsForForm($form);
+
+		if ($this->isFormContainsSubmit($form))
+			return $form->render();
+
+		return $form->render().$this->_buttonsFor($form->getAttrib('id'));
+	}
+
+
+	public function isFormContainsSubmit($form) {
+		foreach($form->getElements() as $element) {
+			if ($element->helper == 'formSubmit')
+				return true;
+		}
+		return false;
+	}
+
+
+	public function setupTableDecoratorsForForm($form) {
+		$td_gauche_tag = array(array('input_data' => 'HtmlTag'),
+													 array('tag' => 'td', 'class' => 'gauche'));
+
 		$form
-			->setAttrib('class', trim($form->getAttrib('class').' form'))
 			->setDisplayGroupDecorators(array(
 																				'FormElements',
 																				array('HtmlTag', array('tag' => 'table')),
 																				'Fieldset'))
 			->removeDecorator('HtmlTag');
+		
 
 		foreach ($form->getElements() as $element) {
 			$decorators	= $element->getDecorators();
@@ -47,24 +71,31 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 				$name = strtolower($name);
 
 				switch ($name) {
-					case 'label':
-						$newDecorators[] = array(array('input_data' => 'HtmlTag'),
-								array('tag' => 'td', 'class' => 'gauche'));
-					case 'viewhelper':
-						$decorator->setOption('tag', 'td');
+				case 'label':
+					$newDecorators[] = $td_gauche_tag;
+					$decorator->setOption('tag', 'td');
+					$newDecorators[$name] = $decorator;
+					$newDecorators[] = array('HtmlTag', array('tag' => 'tr'));
+					break;
+
+				case 'dtddwrapper':
+					break;
+
+				case 'viewhelper':
+					$decorator->setOption('tag', 'td');
+					$newDecorators[$name] = $decorator;
+					break;
+
+				default:
+					$newDecorators[$name] = $decorator;
+					break;
 				}
-
-				$newDecorators[$name] = $decorator;
-
 			}
 
-			$newDecorators[] = array('HtmlTag', array('tag' => 'tr'));
+
 			$element->setDecorators($newDecorators);
 		}
-
-		return
-			$form->render().
-			$this->_buttonsFor($form->getAttrib('id'));
+		return $this;
 	}
 
 

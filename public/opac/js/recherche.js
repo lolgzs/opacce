@@ -335,10 +335,32 @@ function reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe)
 }
 
 
+var pickupImgCallback;
+var pickupConfirmCallBack;
 function reservationPickupAjax(oImg,nIdBib,sIdOrigine,sCodeAnnexe)
 {
-	var sUrl=baseUrl+'/recherche/reservation-pickup-ajax?id_bib='+nIdBib+"&id_origine="+sIdOrigine+"&code_annexe="+sCodeAnnexe;
-	var saveImg=$(oImg).attr('src');
+	var sUrl = baseUrl+'/recherche/reservation-pickup-ajax?id_bib='+nIdBib+"&id_origine="+sIdOrigine+"&code_annexe="+sCodeAnnexe;
+	var saveImg = $(oImg).attr('src');
+	pickupImgLoadingCallback = function() {
+		$(oImg).attr('src', saveImg);
+	};
+	pickupConfirmCallBack = function(form) {
+		reservationPickupAjaxCancel();
+		var sCodeAnnexe = $(form).find('input:radio[name="code_annexe"]:checked').val();
+		reservationAjax(oImg, nIdBib, sIdOrigine, sCodeAnnexe);
+	};
+
 	$(oImg).attr('src',imagesUrl+'patience.gif');
 	showPopWin(sUrl, 500, 345, null);
+}
+
+
+function reservationPickupAjaxCancel() {
+	pickupImgLoadingCallback();
+	hidePopWin(false);
+}
+
+
+function reservationPickupAjaxConfirm(form) {
+	pickupConfirmCallBack(form);
 }
