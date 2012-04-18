@@ -24,10 +24,6 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 	 * @return string
 	 */
 	public function renderForm($form) {
-		Class_ScriptLoader::getInstance()
-			->addAdminScript('controle_maj')
-			->addJQueryReady('$("form input").change(function(){setFlagMaj(true)})');
-
 		$form->setAttrib('class', trim($form->getAttrib('class').' form'));
 
 		// compatibilité avec les tables admin standard
@@ -36,23 +32,31 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 		if ($this->isFormContainsSubmit($form))
 			return $form->render();
 
+
+		return $this->renderFormWithButtonsValiderAnnuler($form);
+	}
+
+
+	public function renderFormWithButtonsValiderAnnuler($form) {
+		Class_ScriptLoader::getInstance()
+			->addAdminScript('controle_maj')
+			->addJQueryReady('$("form input").change(function(){setFlagMaj(true)})');
+
 		return $form->render().$this->_buttonsFor($form->getAttrib('id'));
 	}
 
 
 	public function isFormContainsSubmit($form) {
-		foreach($form->getElements() as $element) {
-			if ($element->helper == 'formSubmit')
-				return true;
-		}
-		return false;
+		$isFormContainsSubmit = false;
+
+		foreach($form->getElements() as $element)
+			$isFormContainsSubmit = ($isFormContainsSubmit || ($element->helper == 'formSubmit'));
+
+		return $isFormContainsSubmit;
 	}
 
 
 	public function setupTableDecoratorsForForm($form) {
-		$td_gauche_tag = array(array('input_data' => 'HtmlTag'),
-													 array('tag' => 'td', 'class' => 'gauche'));
-
 		$form
 			->setDisplayGroupDecorators(array(
 																				'FormElements',
@@ -61,9 +65,16 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 			->removeDecorator('HtmlTag');
 		
 
-		foreach ($form->getElements() as $element) {
-			$decorators	= $element->getDecorators();
+		foreach ($form->getElements() as $element)
+			$element->setDecorators($this->_decoratorsForTableRendering($element));			
+
+		return $this;
+	}
+
+
+	protected function _decoratorsForTableRendering($element) {
 			$newDecorators = array();
+			$decorators	= $element->getDecorators();
 
 			foreach ($decorators as $name => $decorator) {
 				$name = explode('_', $name);
@@ -72,7 +83,8 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 
 				switch ($name) {
 				case 'label':
-					$newDecorators[] = $td_gauche_tag;
+					$newDecorators[] = array(array('input_data' => 'HtmlTag'),
+																	 array('tag' => 'td', 'class' => 'gauche'));
 					$decorator->setOption('tag', 'td');
 					$newDecorators[$name] = $decorator;
 					$newDecorators[] = array('HtmlTag', array('tag' => 'tr'));
@@ -92,10 +104,7 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 				}
 			}
 
-
-			$element->setDecorators($newDecorators);
-		}
-		return $this;
+			return $newDecorators;
 	}
 
 
