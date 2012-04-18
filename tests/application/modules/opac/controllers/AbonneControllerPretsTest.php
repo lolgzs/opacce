@@ -157,29 +157,44 @@ class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerP
 	}
 
 
-	public function testPageIsRendered() {
+	/** @test */
+	public function controllerShouldBeAbonne() {
 		$this->assertController('abonne');
+	}
+
+
+	/** @test */
+	public function actionShouldBeReservations() {
 		$this->assertAction('reservations');
 	}
 
 
-	public function testNomAffiche() {
-		$this->assertQueryContentContains("div.abonneTitre", 'FloFlo');
+	/** @test */
+	public function nomShouldBeFloFlo() {
+		$this->assertQueryContentContains('div.abonneTitre', 'FloFlo');
 	}
 
-	public function testViewTitrePotter() {
-		$this->assertXPathContentContains("//tr[2]//td", 'Potter');
+
+	/** @test */
+	public function titreShouldBePotter() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Potter');
 	}
 
-	public function testEtatIsReservationEmise() {
-		$this->assertXPathContentContains("//tr[2]//td", 'Réservation émise');
+
+	/** @test */
+	public function etatShouldBeReservationEmise() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Réservation émise');
 	}
 
-	public function testRangIsTwo() {
-		$this->assertXPathContentContains("//tr[2]//td", '2');
+
+	/** @test */
+	public function rangShouldBeTwo() {
+		$this->assertXPathContentContains('//tr[2]//td', '2');
 	}
 
-	public function testLinkDeleteReservationForPotter() {
+
+	/** @test */
+	public function linkToDeleteShouldBeAsExpected() {
 		$this->assertXPath("//tr[2]//td//a[@href='/abonne/reservations/id_delete/12']");
 	}
 }
