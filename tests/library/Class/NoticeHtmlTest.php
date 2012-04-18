@@ -197,6 +197,8 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest
 
 	public function setUp() {
 		parent::setUp();
+		Class_CosmoVar::getLoader()->newInstanceWithId('site_retrait_resa')
+			->setValeur('0');
 		$notice_html = new Class_NoticeHtml();
 		$this->html = $notice_html->getExemplaires(array($this->exemplaire));
 	}
