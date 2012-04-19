@@ -984,6 +984,12 @@ class Class_Notice extends Storm_Model_Abstract
 		return($lien);
 	}
 
+
+
+	public function acceptVisitor($visitor) {
+		$visitor->visitClefAlpha($this->getClefAlpha());
+		$visitor->visitTitre($this->getTitrePrincipal());
+	}
 }
 
 ?>
