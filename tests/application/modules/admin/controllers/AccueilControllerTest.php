@@ -346,6 +346,12 @@ class AccueilControllerConfigCalendrierTest extends Admin_AbstractControllerTest
 	function checkBoxDisplayNextEventShouldBeChecked() {
 		$this->assertXPath('//input[@type="checkbox"][@name="display_next_event"][@checked="checked"]');
 	}
+
+
+	/** @test */
+	public function inputNbEventsShouldDisplayThree() {
+		$this->assertXPath("//input[@name='nb_events'][@value='3']");
+	}
 }
 
 

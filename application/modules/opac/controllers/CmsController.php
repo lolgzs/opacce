@@ -244,7 +244,7 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 		$param["ID_BIB"]=Class_Profil::getCurrentProfil()->getIdSite();
 		$param["AFFICH_MOIS"]=1;
 		$param["NEWS"]["AFFICH_NEWS"]=1;
-		$param["NB_NEWS"]=3;
+		$param["NB_NEWS"]= (int)$preferences["nb_events"];
 		$param["ALEATOIRE"]=1;
 		$param["ID_MODULE"] = $id_module;
 		$param["ID_CAT"] = $preferences["id_categorie"];

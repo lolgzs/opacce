@@ -45,7 +45,8 @@ class Class_Systeme_ModulesAccueil_Calendrier extends Class_Systeme_ModulesAccue
 		// Information à afficher en préfixed du titre de l'article: bib, cat ou none.
 		'display_event_info'=> false,
 		'rss_avis' => false,                     //RSS
-		'display_next_event' => '1' //Afficher Prochains rendez-vous
+		'display_next_event' => '1',//Afficher Prochains rendez-vous
+		'nb_events' => '3' // Nombre de rendez-vous à afficher
 	);
 
 
