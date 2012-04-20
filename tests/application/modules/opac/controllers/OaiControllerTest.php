@@ -20,7 +20,7 @@ rf<?php
  */
 require_once 'AbstractControllerTestCase.php';
 
-abstract class OaiControllerListSetsRequestTestCase extends AbstractControllerTestCase {
+abstract class OaiControllerRequestTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -58,7 +58,7 @@ abstract class OaiControllerListSetsRequestTestCase extends AbstractControllerTe
 
 
 
-class OaiControllerIndentifyRequestTest extends OaiControllerListSetsRequestTestCase {
+class OaiControllerIndentifyRequestTest extends OaiControllerRequestTestCase {
 	protected $_xpath;
 	 
 	public function setUp() {
@@ -68,7 +68,7 @@ class OaiControllerIndentifyRequestTest extends OaiControllerListSetsRequestTest
 
 
 	/** @test */
-	public function identifyShouldReturnIdentifyResponse() {
+	public function shouldReturnIdentifyResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:request[@verb="Identify"]');
 	}
@@ -77,7 +77,7 @@ class OaiControllerIndentifyRequestTest extends OaiControllerListSetsRequestTest
 
 
 
-class OaiControllerListSetsRequestTest extends OaiControllerListSetsRequestTestCase {
+class OaiControllerListSetsRequestTest extends OaiControllerRequestTestCase {
 	protected $_xpath;
 	 
 	public function setUp() {
@@ -87,9 +87,29 @@ class OaiControllerListSetsRequestTest extends OaiControllerListSetsRequestTestC
 
 
 	/** @test */
-	public function identifyShouldReturnIdentifyResponse() {
+	public function shouldReturnListSetsResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 												'//oai:request[@verb="ListSets"]');
 	}
+}
+
+
+
+class OaiControllerUnknownVerbRequestTest extends OaiControllerRequestTestCase {
+	protected $_xpath;
+	 
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=DoASpecialThing');
+	}
+
+
+	/** @test */
+	public function shouldReturnErrorResponse() {
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
+																							'//oai:error[@code="badVerb"]',
+																							'Illegal OAI verb');
+	}
+
 }
 ?>

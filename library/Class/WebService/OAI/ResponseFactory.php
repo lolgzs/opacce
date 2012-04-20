@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_WebService_OAI_ResponseFactory {
+	const RESPONSE_PREFIX = 'Class_WebService_OAI_Response_';
+
 	public static function verbAndBaseUrl($verb, $baseUrl) {
 		$instance = new self();
 		return $instance->responseForVerbAndBaseUrl($verb, $baseUrl);
@@ -32,7 +34,9 @@ class Class_WebService_OAI_ResponseFactory {
 
 	
 	public function getResponseClassByVerb($verb) {
-		return 'Class_WebService_OAI_Response_'.$verb;
+		if (!class_exists(self::RESPONSE_PREFIX . $verb)) 
+			$verb = 'Null';
+		return self::RESPONSE_PREFIX . $verb;
 	}
 }
 

@@ -39,7 +39,7 @@ class Class_WebService_OAI_Response_Null {
 	}
 
 	public function buildXmlOn($builder) {
-		return '';
+		return $builder->error(array('code' => 'badVerb'), 'Illegal OAI verb');
 	}
 }
 
