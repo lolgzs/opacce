@@ -23,10 +23,15 @@ class OaiController extends Zend_Controller_Action {
 		$this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8');
 		$this->getHelper('ViewRenderer')->setNoRender();
 
-		$baseUrl = $this->_request->getScheme() . ':' . $_SERVER['SERVER_NAME'] 
+		$request = Class_WebService_OAI_ResponseFactory::verbAndBaseUrl($this->_getParam('verb'),
+																																		$this->buildBaseUrl());
+		$this->_response->setBody($request->xml($this->_request->getParams()));
+	}
+
+
+	protected function buildBaseUrl() {
+		return $this->_request->getScheme() . ':' . $_SERVER['SERVER_NAME'] 
 			. BASE_URL . '/opac/oai/request';
-		$response = new Class_WebService_OAI_Response_Identify($baseUrl);
-		$this->_response->setBody($response->xml());
 	}
 }
 

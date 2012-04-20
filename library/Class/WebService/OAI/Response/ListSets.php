@@ -20,13 +20,12 @@
  */
 
 
-class Class_WebService_OAI_Response_Identify extends Class_WebService_OAI_Response_Null {
+class Class_WebService_OAI_Response_ListSets extends Class_WebService_OAI_Response_Null {
 	public function buildXmlOn($builder) {
 		return 
-			$builder->request(array('verb' => 'Identify'), 
+			$builder->request(array('verb' => 'ListSets'), 
 												$this->_baseUrl);
 	}
 }
-
 
 ?>

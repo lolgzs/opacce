@@ -18,15 +18,22 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+class Class_WebService_OAI_ResponseFactory {
+	public static function verbAndBaseUrl($verb, $baseUrl) {
+		$instance = new self();
+		return $instance->responseForVerbAndBaseUrl($verb, $baseUrl);
+	}
 
 
-class Class_WebService_OAI_Response_Identify extends Class_WebService_OAI_Response_Null {
-	public function buildXmlOn($builder) {
-		return 
-			$builder->request(array('verb' => 'Identify'), 
-												$this->_baseUrl);
+	public function responseForVerbAndBaseUrl($verb, $baseUrl) {
+		$classname = $this->getResponseClassByVerb($verb);
+		return new $classname($baseUrl);
+	}
+
+	
+	public function getResponseClassByVerb($verb) {
+		return 'Class_WebService_OAI_Response_'.$verb;
 	}
 }
-
 
 ?>

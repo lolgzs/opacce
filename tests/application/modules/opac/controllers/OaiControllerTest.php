@@ -20,14 +20,25 @@ rf<?php
  */
 require_once 'AbstractControllerTestCase.php';
 
-class OaiControllerRequestTest extends AbstractControllerTestCase {
+abstract class OaiControllerListSetsRequestTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/oai/request?verb=Identify');
 		$this->_xpath = new Storm_Test_XPathXML();
 		$this->_xpath->registerNameSpace('oai', 'http://www.openarchives.org/OAI/2.0/');
+	}
+}
+
+
+
+
+class OaiControllerIndentifyRequestTest extends OaiControllerListSetsRequestTestCase {
+	protected $_xpath;
+	 
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=Identify');
 	}
 
 
@@ -48,6 +59,25 @@ class OaiControllerRequestTest extends AbstractControllerTestCase {
 	public function identifyShouldReturnIdentifyResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 												'//oai:request[@verb="Identify"]');
+	}
+}
+
+
+
+
+class OaiControllerListSetsRequestTest extends OaiControllerListSetsRequestTestCase {
+	protected $_xpath;
+	 
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=ListSets');
+	}
+
+
+	/** @test */
+	public function identifyShouldReturnIdentifyResponse() {
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+												'//oai:request[@verb="ListSets"]');
 	}
 }
 ?>

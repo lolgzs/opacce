@@ -18,15 +18,27 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+class Class_WebService_OAI_Response_Null {
+	protected $_baseUrl;
+
+	public function __construct($baseUrl) {
+		$this->_baseUrl = $baseUrl;
+	}
 
 
-class Class_WebService_OAI_Response_Identify extends Class_WebService_OAI_Response_Null {
+	public function xml() {
+		$builder = new Class_Xml_Builder();
+		
+		return $builder->_tag(array('OAI-PMH' =>  array('xmlns' => 'http://www.openarchives.org/OAI/2.0/',
+																										'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+																										'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd')),
+													$builder->responseDate(date('c')).
+													$this->buildXmlOn($builder));
+	}
+
 	public function buildXmlOn($builder) {
-		return 
-			$builder->request(array('verb' => 'Identify'), 
-												$this->_baseUrl);
+		return '';
 	}
 }
-
 
 ?>
