@@ -82,6 +82,13 @@ class OaiControllerListSetsRequestTest extends OaiControllerRequestTestCase {
 	 
 	public function setUp() {
 		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('findAllBy')
+			->with(array('where' => 'oai_spec is not null',
+									 'where' => 'oai_spec !=\'\'',
+									 'order' => 'oai_spec'))
+			->answers(array());
+
 		$this->dispatch('/opac/oai/request?verb=ListSets');
 	}
 

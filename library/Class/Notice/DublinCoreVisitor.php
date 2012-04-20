@@ -21,38 +21,33 @@
 
 class Class_Notice_DublinCoreVisitor {
 	protected $_xml;
+	protected $_builder;
+
+	public function __construct() {
+		$this->_builder = new Class_Xml_Oai_DublinCoreBuilder();
+	}
+
 
 	public function visit($notice) {
-		$this->_xml = '<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
-									 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">';
-
 		$notice->acceptVisitor($this);
-		$this->_xml .= '</oai_dc:dc>';
-		
 	}
 
 
 	public function xml() {
-		return $this->_xml;
+		return $this->_builder->oai_dc($this->_xml);
 	}
 
 
 	public function visitClefAlpha($clef) {
-		$this->addTag('identifier', sprintf('http://%s%s/recherche/notice/%s',
-																				$_SERVER['SERVER_NAME'],
-																				BASE_URL,
-																				$clef));
+		$this->_xml .= $this->_builder->identifier(sprintf('http://%s%s/recherche/notice/%s',
+																											 $_SERVER['SERVER_NAME'],
+																											 BASE_URL,
+																											 $clef));
 	}
 
 
 	public function visitTitre($titre) {
-		$this->addTag('title', $titre);
-	}
-
-
-	public function addTag($tag, $content) {
-		$this->_xml .= sprintf('<dc:%1$s>%2$s</dc:%1$s>',
-													 $tag, $content);
+		$this->_xml .= $this->_builder->title($titre);
 	}
 }
 

@@ -22,8 +22,27 @@
 // OPAC3 - Catalogues de notices
 ////////////////////////////////////////////////////////////////////////////////
 
-class Class_Catalogue
+class Class_Catalogue extends Storm_Model_Abstract
 {
+	protected $_table_name = 'catalogue';
+	protected $_table_primary = 'ID_CATALOGUE';
+
+	protected $_default_attribute_values = array('oai_spec' => '',
+																							 'description' => '');
+
+	public static function getLoader() {
+		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	public function acceptVisitor($visitor) {
+		$visitor->visitOaiSpec($this->getOaiSpec());
+		$visitor->visitLibelle($this->getLibelle());
+		if ($this->hasDescription())
+			$visitor->visitDescription($this->getDescription());
+	}
+
+
 //------------------------------------------------------------------------------
 // Rend les notices et les stats (test d'un catalogue)
 //------------------------------------------------------------------------------

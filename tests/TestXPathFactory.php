@@ -19,33 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Xml_Builder {
-	public function __call($method, $arguments) {
-		if (is_array($first_arg = $arguments[0]))
-			return $this->_tag(array($method => $first_arg), $arguments[1]);
-		return $this->_tag($method, $first_arg);
+class TestXPathFactory {
+	public static function newOai() {
+		$xpath = new Storm_Test_XPathXML();
+		$xpath->registerNameSpace('oai', 'http://www.openarchives.org/OAI/2.0/');
+		return $xpath;
 	}
 
-
-	public function _tag($tag, $content) {
-		if (!is_array($tag)) 
-			return $this->_xmlString((string)$tag, $content);
-		$attributes = $this->attributesToString(current($tag));
-		return $this->_xmlString(key($tag), $content, $attributes);
-	}
-
-
-	public function _xmlString($name, $content, $attributes = '') {
-		return '<'.$name.$attributes.'>'.$content.'</'.$name.'>';
-	}
-
-	
-	public function attributesToString($attributes) {
-		$attribs = '';
-		foreach ($attributes as $k => $v)
-			$attribs .= ' ' . $k . '="' . $v . '"';
-		return $attribs;
-	}
 }
-
 ?>

@@ -19,40 +19,41 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-
-class Class_WebService_OAI_Response_ListSets extends Class_WebService_OAI_Response_Null {
+class Class_WebService_OAI_CatalogueVisitor {
+	protected $_xml;
 	protected $_xmlBuilder;
-	protected $_catalogue_visitor;
 
-	public function buildXmlOn($builder) {
+	public function __construct($builder) {
 		$this->_xmlBuilder = $builder;
-		$this->_catalog_visitor = new Class_WebService_OAI_CatalogueVisitor($this->_xmlBuilder);
-
-		return 
-			$this->_xmlBuilder->request(array('verb' => 'ListSets'), 
-																	$this->_baseUrl)
-			. $this->_buildSets();
 	}
 
 
-	protected function _buildSets() {
-		$catalogs = Class_Catalogue::getLoader()
-			->findAllBy(array('where' => 'oai_spec is not null',
-												'where' => 'oai_spec !=\'\'',
-												'order' => 'oai_spec'));
-
-
-		$sets = '';
-		foreach ($catalogs as $catalog)
-			$sets .= $this->xmlForCatalogue($catalog);
-		
-		return $this->_xmlBuilder->ListSets($sets);
+	public function xml() {
+		return $this->_xml;
 	}
 
 
-	protected function xmlForCatalogue($catalog) {
-		$this->_catalog_visitor->visitCatalogue($catalog);
-		return $this->_xmlBuilder->set($this->_catalog_visitor->xml());
+	public function visitCatalogue($catalogue) {
+		$this->_xml = '';
+		$catalogue->acceptVisitor($this);
+		return $this;
+	}
+
+
+	public function visitOaiSpec($oai_spec) {
+		$this->_xml .= $this->_xmlBuilder->setSpec($oai_spec);
+	}
+
+
+	public function visitLibelle($libelle) {
+		$this->_xml .= $this->_xmlBuilder->setName($libelle);
+	}
+
+
+	public function visitDescription($description) {
+		$dcBuilder = new Class_Xml_Oai_DublinCoreBuilder();
+		$dcDescription = $dcBuilder->oai_dc($dcBuilder->description($description));
+		$this->_xml .= $this->_xmlBuilder->setDescription($dcDescription);
 	}
 }
 

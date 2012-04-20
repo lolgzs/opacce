@@ -19,33 +19,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Xml_Builder {
-	public function __call($method, $arguments) {
-		if (is_array($first_arg = $arguments[0]))
-			return $this->_tag(array($method => $first_arg), $arguments[1]);
-		return $this->_tag($method, $first_arg);
-	}
-
-
-	public function _tag($tag, $content) {
-		if (!is_array($tag)) 
-			return $this->_xmlString((string)$tag, $content);
-		$attributes = $this->attributesToString(current($tag));
-		return $this->_xmlString(key($tag), $content, $attributes);
+class Class_Xml_Oai_DublinCoreBuilder extends Class_Xml_Builder {
+	public function oai_dc($content) {
+		return parent::_xmlString('oai_dc:dc', 
+															$content, 
+															$this->attributesToString(array('xmlns:oai_dc' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+																															'xmlns:dc' => 'http://purl.org/dc/elements/1.1')));
 	}
 
 
 	public function _xmlString($name, $content, $attributes = '') {
-		return '<'.$name.$attributes.'>'.$content.'</'.$name.'>';
-	}
-
-	
-	public function attributesToString($attributes) {
-		$attribs = '';
-		foreach ($attributes as $k => $v)
-			$attribs .= ' ' . $k . '="' . $v . '"';
-		return $attribs;
+		return parent::_xmlString('dc:' . $name, $content, $attributes);
 	}
 }
-
 ?>
