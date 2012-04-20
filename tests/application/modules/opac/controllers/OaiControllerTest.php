@@ -24,6 +24,7 @@ class OaiControllerRequestTest extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
+		parent::setUp();
 		$this->dispatch('/opac/oai/request?verb=Identify');
 		$this->_xpath = new Storm_Test_XPathXML();
 		$this->_xpath->registerNameSpace('oai', 'http://www.openarchives.org/OAI/2.0/');
@@ -38,13 +39,13 @@ class OaiControllerRequestTest extends AbstractControllerTestCase {
 
 
 	/** @test */
-	public function acionShouldBeRequest() {
+	public function actionShouldBeRequest() {
 		$this->assertAction('request');
 	}
 
 	
 	/** @test */
-	public function IdentifyShouldReturnIdentifyResponse() {
+	public function identifyShouldReturnIdentifyResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 												'//oai:request[@verb="Identify"]');
 	}
