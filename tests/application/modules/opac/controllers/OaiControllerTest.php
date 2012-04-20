@@ -28,6 +28,31 @@ abstract class OaiControllerListSetsRequestTestCase extends AbstractControllerTe
 		$this->_xpath = new Storm_Test_XPathXML();
 		$this->_xpath->registerNameSpace('oai', 'http://www.openarchives.org/OAI/2.0/');
 	}
+
+
+	/** @test */
+	public function controllerShouldBeOai() {
+		$this->assertController('oai');
+	}
+
+
+
+	/** @test */
+	public function actionShouldBeRequest() {
+		$this->assertAction('request');
+	}
+
+
+	/** @test */
+	public function xmlVersionShouldOneDotZero() {
+		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");
+	}
+
+
+	/** @test */
+	public function xmlEncodingShouldBeUtf8() {
+		$this->_xpath->assertXmlEncoding($this->_response->getBody(), "UTF-8");
+	}
 }
 
 
@@ -43,22 +68,9 @@ class OaiControllerIndentifyRequestTest extends OaiControllerListSetsRequestTest
 
 
 	/** @test */
-	public function controllerShouldBeOai() {
-		$this->assertController('oai');
-	}
-
-
-
-	/** @test */
-	public function actionShouldBeRequest() {
-		$this->assertAction('request');
-	}
-
-	
-	/** @test */
 	public function identifyShouldReturnIdentifyResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
-												'//oai:request[@verb="Identify"]');
+															 '//oai:request[@verb="Identify"]');
 	}
 }
 
