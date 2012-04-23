@@ -36,7 +36,8 @@ class ZendAfi_View_Helper_Admin_HelpLink extends ZendAfi_View_Helper_BaseHelper 
 
 					'cms' => array('index' => 3611),
 
-					'index' => array('index' => 4037),
+					'index' => array('index' => 4037,
+													 'changelog' => 4488),
 
 					'modules' => array('recherche_viewnotice' => 3647,
 														 'recherche_resultat' => 3643),

@@ -5,7 +5,7 @@ $profil = Class_Profil::getCurrentProfil();
 
 // No de version
 print('<h2>'.$this->traduire('Version').'&nbsp;:</h2>');
-echo $this->ligneInfos("Numéro de version",VERSION_PERGAME);
+echo $this->ligneInfos("Numéro de version", VERSION_PERGAME . $this->helpLink('changelog'));
 
 // Parametres du site
 print('<h2>'.$this->traduire('Paramètres du site').'&nbsp;:</h2>');
