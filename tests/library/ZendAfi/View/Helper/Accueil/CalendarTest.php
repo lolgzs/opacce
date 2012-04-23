@@ -387,6 +387,18 @@ class CalendarWithCategorySelectorAndRssPreferencesTest extends CalendarViewHelp
 	function calendarEventListShouldNotContainsPortail() {
 		$this->assertNotXPathContentContains($this->html, '//a', 'Portail');
 	}
+
+
+	/** @test */
+	public function categorySelectorShouldBeVisible() {
+		$this->assertXPath($this->html, '//form[@id="calendar_select_categorie"]//select');
+	}
+
+
+	/** @test */
+	public function categorySelectorActionShouldBeOpacCmsCalendar() {
+		$this->assertXPath($this->html, '//form[@id="calendar_select_categorie"][contains(@action, "opac/cms/calendar")]');
+	}
 }
 
 

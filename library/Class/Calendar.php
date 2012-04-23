@@ -193,11 +193,12 @@ class Class_Calendar {
 		$action_url=BASE_URL.'/opac/cms/calendar/';
 
 		return sprintf('
-			<form id="calendar_select_categorie"	method="get" action="$action_url">
+			<form id="calendar_select_categorie"	method="get" action="%s">
 			  <label for="select_id_categorie">%s:</label>
 				<select id="select_id_categorie" name="select_id_categorie">%s</select>
 				<input type="hidden" name="id_module" value="%d"></input>
 			</form>',
+		 $action_url,
 		 $this->_translate->_('Catégorie'),
 		 $options,
 		 $this->id_module);
