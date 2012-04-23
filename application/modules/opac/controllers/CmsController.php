@@ -39,22 +39,29 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 	 *		'cat': identifiant de la catégorie
 	 */
 	public function articleviewbydateAction() {
-		$prefs = array(
-									 'event_date'		=> $this->_getParam('d'),
-									 'id_bib'				=> $this->_getParam('b'),
-									 'display_order' => 'EventDebut',
-									 'events_only'		=> true,
-									 'published' => false);
-		if ($id_cat = (int)$this->_getParam('select_id_categorie'))
-			$prefs['id_categorie'] = $id_cat;
+		$id_profil = (int)$this->_getParam('id_profil');
+		$id_module = (int)$this->_getParam('id_module');
+		if (!$profil = Class_Profil::getLoader()->find($id_profil))
+			$profil = Class_Profil::getCurrentProfil();
+		$preferences	= $profil->getModuleAccueilPreferences($id_module);
 
-		$articles = Class_Article::getLoader()->getArticlesByPreferences($prefs);
+		$preferences['event_date']		= $this->_getParam('d');
+		$preferences['id_bib']				= $this->_getParam('b');
+		$preferences['display_order'] = 'EventDebut';
+		$preferences['events_only']		= true;
+		$preferences['published'] = false;
+
+		if ($id_cat = (int)$this->_getParam('select_id_categorie'))
+			$preferences['id_categorie'] = $id_cat;
+
+		$articles = Class_Article::getLoader()->getArticlesByPreferences($preferences);
 
 		$articles = Class_Article::getLoader()->filterByLocaleAndWorkflow($articles);
 
 		$this->view->articles	= Class_Article::getLoader()->groupByBib($articles);
 
 	}
+
 
 	public function calendarrssAction() {
 		$id_profil = (int)$this->_getParam('id_profil');

@@ -202,6 +202,11 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 
 		$this->_article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
 			->whenCalled('getArticlesByPreferences')
+			->with(array('event_date' => '2011-09-03',
+									 'id_bib' => null,
+									 'display_order' => 'EventDebut',
+									 'events_only' => true,
+									 'published' => false))
 			->answers(
 				array(
 					Class_Article::getLoader()
@@ -227,10 +232,10 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 										Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
 												->setLibelle('Alimentaire')
 								),
-							))
-			->getWrapper();
+							));
 
-		$this->dispatch('/cms/articleviewbydate?d=2011-09-03&id_module=8&select_id_categorie=all');
+
+		$this->dispatch('/cms/articleviewbydate?d=2011-09-03&id_module=8&id_profil=2&select_id_categorie=all');
 	}
 
 	/** @test */
@@ -277,7 +282,7 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 }
 
 
-class CmsControllerArticleViewByDateCategorie23Test extends AbstractControllerTestCase {
+class CmsControllerArticleViewByDateCategorie23AndNoProfilParamTest extends AbstractControllerTestCase {
 	protected $_article_loader;
 
 	public function setUp() {

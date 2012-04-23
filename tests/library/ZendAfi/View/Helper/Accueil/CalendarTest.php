@@ -127,6 +127,14 @@ class CalendarWithEmptyPreferencesTest extends CalendarWithEmptyPreferencesTestC
 
 
 	/** @test */
+	public function titreShouldBeAgendaAndLinkToArticleViewByDate() {
+		$this->assertXPathContentContains($this->html, 
+																			'//a[contains(@href, "/cms/articleviewbydate/id_module/2/id_profil/2")]', 
+																			'Agenda');
+	}
+
+
+	/** @test */
 	function shouldDisplayCurrentMonth() {
 		$this->assertXPathContentContains($this->html,
 																			'//td[@class="calendar_title_month"]/a',
@@ -277,7 +285,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthFirstLinkShouldGoToFebruary() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-02&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-02&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -285,7 +293,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthSecondLinkShouldLinkToArticleViewByDate() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[2][contains(@href, "cms/articleviewbydate?d=2011-03&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[2][contains(@href, "cms/articleviewbydate?d=2011-03&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -293,7 +301,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthLastLinkShouldGoToApril() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2011-04&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2011-04&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -378,7 +386,7 @@ class CalendarWithCategorySelectorAndRssPreferencesTest extends CalendarViewHelp
 	/** @test */
 	function titleMonthLastLinkShouldGoToJanuary2012Categorie12() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2012-01&id_module=2&select_id_categorie=12")]',
+					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2012-01&id_module=2&id_profil=2&select_id_categorie=12")]',
 					$this->html);
 	}
 
@@ -536,7 +544,7 @@ class CalendarOnJanuaryTest extends CalendarViewHelperTestCase {
 	/** @test */
 	function titleMonthPreviousLinkShouldGoToDecember2011() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-12&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-12&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 

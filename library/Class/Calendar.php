@@ -450,7 +450,10 @@ class Class_Calendar {
 				$url = BASE_URL."/cms/articleviewbydate?d=".$this->year.'-'.$mois.'-'.$day;
 				break;
 		}
-		return $url."&amp;id_module=".$this->id_module.'&amp;select_id_categorie='.$this->param["SELECT_ID_CAT"];
+		return $url."&amp;".http_build_query(array(
+																							 'id_module' => $this->id_module,
+																							 'id_profil' => Class_Profil::getCurrentProfil()->getId(),
+																							 'select_id_categorie' => $this->param["SELECT_ID_CAT"]));
 	}
 
 	function getLastMonth($month, $year) {

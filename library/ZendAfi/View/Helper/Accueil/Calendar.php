@@ -26,9 +26,13 @@ class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_B
 //---------------------------------------------------------------------
 // Fabrique le html
 //---------------------------------------------------------------------  
-	public function getHtml()
-	{
-		$this->titre = '<a href="'.BASE_URL.'/cms/articleviewbydate">'.$this->preferences["titre"].'</a>';
+	public function getHtml()	{
+		$this->titre = $this->view->tagAnchor(array('controller' => 'cms',
+																								'action' => 'articleviewbydate',
+																								'id_module' => $this->id_module,
+																								'id_profil' => Class_Profil::getCurrentProfil()->getId()),
+																					$this->preferences["titre"]);
+
 
 		if ($this->preferences['rss_avis'])
 			$this->rss_interne = $this->_getRSSurl('cms', 'calendarrss');
