@@ -29,17 +29,19 @@ set_include_path('.' . PATH_SEPARATOR . './library'
 
 // Includes de base
 include_once "local.php";
-include_once "fonctions/fonctions.php";
-require_once "Zend/Loader.php";
-require_once "startup.php";
 
 $site= substr($_SERVER['SCRIPT_NAME'], 1, strpos($_SERVER['SCRIPT_NAME'], "index.php") -2);
-if(!file_exists("../" . array_last(split('/', $site)))) {
+if(!file_exists("../" . end(split('/', $site)))) {
 	echo "Erreur de vhost !" ;
 	exit ;
 }
 
 define("BASE_URL", "/" . $site) ;
+
+include_once "fonctions/fonctions.php";
+require_once "Zend/Loader.php";
+require_once "startup.php";
+
 $frontController = setupOpac();
 
 try { 
