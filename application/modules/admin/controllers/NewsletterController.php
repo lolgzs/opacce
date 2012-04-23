@@ -37,7 +37,7 @@ class Admin_NewsletterController extends Zend_Controller_Action {
 
 
 	protected function _newsletterForm($newsletter) {
-		$form = new Zend_Form;
+		$form = $this->view->newForm('newsletter');
 		$form
 			->setAction($this->view->url(array('action' => 'edit')))
 			->setMethod('post')
@@ -56,8 +56,7 @@ class Admin_NewsletterController extends Zend_Controller_Action {
 			->addValidator(new Zend_Validate_EmailAddress());
 
 		$contenu = $form
-			->createElement('textarea', 'contenu')
-			->setLabel('Contenu')
+			->createElement('ckeditor', 'contenu')
 			->setRequired(true);
 
 		$id_catalogue = $form
@@ -88,10 +87,12 @@ class Admin_NewsletterController extends Zend_Controller_Action {
 			->addElement($titre)
 			->addElement($expediteur)
 			->addElement($contenu)
-			->addDisplayGroup(array('titre', 'expediteur', 'contenu'), 
+			->addDisplayGroup(array('titre', 'expediteur'), 
 												'letter', 
 												array("legend" => "Lettre"))
-
+			->addDisplayGroup(array('contenu'), 
+												'contenu_html', 
+												array("legend" => "Contenu HTML"))
 			->addElement($id_catalogue)
 			->addElement($id_panier)
 			->addElement($nb_notices)

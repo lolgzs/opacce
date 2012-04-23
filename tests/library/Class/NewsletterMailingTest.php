@@ -178,7 +178,7 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 		$concerts = new Class_Newsletter();
 		$concerts
 			->setTitre('Concerts')
-			->setContenu("Marcus Miller\nau Jazz Festival")
+			->setContenu("Marcus Miller<br />au Jazz Festival")
 			->setIdCatalogue(null)
 			->setNbNotices(0)
 			->setIdPanier(null);
@@ -202,7 +202,7 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 
 
 	public function testBodyHTMLBreaksLines() {
-		$this->assertContains("Marcus Miller<br />\nau Jazz Festival",
+		$this->assertContains("Marcus Miller<br />au Jazz Festival",
 													quoted_printable_decode($this->mail->getBodyHTML()->getContent()));
 	}
 

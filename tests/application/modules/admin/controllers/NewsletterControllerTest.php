@@ -160,7 +160,7 @@ class Admin_NewsletterControllerAddActionTest extends Admin_NewsletterController
 	}
 
 	public function testFormContenu() {
-		$this->assertQuery("form textarea#contenu");
+		$this->assertQuery("form textarea[@name='contenu']");
 	}
 
 	public function testTitle() {
@@ -257,8 +257,8 @@ class Admin_NewsletterControllerEditActionTest extends Admin_NewsletterControlle
 		$this->assertXPath("//form//input[@id='expediteur'][@value='laurent@free.fr']");
 	}
 
-	public function testFormContenu() {
-		$this->assertQueryContentContains("form textarea#contenu",
+	public function testFormContenuHTML() {
+		$this->assertQueryContentContains("form textarea[@name='contenu'][following-sibling::script]",
 																			'Notre sélection du mois');
 	}
 
@@ -443,7 +443,7 @@ class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterContro
 		$nouveautes
 			->setId(3)
 			->setTitre('Nouveautés')
-			->setContenu('Notre sélection du mois')			
+			->setContenu('Notre sélection du mois<img src="zork.jpg"/> <b>Hoho</b>')			
 			->setIdCatalogue(null)
 			->setNbNotices(0)
 			->setIdPanier(null)
@@ -472,11 +472,11 @@ class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterContro
 	}
 
 	public function testBodyText() {
-		$this->assertQueryContentContains('p', 'Notre sélection du mois');
+		$this->assertQueryContentContains('p', 'Notre sélection du mois Hoho');
 	}
 
 	public function testBodyHtml() {
-		$this->assertQueryContentContains('p', 'Notre sélection du mois');
+		$this->assertXPath('//div//img[@src="zork.jpg"]');
 	}
 
 	public function testTableAbonnes() {

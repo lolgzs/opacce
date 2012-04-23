@@ -142,9 +142,14 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	}
 
 
+	protected function _htmlToText($html) {
+		return strip_tags(preg_replace('/<br[^>]*>/i', "\n", $html));
+	}
+
+
 
 	protected function _getBodyText($notices) {
-		$lines = array($this->getContenu(), "");
+		$lines = array($this->_htmlToText($this->getContenu()));
 
 		foreach($notices as $notice) {
 			$url_notice = sprintf('http://%s/recherche/viewnotice/id/%d',
@@ -168,7 +173,7 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	protected function _getBodyHTML($notices) {
 		$view = new ZendAfi_Controller_Action_Helper_View();
 
-		$html = "<p>".nl2br($this->getContenu())."</p>";
+		$html = $this->getContenu();
 
 		foreach($notices as $notice) {
 			$title = $this->_getTitleForNotice($notice);
