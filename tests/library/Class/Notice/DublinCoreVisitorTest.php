@@ -37,7 +37,8 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 		$potter = Class_Notice::getLoader()
 			->newInstanceWithId(4)
 			->setClefAlpha('harrypotter-sorciers')
-			->setTitrePrincipal('Harry Potter a l\'ecole des sorciers');
+			->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
+			->setDateMaj('2012-04-23');
 		$this->_dublin_core_visitor->visit($potter);
 	}
 
@@ -74,9 +75,12 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 		parent::setUp();
 		$souvigny = Class_Notice::getLoader()
 			->newInstanceWithId(5)
-			->setClefAlpha('souvigny-bible-11eme');
+			->setClefAlpha('souvigny-bible-11eme')
+			->setDateMaj('2012-04-23');
+		$oldServerName = $_SERVER['SERVER_NAME'];
 		$_SERVER['SERVER_NAME'] = 'moulins.fr';
 		$this->_dublin_core_visitor->visit($souvigny);
+		$_SERVER['SERVER_NAME'] = $oldServerName;
 	}
 
 

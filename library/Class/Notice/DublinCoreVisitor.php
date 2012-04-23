@@ -22,6 +22,9 @@
 class Class_Notice_DublinCoreVisitor {
 	protected $_xml;
 	protected $_builder;
+	protected $_identifier;
+	protected $_date;
+
 
 	public function __construct() {
 		$this->_builder = new Class_Xml_Oai_DublinCoreBuilder();
@@ -39,15 +42,30 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visitClefAlpha($clef) {
-		$this->_xml .= $this->_builder->identifier(sprintf('http://%s%s/recherche/notice/%s',
-																											 $_SERVER['SERVER_NAME'],
-																											 BASE_URL,
-																											 $clef));
+		$this->_identifier = sprintf('http://%s%s/recherche/notice/%s',
+																 $_SERVER['SERVER_NAME'], BASE_URL, $clef);
+		$this->_xml .= $this->_builder->identifier($this->_identifier);
 	}
 
 
 	public function visitTitre($titre) {
 		$this->_xml .= $this->_builder->title($titre);
+	}
+
+
+	public function visitDateMaj($dateMaj) {
+		$this->_date = substr($dateMaj, 0, 10);
+		$this->_xml .= $this->_builder->date($this->_date);
+	}
+
+
+	public function getIdentifier() {
+		return $this->_identifier;
+	}
+
+
+	public function getDate() {
+		return $this->_date;
 	}
 }
 

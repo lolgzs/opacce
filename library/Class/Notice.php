@@ -989,6 +989,7 @@ class Class_Notice extends Storm_Model_Abstract
 	public function acceptVisitor($visitor) {
 		$visitor->visitClefAlpha($this->getClefAlpha());
 		$visitor->visitTitre($this->getTitrePrincipal());
+		$visitor->visitDateMaj($this->getDateMaj());
 	}
 }
 
