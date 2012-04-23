@@ -92,7 +92,6 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 
 	public function setUp() {
 		$this->_registry_sql = Zend_Registry::get('sql');
-		Storm_Model_Abstract::unsetLoaders();
 		Class_ScriptLoader::resetInstance();
 
 		$this->_initMockProfil();

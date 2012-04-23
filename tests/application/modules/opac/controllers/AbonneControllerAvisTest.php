@@ -58,6 +58,7 @@ abstract class AbonneFlorenceIsLoggedControllerTestCase extends AbstractControll
 
 abstract class AbonneControllerAvisTestCase extends AbonneFlorenceIsLoggedControllerTestCase {
 	public function setUp() {
+		parent::setUp();
 		$this->avis_loader = $this->_generateLoaderFor('Class_AvisNotice',
 																									 array('findAllBy', 'save'));
 
