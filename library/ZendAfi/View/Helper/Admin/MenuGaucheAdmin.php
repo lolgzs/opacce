@@ -52,7 +52,8 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_modules .= $this->addMenu("mail.png",				$this->translate()->_("Lettres d'information"),		"/admin/newsletter",				 $acl_admins);
 
 		if (Class_AdminVar::isFormationEnabled()) {
-			$menu_modules .= $this->addMenu("formation.png",$this->translate()->_("Formations"),							"/admin/formation",					 $acl_admins);
+			$menu_modules .= $this->addMenu("formation.png", $this->translate()->_("Formations"),							"/admin/formation",					 $acl_admins);
+			$menu_modules .= $this->addMenu("compass.png",   $this->translate()->_("Lieux"),				  		  	"/admin/lieu",	 		  		   $acl_admins);
 		}
 
 		$menu_modules .= $this->closeBoite();
@@ -84,6 +85,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 
 		if (Class_AdminVar::isFormationEnabled()) {
 			$menu_portail .= $this->addMenu("usergroups.png",		$this->translate()->_("Groupes"),				"/admin/usergroup",	 $acl_admins);
+
 		}
 		$menu_portail .= $this->closeBoite();
 

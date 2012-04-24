@@ -1,0 +1,13 @@
+<li>
+  <?php 
+		 echo sprintf("<div></div><div>%s</div>", $this->lieu->getLibelle()); 
+		 echo sprintf("<div class='actions'>%s %s</div>", 
+									$this->tagAnchor(array('action' => 'edit',
+																				 'id' => $this->lieu->getId()),
+																	 $this->boutonIco("type=edit")),
+
+									$this->tagAnchor(array('action' => 'delete',
+																				 'id' => $this->lieu->getId()),
+																	 $this->boutonIco("type=del")));
+	?>
+</li>

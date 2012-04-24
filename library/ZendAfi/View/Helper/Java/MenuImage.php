@@ -62,7 +62,7 @@ class ZendAfi_View_Helper_Java_MenuImage
 				{ 
 					$id_sous_menu=$id_menu."_".$num_sous_menu;
 					$param_url=$cls_menu->getUrl($sous_menu["type_menu"],$sous_menu["preferences"]);
-					$html.='<tr><td onclick="window.parent.location=\''.$param_url["url"].'\';">&raquo;&nbsp;'.$sous_menu["libelle"].'</td></tr>';
+					$html.='<tr><td onclick="window.parent.location=\''.$param_url["url"].'\';">&raquo&nbsp;'.$sous_menu["libelle"].'</td></tr>';
 					$num_sous_menu++;
 				}
 				$html.='</table>';
