@@ -49,13 +49,28 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visitTitre($titre) {
-		$this->_xml .= $this->_builder->title($titre);
+		$this->_xml .= $this->_builder->title($this->cdata($titre));
+	}
+
+
+	public function visitAuteur($auteur) {
+		$this->_xml .= $this->_builder->creator($this->cdata($auteur));
+	}
+
+
+	public function visitResume($resume) {
+		$this->_xml .= $this->_builder->description($this->cdata($resume));
 	}
 
 
 	public function visitDateMaj($dateMaj) {
 		$this->_date = substr($dateMaj, 0, 10);
 		$this->_xml .= $this->_builder->date($this->_date);
+	}
+
+
+	public function visitMatiere($matiere) {
+		$this->_xml .= $this->_builder->subject($this->cdata($matiere));
 	}
 
 
@@ -66,6 +81,11 @@ class Class_Notice_DublinCoreVisitor {
 
 	public function getDate() {
 		return $this->_date;
+	}
+
+
+	public function cdata($value) {
+		return $this->_builder->cdata($value);
 	}
 }
 

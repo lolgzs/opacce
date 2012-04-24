@@ -26,5 +26,12 @@ class TestXPathFactory {
 		return $xpath;
 	}
 
+
+	public static function newOaiDc() {
+		$xpath = self::newOai();
+		$xpath->registerNameSpace('oai_dc', 'http://www.openarchives.org/OAI/2.0/oai_dc/')
+			->registerNameSpace('dc', 'http://purl.org/dc/elements/1.1/');
+		return $xpath;
+	}
 }
 ?>

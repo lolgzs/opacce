@@ -60,7 +60,8 @@ class Class_Notice extends Storm_Model_Abstract
 		$_auteur_principal,
 		$_avis,
 		$_moderated_avis,
-		$_resume;
+		$_resume,
+		$_matieres;
 
 	protected $_default_attribute_values = array('type_doc' => 0);
 
@@ -787,6 +788,11 @@ class Class_Notice extends Storm_Model_Abstract
 // ----------------------------------------------------------------
 	public function getMatieres()
 	{
+		if (isset($this->_matieres))
+			return $this->_matieres;
+		
+		$matiere = array();
+
 		// Recup des zones matières dans les variables
 		$zones = fetchOne("select valeur from variables where clef='unimarc_zone_matiere'");
 		$zones = explode(";", trim($zones));
@@ -811,6 +817,16 @@ class Class_Notice extends Storm_Model_Abstract
 		}
 		return($matiere);
 	}
+
+
+	/**
+	 * @param $matieres Array
+	 */
+	public function setMatieres($matieres) {
+		$this->_matieres = $matieres;
+		return $this;
+	}
+
 
 // ----------------------------------------------------------------
 // CENTRE D'INTERET PERGAME
@@ -989,6 +1005,10 @@ class Class_Notice extends Storm_Model_Abstract
 	public function acceptVisitor($visitor) {
 		$visitor->visitClefAlpha($this->getClefAlpha());
 		$visitor->visitTitre($this->getTitrePrincipal());
+		$visitor->visitAuteur($this->getAuteurPrincipal());
+		foreach ($this->getMatieres() as $matiere)
+			$visitor->visitMatiere($matiere);
+		$visitor->visitResume($this->getResume());
 		$visitor->visitDateMaj($this->getDateMaj());
 	}
 }

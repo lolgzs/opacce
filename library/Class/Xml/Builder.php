@@ -46,6 +46,11 @@ class Class_Xml_Builder {
 			$attribs .= ' ' . $k . '="' . $v . '"';
 		return $attribs;
 	}
+
+
+	public function cdata($value) {
+		return sprintf('<![CDATA[%s]]>', $value);
+	}
 }
 
 ?>
