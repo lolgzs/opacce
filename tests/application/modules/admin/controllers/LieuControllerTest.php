@@ -45,11 +45,14 @@ abstract class LieuControllerTestCase extends AbstractControllerTestCase {
 			->setVille('Lognes')
 			->setPays('France');
 
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
 			->whenCalled('findAllBy')
 			->with(array('order' => 'libelle'))
 			->answers(array($this->afi_annecy, $this->afi_lognes))
-			->beStrict();
+
+			->whenCalled('save')->answers(true)
+			->whenCalled('delete')->answers(null);
 	}
 }
 
@@ -103,6 +106,239 @@ class LieuControllerListTest extends LieuControllerTestCase {
 	function menuGaucheAdminShouldContainsLinkToLieu() {
 		$this->assertXPathContentContains('//div[@class="menuGaucheAdmin"]//a[contains(@href,"admin/lieu")]',
 																			"Lieux");
+	}
+}
+
+
+
+
+class LieuControllerAddTest extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/lieu/add');
+	}
+
+
+	/** @test */
+	public function titreShouldBeDeclarerUnNouveauLieu() {
+		$this->assertXPathContentContains('//h1', 'un nouveau lieu');
+	}
+
+
+	/** @test */
+	public function formShouldContainsInputForLibelle() {
+		$this->assertXPath('//form[contains(@action, "add")][@method="post"]//input[@name="libelle"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsTextAreaForAdresse() {
+		$this->assertXPath('//form//textarea[@name="adresse"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsInputForCodePostal() {
+		$this->assertXPath('//form//input[@name="code_postal"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsInputForVille() {
+		$this->assertXPath('//form//input[@name="ville"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsInputForPaysWithDefaultFrance() {
+		$this->assertXPath('//form//input[@name="pays"][@value="FRANCE"]');
+	}
+}
+
+
+
+
+class LieuControllerPostNewLieuTest extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Lieu::getLoader()
+			->whenCalled('save')
+			->willDo(function($lieu) {
+					$lieu->setId(90);
+					return true;
+			});
+
+		$this->postDispatch('/admin/lieu/add',
+												array('libelle' => 'MJC des Romains',
+															'adresse' => '28 avenue du stade',
+															'code_postal' => '74014',
+															'ville' => 'Annecy',
+															'pays' => 'France'));
+		$this->new_lieu = Class_Lieu::getLoader()->getFirstAttributeForLastCallOn('save');
+	}
+
+	
+	/** @test */
+	public function lieuShouldBeCreatedWithMJCDesRomains() {
+		$this->assertEquals('MJC des Romains', $this->new_lieu->getLibelle());
+	}
+
+
+	/** @test */
+	public function adresseShouldBe28AvenueStade() {
+		$this->assertEquals('28 avenue du stade', $this->new_lieu->getAdresse());
+	}
+
+
+	/** @test */
+	public function codePostalShouldReturn74014() {
+		$this->assertEquals('74014', $this->new_lieu->getCodePostal());
+	}
+
+
+	/** @test */
+	public function answerShouldRetirectToLieuEditId90() {
+		$this->assertRedirectTo('/admin/lieu/edit/id/90');
+	}
+}
+
+
+
+
+class LieuControllerEditAnnecyTest extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/lieu/edit/id/3');
+	}
+
+
+	/** @test */
+	public function titreShouldBeModificationDuLieuAfiAnnecy() {
+		$this->assertXPathContentContains('//h1', 'Modifier le lieu: "AFI Annecy"');
+	}
+
+
+	/** @test */
+	public function formInputLibelleShouldContainsAnnecy() {
+		$this->assertXPath('//form[contains(@action, "edit")][@method="post"]//input[@name="libelle"][@value="AFI Annecy"]');	
+	}
+
+
+	/** @test */
+	public function adresseShouldContains11BoulevardDuFier() {
+		$this->assertXPathContentContains('//textarea[@name="adresse"]', '11, boulevard du fier');
+	}
+
+
+	/** @test */
+	public function codePostalInputShouldContains74000() {
+		$this->assertXPath('//input[@name="code_postal"][@value="74000"]');
+	}
+
+
+	/** @test */
+	public function villeShouldContainsAnnecy() {
+		$this->assertXPath('//input[@name="ville"][@value="Annecy"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsStaticGoogleImage() {
+		$this->assertXPath('//img[@src="http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=15&size=200x200&center=11%2C+boulevard+du+fier%2C74000%2CAnnecy%2CFrance&markers=11%2C+boulevard+du+fier%2C74000%2CAnnecy%2CFrance"]',
+											 $this->_response->getBody());
+	}
+}
+
+
+
+
+class LieuControllerPostLieuAnnecyTest extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->postDispatch('/admin/lieu/edit/id/3',
+												array('libelle' => 'Agence Francaise Informatique'));
+	}
+
+
+	/** @test */
+	public function libelleAnnecyShouldBeAgenceFrancaise() {
+		$this->assertEquals('Agence Francaise Informatique', $this->afi_annecy->getLibelle());
+	}
+
+
+	/** @test */
+	public function lieuAnnecyShouldHaveBeenSaved() {
+		$this->assertEquals($this->afi_annecy, Class_Lieu::getLoader()->getFirstAttributeForLastCallOn('save'));
+	}
+}
+
+
+
+
+class LieuControllerDeleteAnnecyTest extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/admin/lieu/delete/id/3');
+	}
+
+
+	/** @test */
+	public function lieuShouldHaveBeenDeleted() {
+		$this->assertEquals($this->afi_annecy, Class_Lieu::getLoader()->getFirstAttributeForLastCallOn('delete'));
+	}
+
+
+	/** @test */
+	public function answerShouldRetirectToLieuEditId90() {
+		$this->assertRedirectTo('/admin/lieu/index');
+	}
+}
+
+
+
+
+class LieuControllerPostTestErrors extends LieuControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/admin/lieu/add', 
+												array('libelle' => ''));
+	}
+
+
+	/** @test */
+	function saveShouldNotBeCalledIfLibelleEmpty() {
+		$this->assertFalse(Class_Lieu::getLoader()->methodHasBeenCalled('save'));		
+	}
+
+
+	/** @test */
+	function responseShouldNotRedirect() {
+		$this->assertNotRedirect();
+	}
+
+	/** @test */
+	function errorShouldDisplayUneValeurEstRequise() {
+		$this->assertXPathContentContains('//ul[@class="errors"]//li', "Une valeur est requise");
+	}
+}
+
+
+
+class LieuControllerErrorsFindTest extends LieuControllerTestCase {
+	/** @test */
+	public function lieuNotFoundOnEditShouldRedirectToIndex() {
+		$this->dispatch('/admin/lieu/edit/id/999999999999');
+		$this->assertRedirectTo('/admin/lieu/index');
+	}
+
+
+	/** @test */
+	public function lieuNotFoundOnDeleteShouldRedirectToIndex() {
+		$this->dispatch('/admin/lieu/delete/id/999999999999');
+		$this->assertRedirectTo('/admin/lieu/index');
 	}
 }
 

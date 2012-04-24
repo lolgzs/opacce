@@ -207,7 +207,7 @@ class Class_ScriptLoader {
 			->addJQueryReady(sprintf('showNotification(%s)',
 															 json_encode(array('message' => $message, 
 																								 'autoClose' => true, 
-																								 'duration' => 2, 
+																								 'duration' => 10, 
 																								 'type' => 'information'))));
 	}
 

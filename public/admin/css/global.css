@@ -879,3 +879,13 @@ div.impressions .actions{
 .formations li.annule div:first-child + div {
 		text-decoration: line-through;
 }
+
+
+.edit_lieu>img {
+		float: right;
+}
+
+
+.edit_lieu form {
+		width: 480px;
+}

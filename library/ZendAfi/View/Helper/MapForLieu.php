@@ -19,14 +19,24 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Lieu extends Storm_Model_Abstract {
-	protected $_table_name = 'lieux';
-	protected $_default_attribute_values = array('pays' => 'FRANCE');
+class ZendAfi_View_Helper_MapForLieu extends Zend_View_Helper_HtmlElement {
+	public function mapForLieu($lieu) {
+		$full_adresse = implode(',',
+														array($lieu->getAdresse(),
+																	$lieu->getCodePostal(),
+																	$lieu->getVille(),
+																	$lieu->getPays()));
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
+		$params = array('sensor' => 'false',
+										'zoom' => 15,
+										'size' => '200x200',
+										'center' => $full_adresse,
+										'markers' => $full_adresse);
+										
+		return sprintf('<img src="http://maps.googleapis.com/maps/api/staticmap?%s" alt="%s"/>',
+									 http_build_query($params),
+									 $lieu->getLibelle());
 	}
-
 }
 
 ?>

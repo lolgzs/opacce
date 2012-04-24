@@ -165,6 +165,7 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		return ('' != self::get('VODECLIC_KEY'));
 	}
 
+
 	/**
 	 * @return array
 	 */
