@@ -27,6 +27,7 @@
 | ProtoFlow                           | (open-terms)                |               | kiosques                          |                  | http://blog.deensoft.com                                                                                                       |
 | Image SlideShow                     | LGPL                        |               | kiosques                          |                  | http://www.dhtmlgoodies.com/index.html?whichScript=image_slideshow                                                             |
 | FPDF                                | MIT like                    |               |                                   |                  | http://www.fpdf.org/                                                                                                           |
+| Nuvola icons                        | LGPL                        |               | icônes                            |                  | http://www.icon-king.com/projects/nuvola/                                                                                      |
 |                                     |                             |               |                                   |                  |                                                                                                                                |
 
 
