@@ -21,6 +21,7 @@
 class Class_WebService_OAI_Response_Null {
 	const PROLOG = '<?xml version="1.0" encoding="UTF-8"?>';
 	protected $_baseUrl;
+	protected $_protocolVersion = '2.0';
 
 	public function __construct($baseUrl) {
 		$this->_baseUrl = $baseUrl;

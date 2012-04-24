@@ -21,10 +21,40 @@
 
 
 class Class_WebService_OAI_Response_Identify extends Class_WebService_OAI_Response_Null {
+	const GRANULARITY = 'YYYY-MM-DD';
+	const DELETED_RECORD = 'no';
+
+	protected $_earliestDatestamp;
+	protected $_adminEmail;
+
 	public function buildXmlOn($builder) {
 		return 
 			$builder->request(array('verb' => 'Identify'), 
-												$this->_baseUrl);
+												$this->_baseUrl)
+			. $this->identify($builder);
+	}
+
+
+	public function identify($builder) {
+		return $builder->Identify($builder->repositoryName('Afi OPAC 3 Oai repository')
+															. $builder->baseURL($this->_baseUrl)
+															. $builder->protocolVersion($this->_protocolVersion)
+															. $builder->earliestDatestamp($this->_earliestDatestamp)
+															. $builder->granularity(self::GRANULARITY)
+															. $builder->deletedRecord(self::DELETED_RECORD)
+															. $builder->adminEmail($this->_adminEmail));
+	}
+
+
+	public function setEarliestDatestamp($datestamp) {
+		$this->_earliestDatestamp = $datestamp;
+		return $this;
+	}
+
+
+	public function setAdminEmail($mail) {
+		$this->_adminEmail = $mail;
+		return $this;
 	}
 }
 
