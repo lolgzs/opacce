@@ -397,14 +397,14 @@ class Admin_FormationControllerIndexTest extends Admin_FormationControllerTestCa
 
 
 	/** @test */
-	function secondH2ShouldContains2009() {
-		$this->assertXPathContentContains('//div[3]//h2', '2009', $this->_response->getBody());
+	function firstH2ShouldContains2009() {
+		$this->assertXPathContentContains('//div[2]//h2', '2009', $this->_response->getBody());
 	}
 
 
 	/** @test */
-	function firstH2ShouldContains2012() {
-		$this->assertXPathContentContains('//div[2]//h2', '2012');
+	function secondH2ShouldContains2012() {
+		$this->assertXPathContentContains('//div[3]//h2', '2012');
 	}
 
 

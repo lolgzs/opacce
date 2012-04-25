@@ -192,32 +192,20 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 	}	
 
 	/** @test */
-	function aListItemShouldContainsLearnJava() {
-		$this->assertXPathContentContains('//li//div', 'Learn Java');
+	function aH2ShouldContainsLearnJava() {
+		$this->assertXPathContentContains('//h2', 'Learn Java');
 	}
 
 
 	/** @test */
-	function aListItemForDescriptionShouldContainsIfYouWantTo() {
-		$this->assertXPathContentContains('//li//div', 'If you want to');
+	function aDivForDescriptionShouldContainsIfYouWantTo() {
+		$this->assertXPathContentContains('//div', 'If you want to');
 	}
 
 
 	/** @test */
-	function aListItemShouldContainsLearnPython() {
-		$this->assertXPathContentContains('//ul//li', 'Learn Python');
-	}
-
-
-	/** @test */
-	function aH2ShouldContains2022() {
-		$this->assertXPathContentContains('//h2', '2022');
-	}
-
-
-	/** @test */
-	function aH2ShouldContains2023() {
-		$this->assertXPathContentContains('//h2', '2023');
+	function aH2ShouldContainsLearnPython() {
+		$this->assertXPathContentContains('//h2', 'Learn Python');
 	}
 
 
@@ -241,60 +229,60 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 
 	/** @test */
 	function session_juillet_smalltalk_ShouldNotDisplayLimiteAsNotSet() {
-		$this->assertNotXPathContentContains('//li[@class="session_12"]', 'Limite:');
+		$this->assertNotXPathContentContains('//td[@class="session_12"]', 'Limite:');
 	}
 
 
 
 	/** @test */
 	function session_fevrier_17_ShouldBeDisplayedUnderLearnJavaInSecondPosition() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]', 'février, 17');
+		$this->assertXPathContentContains('//tr[2]//td', '17 février 2022');
 	}
 
 
 	/** @test */
 	function session_fevrier_17_lieuBonlieuShouldBeDisplayed() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]', 'Bonlieu');
+		$this->assertXPathContentContains('//tr[2]//td', 'Bonlieu');
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldHaveLinkForInscrire() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//a[contains(@href, "abonne/inscrire_session/id/31")]',
+		$this->assertXPathContentContains('//tr[2]//a[contains(@href, "abonne/inscrire_session/id/31")]',
 																			"S'inscrire");
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldDisplayDateLimite15Fevrier() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]',
+		$this->assertXPathContentContains('//tr[2]',
 																			"Limite: 15 février 2022");
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldHaveLinkForDetailSessionFormation() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//a[contains(@href, "abonne/detail_session/id/31")]', 
+		$this->assertXPathContentContains('//tr[2]//a[contains(@href, "abonne/detail_session/id/31")]', 
 																			'Détails de la session');
 	}
 
 
 	/** @test */
 	function session_mars_27_ShouldBeDisplayedUnderLearnJavaInFirstPosition() {
-		$this->assertXPathContentContains('//ul//li//ul//li[1]', 'mars, 27');
+		$this->assertXPathContentContains('//tr[1]', '27 mars 2022');
 	}
 
 
 	/** @test */
 	function session_septembre_java_ShouldBeAnnule() {
-		$this->assertXPathContentContains('//ul//li//ul//li', 'septembre, 27 (Annul');
+		$this->assertXPathContentContains('//tr', '27 septembre 2022 (Annul');
 	}
 
 
 
 	/** @test */
 	function session_python_juillet_ShouldHaveLinkForDesinscrire() {
-		$this->assertXPathContentContains('//ul//li//ul//li//a[contains(@href, "abonne/desinscrire_session/id/121")]',
+		$this->assertXPathContentContains('//tr//a[contains(@href, "abonne/desinscrire_session/id/121")]',
 																			"Se désinscrire");
 	}
 
@@ -463,7 +451,7 @@ class AbonneControllerFormationsSessionJavaFevrierFullListTest extends AbonneCon
 
 	/** @test */
 	public function sessionShouldDisplayFull() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//span', 'Effectif maximum atteint');
+		$this->assertXPathContentContains('//tr[2]//span', 'Effectif maximum atteint');
 	}
 }
 

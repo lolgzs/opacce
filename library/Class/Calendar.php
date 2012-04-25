@@ -453,7 +453,9 @@ class Class_Calendar {
 		return $url."&amp;".http_build_query(array(
 																							 'id_module' => $this->id_module,
 																							 'id_profil' => Class_Profil::getCurrentProfil()->getId(),
-																							 'select_id_categorie' => $this->param["SELECT_ID_CAT"]));
+																							 'select_id_categorie' => $this->param["SELECT_ID_CAT"]),
+																				 null,
+																				 '&amp;');
 	}
 
 	function getLastMonth($month, $year) {

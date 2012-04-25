@@ -1,12 +1,24 @@
-<li>
-  <?php 
-		 echo sprintf("<div></div><div>%s</div><div></div><div>%s</div>", 
-									$this->formation->getLibelle(),
-									$this->formation->getDescription()); 
-	   echo sprintf('<ul>%s</ul>',
-									$this->partialCycle('abonne/_session.phtml',
-																			'session',
-																			$this->formation->getSessions(),
-																			array('first', 'second')));
-	?>
-</li>
+<div>
+	 <h2><?php echo $this->formation->getLibelle() ?></h2>
+	 <div><?php echo $this->formation->getDescription() ?></div>
+
+
+	<table class="lieux">
+	<thead>
+		<tr class="soustitre">
+			<td>Date</td>
+			<td>Lieu</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</thead>
+  <tbody>
+	 <?php
+	    echo $this->partialCycle('abonne/_session.phtml',
+															 'session',
+															 $this->formation->getSessions(),
+															 array('first', 'second'));
+	  ?>
+	</tbody>
+  </table>
+</div>
