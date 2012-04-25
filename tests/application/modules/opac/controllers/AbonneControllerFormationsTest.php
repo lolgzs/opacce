@@ -632,12 +632,6 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 
 
 	/** @test */
-	public function ddShouldContainsObjectif() {
-		$this->assertXPathContentContains('//dl/dd', 'Ecrire un premier programme');
-	}
-
-
-	/** @test */
 	public function ddShouldContainsNombreDeParticipants() {
 		$this->assertXPathContentContains('//dl/dd', 'minimum: 5, maximum: 22, actuel: 1');
 	}

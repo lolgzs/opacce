@@ -19,18 +19,23 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_RenderLieu extends Zend_View_Helper_HtmlElement {
-	public function renderLieu($lieu, $map_options = null) {
-		if (!$lieu)
-			return '';
+class ZendAfi_View_Helper_RenderLieuTest extends ViewHelperTestCase {
+	/** @var ZendAfi_View_Helper_RenderForm */
+	protected $_helper;
 
-		$adresse = nl2br($lieu->getAdresse()).'<br/>'.$lieu->getCodePostal().' '.$lieu->getVille();
-		
-		return sprintf('<div class="lieu">%s %s <p>%s</p></div>',
-									 $this->view->mapForLieu($lieu, $map_options),
-									 $lieu->getLibelle(),
-									 $adresse);
+	public function setUp() {
+		parent::setUp();
+		$view = new ZendAfi_Controller_Action_Helper_View();
+		$this->_helper = new ZendAfi_View_Helper_RenderLieu();
+		$this->_helper->setView($view);
+	}
+
+
+	/** @test */
+	public function withLieuNullShouldRenderEmptyString() {
+		$this->assertEquals('', $this->_helper->renderLieu(null));
 	}
 }
+
 
 ?>

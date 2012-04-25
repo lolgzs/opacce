@@ -400,7 +400,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 																										 'required' => true,
 																										 'allowEmpty' => false	))
 			->addElement('datePicker', 'date_limite_inscription', array(
-																																	'label' => 'Date limite d\'inscription',
+																																	'label' => 'Date limite d\'inscription *',
 																																	'size'	=> 10	))
 			->addElement('text', 'effectif_min', array(
 																								 'label' => 'Effectif minimum *',
@@ -421,7 +421,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 																					'validators' => array('int')))
 
 			->addElement('text', 'horaires', array(
-																						 'label' => 'Horaires',
+																						 'label' => 'Horaires *',
 																						 'size'	=> 50,
 																						 'required' => true,
 																						 'allowEmpty' => false))
@@ -439,10 +439,9 @@ class Admin_FormationController extends Zend_Controller_Action {
 			->addElement($intervenants_checkboxes)
 
 			->addElement('ckeditor', 'contenu', array(
-																										 'label' => 'Contenu *',
+																										 'label' => '',
 																										 'required' => true,
 																										 'allowEmpty' => false))
-			->addElement('ckeditor', 'objectif', array('label' => 'Objectif'))
 			->addElement('ckeditor', 'compte_rendu', array('label' => ''))
 
 			->addDisplayGroup(
@@ -462,10 +461,9 @@ class Admin_FormationController extends Zend_Controller_Action {
 												'intervenants',
 												array('legend' => 'Intervenants'))
 			->addDisplayGroup(
-												array('contenu',
-															'objectif'), 
+												array('contenu'), 
 												'programme',
-												array('legend' => 'Programme'))
+												array('legend' => 'Contenu *'))
 			->addDisplayGroup(
 												array('compte_rendu'),
 												'bilan',
