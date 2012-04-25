@@ -214,7 +214,10 @@ class UsersTestSave extends ModelTestCase {
 												 'naissance' => '',
 												 'date_debut' => 0,
 												 'telephone' => '',
-												 'mail' => ''));
+												 'mail' => '',
+												 'adresse' => '',
+												 'code_postal' => '',
+												 'ville' => ''));
 
 		$coltrane = new Class_Users();
 		$coltrane
@@ -246,7 +249,10 @@ class UsersTestSave extends ModelTestCase {
 									 'idabon' => '',
 									 'naissance' => '',
 									 'date_debut' => 0,
-									 'telephone' => ''), 
+									 'telephone' => '',
+									 'adresse' => '',
+									 'code_postal' => '',
+									 'ville' => ''), 
 						 'id_user=\'34\'');
 
 		Class_Users::getLoader()
