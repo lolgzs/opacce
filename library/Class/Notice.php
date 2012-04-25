@@ -42,6 +42,16 @@ class NoticeLoader extends Storm_Model_Loader
 		return $notices;
 	}
 
+
+	public function getNoticeByClefAlpha($clef) {
+		$result = $this->findAllBy(array('clef_alpha' => $clef,
+																		 'limit' => 1));
+		if (0 == count($result))
+			return null;
+		
+		return $result[0];
+	}
+
 }
 
 class Class_Notice extends Storm_Model_Abstract

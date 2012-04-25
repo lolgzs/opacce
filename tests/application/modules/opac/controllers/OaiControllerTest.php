@@ -102,6 +102,24 @@ class OaiControllerListSetsRequestTest extends OaiControllerRequestTestCase {
 
 
 
+class OaiControllerGetRecordRequestTest extends OaiControllerRequestTestCase {
+	protected $_xpath;
+	 
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=GetRecord&identifier=zork&metadataPrefix=oai_dc');
+	}
+
+
+	/** @test */
+	public function shouldReturnGetRecordResponse() {
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+												'//oai:request[@verb="GetRecord"]');
+	}
+}
+
+
+
 class OaiControllerUnknownVerbRequestTest extends OaiControllerRequestTestCase {
 	protected $_xpath;
 	 
