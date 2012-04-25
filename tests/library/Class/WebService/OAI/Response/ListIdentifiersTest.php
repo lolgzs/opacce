@@ -56,6 +56,13 @@ class ListIdentifiersTest extends Storm_Test_ModelTestCase {
 																		3);
 	}
 
+
+	/** @test */
+	public function shouldNotHaveMetadata() {
+		$this->_xpath->assertNotXpath($this->_response->xml(),
+																	'//oai:ListIdentifiers/oai:metadata');
+	}
+
 	
 	/** @test */
 	public function firstIdentifierShouldContainSorciers() {

@@ -18,29 +18,9 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Response_Null {
-	protected $_notice;
-
-	public function buildXmlOn($builder) {
-		if (null === $this->_notice)
-			return '';
-
-		$visitor = new Class_Notice_DublinCoreVisitor();
-		$visitor->visit($this->_notice);
-		$recordBuilder = new Class_WebService_OAI_Response_RecordBuilder();
-
-		return 
-			$builder->request(array('verb' => 'GetRecord',
-															'metadataPrefix' => 'oai_dc'), 
-												$this->_baseUrl)
-			. $builder->GetRecord($builder->record($recordBuilder->xml($builder, $visitor)));
-	}
-
-
-	public function setNotice($notice) {
-		$this->_notice = $notice;
+class Class_WebService_OAI_Response_RecordHeadersBuilder extends Class_WebService_OAI_Response_RecordBuilder {
+	public function buildMetadata($builder, $visitor) {
+		return '';
 	}
 }
-
-
 ?>

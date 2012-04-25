@@ -36,11 +36,11 @@ class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI
 
 	public function headers($builder) {
 		$visitor = new Class_Notice_DublinCoreVisitor();
+		$recordBuilder = new Class_WebService_OAI_Response_RecordHeadersBuilder();
 		$headers = '';
 		foreach ($this->_notices as $notice) {
 			$visitor->visit($notice);
-			$headers .= $builder->header($builder->identifier($visitor->getIdentifier())
-																	 . $builder->datestamp($visitor->getDate()));
+			$headers .= $recordBuilder->xml($builder, $visitor);
 		}
 
 		return $headers;
