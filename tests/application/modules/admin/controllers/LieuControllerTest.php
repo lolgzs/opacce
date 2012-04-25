@@ -67,26 +67,26 @@ class LieuControllerListTest extends LieuControllerTestCase {
 
 	
 	/** @test */
-	public function aListItemShouldContainsAnnecy() {
-		$this->assertXPathContentContains('//ul//li[1]', 'AFI Annecy');
+	public function tableShouldContainsAnnecy() {
+		$this->assertXPathContentContains('//tr[1]//td', 'AFI Annecy');
 	}
 
 
 	/** @test */
-	public function aListItemShouldContainsLognes() {
-		$this->assertXPathContentContains('//ul//li[2]', 'AFI Lognes');
+	public function tableShouldContainsLognes() {
+		$this->assertXPathContentContains('//tr[2]//td', 'AFI Lognes');
 	}
 
 
 	/** @test */
 	public function annecyShouldHaveLinkToEdit() {
-		$this->assertXPath('//ul//li[1]//a[contains(@href, "lieu/edit/id/3")]');
+		$this->assertXPath('//tr[1]//a[contains(@href, "lieu/edit/id/3")]');
 	}
 
 
 	/** @test */
 	public function annecyShouldHaveLinkToDelete() {
-		$this->assertXPath('//ul//li[1]//a[contains(@href, "lieu/delete/id/3")]');
+		$this->assertXPath('//tr[1]//a[contains(@href, "lieu/delete/id/3")]');
 	}
 
 

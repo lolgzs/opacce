@@ -20,7 +20,7 @@
  */
 
 class ZendAfi_View_Helper_MapForLieu extends Zend_View_Helper_HtmlElement {
-	public function mapForLieu($lieu) {
+	public function mapForLieu($lieu, $options=null) {
 		$full_adresse = implode(',',
 														array($lieu->getAdresse(),
 																	$lieu->getCodePostal(),
@@ -32,10 +32,19 @@ class ZendAfi_View_Helper_MapForLieu extends Zend_View_Helper_HtmlElement {
 										'size' => '200x200',
 										'center' => $full_adresse,
 										'markers' => $full_adresse);
-										
-		return sprintf('<img src="http://maps.googleapis.com/maps/api/staticmap?%s" alt="%s"/>',
+
+		if (is_array($options))
+			$params = array_merge($params, $options);
+		
+		return sprintf('<img style="cursor:pointer" '.
+									 'class="google_static_map" '.
+									 'src="http://maps.googleapis.com/maps/api/staticmap?%s" '.
+									 'alt="%s" '.
+									 'onclick="window.open(\'http://maps.google.com/maps?%s\');return false;" />',
+
 									 http_build_query($params),
-									 $lieu->getLibelle());
+									 $lieu->getLibelle(),
+									 http_build_query(array('q' => $full_adresse)));
 	}
 }
 

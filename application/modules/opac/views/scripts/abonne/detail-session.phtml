@@ -8,7 +8,7 @@ echo $this->openBoite(sprintf('Formation %s: session du %s',
 
 <dl class="session_formation">
 	<dt><?php echo $this->_('Lieu') ?></dt>
-	<dd><?php echo $this->session->getLibelleLieu() ?></dd>
+	<dd><?php echo $this->renderLieu($this->session->getLieu(), array('size' => '300x300')) ?></dd>
 
 
 	<dt><?php echo $this->_('Horaires') ?></dt>
@@ -33,7 +33,7 @@ echo $this->openBoite(sprintf('Formation %s: session du %s',
 	  <ul>
 	  <?php
 	  foreach ($this->session->getIntervenants() as $intervenant)
-		  echo sprintf('<li>%s</li>', $intervenant->getNomAff());
+		  echo sprintf('<li>%s, %s</li>', $intervenant->getNom(), $intervenant->getPrenom());
     ?>
     </ul>
 	</dd>

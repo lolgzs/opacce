@@ -731,7 +731,6 @@ dl.session_formation {
 
 dl.session_formation dt {
 		display: block;
-		border-bottom: 1px solid black;
 		font-size: 1.2em;
 		font-weight: bold;
 }
@@ -831,4 +830,9 @@ dl.session_formation + .actions a:last-child {
 	padding:5px;
 	color:#476777;
 	background-color:#DFE7EF;
+}
+
+
+.lieu img {
+		float: right;
 }

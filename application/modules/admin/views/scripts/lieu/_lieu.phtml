@@ -1,7 +1,8 @@
-<li class="<?php echo $this->item_class ?>">
+<tr class="<?php echo $this->item_class ?>">
   <?php 
-		 echo sprintf("<div></div><div>%s</div>", $this->lieu->getLibelle()); 
-		 echo sprintf("<div class='actions'>%s %s</div>", 
+	   echo sprintf("<td>%s</td>", $this->mapForLieu($this->lieu, array('size' => '100x100', 'zoom' => '12'))); 
+		 echo sprintf("<td>%s</td>", $this->lieu->getLibelle()); 
+		 echo sprintf("<td>%s %s</td>", 
 									$this->tagAnchor(array('action' => 'edit',
 																				 'id' => $this->lieu->getId()),
 																	 $this->boutonIco("type=edit")),
@@ -10,4 +11,4 @@
 																				 'id' => $this->lieu->getId()),
 																	 $this->boutonIco("type=del")));
 	?>
-</li>
+</tr>

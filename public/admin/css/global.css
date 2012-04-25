@@ -889,3 +889,13 @@ div.impressions .actions{
 .edit_lieu form {
 		width: 480px;
 }
+
+
+table.lieux td:first-child {
+		width: 100px;
+}
+
+
+table.lieux td:last-child {
+		width: 48px;
+}

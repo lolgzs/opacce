@@ -163,7 +163,9 @@ class Class_Users extends Storm_Model_Abstract {
 																							 'naissance' => '',
 																							 'date_debut' => 0,
 																							 'telephone' => '',
-																							 'mail' => ''
+																							 'mail' => '',
+																							 'nom' => '',
+																							 'prenom' => ''
 																							 );
 
 	protected $_translate;

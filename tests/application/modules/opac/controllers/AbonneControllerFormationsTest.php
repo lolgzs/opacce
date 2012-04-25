@@ -59,7 +59,10 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 
 		$this->_bonlieu = Class_Lieu::getLoader()
 													->newInstanceWithId(100)
-													->setLibelle('Bonlieu');
+													->setLibelle('Bonlieu')
+													->setAdresse("1, rue Jean-Jaures\nBP 294")
+													->setCodePostal(74007)
+													->setVille('Annecy');
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('save')->answers(true);
@@ -141,10 +144,15 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setLieu($this->_bib_romains)
 																																	->setIntervenants( array(Class_Users::getLoader()
 																																													 ->newInstanceWithId(76)
-																																													 ->setLogin('jpp'),
+																																													 ->setLogin('jpp')
+																																													 ->setPrenom('Jean-Paul')
+																																													 ->setNom('Pirant'),
+
 																																													 Class_Users::getLoader()
 																																													 ->newInstanceWithId(77)
-																																													 ->setLogin('cm')) ) ))
+																																													 ->setLogin('cc')
+																																													 ->setPrenom('Christophe')
+																																													 ->setNom('Cerisier')) ) ))
 																						 ));
 
 		$this->_amadou = Class_Users::getLoader()
@@ -566,6 +574,21 @@ class AbonneControllerFormationsSessionFevrierJavaTest extends AbstractAbonneCon
 		$this->assertXPathContentContains('//dl/dd', 'minimum: 2, maximum: 5, actuel: 0');
 	}
 
+
+	/** @test */
+	function ddShouldContainsAdresseBonlieu() {
+		$this->assertXPathContentContains('//dd', 'Bonlieu');
+		$this->assertXPathContentContains('//dd', '1, rue Jean-Jaures');
+		$this->assertXPathContentContains('//dd', '74007 Annecy');
+	}
+
+
+	/** @test */
+	function ddShouldContainsGoogleMap() {
+		$this->assertXPath('//dd//img[@src="http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=15&size=300x300&center=1%2C+rue+Jean-Jaures%0ABP+294%2C74007%2CAnnecy%2CFRANCE&markers=1%2C+rue+Jean-Jaures%0ABP+294%2C74007%2CAnnecy%2CFRANCE"]',
+											 $this->_response->getBody());
+	}
+
 }
 
 
@@ -639,13 +662,13 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 
 	/** @test */
 	public function ddIntervenantsShouldContainsJpp() {
-		$this->assertXPathContentContains('//dd//li', 'jpp');
+		$this->assertXPathContentContains('//dd//li', 'Pirant, Jean-Paul');
 	}
 
 
 	/** @test */
-	public function ddIntervenantsShouldContainsCm() {
-		$this->assertXPathContentContains('//dd//li', 'cm');
+	public function ddIntervenantsShouldContainsCc() {
+		$this->assertXPathContentContains('//dd//li', 'Cerisier, Christophe');
 	}
 }
 

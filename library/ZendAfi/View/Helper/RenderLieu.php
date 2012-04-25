@@ -19,32 +19,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Lieu extends Storm_Model_Abstract {
-	protected $_table_name = 'lieux';
-	protected $_default_attribute_values = array('libelle' => '',
-																							 'adresse' => '',
-																							 'ville' => '',
-																							 'code_postal' => '',
-																							 'pays' => 'FRANCE');
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
+class ZendAfi_View_Helper_RenderLieu extends Zend_View_Helper_HtmlElement {
+	public function renderLieu($lieu, $map_options = null) {
+		$adresse = nl2br($lieu->getAdresse()).'<br/>'.$lieu->getCodePostal().' '.$lieu->getVille();
+		
+		return sprintf('<div class="lieu">%s %s <p>%s</p></div>',
+									 $this->view->mapForLieu($lieu, $map_options),
+									 $lieu->getLibelle(),
+									 $adresse);
 	}
-
-
-	public static function getAllLibelles() {
-		$lieux = self::getLoader()->findAllBy(array('order' => 'libelle'));
-		$libelles = array();
-		foreach($lieux as $lieu) 
-			$libelles[$lieu->getId()] = $lieu->getLibelle();
-		return $libelles;
-	}
-
-
-	public function validate() {
-		$this->check($this->hasLibelle(), 'Le libelle doit être renseigné');
-	}
-
 }
 
 ?>
