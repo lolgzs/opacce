@@ -282,7 +282,6 @@ class Admin_FormationController extends Zend_Controller_Action {
 
 
 	public function sessionaddAction() {
-		xdebug_break();
 		if (!$formation = Class_Formation::getLoader()->find((int)$this->_getParam('formation_id'))) {
 			$this->_redirect('admin/formation');
 			return;
