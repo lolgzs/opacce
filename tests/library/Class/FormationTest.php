@@ -51,6 +51,11 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	protected $_laurent_intervention;
 
 	public function setUp() {
+		parent::setUp();
+		Class_Lieu::getLoader()
+			->newInstanceWithId(74)
+			->setLibelle('Bonlieu');
+
 		$this->_learn_st = Class_Formation::getLoader()
 																					->newInstanceWithId(3)
 																					->setLibelle('Learning Smalltalk')
@@ -61,7 +66,8 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 																															->setDateDebut('2009-01-05')
 																															->setDateLimiteInscription('0000-00-00')
 																															->setEffectifMin(1)
-																															->setEffectifMax(3),
+																															->setEffectifMax(3)
+																															->setLieuId(74),
 
 																															$this->_session_fevrier = Class_SessionFormation::getLoader()
 																															->newInstanceWithId(2)
@@ -130,6 +136,12 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	public function sessionJanvierDateLimiteInscriptionShouldReturnNull() {
 		$this->assertEquals(null, $this->_session_janvier->getDateLimiteInscription());
+	}
+
+
+	/** @test */
+	public function lieuSessionJanvierShouldBeBonlieu() {
+		$this->assertEquals('Bonlieu', $this->_session_janvier->getLieu()->getLibelle());
 	}
 
 

@@ -21,10 +21,25 @@
 
 class Class_Lieu extends Storm_Model_Abstract {
 	protected $_table_name = 'lieux';
-	protected $_default_attribute_values = array('pays' => 'FRANCE');
+	protected $_default_attribute_values = array('libelle' => '',
+																							 'pays' => 'FRANCE');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	public static function getAllLibelles() {
+		$lieux = self::getLoader()->findAllBy(array('order' => 'libelle'));
+		$libelles = array();
+		foreach($lieux as $lieu) 
+			$libelles[$lieu->getId()] = $lieu->getLibelle();
+		return $libelles;
+	}
+
+
+	public function validate() {
+		$this->check($this->hasLibelle(), 'Le libelle doit être renseigné');
 	}
 
 }

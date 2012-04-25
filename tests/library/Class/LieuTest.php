@@ -19,4 +19,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+
+class LieuTest extends Storm_Test_ModelTestCase {
+
+	/** @test */
+	public function lieuShouldNotBeValidWithoutLibelle() {
+		$this->assertFalse(Class_Lieu::getLoader()->newInstanceWithId(4)->isValid());
+	}
+
+
+	/** @test */
+	public function lieuShouldBeValidWithLibelle() {
+		$this->assertTrue(Class_Lieu::getLoader()
+											->newInstanceWithId(4)
+											->setLibelle('ici')
+											->isValid());
+	}
+}
+
 ?>

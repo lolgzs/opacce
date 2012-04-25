@@ -31,6 +31,9 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 	protected $_session_java_fevrier;
 	protected $_session_java_septembre;
 	protected $_session_python_juillet;
+	protected $_gallice_cafe;
+	protected $_bib_romains;
+	protected $_bonlieu;
 
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
@@ -45,6 +48,18 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('1');
+
+		$this->_gallice_cafe = Class_Lieu::getLoader()
+													->newInstanceWithId(98)
+													->setLibelle('Gallice');
+
+		$this->_bib_romains = Class_Lieu::getLoader()
+													->newInstanceWithId(99)
+													->setLibelle('Bibliothèque des romains');
+
+		$this->_bonlieu = Class_Lieu::getLoader()
+													->newInstanceWithId(100)
+													->setLibelle('Bonlieu');
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('save')->answers(true);
@@ -65,7 +80,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(1)
 																																	->setEffectifMax(10)
 																																	->setStagiaires(array())
-																																	->setLieu('Gallice')
+																																	->setLieu($this->_gallice_cafe)
 																																	->setDateDebut('2009-01-17'),
 
 
@@ -75,7 +90,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(1)
 																																	->setEffectifMax(10)
 																																	->setStagiaires(array())
-																																	->setLieu('Gallice')
+																																	->setLieu($this->_gallice_cafe)
 																																	->setDateDebut('2023-07-12')
 																																	)),
 
@@ -96,7 +111,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(2)
 																																	->setEffectifMax(5)
 																																	->setStagiaires(array())
-																																	->setLieu('Bonlieu')
+																																	->setLieu($this->_bonlieu)
 																																	->setDateDebut('2022-02-17') 
 																																	->setDateLimiteInscription('2022-02-15'),
 
@@ -123,7 +138,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMax(22)
 																																	->setDuree(8)
 																																	->setHoraires('8h-12h, 14h-18h')
-																																	->setLieu('Bibliothèque des romains')
+																																	->setLieu($this->_bib_romains)
 																																	->setIntervenants( array(Class_Users::getLoader()
 																																													 ->newInstanceWithId(76)
 																																													 ->setLogin('jpp'),

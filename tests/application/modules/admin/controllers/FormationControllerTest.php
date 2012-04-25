@@ -85,7 +85,9 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->setDuree(8)
 																	 ->setContenu('Intro à la syntaxe')
 																	 ->setHoraires('9h - 12h, 13h - 18h')
-																	 ->setLieu('Salle réunion AFI')
+																	 ->setLieu($salle_reunion = Class_Lieu::getLoader()
+																						                     ->newInstanceWithId(12)
+																						                      ->setLibelle('Salle reunion AFI'))
 																	 ->setDateLimiteInscription('2012-03-05')
 																	 ->setIntervenants(array($this->_prof_laurent)),
 
@@ -108,6 +110,23 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->setStagiaires(array())
 																	 ->beAnnule())) 
 							 ));
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+			->whenCalled('save')
+			->answers(true)
+
+			->whenCalled('findAllBy')
+			->answers(array($salle_reunion,
+
+											Class_Lieu::getLoader()
+											->newInstanceWithId(28)
+											->setLibelle('au marché'),
+
+											Class_Lieu::getLoader()
+											->newInstanceWithId(18)
+											->setLibelle('Au café du coin')));
+
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SessionFormationInscription')
 			->whenCalled('save')->answers(true)
@@ -539,6 +558,7 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 		$this->assertXPathContentContains('//td//textarea[@name="contenu"]', 'Intro à la syntaxe');
 	}
 
+
 	/** @test */
 	public function checkboxIntervenantLaurentShouldBeChecked() {
 		$this->assertXPath('//input[@name="intervenant_ids[]"][@value="34"][@checked="checked"]');	
@@ -553,9 +573,11 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 
 	/** @test */
 	public function inputLieuShouldContainsSalleReunionAFI() {
-		$this->assertXPath('//input[@name="lieu"][@value="Salle réunion AFI"]');
+		$this->assertXPathContentContains('//select[@name="lieu_id"]//option[@value="12"]', "Salle reunion AFI");
 	}
 }
+
+
 
 
 class Admin_FormationControllerDeleteSessionLearningJavaMars27Test extends  Admin_FormationControllerTestCase  {
@@ -577,6 +599,8 @@ class Admin_FormationControllerDeleteSessionLearningJavaMars27Test extends  Admi
 		$this->assertRedirectTo('/admin/formation');
 	}
 }
+
+
 
 
 class Admin_FormationControllerDeleteFormationLearningJavaTest extends  Admin_FormationControllerTestCase  {
@@ -614,6 +638,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 	public function setUp() {
 		parent::setUp();
+
 		$this->postDispatch('/admin/formation/session_edit/id/32',
 												array('date_debut' => '29/05/2012',
 															'date_limite_inscription' => '03/05/2012',
@@ -621,7 +646,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 															'effectif_max' => '8',
 															'contenu' => 'Accompagné d un bon café',
 															'horaires' => '9h - 18h',
-															'lieu' => 'Au café du coin',
+															'lieu_id' => 18,
 															'is_annule' => '1'));
 		$this->_session = Class_SessionFormation::getLoader()->find(32);
 	}
@@ -677,7 +702,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 	/** @test */
 	public function lieuShouldEqualsAuCafeDuCoin() {
-		$this->assertEquals('Au café du coin', $this->_session->getLieu());
+		$this->assertEquals('Au café du coin', $this->_session->getLieu()->getLibelle());
 	}
 
 
@@ -779,6 +804,7 @@ class Admin_FormationControllerAddSessionToFormationLearningPythonTest extends  
 class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest extends  Admin_FormationControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
+
 		$this->postDispatch('/admin/formation/session_add/formation_id/12',
 												array('date_debut' => '17/02/2010',
 															'effectif_min' => '3',
@@ -786,7 +812,7 @@ class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest exten
 															'contenu' => 'On charme les serpents',
 															'intervenant_ids' => array(34, 35),
 															'horaires' => '9h - 18h',
-															'lieu' => 'au marché',
+															'lieu_id' => 28,
 															'is_annule' => '0'));
 		$this->session = Class_SessionFormation::getLoader()->getFirstAttributeForLastCallOn('save');
 	}

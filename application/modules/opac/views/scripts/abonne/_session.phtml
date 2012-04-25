@@ -4,7 +4,7 @@
 echo sprintf("<div>%s %s</div>", 
 						 $this->humanDate($this->session->getDateDebut(), 'MMMM, d'),
 						 $this->session->isAnnule() ? '(Annulé)' : '');
-echo sprintf("<div>%s&nbsp;</div>", $this->session->getLieu());
+echo sprintf("<div>%s&nbsp;</div>", $this->session->getLibelleLieu());
 echo sprintf("<div class='actions'>%s %s</div>", 
 						 $this->tagAnchor(array('action' => 'detail_session',
 																		'id' => $this->session->getId()),

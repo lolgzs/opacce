@@ -22,7 +22,9 @@
 class Class_SessionFormation extends Storm_Model_Abstract {
 	protected $_table_name = 'sessions_formation';
 
-	protected $_belongs_to = array('formation' => array('model' => 'Class_Formation'));
+	protected $_belongs_to = array(
+																 'formation' => array('model' => 'Class_Formation'),
+																 'lieu' => array('model' => 'Class_Lieu'));
 	protected $_has_many = array(
 															 'session_formation_inscriptions' => array('model' => 'Class_SessionFormationInscription',
 																																				 'role' => 'session_formation',
@@ -46,7 +48,6 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 																							 'date_limite_inscription' => null,
 																							 'contenu' => '',
 																							 'objectif' => '',
-																							 'lieu' => '',
 																							 'horaires' => '',
 																							 'is_annule' => false);
 
@@ -57,6 +58,13 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 
 	public function getAnnee() {
 		return array_first(explode('-', $this->getDateDebut()));
+	}
+
+	
+	public function getLibelleLieu() {
+		if ($this->hasLieu())
+			return $this->getLieu()->getLibelle();
+		return '';
 	}
 
 

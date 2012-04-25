@@ -282,6 +282,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 
 
 	public function sessionaddAction() {
+		xdebug_break();
 		if (!$formation = Class_Formation::getLoader()->find((int)$this->_getParam('formation_id'))) {
 			$this->_redirect('admin/formation');
 			return;
@@ -419,22 +420,25 @@ class Admin_FormationController extends Zend_Controller_Action {
 																					'label' => 'Durée (h)',
 																					'size'	=> 2,
 																					'validators' => array('int')))
+
 			->addElement('text', 'horaires', array(
 																						 'label' => 'Horaires',
 																						 'size'	=> 50,
 																						 'required' => true,
 																						 'allowEmpty' => false))
-			->addElement('text', 'lieu', array(
-																				 'label' => 'Lieu',
-																				 'size'	=> 50,
-																				 'required' => true,
-																				 'allowEmpty' => false))
+
+			->addElement('select', 'lieu_id', array('label' => 'Lieu',
+																							'multiOptions' => Class_Lieu::getAllLibelles()))
+
 			->addElement('text', 'cout', array(
 																				 'label' => 'Coût',
 																				 'size'	=> 6,
 																				 'validators' => array('int')))
+
 			->addElement('checkbox', 'is_annule', array('label' => 'Session annulée'))
+
 			->addElement($intervenants_checkboxes)
+
 			->addElement('ckeditor', 'contenu', array(
 																										 'label' => 'Contenu *',
 																										 'required' => true,
@@ -447,7 +451,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 															'date_limite_inscription',
 															'effectif_min',
 															'effectif_max',
-															'lieu',
+															'lieu_id',
 															'horaires',
 															'duree',
 															'cout',
