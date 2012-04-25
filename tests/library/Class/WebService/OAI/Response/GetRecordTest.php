@@ -58,6 +58,14 @@ class OAIGetRecordTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
+	public function shouldContainOneHeader() {
+		$this->_xpath->assertXpathCount($this->_response->xml(),
+																		self::OAI_RECORD_PATH . 'oai:header',
+																		1);
+	}
+
+
+	/** @test */
 	public function headerShouldContainRecordIdentifier() {
 		$this->_xpath->assertXPathContentContains($this->_response->xml(),
 																							self::OAI_RECORD_PATH . self::OAI_HEADER_PATH . 'oai:identifier',
@@ -78,6 +86,14 @@ class OAIGetRecordTest extends Storm_Test_ModelTestCase {
 	public function metadataShouldContainOaiDublinCore() {
 		$this->_xpath->assertXPath($this->_response->xml(),
 															 self::OAI_RECORD_PATH . 'oai:metadata/oai_dc:dc');
+	}
+
+
+	/** @test */
+	public function shouldContainOneMetadata() {
+		$this->_xpath->assertXpathCount($this->_response->xml(),
+																		self::OAI_RECORD_PATH . 'oai:metadata',
+																		1);
 	}
 
 }

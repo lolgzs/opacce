@@ -40,8 +40,8 @@ class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Respo
 
 	protected function _buildHeaders($builder) {
 		return 
-			$builder->header($builder->identifier($this->_dublin_core_visitor->getIdentifier()))
-			. $builder->header($builder->datestamp($this->_dublin_core_visitor->getDate()));
+			$builder->header($builder->identifier($this->_dublin_core_visitor->getIdentifier())
+											 . $builder->datestamp($this->_dublin_core_visitor->getDate()));
 	}
 
 
