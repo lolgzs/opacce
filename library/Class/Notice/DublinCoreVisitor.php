@@ -32,6 +32,9 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visit($notice) {
+		$this->_xml = '';
+		$this->_identifier = null;
+		$this->_date = null;
 		$notice->acceptVisitor($this);
 	}
 
