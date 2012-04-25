@@ -129,7 +129,10 @@ class Admin_UsersController extends Zend_Controller_Action
 				->setIdSite($data['bib'])
 				->setIdabon($data['id_abon'])
 				->setOrdreabon($data['ordre'])
-				->setTelephone($data['telephone']);
+				->setTelephone($data['telephone'])
+				->setAdresse($data['adresse'])
+				->setVille($data['ville'])
+				->setCodePostal($data['code_postal']);
 	
 			try {
 				if ($user->save())
