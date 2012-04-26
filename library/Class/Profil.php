@@ -865,10 +865,10 @@ class Class_Profil extends Storm_Model_Abstract {
 				$css .= 'div#banniere, div#header{height:'.$hauteur_banniere.'px}';
 
 			if ($couleur_texte = $this->getCouleurTexteBandeau())
-				$css .= 'div#header * {color:$couleur_texte} div#header form input {color: #000}';
+				$css .= 'div#header * {color:'.$couleur_texte.'} div#header form input {color: #000}';
 
 			if ($couleur_lien = $this->getCouleurLienBandeau())
-				$css .= 'div#header a, div#header a:visited {color:$couleur_lien}';
+				$css .= 'div#header a, div#header a:visited {color:'.$couleur_lien.'}';
 
 			$css .= '</style>';
 
