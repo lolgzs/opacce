@@ -197,6 +197,14 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader {
 
 
 	/**
+	 * @paran string $data
+	 */
+	public function endAvailabilityDate($data) {
+		if ('' != $data)
+			$this->_currentHold->setEtat('Pas disponible avant le ' . $data);
+	}
+
+	/**
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */
 	protected function _getCurrentOperation() {

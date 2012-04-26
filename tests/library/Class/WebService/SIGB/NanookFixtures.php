@@ -159,6 +159,7 @@ class NanookFixtures {
       <author>Natha Caputo</author>
       <locationLabel>Site Principal</locationLabel>
 			<priority>1</priority>
+      <availabilityDate>15/06/2012</availabilityDate>
     </hold>
     <hold>
       <bibId>12501</bibId>

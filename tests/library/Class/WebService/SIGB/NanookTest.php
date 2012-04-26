@@ -486,10 +486,10 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 
 
 	/** @test */
-	public function firstReservationEtasShouldBeEmpty() {
-		$this->assertEquals('', $this->_emprunteur->getReservationAt(0)->getEtat());
+	public function firstReservationEtatShouldBePasDisponibleAvantLe15Juin2012() {
+		$this->assertEquals('Pas disponible avant le 15/06/2012', 
+												$this->_emprunteur->getReservationAt(0)->getEtat());
 	}
-
 
 	/** @test */
 	public function secondReservationIdShouldBe14586() {
