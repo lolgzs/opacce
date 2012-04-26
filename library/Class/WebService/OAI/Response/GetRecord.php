@@ -35,7 +35,6 @@ class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Respo
 			if (null !== ($notice = Class_Notice::getLoader()->getNoticeByClefAlpha(end($parts))))
 				$this->_notice = $notice;
 		}
-			
 		return parent::xml();
 	}
 
@@ -55,12 +54,12 @@ class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Respo
 		
 		if (null == $this->_metadataPrefix) 
 			return $response . $builder->error(array('code' => 'badArgument'), 'Missing metadataPrefix');
-
+ 
 		if (null == $this->_notice)
-			return $response . $builder->error(array('code' => 'idDoesNotExist'), '');
+			return $response . $builder->error(array('code' => 'idDoesNotExist'));
 
 		if ('oai_dc' != $this->_metadataPrefix) 
-			return $response . $builder->error(array('code' => 'cannotDisseminateFormat'), '');
+			return $response . $builder->error(array('code' => 'cannotDisseminateFormat'));
 
 		$visitor = new Class_Notice_DublinCoreVisitor();
 		$visitor->visit($this->_notice);
@@ -68,19 +67,5 @@ class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Respo
 
 		return $response . $builder->GetRecord($builder->record($recordBuilder->xml($builder, $visitor)));
 	}
-
-
-	public function setNotice($notice) {
-		$this->_notice = $notice;
-	}
-
-
-	public function request($builder) {
-		return $builder->request(array('verb' => 'GetRecord',
-																	 'metadataPrefix' => 'oai_dc'), 
-														 $this->_baseUrl);
-	}
 }
-
-
 ?>
