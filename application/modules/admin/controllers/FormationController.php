@@ -153,7 +153,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 
 
 	public function ficheemargementAction() {
-		$this->_renderLettreFusion(new SessionFusionStrategy('FORMATION_EMARGEMENT'));
+		$this->_renderLettreFusion(new SessionOneLetterPerDayFusionStrategy('FORMATION_EMARGEMENT'));
 	}
 
 
@@ -513,6 +513,28 @@ class SessionFusionStrategy extends AbstractSessionFusionStrategy{
 		return $this->_modele_fusion
 			->setDataSource(array("session_formation" => $session_formation))
 			->getContenuFusionne();
+	}
+}
+
+
+class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy{
+	public function getContenuFusionne($session_formation) {
+		$date_utils = new Class_Date();
+		$date_debut = $session_formation->getDateDebut();
+		$date_fin = $session_formation->getDateFin() ? $session_formation->getDateFin() : $date_debut;
+		$nb_jours = $date_utils->soustraitDates($date_fin, $date_debut);
+
+		$lettres = array();
+		for ($i=0; $i<=$nb_jours; $i++) {
+			$jour = $date_utils->ajouterJours($session_formation->getDateDebut(), $i, 'yyyy-mm-dd');
+			$session_formation->setDateJourTexte($date_utils->humanDate($jour, 'd MMMM yyyy'));
+
+			$lettres []= $this->_modele_fusion
+				->setDataSource(array("session_formation" => $session_formation))
+				->getContenuFusionne();
+		}
+
+		return implode('<div style="page-break-after: always"></div>', $lettres);
 	}
 }
 

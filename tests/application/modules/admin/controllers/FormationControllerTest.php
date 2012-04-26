@@ -1329,7 +1329,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 										<h2>{session_formation.formation.libelle}</h2>
 
 										<p>
-										{session_formation.date_debut}
+										{session_formation.date_jour_texte}
 										</p>
 
 										<p>
@@ -1516,10 +1516,15 @@ class FormationControllerFicheEmargementSessionJavaFevrierTest extends Formation
 
 	/** @test */
 	public function pageShouldContainsH1WithLettreEmargement() {
-		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//h1', 
-																			'Lettre emargement',
-																			$this->_response->getBody());
+		$this->assertXPathCount('//div[@class="lettre_fusion"]//h1[text()="Lettre emargement"]', 1);
 	}
+
+
+	/** @test */
+	public function pageShouldContainsParagraphWith17Fevrier2012() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//p', '17 février 2012');
+	}
+
 
 
 	/** @test */
@@ -1538,6 +1543,46 @@ class FormationControllerFicheEmargementSessionJavaFevrierTest extends Formation
 	/** @test */
 	public function pageShouldNotHaveLayout() {
 		$this->assertNotXPath('//div[@id="banniere"]');
+	}
+}
+
+
+
+
+class FormationControllerFicheEmargementSessionJavaMarsTest extends FormationControllerImpressionsTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/formation/fiche_emargement/id/32');
+	}
+
+
+	/** @test */
+	public function actionShouldBeFicheEmargement() {
+		$this->assertAction('fiche_emargement');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsThreeH1WithLettreEmargement() {
+		$this->assertXPathCount('//div[@class="lettre_fusion"]//h1[text()="Lettre emargement"]', 3);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor27Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[1]//p', '27 mars 2012');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor28Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[3]//p', '28 mars 2012');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor29Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[5]//p', '29 mars 2012', $this->_response->getBody());
 	}
 }
 
