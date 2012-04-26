@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ListIdentifiersTest extends Storm_Test_ModelTestCase {
+class ListIdentifiersValidTest extends Storm_Test_ModelTestCase {
 	protected $_xpath;
 	protected $_response;
 
@@ -38,12 +38,13 @@ class ListIdentifiersTest extends Storm_Test_ModelTestCase {
 																			   ->newInstanceWithId(4)
 																			   ->setClefAlpha('harrypotter-azkaban')
 																			   ->setDateMaj('2012-04-03 11:42:42')));
+		$this->_xml = $this->_response->xml(array('metadataPrefix' => 'oai_dc'));
 	}
 
 
 	/** @test */
 	public function requestVerbShouldBeListIdentifiers() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_xml,
 																							'//oai:request[@verb="ListIdentifiers"]',
 																							'http://moulins.fr/oai2/do');
 	}
@@ -51,7 +52,7 @@ class ListIdentifiersTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function shouldHaveThreeHeaders() {
-		$this->_xpath->assertXpathCount($this->_response->xml(),
+		$this->_xpath->assertXpathCount($this->_xml,
 																		'//oai:ListIdentifiers/oai:header',
 																		3);
 	}
@@ -59,7 +60,7 @@ class ListIdentifiersTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function shouldNotHaveMetadata() {
-		$this->_xpath->assertNotXpath($this->_response->xml(),
+		$this->_xpath->assertNotXpath($this->_xml,
 																	'//oai:ListIdentifiers/oai:metadata');
 	}
 
@@ -116,7 +117,26 @@ class ListIdentifiersTest extends Storm_Test_ModelTestCase {
 	protected function _assertHeaderContentAt($header, $content, $position) {
 		$path = sprintf('//oai:ListIdentifiers/oai:header[%s]/oai:%s', 
 										$position, $header);
-		$this->_xpath->assertXPathContentContains($this->_response->xml(), $path, $content);
+		$this->_xpath->assertXPathContentContains($this->_xml, $path, $content);
+	}
+}
+
+
+class ListIdentifiersWithoutMetadataPrefixTest extends Storm_Test_ModelTestCase {
+	protected $_xpath;
+	protected $_response;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_xpath = TestXPathFactory::newOai();
+		$this->_response = new Class_WebService_OAI_Response_ListIdentifiers('http://moulins.fr/oai2/do');
+		$this->_xml = $this->_response->xml(array());
+	}
+
+
+	/** @test */
+	public function errorCodeShouldBeBadArgument() {
+		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="badArgument"]');
 	}
 }
 ?>

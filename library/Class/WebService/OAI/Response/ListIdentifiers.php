@@ -19,13 +19,23 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI_Response_Null {
-	protected $_notices;
+	protected $_notices = array();
 
 	public function buildXmlOn($builder) {
-		return 
-			$builder->request(array('verb' => 'ListIdentifiers'), 
-												$this->_baseUrl)
-			. $this->listIdentifiers($builder);
+		$response = $builder->request(array('verb' => 'ListIdentifiers'), 
+																	$this->_baseUrl);
+			
+		if ($errors = $this->buildErrorsOn($builder))
+			return $response . $errors;
+
+		return $response	. $this->listIdentifiers($builder);
+	}
+
+
+	public function buildErrorsOn($builder) {
+		if (!isset($this->_params['metadataPrefix'])) 
+			return $builder->error(array('code' => 'badArgument'), 'Missing metadataPrefix');
+
 	}
 
 

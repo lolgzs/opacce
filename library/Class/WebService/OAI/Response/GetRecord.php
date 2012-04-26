@@ -22,44 +22,63 @@ class Class_WebService_OAI_Response_GetRecord extends Class_WebService_OAI_Respo
 	protected $_notice;
 	protected $_identifier;
 	protected $_metadataPrefix;
+	protected $_params;
 
 	public function xml($params = array()) {
-		if (array_key_exists('identifier', $params))
-			$this->_identifier = $params['identifier'];
+		$this->_params = array_merge(array('identifier' => null,
+																			 'metadataPrefix' => null),
+																 $params);
 
-		if (array_key_exists('metadataPrefix', $params))
-			$this->_metadataPrefix = $params['metadataPrefix'];
-
-		if (null != $this->_identifier) {
-			$parts = explode('/', $this->_identifier);
-			if (null !== ($notice = Class_Notice::getLoader()->getNoticeByClefAlpha(end($parts))))
-				$this->_notice = $notice;
-		}
+		$this->_identifier = $this->_params['identifier'];
+		$this->_metadataPrefix = $this->_params['metadataPrefix'];
+		$this->_notice = $this->getNoticeFromIdentifier($this->_identifier);
+		
 		return parent::xml();
 	}
 
 
-	public function buildXmlOn($builder) {
-		$response = '';
+	public function requestTagOn($builder) {
 		$requestOptions = array('verb' => 'GetRecord');
 		if (null !== $this->_metadataPrefix)
 			$requestOptions['metadataPrefix'] = $this->_metadataPrefix;
 		if (null !== $this->_identifier)
 			$requestOptions['identifier'] = $this->_identifier;
 
-		$response .= $builder->request($requestOptions, $this->_baseUrl);
+		return $builder->request($requestOptions, $this->_baseUrl);
+	}
 
+
+	public function buildErrorsOn($builder) {
 		if (null == $this->_identifier)
-			return $response . $builder->error(array('code' => 'badArgument'), 'Missing identifier');
+			return $builder->error(array('code' => 'badArgument'), 'Missing identifier');
 		
 		if (null == $this->_metadataPrefix) 
-			return $response . $builder->error(array('code' => 'badArgument'), 'Missing metadataPrefix');
+			return $builder->error(array('code' => 'badArgument'), 'Missing metadataPrefix');
  
 		if (null == $this->_notice)
-			return $response . $builder->error(array('code' => 'idDoesNotExist'));
+			return $builder->error(array('code' => 'idDoesNotExist'));
 
 		if ('oai_dc' != $this->_metadataPrefix) 
-			return $response . $builder->error(array('code' => 'cannotDisseminateFormat'));
+			return $builder->error(array('code' => 'cannotDisseminateFormat'));
+
+		return '';
+	}
+
+
+	public function getNoticeFromIdentifier($identifier) {
+		if (null != $this->_identifier) {
+			$parts = explode('/', $this->_identifier);
+			return Class_Notice::getLoader()->getNoticeByClefAlpha(end($parts));
+		}
+		return null;
+	}
+
+
+	public function buildXmlOn($builder) {
+		$response = $this->requestTagOn($builder);
+
+		if ($errors = $this->buildErrorsOn($builder))
+			return $response . $errors;
 
 		$visitor = new Class_Notice_DublinCoreVisitor();
 		$visitor->visit($this->_notice);

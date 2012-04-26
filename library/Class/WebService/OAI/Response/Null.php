@@ -22,13 +22,15 @@ class Class_WebService_OAI_Response_Null {
 	const PROLOG = '<?xml version="1.0" encoding="UTF-8"?>';
 	protected $_baseUrl;
 	protected $_protocolVersion = '2.0';
+	protected $_params;
 
 	public function __construct($baseUrl) {
 		$this->_baseUrl = $baseUrl;
 	}
 
 
-	public function xml() {
+	public function xml($params = array()) {
+		$this->_params = $params;
 		$builder = new Class_Xml_Builder();
 		
 		return self::PROLOG . "\n"
