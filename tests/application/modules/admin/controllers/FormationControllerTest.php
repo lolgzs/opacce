@@ -1329,7 +1329,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 										<h2>{session_formation.formation.libelle}</h2>
 
 										<p>
-										{session_formation.date_jour_texte}
+										{date_context.texte}
 										</p>
 
 										<p>

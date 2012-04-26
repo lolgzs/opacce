@@ -519,24 +519,65 @@ class SessionFusionStrategy extends AbstractSessionFusionStrategy{
 
 class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy{
 	public function getContenuFusionne($session_formation) {
-		$date_utils = new Class_Date();
-		$date_debut = $session_formation->getDateDebut();
-		$date_fin = $session_formation->getDateFin() ? $session_formation->getDateFin() : $date_debut;
-		$nb_jours = $date_utils->soustraitDates($date_fin, $date_debut);
+		$date_context = new FusionDateContext($session_formation->getDateDebut());
+		$nb_jours = $date_context->numberOfDaysTo($session_formation->getDateFin());
 
 		$lettres = array();
 		for ($i=0; $i<=$nb_jours; $i++) {
-			$jour = $date_utils->ajouterJours($session_formation->getDateDebut(), $i, 'yyyy-mm-dd');
-			$session_formation->setDateJourTexte($date_utils->humanDate($jour, 'd MMMM yyyy'));
-
 			$lettres []= $this->_modele_fusion
-				->setDataSource(array("session_formation" => $session_formation))
+				->setDataSource(array("session_formation" => $session_formation,
+															"date_context" => $date_context))
 				->getContenuFusionne();
+			$date_context->forwardOneDay();
 		}
 
 		return implode('<div style="page-break-after: always"></div>', $lettres);
 	}
 }
+
+
+
+
+class FusionDateContext {
+	protected $_current_date;
+
+	public function __construct($datestr) {
+		$this->_current_date = $this->dateStringToZendDate($datestr);
+	}
+
+
+	public function dateStringToZendDate($datestr) {
+		return new Zend_Date($datestr, null, Zend_Registry::get('locale'));
+	}
+
+
+	public function forwardOneDay() {
+		$this->_current_date->add(1, Zend_Date::DAY);		
+		return $this;
+	}
+
+
+	public function getTexte() {
+		return $this->_current_date->toString('d MMMM yyyy');
+	}
+
+
+	public function numberOfDaysTo($other_datestr) {
+		if (!$other_datestr)
+			return 0;
+
+		$other_date = $this->dateStringToZendDate($other_datestr);
+		$other_date->sub($this->_current_date);
+		return ($other_date->toValue(Zend_Date::DAY)-1);
+	}
+
+
+	public function callGetterByAttributeName($attribute) {
+		return call_user_func(array($this, 'get'.Storm_Inflector::camelize($attribute)));
+	}
+}
+
+
 
 
 class SessionStagiairesFusionStrategy extends AbstractSessionFusionStrategy{
