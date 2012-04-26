@@ -354,14 +354,18 @@ class Admin_FormationController extends Zend_Controller_Action {
 			$session
 				->updateAttributes($post)
 				->setDateDebut($this->_readPostDate($this->_request->getPost('date_debut')))
+				->setDateFin($this->_readPostDate($this->_request->getPost('date_fin')))
 				->setDateLimiteInscription($this->_readPostDate($this->_request->getPost('date_limite_inscription')))
 				->setIntervenants($intervenants)
 				->validate();
 			
 			if ($form->isValid($this->_request->getPost()) && $session->isValid()) {
-				$session->save();
-				$this->_redirect('admin/formation');
-				return true;
+				if ($session->save()) {
+					$this->_helper->notify(sprintf('Session du %s sauvegardée', 
+																				 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY')));
+					$this->_redirect('admin/formation/session_edit/id/'.$session->getId());
+					return true;
+				}
 			}
 
 			foreach($session->getErrors() as $attribute => $message) {
@@ -399,6 +403,9 @@ class Admin_FormationController extends Zend_Controller_Action {
 																										 'size'	=> 10,
 																										 'required' => true,
 																										 'allowEmpty' => false	))
+			->addElement('datePicker', 'date_fin', array(
+																										 'label' => 'Date fin',
+																										 'size'	=> 10	))
 			->addElement('datePicker', 'date_limite_inscription', array(
 																																	'label' => 'Date limite d\'inscription *',
 																																	'size'	=> 10	))
@@ -446,6 +453,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 
 			->addDisplayGroup(
 												array('date_debut',
+															'date_fin',
 															'date_limite_inscription',
 															'effectif_min',
 															'effectif_max',

@@ -45,6 +45,7 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 																							 'cout' => 0,
 																							 'duree' => 0,
 																							 'date_debut' => '',
+																							 'date_fin' => '',
 																							 'date_limite_inscription' => null,
 																							 'contenu' => '',
 																							 'objectif' => '',
@@ -116,6 +117,12 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 	}
 
 
+	public function getDateFin() {
+		$date = parent::_get('date_fin');
+		return $date ? $date : null; //pour ne pas retourner chaine vide, probleme zend_form
+	}
+
+
 	public function getDateLimiteInscription() {
 		$date = parent::_get('date_limite_inscription');
 		if ('0000-00-00' == $date)
@@ -142,6 +149,10 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 		$this->checkAttribute('date_limite_inscription',
 													Class_Date::isEndDateAfterStartDateNotEmpty($this->getDateLimiteInscription(), $this->getDateDebut()),
 													"La date limite d'inscription doit être inférieure ou égale à la date de début");
+
+		$this->checkAttribute('date_fin',
+													Class_Date::isEndDateAfterStartDateNotEmpty($this->getDateFin(), $this->getDateDebut()),
+													"La date de fin doit être supérieure ou égale à la date de début");
 	}
 
 

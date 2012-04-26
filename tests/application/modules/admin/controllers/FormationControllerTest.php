@@ -80,6 +80,7 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->newInstanceWithId(32)
 																	 ->setFormationId(3)
 																	 ->setDateDebut('2012-03-27')
+																	 ->setDateFin('2012-03-29')
 																	 ->setEffectifMin(5)
 																	 ->setEffectifMax(25)
 																	 ->setDuree(8)
@@ -95,6 +96,7 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->newInstanceWithId(31)
 																	 ->setFormationId(3)
 																	 ->setDateDebut('2012-02-17')
+																	 ->setDateFin('')
 																	 ->setEffectifMax(10)
 																	 ->setStagiaires(array($this->_benoit)))),
 											
@@ -514,6 +516,23 @@ class Admin_FormationControllerIndexTest extends Admin_FormationControllerTestCa
 
 
 
+class Admin_FormationControllerEditSessionLearningJavaFevrierTest extends  Admin_FormationControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/formation/session_edit/id/31');
+	}
+
+
+	/** @test */
+	function inputDateFinShouldBeEmpty() {
+		$this->assertXPath('//form[@id="sessionForm"]//input[@name="date_fin"][@value=""]');
+	}
+
+}
+
+
+
+
 class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_FormationControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
@@ -529,15 +548,19 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 
 	/** @test */
 	function inputDateDebutShouldContains27_03_2012() {
-		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_debut"][@value="27/03/2012"]', 
-											 $this->_response->getBody());
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_debut"][@value="27/03/2012"]');
+	}
+
+
+	/** @test */
+	function inputDateFinShouldContains28_03_2012() {
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_fin"][@value="29/03/2012"]');
 	}
 
 
 	/** @test */
 	function inputDateLimiteInscriptionShouldContains05_03_2012() {
-		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_limite_inscription"][@value="05/03/2012"]', 
-											 $this->_response->getBody());
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_limite_inscription"][@value="05/03/2012"]');
 	}
 
 	
@@ -678,8 +701,8 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 
 	/** @test */
-	function responseShouldRedirectToFormationIndex() {
-		$this->assertRedirectTo('/admin/formation');
+	function responseShouldRedirectToSessionFormationEdit() {
+		$this->assertRedirectTo('/admin/formation/session_edit/id/32');
 	}
 
 	/** @test */
@@ -722,7 +745,8 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 												array('date_debut' => '',
 															'effectif_min' => 20,
 															'effectif_max' => 4,
-															'date_limite_inscription' => '05/01/2099'));
+															'date_limite_inscription' => '05/01/2099',
+															'date_fin' => '05/01/1990'));
 	}
 
 	/** @test */
@@ -746,8 +770,14 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 	/** @test */
 	public function errorsShouldContainsDateLimiteInscriptionAfterDateDebut() {
 		$this->assertXPathContentContains('//ul[@class="errors"]//li', 
-																			"La date limite d'inscription doit être inférieure ou égale à la date de début",
-																			$this->_response->getBody());
+																			"La date limite d'inscription doit être inférieure ou égale à la date de début");
+	}
+
+
+	/** @test */
+	public function errorsShouldContainsDateFinBeforeDateDebut() {
+		$this->assertXPathContentContains('//ul[@class="errors"]//li', 
+																			"La date de fin doit être supérieure ou égale à la date de début");
 	}
 }
 
@@ -805,8 +835,17 @@ class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest exten
 	public function setUp() {
 		parent::setUp();
 
+
+		Class_SessionFormation::getLoader()
+			->whenCalled('save')
+			->willDo(function($session) {
+					$session->setId(99); 
+					return true;
+				});
+
 		$this->postDispatch('/admin/formation/session_add/formation_id/12',
 												array('date_debut' => '17/02/2010',
+															'date_fin' => '17/02/2010',
 															'effectif_min' => '3',
 															'effectif_max' => '12',
 															'contenu' => 'On charme les serpents',
@@ -825,8 +864,14 @@ class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest exten
 
 
 	/** @test */
+	function newSessionDateFinShouldBe2010_02_17() {
+		$this->assertEquals('2010-02-17', $this->session->getDateFin());
+	}
+
+
+	/** @test */
 	function answerShouldRedirectToFormationIndex() {
-		$this->assertRedirectTo('/admin/formation');
+		$this->assertRedirectTo('/admin/formation/session_edit/id/99');
 	}
 
 
