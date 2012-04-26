@@ -21,8 +21,14 @@
 
 class Class_Xml_Builder {
 	public function __call($method, $arguments) {
-		if (is_array($first_arg = $arguments[0]))
+		if (0 == count($arguments))
+			return $this->_tag($method, '');
+
+		if (is_array($first_arg = $arguments[0])) {
+			if (1 == count($arguments))
+				$arguments[1] = '';
 			return $this->_tag(array($method => $first_arg), $arguments[1]);
+		}
 		return $this->_tag($method, $first_arg);
 	}
 
