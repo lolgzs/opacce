@@ -47,7 +47,7 @@ class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_B
 		$param["ID_MODULE"] = $this->id_module;
 		$param["ID_CAT"] = $this->preferences["id_categorie"];
 		$param["SELECT_ID_CAT"] = array_isset("select_id_categorie", $this->preferences) ? $this->preferences["select_id_categorie"] : "all";
-		$param["DISPLAY_CAT_SELECT"] = $this->preferences["display_cat_select"];
+		$param["DISPLAY_CAT_SELECT"] = array_isset("display_cat_select", $this->preferences) ? $this->preferences["display_cat_select"] : false;
  		$param["EVENT_INFO"] = $this->preferences["display_event_info"];
 		$param["ALEATOIRE"] = 1;
 		$param["DISPLAY_NEXT_EVENT"] = array_key_exists('display_next_event', $this->preferences) ? $this->preferences["display_next_event"] : '1';

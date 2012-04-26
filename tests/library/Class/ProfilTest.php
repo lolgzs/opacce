@@ -81,10 +81,12 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 		$this->assertEquals(array(
 															'H' => array(
 																					 "libelle" => "Menu horizontal",
-																					 "picto" => "vide.gif"),
+																					 "picto" => "vide.gif",
+																					 'menus' => array()),
 															'V' => array(
 																					 "libelle" => "Menu vertical",
-																					 "picto" => "vide.gif")),
+																					 "picto" => "vide.gif",
+																					 'menus' => array())),
 												$this->profil_astro->getCfgMenusAsArray());
 	}
 
@@ -105,7 +107,8 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 		$this->assertEquals(array(
 															'H' => array(
 																					 "libelle" => "Menu horizontal",
-																					 "picto" => "vide.gif"),
+																					 "picto" => "vide.gif",
+																					 "menus" => array()),
 															'V' => array(
 																					 "libelle" => "Les news",
 																					 "picto" => "home.gif",

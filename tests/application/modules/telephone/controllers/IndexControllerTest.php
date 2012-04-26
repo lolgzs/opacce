@@ -195,4 +195,49 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 		$this->assertXPath('//form[contains(@action, "embed/recherche/lancer")]');
 	}
 }
+
+
+
+
+class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUnit_ControllerTestCase {
+	public $bootstrap = 'bootstrap_frontcontroller.php';
+
+ 	public function setUp() {
+ 		$_SERVER['HTTP_USER_AGENT'] = 'iphone';
+ 		parent::setUp();
+
+
+		$cfg_accueil =
+			array('modules' => array('1' => array('division' => '1',
+																						'type_module' => 'LOGIN',
+																						'preferences' => array()),
+
+															 '2' => array('division' => '1',
+																						'type_module' => 'NEWS',
+																						'preferences' => array('titre' => 'Concerts',
+																																	 'rss_avis' => 0)))); 
+
+		Class_Profil::setCurrentProfil(
+																	 Class_Profil::getLoader()
+																	 ->newInstanceWithId(1)
+																	 ->setBrowser('opac')
+																	 ->setTitreSite('portail')
+																	 ->setCfgAccueil($cfg_accueil));
+		$_SESSION['id_profil'] = 1;
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
+							->whenCalled('findFirstBy')
+							->with(array('BROWSER' => 'telephone'))
+							->answers(null);
+		$this->dispatch('/');
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function moduleShouldBeOpac() {
+		$this->assertModule('opac');
+	}
+}
 ?>

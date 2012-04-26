@@ -150,15 +150,17 @@ class Class_Profil extends Storm_Model_Abstract {
 		if (!isset(self::$DEFAULT_VALUES))
 			self::$DEFAULT_VALUES =
 				array('cfg_site' => '',
-							'cfg_accueil' => ZendAfi_Filters_Serialize::serialize(array("modules" => array())),
+							'cfg_accueil' => ZendAfi_Filters_Serialize::serialize(array('modules' => array())),
 							'cfg_menus' => ZendAfi_Filters_Serialize::serialize(
 																	 array(
 																				'H' => array(
-																										 "libelle" => "Menu horizontal",
-																										 "picto" => "vide.gif"),
+																										 'libelle' => 'Menu horizontal',
+																										 'picto' => 'vide.gif',
+																										 'menus' => array()),
 																				'V' => array(
-																										 "libelle" => "Menu vertical",
-																										 "picto" => "vide.gif"))),
+																										 'libelle' => 'Menu vertical',
+																										 'picto' => 'vide.gif',
+																										 'menus' => array()))),
 							'cfg_modules' => '',
 							'cfg_notice' => ZendAfi_Filters_Serialize::serialize(
 																			 array('exemplaires' => array(
@@ -295,7 +297,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	public function getPathTheme()	{
 		$path='/public/'.$this->getBrowser().'/skins/'.$this->getSkin().'/';
-		if(!file_exists(".".$path))
+		if(!file_exists('.'.$path))
 			$path='/public/'.$this->getBrowser().'/skins/original/';
 		return $path;
 	}
@@ -305,7 +307,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return string
 	 */
 	public function getPathTemplates() {
-		return ".".$this->getPathTheme()."templates/boites/";
+		return '.'.$this->getPathTheme().'templates/boites/';
 	}
 
 
@@ -317,14 +319,14 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function getOrCreateConfigAccueil($id_module, $type_module) {
 		$cfg_accueil = $this->getCfgAccueilAsArray();
 
-		if (array_isset($id_module, $cfg_accueil["modules"]))
-			$module = $cfg_accueil["modules"][$id_module];
+		if (array_isset($id_module, $cfg_accueil['modules']))
+			$module = $cfg_accueil['modules'][$id_module];
 		else
-			$module = array("preferences" => array());
+			$module = array('preferences' => array());
 
 		$data = array();
-		if (array_isset("preferences", $module))
-			$data = $module["preferences"];
+		if (array_isset('preferences', $module))
+			$data = $module['preferences'];
 
 		$default_values = Class_Systeme_ModulesAccueil::getInstance()->getValeursParDefaut($type_module);
 		return array_merge($default_values, $data);
@@ -352,7 +354,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	public function updateModuleConfigAccueil($id_module, $module_config) {
 		$cfg_accueil=$this->getCfgAccueilAsArray();
-		$cfg_accueil["modules"][$id_module] = $module_config;
+		$cfg_accueil['modules'][$id_module] = $module_config;
 		$this->setCfgAccueil($cfg_accueil);
 		return $this;
 	}
@@ -386,8 +388,8 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		// réserve l'id pour ne pas redonner 2 fois le même
 		$cfg_accueil = $this->getCfgAccueilAsArray();
-		$cfg_accueil['modules'][$new_id] = array("preferences" => array(
-																								 "id_module" => $new_id));
+		$cfg_accueil['modules'][$new_id] = array('preferences' => array(
+																								 'id_module' => $new_id));
 		$this->setCfgAccueil($cfg_accueil);
 
 		return $new_id;
@@ -745,11 +747,11 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	function getAvailableSkins()	{
 		// Parcourir le dossier des skins opac
-		$scanlisting = scandir("./public/opac/skins");
+		$scanlisting = scandir('./public/opac/skins');
 		$availableSkins = array();
 
 		foreach($scanlisting as $key => $value)
-			if (is_dir("./public/opac/skins/$value") == true and $value[0] != '.')
+			if (is_dir("./public/opac/skins/$value") and $value[0] != '.')
 				$availableSkins[$value] = $value;
 
 		return $availableSkins;
@@ -817,17 +819,17 @@ class Class_Profil extends Storm_Model_Abstract {
 		$this->check($this->getLargeurDivision1() +
 								 $this->getLargeurDivision2() +
 								 $this->getLargeurDivision3() <= $this->getLargeurSite(),
-								 "La somme des largeurs des divisions ne doit pas excéder la largeur du site.");
+								 'La somme des largeurs des divisions ne doit pas excéder la largeur du site.');
 
-		$this->check($this->getLargeurDivision1(), "Il manque la largeur de la division 1.");
+		$this->check($this->getLargeurDivision1(), 'Il manque la largeur de la division 1.');
 		$this->check($this->getLargeurDivision2() or $this->getNbDivisions() < 2,
-								 "Il manque la largeur de la division 2.");
+								 'Il manque la largeur de la division 2.');
 		$this->check($this->getLargeurDivision3() or $this->getNbDivisions() < 3,
-								 "Il manque la largeur de la division 3.");
+								 'Il manque la largeur de la division 3.');
 		$this->check($this->getMargeDivision1() < 20
 								 and $this->getMargeDivision2() < 20
 								 and $this->getMargeDivision3() < 20,
-								 "Une marge interne de division ne peut pas excéder 20 pixels.");
+								 'Une marge interne de division ne peut pas excéder 20 pixels.');
 
 
 		$this->check($this->_isCSSColorValid($this->getCouleurTexteBandeau()),
@@ -838,10 +840,10 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		$url_validate = new ZendAfi_Validate_Url();
 		$this->check(!$this->getLogoGaucheLink() or $url_validate->isValid($this->getLogoGaucheLink()),
-								 "Le lien pour le logo gauche n'est pas valide");
+								 'Le lien pour le logo gauche n\'est pas valide');
 
 		$this->check(!$this->getLogoDroiteLink() or $url_validate->isValid($this->getLogoDroiteLink()),
-								 "Le lien pour le logo droite n'est pas valide");
+								 'Le lien pour le logo droite n\'est pas valide');
     return $this;
 	}
 
@@ -860,13 +862,13 @@ class Class_Profil extends Storm_Model_Abstract {
 			$css = '<style id="profil_stylesheet" type="text/css">';
 
 			if ($hauteur_banniere = $this->getHauteurBanniere())
-				$css .= "div#banniere, div#header{height:".$hauteur_banniere."px}";
+				$css .= 'div#banniere, div#header{height:'.$hauteur_banniere.'px}';
 
 			if ($couleur_texte = $this->getCouleurTexteBandeau())
-				$css .= "div#header * {color:$couleur_texte} div#header form input {color: #000}";
+				$css .= 'div#header * {color:$couleur_texte} div#header form input {color: #000}';
 
 			if ($couleur_lien = $this->getCouleurLienBandeau())
-				$css .= "div#header a, div#header a:visited {color:$couleur_lien}";
+				$css .= 'div#header a, div#header a:visited {color:$couleur_lien}';
 
 			$css .= '</style>';
 
@@ -927,7 +929,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$cls_module = new Class_Systeme_ModulesAccueil();
 
 		$boites = array();
-		foreach ($cfg_accueil["modules"] as $id => $module) {
+		foreach ($cfg_accueil['modules'] as $id => $module) {
 			if (!$module) $module = array();
 			$module = array_merge(array('type_module' => null,
 																	'preferences' => array()),
@@ -963,10 +965,10 @@ class Class_Profil extends Storm_Model_Abstract {
 			$cfg_accueil['modules'][$id] = $module;
 
 		} else {
-			foreach ($cfg_accueil["modules"] as $index => $module)  {
+			foreach ($cfg_accueil['modules'] as $index => $module)  {
 				if ($module['division'] == self::DIV_BANNIERE and
 						$module['type_module'] == $type_module)
-					unset($cfg_accueil["modules"][$index]);
+					unset($cfg_accueil['modules'][$index]);
 			}
 		}
 

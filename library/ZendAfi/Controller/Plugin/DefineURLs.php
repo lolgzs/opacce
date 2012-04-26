@@ -58,6 +58,9 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		if ('telephone' == $profil->getBrowser())
 			$module = 'telephone';
 
+		if ($requested_module == 'telephone' && $profil->getBrowser() == 'opac')
+			$module = 'opac';
+
 
 		/**
 		 * Si l'ouverture du profil nécessite un niveau d'accès et que
