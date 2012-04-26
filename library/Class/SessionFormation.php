@@ -151,7 +151,7 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 													"La date limite d'inscription doit être inférieure ou égale à la date de début");
 
 		$this->checkAttribute('date_fin',
-													Class_Date::isEndDateAfterStartDateNotEmpty($this->getDateFin(), $this->getDateDebut()),
+													Class_Date::isEndDateAfterStartDate($this->getDateDebut(), $this->getDateFin()),
 													"La date de fin doit être supérieure ou égale à la date de début");
 	}
 

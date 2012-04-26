@@ -1,8 +1,8 @@
 <?php 
 echo $this->openBoite(sprintf('Formation %s: session du %s',
 															$this->session->getLibelleFormation(),
-															$this->humanDate($this->session->getDateDebut(), 
-																							 'd MMMM yyyy')));
+															$this->renderDateRange($this->session->getDateDebut(), 
+																										 $this->session->getDateFin())));
 
 ?>
 

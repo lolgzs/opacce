@@ -1,7 +1,7 @@
 <tr class="session_<?php echo $this->session->getId()?> <?php echo $this->item_class ?>">
 <?php 
 echo sprintf("<td>%s %s</td>", 
-						 $this->humanDate($this->session->getDateDebut(), 'dd MMMM Y'),
+						 $this->renderDateRange($this->session->getDateDebut(), $this->session->getDateFin()),
 						 $this->session->isAnnule() ? '(Annulé)' : '');
 echo sprintf("<td>%s&nbsp;</td>", $this->session->getLibelleLieu());
 echo sprintf("<td>%s</td>", 

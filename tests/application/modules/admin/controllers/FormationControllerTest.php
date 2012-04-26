@@ -745,8 +745,7 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 												array('date_debut' => '',
 															'effectif_min' => 20,
 															'effectif_max' => 4,
-															'date_limite_inscription' => '05/01/2099',
-															'date_fin' => '05/01/1990'));
+															'date_limite_inscription' => '05/01/2022'));
 	}
 
 	/** @test */
@@ -771,6 +770,18 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 	public function errorsShouldContainsDateLimiteInscriptionAfterDateDebut() {
 		$this->assertXPathContentContains('//ul[@class="errors"]//li', 
 																			"La date limite d'inscription doit être inférieure ou égale à la date de début");
+	}
+}
+
+
+
+
+class Admin_FormationControllerPostSessionLearnJavaWithInvalidDateFinTest extends  Admin_FormationControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/admin/formation/session_edit/id/32',
+												array('date_debut' => '05/02/2011',
+															'date_fin' => '05/01/2010'));
 	}
 
 

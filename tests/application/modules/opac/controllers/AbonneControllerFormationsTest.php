@@ -116,6 +116,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setStagiaires(array())
 																																	->setLieu($this->_bonlieu)
 																																	->setDateDebut('2022-02-17') 
+																																	->setDateFin('2022-02-19')
 																																	->setDateLimiteInscription('2022-02-15'),
 
 
@@ -236,7 +237,7 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 
 	/** @test */
 	function session_fevrier_17_ShouldBeDisplayedUnderLearnJavaInSecondPosition() {
-		$this->assertXPathContentContains('//tr[2]//td', '17 février 2022');
+		$this->assertXPathContentContains('//tr[2]//td', '17 février 2022 au 19 février 2022', $this->_response->getBody());
 	}
 
 
@@ -275,7 +276,7 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 
 	/** @test */
 	function session_septembre_java_ShouldBeAnnule() {
-		$this->assertXPathContentContains('//tr', '27 septembre 2022 (Annul');
+		$this->assertXPathContentContains('//tr//td[contains(text(), "Annul")]//span', '27 septembre 2022');
 	}
 
 
@@ -596,7 +597,7 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 
 	/** @test */
 	public function titleShouldBeFormationLearnPython_SessionDu21Juillet2023() {
-		$this->assertXPathContentContains('//h1', 'Formation Learn Python: session du 21 juillet 2023');
+		$this->assertXPathContentContains('//h1[contains(text(), "Learn Python")]//span', '21 juillet 2023');
 	}
 
 

@@ -360,12 +360,11 @@ class Admin_FormationController extends Zend_Controller_Action {
 				->validate();
 			
 			if ($form->isValid($this->_request->getPost()) && $session->isValid()) {
-				if ($session->save()) {
-					$this->_helper->notify(sprintf('Session du %s sauvegardée', 
-																				 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY')));
-					$this->_redirect('admin/formation/session_edit/id/'.$session->getId());
-					return true;
-				}
+				$session->save();
+				$this->_helper->notify(sprintf('Session du %s sauvegardée', 
+																			 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY')));
+				$this->_redirect('admin/formation/session_edit/id/'.$session->getId());
+				return true;
 			}
 
 			foreach($session->getErrors() as $attribute => $message) {

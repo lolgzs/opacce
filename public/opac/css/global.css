@@ -777,6 +777,12 @@ dl.session_formation + .actions a:last-child {
 }
 
 
+.formations table td:first-child {
+		width: 140px;
+		padding: 5px 0px;
+}
+
+
 .first:hover,
 .second:hover{
 		background-color: rgba(194, 221, 230, 0.4); 
