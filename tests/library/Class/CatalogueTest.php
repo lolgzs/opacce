@@ -66,4 +66,70 @@ class CatalogueTestGetRequetesPanier extends ModelTestCase {
 	}
 }
 
+
+class CatalogueTestGetSelectionFacette extends ModelTestCase {
+	protected $_catalogue;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_catalogue = new Class_Catalogue();
+	}
+
+
+	/** @test */
+	public function withoutValuesShouldReturnFalse() {
+		$this->assertEquals(false, $this->_catalogue->getSelectionFacette(null, null));
+	}
+
+
+	/** @test */
+	public function withEmptyValuesShouldReturnEmptyString() {
+		$this->assertEquals('', $this->_catalogue->getSelectionFacette(null, ''));
+	}
+
+
+	/** @test */
+	public function withTypeAndValuesShouldReturnThemConcatened() {
+		$this->assertEquals('+(A18 A78 A8 A3)', 
+												$this->_catalogue->getSelectionFacette('A', '18;78;8;3'));
+	}
+
+
+	/** @test */
+	public function withTypeAndValuesAndNoSigneShouldNotAddPlus() {
+		$this->assertEquals(' A18 A78 A8 A3', 
+												$this->_catalogue->getSelectionFacette('A', '18;78;8;3', false, false));
+	}
+
+
+
+	/** @test */
+	public function withDescendantShouldAddWildCard() {
+		$this->assertEquals('+(A18* A78* A8* A3*)', 
+												$this->_catalogue->getSelectionFacette('A', '18;78;8;3', true));
+	}
+
+
+	/** @test */
+	public function withMatersShouldConcatenateThem() {
+		$this->assertEquals('+(M18 M78 M8 M3)', 
+												$this->_catalogue->getSelectionFacette('M', '18;78;8;3'));
+	}
+
+
+	/** @test */
+	public function withMaterAndDescendantsShouldConcatenateThem() {
+		Class_Matiere::getLoader()->newInstanceWithId(18)
+			->setLibelle('Parc animalier');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Matiere')
+			->whenCalled('findAllBy')
+			->with(array('where' => 'libelle LIKE \'Parc animalier : %\''))
+			->answers(array(Class_Matiere::getLoader()->newInstanceWithId(78)));
+
+		$this->assertEquals('+(M18 M78)', 
+												$this->_catalogue->getSelectionFacette('M', '18', true));
+	}
+
+}
 ?>

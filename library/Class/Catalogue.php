@@ -227,29 +227,40 @@ class Class_Catalogue extends Storm_Model_Abstract
 	//----------------------------------------------------------------------------
 	// Calcul de la clause against pour une facette
 	//----------------------------------------------------------------------------
-	private function getSelectionFacette($type,$valeurs,$descendants=false,$signe=true)
+	public function getSelectionFacette($type,$valeurs,$descendants=false,$signe=true)
 	{
-		if(!$valeurs) return false;
-		$valeurs=explode(";",$valeurs);
-		foreach($valeurs as $valeur) 
-		{
-			if(!$valeur) continue;
-			if($descendants == true)
-			{
-				if($type=="M")
-				{
-					$cls_matiere = new Class_Matiere();
-					$sous_vedettes=$cls_matiere->getSousVedettes($valeur);
-					$valeur.=str_replace(" "," M"," ".$sous_vedettes);
-				}
-				else $valeur.="*";
+		if (!$valeurs) 
+			return false;
+		$valeurs = explode(';', $valeurs);
+		$cond = '';
+		foreach ($valeurs as $valeur) {
+			if (!$valeur)
+        continue;
+
+			if (!$descendants) {
+				$cond .= $type . $valeur . ' ';
+				continue;
 			}
-			$cond.=$type.$valeur." ";
+
+			if ('M' != $type) {
+				$cond .= $type . $valeur . '* ';
+				continue;
+			}
+
+			if (!$matiere = Class_Matiere::getLoader()->find($valeur))
+				continue;
+			
+			if ('' != ($sous_vedettes = trim($matiere->getSousVedettes())))
+			  $valeur .= str_replace(' ', ' M', ' ' . $sous_vedettes);
+			$cond .= $type . $valeur . ' ';
 		}
-		$cond=trim($cond);
-		if($signe==true) $cond="+(".$cond.")";
-		else $cond=" ".$cond;
-		return $cond;
+
+		$cond = trim($cond);
+
+		if ($signe) 
+			return '+(' . $cond . ')';
+
+		return ' ' . $cond;
 	}
 
 	//------------------------------------------------------------------------------

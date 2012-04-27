@@ -31,20 +31,15 @@ class MatiereTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	function sqlQueriesShouldBeEscaped() {
-		$this->mock_sql
-			->expects($this->once())
-			->method('fetchOne')
-			->with("select libelle from codif_matiere where id_matiere=4")
-			->will($this->returnValue("L'art du 20ème"));
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Matiere')
+			->whenCalled('findAllBy')
+			->with(array('where' => 'libelle LIKE \'L\'\'art du 20ème : %\''))
+			->answers(array(Class_Matiere::getLoader()->newInstanceWithId(12), 
+											Class_Matiere::getLoader()->newInstanceWithId(24)));
 
-		$this->mock_sql
-			->expects($this->once())
-			->method('fetchAll')
-			->with("select id_matiere from codif_matiere where libelle like 'L''art du 20ème : %'")
-			->will($this->returnValue(array(array('id_matiere' => 12), 
-																			array('id_matiere' => 24))));
-
-		$matiere = new Class_Matiere();
+		$matiere = Class_Matiere::getLoader()
+			->newInstanceWithId(4)
+			->setLibelle('L\'art du 20ème');
 		$this->assertEquals('12 24 ',	$matiere->getSousVedettes(4));
 	}
 }

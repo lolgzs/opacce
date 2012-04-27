@@ -24,7 +24,9 @@
 
 class Class_Matiere extends Storm_Model_Abstract {
 	protected $_table_name = 'codif_matiere';
-	protected $_table_primary = 'id_matiere'; 
+	protected $_table_primary = 'id_matiere';
+
+	protected $_default_attribute_values = array('libelle' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
@@ -51,24 +53,17 @@ class Class_Matiere extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Rend les identifiants de sous_vedettes pour un id_matiere
 // ----------------------------------------------------------------
-	public function getSousVedettes($id_matiere)
-	{
-		// lire la vedette
-		if(!$id_matiere) return false;
-		$vedette=fetchOne("select libelle from codif_matiere where id_matiere=$id_matiere");
-		if(!$vedette) return false;
-
-		// lire les sous-vedettes
+	public function getSousVedettes() {
+		$vedette = $this->getLibelle();
 		$vedette = str_replace("'", "''", $vedette);
-		$vedette.=" : %";
-		$data=fetchAll("select id_matiere from codif_matiere where libelle like '$vedette'");
+		$children = self::getLoader()->findAllBy(array('where' => 'libelle LIKE \''. $vedette . ' : %\''));
 		
-		if (!$data) 
-		  return false;
+		if (0 == count($children)) 
+		  return '';
 		
 		$sous_vedette = '';
-		foreach($data as $enreg)
-			$sous_vedette.=$enreg["id_matiere"]." ";
+		foreach($children as $child)
+			$sous_vedette.= $child->getId() . ' ';
 
 		return $sous_vedette;
 	}
