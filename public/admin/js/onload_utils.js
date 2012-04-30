@@ -71,7 +71,7 @@ var ajaxify_calendars = function () {
 var setupAnchorsTarget = function() {
 	var internalLink = new RegExp('/' + window.location.host + '/');
 	$('a[href^="http://"]').each(function() {
-		if (!internalLink.test(this.href) && (undefined == this.onclick)  && (undefined == $(this).data('events') || undefined == $(this).data('events').click)) {
+		if (!internalLink.test($(this).attr('href')) && (undefined == this.onclick)  && (undefined == $(this).data('events') || undefined == $(this).data('events').click)) {
 			if ($.browser.msie) { //Sinon IE n'envoie pas le HTTP REFERRER
 				this.target = '_blank';
 				return;
