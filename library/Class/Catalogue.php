@@ -21,14 +21,160 @@
 ////////////////////////////////////////////////////////////////////////////////
 // OPAC3 - Catalogues de notices
 ////////////////////////////////////////////////////////////////////////////////
+class CatalogueLoader extends Storm_Model_Loader {
+	const DEFAULT_ITEMS_BY_PAGE = 1000;
+
+	public function loadNoticesFor($catalogue, $itemsByPage = self::DEFAULT_ITEMS_BY_PAGE, $page = 1) {
+		if (null == $catalogue)
+			return array();
+
+		if ('' == ($where = $this->clausesFor($catalogue)))
+			return array();
+
+
+		return Class_Notice::getLoader()->findAllBy(array('where' => $where,
+																											'limitPage' => array($page, $itemsByPage)));
+	}
+
+
+	public function clausesFor($catalogue) {
+		$conditions = array();
+		if ($facets = $this->facetsClauseFor($catalogue))
+			$conditions[] = $facets;
+		
+		if ($docType = $this->docTypeClauseFor($catalogue)) 
+			$conditions[] = $docType;
+
+		if ($year = $this->yearClauseFor($catalogue)) 
+			$conditions[] = $year;
+
+		if ($cote = $this->coteClauseFor($catalogue))
+			$conditions[] = $cote;
+
+		if ($new = $this->nouveauteClauseFor($catalogue))
+			$conditions[] = $new;
+
+		if (0 == count($conditions))
+			return '';
+		
+		return implode(' and ', $conditions);
+	}
+
+
+	/**
+	 * @param $catalogue Class_Catalogue
+	 * @return string
+	 */
+	public function facetsClauseFor($catalogue) {
+		$against = $against_ou = '';
+		$facets = array('B' => $catalogue->getBibliotheque(),
+										'S' => $catalogue->getSection(),
+										'G' => $catalogue->getGenre(),
+										'L' => $catalogue->getLangue(),
+										'Y' => $catalogue->getAnnexe(),
+										'E' => $catalogue->getEmplacement());
+
+		foreach ($facets as $k => $v) 
+			$against .= Class_Catalogue::getSelectionFacette($k, $v);
+		
+		$facets = array('A' => $catalogue->getAuteur(),
+										'M' => $catalogue->getMatiere(),
+										'D' => $catalogue->getDewey(),
+										'P' => $catalogue->getPcdm4(),
+										'T' => $catalogue->getTags(),
+										'F' => $catalogue->getInteret());
+
+		foreach ($facets as $k => $v) 
+			$against_ou .= Class_Catalogue::getSelectionFacette($k, $v, in_array($k, array('M', 'D', 'P')), false);
+
+
+		if ('' != $against_ou) 
+			$against .= '+(' . $against_ou . ")";
+
+		if ('' == $against)
+			return '';
+
+		return "MATCH(facettes) AGAINST('".$against."' IN BOOLEAN MODE)";
+	}
+
+
+	public function docTypeClauseFor($catalogue) {
+		if (!$docType = $catalogue->getTypeDoc())
+			return '';
+
+		$parts = explode(';', $docType);
+		if (1 == count($parts)) 
+			return 'type_doc=' . $parts[0];
+
+		return 'type_doc IN (' . implode(', ', $parts) .  ')';
+	}
+
+
+	public function yearClauseFor($catalogue) {
+		$clauses = array();
+		if ($start = $catalogue->getAnneeDebut()) 
+			$clauses[] = "annee >= '" . $start . "'";
+
+		if($end = $catalogue->getAnneeFin()) 
+			$clauses[] = "annee <= '" . $end . "'";
+
+		if (0 == count($clauses))
+			return '';
+
+		return implode(' and ', $clauses);
+	}
+
+
+	public function coteClauseFor($catalogue) {
+		$clauses = array();
+		if ($start = $catalogue->getCoteDebut()) 
+			$clauses[] = "cote >= '" . strtoupper($start) . "'";
+
+		if ($end = $catalogue->getCoteFin()) 
+			$clauses[] = "cote <= '". strtoupper($end) . "'";
+
+		if (0 == count($clauses))
+			return '';
+
+		return implode(' and ', $clauses);
+	}
+
+
+	public function nouveauteClauseFor($catalogue) {
+		if (1 != $catalogue->getNouveaute())
+			return '';
+
+		return 'date_creation >= \'' . date('Y-m-d') . '\'';
+	}
+}
+
 
 class Class_Catalogue extends Storm_Model_Abstract
 {
 	protected $_table_name = 'catalogue';
 	protected $_table_primary = 'ID_CATALOGUE';
+	protected $_loader_class = 'CatalogueLoader';
 
 	protected $_default_attribute_values = array('oai_spec' => '',
-																							 'description' => '');
+																							 'description' => '',
+																							 'bibliotheque' => '',
+																							 'section' => '',
+																							 'genre' => '',
+																							 'langue' => '',
+																							 'annexe' => '',
+																							 'emplacement' => '',
+																							 'auteur' => '',
+																							 'matiere' => '',
+																							 'dewey' => '',
+																							 'pcdm4' => '',
+																							 'tags' => '',
+																							 'interet' => '',
+																							 'type_doc' => '',
+																							 'annee_debut' => '',
+																							 'annee_fin' => '',
+																							 'cote_debut' => '',
+																							 'cote_fin' => '',
+																							 'nouveaute' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
@@ -228,10 +374,10 @@ class Class_Catalogue extends Storm_Model_Abstract
 	//----------------------------------------------------------------------------
 	// Calcul de la clause against pour une facette
 	//----------------------------------------------------------------------------
-	public function getSelectionFacette($type,$valeurs,$descendants=false,$signe=true)
-	{
+	public static function getSelectionFacette($type, $valeurs, $descendants = false, $signe = true) {
 		if (!$valeurs) 
 			return false;
+
 		$valeurs = explode(';', $valeurs);
 		$cond = '';
 		foreach ($valeurs as $valeur) {

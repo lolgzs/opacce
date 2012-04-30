@@ -102,7 +102,6 @@ class CatalogueTestGetSelectionFacette extends ModelTestCase {
 	}
 
 
-
 	/** @test */
 	public function withDescendantShouldAddWildCard() {
 		$this->assertEquals('+(A18* A78* A8* A3*)', 
@@ -130,6 +129,154 @@ class CatalogueTestGetSelectionFacette extends ModelTestCase {
 		$this->assertEquals('+(M18 M78)', 
 												$this->_catalogue->getSelectionFacette('M', '18', true));
 	}
+}
 
+
+class CatalogueTestGetPagedNotices extends ModelTestCase {
+	protected $_catalogue;
+	protected $_noticeWrapper;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_catalogue = Class_Catalogue::getLoader()->newInstanceWithId(3);
+		$this->_noticeWrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice');
+	}
+
+
+	/** @test */
+	public function withoutConditionsShouldReturnEmptyResult() {
+		$this->assertEquals(0, count(Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue)));
+	}
+
+
+	/** @test */
+	public function withBibliothequeShouldQueryNoticeWithFacet() {
+		$lambda = function($catalogue) {$catalogue->setBibliotheque('23;88');};
+		$this->_prepareAndLoadForFacet($lambda, 'B23 B88');
+	}
+
+
+	/** @test */
+	public function withSectionShouldQueryNoticeWithFacet() {
+		$lambda = function($catalogue) {$catalogue->setSection('66');};
+		$this->_prepareAndLoadForFacet($lambda, 'S66');
+	}
+
+
+	/** @test */
+	public function withGenreShouldQueryNoticeWithFacet() {
+		$lambda = function($catalogue) {$catalogue->setGenre('43');};
+		$this->_prepareAndLoadForFacet($lambda, 'G43');
+	}
+
+
+	/** @test */
+	public function withLangueShouldQueryNoticeWithFacet() {
+		$lambda = function($catalogue) {$catalogue->setLangue('4');};
+		$this->_prepareAndLoadForFacet($lambda, 'L4');
+	}
+
+
+	/** @test */
+	public function withAnnexeShouldQueryNoticeWithFacet() {
+		$lambda = function($catalogue) {$catalogue->setAnnexe('67');};
+		$this->_prepareAndLoadForFacet($lambda, 'Y67');
+	}
+
+
+	/** @test */
+	public function withEmplacementShouldQueryNoticeWithFacet() {
+		$lambda = function ($catalogue) {$catalogue->setEmplacement('12');};
+		$this->_prepareAndLoadForFacet($lambda, 'E12');
+	}
+
+
+	/** @test */
+	public function withTypeDocShouldQueryOnColumn() {
+		$this->_catalogue->setTypeDoc(7);
+		$this->_expectNoticeFindAllBy('type_doc=7');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
+	public function withYearShouldQueryOnColumn() {
+		$this->_catalogue
+			->setAnneeDebut('1936')
+			->setAnneeFin('1965');
+		$this->_expectNoticeFindAllBy('annee >= \'1936\' and annee <= \'1965\'');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
+	public function withCoteShouldQueryOnColumn() {
+		$this->_catalogue
+			->setCoteDebut('A')
+			->setCoteFin('Z');
+		$this->_expectNoticeFindAllBy('cote >= \'A\' and cote <= \'Z\'');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
+	public function withNouveauteShouldQueryOnColumn() {
+		$this->_catalogue->setNouveaute(1);
+		$this->_expectNoticeFindAllBy('date_creation >= \'' . date('Y-m-d') . '\'');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
+	public function forFirstPageShouldLimitFromZero() {
+		$this->_catalogue->setBibliotheque('77');
+		$this->_noticeWrapper
+			->whenCalled('findAllBy')
+			->with(array('where' => $this->_facetsClauseWith('B77'),
+									 'limitPage' => array(1, 5)))
+			->answers(array())
+			->beStrict();
+
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue, 5);
+	}
+
+
+	/** @test */
+	public function forThirdPageAndFiveItemsByPageShouldLimitFromTen() {
+		$this->_catalogue->setBibliotheque('77');
+		$this->_noticeWrapper
+			->whenCalled('findAllBy')
+			->with(array('where' => $this->_facetsClauseWith('B77'),
+									 'limitPage' => array(3, 5)))
+			->answers(array())
+			->beStrict();
+
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue, 5, 3);
+	}
+
+
+	protected function _prepareAndLoadForFacet($lambda, $facet) {
+		$lambda($this->_catalogue);
+		$this->_expectNoticeFindAllBy($this->_facetsClauseWith($facet));
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	protected function _expectNoticeFindAllBy($where, $limit = array()) {
+		if (0 == count($limit))
+			$limit = array(1, CatalogueLoader::DEFAULT_ITEMS_BY_PAGE);
+
+ 		$this->_noticeWrapper
+			->whenCalled('findAllBy')
+			->with(array('where' => $where,
+									 'limitPage' => $limit))
+			->answers(array())
+			->beStrict();
+	}
+
+
+  protected function _facetsClauseWith($clauses) {
+    return sprintf('MATCH(facettes) AGAINST(\'+(%s)\' IN BOOLEAN MODE)', $clauses);
+  }
 }
 ?>
