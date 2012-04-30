@@ -127,7 +127,8 @@ class Class_Catalogue extends Storm_Model_Abstract
 	public function getRequetes($preferences,$no_limit=false)
 	{
 		// Si panier traitement special
-		if (isset($preferences["id_panier"])) return $this->getRequetesPanier($preferences);
+		if (isset($preferences["id_panier"])  && (0 !== (int)$preferences["id_panier"])) 
+			return $this->getRequetesPanier($preferences);
 
 		// Ordre
 		$where = $join = $order_by =	$against = $against_ou = '';
