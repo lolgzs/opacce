@@ -232,7 +232,7 @@ class Class_ScriptLoader {
 		foreach($attributes as $name => $value)
 			$html_attributes .= sprintf(' %s="%s" ', $name, $value);
 
-		return $this->cssAddLine(sprintf('<link %s />', $html_attributes));
+		return $this->cssAddLine(sprintf('<link %s>', $html_attributes));
 	}
 
 
