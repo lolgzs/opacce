@@ -448,3 +448,49 @@ class AccueilControllerConfigRSSDefaultsTest extends Admin_AbstractControllerTes
 		$this->assertXPath("//input[@name='nb_aff'][@value='2']");
 	}
 }
+
+
+
+
+class AccueilControllerConfigBoiteLoginTest extends Admin_AbstractControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::getCurrentProfil()
+			->updateModuleConfigAccueil(25,
+																	array('type_module' => 'LOGIN',
+																				'division' => 4,
+																				'id_module' => 32,
+																				'preferences' => array()));		
+		$this->dispatch('/admin/accueil/login?config=accueil&type_module=LOGIN&id_module=32');
+	}
+
+
+	/** @test */
+	public function inputTitreShouldBeSeConnecter() {
+		$this->assertXPath('//input[@name="titre"][@value="Se connecter"]');
+	}
+
+
+	/** @test */
+	public function inputIdentifiantExempleShouldBeEmpty() {
+		$this->assertXPath('//input[@name="identifiant_exemple"][@value=""]');
+	}
+
+
+	/** @test */
+	public function inputMotDePasseExempleShouldBeEmpty() {
+		$this->assertXPath('//input[@name="mot_de_passe_exemple"][@value=""]');
+	}
+
+
+	/** @test */
+	public function inputLibelleLienConnexion() {
+		$this->assertXPath('//input[@name="lien_connexion"][@value="» Se connecter"]');
+	}
+
+
+	/** @test */
+	public function inputLibelleLienMotDePasseOublie() {
+		$this->assertXPath('//input[@name="lien_mot_de_passe_oublie"][@value="» Mot de passe oublié ?"]');
+	}
+}

@@ -30,7 +30,11 @@ abstract class PortailWithOneLoginModuleTestCase extends AbstractControllerTestC
 																									'preferences' => array(
 																											'titre'	=> 'Se connecter',
 																											'identifiant' => 'Numéro de carte',
-																											'mot_de_passe'=> 'Année de naissance'))),
+																											'mot_de_passe'=> 'Année de naissance',
+																											'identifiant_exemple' => 'jj-mm-aaaa',
+																											'mot_de_passe_exemple' => '1983',
+																											'lien_connexion' => 'please, log me',
+																											'lien_mot_de_passe_oublie' => 'me rappelle plus'))),
 												 'options' => 	array());
 
 		Class_Profil::getCurrentProfil()
@@ -144,13 +148,13 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 	public function testLinkSeConnecter() {
 		$this->assertXPath('//div[@id="boite_login"]//a[contains(@onclick, "submit")]');
 		$this->assertXPathContentContains('//div[@id="boite_login"]//a[contains(@onclick, "submit")]',
-																			'Se connecter');
+																			'please, log me');
 	}
 
 	public function testLinkLostPassword() {
 		$this->assertXPath('//div[@id="boite_login"]//a[contains(@href, "auth/lostpass")]');
 		$this->assertXPathContentContains('//div[@id="boite_login"]//a[contains(@href, "auth/lostpass")]',
-																			'Mot de passe oublié ?');
+																			'me rappelle plus');
 	}
 
 	public function testLinkSenregistrer() {
@@ -165,6 +169,18 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 		$this->assertAction('register');
 		$this->assertController('auth');
 		$this->assertNotRedirect('/');
+	}
+
+
+	/** @test */
+	public function inputIdentifiantShouldHavePlaceHolderJJ_MM_AAAA() {
+		$this->assertXPath('//input[@name="username"][@placeholder="jj-mm-aaaa"]');
+	}
+
+
+	/** @test */
+	public function inputPasswordShouldHavePlaceHolder1983() {
+		$this->assertXPath('//input[@name="password"][@placeholder="1983"]');
 	}
 
 

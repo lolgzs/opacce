@@ -10,23 +10,23 @@
 		echo sprintf('<a href="%s/auth/logout" target="_parent">&raquo;&nbsp;%s</a>', BASE_URL, $this->_('Se déconnecter'));
 	} else	{
 	?>
-	<form id="login_form" name="form" action="<?php echo $this->url(array('controller' => 'auth', 'action' => 'boitelogin', 'id_module' => $this->id_module)); ?>"	method="post">
+	<form autocomplete="off" id="login_form" name="form" action="<?php echo $this->url(array('controller' => 'auth', 'action' => 'boitelogin', 'id_module' => $this->id_module)); ?>"	method="post">
 		<table cellspacing="2">
 			<tr>
 				<td class="masque"><label for="auth_username"> <?php echo $this->preferences["identifiant"] ?>&nbsp;</label></td>
-				<td class="saisie"><input id="auth_username" type="text" size="15" name="username" value="" /></td>
+				<td class="saisie"><input id="auth_username" type="text" size="15" name="username" value="" placeholder="<?php echo $this->escape($this->preferences["identifiant_exemple"]) ?>"/></td>
 			</tr>
 
 			<tr>
 				<td class="masque"><label for="auth_password"><?php echo $this->preferences["mot_de_passe"] ?>&nbsp;</label></td>
-				<td class="saisie"><input id="auth_password" type="password" name="password" size="15" onkeypress="if (event.keyCode == 13) {this.form.submit()}" /></td>
+				<td class="saisie"><input id="auth_password" type="password" name="password" size="15" onkeypress="if (event.keyCode == 13) {this.form.submit()}" placeholder="<?php echo $this->escape($this->preferences["mot_de_passe_exemple"]) ?>"/></td>
 			</tr>
 
 			<tr>
 				<td colspan="2" align="center" class="masque">
 					<div align="left">
-						<a href="#" onclick="$(this).parents('form').submit();">&raquo;&nbsp;<?php echo $this->_("Se connecter");?></a>
-						<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'lostpass', 'id_module' => $this->id_module)); ?>">&raquo;&nbsp;<?php echo $this->_("Mot de passe oublié ?") ?></a>
+						<a href="#" onclick="$(this).parents('form').submit();"><?php echo $this->escape($this->preferences["lien_connexion"]);?></a>
+						<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'lostpass', 'id_module' => $this->id_module)); ?>"><?php echo $this->escape($this->preferences["lien_mot_de_passe_oublie"]);?></a>
 						<?php if (!Class_AdminVar::get('INTERDIRE_ENREG_UTIL')) {?>
 									<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'register', 'id_module' => $this->id_module)); ?>">&raquo;&nbsp;<?php echo $this->_("S'enregistrer")?></a>
 						<?php } ?>
