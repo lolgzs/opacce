@@ -241,7 +241,7 @@ function setupFrontController() {
 	$front_controller = Zend_Controller_Front::getInstance()
 		->throwExceptions(true)
 		->addModuleDirectory(MODULEDIRECTORY)
-		->addControllerDirectory('afi/application/modules/opacpriv/controllers','opacpriv')	
+		->addControllerDirectory(ROOT_PATH.'afi/application/modules/opacpriv/controllers','opacpriv')	
 		->setDefaultModule('opac')
 		->setBaseUrl(BASE_URL)
 		->registerPlugin(new ZendAfi_Controller_Plugin_AdminAuth())
