@@ -1002,7 +1002,7 @@ class CmsControllerArticleNewTraductionEditTest extends CmsControllerTestCase {
 
 	/** @test */
 	function descriptionOriginalShouldContainsVenezNombreux() {
-		$this->assertXPathContentContains('//div[@class="art_original"]', 'Venez nombreux ici: <img src="/afi-opac3/images/bonlieu.jpg" />');
+		$this->assertXPath('//div[@class="art_original"][contains(text(), "Venez nombreux ici: ")]//img[@src="/afi-opac3/images/bonlieu.jpg"]');
 	}
 }
 

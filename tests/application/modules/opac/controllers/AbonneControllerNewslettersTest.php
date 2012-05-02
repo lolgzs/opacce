@@ -204,7 +204,7 @@ class AbonneControllerNewsletterEditActionTest extends AbonneControllerWithTwoNe
 	}
 
 	public function testAideIsDisplayed() {
-		$this->assertQueryContentContains('div.help', "Saisissez<br />\nvos données");
+		$this->assertContains("<div class='help'>Saisissez<br />\nvos données</div>", $this->_response->getBody());
 	}
 
 	public function testUserForm() {
