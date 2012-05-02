@@ -511,7 +511,8 @@ class AbstractSessionFusionStrategy {
 class SessionFusionStrategy extends AbstractSessionFusionStrategy{
 	public function getContenuFusionne($session_formation) {
 		return $this->_modele_fusion
-			->setDataSource(array("session_formation" => $session_formation))
+			->setDataSource(array("session_formation" => $session_formation,
+														"date_jour" => new FusionDateContext()))
 			->getContenuFusionne();
 	}
 }
@@ -526,7 +527,8 @@ class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy
 		for ($i=0; $i<=$nb_jours; $i++) {
 			$lettres []= $this->_modele_fusion
 				->setDataSource(array("session_formation" => $session_formation,
-															"date_context" => $date_context))
+															"date_context" => $date_context,
+															"date_jour" => new FusionDateContext()))
 				->getContenuFusionne();
 			$date_context->forwardOneDay();
 		}
@@ -541,7 +543,7 @@ class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy
 class FusionDateContext {
 	protected $_current_date;
 
-	public function __construct($datestr) {
+	public function __construct($datestr=null) {
 		$this->_current_date = $this->dateStringToZendDate($datestr);
 	}
 
@@ -587,7 +589,8 @@ class SessionStagiairesFusionStrategy extends AbstractSessionFusionStrategy{
 		foreach($stagiaires as $stagiaire)
 			$lettres []= $this->_modele_fusion
 													->setDataSource(array('session_formation' => $session_formation,
-																								'stagiaire' => $stagiaire))
+																								'stagiaire' => $stagiaire,
+																								"date_jour" => new FusionDateContext()))
 													->getContenuFusionne();
 
 

@@ -1345,6 +1345,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 			->setNom('FORMATION_CONVOCATION')
 			->setContenu('<div>
 										<h1>Convocation pour {stagiaire.nom}, {stagiaire.prenom}</h1>
+                    <p>Fait le {date_jour.texte}</p>
 										<p>Le stage {session_formation.formation.libelle} débutera le {session_formation.date_debut}</p>
 										</div>');
 
@@ -1608,6 +1609,12 @@ class FormationControllerConvocationTestCase extends FormationControllerImpressi
 	/** @test */
 	public function pageShouldContainssConvocationPourBenoit() {
 		$this->assertXPathContentContains('//h1', 'Convocation pour Curzillat, Benoit');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsDateDuJour() {
+		$this->assertXPathContentContains('//p', strftime('%e %B %Y'));
 	}
 
 
