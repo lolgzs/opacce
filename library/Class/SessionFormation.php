@@ -172,6 +172,11 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 	public function getDateDebutTexte() {
 		return Class_Date::humanDate($this->getDateDebut(), 'd MMMM yyyy');
 	}
+
+	/** @return string */
+	public function getDateFinTexte() {
+		return Class_Date::humanDate($this->getDateFin(), 'd MMMM yyyy');
+	}
 }
 
 ?>

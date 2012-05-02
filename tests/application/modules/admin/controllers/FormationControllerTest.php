@@ -1353,7 +1353,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 		$modele_lettre_stagiaires = Class_ModeleFusion::getLoader()
 			->newInstanceWithId(19)
 			->setNom('FORMATION_LISTE_STAGIAIRES')
-			->setContenu('<h1>Liste des stagiaires pour la session du {session_formation.date_debut_texte}</h1>
+			->setContenu('<h1>Liste des stagiaires pour la session du {session_formation.date_debut_texte} au {session_formation.date_fin_texte}</h1>
 			              <h2>{session_formation.formation.libelle}</h2>
 				            {session_formation.stagiaires["Nom":nom, "Prénom":prenom, "Bibliothèque":bib.libelle, "Téléphone":telephone]}');
 

@@ -64,6 +64,7 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 																															->newInstanceWithId(1)
 																															->setFormationId(3)
 																															->setDateDebut('2009-01-05')
+																															->setDateFin('2009-01-07')
 																															->setDateLimiteInscription('0000-00-00')
 																															->setEffectifMin(1)
 																															->setEffectifMax(3)
@@ -160,6 +161,12 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	function patrickInscriptionFormationShouldBeSessionJanvier() {
 		$this->assertSame($this->_session_janvier, $this->_patrick_inscription->getSessionFormation());
+	}
+
+
+	/** @test */
+	public function sessionJanvierDateFinTexteShouldBeSevenJanuary2009() {
+		$this->assertEquals('7 janvier 2009', $this->_session_janvier->getDateFinTexte());
 	}
 
 
