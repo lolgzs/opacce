@@ -22,7 +22,7 @@
 // OPAC3 - Catalogues de notices
 ////////////////////////////////////////////////////////////////////////////////
 class CatalogueLoader extends Storm_Model_Loader {
-	const DEFAULT_ITEMS_BY_PAGE = 1000;
+	const DEFAULT_ITEMS_BY_PAGE = 100;
 
 	public function loadNoticesFor($catalogue, $itemsByPage = self::DEFAULT_ITEMS_BY_PAGE, $page = 1) {
 		if (null == $catalogue)
@@ -38,6 +38,9 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 
 	public function clausesFor($catalogue) {
+		if (1 == $catalogue->getAll())
+			return '1=1';
+
 		$conditions = array();
 		if ($facets = $this->facetsClauseFor($catalogue))
 			$conditions[] = $facets;
@@ -174,10 +177,17 @@ class Class_Catalogue extends Storm_Model_Abstract
 																							 'annee_fin' => '',
 																							 'cote_debut' => '',
 																							 'cote_fin' => '',
-																							 'nouveaute' => '');
+																							 'nouveaute' => '',
+																							 'all' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	public static function newCatalogueForAll() {
+		$instance = new self();
+		return $instance->setAll(1);
 	}
 
 

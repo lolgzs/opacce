@@ -254,6 +254,13 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
 		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue, 5, 3);
 	}
 
+	
+	/** @test */
+	public function withCatalogForAllShouldQueryOneEgalOne() {
+		$this->_expectNoticeFindAllBy('1=1');
+		Class_Catalogue::getLoader()->loadNoticesFor(Class_Catalogue::newCatalogueForAll());
+	}
+
 
 	protected function _prepareAndLoadForFacet($lambda, $facet) {
 		$lambda($this->_catalogue);

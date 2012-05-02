@@ -52,6 +52,10 @@ class NoticeLoader extends Storm_Model_Loader
 		return $result[0];
 	}
 
+
+	public function findAllByCatalogue($catalogue) {
+		return Class_Catalogue::getLoader()->loadNoticesFor($catalogue);
+	}
 }
 
 class Class_Notice extends Storm_Model_Abstract
