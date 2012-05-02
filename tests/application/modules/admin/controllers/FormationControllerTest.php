@@ -70,7 +70,10 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formation')
 			->whenCalled('save')->answers(true)
 			->whenCalled('delete')->answers(null)
-			->whenCalled('findAll')->answers(array(
+
+			->whenCalled('findAllBy')
+			->with(array('order' => 'id desc'))
+			->answers(array(
 							 $this->_learn_java = Class_Formation::getLoader()
 							 ->newInstanceWithId(3)
 							 ->setLibelle('Learn Java')

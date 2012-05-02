@@ -34,12 +34,15 @@ class ModeleFusionWithSessionFormationAndBibTest extends Storm_Test_ModelTestCas
 																										 ->setStagiaires(array(Class_Users::getLoader()
 																																								->newInstance()
 																																								->setNom('Luke')
-																																								->setPrenom('Lucky'),
+																																								->setPrenom('Lucky')
+																																					      ->setBib(Class_Bib::getLoader()
+																																												 ->newInstanceWithId(3)
+																																												 ->setLibelle('Seynod')),
 
 																																						Class_Users::getLoader()
 																																								->newInstance()
 																																								->setNom('Dalton')
-																																								->setPrenom('Joe'))),
+																																								->setPrenom('Joé'))),
 														'bib' => Class_Bib::getLoader()
 																								->newInstance()
 																								->setLibelle('Annecy')));
@@ -85,13 +88,13 @@ class ModeleFusionWithSessionFormationAndBibTest extends Storm_Test_ModelTestCas
 	/** @test */
 	public function withIntervenantsAndColsDefsShouldRepeatDataInTable() {
 		$this->assertEquals('Stagiaires:<table>'.
-												'<tr><td>Nom</td><td>Prenom</td><td>Signature</td></tr>'.
-												'<tr><td>Luke</td><td>Lucky</td><td></td></tr>'.
-												'<tr><td>Dalton</td><td>Joe</td><td></td></tr>'.
+												'<tr><td>Nom</td><td>Prenom</td><td>Bib</td><td>Signature</td></tr>'.
+												'<tr><td>Luke</td><td>Lucky</td><td>Seynod</td><td></td></tr>'.
+												'<tr><td>Dalton</td><td>Jo&eacute;</td><td></td><td></td></tr>'.
 												'</table>', 
 
 												$this->modele
-												  ->setContenu('Stagiaires:{session_formation.stagiaires["Nom":nom, "Prenom":prenom, "Signature":]}')
+												  ->setContenu('Stagiaires:{session_formation.stagiaires["Nom":nom, "Prenom":prenom, "Bib":bib.libelle, "Signature":]}')
 												  ->getContenuFusionne());
 	}
 
@@ -101,7 +104,7 @@ class ModeleFusionWithSessionFormationAndBibTest extends Storm_Test_ModelTestCas
 		$this->assertEquals('&eacute;leves:<table>'.
 												'<tr><td>Nom</td><td>Pr&eacute;nom</td><td>Signature</td></tr>'.
 												'<tr><td>Luke</td><td>Lucky</td><td></td></tr>'.
-												'<tr><td>Dalton</td><td>Joe</td><td></td></tr>'.
+												'<tr><td>Dalton</td><td>Jo&eacute;</td><td></td></tr>'.
 												'</table>', 
 
 												$this->modele

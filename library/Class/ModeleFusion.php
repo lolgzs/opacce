@@ -59,14 +59,9 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 		foreach ($matches as $match) {
 			$tag = array_shift($match);
-			$attributes = explode('.',array_shift($match));
 
-			$model = $this->getDataSourceNamed(array_shift($attributes));
 			try {
-				if (is_array($value = $this->getValue($model, $attributes))) 
-					$tag_value = $this->buildTable($value, array_shift($match));
-				else
-					$tag_value = htmlentities(utf8_decode($value));
+				$tag_value = $this->getTagValueForString($match);
 			} catch (Storm_Model_Exception $e) {
 				continue;
 			} 
@@ -79,18 +74,37 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 		return $contenu_decode;
 	}
 
+
+	public function getTagValueForString($match) {
+		$attributes = explode('.',array_shift($match));
+
+		$model = $this->getDataSourceNamed(array_shift($attributes));
+
+		if (is_array($value = $this->getValue($model, $attributes))) 
+			return $this->buildTable($value, array_shift($match));
+
+		return htmlentities(utf8_decode($value));
+	}
+
 	
 	public function getValue($modele, &$attributes) {
-		$value_or_model = $modele->callGetterByAttributeName(array_shift($attributes));
+		if (!$next_attribute = array_shift($attributes))
+			return '';
+
+		if (!$value_or_model = $modele->callGetterByAttributeName($next_attribute))
+			return '';
+
 		if (count($attributes)==0) 
 			return $value_or_model;
+		
 		return $this->getValue($value_or_model, $attributes);
 	}
 
 
 	public function buildTable($items, $columns_def_string) {
 		$matches = array();
-		preg_match_all('/(?:\"([^\"]+)\"\:)(\w+)?(?:\s*,\s*)?/', $columns_def_string, $matches, PREG_SET_ORDER);
+
+		preg_match_all('/(?:\"([^\"]+)\"\:)([\w|\.]+)?(?:\s*,\s*)?/', $columns_def_string, $matches, PREG_SET_ORDER);
 
 		$columns = array();
 		foreach ($matches as $match)
@@ -111,9 +125,13 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 	public function buildTableRow($model, &$attributes) {
 		$row = '';
+
 		foreach($attributes as $attribute) {
+			$requested_attributes = explode('.', $attribute);
+			$value = $this->getValue($model, $requested_attributes);
+
 			$row .= sprintf('<td>%s</td>', 
-											$attribute ? htmlentities($model->callGetterByAttributeName($attribute)) : '');
+											$attribute ? htmlentities(utf8_decode($value)) : '');
 		}
 
 		return sprintf('<tr>%s</tr>', $row);

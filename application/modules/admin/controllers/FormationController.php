@@ -21,7 +21,7 @@
 class Admin_FormationController extends Zend_Controller_Action {
 	public function indexAction() {
 		$this->view->titre = 'Mise à jour des formations';
-		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAll());
+		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAllBy(array('order' => 'id desc')));
 	}
 
 

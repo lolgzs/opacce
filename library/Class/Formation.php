@@ -25,7 +25,7 @@ class Class_Formation extends Storm_Model_Abstract {
 																									 'model' => 'Class_SessionFormation',
 																									 'role' => 'formation',
 																									 'dependents' => 'delete',
-																									 'order' => 'date_debut desc'),
+																									 'order' => 'date_debut'),
 
 															 'session_formation_inscriptions' => array('through' => 'sessions'),
 
