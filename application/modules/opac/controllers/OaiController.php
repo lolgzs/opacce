@@ -88,7 +88,7 @@ class OaiController extends Zend_Controller_Action {
 		$this->view->repositoryName = $_SERVER['SERVER_NAME'] . ' Oai repository';
 		$this->view->baseUrl = $baseUrl;
 		$this->view->earliestDatestamp = ($notice = Class_Notice::getLoader()->getEarliestNotice()) ? 
-			$notice->getDateMaj() : '';
+			substr($notice->getDateMaj(), 0, 10) : '';
 		$this->view->adminEmail = Class_CosmoVar::get('mail_admin');
 	}
 }
