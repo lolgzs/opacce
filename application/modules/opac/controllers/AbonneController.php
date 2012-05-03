@@ -33,19 +33,18 @@ class AbonneController extends Zend_Controller_Action
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
 		
-		if (!Zend_Auth::getInstance()->hasIdentity()) {
+		if (!$this->_user = Class_Users::getLoader()->getIdentity()) {
 			$this->_redirect('opac/auth/login');
 			return;
 		}	
 			
-		$this->_user = Zend_Auth::getInstance()->getIdentity();
 		$this->clearEmprunteurCache();
 	}
 
 
 	protected function clearEmprunteurCache() {
 		if (in_array($this->getRequest()->getActionName(), array('prets', 'reservations', 'fiche')))
-			Class_WebService_SIGB_EmprunteurCache::newInstance()->remove(Class_Users::getLoader()->find($this->_user->ID_USER));
+			Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($this->_user);
 	}
 
 
@@ -57,14 +56,14 @@ class AbonneController extends Zend_Controller_Action
 	public function formationsAction() {
 		$this->sessions_inscrit = array();
 		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAll());
-		$this->view->user = Class_Users::getLoader()->getIdentity();
+		$this->view->user = $this->_user;
 	}
 
 
 	public function inscriresessionAction() {
 		if (($session = Class_SessionFormation::getLoader()->find((int)$this->_getParam('id'))) && 
 				!$session->isInscriptionClosed()) {
-			$session->addStagiaire(Class_Users::getLoader()->getIdentity());
+			$session->addStagiaire($this->_user);
 
 			if (!$session->save())
 				$this->_helper->notify(implode('<br/>', $session->getErrors()));
@@ -87,9 +86,8 @@ class AbonneController extends Zend_Controller_Action
 			return;
 		}
 
-		$user = Class_Users::getLoader()->getIdentity();
-		$user->removeSessionFormation($session);
-		if ($user->save()) {
+		$this->_user->removeSessionFormation($session);
+		if ($this->_user->save()) {
 			$this->_helper->notify(sprintf('Vous n\'êtes plus inscrit à la session du %s de la formation %s',
 																		 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY'),
 																		 $session->getLibelleFormation()));
@@ -110,7 +108,7 @@ class AbonneController extends Zend_Controller_Action
 // Voir ses avis
 //------------------------------------------------------------------------------------------------------
 	public function viewavisAction(){
-		$this->_redirect('blog/viewauteur/id/'.$this->_user->ID_USER);
+		$this->_redirect('blog/viewauteur/id/'.$this->_user->getId());
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -202,9 +200,8 @@ class AbonneController extends Zend_Controller_Action
 			->getHelper('ViewRenderer')
 			->setLayoutScript('subModal.phtml');
 
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
 		$notice = Class_Notice::getLoader()->find($id_notice);
-		$avis = $user->getFirstAvisByIdNotice($id_notice);
+		$avis = $this->_user->getFirstAvisByIdNotice($id_notice);
 
 		if ($this->_request->isPost()) {
 			if ($avis == null)
@@ -214,13 +211,13 @@ class AbonneController extends Zend_Controller_Action
 				->setEntete($this->_request->getParam('avisEntete'))
 				->setAvis($this->_request->getParam('avisTexte'))
 				->setNote($this->_request->getParam('avisNote'))
-				->setUser($user)
+				->setUser($this->_user)
 				->setClefOeuvre($notice->getClefOeuvre())
 				->setStatut(0);
 
 
 			if ($avis->save()) {
-				$user
+				$this->_user
 					->setPseudo($this->_request->getParam('avisSignature'))
 					->save();
 				$this->_renderRefreshOnglet();
@@ -236,7 +233,7 @@ class AbonneController extends Zend_Controller_Action
 			$this->view->avisTexte = $avis->getAvis();
 			$this->view->avisNote = $avis->getNote();
 		}
-		$this->view->avisSignature = $user->getNomAff();
+		$this->view->avisSignature = $this->_user->getNomAff();
 		$this->view->id_notice = $id_notice;
 	}
 
@@ -244,7 +241,7 @@ class AbonneController extends Zend_Controller_Action
 	function avissupprimerAction()
 	{
 		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->ID_USER;
+		$id_user=$this->_user->getId();
 		$avis = new Class_Avis();
 		$avis->supprimerAvis($id_user,$id_notice);
 
@@ -267,7 +264,7 @@ class AbonneController extends Zend_Controller_Action
 	function aviscmssupprimerAction()
 	{
 		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->ID_USER;
+		$id_user=$this->_user->getId();
 		$avis = new Class_Avis();
 		$avis->supprimerCmsAvis($id_user,$id_notice);
 
@@ -325,8 +322,6 @@ class AbonneController extends Zend_Controller_Action
 // Fiche abonné
 //------------------------------------------------------------------------------------------------------
 	function ficheAction() {
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-
 		$abonnement = '';
 		$nb_prets = '';
 		$nb_resas = '';
@@ -336,16 +331,16 @@ class AbonneController extends Zend_Controller_Action
 		$error = '';
 
 		// Dates d'abonnement
-		if ($user->isAbonne()) {
-			$date_fin=formatDate($user->getDateFin(),"1");
-			if($user->isAbonnementValid())
+		if ($this->_user->isAbonne()) {
+			$date_fin=formatDate($this->_user->getDateFin(),"1");
+			if($this->_user->isAbonnementValid())
 				$abonnement = $this->view->_("Votre abonnement est valide jusqu'au %s.", $date_fin);
 			else
 				$abonnement = $this->view->_("Votre abonnement est terminé depuis le %s.", $date_fin);
 
 		}
 		// Fiche abonné sigb
-		$fiche_sigb = $user->getFicheSigb();
+		$fiche_sigb = $this->_user->getFicheSigb();
 		if(array_key_exists("fiche", $fiche_sigb)) {
 			$nb_retards = $fiche_sigb["fiche"]->getNbPretsEnRetard();
 			$str_retards = $nb_retards ? $this->view->_('(%d en retard)', $nb_retards) : '';
@@ -367,7 +362,7 @@ class AbonneController extends Zend_Controller_Action
 			$nb_resas = sprintf("<a href='%s/abonne/reservations'>%s</a>", BASE_URL, $nb_resas);
 
 			try {
-				$user_info_popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($user);
+				$user_info_popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($this->_user);
 			} catch (Exception $e) {
 				$error = sprintf('Erreur VSmart: %s', $e->getMessage());
 			}
@@ -378,7 +373,7 @@ class AbonneController extends Zend_Controller_Action
 			
 
 		// Paniers
-		$nb_paniers=count($user->getPaniers());
+		$nb_paniers=count($this->_user->getPaniers());
 		$nb_paniers = $this->view->_plural($nb_paniers,
 																			 "Vous n'avez aucun panier de notices.",
 																			 "Vous avez %d panier de notices",
@@ -387,7 +382,7 @@ class AbonneController extends Zend_Controller_Action
 		$nb_paniers = sprintf("<a href='%s/panier'>%s</a>", BASE_URL, $nb_paniers);
 
 		// Variables de vue
-		$this->view->user = $user;
+		$this->view->user = $this->_user;
 		$this->view->fiche = $fiche_sigb;
 		$this->view->abonnement = $abonnement;
 		$this->view->nb_prets = $nb_prets;
@@ -401,20 +396,17 @@ class AbonneController extends Zend_Controller_Action
 // Liste des prets en cours
 //------------------------------------------------------------------------------------------------------
 	function pretsAction()	{
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->fiche = $this->_user->getFicheSigb();
 	}
 
 
 	function prolongerpretAction() {
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-
 		$id_pret = $this->_request->getParam('id_pret');
 		$cls_comm = new Class_CommSigb();
 
-		$result = $cls_comm->prolongerPret($user, $id_pret);
+		$result = $cls_comm->prolongerPret($this->_user, $id_pret);
 
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->fiche = $this->_user->getFicheSigb();
 
 		if ($result['statut'] == 1) {
 			$this->view->fiche['message'] = $this->view->_('Prêt prolongé');
@@ -429,16 +421,13 @@ class AbonneController extends Zend_Controller_Action
 // Liste des reservations en cours
 //------------------------------------------------------------------------------------------------------
 	function reservationsAction()	{
-		// Communication sigb
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-	
 		// Mode Suppression
 		if (null !== ($delete = $this->_getParam('id_delete'))) {
 			$cls_comm = new Class_CommSigb();
 			$statut_suppr = $cls_comm->supprimerReservation($this->_user, $delete);
 		}
 
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->fiche = $this->_user->getFicheSigb();
 	}
 
 
@@ -522,8 +511,7 @@ class AbonneController extends Zend_Controller_Action
 
 
 	function editAction() {
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-		$form = $this->_userForm($user);
+		$form = $this->_userForm($this->_user);
 
 		if ($this->getRequest()->isPost() && $form->isValid($_POST)) {
 			$newsletters = array();
@@ -535,9 +523,9 @@ class AbonneController extends Zend_Controller_Action
 			try {
 				$password = $this->_request->getParam('password');
 				if (empty($password))
-					$password = $user->getPassword();
+					$password = $this->_user->getPassword();
 
-				$user
+				$this->_user
 					->updateSIGBOnSave()
 					->setNom($this->_request->getParam('nom'))
 					->setPrenom($this->_request->getParam('prenom'))
