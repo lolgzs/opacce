@@ -154,6 +154,7 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTestCase {
 	protected $_xpath;
 	protected $_xml;
+	protected $_cache;
 
 	public function setUp() {
 		parent::setUp();
@@ -175,8 +176,19 @@ class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTe
 											->newInstanceWithId(4)
 											->setClefAlpha('harrypotter-azkaban')
 											->setDateMaj('2012-04-03 11:42:42')));
+		$this->_cache = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('save')
+			->answers(true);
+		Class_WebService_OAI_ResumptionToken::defaultCache($this->_cache);
+
 		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
 		$this->_xml = $this->_response->getBody();
+	}
+
+
+	public function tearDown() {
+		Class_WebService_OAI_ResumptionToken::defaultCache(null);
+		parent::tearDown();
 	}
 
 	
@@ -185,6 +197,11 @@ class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTe
 		$this->_xpath->assertXPath($this->_xml, '//oai:resumptionToken');
 	}
 
+
+	/** @test */
+	public function shouldHaveSavedToken() {
+		$this->assertTrue($this->_cache->methodHasBeenCalled('save'));
+	}
 }
 
 

@@ -81,6 +81,9 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		} elseif (self::IDENTIFIERS_BY_PAGE < $count) {
 			$this->_token = Class_WebService_OAI_ResumptionToken::newWithParamsAndListSize($this->_params, $count);
 		}
+
+		if ($this->_token)
+			$this->_token->save();
 		
 		$this->_notices = $this->_catalogue->getNotices($page_number);
 	}
