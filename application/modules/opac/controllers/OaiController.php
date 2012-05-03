@@ -31,18 +31,15 @@ class OaiController extends Zend_Controller_Action {
 		$this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8');
 		$this->getHelper('ViewRenderer')->setNoRender();
 
-		if ('ListIdentifiers' == $this->_getParam('verb')) {
-			$this->_forward('list-identifiers', null, null, 
+		$verbsMapping = array('ListIdentifiers' => 'list-identifiers',
+													'Identify' => 'identify');
+
+		if (array_key_exists($this->_getParam('verb'), $verbsMapping)) {
+			$this->_forward($verbsMapping[$this->_getParam('verb')], null, null, 
 											$this->_request->getParams() + array('format' => 'xml'));
 			return;
 		}
 
-		if ('Identify' == $this->_getParam('verb')) {
-			$this->_forward('identify', null, null,
-											$this->_request->getParams() + array('format' => 'xml'));
-			return;
-		}
-		
 		$request = Class_WebService_OAI_ResponseFactory::verbAndBaseUrl($this->_getParam('verb'),
 																																		$this->buildBaseUrl());
 		$this->_response->setBody($request->xml($this->_request->getParams()));
