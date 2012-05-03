@@ -18,28 +18,28 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ListMetadataFormatsTest extends Storm_Test_ModelTestCase {
+require_once 'AbstractControllerTestCase.php';
+
+class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
 	protected $_xpath;
-	protected $_response;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
-		$this->_response = new Class_WebService_OAI_Response_ListMetadataFormats('http://afi-sa.fr/oai2/do');
+		$this->dispatch('/opac/oai/request?verb=ListMetadataFormats');
 	}
 
 
 	/** @test */
 	public function requestVerbShouldBeListMetadataFormats() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
-																							'//oai:request[@verb="ListMetadataFormats"]',
-																							'http://afi-sa.fr/oai2/do');
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//oai:request[@verb="ListMetadataFormats"]');
 	}
 
 
 	/** @test */
 	public function shouldHaveOneMetadataFormat() {
-		$this->_xpath->assertXpathCount($this->_response->xml(), 
+		$this->_xpath->assertXpathCount($this->_response->getBody(), 
 																		'//oai:ListMetadataFormats/oai:metadataFormat',
 																		1);
 	}
@@ -70,7 +70,7 @@ class ListMetadataFormatsTest extends Storm_Test_ModelTestCase {
 	protected function _assertFormatContentAt($name, $content, $position) {
 		$path = sprintf('//oai:ListMetadataFormats/oai:metadataFormat[%s]/oai:%s',
 										$position, $name);
-		$this->_xpath->assertXpathContentContains($this->_response->xml(), $path,	$content);
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(), $path,	$content);
 	}
 }
 ?>

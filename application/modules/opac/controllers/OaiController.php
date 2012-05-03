@@ -23,6 +23,7 @@ class OaiController extends Zend_Controller_Action {
 		$this->_helper->getHelper('contextSwitch')
 			->addActionContext('list-identifiers', 'xml')
 			->addActionContext('identify', 'xml')
+			->addActionContext('list-metadata-formats', 'xml')
 			->initContext();
 	}
 
@@ -32,7 +33,8 @@ class OaiController extends Zend_Controller_Action {
 		$this->getHelper('ViewRenderer')->setNoRender();
 
 		$verbsMapping = array('ListIdentifiers' => 'list-identifiers',
-													'Identify' => 'identify');
+													'Identify' => 'identify',
+													'ListMetadataFormats' => 'list-metadata-formats');
 
 		if (array_key_exists($this->_getParam('verb'), $verbsMapping)) {
 			$this->_forward($verbsMapping[$this->_getParam('verb')], null, null, 
@@ -82,11 +84,22 @@ class OaiController extends Zend_Controller_Action {
 																												 $baseUrl);
 		$this->view->request = $request;
 		$this->view->builder = new Class_Xml_Builder();
+
 		$this->view->repositoryName = $_SERVER['SERVER_NAME'] . ' Oai repository';
 		$this->view->baseUrl = $baseUrl;
 		$this->view->earliestDatestamp = ($notice = Class_Notice::getLoader()->getEarliestNotice()) ? 
 			substr($notice->getDateMaj(), 0, 10) : '';
 		$this->view->adminEmail = Class_CosmoVar::get('mail_admin');
+	}
+
+
+	public function listMetadataFormatsAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$baseUrl = $this->buildBaseUrl();
+		$request = new Class_WebService_OAI_Request_ListMetadataFormats($this->_request->getParams(), 
+																																		$baseUrl);
+		$this->view->request = $request;
+		$this->view->builder = new Class_Xml_Builder();
 	}
 }
 
