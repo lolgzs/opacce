@@ -1,5 +1,7 @@
 <?php 
 echo $this->openBoite('Formulaire de contact');
+if ($this->error)
+	echo sprintf('<p class="errors">%s</p>', $this->_("Erreur d'envoi: %s", $this->error));
 echo $this->renderForm($this->form); 
 echo $this->closeBoite();
 ?>

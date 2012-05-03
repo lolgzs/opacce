@@ -98,10 +98,14 @@ class FormulaireContactInvalidPostTest extends AbstractControllerTestCase {
 abstract class FormulaireContactValidPostTestCase extends AbstractControllerTestCase {
 	protected $_mail;
 
+	public function newMailTransport() {
+		return new MockMailTransport();
+	}
+
 	public function sendValidMail() {
 		defineConstant('NOCAPTCHA', true);
 
-		$mock_transport = new MockMailTransport();
+		$mock_transport = $this->newMailTransport();
 		Zend_Mail::setDefaultTransport($mock_transport);
 
 		$this->postDispatch('/opac/index/formulairecontact',
@@ -116,6 +120,32 @@ abstract class FormulaireContactValidPostTestCase extends AbstractControllerTest
 		$this->_mail = $mock_transport->sent_mail;
 	}
 }
+
+
+
+class FormulaireContactValidPostThrowErrorTest extends FormulaireContactValidPostTestCase {
+	public function newMailTransport() {
+		$transport = new MockMailTransport();
+		$transport->onSendDo(function() {throw new Exception('Erreur de connexion');});
+		return $transport;
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+
+		Class_Profil::getCurrentProfil()->setMailSite('laurent@afi-sa.fr');
+		$this->sendValidMail();
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayError() {
+		$this->assertXPathContentContains('//p[@class="errors"]', "Erreur d'envoi: Erreur de connexion");
+	}
+}
+
+
 
 
 class FormulaireContactValidPostTest extends FormulaireContactValidPostTestCase {
@@ -222,7 +252,7 @@ class FormulaireContactValidPostWithoutMailCurrentProfilTest extends FormulaireC
 		$this->sendValidMail();
 
 		$this->assertNull($this->_mail);
-		$this->assertRedirectTo('/index/formulairecontacterror');
+		$this->assertXPathContentContains('//p[@class="errors"]', "Erreur d'envoi: destinataire non configuré");
 	}
 }
 
@@ -234,13 +264,6 @@ class FormulaireContactRelatedActionsTest extends AbstractControllerTestCase {
 	public function formulaireContectSentShouldDisplaySuccess() {
 		$this->dispatch('/index/formulairecontactsent');
 		$this->assertXPathContentContains('//p', 'Le message a bien été envoyé');
-	}
-
-
-	/** @test */
-	public function formulaireContectErrorShouldDisplayError() {
-		$this->dispatch('/index/formulairecontacterror');
-		$this->assertXPathContentContains('//p', "Erreur d'envoi: problème de configuration");
 	}
 }
 

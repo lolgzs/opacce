@@ -69,19 +69,15 @@ class IndexController extends Zend_Controller_Action {
 				$this->_sendFormulaireContact();
 				$this->_redirect('index/formulairecontactsent');
 			}	catch (Exception $e) {
-				$this->_helper->notify($e->getMessage());
-				$this->_redirect('index/formulairecontacterror');
+				$this->view->error = $e->getMessage();
 			}
-			return;
-		} 
+		}
 
 		$this->view->form = $form;
 	}
 
 
 	public function formulairecontactsentAction() {}
-
-	public function formulairecontacterrorAction() {}
 
 
 	protected function _formulaireContact() {
@@ -174,9 +170,9 @@ class IndexController extends Zend_Controller_Action {
 
 	protected function _sendFormulaireContact() {
 			if (!$mail_address = Class_Profil::getCurrentProfil()->getMailSiteOrPortail())
-				throw new Exception($this->view->_("Erreur à l'envoi du mail: destinataire non configuré"));
+				throw new Exception($this->view->_("destinataire non configuré. Vérifiez les paramètres du profil, champ 'E-mail du webmestre'"));
 
-			$data = ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
+			$data = $this->_request->getPost();
 
 			$mail = new Zend_Mail('utf8');
 			$mail
