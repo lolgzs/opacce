@@ -21,6 +21,8 @@
 require_once 'AbstractControllerTestCase.php';
 
 abstract class AbstractAbonneControllerPretsTestCase extends AbstractControllerTestCase {
+	protected $_old_zend_cache;
+
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
 		$account->ROLE_LEVEL = 2;
@@ -29,14 +31,35 @@ abstract class AbstractAbonneControllerPretsTestCase extends AbstractControllerT
 		$this->account = $account;
 	}
 
+
 	public function setUp() {
 		parent::setUp();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')->whenCalled('save')->answers(true);
 		$this->florence = Class_Users::getLoader()->newInstanceWithId('123456');
 
+		$this->_old_zend_cache = Zend_Registry::get('cache');
+		Zend_Registry::set('cache', $this->zend_cache = Storm_Test_ObjectWrapper::mock());
+		$this->zend_cache
+			->whenCalled('remove')
+			->answers(true);
+	}
+
+	
+	public function tearDown() {
+		Zend_Registry::set('cache', $this->_old_zend_cache);
+		parent::tearDown();
+	}
+
+	
+	public function assertUserRemovedFromEmprunteurCache($user) {
+		$user_key = Class_WebService_SIGB_EmprunteurCache::newInstance()->keyFor($user);
+		$this->assertTrue($this->zend_cache
+											->methodHasBeenCalledWithParams('remove', array($user_key)));		
 	}
 }
+
+
 
 
 class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPretsTestCase {
@@ -80,6 +103,12 @@ class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPret
 	public function testPageIsRendered() {
 		$this->assertController('abonne');
 		$this->assertAction('prets');
+	}
+
+
+	/** @test */
+	public function cacheShouldHaveBeenCleared() {
+		$this->assertUserRemovedFromEmprunteurCache($this->florence);
 	}
 
 
@@ -163,6 +192,12 @@ class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerP
 	/** @test */
 	public function controllerShouldBeAbonne() {
 		$this->assertController('abonne');
+	}
+
+
+	/** @test */
+	public function cacheShouldHaveBeenCleared() {
+		$this->assertUserRemovedFromEmprunteurCache($this->florence);
 	}
 
 

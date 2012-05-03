@@ -33,12 +33,19 @@ class AbonneController extends Zend_Controller_Action
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
 		
-		$user = Zend_Auth::getInstance();
-		if (!$user->hasIdentity()) {
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('opac/auth/login');
-		}	else {
-			$this->_user = Zend_Auth::getInstance()->getIdentity();
-		}
+			return;
+		}	
+			
+		$this->_user = Zend_Auth::getInstance()->getIdentity();
+		$this->clearEmprunteurCache();
+	}
+
+
+	protected function clearEmprunteurCache() {
+		if (in_array($this->getRequest()->getActionName(), array('prets', 'reservations', 'fiche')))
+			Class_WebService_SIGB_EmprunteurCache::newInstance()->remove(Class_Users::getLoader()->find($this->_user->ID_USER));
 	}
 
 
@@ -317,9 +324,9 @@ class AbonneController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Fiche abonné
 //------------------------------------------------------------------------------------------------------
-	function ficheAction()
-	{
+	function ficheAction() {
 		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
+
 		$abonnement = '';
 		$nb_prets = '';
 		$nb_resas = '';
@@ -393,10 +400,8 @@ class AbonneController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Liste des prets en cours
 //------------------------------------------------------------------------------------------------------
-	function pretsAction()
-	{
+	function pretsAction()	{
 		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-
 		$this->view->fiche = $user->getFicheSigb();
 	}
 
@@ -426,7 +431,7 @@ class AbonneController extends Zend_Controller_Action
 	function reservationsAction()	{
 		// Communication sigb
 		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-
+	
 		// Mode Suppression
 		if (null !== ($delete = $this->_getParam('id_delete'))) {
 			$cls_comm = new Class_CommSigb();
