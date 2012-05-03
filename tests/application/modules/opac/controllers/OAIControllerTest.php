@@ -36,13 +36,6 @@ abstract class OAIControllerRequestTestCase extends AbstractControllerTestCase {
 	}
 
 
-
-	/** @test */
-	public function actionShouldBeRequest() {
-		$this->assertAction('request');
-	}
-
-
 	/** @test */
 	public function xmlVersionShouldOneDotZero() {
 		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");

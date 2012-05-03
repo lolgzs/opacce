@@ -18,22 +18,44 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class OAIIdentifyTest extends Storm_Test_ModelTestCase {
+require_once 'AbstractControllerTestCase.php';
+
+class OAIControllerIdentifyTest extends AbstractControllerTestCase {
 	protected $_xpath;
-	protected $_response;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
-		$this->_response = new Class_WebService_OAI_Response_Identify('http://moulins.fr/oai2/do');
-		$this->_response->setEarliestDatestamp('2011-07-11')
-			->setAdminEmail('user@server.fr');
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('getEarliestNotice')
+			->answers(Class_Notice::getLoader()
+								  ->newInstanceWithId(2)
+								  ->setDateMaj('2011-07-11'));
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CosmoVar')
+			->whenCalled('find')
+			->with('mail_admin')
+			->answers(Class_CosmoVar::getLoader()
+								  ->newInstanceWithId('mail_admin')
+								  ->setValeur('user@server.fr'));
+		$this->dispatch('/opac/oai/request?verb=Identify');
+	}
+
+
+	/** @test */
+	public function controllerShouldBeOai() {
+		$this->assertController('oai');
+	}
+
+
+	/** @test */
+	public function actionShouldBeIdentify() {
+		$this->assertAction('identify');
 	}
 
 
 	/** @test */
 	public function responseDateShouldBeNow() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:responseDate',
 																							date('Y-m-d'));
 	}
@@ -41,31 +63,30 @@ class OAIIdentifyTest extends Storm_Test_ModelTestCase {
 	
 	/** @test */
 	public function requestVerbShouldBeIdentify() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
-																							'//oai:request[@verb="Identify"]',
-																							'http://moulins.fr/oai2/do');
+		$this->_xpath->assertXpath($this->_response->getBody(),
+															 '//oai:request[@verb="Identify"]');
 	}
 
 
 	/** @test */
 	public function repositoryNameShouldBeAfiOpac3OaiRepository() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:repositoryName',
-																							'Afi OPAC 3 Oai repository');
+																							$_SERVER['SERVER_NAME'] . ' Oai repository');
 	}
 
 
 	/** @test */
 	public function baseUrlShouldBeMoulinsDotFr() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:baseURL',
-																							'http://moulins.fr/oai2/do');
+																							'http://' . $_SERVER['SERVER_NAME'] . BASE_URL . '/opac/oai/request');
 	}
 
 
 	/** @test */
 	public function protocolVersionShouldBeTwoDotZero() {
-	  $this->_xpath->assertXPathContentContains($this->_response->xml(),
+	  $this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:protocolVersion',
 																							'2.0');
 	}
@@ -73,7 +94,7 @@ class OAIIdentifyTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function earliestDateStampShouldBeJulyEleven2011() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:earliestDatestamp',
 																							'2011-07-11');
 	}
@@ -81,7 +102,7 @@ class OAIIdentifyTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function granularityShouldBeYearMonthDay() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:granularity',
 																							'YYYY-MM-DD');
 	}
@@ -89,7 +110,7 @@ class OAIIdentifyTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function deletedRecordShouldBeNo() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:deletedRecord',
 																							'no');
 	}
@@ -97,7 +118,7 @@ class OAIIdentifyTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function adminEmailShouldBeUserAtServerDotfr() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//oai:Identify/oai:adminEmail',
 																							'user@server.fr');
 	}

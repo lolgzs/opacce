@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+	<responseDate><?php echo date('c');?></responseDate>
+	<?php echo $this->request->renderOn($this->builder); ?>
+	<Identify>
+		<repositoryName><![CDATA[<?php echo $this->repositoryName;?>>]]></repositoryName>
+		<baseURL><?php echo $this->baseUrl; ?></baseURL>
+		<protocolVersion>2.0</protocolVersion>
+		<earliestDatestamp><?php echo $this->earliestDatestamp; ?></earliestDatestamp>
+    <granularity>YYYY-MM-DD</granularity>
+    <deletedRecord>no</deletedRecord>
+    <adminEmail><![CDATA[<?php echo $this->adminEmail;?>]]></adminEmail>
+	</Identify>
+</OAI-PMH>

@@ -56,6 +56,16 @@ class NoticeLoader extends Storm_Model_Loader
 	public function findAllByCatalogue($catalogue) {
 		return Class_Catalogue::getLoader()->loadNoticesFor($catalogue);
 	}
+
+
+	public function getEarliestNotice() {
+		$result = $this->findAllBy(array('limit' => 1,
+																		 'order' => 'date_maj asc'));
+		if (0 == count($result))
+			return null;
+
+		return $result[0];
+	}
 }
 
 class Class_Notice extends Storm_Model_Abstract

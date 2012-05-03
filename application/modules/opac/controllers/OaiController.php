@@ -22,6 +22,7 @@ class OaiController extends Zend_Controller_Action {
 	public function init() {
 		$this->_helper->getHelper('contextSwitch')
 			->addActionContext('list-identifiers', 'xml')
+			->addActionContext('identify', 'xml')
 			->initContext();
 	}
 
@@ -31,9 +32,13 @@ class OaiController extends Zend_Controller_Action {
 		$this->getHelper('ViewRenderer')->setNoRender();
 
 		if ('ListIdentifiers' == $this->_getParam('verb')) {
-			$this->_forward('list-identifiers', 
-											null, 
-											null, 
+			$this->_forward('list-identifiers', null, null, 
+											$this->_request->getParams() + array('format' => 'xml'));
+			return;
+		}
+
+		if ('Identify' == $this->_getParam('verb')) {
+			$this->_forward('identify', null, null,
 											$this->_request->getParams() + array('format' => 'xml'));
 			return;
 		}
@@ -45,7 +50,7 @@ class OaiController extends Zend_Controller_Action {
 
 
 	protected function buildBaseUrl() {
-		return $this->_request->getScheme() . ':' . $_SERVER['SERVER_NAME'] 
+		return $this->_request->getScheme() . '://' . $_SERVER['SERVER_NAME'] 
 			. BASE_URL . '/opac/oai/request';
 	}
 
@@ -70,6 +75,21 @@ class OaiController extends Zend_Controller_Action {
 		}
 		$this->view->builder = $builder;
 		$this->view->token = $request->getToken();
+	}
+
+
+	public function identifyAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$baseUrl = $this->buildBaseUrl();
+		$request = new Class_WebService_OAI_Request_Identify($this->_request->getParams(), 
+																												 $baseUrl);
+		$this->view->request = $request;
+		$this->view->builder = new Class_Xml_Builder();
+		$this->view->repositoryName = $_SERVER['SERVER_NAME'] . ' Oai repository';
+		$this->view->baseUrl = $baseUrl;
+		$this->view->earliestDatestamp = ($notice = Class_Notice::getLoader()->getEarliestNotice()) ? 
+			$notice->getDateMaj() : '';
+		$this->view->adminEmail = Class_CosmoVar::get('mail_admin');
 	}
 }
 
