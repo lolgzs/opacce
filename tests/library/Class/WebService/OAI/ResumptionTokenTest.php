@@ -68,6 +68,12 @@ class ResumptionTokenTest extends PHPUnit_Framework_TestCase {
 
 
 	/** @test */
+	public function pageNumberShouldBeOne() {
+		$this->assertEquals(1, $this->_token->getPageNumber());
+	}
+
+
+	/** @test */
 	public function findByMd5ShouldAnswerToken() {
 		$this->assertEquals($this->_token, Class_WebService_OAI_ResumptionToken::find(md5(serialize($this->_token))));
 	}
@@ -101,5 +107,12 @@ class ResumptionTokenTest extends PHPUnit_Framework_TestCase {
 																							'//resumptionToken[@completeListSize="10000"][@cursor="10"]',
 																							md5(serialize($next)));
 	}	
+
+
+	/** @test */
+	public function nextPageNumberShouldBeTwo() {
+			$this->assertEquals(2, $this->_token->next(10)->getPageNumber());
+	}
+
 }
 ?>

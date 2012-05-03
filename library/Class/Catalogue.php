@@ -37,6 +37,17 @@ class CatalogueLoader extends Storm_Model_Loader {
 	}
 
 
+	public function countNoticesFor($catalogue) {
+		if (!$catalogue)
+			return 0;
+		
+		if ('' == ($where = $this->clausesFor($catalogue)))
+			return 0;
+
+		return Class_Notice::getLoader()->countBy(array('where' => $where));
+	}
+
+
 	public function clausesFor($catalogue) {
 		if (1 == $catalogue->getAll())
 			return '1=1';
@@ -199,6 +210,16 @@ class Class_Catalogue extends Storm_Model_Abstract
 	}
 
 
+	public function getNotices($page = 1, $itemsByPage = CatalogueLoader::DEFAULT_ITEMS_BY_PAGE) {
+		return self::getLoader()->loadNoticesFor($this, $itemsByPage, $page);
+	}
+
+
+	public function getNoticesCount() {
+		return self::getLoader()->countNoticesFor($this);
+	}
+
+
 //------------------------------------------------------------------------------
 // Rend les notices et les stats (test d'un catalogue)
 //------------------------------------------------------------------------------
@@ -224,7 +245,7 @@ class Class_Catalogue extends Storm_Model_Abstract
 //------------------------------------------------------------------------------
 // Rend les notices selon les preferences (kiosques)
 //------------------------------------------------------------------------------
-	public function getNotices($preferences,$cache_vignette=false)
+	public function getNoticesByPreferences($preferences,$cache_vignette=false)
 	{
 		//Instanciations
 		$class_notice = new Class_Notice();

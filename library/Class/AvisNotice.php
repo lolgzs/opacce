@@ -30,7 +30,7 @@ class AvisNoticeLoader extends Storm_Model_Loader {
 		$preferences["avec_avis"] = 1; //seulement les notices avec avis
 
 		$catalogue = new Class_Catalogue();
-		$notices = $catalogue->getNotices($preferences);
+		$notices = $catalogue->getNoticesByPreferences($preferences);
 
     if (count($notices) == 0) {
 			//on ne doit retourner aucun avis

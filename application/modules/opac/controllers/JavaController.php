@@ -52,7 +52,7 @@ class JavaController extends ZendAfi_Controller_IFrameAction {
 		
 		// Lire les notices
 		$catalogue=new Class_Catalogue();
-		$this->view->notices=$catalogue->getNotices($preferences,"url");
+		$this->view->notices=$catalogue->getNoticesByPreferences($preferences,"url");
 
 		// Redirection vers la bonne vue
 		$vue="/java/".$this->_getParam("vue").".phtml";

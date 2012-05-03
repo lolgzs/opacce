@@ -25,6 +25,7 @@ class Class_WebService_OAI_ResumptionToken {
 	protected $_params;
 	protected $_list_size;
 	protected $_cursor = 0;
+	protected $_page_number = 1;
 
 	public static function defaultCache($cache) {
 		self::$_cache = $cache;
@@ -38,8 +39,8 @@ class Class_WebService_OAI_ResumptionToken {
 	}
 
 
-	public static function newWithParamsAndListSize($params, $list_size, $cursor = 0) {
-		return new self($params, $list_size, $cursor);
+	public static function newWithParamsAndListSize($params, $list_size, $cursor = 0, $page_number = 1) {
+		return new self($params, $list_size, $cursor, $page_number);
 	}
 
 
@@ -48,10 +49,11 @@ class Class_WebService_OAI_ResumptionToken {
 	}
 
 
-	public function __construct($params, $list_size, $cursor) {
+	public function __construct($params, $list_size, $cursor, $page_number) {
 		$this->_params = $params;
 		$this->_list_size = $list_size;
 		$this->_cursor = $cursor;
+		$this->_page_number = $page_number;
 	}
 
 	public function save() {
@@ -63,7 +65,8 @@ class Class_WebService_OAI_ResumptionToken {
 	public function next($size) {
 		return self::newWithParamsAndListSize($this->_params, 
 																					$this->_list_size, 
-																					$this->_cursor + $size);
+																					$this->_cursor + $size,
+																					$this->_page_number + 1);
 	}
 
 
@@ -71,6 +74,11 @@ class Class_WebService_OAI_ResumptionToken {
 		return $builder->resumptionToken(array('completeListSize' => $this->_list_size,
 																					 'cursor' => $this->_cursor),
 																		 md5(serialize($this)));
+	}
+
+
+	public function getPageNumber() {
+		return $this->_page_number;
 	}
 }
 ?>

@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI_Response_Null {
+	const IDENTIFIERS_BY_PAGE = 100;
+
 	protected $_metadataPrefix;
 	protected $_catalogue;
 	protected $_set;
@@ -26,6 +28,7 @@ class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI
 	protected $_until;
 	protected $_resumptionToken;
 	protected $_notices;
+	protected $_token;
 
 
 	public function xml($params = array()) {
@@ -66,7 +69,7 @@ class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI
 		if ($errors = $this->buildErrorsOn($builder))
 			return $response . $errors;
 
-		return $response . $this->listIdentifiers($builder);
+		return $response . $this->listIdentifiers($builder) . $this->resumptionToken($builder);
 	}
 
 
@@ -80,13 +83,23 @@ class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI
 		if ($this->_set && !$this->_catalogue)
 			return $builder->error(array('code' => 'badArgument'), 'Set not found');
 
+		if (0 == ($count = $this->_catalogue->getNoticesCount()))
+			return $builder->error(array('code' => 'noRecordsMatch'));
+
+		$token = null;
 		if ($this->_resumptionToken 
 				&& !($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken)))
 			return $builder->error(array('code' => 'badResumptionToken'));
 
-		$this->_notices = Class_Notice::getLoader()->findAllByCatalogue($this->_catalogue);
-		if (0 == count($this->_notices))
-			return $builder->error(array('code' => 'noRecordsMatch'));
+		$page_number = 1;
+		if (null != $token) {
+			$this->_token = $token->next(self::IDENTIFIERS_BY_PAGE); 
+			$page_number = $this->_token->getPageNumber();
+		} elseif (self::IDENTIFIERS_BY_PAGE < $count) {
+			$this->_token = Class_WebService_OAI_ResumptionToken::newWithParamsAndListSize($this->_params, $count);
+		}
+		
+		$this->_notices = $this->_catalogue->getNotices($page_number);
 	}
 
 
@@ -105,6 +118,11 @@ class Class_WebService_OAI_Response_ListIdentifiers extends Class_WebService_OAI
 		}
 
 		return $headers;
+	}
+
+
+	public function resumptionToken($builder) {
+		return (null != $this->_token) ? $this->_token->renderOn($builder) : '';
 	}
 
 

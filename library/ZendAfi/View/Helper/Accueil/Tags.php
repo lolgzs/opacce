@@ -55,7 +55,7 @@ class ZendAfi_View_Helper_Accueil_Tags extends ZendAfi_View_Helper_Accueil_Base 
 		else
 			$this->preferences["tri"] = -1; // Permet de ne pas faire d'order by.
 
-		$notices = $catalogue->getNotices($this->preferences);
+		$notices = $catalogue->getNoticesByPreferences($this->preferences);
 
 		foreach ($notices as $notice)	{
 			$type="T".$notice["type_doc"];
