@@ -18,14 +18,18 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ListIdentifiersValidTest extends Storm_Test_ModelTestCase {
+require_once 'AbstractControllerTestCase.php';
+
+
+class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 	protected $_xpath;
 	protected $_response;
+	protected $_xml;	
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
-		$this->_response = new Class_WebService_OAI_Response_ListIdentifiers('http://moulins.fr/oai2/do');
+	
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
 			->whenCalled('countNoticesFor')
 			->answers(3)
@@ -43,15 +47,27 @@ class ListIdentifiersValidTest extends Storm_Test_ModelTestCase {
 											->newInstanceWithId(4)
 											->setClefAlpha('harrypotter-azkaban')
 											->setDateMaj('2012-04-03 11:42:42')));
-		$this->_xml = $this->_response->xml(array('metadataPrefix' => 'oai_dc'));
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+		$this->_xml = $this->_response->getBody();
+	}
+
+	
+	/** @test */
+	public function controllerShouldBeOai() {
+		$this->assertController('oai');
+	}
+
+
+	/** @test */
+	public function actionShouldBeRequest() {
+		$this->assertAction('list-identifiers');
 	}
 
 
 	/** @test */
 	public function requestVerbShouldBeListIdentifiers() {
-		$this->_xpath->assertXPathContentContains($this->_xml,
-																							'//oai:request[@verb="ListIdentifiers"]',
-																							'http://moulins.fr/oai2/do');
+		$this->_xpath->assertXPath($this->_xml,
+															 '//oai:request[@verb="ListIdentifiers"]');
 	}
 
 
@@ -135,11 +151,13 @@ class ListIdentifiersValidTest extends Storm_Test_ModelTestCase {
 }
 
 
-class ListIdentifiersWithPaginatorTest extends Storm_Test_ModelTestCase {
+class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTestCase {
+	protected $_xpath;
+	protected $_xml;
+
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
-		$this->_response = new Class_WebService_OAI_Response_ListIdentifiers('http://moulins.fr/oai2/do');
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
 			->whenCalled('countNoticesFor')
 			->answers(10000)
@@ -157,7 +175,8 @@ class ListIdentifiersWithPaginatorTest extends Storm_Test_ModelTestCase {
 											->newInstanceWithId(4)
 											->setClefAlpha('harrypotter-azkaban')
 											->setDateMaj('2012-04-03 11:42:42')));
-		$this->_xml = $this->_response->xml(array('metadataPrefix' => 'oai_dc'));
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+		$this->_xml = $this->_response->getBody();
 	}
 
 	
@@ -169,14 +188,12 @@ class ListIdentifiersWithPaginatorTest extends Storm_Test_ModelTestCase {
 }
 
 
-class ListIdentifiersInvalidParamsTest extends Storm_Test_ModelTestCase {
+class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTestCase {
 	protected $_xpath;
-	protected $_response;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
-		$this->_response = new Class_WebService_OAI_Response_ListIdentifiers('http://moulins.fr/oai2/do');
 	}
 
 
@@ -188,13 +205,16 @@ class ListIdentifiersInvalidParamsTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function withoutMetadataPrefixErrorCodeShouldBeBadArgument() {
-		$this->_xpath->assertXPath($this->_response->xml(array()), '//oai:error[@code="badArgument"]');
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//oai:error[@code="badArgument"]');
 	}
 
 
 	/** @test */
 	public function withUnknownFormatErrorCodeShouldBeCannotDisseminateFormat() {
-		$this->_xpath->assertXpath($this->_response->xml(array('metadataPrefix' => 'zork')),
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=zork');
+		$this->_xpath->assertXpath($this->_response->getBody(),
 															 '//oai:error[@code="cannotDisseminateFormat"]');
 	}
 
@@ -204,8 +224,8 @@ class ListIdentifiersInvalidParamsTest extends Storm_Test_ModelTestCase {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
 			->whenCalled('findAllBy')
 			->answers(array());
-		$this->_xpath->assertXPath($this->_response->xml(array('metadataPrefix' => 'oai_dc',
-																													 'set' => 'jeunesse:bd')), 
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=' . urlencode('jeunesse:bd'));
+		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:error[@code="badArgument"]');
 	}
 
@@ -215,7 +235,8 @@ class ListIdentifiersInvalidParamsTest extends Storm_Test_ModelTestCase {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
 			->whenCalled('countBy')
 			->answers(0);
-		$this->_xpath->assertXPath($this->_response->xml(array('metadataPrefix' => 'oai_dc')),
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="noRecordsMatch"]');
 	}
 
@@ -226,8 +247,8 @@ class ListIdentifiersInvalidParamsTest extends Storm_Test_ModelTestCase {
 			->whenCalled('load')
 			->answers(false);
 		Class_WebService_OAI_ResumptionToken::defaultCache($cache);
-		$this->_xpath->assertXPath($this->_response->xml(array('metadataPrefix' => 'oai_dc',
-																													 'resumptionToken' => 'Zork')),
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&resumptionToken=Zork');
+		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="badResumptionToken"]');
 	}
 }

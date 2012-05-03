@@ -20,7 +20,7 @@ rf<?php
  */
 require_once 'AbstractControllerTestCase.php';
 
-abstract class OaiControllerRequestTestCase extends AbstractControllerTestCase {
+abstract class OAIControllerRequestTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -58,7 +58,7 @@ abstract class OaiControllerRequestTestCase extends AbstractControllerTestCase {
 
 
 
-class OaiControllerIndentifyRequestTest extends OaiControllerRequestTestCase {
+class OAIControllerIndentifyRequestTest extends OaiControllerRequestTestCase {
 	protected $_xpath;
 	 
 	public function setUp() {

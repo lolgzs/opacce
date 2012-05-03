@@ -19,10 +19,25 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class OaiController extends Zend_Controller_Action {
+	public function init() {
+		$this->_helper->getHelper('contextSwitch')
+			->addActionContext('list-identifiers', 'xml')
+			->initContext();
+	}
+
+
 	public function requestAction() {
 		$this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8');
 		$this->getHelper('ViewRenderer')->setNoRender();
 
+		if ('ListIdentifiers' == $this->_getParam('verb')) {
+			$this->_forward('list-identifiers', 
+											null, 
+											null, 
+											$this->_request->getParams() + array('format' => 'xml'));
+			return;
+		}
+		
 		$request = Class_WebService_OAI_ResponseFactory::verbAndBaseUrl($this->_getParam('verb'),
 																																		$this->buildBaseUrl());
 		$this->_response->setBody($request->xml($this->_request->getParams()));
@@ -32,6 +47,29 @@ class OaiController extends Zend_Controller_Action {
 	protected function buildBaseUrl() {
 		return $this->_request->getScheme() . ':' . $_SERVER['SERVER_NAME'] 
 			. BASE_URL . '/opac/oai/request';
+	}
+
+
+	public function listIdentifiersAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$request = new Class_WebService_OAI_Request_ListIdentifiers($this->_request->getParams(), 
+																																$this->buildBaseUrl());
+		$builder = new Class_Xml_Builder();
+		$this->view->request = $request;
+		$this->view->error = $request->getErrorOn($builder);
+
+		if ($notices = $request->getNotices()) {
+			$visitor = new Class_Notice_DublinCoreVisitor();
+			$recordBuilder = new Class_WebService_OAI_Response_RecordHeadersBuilder();
+			$headers = '';
+			foreach ($notices as $notice) {
+				$visitor->visit($notice);
+				$headers .= $recordBuilder->xml($builder, $visitor);
+			}
+			$this->view->headers = $headers;
+		}
+		$this->view->builder = $builder;
+		$this->view->token = $request->getToken();
 	}
 }
 
