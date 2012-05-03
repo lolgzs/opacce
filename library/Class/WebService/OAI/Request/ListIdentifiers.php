@@ -20,6 +20,7 @@
  */
 class Class_WebService_OAI_Request_ListIdentifiers {
 	const IDENTIFIERS_BY_PAGE = 100;
+	protected $_verb = 'ListIdentifiers';
 	protected $_baseUrl;
 	protected $_params;
 	protected $_metadataPrefix;
@@ -70,6 +71,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			return $builder->error(array('code' => 'noRecordsMatch'));
 
 		$token = null;
+		xdebug_break();
 		if ($this->_resumptionToken 
 				&& !($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken)))
 			return $builder->error(array('code' => 'badResumptionToken'));
@@ -95,7 +97,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 
 	public function renderOn($builder) {
-		$requestOptions = array('verb' => 'ListIdentifiers');
+		$requestOptions = array('verb' => $this->_verb);
 		if (null !== $this->_set)
 			$requestOptions['set'] = $this->_set;
 		if (null !== $this->_from)

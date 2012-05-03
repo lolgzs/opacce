@@ -18,15 +18,18 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ListRecordsTest extends Storm_Test_ModelTestCase {
+require_once 'AbstractControllerTestCase.php';
+
+class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 	protected $_xpath;
-	protected $_response;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOaiDc();
-		$this->_response = new Class_WebService_OAI_Response_ListRecords('http://afi-sa.fr/oai2/do');
-		$this->_response->setNotices(array(Class_Notice::getLoader()
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('loadNoticesFor')
+			->answers(array(Class_Notice::getLoader()
 																			   ->newInstanceWithId(2)
 																			   ->setClefAlpha('harrypotter-sorciers')
 																			   ->setDateMaj('2001-12-14 11:42:42')
@@ -39,20 +42,20 @@ class ListRecordsTest extends Storm_Test_ModelTestCase {
 																			   ->newInstanceWithId(4)
 																			   ->setClefAlpha('harrypotter-azkaban')
 																			   ->setDateMaj('2012-04-03 11:42:42')));
+		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc');
 	}
 
 
 	/** @test */
 	public function requestVerbShouldBeListRecords() {
-		$this->_xpath->assertXPathContentContains($this->_response->xml(),
-																							'//oai:request[@verb="ListRecords"]',
-																							'http://afi-sa.fr/oai2/do');
+		$this->_xpath->assertXPath($this->_response->getBody(),
+																							'//oai:request[@verb="ListRecords"]');
 	}
 
 
 	/** @test */
 	public function shouldHaveThreeRecords() {
-		$this->_xpath->assertXPathCount($this->_response->xml(),
+		$this->_xpath->assertXPathCount($this->_response->getBody(),
 																		'//oai:ListRecords/oai:record',
 																		3);
 	}
@@ -79,7 +82,7 @@ class ListRecordsTest extends Storm_Test_ModelTestCase {
 	protected function _assertHeaderContentAt($header, $content, $position) {
 		$path = sprintf('//oai:ListRecords/oai:record[%s]/oai:header/oai:%s', 
 										$position, $header);
-		$this->_xpath->assertXPathContentContains($this->_response->xml(), $path, $content);
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), $path, $content);
 	}
 }
 

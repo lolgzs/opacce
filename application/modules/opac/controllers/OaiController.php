@@ -24,6 +24,7 @@ class OaiController extends Zend_Controller_Action {
 			->addActionContext('list-identifiers', 'xml')
 			->addActionContext('identify', 'xml')
 			->addActionContext('list-metadata-formats', 'xml')
+			->addActionContext('list-records', 'xml')
 			->initContext();
 	}
 
@@ -34,7 +35,8 @@ class OaiController extends Zend_Controller_Action {
 
 		$verbsMapping = array('ListIdentifiers' => 'list-identifiers',
 													'Identify' => 'identify',
-													'ListMetadataFormats' => 'list-metadata-formats');
+													'ListMetadataFormats' => 'list-metadata-formats',
+													'ListRecords' => 'list-records');
 
 		if (array_key_exists($this->_getParam('verb'), $verbsMapping)) {
 			$this->_forward($verbsMapping[$this->_getParam('verb')], null, null, 
@@ -71,6 +73,29 @@ class OaiController extends Zend_Controller_Action {
 				$headers .= $recordBuilder->xml($builder, $visitor);
 			}
 			$this->view->headers = $headers;
+		}
+		$this->view->builder = $builder;
+		$this->view->token = $request->getToken();
+	}
+
+
+	public function listRecordsAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$request = new Class_WebService_OAI_Request_ListRecords($this->_request->getParams(), 
+																														$this->buildBaseUrl());
+		$builder = new Class_Xml_Builder();
+		$this->view->request = $request;
+		$this->view->error = $request->getErrorOn($builder);
+
+		if ($notices = $request->getNotices()) {
+			$visitor = new Class_Notice_DublinCoreVisitor();
+			$recordBuilder = new Class_WebService_OAI_Response_RecordBuilder();
+			$records = '';
+			foreach ($notices as $notice) {
+				$visitor->visit($notice);
+				$records .= $builder->record($recordBuilder->xml($builder, $visitor));
+			}
+			$this->view->records = $records;
 		}
 		$this->view->builder = $builder;
 		$this->view->token = $request->getToken();
