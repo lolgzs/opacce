@@ -25,6 +25,11 @@ abstract class OAIControllerRequestTestCase extends AbstractControllerTestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur('1');	
+
 		$this->_xpath = new Storm_Test_XPathXML();
 		$this->_xpath->registerNameSpace('oai', 'http://www.openarchives.org/OAI/2.0/');
 	}
@@ -67,6 +72,19 @@ class OAIControllerIndentifyRequestTest extends OaiControllerRequestTestCase {
 	}
 }
 
+
+
+
+class OAIControllerRequestWithoutOAIEnabledTest extends AbstractControllerTestCase {
+	/** @test */
+	public function responseShouldBeEmpty() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur('0');	
+		$this->dispatch('/opac/oai/request?verb=Identify');
+		$this->assertEmpty($this->_response->getBody());
+	}
+}
 
 
 

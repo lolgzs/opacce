@@ -35,6 +35,8 @@ class OaiController extends Zend_Controller_Action {
 	public function requestAction() {
 		$this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8');
 		$this->getHelper('ViewRenderer')->setNoRender();
+		if (!Class_AdminVar::isOAIServerEnabled()) 
+			return;
 
 		$verbsMapping = array('ListIdentifiers' => 'list-identifiers',
 													'Identify' => 'identify',
