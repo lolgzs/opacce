@@ -188,7 +188,7 @@ abstract class CatalogueControllerFormTestCase extends AdminCatalogueControllerT
 			->newInstanceWithId(6)
 			->setLibelle('Adultes')
 			->setDescription('Mon catalogue')
-			->setOaiSpec('livres:adultes')
+			->setOaiSpec('adultes')
 			->setTypeDoc('1;3;4;5')
 			->setAnneeDebut(2012)
 			->setAnneeFin(2012)
@@ -274,7 +274,7 @@ class CatalogueControllerEditCatalogueWithOAIServerTest extends CatalogueControl
 
 	/** @test */
 	public function inputOAISpecShouldExists() {
-		$this->assertXPath('//input[@name="oai_spec"][@value="livres:adultes"]');
+		$this->assertXPath('//input[@name="oai_spec"][@value="adultes"]');
 	}
 }
 

@@ -533,6 +533,9 @@ class Class_Catalogue extends Storm_Model_Abstract {
 		$this->checkAttribute('annee_fin', 
 													!($this->getAnneeDebut() and $this->getAnneeFin()) || $this->getAnneeDebut() <= $this->getAnneeFin(),
 													"L'année de début doit être inférieure ou égale à l'année de fin");
+		$this->checkAttribute('oai_spec',
+													!$this->getOaiSpec() || preg_match('/^[a-zA-Z0-9_.-]+$/', $this->getOaiSpec()),
+													"La spec OAI ne peut contenir que les caractères suivants: de a à z, 0 à 9, - _ ."); 
 		
 	}
 }

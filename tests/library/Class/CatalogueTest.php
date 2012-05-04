@@ -295,4 +295,42 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
   }
 }
 
+
+
+class CatalogueTestOAISpec extends ModelTestCase {
+	protected $_catalogue;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_catalogue = Class_Catalogue::getLoader()->newInstanceWithId(3)->setLibelle('zork');
+	}
+
+
+	/** @test */
+	public function oaiSpecEmptyShouldBeValid() {
+		$this->assertTrue($this->_catalogue->isValid());
+	}
+
+
+	/** @test */
+	public function oaiSpecValidShouldBeValid() {
+		$this->_catalogue->setOaiSpec('bd-Adultes_1.');
+		$this->assertTrue($this->_catalogue->isValid());
+	}
+
+
+	/** @test */
+	public function oaiSpecWithUnknownCharsShouldBeInvalid() {
+		$this->_catalogue->setOaiSpec('+@*/');
+		$this->assertFalse($this->_catalogue->isValid());
+	}
+
+
+	/** @test */
+	public function oaiSpecWithColonShouldBeInvalidHasHierarchyNotSupported() {
+		$this->_catalogue->setOaiSpec('bd:adultes');
+		$this->assertFalse($this->_catalogue->isValid());
+	}
+}
+
 ?>
