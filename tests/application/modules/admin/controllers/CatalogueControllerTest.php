@@ -179,17 +179,22 @@ abstract class CatalogueControllerFormTestCase extends AdminCatalogueControllerT
 	public function setUp() {
 		parent::setUp();
 
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur('0');
+		
+
 		$this->_catalogue_adultes = Class_Catalogue::getLoader()
 			->newInstanceWithId(6)
 			->setLibelle('Adultes')
+			->setDescription('Mon catalogue')
+			->setOaiSpec('livres:adultes')
 			->setTypeDoc('1;3;4;5')
 			->setAnneeDebut(2012)
 			->setAnneeFin(2012)
 			->setAnnexe(0)
 			->setDewey(78308)
 			->setBibliotheque(1);
-
-
 
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
@@ -237,6 +242,39 @@ class CatalogueControllerEditCatalogueTest extends CatalogueControllerFormTestCa
 	/** @test */
 	public function inputAnneFinShouldContains2012() {
 		$this->assertXPath('//input[@name="annee_fin"][@value="2012"]');
+	}
+
+
+	/** @test */
+	public function inputOAISpecShouldNotExists() {
+		$this->assertNotXPath('//input[@name="oai_spec"]');
+	}
+
+
+	/** @test */
+	public function textAreaDescriptionShouldBeVisible() {
+		$this->assertXPath('//textarea[@name="description"]', 'Mon catalogue');
+	}
+}
+
+
+
+
+class CatalogueControllerEditCatalogueWithOAIServerTest extends CatalogueControllerFormTestCase { 
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur('1');
+
+		$this->dispatch('/admin/catalogue/edit/id_catalogue/6');
+	}
+
+
+	/** @test */
+	public function inputOAISpecShouldExists() {
+		$this->assertXPath('//input[@name="oai_spec"][@value="livres:adultes"]');
 	}
 }
 

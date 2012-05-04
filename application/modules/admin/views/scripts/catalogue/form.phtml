@@ -16,10 +16,27 @@
 						<td class="droite" style="width:150px;"><?php echo $this->traduire('Libelle'); ?></td>
 						<td class="gauche"><input type="text" name="libelle" value="<?php echo $this->catalogue->getLibelle()?>" maxlength="50" size="50" onchange="setFlagMaj(true)"></td>
 					</tr>
-					
+
+					<tr>
+						<td class="droite" style="width:150px;"><?php echo $this->traduire('Description'); ?></td>
+						<td class="gauche"><textarea name="description" rows='10' onchange="setFlagMaj(true)"><?php echo $this->catalogue->getDescription()?></textarea></td>
+					</tr>
+
 				</table>
 		</fieldset>
-		
+
+	  <?php if (Class_AdminVar::isOAIServerEnabled()) { ?>
+    <fieldset>
+			<legend><?php echo $this->traduire('Serveur OAI'); ?> </legend>
+		  <table border="0" cellpadding="5" cellspacing="0">
+					<tr>
+						<td class="droite" style="width:150px;"><?php echo $this->traduire('OAI spec'); ?></td>
+						<td class="gauche"><input type="text" name="oai_spec" value="<?php echo $this->catalogue->getOaiSpec()?>" maxlength="50" size="50" onchange="setFlagMaj(true)"></td>
+					</tr>
+		  </table>    
+    </fieldset>
+   <?php } ?>
+
 		<fieldset>
 			<legend><?php echo $this->traduire('Critères généraux'); ?> </legend>
 				<table border="0" cellpadding="5" cellspacing="0">

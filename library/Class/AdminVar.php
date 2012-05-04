@@ -54,7 +54,8 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'PCDM4_LIB',
 		'DEWEY_LIB',
 		'VODECLIC_KEY',
-		'VODECLIC_ID'
+		'VODECLIC_ID',
+		'OAI_SERVER'
 	);
 
 
@@ -163,6 +164,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	 */
 	public static function isVodeclicEnabled() {
 		return ('' != self::get('VODECLIC_KEY'));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isOAIServerEnabled() {
+		return self::isModuleEnabled('OAI_SERVER');
 	}
 
 
