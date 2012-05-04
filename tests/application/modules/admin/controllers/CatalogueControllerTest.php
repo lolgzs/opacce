@@ -171,7 +171,9 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 }
 
 
-class CatalogueControllerFormTestCase extends AdminCatalogueControllerTestCase {
+
+
+abstract class CatalogueControllerFormTestCase extends AdminCatalogueControllerTestCase {
 	protected $_catalogue_adultes;
 
 	public function setUp() {

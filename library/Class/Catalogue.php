@@ -54,7 +54,7 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 
 	public function clausesFor($catalogue) {
-		if (1 == $catalogue->getAll())
+		if ($catalogue->isMatchingAllNotices())
 			return '1=1';
 
 		$conditions = array();
@@ -168,8 +168,7 @@ class CatalogueLoader extends Storm_Model_Loader {
 }
 
 
-class Class_Catalogue extends Storm_Model_Abstract
-{
+class Class_Catalogue extends Storm_Model_Abstract {
 	protected $_table_name = 'catalogue';
 	protected $_table_primary = 'ID_CATALOGUE';
 	protected $_loader_class = 'CatalogueLoader';
@@ -201,8 +200,7 @@ class Class_Catalogue extends Storm_Model_Abstract
 
 
 	public static function newCatalogueForAll() {
-		$instance = new self();
-		return $instance->setAll(1);
+		return new AllNoticesCatalogue();
 	}
 
 
@@ -221,6 +219,11 @@ class Class_Catalogue extends Storm_Model_Abstract
 
 	public function getNoticesCount() {
 		return self::getLoader()->countNoticesFor($this);
+	}
+
+	
+	public function isMatchingAllNotices() {
+		return false;
 	}
 
 
@@ -349,7 +352,17 @@ class Class_Catalogue extends Storm_Model_Abstract
 
 
 	public function selectionFacettesForCatalogueRequestByPreferences($preferences) {
-		
+		if (!isset($preferences["facettes"]))
+			return '';
+
+		$against = '';
+		$facettes=explode(";", $preferences["facettes"]);
+		foreach($facettes as $facette) {
+			$facette=trim($facette); 
+			$against.=$this->getSelectionFacette(substr($facette,0,1),substr($facette,1));
+		}
+
+		return $against;
 	}
 
 
@@ -521,6 +534,15 @@ class Class_Catalogue extends Storm_Model_Abstract
 													!($this->getAnneeDebut() and $this->getAnneeFin()) || $this->getAnneeDebut() <= $this->getAnneeFin(),
 													"L'année de début doit être inférieure ou égale à l'année de fin");
 		
+	}
+}
+
+
+
+
+class AllNoticesCatalogue extends Class_Catalogue {
+	public function isMatchingAllNotices() {
+		return true;
 	}
 }
 
