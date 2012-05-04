@@ -54,7 +54,7 @@ class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
 	/** @test */
 	public function schemaShouldbeOaiDublinCore() {
 		$this->_assertFormatContentAt('schema', 
-																	Class_WebService_OAI_Response_ListMetadataFormats::OAI_DC_SCHEMA, 
+																	'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 
 																	1);
 	}
 
@@ -62,7 +62,7 @@ class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
 	/** @test */
 	public function namespaceShouldBeDublinCore() {
 		$this->_assertFormatContentAt('metadataNamespace', 
-																	Class_WebService_OAI_Response_ListMetadataFormats::OAI_DC_NAMESPACE, 
+																	'http://www.openarchives.org/OAI/2.0/oai_dc/',
 																	1);
 	}
 
