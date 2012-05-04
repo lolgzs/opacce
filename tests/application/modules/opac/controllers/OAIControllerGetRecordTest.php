@@ -18,27 +18,27 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+require_once 'AbstractControllerTestCase.php';
 
-abstract class OAIGetRecordTestCase extends Storm_Test_ModelTestCase {
+abstract class OAIControllerGetRecordTestCase extends AbstractControllerTestCase {
 	const OAI_RECORD_PATH = '//oai:GetRecord/oai:record/';
 	const OAI_HEADER_PATH = 'oai:header/';
 
 	protected $_xpath;
-	protected $_response;
 	protected $_xml;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOaiDc();
-		$this->_response = new Class_WebService_OAI_Response_GetRecord('http://afi-sa.fr/oai/do');
 	}
 }
 
 
-class OAIGetRecordNoIdentifierTest extends OAIGetRecordTestCase {
+class OAIControllerGetRecordNoIdentifierTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->_xml = $this->_response->xml(array('metadataPrefix' => 'oai_dc'));
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc');
+		$this->_xml = $this->_response->getBody();
 	}
 
 
@@ -57,10 +57,11 @@ class OAIGetRecordNoIdentifierTest extends OAIGetRecordTestCase {
 }
 
 
-class OAIGetRecordNoMetadataPrefixTest extends OAIGetRecordTestCase {
+class OAIControllerGetRecordNoMetadataPrefixTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->_xml = $this->_response->xml(array('identifier' => 'toto'));
+		$this->dispatch('/opac/oai/request?verb=GetRecord&identifier=toto');
+		$this->_xml = $this->_response->getBody();
 	}
 
 
@@ -80,7 +81,7 @@ class OAIGetRecordNoMetadataPrefixTest extends OAIGetRecordTestCase {
 
 
 
-class OAIGetRecordNotFoundParamsTest extends OAIGetRecordTestCase {
+class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -89,9 +90,8 @@ class OAIGetRecordNotFoundParamsTest extends OAIGetRecordTestCase {
 			->with('harrypotter-sorciers')
 			->answers(null);
 
-		$this->_xml = $this->_response->xml(array('identifier' => 'harrypotter-sorciers',
-																							'metadataPrefix' => 'oai_dc'));
-		
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers');
+		$this->_xml = $this->_response->getBody();
 	}
 
 
@@ -110,7 +110,7 @@ class OAIGetRecordNotFoundParamsTest extends OAIGetRecordTestCase {
 }
 
 
-class OAIGetRecordNotSupportedPrefixTest extends OAIGetRecordTestCase {
+class OAIControllerGetRecordNotSupportedPrefixTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -123,9 +123,8 @@ class OAIGetRecordNotSupportedPrefixTest extends OAIGetRecordTestCase {
 								  ->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
 								  ->setDateMaj('2001-12-14 11:39:44'));
 
-		$this->_xml = $this->_response->xml(array('identifier' => 'harrypotter-sorciers',
-																							'metadataPrefix' => 'not_supported'));
-		
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=not_supported&identifier=harrypotter-sorciers');		
+		$this->_xml = $this->_response->getBody();
 	}
 
 
@@ -144,7 +143,7 @@ class OAIGetRecordNotSupportedPrefixTest extends OAIGetRecordTestCase {
 }
 
 
-class OAIGetRecordValidParamsTest extends OAIGetRecordTestCase {
+class OAIControllerGetRecordValidParamsTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -157,9 +156,8 @@ class OAIGetRecordValidParamsTest extends OAIGetRecordTestCase {
 								  ->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
 								  ->setDateMaj('2001-12-14 11:39:44'));
 
-		$this->_xml = $this->_response->xml(array('identifier' => 'harrypotter-sorciers',
-																							'metadataPrefix' => 'oai_dc'));
-		
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers');
+		$this->_xml = $this->_response->getBody();
 	}
 
 
