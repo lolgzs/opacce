@@ -40,7 +40,7 @@ class ZendAfi_View_Helper_IframeContainer extends ZendAfi_View_Helper_BaseHelper
 
 
 		$this->_params = array('height' => $hauteur,
-													 'frameborder' => 0,
+													 'style' => 'border: 0px; overflow:hidden',
 													 'width' => $largeur,
 													 'scrolling' => 'no');
 		return $this->getHtml();
@@ -59,8 +59,6 @@ class ZendAfi_View_Helper_IframeContainer extends ZendAfi_View_Helper_BaseHelper
 		$this->_params['src'] = sprintf("%s?%s",
 																		$absolute_url,
 																		http_build_query($this->_src_args, '', '&amp;'));
-
-		$this->_params['longdesc'] = sprintf("%sdesc",$absolute_url);
 
 
 		$iframe_attributes = '';

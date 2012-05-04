@@ -246,7 +246,7 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	{
 		// Fil rss interne
 		if (array_isset('RSS', $html_array))
-			$html_array["RSS"]= sprintf('<a href="%s" target="_blank"><img src="%s" border="0" alt="%s"/></a>',
+			$html_array["RSS"]= sprintf('<a href="%s" target="_blank"><img src="%s" style="border:0px" alt="%s"/></a>',
 																	$html_array["RSS"],
 																	URL_IMG.'rss.gif',
 																	$this->translate()->_('flux RSS de la boite %s',

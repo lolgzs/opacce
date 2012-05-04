@@ -46,7 +46,7 @@ class ZendAfi_View_Helper_FonctionsAdmin extends ZendAfi_View_Helper_BaseHelper
 		
 		// Html
 		if(!$fonction) return false;
-		$html='<div class="configuration_module" align="right">';
+		$html='<div class="configuration_module" style="text-align:right">';
 		$onclick="showPopWin('".htmlspecialchars(BASE_URL.$fonction["url"])."',".$fonction["popup_width"].",".$fonction["popup_height"].",null)";
 		$html.=sprintf('<img src="'.URL_ADMIN_IMG.'ico/fonctions_admin.png" onclick="'.$onclick.'" alt="%s" title="%s" style="cursor:pointer" />',
 									 $this->translate()->_('Propriétés du module'),

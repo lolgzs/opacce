@@ -1,4 +1,4 @@
-<div class="form" align="center">
+<div class="form" style="text-align:center">
 	<?php
 	if($this->boite_login_message) echo '<p class="error">'.$this->boite_login_message.'</p>';
 
@@ -23,8 +23,8 @@
 			</tr>
 
 			<tr>
-				<td colspan="2" align="center" class="masque">
-					<div align="left">
+				<td colspan="2" style="text-align:center" class="masque">
+					<div style="text-align:left">
 						<a href="#" onclick="$(this).parents('form').submit();"><?php echo $this->escape($this->preferences["lien_connexion"]);?></a>
 						<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'lostpass', 'id_module' => $this->id_module)); ?>"><?php echo $this->escape($this->preferences["lien_mot_de_passe_oublie"]);?></a>
 						<?php if (!Class_AdminVar::get('INTERDIRE_ENREG_UTIL')) {?>
