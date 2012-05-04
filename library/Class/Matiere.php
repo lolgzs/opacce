@@ -26,7 +26,8 @@ class Class_Matiere extends Storm_Model_Abstract {
 	protected $_table_name = 'codif_matiere';
 	protected $_table_primary = 'id_matiere';
 
-	protected $_default_attribute_values = array('libelle' => '');
+	protected $_default_attribute_values = array('libelle' => '',
+																							 'sous_vedettes' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);

@@ -42,6 +42,11 @@ class CatalogueControllerAppelMenuTest extends AbstractControllerTestCase {
 	 *@test 
 	 */
 	function getFacettesSqlError() {
+		$catalogue_test = Class_Catalogue::getLoader()
+			->newInstanceWithId(151)
+			->setLibelle('nouveautés')
+			->setTypeDoc('1;3;4;5');
+
 		$query = "titre=Catalogue&aleatoire=0&tri=1&nb_notices=+&nb_analyse=&id_catalogue=151&id_panier=0&id_user=0&reset=true";
 		$this->_updateMagicREQUESTWith($query);
 		$this->dispatch('catalogue/appelmenu?'.$query);

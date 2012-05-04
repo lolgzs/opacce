@@ -336,39 +336,22 @@ class Class_Catalogue extends Storm_Model_Abstract
 			$limite=" LIMIT 5000"; //LL: j'ai rajouté une limite max car explosion mémoire sur des catalogues mal définis
 		
 		// Facettes de la navigation
-		if (array_key_exists("facettes", $preferences))
-		{
+		if (array_key_exists("facettes", $preferences))	{
 			$facettes=explode(";",$preferences["facettes"]);
-			foreach($facettes as $facette) {$facette=trim($facette); $against.=$this->getSelectionFacette(substr($facette,0,1),substr($facette,1));}
+			foreach($facettes as $facette) {
+				$facette=trim($facette); 
+				$against.=$this->getSelectionFacette(substr($facette,0,1),substr($facette,1));}
 		}
 
 		// Lire les proprietes du catalogue
-		$catalogue = $this->getCatalogue($preferences["id_catalogue"]);
-
-		// Criteres de selection sur les facettes (opérateur AND)
-		$against.=$this->getSelectionFacette("B",$catalogue["BIBLIOTHEQUE"]);
-		$against.=$this->getSelectionFacette("S",$catalogue["SECTION"]);
-		$against.=$this->getSelectionFacette("G",$catalogue["GENRE"]);
-		$against.=$this->getSelectionFacette("L",$catalogue["LANGUE"]);
-		$against.=$this->getSelectionFacette("Y",$catalogue["ANNEXE"]);
-		$against.=$this->getSelectionFacette("E",$catalogue["EMPLACEMENT"]);
-
-		// Criteres de selection sur les facettes (opérateur OR)
-		$against_ou.=$this->getSelectionFacette("A",$catalogue["AUTEUR"],false,false);
-		$against_ou.=$this->getSelectionFacette("M",$catalogue["MATIERE"],true,false);
-		$against_ou.=$this->getSelectionFacette("D",$catalogue["DEWEY"],true,false);
-		$against_ou.=$this->getSelectionFacette("P",$catalogue["PCDM4"],true,false);
-		$against_ou.=$this->getSelectionFacette("T",$catalogue["TAGS"],false,false);
-		$against_ou.=$this->getSelectionFacette("F",$catalogue["INTERET"],false,false);
-		
-		// Finalisation du against
-		if($against_ou) $against.='+('.$against_ou.")";
-		if($against) $conditions[]="MATCH(facettes) AGAINST('".$against."' IN BOOLEAN MODE)";
+		$catalogue = $this->getLoader()->find($preferences['id_catalogue']);
+		if ($against .= $this->getLoader()->facetsClauseFor($catalogue))
+			$conditions[] = $against;
 		
 		// Criteres de selection simples
-		if($catalogue["TYPE_DOC"])
+		if($catalogue->getTypeDoc())
 		{ 
-			$tdocs=explode(";",$catalogue["TYPE_DOC"]);
+			$tdocs=explode(";", $catalogue->getTypeDoc());
 			$type_doc = '';
 			foreach($tdocs as $tdoc)
 			{
@@ -379,15 +362,20 @@ class Class_Catalogue extends Storm_Model_Abstract
 			if(strpos($type_doc,",") === false) $conditions[]="type_doc=".$type_doc;
 			else $conditions[]="type_doc in(".$type_doc.")"; 
 		}
-		if($catalogue["ANNEE_DEBUT"]) $conditions[]="annee >='".$catalogue["ANNEE_DEBUT"]."'";
-		if($catalogue["ANNEE_FIN"]) $conditions[]="annee <='".$catalogue["ANNEE_FIN"]."'";
+		if ($catalogue->getAnneeDebut()) 
+			$conditions[]="annee >='".$catalogue->getAnneeDebut()."'";
 
-		if($catalogue["COTE_DEBUT"]) $conditions[]="cote >='".strtoupper($catalogue["COTE_DEBUT"])."'";
-		if($catalogue["COTE_FIN"]) $conditions[]="cote <='".strtoupper($catalogue["COTE_FIN"])."'";
+		if ($catalogue->getAnneeFin()) 
+			$conditions[]="annee <='".$catalogue->getAnneeFin()."'";
+
+		if ($catalogue->getCoteDebut()) 
+			$conditions[]="cote >='".strtoupper($catalogue->getCoteDebut())."'";
+		
+		if ($catalogue->getCoteFin()) 
+			$conditions[]="cote <='".strtoupper($catalogue->getCoteFin())."'";
 
 		// Nouveautes
-		if($catalogue["NOUVEAUTE"]==1)
-		{
+		if($catalogue->getNouveaute()==1)	{
 			$dtj=date("Y-m-d");
 			$conditions[]="date_creation >='$dtj'";
 		}
@@ -415,6 +403,7 @@ class Class_Catalogue extends Storm_Model_Abstract
 		$ret["req_liste"]="select * from notices ".$join.$where.$order_by.$limite;
 		$ret["req_comptage"]="select count(*) from notices ".$join.$where;
 		$ret["req_facettes"]="select notices.id_notice,type_doc,facettes from notices ".$join.$where.$limite;
+
 		return $ret;
 	}
 	

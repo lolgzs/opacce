@@ -86,8 +86,7 @@ class CatalogueController extends Zend_Controller_Action
 		{
 			$ret=$this->catalogue->getRequetes($_REQUEST,false);
 			
-			if (array_isset("req_comptage", $ret))
-			{
+			if (array_isset("req_comptage", $ret)) {
 				$ret["nombre"]=fetchOne($ret["req_comptage"]);
 				if($_REQUEST["nb_notices"]) if($ret["nombre"] > $_REQUEST["nb_notices"]) $ret["nombre"]=$_REQUEST["nb_notices"];
 				$facettes = $moteur->getFacettes($ret["req_facettes"],$this->preferences);

@@ -130,8 +130,12 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 			->setTypeDoc('1;3;4;5')
 			->setAnneeDebut(2012)
 			->setAnneeFin(2012)
-			->setAnnexe(0);
+			->setAnnexe(0)
+			->setDewey(78308)
+			->setBibliotheque(1);
 
+		Class_Matiere::getLoader()
+			->newInstanceWithId(78308);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
 			->whenCalled('findAllBy')
@@ -144,7 +148,7 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 
 	/** @test */
 	public function pageShouldDisplayRequest() {
-		$this->assertContains("select * from notices  where type_doc in(1,3,4,5) and annee >='2012' and annee <='2012' order by alpha_titre  LIMIT 0,20",
+		$this->assertContains("select * from notices  where MATCH(facettes) AGAINST('+(B1)+( D78308*)' IN BOOLEAN MODE) and type_doc in(1,3,4,5) and annee >='2012' and annee <='2012' order by alpha_titre  LIMIT 0,20",
 													$this->_response->getBody());
 	}
 
@@ -152,8 +156,8 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 	/** @test */
 	public function findAllByRequestShouldHaveSameWhereAsGetRequetes() {
 		$params = Class_Notice::getLoader()->getFirstAttributeForLastCallOn('findAllBy');
-		$this->assertEquals('type_doc in (1, 3, 4, 5) and annee >= \'2012\' and annee <= \'2012\'',
-												strtolower($params['where']));
+		$this->assertEquals('MATCH(facettes) AGAINST(\'+(B1)+( D78308*)\' IN BOOLEAN MODE) and type_doc IN (1, 3, 4, 5) and annee >= \'2012\' and annee <= \'2012\'',
+												$params['where']);
 	}
 
 
