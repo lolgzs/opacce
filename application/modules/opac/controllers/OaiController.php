@@ -27,6 +27,7 @@ class OaiController extends Zend_Controller_Action {
 			->addActionContext('list-records', 'xml')
 			->addActionContext('list-sets', 'xml')
 			->addActionContext('get-record', 'xml')
+			->addActionContext('bad-verb', 'xml')
 			->initContext();
 	}
 
@@ -48,9 +49,8 @@ class OaiController extends Zend_Controller_Action {
 			return;
 		}
 
-		$request = Class_WebService_OAI_ResponseFactory::verbAndBaseUrl($this->_getParam('verb'),
-																																		$this->buildBaseUrl());
-		$this->_response->setBody($request->xml($this->_request->getParams()));
+		$this->_forward('bad-verb', null, null, 
+										$this->_request->getParams() + array('format' => 'xml'));
 	}
 
 
@@ -170,6 +170,12 @@ class OaiController extends Zend_Controller_Action {
 			$this->view->record = $recordBuilder->xml($builder, $visitor);
 		}
 		$this->view->builder = $builder;
+	}
+
+
+	public function badVerbAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$this->view->baseUrl = $this->buildBaseUrl();
 	}
 }
 
