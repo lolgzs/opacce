@@ -86,7 +86,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		if ($this->_token)
 			$this->_token->save();
 		
-		$this->_notices = $this->_catalogue->getNotices($page_number);
+		$this->_notices = $this->_catalogue->getNotices($page_number, self::IDENTIFIERS_BY_PAGE);
 	}
 
 
