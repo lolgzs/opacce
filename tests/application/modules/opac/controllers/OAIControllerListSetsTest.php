@@ -18,9 +18,9 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+require_once 'AbstractControllerTestCase.php';
 
-class ListSetsTest extends Storm_Test_ModelTestCase {
-	protected $_response;
+class OAIControllerListSetsTest extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -43,14 +43,13 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 									 'order' => 'oai_spec'))
 			->answers(array($catalogue_bd, $catalogue_musique));
 
-
-		$this->_response = new Class_WebService_OAI_Response_ListSets('http://afi.fr/oai');
+		$this->dispatch('/opac/oai/request?verb=ListSets');
 	}
 
 
 	/** @test */
 	public function setMusiqueShouldContainSpecMusic() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:ListSets/oai:set/oai:setSpec',
 																							'music');
 	}
@@ -58,7 +57,7 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function setMusiqueShouldContainNameMusique() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:ListSets/oai:set/oai:setName',
 																							'Musique');
 	}
@@ -66,7 +65,7 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 
   /** @test */
 	public function setMusiqueShouldContainDescriptionLaMusiqueQuiBalance() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:ListSets/oai:set/oai:setDescription',
 																							'La musique qui balance');
 	}
@@ -75,7 +74,7 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function setBdsShouldContainsSpecLivresColonBds() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:ListSets/oai:set/oai:setSpec',
 																							'livres:bd');
 	}
@@ -83,7 +82,7 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function setBdsShouldContainsNameBds() {
-		$this->_xpath->assertXpathContentContains($this->_response->xml(),
+		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
 																							'//oai:ListSets/oai:set/oai:setName',
 																							'BDs'); 		
 	}
@@ -91,9 +90,8 @@ class ListSetsTest extends Storm_Test_ModelTestCase {
 
   /** @test */
 	public function setBdsShouldNotContainDescription() {
-		$this->_xpath->assertNotXpath($this->_response->xml(),
+		$this->_xpath->assertNotXpath($this->_response->getBody(),
 																	'//oai:ListSets/oai:set/oai:setSpec[text()="livres:bd"][following-sibling::oai:setDescription]');
 	}
-
 }
 ?>

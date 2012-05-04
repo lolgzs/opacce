@@ -25,6 +25,7 @@ class OaiController extends Zend_Controller_Action {
 			->addActionContext('identify', 'xml')
 			->addActionContext('list-metadata-formats', 'xml')
 			->addActionContext('list-records', 'xml')
+			->addActionContext('list-sets', 'xml')
 			->initContext();
 	}
 
@@ -36,7 +37,8 @@ class OaiController extends Zend_Controller_Action {
 		$verbsMapping = array('ListIdentifiers' => 'list-identifiers',
 													'Identify' => 'identify',
 													'ListMetadataFormats' => 'list-metadata-formats',
-													'ListRecords' => 'list-records');
+													'ListRecords' => 'list-records',
+													'ListSets' => 'list-sets');
 
 		if (array_key_exists($this->_getParam('verb'), $verbsMapping)) {
 			$this->_forward($verbsMapping[$this->_getParam('verb')], null, null, 
@@ -125,6 +127,27 @@ class OaiController extends Zend_Controller_Action {
 																																		$baseUrl);
 		$this->view->request = $request;
 		$this->view->builder = new Class_Xml_Builder();
+	}
+
+
+	public function listSetsAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$baseUrl = $this->buildBaseUrl();
+		$request = new Class_WebService_OAI_Request_ListSets($this->_request->getParams(), 
+																												 $baseUrl);
+		$this->view->request = $request;
+		$builder = new Class_Xml_Builder();
+
+		if ($catalogs = $request->getCatalogs()) {
+			$visitor = new Class_WebService_OAI_CatalogueVisitor($builder);
+			$sets = '';
+			foreach ($catalogs as $catalog) {
+				$visitor->visitCatalogue($catalog);
+				$sets .= $builder->set($visitor->xml());
+			}
+			$this->view->sets = $sets;
+		}
+		$this->view->builder = $builder;
 	}
 }
 

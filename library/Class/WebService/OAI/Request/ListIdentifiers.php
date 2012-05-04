@@ -71,7 +71,6 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			return $builder->error(array('code' => 'noRecordsMatch'));
 
 		$token = null;
-		xdebug_break();
 		if ($this->_resumptionToken 
 				&& !($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken)))
 			return $builder->error(array('code' => 'badResumptionToken'));
