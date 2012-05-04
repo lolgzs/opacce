@@ -200,6 +200,14 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
 
 
 	/** @test */
+	public function withSeveralTypeDocShouldQueryOnColumn() {
+		$this->_catalogue->setTypeDoc('7;10;12');
+		$this->_expectNoticeFindAllBy('type_doc IN (7, 10, 12)');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
 	public function withYearShouldQueryOnColumn() {
 		$this->_catalogue
 			->setAnneeDebut('1936')
@@ -285,5 +293,14 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
   protected function _facetsClauseWith($clauses) {
     return sprintf('MATCH(facettes) AGAINST(\'+(%s)\' IN BOOLEAN MODE)', $clauses);
   }
+}
+
+
+
+class CatalogueTestGetRequetesByPreferencesCatalogue extends ModelTestCase {
+	/** @test */
+	public function contextShouldExpectation() {
+		
+	}
 }
 ?>

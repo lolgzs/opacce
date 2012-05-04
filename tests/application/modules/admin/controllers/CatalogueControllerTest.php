@@ -114,4 +114,56 @@ class CatalogueControllerWithAModoBibIndexTest extends AdminCatalogueControllerT
 	}
 }
 
+
+
+class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN;
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		$catalogue_nouveautes = Class_Catalogue::getLoader()
+			->newInstanceWithId(6)
+			->setLibelle('nouveautés')
+			->setTypeDoc('1;3;4;5')
+			->setAnneeDebut(2012)
+			->setAnneeFin(2012)
+			->setAnnexe(0);
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('findAllBy')
+			->answers(array(Class_Notice::getLoader()->newInstanceWithId(2)));
+
+		
+		$this->dispatch('admin/catalogue/tester/id_catalogue/6');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayRequest() {
+		$this->assertContains("select * from notices  where type_doc in(1,3,4,5) and annee >='2012' and annee <='2012' order by alpha_titre  LIMIT 0,20",
+													$this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function findAllByRequestShouldHaveSameWhereAsGetRequetes() {
+		$params = Class_Notice::getLoader()->getFirstAttributeForLastCallOn('findAllBy');
+		$this->assertEquals('type_doc in (1, 3, 4, 5) and annee >= \'2012\' and annee <= \'2012\'',
+												strtolower($params['where']));
+	}
+
+
+	/** @test */
+	public function findAllByRequestShouldHaveOrderByAlphaTitre() {
+		$params = Class_Notice::getLoader()->getFirstAttributeForLastCallOn('findAllBy');
+		$this->assertEquals('alpha_titre',
+												$params['order']);
+	}
+	
+}
+
 ?>

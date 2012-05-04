@@ -55,9 +55,8 @@ class Admin_CatalogueController extends Zend_Controller_Action
 		if(!$id_catalogue) $this->_redirect("admin/catalogue/index");
 		
 		// Lire les notices
-		$class_catalogue = new Class_Catalogue();
-		$preferences=array("nb_notices" => 20,"id_catalogue" => $id_catalogue);
-		$ret=$class_catalogue->getTestCatalogue($preferences);
+		$catalogue = Class_Catalogue::getLoader()->find($id_catalogue);
+		$ret=$catalogue->getTestCatalogue();
 		
 		// Variables de vue
 		$this->view->requete=$ret["requete"];

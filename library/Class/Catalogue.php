@@ -24,16 +24,21 @@
 class CatalogueLoader extends Storm_Model_Loader {
 	const DEFAULT_ITEMS_BY_PAGE = 100;
 
-	public function loadNoticesFor($catalogue, $itemsByPage = self::DEFAULT_ITEMS_BY_PAGE, $page = 1) {
+	public function loadNoticesFor($catalogue, $itemsByPage = self::DEFAULT_ITEMS_BY_PAGE, $page = 1, $find_all_params = null) {
+		if (!is_array($find_all_params))
+			$find_all_params = array();
+
+		if (!isset($find_all_params['limitPage']))
+			$find_all_params['limitPage'] = array($page, $itemsByPage);
+
 		if (null == $catalogue)
 			return array();
 
 		if ('' == ($where = $this->clausesFor($catalogue)))
 			return array();
-
-
-		return Class_Notice::getLoader()->findAllBy(array('where' => $where,
-																											'limitPage' => array($page, $itemsByPage)));
+		
+		$find_all_params['where'] = $where;
+		return Class_Notice::getLoader()->findAllBy($find_all_params);
 	}
 
 
@@ -210,8 +215,8 @@ class Class_Catalogue extends Storm_Model_Abstract
 	}
 
 
-	public function getNotices($page = 1, $itemsByPage = CatalogueLoader::DEFAULT_ITEMS_BY_PAGE) {
-		return self::getLoader()->loadNoticesFor($this, $itemsByPage, $page);
+	public function getNotices($page = 1, $itemsByPage = CatalogueLoader::DEFAULT_ITEMS_BY_PAGE, $params = null) {
+		return self::getLoader()->loadNoticesFor($this, $itemsByPage, $page, $params);
 	}
 
 
@@ -223,13 +228,17 @@ class Class_Catalogue extends Storm_Model_Abstract
 //------------------------------------------------------------------------------
 // Rend les notices et les stats (test d'un catalogue)
 //------------------------------------------------------------------------------
-	public function getTestCatalogue($preferences)
-	{
+	public function getTestCatalogue() {
 		// Notices et temps d'execution
+		$preferences = $this->toArray();
+		$preferences['nb_notices'] = 20;
 		$requetes=$this->getRequetes($preferences);
 		$ret["requete"]=$requetes["req_liste"];
 		$temps=time();
-		$ret["notices"]=$this->getNotices($preferences);
+
+		$ret["notices"] = $this->getNotices(null, null, 
+																				array('limitPage' => array(1, $preferences['nb_notices']),
+																							'order' => 'alpha_titre'));
 		$ret["temps_execution"]=(time()-$temps);
 		$ret["nb_notices"]=fetchOne($requetes["req_comptage"]);
 
@@ -315,11 +324,16 @@ class Class_Catalogue extends Storm_Model_Abstract
 		else if ($preferences["tri"]==2) $order_by=" order by nb_visu DESC ";
 
 		// Nombre a lire
-		if($preferences["aleatoire"]==1) $limite=(int)$preferences["nb_analyse"];
-		else $limite=(int)$preferences["nb_notices"];
+		$limite = 0; 
+		if (isset($preferences["aleatoire"]) && $preferences["aleatoire"]==1) 
+			$limite = (int)$preferences["nb_analyse"];
+		else if (isset($preferences['nb_notices']))
+			$limite = (int)$preferences["nb_notices"];
 
-		if ($limite and !$no_limit) $limite=" LIMIT 0,".$limite;
-		else $limite=" LIMIT 5000"; //LL: j'ai rajouté une limite max car explosion mémoire sur des catalogues mal définis
+		if ($limite and !$no_limit) 
+			$limite=" LIMIT 0,".$limite;
+		else 
+			$limite=" LIMIT 5000"; //LL: j'ai rajouté une limite max car explosion mémoire sur des catalogues mal définis
 		
 		// Facettes de la navigation
 		if (array_key_exists("facettes", $preferences))
@@ -329,7 +343,7 @@ class Class_Catalogue extends Storm_Model_Abstract
 		}
 
 		// Lire les proprietes du catalogue
-		$catalogue=$this->getCatalogue($preferences["id_catalogue"]);
+		$catalogue = $this->getCatalogue($preferences["id_catalogue"]);
 
 		// Criteres de selection sur les facettes (opérateur AND)
 		$against.=$this->getSelectionFacette("B",$catalogue["BIBLIOTHEQUE"]);
@@ -355,9 +369,11 @@ class Class_Catalogue extends Storm_Model_Abstract
 		if($catalogue["TYPE_DOC"])
 		{ 
 			$tdocs=explode(";",$catalogue["TYPE_DOC"]);
+			$type_doc = '';
 			foreach($tdocs as $tdoc)
 			{
-				if($type_doc) $type_doc.=",";
+				if($type_doc) 
+					$type_doc.=",";
 				$type_doc.=$tdoc;
 			}
 			if(strpos($type_doc,",") === false) $conditions[]="type_doc=".$type_doc;

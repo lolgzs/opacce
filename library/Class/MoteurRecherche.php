@@ -385,8 +385,7 @@ class Class_MoteurRecherche
 // ----------------------------------------------------------------
 // Facettes 
 // ----------------------------------------------------------------
-function getFacettes($req,$preferences)
-	{
+function getFacettes($req,$preferences)	{
 		// Preferences
 		$p_facette=array("nombre" => $preferences["facettes_nombre"],"actif" => $preferences["facettes_actif"],"types" => "T".$preferences["facettes_codes"]);
 		$p_facette["nombre"]=$p_facette["nombre"]*2; // pour afficher les n suivants
@@ -461,7 +460,12 @@ function getFacettes($req,$preferences)
 				if (!array_isset($type, $facettes)) continue;
 
 				$yen_a_plus=false;
-				if(!$sorted[$type]) {arsort($facettes[$type]); $sorted[$type]=true;}
+
+				if(!isset($sorted[$type])) {
+					arsort($facettes[$type]); 
+					$sorted[$type]=true;
+				}
+
 				$lig=array_slice($facettes[$type],0,1);
 				$compare=array_values($lig);
 				if($compare[0] > $controle["nombre"]) 
