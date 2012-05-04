@@ -193,8 +193,7 @@ class Class_Catalogue extends Storm_Model_Abstract
 																							 'annee_fin' => '',
 																							 'cote_debut' => '',
 																							 'cote_fin' => '',
-																							 'nouveaute' => '',
-																							 'all' => '');
+																							 'nouveaute' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
@@ -496,14 +495,32 @@ class Class_Catalogue extends Storm_Model_Abstract
 			$liste[$catalogue["ID_CATALOGUE"]]=$catalogue["LIBELLE"];
 		return $liste;
 	}
+
+
+	public function setAnneeDebut($value) {
+		return $this->checkAndSetAnnee('annee_debut', $value);
+	}
+
+
+	public function setAnneeFin($value) {
+		return $this->checkAndSetAnnee('annee_fin', $value);
+	}
 	
-	//-------------------------------------------------------------------------------
-	// Ecrire catalogue
-	//-------------------------------------------------------------------------------
-	public function ecrireCatalogue($id_catalogue,$enreg)
-	{
-		if(!$id_catalogue) return sqlInsert("catalogue",$enreg,true);
-		else return sqlUpdate("update catalogue set @SET@ where ID_CATALOGUE=$id_catalogue",$enreg,true);
+
+	public function checkAndSetAnnee($attribute, $value) {
+		$value = (int)$value;
+		if ($value < 1000 || $value > date("Y"))
+			$value = '';
+		return parent::_set($attribute, $value);
+	}
+
+
+	public function validate() {
+		$this->checkAttribute('libelle', $this->getLibelle(), 'Le libellé est requis');
+		$this->checkAttribute('annee_fin', 
+													!($this->getAnneeDebut() and $this->getAnneeFin()) || $this->getAnneeDebut() <= $this->getAnneeFin(),
+													"L'année de début doit être inférieure ou égale à l'année de fin");
+		
 	}
 }
 
