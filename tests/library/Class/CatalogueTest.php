@@ -295,12 +295,4 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
   }
 }
 
-
-
-class CatalogueTestGetRequetesByPreferencesCatalogue extends ModelTestCase {
-	/** @test */
-	public function contextShouldExpectation() {
-		
-	}
-}
 ?>

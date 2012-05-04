@@ -310,102 +310,76 @@ class Class_Catalogue extends Storm_Model_Abstract
 //------------------------------------------------------------------------------
 // Rend les notices selon les preferences
 //------------------------------------------------------------------------------
-	public function getRequetes($preferences,$no_limit=false)
-	{
+	public function getRequetes($preferences, $no_limit=false)	{
 		// Si panier traitement special
 		if (isset($preferences["id_panier"])  && (0 !== (int)$preferences["id_panier"])) 
 			return $this->getRequetesPanier($preferences);
 
-		// Ordre
-		$where = $join = $order_by =	$against = $against_ou = '';
-		$conditions = array();
-		if(!array_key_exists("tri", $preferences) || $preferences["tri"]==0) $order_by=" order by alpha_titre ";
-		else if ($preferences["tri"]==1) $order_by=" order by date_creation DESC ";
-		else if ($preferences["tri"]==2) $order_by=" order by nb_visu DESC ";
-
-		// Nombre a lire
-		$limite = 0; 
-		if (isset($preferences["aleatoire"]) && $preferences["aleatoire"]==1) 
-			$limite = (int)$preferences["nb_analyse"];
-		else if (isset($preferences['nb_notices']))
-			$limite = (int)$preferences["nb_notices"];
-
-		if ($limite and !$no_limit) 
-			$limite=" LIMIT 0,".$limite;
-		else 
-			$limite=" LIMIT 5000"; //LL: j'ai rajouté une limite max car explosion mémoire sur des catalogues mal définis
-		
-		// Facettes de la navigation
-		if (array_key_exists("facettes", $preferences))	{
-			$facettes=explode(";",$preferences["facettes"]);
-			foreach($facettes as $facette) {
-				$facette=trim($facette); 
-				$against.=$this->getSelectionFacette(substr($facette,0,1),substr($facette,1));}
-		}
-
 		// Lire les proprietes du catalogue
 		$catalogue = $this->getLoader()->find($preferences['id_catalogue']);
-		if ($against .= $this->getLoader()->facetsClauseFor($catalogue))
-			$conditions[] = $against;
-		
-		// Criteres de selection simples
-		if($catalogue->getTypeDoc())
-		{ 
-			$tdocs=explode(";", $catalogue->getTypeDoc());
-			$type_doc = '';
-			foreach($tdocs as $tdoc)
-			{
-				if($type_doc) 
-					$type_doc.=",";
-				$type_doc.=$tdoc;
-			}
-			if(strpos($type_doc,",") === false) $conditions[]="type_doc=".$type_doc;
-			else $conditions[]="type_doc in(".$type_doc.")"; 
-		}
-		if ($catalogue->getAnneeDebut()) 
-			$conditions[]="annee >='".$catalogue->getAnneeDebut()."'";
+		$conditions = array($this->selectionFacettesForCatalogueRequestByPreferences($preferences)
+												. $this->getLoader()->facetsClauseFor($catalogue));
 
-		if ($catalogue->getAnneeFin()) 
-			$conditions[]="annee <='".$catalogue->getAnneeFin()."'";
-
-		if ($catalogue->getCoteDebut()) 
-			$conditions[]="cote >='".strtoupper($catalogue->getCoteDebut())."'";
-		
-		if ($catalogue->getCoteFin()) 
-			$conditions[]="cote <='".strtoupper($catalogue->getCoteFin())."'";
-
-		// Nouveautes
-		if($catalogue->getNouveaute()==1)	{
-			$dtj=date("Y-m-d");
-			$conditions[]="date_creation >='$dtj'";
-		}
+		$conditions []= $this->getLoader()->docTypeClauseFor($catalogue);
+		$conditions []= $this->getLoader()->yearClauseFor($catalogue);
+		$conditions []= $this->getLoader()->coteClauseFor($catalogue);
+		$conditions []= $this->getLoader()->nouveauteClauseFor($catalogue);
 
 		// Notices avec vignettes uniquement
-		if (array_key_exists('only_img', $preferences) && ($preferences["only_img"] == 1)) 
+		if (isset($preferences['only_img']) && ($preferences["only_img"] == 1)) 
 			$conditions[]="url_vignette > '' and url_vignette != 'NO'";
 
 		// Notices avec avis seulement
-		if (array_key_exists('avec_avis',$preferences) && ($preferences["avec_avis"] == 1)) 
-			$join = " INNER JOIN notices_avis ON notices.clef_oeuvre=notices_avis.clef_oeuvre ";
+		$join = (isset($preferences['avec_avis']) && ($preferences["avec_avis"] == 1)) 
+			?	" INNER JOIN notices_avis ON notices.clef_oeuvre=notices_avis.clef_oeuvre " 
+			: '';
 
 		// Clause where
-		if($conditions)
-		{
-			foreach($conditions as $condition)
-			{
-				if($where) $where.=" and ";
-				else $where =" where ";
-				$where.=$condition;
-			}
-		}
+		if ($where = implode(' and ', array_filter($conditions)))
+			$where = ' where '.$where;
 
 		// Calcul des requetes
+		$order_by = $this->orderByForCatalogueRequestByPreferences($preferences);
+		$limite = $this->limitForCatalogueRequestByPreferences($preferences, $no_limit);
 		$ret["req_liste"]="select * from notices ".$join.$where.$order_by.$limite;
 		$ret["req_comptage"]="select count(*) from notices ".$join.$where;
 		$ret["req_facettes"]="select notices.id_notice,type_doc,facettes from notices ".$join.$where.$limite;
 
 		return $ret;
 	}
+
+
+	public function selectionFacettesForCatalogueRequestByPreferences($preferences) {
+		
+	}
+
+
+	public function orderByForCatalogueRequestByPreferences($preferences) {
+		if(!array_key_exists("tri", $preferences) || $preferences["tri"]==0) 
+			return " order by alpha_titre ";
+		
+		if ($preferences["tri"]==1) 
+			return " order by date_creation DESC ";
+		
+		if ($preferences["tri"]==2) 
+			return " order by nb_visu DESC ";
+	}
+
+
+	public function limitForCatalogueRequestByPreferences($preferences, $no_limit=false) {
+		$limite = 0;
+
+		if (isset($preferences["aleatoire"]) && $preferences["aleatoire"]==1) 
+			$limite = (int)$preferences["nb_analyse"];
+		else if (isset($preferences['nb_notices']))
+			$limite = (int)$preferences["nb_notices"];
+
+		if ($limite and !$no_limit) 
+			return " LIMIT 0,".$limite;
+
+	  return " LIMIT 5000"; //LL: j'ai rajouté une limite max car explosion mémoire sur des catalogues mal définis
+	}
+
 	
 	//----------------------------------------------------------------------------
 	// Calcul de la clause against pour une facette
