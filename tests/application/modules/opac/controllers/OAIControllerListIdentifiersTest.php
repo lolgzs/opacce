@@ -34,6 +34,10 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 			->whenCalled('countNoticesFor')
 			->answers(3)
 
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers(array(Class_Catalogue::getLoader()->newInstanceWithId(2)))
+
 			->whenCalled('loadNoticesFor')
 			->answers(array(Class_Notice::getLoader()
 											->newInstanceWithId(2)
@@ -47,7 +51,7 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 											->newInstanceWithId(4)
 											->setClefAlpha('harrypotter-azkaban')
 											->setDateMaj('2012-04-03 11:42:42')));
-		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork');
 		$this->_xml = $this->_response->getBody();
 	}
 
@@ -114,6 +118,11 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 	}
 
 
+	/** @test */
+	public function firstSetSpecShouldBeZork() {
+		$this->_assertHeaderContentAt('setSpec', 'zork', 1);
+	}
+
 
 	/** @test */
 	public function secondIdentifierShouldContainSecrets() {
@@ -125,7 +134,6 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 	public function secondDateShouldBeOctoberTwentyfourth2005() {
 		$this->_assertDateContentAt('2005-10-24', 2);
 	}
-
 
 
 	/** @test */

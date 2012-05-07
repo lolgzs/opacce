@@ -28,6 +28,13 @@ class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 		$this->_xpath = TestXPathFactory::newOaiDc();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers(array(Class_Catalogue::getLoader()->newInstanceWithId(2)))
+
+			->whenCalled('countNoticesFor')
+			->answers(3)
+
 			->whenCalled('loadNoticesFor')
 			->answers(array(Class_Notice::getLoader()
 																			   ->newInstanceWithId(2)
@@ -42,7 +49,7 @@ class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 																			   ->newInstanceWithId(4)
 																			   ->setClefAlpha('harrypotter-azkaban')
 																			   ->setDateMaj('2012-04-03 11:42:42')));
-		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc');
+		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=zork');
 	}
 
 
@@ -64,6 +71,12 @@ class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 	/** @test */
 	public function firstIdentifierShouldContainSorciers() {
 		$this->_assertHeaderContentAt('identifier', 'sorciers', 1);
+	}
+
+
+	/** @test */
+	public function firstSetSpecShouldBeZork() {
+		$this->_assertHeaderContentAt('setSpec', 'zork', 1);
 	}
 
 

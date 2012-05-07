@@ -24,6 +24,7 @@ class Class_Notice_DublinCoreVisitor {
 	protected $_builder;
 	protected $_identifier;
 	protected $_date;
+	protected $_globalSetSpec;
 
 
 	public function __construct() {
@@ -89,6 +90,17 @@ class Class_Notice_DublinCoreVisitor {
 
 	public function cdata($value) {
 		return $this->_builder->cdata($value);
+	}
+
+
+	public function setGlobalSetSpec($spec) {
+		$this->_globalSetSpec = $spec;
+		return $this;
+	}
+
+
+	public function getGlobalSetSpec() {
+		return $this->_globalSetSpec;
 	}
 }
 

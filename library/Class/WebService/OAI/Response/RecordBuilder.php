@@ -27,8 +27,11 @@ class Class_WebService_OAI_Response_RecordBuilder {
 
 
 	public function buildHeaders($builder, $visitor) {
-		return $builder->header($builder->identifier($visitor->getIdentifier())
-														. $builder->datestamp($visitor->getDate()));
+		$header = $builder->identifier($visitor->getIdentifier())
+			. $builder->datestamp($visitor->getDate());
+		if ($visitor->getGlobalSetSpec())
+			$header .= $builder->setSpec($visitor->getGlobalSetSpec());
+		return $builder->header($header);
 	}
 
 
