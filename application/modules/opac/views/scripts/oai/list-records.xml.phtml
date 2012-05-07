@@ -8,7 +8,7 @@
 	<?php if ($this->records) { ?>
 	<ListRecords>
 		<?php echo $this->records; ?>
+		<?php echo ($this->token) ? $this->token->renderOn($this->builder): '' ?>
 	</ListRecords>
 	<?php } ?>
-	<?php echo ($this->token) ? $this->token->renderOn($this->builder): '' ?>
 </OAI-PMH>

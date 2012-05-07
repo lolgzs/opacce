@@ -8,7 +8,7 @@
 	<?php if ($this->headers) { ?>
 	<ListIdentifiers>
 		<?php echo $this->headers; ?>
+		<?php echo ($this->token) ? $this->token->renderOn($this->builder): '' ?>
 	</ListIdentifiers>
 	<?php } ?>
-	<?php echo ($this->token) ? $this->token->renderOn($this->builder): '' ?>
 </OAI-PMH>
