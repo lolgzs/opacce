@@ -81,7 +81,7 @@ li.selected {font-weight: bold;}
 .form div.tag_saisie{border:1px solid #C8C8C8;min-height:15px;border-top:none;padding:5px;margin-left:5px;display:none;width:auto;background-color:#ffffff;overflow:auto;max-height:244px}
 .form div.tag_liste{padding:1px 3px 1px 3px;margin-left:5px;}
 .form div.tag_liste:hover{background-color:#FFFF99;cursor:pointer}
-div.bouton td {color:#575757;font-size:10pt;font-weight:bold; }
+div.bouton td {color:#575757;font-size:10pt;font-weight:bold; background-repeat: repeat-x}
 div.bouton a:hover {text-decoration: none}
 .form table {border:none;}
 .form td.gauche {text-align:left;padding-left:2px;}
