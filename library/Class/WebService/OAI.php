@@ -40,6 +40,11 @@ class Class_WebService_OAI {
 	const ListSets = 'ListSets';
 	const ListRecords = 'ListRecords';
 
+	public static function baseURL() {
+		return 'http://' . $_SERVER['SERVER_NAME'] . BASE_URL . '/opac/oai/request';
+	}
+
+
 	public function setOAIHandler($oai_handler) {
 		$this->oai_handler = $oai_handler;
 		return $this;

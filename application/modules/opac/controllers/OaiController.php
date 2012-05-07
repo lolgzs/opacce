@@ -57,8 +57,7 @@ class OaiController extends Zend_Controller_Action {
 
 
 	protected function buildBaseUrl() {
-		return $this->_request->getScheme() . '://' . $_SERVER['SERVER_NAME'] 
-			. BASE_URL . '/opac/oai/request';
+		return Class_WebService_OAI::baseURL();
 	}
 
 

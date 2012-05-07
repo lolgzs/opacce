@@ -71,12 +71,19 @@ class CatalogueControllerWithModoPortailIndexTest extends AdminCatalogueControll
 	public function titreShouldBeDefinitionDesCataloguesDynamiques() {
 		$this->assertXPathContentContains('//h1', 'Définition des catalogues dynamiques');
 	}
+
+
+	/** @test */
+	public function pageShouldDisplayOAIBaseUrl() {
+		$this->assertXPath(sprintf('//input[@class="permalink"][@readonly="true"][@value="http://localhost%s/opac/oai/request"]', 
+															 BASE_URL));
+	}
 }
 
 
 
 
-class CatalogueControllerWithAdminBibIndexTest extends AdminCatalogueControllerTestCase {
+class CatalogueControllerWithAdminBibAndNoOAIIndexTest extends AdminCatalogueControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
 		$account->ROLE = 'admin_bib';
@@ -84,6 +91,11 @@ class CatalogueControllerWithAdminBibIndexTest extends AdminCatalogueControllerT
 
 	public function setUp() {
 		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur('0');
+
 		$this->dispatch('admin/catalogue/index');
 	}
 
@@ -91,6 +103,12 @@ class CatalogueControllerWithAdminBibIndexTest extends AdminCatalogueControllerT
 	/** @test */
 	public function titreShouldBeDefinitionDesCataloguesDynamiques() {
 		$this->assertXPathContentContains('//h1', 'Définition des catalogues dynamiques');
+	}
+
+
+	/** @test */
+	public function pageShouldNotDisplayOAIBaseUrl() {
+		$this->assertNotXPath(sprintf('//input[@class="permalink"]'));
 	}
 }
 

@@ -32,3 +32,11 @@ if($this->catalogues)
 </table>
 <br>
 <p align="center" class="error"><?php echo $this->message ?></p>
+
+<?php 
+	if (Class_AdminVar::isOaiServerEnabled()) {
+		echo '<h3>'.$this->_('Serveur OAI').'</h3>';
+		echo sprintf('<div>Base URL: <input class="permalink" value="%s" readonly="true" size="100"/></div>', 
+								 Class_WebService_OAI::baseURL());
+	}
+?>
