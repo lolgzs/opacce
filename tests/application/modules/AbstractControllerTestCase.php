@@ -115,6 +115,10 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('BIBNUM')
 			->setValeur(1);
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur(1);	
 	}
 
 	public function tearDown() {
