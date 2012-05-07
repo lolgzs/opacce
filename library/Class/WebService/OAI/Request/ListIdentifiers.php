@@ -35,7 +35,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 	
 	public function __construct($params, $baseUrl) {
 		$this->_baseUrl = $baseUrl;
-		$this->_params = array_merge(array('metadataPrefix' => null,
+		$this->_params = array_merge(array('metadataPrefix' => 'oai_dc',
 																			 'set' => null,
 																			 'from' => null,
 																			 'until' => null,
@@ -58,9 +58,6 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 
 	public function getErrorOn($builder) {
-		if (!$this->_metadataPrefix) 
-			return $builder->error(array('code' => 'badArgument'), 'Missing metadataPrefix');
-
 		if ('oai_dc' != $this->_metadataPrefix) 
 			return $builder->error(array('code' => 'cannotDisseminateFormat'));
 

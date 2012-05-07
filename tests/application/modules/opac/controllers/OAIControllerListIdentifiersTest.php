@@ -229,14 +229,6 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 
 
 	/** @test */
-	public function withoutMetadataPrefixErrorCodeShouldBeBadArgument() {
-		$this->dispatch('/opac/oai/request?verb=ListIdentifiers');
-		$this->_xpath->assertXPath($this->_response->getBody(), 
-															 '//oai:error[@code="badArgument"]');
-	}
-
-
-	/** @test */
 	public function withUnknownFormatErrorCodeShouldBeCannotDisseminateFormat() {
 		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=zork');
 		$this->_xpath->assertXpath($this->_response->getBody(),
