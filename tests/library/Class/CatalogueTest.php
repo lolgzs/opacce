@@ -236,6 +236,22 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
 
 
 	/** @test */
+	public function withFromShouldQueryOnDateMaj() {
+		$this->_catalogue->setFrom('2011-03-05');
+		$this->_expectNoticeFindAllBy('date_maj >= \'2011-03-05\'');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
+	public function withUntilShouldQueryOnDateMaj() {
+		$this->_catalogue->setUntil('2011-03-05');
+		$this->_expectNoticeFindAllBy('date_maj <= \'2011-03-05\'');
+		Class_Catalogue::getLoader()->loadNoticesFor($this->_catalogue);
+	}
+
+
+	/** @test */
 	public function forFirstPageShouldLimitFromZero() {
 		$this->_catalogue->setBibliotheque('77');
 		$this->_noticeWrapper

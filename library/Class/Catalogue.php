@@ -73,6 +73,9 @@ class CatalogueLoader extends Storm_Model_Loader {
 		if ($new = $this->nouveauteClauseFor($catalogue))
 			$conditions[] = $new;
 
+		if ($fromUntil = $this->fromUntilClauseFor($catalogue))
+			$conditions[] = $fromUntil;
+
 		if (0 == count($conditions))
 			return '';
 		
@@ -165,6 +168,21 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 		return 'date_creation >= \'' . date('Y-m-d') . '\'';
 	}
+
+
+	public function fromUntilClauseFor($catalogue) {
+		$clauses = array();
+		if ($start = $catalogue->getFrom()) 
+			$clauses[] = "date_maj >= '" . $start . "'";
+
+		if($end = $catalogue->getUntil()) 
+			$clauses[] = "date_maj <= '" . $end . "'";
+
+		if (0 == count($clauses))
+			return '';
+
+		return implode(' and ', $clauses);
+	}
 }
 
 
@@ -193,6 +211,9 @@ class Class_Catalogue extends Storm_Model_Abstract {
 																							 'cote_debut' => '',
 																							 'cote_fin' => '',
 																							 'nouveaute' => '');
+
+	protected $_from;
+	protected $_until;
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
@@ -537,6 +558,28 @@ class Class_Catalogue extends Storm_Model_Abstract {
 													!$this->getOaiSpec() || preg_match('/^[a-zA-Z0-9_.-]+$/', $this->getOaiSpec()),
 													"La spec OAI ne peut contenir que les caractères suivants: de a à z, 0 à 9, - _ ."); 
 		
+	}
+
+
+	public function setFrom($from) {
+		$this->_from = $from;
+		return $this;
+	}
+
+
+	public function getFrom() {
+		return $this->_from;
+	}
+
+
+	public function setUntil($until) {
+		$this->_until = $until;
+		return $this;
+	}
+
+
+	public function getUntil() {
+		return $this->_until;
 	}
 }
 
