@@ -80,5 +80,12 @@ class Class_WebService_OAI_ResumptionToken {
 	public function getPageNumber() {
 		return $this->_page_number;
 	}
+
+
+	public function getParam($key) {
+		if (!array_key_exists($key, $this->_params))
+			return null;
+		return $this->_params[$key];
+	}
 }
 ?>

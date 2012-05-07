@@ -111,7 +111,19 @@ class ResumptionTokenTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function nextPageNumberShouldBeTwo() {
-			$this->assertEquals(2, $this->_token->next(10)->getPageNumber());
+		$this->assertEquals(2, $this->_token->next(10)->getPageNumber());
+	}
+
+
+	/** @test */
+	public function getParamOfSetShouldReturnBandeDessinees() {
+		$this->assertEquals('bande_dessinees', $this->_token->getParam('set'));
+	}
+
+	
+	/** @test */
+	public function getParamOfUnknownShouldReturnNull() {
+		$this->assertNull($this->_token->getParam('Zork'));
 	}
 
 }
