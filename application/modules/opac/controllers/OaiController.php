@@ -71,7 +71,7 @@ class OaiController extends Zend_Controller_Action {
 
 		if ($notices = $request->getNotices()) {
 			$visitor = new Class_Notice_DublinCoreVisitor();
-			$visitor->setGlobalSetSpec($this->_getParam('set'));
+			$visitor->setGlobalSetSpec($request->getSet());
 			$recordBuilder = new Class_WebService_OAI_Response_RecordHeadersBuilder();
 			$headers = '';
 			foreach ($notices as $notice) {
@@ -95,7 +95,7 @@ class OaiController extends Zend_Controller_Action {
 
 		if ($notices = $request->getNotices()) {
 			$visitor = new Class_Notice_DublinCoreVisitor();
-			$visitor->setGlobalSetSpec($this->_getParam('set'));
+			$visitor->setGlobalSetSpec($request->getSet());
 			$recordBuilder = new Class_WebService_OAI_Response_RecordBuilder();
 			$records = '';
 			foreach ($notices as $notice) {

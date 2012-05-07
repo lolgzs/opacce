@@ -126,5 +126,10 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			return Class_Catalogue::newCatalogueForAll();
 		return current(Class_Catalogue::getLoader()->findAllBy(array('oai_spec' => $setSpec)));
 	}
+
+
+	public function getSet() {
+		return $this->_set;
+	}
 }
 ?>
