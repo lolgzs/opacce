@@ -173,10 +173,10 @@ class CatalogueLoader extends Storm_Model_Loader {
 	public function fromUntilClauseFor($catalogue) {
 		$clauses = array();
 		if ($start = $catalogue->getFrom()) 
-			$clauses[] = "date_maj >= '" . $start . "'";
+			$clauses[] = "left(date_maj, 10) >= '" . $start . "'";
 
 		if($end = $catalogue->getUntil()) 
-			$clauses[] = "date_maj <= '" . $end . "'";
+			$clauses[] = "left(date_maj, 10) <= '" . $end . "'";
 
 		if (0 == count($clauses))
 			return '';
