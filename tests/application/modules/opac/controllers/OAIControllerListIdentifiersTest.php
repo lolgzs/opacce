@@ -65,6 +65,14 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 
 
 	/** @test */
+	public function xmlShouldBeValid() {
+		$dom = new DOMDocument();
+		$dom->loadXml($this->_response->getBody());
+		$dom->schemaValidate('tests/application/modules/opac/controllers/OAI-PMH.xsd');
+	}
+
+
+	/** @test */
 	public function requestVerbShouldBeListIdentifiers() {
 		$this->_xpath->assertXPath($this->_xml,
 															 '//oai:request[@verb="ListIdentifiers"]');

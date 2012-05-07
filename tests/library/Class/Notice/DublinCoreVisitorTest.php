@@ -51,6 +51,14 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 
 
 	/** @test */
+	public function xmlShouldBeValid() {
+		$dom = new DOMDocument();
+		$dom->loadXml($this->_dublin_core_visitor->xml());
+		$dom->schemaValidate('tests/library/Class/Notice/oai_dc.xsd');
+	}
+
+
+	/** @test */
 	public function identifierShouldBeHarryPotterSorciers() {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:identifier',

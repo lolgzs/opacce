@@ -31,6 +31,14 @@ class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
 
 
 	/** @test */
+	public function xmlShouldBeValid() {
+		$dom = new DOMDocument();
+		$dom->loadXml($this->_response->getBody());
+		$dom->schemaValidate('tests/application/modules/opac/controllers/OAI-PMH.xsd');
+	}
+
+
+	/** @test */
 	public function requestVerbShouldBeListMetadataFormats() {
 		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:request[@verb="ListMetadataFormats"]');

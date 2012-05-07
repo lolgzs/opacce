@@ -47,6 +47,7 @@ class OAIControllerListSetsTest extends AbstractControllerTestCase {
 	}
 
 
+
 	/** @test */
 	public function setMusiqueShouldContainSpecMusic() {
 		$this->_xpath->assertXpathContentContains($this->_response->getBody(),
