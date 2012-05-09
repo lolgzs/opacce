@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-require_once 'application/modules/opac/controllers/AuthController.php';
+require_once ROOT_PATH.'application/modules/opac/controllers/AuthController.php';
 
 class Telephone_AuthController extends AuthController {
 	function boiteloginAction() {
