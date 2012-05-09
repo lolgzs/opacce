@@ -1,0 +1,12 @@
+<?php
+
+echo $this->newForm()
+->addElement('text', 'username', array('label' => $this->preferences['identifiant'],
+																			 'placeholder' => $this->preferences['identifiant_exemple'],
+																			 'size' => 15))
+->addElement('password', 'password', array('label' => $this->preferences['mot_de_passe'],
+																					 'placeholder' => $this->preferences['mot_de_passe_exemple'],
+																					 'size' => 15))
+->addElement('submit', 'login', array('label' => $this->preferences['lien_connexion']))
+->setElementDecorators(array('ViewHelper'));
+?>

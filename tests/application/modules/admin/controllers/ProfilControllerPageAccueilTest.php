@@ -176,4 +176,35 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 	}
 }
 
+
+
+class ProfilControllerWithTelephoneAccueilTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$profil_telephone = Class_Profil::getLoader()
+			->newInstanceWithId(3)
+			->setLibelle('iPhone')
+			->beTelephone();
+		$this->dispatch('/admin/profil/accueil/id_profil/3');
+	}
+
+
+	/** @test */
+	public function moduleNewsShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="NEWS"]');
+	}
+
+
+	/** @test */
+	public function moduleRechSimpleShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="RECH_SIMPLE"]');
+	}
+
+
+	/** @test */
+	public function moduleLoginShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="LOGIN"]');
+	}
+}
+
 ?>

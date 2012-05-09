@@ -49,7 +49,16 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends AbstractC
 															 '2' => array('division' => '1',
 																						'type_module' => 'NEWS',
 																						'preferences' => array('titre' => 'Concerts',
-																																	 'rss_avis' => 0)))); 
+																																	 'rss_avis' => 0)),
+
+															 '3' => array('division' => '1',
+																						'type_module' => 'LOGIN',
+																						'preferences' => array('titre' => 'Se connecter',
+																																	 'identifiant' => 'identifiant',
+																																	 'identifiant_exemple' => 'numero carte',
+																																	 'mot_de_passe' => 'mot de passe',
+																																	 'mot_de_passe_exemple' => 'zork',
+																																	 'lien_connexion' => 'go')))); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
 			->setBrowser('telephone')
@@ -193,6 +202,49 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 	/** @test */
 	function formRechercheShouldContainsUrlEmbed() {
 		$this->assertXPath('//form[contains(@action, "embed/recherche/lancer")]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldBeVisible() {
+		$this->assertXPathContentContains('//h2', 'Se connecter');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveInputForUsername() {
+		$this->assertXPath('//input[@name="username"][@placeholder="numero carte"]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldLabelForUsername() {
+		$this->assertXPathContentContains('//label[@for="username"]', 'identifiant');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveInputForPassword() {
+		$this->assertXPath('//input[@name="password"][@type="password"][@placeholder="zork"]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldLabelForPassword() {
+		$this->assertXPathContentContains('//label[@for="password"]', 'mot de passe');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveButtonForConnect() {
+		$this->assertXPath('//input[@type="submit"][@value="go"]');
+	}
+
+	
+	/** @test */
+	public function formShouldNotHaveDDAndDTTag() {
+		$this->assertNotXPath('//dd');
+		$this->assertNotXPath('//dt');
 	}
 }
 

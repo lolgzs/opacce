@@ -20,6 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
+
 class AccueilControllerBoite2ColTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();

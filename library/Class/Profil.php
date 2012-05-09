@@ -742,6 +742,15 @@ class Class_Profil extends Storm_Model_Abstract {
 		return 'telephone' == $this->getBrowser();
 	}
 
+
+	/**
+	 * @return Class_Profil
+	 */
+	public function beTelephone() {
+		return $this->setBrowser('telephone');
+	}
+
+
 	/**
 	 * @return array
 	 */

@@ -258,3 +258,10 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 		color: #FFF;
 
 }
+
+
+
+#boite_login form, #boite_login dl {
+		margin: 0px;
+		padding: 2px 0px;
+}

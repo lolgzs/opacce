@@ -66,10 +66,6 @@ class Admin_AccueilController extends Zend_Controller_Action {
 	}
 
 
-
-	public function indexAction()	{}
-
-
 	public function calendrierAction()	{
 		$this->_simpleAction();
 	}
