@@ -240,7 +240,7 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 		$this->assertXPath('//input[@type="submit"][@value="go"]');
 	}
 
-	
+
 	/** @test */
 	public function formShouldNotHaveDDAndDTTag() {
 		$this->assertNotXPath('//dd');

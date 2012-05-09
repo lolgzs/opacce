@@ -7,6 +7,7 @@ echo $this->newForm()
 ->addElement('password', 'password', array('label' => $this->preferences['mot_de_passe'],
 																					 'placeholder' => $this->preferences['mot_de_passe_exemple'],
 																					 'size' => 15))
-->addElement('submit', 'login', array('label' => $this->preferences['lien_connexion']))
-->setElementDecorators(array('ViewHelper'));
+->setElementDecorators(array('ViewHelper', 'Label'))
+->addElement('submit', 'login', array('label' => $this->preferences['lien_connexion'],
+																			'decorators' => array('ViewHelper')));
 ?>
