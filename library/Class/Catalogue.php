@@ -277,8 +277,7 @@ class Class_Catalogue extends Storm_Model_Abstract {
 //------------------------------------------------------------------------------
 // Rend les notices selon les preferences (kiosques)
 //------------------------------------------------------------------------------
-	public function getNoticesByPreferences($preferences,$cache_vignette=false)
-	{
+	public function getNoticesByPreferences($preferences,$cache_vignette=false)	{
 		//Instanciations
 		$class_notice = new Class_Notice();
 		$class_img = new Class_WebService_Vignette();
@@ -339,14 +338,17 @@ class Class_Catalogue extends Storm_Model_Abstract {
 			return $this->getRequetesPanier($preferences);
 
 		// Lire les proprietes du catalogue
-		$catalogue = $this->getLoader()->find($preferences['id_catalogue']);
-		$conditions = array($this->selectionFacettesForCatalogueRequestByPreferences($preferences)
-												. $this->getLoader()->facetsClauseFor($catalogue));
+		$against = $this->selectionFacettesForCatalogueRequestByPreferences($preferences);
+		if ($catalogue = $this->getLoader()->find($preferences['id_catalogue'])) {
+			$conditions = array($against . $this->getLoader()->facetsClauseFor($catalogue));
 
-		$conditions []= $this->getLoader()->docTypeClauseFor($catalogue);
-		$conditions []= $this->getLoader()->yearClauseFor($catalogue);
-		$conditions []= $this->getLoader()->coteClauseFor($catalogue);
-		$conditions []= $this->getLoader()->nouveauteClauseFor($catalogue);
+			$conditions []= $this->getLoader()->docTypeClauseFor($catalogue);
+			$conditions []= $this->getLoader()->yearClauseFor($catalogue);
+			$conditions []= $this->getLoader()->coteClauseFor($catalogue);
+			$conditions []= $this->getLoader()->nouveauteClauseFor($catalogue);
+		} else {
+			$conditions = array($against);
+		}
 
 		// Notices avec vignettes uniquement
 		if (isset($preferences['only_img']) && ($preferences["only_img"] == 1)) 
