@@ -50,6 +50,7 @@ body.main
 
 
 /* tags de base */
+table, td {padding:0px; margin:0px}
 img{border:none;}
 a{color:rgb(76,86,108); text-decoration:none;}
 a:hover{color:rgb(76,86,108); text-decoration:none;}

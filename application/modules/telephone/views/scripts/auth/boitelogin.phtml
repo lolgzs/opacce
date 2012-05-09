@@ -16,7 +16,8 @@ if($user = Class_Users::getLoader()->getIdentity()) {
 																	 $user->getNbReservations());
 
 } else {
-	echo $this->newForm(array('autocomplete' => 'off'))
+	echo $this->newForm(array('autocomplete' => 'off',
+														'decorators' => array('FormElements', 'Form')))
 		->setAction($this->url(array('controller' => 'auth', 
 																 'action' => 'boitelogin', 
 																 'id_module' => $this->id_module)))

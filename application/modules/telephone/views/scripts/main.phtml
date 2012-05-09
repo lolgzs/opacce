@@ -1,7 +1,7 @@
 <?php echo $this->render('head.phtml'); ?>
 
 <body class="main" <?php echo $this->bodyParam; ?>>
-	<img src="<?php  echo $this->profil->getHeaderImg(); ?>" width="100%">
+	<img src="<?php  echo $this->profil->getHeaderImg(); ?>" style="width:100%" alt="<?php echo $this->_('Bannière') ?>">
 			<div class="main">
 				<?php 
 					echo $this->render($this->actionScript);

@@ -29,27 +29,29 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 //--------------------------------------------------------------------- 
 	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
 		$html='<div class="toolbar">';
-		$html.='<table cellspacing="0" cellpadding="0" width="100%"><tr>';
+		$html.='<table style="width:100%"><tr>';
 		$html.='<td class="gauche">';
 		
 		if(is_array($url_retour))
 			$url_retour = $this->view->url($url_retour);
 
 		if($url_retour) 
-			$html.=sprintf('<a href="%s"><img src="%s"></a>',
+			$html.=sprintf('<a href="%s"><img src="%s" alt="%s"></a>',
 										 $url_retour,
-										 URL_IMG.'systeme/bouton_retour.png');  
+										 URL_IMG.'systeme/bouton_retour.png',
+										 $this->view->_('Retour'));  
 		else 
 			$html.="&nbsp;";
 
 		$html.='</td>';
-		$html.='<td align="center" width="50%"><h1>'.$titre.'</h1></td>';
+		$html.='<td style="text-align:center; width:50%"><h1>'.$titre.'</h1></td>';
 		$html.='<td class="droite">';
 
 		if($accueil) 
-			$html.=sprintf('<a href="%s"><img src="%s"></a>',
+			$html.=sprintf('<a href="%s"><img src="%s" alt="%s"></a>',
 										 $this->view->url(array(), null, true),
-										 URL_IMG.'systeme/bouton_accueil.png'); 
+										 URL_IMG.'systeme/bouton_accueil.png',
+										 $this->view->_('Accueil')); 
 		else 
 			$html.="&nbsp;";
 		$html.='</td>';

@@ -35,10 +35,11 @@ class ZendAfi_View_Helper_Telephone_News extends ZendAfi_View_Helper_Accueil_New
 		foreach($articles as $article) {
 			$fallback_img = URL_ADMIN_IMG.'supports/vignette_vide.gif';
 			$vignette_url = $article->getFirstImageURL();
-			$html.= sprintf("<li class='lien'><a href='%s'><img src='%s' onerror='this.src=\"%s\"'/><span>%s</span></a></li>",
+			$html.= sprintf("<li class='lien'><a href='%s'><img src='%s' onerror='this.src=\"%s\"' alt='%s'/><span>%s</span></a></li>",
 											$this->view->url($article->getUrl()),
-											$vignette_url,
+											$vignette_url ? $vignette_url : $fallback_img,
 											$fallback_img,
+											htmlentities($article->getTitre(), ENT_QUOTES),
 											$article->getTitre());
 		}
 

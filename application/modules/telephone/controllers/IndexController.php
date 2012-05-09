@@ -25,8 +25,7 @@ class Telephone_IndexController extends Zend_Controller_Action
 //-------------------------------------------------------------------------------
 // PAGE D'ACCUEIL
 //-------------------------------------------------------------------------------
-	function indexAction()
-	{
+	function indexAction() {
 
 	}
 	
