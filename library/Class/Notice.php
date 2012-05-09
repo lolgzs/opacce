@@ -85,9 +85,14 @@ class Class_Notice extends Storm_Model_Abstract
 		$_avis,
 		$_moderated_avis,
 		$_resume,
-		$_matieres;
+		$_matieres,
+		$_editeur,
+		$_langueCodes;
 
-	protected $_default_attribute_values = array('type_doc' => 0);
+	protected $_default_attribute_values = array('type_doc' => 0,
+																							 'annee' => null,
+																							 'isbn' => null,
+																							 'ean' => null);
 
 
 	public static function getLoader()
@@ -791,10 +796,23 @@ class Class_Notice extends Storm_Model_Abstract
 // ----------------------------------------------------------------
 // EDITEUR
 // ----------------------------------------------------------------
-	public function getEditeur()
+	public function getEditeur() 
 	{
-		if (!$data = $this->get_subfield("210", "c")) return '';
-		return(trim($data[0]));
+		if ($this->_editeur)
+			return $this->_editeur;
+
+		if (!$data = $this->get_subfield("210", "c"))
+			return '';
+		return trim($data[0]);
+	}
+
+
+	/**
+	 * @category testing
+	 */
+	public function setEditeur($editeur) {
+		$this->_editeur = $editeur;
+		return $this;
 	}
 
 // ----------------------------------------------------------------
@@ -877,31 +895,49 @@ class Class_Notice extends Storm_Model_Abstract
 // ----------------------------------------------------------------
 	public function getLangues()
 	{
-		$langues = '';
+		$codes = $this->getLangueCodes();
+		if (0 == count($codes))
+			return '';
+		
+		$langues = array();
+		foreach ($codes as $code) {
+			if ($langue = Class_CodifLangue::getLoader()->find($code))
+				$langues[] = ($langue->getLibelle()) ? $langue->getLibelle() : $code;
+		}
+
+		return implode(', ', $langues);
+	}
+
+
+	public function getLangueCodes() {
+		if ($this->_langueCodes) 
+			return $this->_langueCodes;
+			
+		$langues = array();
 		$data = $this->get_subfield(101);
-		foreach ($data as $items)
-		{
+		foreach ($data as $items) {
 			$sous_champs = $this->decoupe_bloc_champ($items);
-			foreach ($sous_champs as $item)
-			{
-				$langue = "";
-				if ($item["code"] == "a")
-				{
-					$code = strtolower($item["valeur"]);
-					$code = substr($code, 0, 3);
-					if ($code == "fra") $code = "fre";
-					if ($code != "und") $langue = $code;
-					if ($langue)
-					{
-						$libelle = fetchOne("select libelle from codif_langue where id_langue='$langue'");
-						if (!$libelle) $libelle = $langue;
-						if ($langues) $langues.=", ";
-						$langues.=$libelle;
-					}
-				}
+			foreach ($sous_champs as $item) {
+				if ('a' != $item['code'])
+					continue;
+				$code = substr(strtolower($item['valeur']), 0, 3);
+				if ('und' == $code)
+					continue;
+				if ('fra' == $code) 
+					$code = 'fre';
+				$langues[] = $code;
 			}
 		}
 		return $langues;
+	}
+
+
+	/**
+	 * @category testing
+	 */
+	public function setLangueCodes($codes) {
+		$this->_langueCodes = $codes;
+		return $this;
 	}
 
 // ----------------------------------------------------------------
@@ -1034,6 +1070,14 @@ class Class_Notice extends Storm_Model_Abstract
 			$visitor->visitMatiere($matiere);
 		$visitor->visitResume($this->getResume());
 		$visitor->visitDateMaj($this->getDateMaj());
+		$visitor->visitAnnee($this->getAnnee());
+		$visitor->visitEditeur($this->getEditeur());
+		$visitor->visitLangues($this->getLangueCodes());
+		$visitor->visitTypeDoc($this->getTypeDoc());
+		if ($this->hasVignette())
+			$visitor->visitVignette($this->getUrlVignette());
+		$visitor->visitIsbn($this->getIsbn());
+		$visitor->visitEan($this->getEan());
 	}
 }
 

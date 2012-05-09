@@ -30,6 +30,10 @@ class DecodageUnimarcDVDLaJeuneFilleTest extends PHPUnit_Framework_TestCase {
 			->expects($this->any())
 			->method('fetchOne');
 
+		Class_CodifLangue::getLoader()
+			->newInstanceWithId('bam')
+			->setLibelle('');
+
 		$this->dvd_jeune_fille = Class_Notice::getLoader()
 			->newFromRow(array('id_notice' => 3,
 												 'unimarc' => "01328ngm0 2200265   450 0010007000001000041000071010013000481020007000611150025000682000071000932100022001642150053001863000035002393000045002743300454003193450027007735100018008006060027008186060039008457000042008847020043009267020033009697020032010028010028010342247456  a20021213i20041975u  y0frey0103    ba0 abamjfre  aFR  ac086baz|zba    zz  c1 aLa jeune fillebDVDdDen MusofSouleymane Cisse, réal., scénario  cPathédcop. 2004  a1 DVD vidéo monoface zone 2 (1 h 26 min)ccoul.  aDate de sortie du film : 1975.  aFilm en bambara sous-titré en français  aSékou est renvoyé de l'usine parce qu'il a osé demander une augmentation. Chômeur, il sort avec Ténin, une jeune fille muette ; il ignore qu'elle est la fille de son ancien patron. Ténin, qui sera violée par Sékou lors d'une sortie entre jeunes, se retrouve enceinte et subit la colère de ses parents. Elle se trouve alors confrontée brutalement à la morale de sa famille et à la lâcheté de Sékou, qui refuse de reconnaiîre l'enfant.  b3388334509824d14.00 ?1 aDen Musozbam| 31070135aCinémayMali| 32243367aCinéma30076549yAfrique 131070144aCissébSouleymane43704690 132247457aCoulibalibDounamba Dani4590 132247458aDiabatebFanta4590 132247459aDiarrabOumou4590 0aFRbBNc20011120gAFNOR"));
@@ -44,7 +48,6 @@ class DecodageUnimarcDVDLaJeuneFilleTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains("Date de sortie du film : 1975.", 
 													$this->dvd_jeune_fille->getNotes());
 	}
-
 
 	public function testNotesContainsFilmEnBambara() {
 		$this->assertContains("Film en bambara sous-titré en français",
@@ -132,6 +135,10 @@ class DecodageUnimarcLittleSenegalTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->little_senegal = new Class_Notice();
 		$this->little_senegal->setUnimarc("01494ngm0 2200337   450 0010007000000710012000071000041000191010038000601020007000981150042001052000052001472100035001992150053002343000109002873000071003963050034004673300201005013450027007026060031007296060036007606060043007966060039008397000048008787020043009267020031009697020038010007020035010387020033010738010023011068010027011292371272|0aEDV1441  a20070320i20042001b-ey0frey0103    ba0 afreaengcfrecengjfrejengjger  aFR  ac093baz|zba||||zz||cb|||||||||||||||1 aLittle SénégalbDVDfRachid Bouchareb, réal.  cBlaq outcParamountdcop. 2004  a1 DVD vidéo monoface zone 2 (1 h 33 min)cCoul.  aVersion originale franco-anglaise, Version française, avec sous-titrage en français, anglais, allemand  aBonus : court-métrage \"Peut-être la mer\" (14 min), bande-annonce  aDate de sortie du film : 2001  aUn vieil Africain, guide à la maison des esclaves de l'île de Gorée, part à la rencontre des descendants de ses ancêtres à Harlem... Quête identitaire et exploration d'un fossé culturel...  b3333973136023d44,73 ?| 31047449aCinémayAlgérie| 32243366aCinémayFrancez1990-| 32163808aNoirs américainsxAu cinéma| 32243367aCinéma30076549yAfrique 132371273aBoucharebbRachidf1953-43704690 132371260aKouyatébSotiguif1936-4590 132371274aHopebSharon4590 131073585aZembRoschdyf1965-4590 132371277aLorellebOlivier4690 131089718aBoutellabSafy4230 0aFRbADAVc20070320 0aFRbBM Melunc20070510");
+		Class_CodifLangue::getLoader()
+			->newInstanceWithId('fre')->setLibelle('');
+		Class_CodifLangue::getLoader()
+			->newInstanceWithId('eng')->setLibelle('');
 	}
 
 

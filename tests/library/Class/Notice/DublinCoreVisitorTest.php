@@ -44,8 +44,13 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 			->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
 			->setAuteurPrincipal('Joanne Kathleen Rowling')
 			->setDateMaj('2012-04-23')
+			->setAnnee('2012')
 			->setResume($this->_summary)
-			->setMatieres(array('Potions', 'Etude des runes'));
+			->setMatieres(array('Potions', 'Etude des runes'))
+			->setEditeur('Bloomsbury Publishing')
+			->setLangueCodes(array('fre', 'eng'))
+			->setIsbn('978-2-07-054127-0')
+			->setEan('');
 		$this->_dublin_core_visitor->visit($potter);
 	}
 
@@ -84,10 +89,10 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 
 
 	/** @test */
-	public function dateShouldBeAprilTwentythird2012() {
+	public function dateShouldBe2012() {
 		$this->_xpath->assertXpathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:date',
-																							'2012-04-23');
+																							'2012');
 	}
 
 
@@ -120,16 +125,69 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 		$this->_xpath->assertXpath($this->_dublin_core_visitor->xml(),
 															 '//oai_dc:dc');
 	}
+
+
+	/** @test */
+	public function publisherShouldBeBloomsbury() {
+		$this->_xpath->assertXpathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:publisher',
+																							'Bloomsbury Publishing');
+	}
+
+
+	/** @test */
+	public function shouldHaveTwoLanguages() {
+		$this->_xpath->assertXpathCount($this->_dublin_core_visitor->xml(),
+																		'//oai_dc:dc/dc:language', 2);
+	}
+
+
+	/** @test */
+	public function shouldHaveFrenchLanguage() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:language',
+																							'fre');
+	}
+
+
+	/** @test */
+	public function shouldHaveEnglishLanguage() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:language',
+																							'eng');
+	}
+
+
+	/** @test */
+	public function shouldHaveIdentifierWithIsbn() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:identifier',
+																							'978-2-07-054127-0');
+	}
+
 }
 
 
 class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase { 
 	public function setUp() {
 		parent::setUp();
+
 		$souvigny = Class_Notice::getLoader()
 			->newInstanceWithId(5)
 			->setClefAlpha('souvigny-bible-11eme')
-			->setDateMaj('2012-04-23');
+			->setDateMaj('2012-04-23')
+			->setUrlVignette('http://server.fr/vignette.png')
+			->setIsbn('')
+			->setEan('4719-5120-0288-9')
+			->beLivreNumerique();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_TypeDoc')
+			->whenCalled('find')
+			->with(Class_TypeDoc::LIVRE_NUM)
+			->answers(Class_TypeDoc::getLoader()->newInstanceWithId(Class_TypeDoc::LIVRE_NUM)
+								->setLabel('livre numerise'));
+
+
 		$oldServerName = $_SERVER['SERVER_NAME'];
 		$_SERVER['SERVER_NAME'] = 'moulins.fr';
 		$this->_dublin_core_visitor->visit($souvigny);
@@ -144,7 +202,52 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 																							sprintf('http://moulins.fr%s/recherche/notice/souvigny-bible-11eme',
 																											BASE_URL));
 	}
-	
-}
 
+
+	/** @test */
+	public function shouldNotHaveDate() {
+		$this->_xpath->assertNotXPath($this->_dublin_core_visitor->xml(),
+																	'//oai_dc:dc/dc:date');
+	}
+
+
+	/** @test */
+	public function shouldNotHavePublisher() {
+		$this->_xpath->assertNotXPath($this->_dublin_core_visitor->xml(),
+																	'//oai_dc:dc/dc:publisher');
+	}
+
+
+	/** @test */
+	public function shouldHaveJpegFormat() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:format',
+																							'image/jpeg');
+	}
+
+
+	/** @test */
+	public function shouldHaveTypeLivreNumerise() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:type',
+																							'livre numerise');
+	}
+
+
+	/** @test */
+	public function shouldHaveRelationWithThumbnail() {
+			$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																								'//oai_dc:dc/dc:relation',
+																								'vignette : http://server.fr/vignette.png');
+	}
+
+
+	/** @test */
+	public function shouldHaveIdentifierWithEan() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:identifier',
+																							'4719-5120-0288-9');
+	}
+
+}
 ?>

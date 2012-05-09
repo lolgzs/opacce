@@ -53,7 +53,7 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visitTitre($titre) {
-		$this->_xml .= $this->_builder->title($this->cdata($titre));
+		$this->_xml .= $this->_builder->title($this->cdata(strip_tags($titre)));
 	}
 
 
@@ -63,18 +63,73 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visitResume($resume) {
-		$this->_xml .= $this->_builder->description($this->cdata($resume));
+		if ($resume) 
+			$this->_xml .= $this->_builder->description($this->cdata($resume));
 	}
 
 
 	public function visitDateMaj($dateMaj) {
 		$this->_date = substr($dateMaj, 0, 10);
-		$this->_xml .= $this->_builder->date($this->_date);
+	}
+
+
+	public function visitAnnee($annee) {
+		if ($annee)
+			$this->_xml .= $this->_builder->date($annee);
 	}
 
 
 	public function visitMatiere($matiere) {
 		$this->_xml .= $this->_builder->subject($this->cdata($matiere));
+	}
+
+
+	public function visitEditeur($editeur) {
+		if ($editeur)
+			$this->_xml .= $this->_builder->publisher($this->cdata($editeur));
+	}
+
+
+	public function visitLangues($langues) {
+		if (!is_array($langues)) 
+			return;
+
+		foreach ($langues as $langue)
+			$this->_xml .= $this->_builder->language($langue);
+	}
+
+
+	public function visitTypeDoc($id) {
+		if (!$id)
+			return;
+
+		if ($type = Class_TypeDoc::getLoader()->find($id))
+			$this->_xml .= $this->_builder->type($this->cdata($type->getLabel()));
+
+		if (in_array($id, array(Class_TypeDoc::LIVRE_NUM, Class_TypeDoc::DIAPORAMA))) 
+			$this->_xml .= $this->_builder->format('image/jpeg');
+	}
+
+
+	public function visitVignette($url) {
+		if (!$url or 'NO' == $url )
+			return;
+
+		$this->_xml .= $this->_builder->relation($this->cdata('vignette : ' . $url));
+	}
+
+
+	public function visitIsbn($isbn) {
+		if (!$isbn)
+			return;
+		$this->_xml .= $this->_builder->identifier($isbn);
+	}
+
+
+	public function visitEan($ean) {
+		if (!$ean)
+			return;
+		$this->_xml .= $this->_builder->identifier($ean);
 	}
 
 
