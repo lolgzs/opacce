@@ -183,10 +183,17 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 
 
 	public function setUp() {
+		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance(2, 'mario')
+			->empruntsAddAll(array(Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()))
+			->reservationsAddAll(array());
+
 		Class_Users::getLoader()
 			->newInstanceWithId(54321)
 			->setNom('Bros')
-			->setPrenom('Mario');
+			->setPrenom('Mario')
+			->setIdabon(23)
+			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_NANOOK,
+													 'fiche' => $emprunteur));
 			
 		parent::setUp();
 		$this->dispatch('/');
@@ -206,8 +213,20 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 
 
 	/** @test */
+	public function boiteLoginShouldDisplayLinkToFicheAbonne() {
+		$this->assertXPath('//a[contains(@href, "abonne/fiche")]');
+	}
+
+
+	/** @test */
 	public function boiteLoginShouldDisplayLinkToLogout() {
 		$this->assertXPath('//a[contains(@href, "auth/logout")]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldDisplayPrets() {
+		$this->assertXPath('//a[contains(@href, "abonne/prets")]');
 	}
 }
 

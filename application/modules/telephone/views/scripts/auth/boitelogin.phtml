@@ -1,13 +1,20 @@
 <?php
 
 if($user = Class_Users::getLoader()->getIdentity()) {
-	echo sprintf("<div class='welcome'> %s %s %s </div>", 
-							 $this->_("Bienvenue"), 
-							 $user->getNomAff(),
+	echo sprintf("<div class='welcome'> %s %s </div>", 
+							 $this->tagAnchor(array('controller' => 'abonne',
+																			'action' => 'fiche'),
+																$this->_("Bienvenue ").$user->getNomAff()), 
 							 $this->tagAnchor(array('controller' => 'auth', 'action' => 'logout'),
 																$this->tagImg(URL_IMG.'systeme/exit.png',
 																							array('alt' => $this->_('Déconnexion'))))
 							 );	
+
+	if ($user->hasIdabon())
+			echo $this->ficheAbonneLinks($user->getNbEmprunts(), 
+																	 $user->getNbEmpruntsRetard(), 
+																	 $user->getNbReservations());
+
 } else {
 	echo $this->newForm(array('autocomplete' => 'off'))
 		->setAction($this->url(array('controller' => 'auth', 

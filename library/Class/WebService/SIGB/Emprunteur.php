@@ -90,6 +90,7 @@ class Class_WebService_SIGB_Emprunteur {
 		return $this;
 	}
 
+
 	/**
 	 * @param string $name
 	 * @return Class_WebService_SIGB_Emprunteur
@@ -98,6 +99,7 @@ class Class_WebService_SIGB_Emprunteur {
 		$this->_name = $name;
 		return $this;
 	}
+
 
 	/**
 	 * @param array $emprunts
@@ -113,6 +115,7 @@ class Class_WebService_SIGB_Emprunteur {
 		$this->sortByDateRetour($this->_emprunts);
 		return $this;
 	}
+
 
 	/**
 	 * @param Class_WebService_SIGB_Emprunt $emprunt

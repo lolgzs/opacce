@@ -1,0 +1,22 @@
+<?php 
+echo $this->toolbar($this->_('Réservations'), 
+										$this->url(array('controller' => 'abonne',
+																		 'action' => 'fiche'), 
+															 null, 
+															 true),
+										false); 
+?>
+
+<div class="liste">
+<ul>
+
+<?php 
+
+foreach($this->fiche["fiche"]->getReservations() as $reservation) {
+	echo sprintf('<li>%s</li>',
+							 $reservation->getTitre());
+}
+
+?>
+
+</ul>
