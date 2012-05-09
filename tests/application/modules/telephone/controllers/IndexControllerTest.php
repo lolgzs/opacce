@@ -79,17 +79,13 @@ class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTel
 	}
 
 
-	/**
-	 * @test
-	 */
+	/** @test	 */
   public function moduleShouldBeTelephone() {
 		$this->assertModule('telephone');
 	}
 
 
-	/**
-	 * @test
-	 */
+	/** @test	 */
 	public function shouldBeDisplayedInIPhoneSimulation() {
 		$this->assertQuery('div#iphone_container');
 	}
@@ -206,6 +202,12 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 	/** @test */
 	public function boiteLoginShouldDisplayBienvenuMario() {
 		$this->assertXPathContentContains('//div', 'Bienvenue Mario');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldDisplayLinkToLogout() {
+		$this->assertXPath('//a[contains(@href, "auth/logout")]');
 	}
 }
 

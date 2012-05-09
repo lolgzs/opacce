@@ -94,8 +94,8 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 
 .boite_saisie form{
    background: #FFFFFF url(../images/boites/gradient_gris.png) repeat-x scroll bottom;
-    padding-bottom:10px;
-    padding-top:10px;
+   padding-bottom:10px;
+   padding-top:10px;
 }
 
 .boite_saisie h2
@@ -264,4 +264,15 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 #boite_login form, #boite_login dl {
 		margin: 0px;
 		padding: 2px 0px;
+}
+
+
+#boite_login .welcome img {
+		float: right;
+}
+
+
+div.clear {
+		height: 0px;
+		clear: both;
 }

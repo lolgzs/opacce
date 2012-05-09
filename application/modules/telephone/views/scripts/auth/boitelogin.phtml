@@ -1,7 +1,13 @@
 <?php
 
 if($user = Class_Users::getLoader()->getIdentity()) {
-	echo sprintf("<div>%s %s </div>", $this->_("Bienvenue"), $user->getNomAff());	
+	echo sprintf("<div class='welcome'> %s %s %s </div>", 
+							 $this->_("Bienvenue"), 
+							 $user->getNomAff(),
+							 $this->tagAnchor(array('controller' => 'auth', 'action' => 'logout'),
+																$this->tagImg(URL_IMG.'systeme/exit.png',
+																							array('alt' => $this->_('Déconnexion'))))
+							 );	
 } else {
 	echo $this->newForm(array('autocomplete' => 'off'))
 		->setAction($this->url(array('controller' => 'auth', 
@@ -17,4 +23,7 @@ if($user = Class_Users::getLoader()->getIdentity()) {
 		->addElement('submit', 'login', array('label' => $this->preferences['lien_connexion'],
 																					'decorators' => array('ViewHelper')));
 }
+
 ?>
+
+<div class="clear"></div>
