@@ -61,13 +61,15 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends AbstractC
 																																	 'lien_connexion' => 'go')))); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
-			->setBrowser('telephone')
+			->beTelephone()
 			->setTitreSite('Smartphone')
 			->setLibelle(null)
 			->setCfgAccueil($cfg_accueil)
 			->setHauteurBanniere(150);
 	}
 }
+
+
 
 
 class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTelephoneWithModulesTest {
@@ -121,7 +123,92 @@ class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTel
 	function vignetteTruffazShouldBeFirstImage() {
 		$this->assertXPath('//img[@src="truffaz.jpg"]');
 	}
+
+
+	/** @test */
+	public function formLoginShouldBeVisible() {
+		$this->assertXPath('//form[contains(@action, "auth/boitelogin")][@method="post"]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldBeVisible() {
+		$this->assertXPathContentContains('//h2', 'Se connecter');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveInputForUsername() {
+		$this->assertXPath('//input[@name="username"][@placeholder="numero carte"]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldLabelForUsername() {
+		$this->assertXPathContentContains('//label[@for="username"]', 'identifiant');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveInputForPassword() {
+		$this->assertXPath('//input[@name="password"][@type="password"][@placeholder="zork"]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldLabelForPassword() {
+		$this->assertXPathContentContains('//label[@for="password"]', 'mot de passe');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldHaveButtonForConnect() {
+		$this->assertXPath('//input[@type="submit"][@value="go"]');
+	}
+
+
+	/** @test */
+	public function formShouldNotHaveDDAndDTTag() {
+		$this->assertNotXPath('//dd');
+		$this->assertNotXPath('//dt');
+	}
 }
+
+
+
+
+class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	protected function _loginHook($account) {
+		$account->ROLE = "abonne_sigb";
+		$account->ROLE_LEVEL = 2;
+		$account->ID_USER = 54321;
+		$account->PSEUDO = "mario";
+	}
+
+
+	public function setUp() {
+		Class_Users::getLoader()
+			->newInstanceWithId(54321)
+			->setNom('Bros')
+			->setPrenom('Mario');
+			
+		parent::setUp();
+		$this->dispatch('/');
+	}
+
+
+	/** @test */
+	public function formLoginShouldNotBeVisible() {
+		$this->assertNotXPath('//form[contains(@action, "boitelogin")]');
+	}
+
+
+	/** @test */
+	public function boiteLoginShouldDisplayBienvenuMario() {
+		$this->assertXPathContentContains('//div', 'Bienvenue Mario');
+	}
+}
+
 
 
 
@@ -202,49 +289,6 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 	/** @test */
 	function formRechercheShouldContainsUrlEmbed() {
 		$this->assertXPath('//form[contains(@action, "embed/recherche/lancer")]');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldBeVisible() {
-		$this->assertXPathContentContains('//h2', 'Se connecter');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldHaveInputForUsername() {
-		$this->assertXPath('//input[@name="username"][@placeholder="numero carte"]');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldLabelForUsername() {
-		$this->assertXPathContentContains('//label[@for="username"]', 'identifiant');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldHaveInputForPassword() {
-		$this->assertXPath('//input[@name="password"][@type="password"][@placeholder="zork"]');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldLabelForPassword() {
-		$this->assertXPathContentContains('//label[@for="password"]', 'mot de passe');
-	}
-
-
-	/** @test */
-	public function boiteLoginShouldHaveButtonForConnect() {
-		$this->assertXPath('//input[@type="submit"][@value="go"]');
-	}
-
-
-	/** @test */
-	public function formShouldNotHaveDDAndDTTag() {
-		$this->assertNotXPath('//dd');
-		$this->assertNotXPath('//dt');
 	}
 }
 
