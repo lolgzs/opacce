@@ -199,7 +199,7 @@ class Class_File_Mime {
 		'avi'		=> 'video/x-msvideo',
 		'mpv'		=> 'video/matroska',
 
-		'epub' => 'application/epub+zip'
+		'epub' => 'application/octet-stream'
 	);
 
 	/**

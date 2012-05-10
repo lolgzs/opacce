@@ -241,7 +241,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$parts = pathinfo($filepath);
 
 		$response->clearAllHeaders();
-		$response->setHeader('Content-Type', $mimeType . '; name="' . $parts['filename'] . '"', true);
+		$response->setHeader('Content-Type', $mimeType . '; name="' . $parts['basename'] . '"', true);
 		$response->setHeader('Content-Transfer-Encoding', 'binary', true);
 		$response->setHeader('Content-Length', $fileInfos['size'], true);
 		$response->setHeader('Expires', '0');
@@ -249,7 +249,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$response->setHeader('Pragma', 'no-cache');
 
 		if ($as_attachment)
-			$response->setHeader('Content-Disposition', 'attachment; filename="' . $parts['filename'] . '"', true);
+			$response->setHeader('Content-Disposition', 'attachment; filename="' . $parts['basename'] . '"', true);
 
 		$response->sendHeaders();
 
