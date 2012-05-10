@@ -278,10 +278,26 @@ class Class_Catalogue extends Storm_Model_Abstract {
 // Rend les notices selon les preferences (kiosques)
 //------------------------------------------------------------------------------
 	public function getNoticesByPreferences($preferences,$cache_vignette=false)	{
-		//Instanciations
-		$class_notice = new Class_Notice();
-		$class_img = new Class_WebService_Vignette();
-		
+		$cache_key = md5(serialize($preferences).$cache_vignette);
+		$cache = Zend_Registry::get('cache');
+		if ($cache->test($cache_key)) {
+			$notices = unserialize($cache->load($cache_key));
+		} else {
+			$notices = $this->_fetchAllNoticesByPreferences($preferences, $cache_vignette);			
+			$cache->save(serialize($notices), $cache_key);
+		}
+
+		// Tirage aleatoire
+		if($preferences["aleatoire"]==1)
+		{
+			shuffle($notices);
+			$notices = array_slice ($notices, 0, $preferences["nb_notices"]);   
+		}
+		return $notices;
+	}
+
+
+	public function _fetchAllNoticesByPreferences($preferences, $cache_vignette) {
 		// Lancer la requete
 		$requetes=$this->getRequetes($preferences);
 		if (!array_key_exists("req_liste", $requetes))
@@ -294,13 +310,17 @@ class Class_Catalogue extends Storm_Model_Abstract {
 		$catalogue=fetchAll($req_liste);
 		if (!$catalogue) 
 			return array();
-
+		
+		//Instanciations
+		$class_notice = new Class_Notice();
+		$class_img = new Class_WebService_Vignette();
+		
+		$notices = array();
 		// Formatter les notices
-		foreach($catalogue as $notice)
-		{
+		foreach($catalogue as $notice)	{
 			$enreg=$class_notice->getNotice($notice["id_notice"],'TA');
-			if($cache_vignette)
-			{
+			$vignette = '';
+			if ($cache_vignette)	{
 				if($cache_vignette=="url") $mode=false; else $mode=true;
 				$vignette=$class_img->getImage($enreg["id_notice"],$mode);
 			}
@@ -319,15 +339,10 @@ class Class_Catalogue extends Storm_Model_Abstract {
 											 "clef_oeuvre" => $notice["clef_oeuvre"]);
 			}
 		}
-		
-		// Tirage aleatoire
-		if($preferences["aleatoire"]==1)
-		{
-			shuffle($notices);
-			$notices = array_slice ($notices, 0, $preferences["nb_notices"]);   
-		}
 		return $notices;
 	}
+
+
 
 //------------------------------------------------------------------------------
 // Rend les notices selon les preferences

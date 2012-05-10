@@ -382,4 +382,100 @@ class CatalogueTestOAISpec extends ModelTestCase {
 	}
 }
 
+
+
+
+class CatalogueTestGetNoticesByPreferences extends ModelTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->old_cache = Zend_Registry::get('cache');
+		$this->mock_cache = Storm_Test_ObjectWrapper::mock();
+		Zend_Registry::set('cache', $this->mock_cache);
+		$this->mock_cache
+			->whenCalled('save')
+			->answers(true)
+			->whenCalled('test')
+			->answers(false);
+
+		$this->old_sql = Zend_Registry::get('sql');
+		$this->mock_sql = Storm_Test_ObjectWrapper::mock();
+		Zend_Registry::set('sql', $this->mock_sql);
+
+
+		$this->mock_sql
+			->whenCalled('fetchAll')
+			->with("select notices.id_notice, notices.editeur, notices.annee, notices.date_creation, notices.facettes, notices.clef_oeuvre from notices  order by alpha_titre  LIMIT 0,25",
+						 false)
+			->answers(array(array('id_notice' => 23,
+														'editeur' => 'dargaud',
+														'annee' => 1975,
+														'date_creation' => '2011-02-23',
+														'facettes' => '',
+														'clef_oeuvre' => 'JEUNE FILLE')))
+
+			->whenCalled('fetchEnreg')
+			->with("select type_doc,facettes,isbn,ean,annee,tome_alpha,unimarc from notices where id_notice=23",
+						 false)
+			->answers(array('type_doc' => 2,
+											'facettes' => 'T2',
+											'isbn' => '123456789',
+											'ean' => '',
+											'annee' => 1974,
+											'tome_alpha' => '',
+											'unimarc' => "01328ngm0 2200265   450 0010007000001000041000071010013000481020007000611150025000682000071000932100022001642150053001863000035002393000045002743300454003193450027007735100018008006060027008186060039008457000042008847020043009267020033009697020032010028010028010342247456  a20021213i20041975u  y0frey0103    ba0 abamjfre  aFR  ac086baz|zba    zz  c1 aLa jeune fillebDVDdDen MusofSouleymane Cisse, réal., scénario  cPathédcop. 2004  a1 DVD vidéo monoface zone 2 (1 h 26 min)ccoul.  aDate de sortie du film : 1975.  aFilm en bambara sous-titré en français  aSékou est renvoyé de l'usine parce qu'il a osé demander une augmentation. Chômeur, il sort avec Ténin, une jeune fille muette ; il ignore qu'elle est la fille de son ancien patron. Ténin, qui sera violée par Sékou lors d'une sortie entre jeunes, se retrouve enceinte et subit la colère de ses parents. Elle se trouve alors confrontée brutalement à la morale de sa famille et à la lâcheté de Sékou, qui refuse de reconnaiîre l'enfant.  b3388334509824d14.00 ?1 aDen Musozbam| 31070135aCinémayMali| 32243367aCinéma30076549yAfrique 131070144aCissébSouleymane43704690 132247457aCoulibalibDounamba Dani4590 132247458aDiabatebFanta4590 132247459aDiarrabOumou4590 0aFRbBNc20011120gAFNOR"))
+			->beStrict();
+
+
+		$this->_catalogue = Class_Catalogue::getLoader()->newInstanceWithId(666);
+		$this->_notices = $this->_catalogue->getNoticesByPreferences(array('id_catalogue' => 666,
+																																			 'aleatoire' => 1,
+																																			 'nb_analyse' => 25,
+																																			 'nb_notices' => 40));
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('sql', $this->old_sql);
+		Zend_Registry::set('cache', $this->old_cache);
+		
+		parent::tearDown();
+	}
+
+
+	/** @test */
+	public function firstNoticeIdShouldBe23() {
+		$this->assertEquals(23, 
+												$this->_notices[0]["id_notice"]);
+	}
+
+
+	/** @test */
+	public function saveInCacheShouldHaveBeenCalledWithSerializedNotices() {
+		$this->assertTrue($this->mock_cache->methodHasBeenCalled('save'));
+	}
+
+
+	/** @test */
+	public function getNoticesWithCachePresentShouldNotCallThem() {
+		$this->mock_cache 
+			->whenCalled('test')
+			->with('51f61478ed7c755ae2f6a15283526f65')
+			->answers(true)
+
+			->whenCalled('load')
+			->with('51f61478ed7c755ae2f6a15283526f65')
+			->answers(serialize(array('test')))
+
+			->beStrict();
+
+		$notices = $this->_catalogue->getNoticesByPreferences(array('id_catalogue' => 666,
+																																'aleatoire' => 1,
+																																'nb_analyse' => 25,
+																																'nb_notices' => 40));
+
+		$this->assertEquals(array('test'), $notices);
+	}
+}
+
 ?>
