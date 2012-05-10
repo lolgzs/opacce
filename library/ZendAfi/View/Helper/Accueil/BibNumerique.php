@@ -110,7 +110,7 @@ class ZendAfi_View_Helper_Accueil_BibNumerique extends ZendAfi_View_Helper_Accue
 			}
 		}
 
-		$this->contenu = '<div class="bib-numerique">' . $this->contenu . '</div>';
+		$this->contenu = '<div class="bib-numerique liste">' . $this->contenu . '</div>';
 		return $this;
 	}
 
@@ -141,7 +141,7 @@ class ZendAfi_View_Helper_Accueil_BibNumerique extends ZendAfi_View_Helper_Accue
 			$content .= '<ul>';
 			foreach ($categories as $categorie) {
 				$options = ($this->_isCurrentCategorie($categorie)) ? array('class' => 'selected') : array();
-				$content .= '<li>' 
+				$content .= '<li class="lien">' 
 					. $this->_getLinkedItemFor($categorie, 'view-categorie', $options)
 					. $this->_getAlbumsOf($categorie)
 					. '</li>';
