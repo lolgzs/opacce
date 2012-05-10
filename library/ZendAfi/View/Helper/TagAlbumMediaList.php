@@ -19,20 +19,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_RenderAlbum extends Zend_View_Helper_HtmlElement {
-	public function renderAlbum($album) {
-		if (!$album)
-			return '';
+class ZendAfi_View_Helper_TagAlbumMediaList extends Zend_View_Helper_HtmlElement {
+	public function tagAlbumMediaList($album) {
+		$html = '<ul>';
 
-		$content = '';
-		if ($album->isLivreNumerique())
-			Class_ScriptLoader::getInstance()->loadBooklet($album->getId(), '#resnum');
-		else if ($album->isDiaporama())
-			$content = $this->view->tagSlideshow($album);
-		else
-			$content = $this->view->tagAlbumMediaList($album);
+		$ressources = $album->getRessources();
+		foreach($ressources as $ressource) {
+			$html .= sprintf('<li>%s</li>',
+											 $this->view->tagAnchor(array('controller' => 'bib-numerique',
+																										'action' => 'download-resource',
+																										'id' => $ressource->getId()),
+																							$this->view->albumRessourceInfos($ressource)));
+		}
 		
-		return sprintf('<div id="resnum">%s</div>', $content); 
+		$html .= '</ul>';
+		return $html;
 	}
 }
 

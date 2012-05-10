@@ -28,6 +28,7 @@
 | Image SlideShow                     | LGPL                        |               | kiosques                          |                  | http://www.dhtmlgoodies.com/index.html?whichScript=image_slideshow                                                             |
 | FPDF                                | MIT like                    |               |                                   |                  | http://www.fpdf.org/                                                                                                           |
 | Nuvola icons                        | LGPL                        |               | icônes                            |                  | http://www.icon-king.com/projects/nuvola/                                                                                      |
-| JQuery PlaceHolder plugin           | MIT/GPL                     |               | compat IE                         |                  | https://github.com/mathiasbynens/jquery-placeholder                                                                                                                               |
+| JQuery PlaceHolder plugin           | MIT/GPL                     |               | compat IE                         |                  | https://github.com/mathiasbynens/jquery-placeholder                                                                            |
+| Monocle                             | MIT                         |               | lecture epub                      |                  | https://github.com/joseph/Monocle                                                                                                                               |
 
 

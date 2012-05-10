@@ -113,6 +113,7 @@ class Class_TypeDoc extends Storm_Model_Abstract {
   protected $_loader_class = 'TypeDocLoader';
 	const LIVRE_NUM = 100;
 	const DIAPORAMA = 101;
+	const EPUB = 102;
 
 
 	/**

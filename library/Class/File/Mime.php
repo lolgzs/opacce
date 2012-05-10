@@ -198,6 +198,8 @@ class Class_File_Mime {
 		'wvx'		=> 'video/x-ms-wvx',
 		'avi'		=> 'video/x-msvideo',
 		'mpv'		=> 'video/matroska',
+
+		'epub' => 'application/epub+zip'
 	);
 
 	/**

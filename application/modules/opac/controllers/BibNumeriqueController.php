@@ -219,7 +219,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 			exit;
 		}
 
-		echo $this->_renderFile($resource->getOriginalPath());
+		echo $this->_renderFile($resource->getOriginalPath(), $as_attachment);
 	}
 
 
@@ -237,7 +237,6 @@ class BibNumeriqueController extends Zend_Controller_Action {
 
 		// puis son type mime
 		$mimeType = Class_File_Mime::getType($ext);
-
 		$fileInfos = stat($filepath);
 		$parts = pathinfo($filepath);
 

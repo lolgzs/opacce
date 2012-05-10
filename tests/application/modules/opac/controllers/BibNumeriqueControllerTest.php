@@ -46,6 +46,7 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 		
 		$album = Class_Album::getLoader()
 			->newInstanceWithId(999)
+			->beDiaporama()
 			->setTitre('Premier volume')
 			->setDescription("On ne peut que reconnaitre le talent de l'artiste !")
 			->setCategorie(Class_AlbumCategorie::getLoader()
@@ -291,7 +292,7 @@ class BibNumeriqueControllerAlbumPremierVolumeWithoutPDFTestToJSON extends Abstr
 
 
 
-class BibNumeriqueControllerDownloadRessoucesTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+class BibNumeriqueControllerDownloadRessourcesTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	/** @test */
 	public function thumbnailIdOneShouldRenderThumbnail() {
 		$this->dispatch('/opac/bib-numerique/thumbnail/id/1');

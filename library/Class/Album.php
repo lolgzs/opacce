@@ -302,9 +302,26 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	/** @return boolean */
+	public function isDiaporama() {
+		return $this->getTypeDocId() == Class_TypeDoc::DIAPORAMA;
+	}
+
+
 	public function beLivreNumerique() {
 		return $this->setTypeDocId(Class_TypeDoc::LIVRE_NUM);
 	}
+
+
+	public function beDiaporama() {
+		return $this->setTypeDocId(Class_TypeDoc::DIAPORAMA);
+	}
+
+
+	public function beEPUB() {
+		return $this->setTypeDocId(Class_TypeDoc::EPUB);
+	}
+
 
 	/**
 	 * @param Zend_Controller_Request_Http $request
