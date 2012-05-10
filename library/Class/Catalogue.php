@@ -87,8 +87,8 @@ class CatalogueLoader extends Storm_Model_Loader {
 	 * @param $catalogue Class_Catalogue
 	 * @return string
 	 */
-	public function facetsClauseFor($catalogue) {
-		$against = $against_ou = '';
+	public function facetsClauseFor($catalogue, $against = '') {
+		$against_ou = '';
 		$facets = array('B' => $catalogue->getBibliotheque(),
 										'S' => $catalogue->getSection(),
 										'G' => $catalogue->getGenre(),
@@ -355,14 +355,14 @@ class Class_Catalogue extends Storm_Model_Abstract {
 		// Lire les proprietes du catalogue
 		$against = $this->selectionFacettesForCatalogueRequestByPreferences($preferences);
 		if ($catalogue = $this->getLoader()->find($preferences['id_catalogue'])) {
-			$conditions = array($against . $this->getLoader()->facetsClauseFor($catalogue));
+			$conditions = array($this->getLoader()->facetsClauseFor($catalogue, $against));
 
 			$conditions []= $this->getLoader()->docTypeClauseFor($catalogue);
 			$conditions []= $this->getLoader()->yearClauseFor($catalogue);
 			$conditions []= $this->getLoader()->coteClauseFor($catalogue);
 			$conditions []= $this->getLoader()->nouveauteClauseFor($catalogue);
 		} else {
-			$conditions = array($against);
+			$conditions = $against ? array("MATCH(facettes) AGAINST('".$against."' IN BOOLEAN MODE)") : array();
 		}
 
 		// Notices avec vignettes uniquement

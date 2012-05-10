@@ -36,7 +36,7 @@ class CatalogueController extends Zend_Controller_Action
 		$this->catalogue = new Class_Catalogue();
 		
 		// Reset session
-		if($_REQUEST["reset"] == "true") 
+		if (isset($_REQUEST["reset"]) && ($_REQUEST["reset"] == "true"))
 		{
 			unset($_REQUEST["reset"]);
 			unset($_SESSION["recherche"]);
@@ -45,8 +45,8 @@ class CatalogueController extends Zend_Controller_Action
 		// Facettes
 		if(array_isset("facette", $_REQUEST)) 
 		{
-			$facette=$_REQUEST["facette"].";";
-			$facettes=$_REQUEST["facettes"];
+			$facette = $_REQUEST["facette"].";";
+			$facettes = isset($_REQUEST["facettes"]) ? $_REQUEST["facettes"] : '';
 			if(strpos($facettes,$facette) === false) $facettes.=" ".$facette;
 			$_REQUEST["facettes"]=$facettes;
 			unset($_REQUEST["page"]);
@@ -82,8 +82,7 @@ class CatalogueController extends Zend_Controller_Action
 		if (!array_isset("recherche", $_SESSION)) $_SESSION["recherche"] = array();
 
 		// Get requetes
-		if (!array_isset("resultat", $_SESSION["recherche"]))
-		{
+		if (!array_isset("resultat", $_SESSION["recherche"]))		{
 			$ret=$this->catalogue->getRequetes($_REQUEST,false);
 			
 			if (array_isset("req_comptage", $ret)) {
@@ -110,6 +109,7 @@ class CatalogueController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	private function getTexteSelection()
 	{
+		$facette = '';
 		// facettes
 		if(array_isset("facettes", $_REQUEST))
 		{

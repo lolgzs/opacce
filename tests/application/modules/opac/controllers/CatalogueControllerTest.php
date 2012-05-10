@@ -62,6 +62,19 @@ class CatalogueControllerAppelMenuTest extends AbstractControllerTestCase {
 		}
 		return $this;
 	}
+
+
+	/** @test */
+	public function withFacettesRequestShouldNotThrowError() {
+		$query = "titre=Catalogue%20-%20Histoire&aleatoire=0&tri=0&nb_notices=0&nb_analyse=50&id_catalogue=12&id_panier=&id_user=0&PHPSESSID=e08025e8cf614198106cc7778f021b4c&facette=A27173";
+		$_REQUEST = array();
+		foreach (explode('&', $query) as $param) {
+			$params = explode('=', $param);
+			$_REQUEST[$params[0]] = $params[1];
+		}
+
+		$this->dispatch('catalogue/appelmenu?'.$query);
+	}
 }
 
 ?>

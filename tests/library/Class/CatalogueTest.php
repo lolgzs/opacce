@@ -327,19 +327,19 @@ class CatalogueTestGetRequetesWithFacettesAndNoCatalogue extends ModelTestCase {
 
 	/** @test */
 	public function requeteListeShouldEqualsSelectStarWhereFacettesFromNotices() {
-		$this->assertEquals('select * from notices  where +(T1, Y1) order by alpha_titre  LIMIT 5000', $this->_requetes['req_liste']);
+		$this->assertEquals('select * from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE) order by alpha_titre  LIMIT 5000', $this->_requetes['req_liste']);
 	}
 
 
 	/** @test */
 	public function requeteComptageShouldBeSelectCount() {
-		$this->assertEquals('select count(*) from notices  where +(T1, Y1)', $this->_requetes['req_comptage']);
+		$this->assertEquals('select count(*) from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE)', $this->_requetes['req_comptage']);
 	}
 
 
 	/** @test */
 	public function requeteFacettesShouldBeSelectIdNoticeTypeDocFacet() {
-		$this->assertEquals('select notices.id_notice,type_doc,facettes from notices  where +(T1, Y1) LIMIT 5000', $this->_requetes['req_facettes']);
+		$this->assertEquals('select notices.id_notice,type_doc,facettes from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE) LIMIT 5000', $this->_requetes['req_facettes']);
 	}
 }
 
