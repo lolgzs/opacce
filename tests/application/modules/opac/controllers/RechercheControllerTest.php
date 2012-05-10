@@ -44,15 +44,7 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 }
 
 
-
-
-class RechercheControllerViewNoticeTest extends RechercheControllerNoticeTestCase {
-	public function setUp() {
-		parent::setUp();
-		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()));
-	}
-
-
+abstract class RechercheControllerViewNoticeTestCase extends RechercheControllerNoticeTestCase {
 	/** @test */
 	public function titleShouldBeDisplayed() {
 		$this->assertXPathContentContains('//h1',
@@ -70,6 +62,28 @@ class RechercheControllerViewNoticeTest extends RechercheControllerNoticeTestCas
 	/** @test */
 	public function headShouldContainsRechercheJS() {
 		$this->assertXPath('//head//script[contains(@src,"public/opac/js/recherche.js")]');
+	}
+}
+
+
+class RechercheControllerViewNoticeTest extends RechercheControllerViewNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()));
+	}
+}
+
+
+class RechercheControllerViewNoticeClefAlphaTest extends RechercheControllerViewNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('getNoticeByClefAlpha')
+			->with('TESTINGALPHAKEY---101')
+			->answers($this->notice);
+
+		$this->dispatch('recherche/viewnotice/clef/TESTINGALPHAKEY---101');
 	}
 }
 

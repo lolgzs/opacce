@@ -268,32 +268,37 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // AFFICHAGE NOTICE
 //------------------------------------------------------------------------------------------------------
-	function viewnoticeAction()
-	{
+	public function viewnoticeAction() {
 		unset($_SESSION["recherche"]["rebond"]);
-		$_SESSION["recherche"]["retour_notice"]=$this->_request->REQUEST_URI;
+		$_SESSION["recherche"]["retour_notice"] = $this->_request->REQUEST_URI;
+
+		if ($this->_getParam('clef')
+				&& ($notice = Class_Notice::getLoader()->getNoticeByClefAlpha($this->_getParam('clef'))))
+			$this->_request->setParam('id', $notice->getId());
+
+		$id_notice = (int)$this->_getParam('id');
+		$oNotice = new Class_Notice();
+		$this->view->notice = $oNotice->getNoticeDetail($id_notice,$this->preferences);
+		if (!$this->view->notice) {
+			$this->_redirect('opac/recherche/simple');
+			return;
+		}
 
 		if (array_isset('retour_liste', $_SESSION["recherche"]))
-			$this->view->url_retour=$_SESSION["recherche"]["retour_liste"];
+			$this->view->url_retour = $_SESSION["recherche"]["retour_liste"];
 
-		// Lire la notice
-		$id_notice=intVal($this->_request->id);
-		$oNotice=new Class_Notice();
-		$this->view->notice=$oNotice->getNoticeDetail($id_notice,$this->preferences);
-		if(!$this->view->notice) $this->_redirect('opac/recherche/simple');
-		$this->view->url_img=Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
+		$this->view->url_img = Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
 
 		// Pour les reseaux sociaux
 		$this->view->titreAdd(strip_tags($this->view->notice["titre_principal"]));
-		if($this->view->notice["auteur_principal"] > "") $this->view->nomSite.=" / " . $this->view->notice["auteur_principal"];
+		if ($this->view->notice["auteur_principal"] > "") 
+			$this->view->nomSite .= " / " . $this->view->notice["auteur_principal"];
 
 		// Picto du genre
-		$genre=$oNotice->getChampNotice("G", $this->view->notice["facettes"]);
-		if($genre)
-		{
-			$picto_genre=fetchOne("select picto from codif_genre where id_genre=".$genre[0]["id"]);
-			if($picto_genre == "_vide.gif") $picto_genre="";
-			$this->view->picto_genre=$picto_genre;
+		if (($genres = $oNotice->getChampNotice("G", $this->view->notice["facettes"]))
+				&& ($genre = Class_CodifGenre::getLoader()->find($genres[0]['id']))
+				&& ('_vide.gif' != $genre->getPicto()))	{
+				$this->view->picto_genre = $genre->getPicto();
 		}
 
 		// Url panier
