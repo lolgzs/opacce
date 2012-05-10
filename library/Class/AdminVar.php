@@ -181,4 +181,10 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	public static function getKnownVars() {
 		return self::$_knownVars;
 	}
+
+
+	/** @return bool */
+	public static function isCacheEnabled() {
+		return self::isModuleEnabled('CACHE_ACTIF');
+	}
 }

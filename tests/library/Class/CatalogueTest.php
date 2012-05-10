@@ -389,6 +389,10 @@ class CatalogueTestGetNoticesByPreferences extends ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('CACHE_ACTIF')
+			->setValeur(1);
+
 		$this->old_cache = Zend_Registry::get('cache');
 		$this->mock_cache = Storm_Test_ObjectWrapper::mock();
 		Zend_Registry::set('cache', $this->mock_cache);

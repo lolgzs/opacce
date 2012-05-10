@@ -280,7 +280,7 @@ class Class_Catalogue extends Storm_Model_Abstract {
 	public function getNoticesByPreferences($preferences,$cache_vignette=false)	{
 		$cache_key = md5(serialize($preferences).$cache_vignette);
 		$cache = Zend_Registry::get('cache');
-		if ($cache->test($cache_key)) {
+		if (Class_AdminVar::isCacheEnabled() && $cache->test($cache_key)) {
 			$notices = unserialize($cache->load($cache_key));
 		} else {
 			$notices = $this->_fetchAllNoticesByPreferences($preferences, $cache_vignette);			
