@@ -1,0 +1,13 @@
+<?php 
+echo $this->toolbar($this->album->getTitre(), 
+										$this->url(array('controller' => 'bib-numerique',
+																		 'action' => 'view-categorie', 
+																		 'id' => $this->album->getCatId()), 
+															 null, 
+															 true),
+										false); 
+?>
+
+<div class="liste">
+	 <?php echo $this->renderAlbum($this->album); ?>
+</div>

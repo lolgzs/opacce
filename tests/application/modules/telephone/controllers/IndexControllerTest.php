@@ -58,7 +58,11 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends AbstractC
 																																	 'identifiant_exemple' => 'numero carte',
 																																	 'mot_de_passe' => 'mot de passe',
 																																	 'mot_de_passe_exemple' => 'zork',
-																																	 'lien_connexion' => 'go')))); 
+																																	 'lien_connexion' => 'go')),
+															 '4' => array('division' => '1',
+																						'type_module' => 'BIB_NUMERIQUE',
+																						'preferences' => array('titre' => 'Mes albums'))
+															 )); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
 			->beTelephone()
@@ -167,6 +171,12 @@ class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTel
 	public function formShouldNotHaveDDAndDTTag() {
 		$this->assertNotXPath('//dd');
 		$this->assertNotXPath('//dt');
+	}
+
+
+	/** @test */
+	function titreBoiteBibNumeriqueShouldBeMesAlbums() {
+		$this->assertXPathContentContains('//div[@class="titre"]', 'Mes albums');
 	}
 }
 

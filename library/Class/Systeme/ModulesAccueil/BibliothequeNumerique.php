@@ -49,7 +49,7 @@ class Class_Systeme_ModulesAccueil_BibliothequeNumerique extends Class_Systeme_M
 	protected $_popupHeight = 700;
 
 	/** @var bool */
-	protected $_isPhone = false;
+	protected $_isPhone = true;
 
 	/** @var array */
 	protected $_defaultValues = array('titre' => 'Bibliothèque numérique',	 // Titre de la boite

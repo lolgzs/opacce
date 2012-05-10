@@ -205,6 +205,12 @@ class ProfilControllerWithTelephoneAccueilTest extends Admin_AbstractControllerT
 	public function moduleLoginShouldBeAvailable() {
 		$this->assertXPath('//ul/li[@id="LOGIN"]');
 	}
+
+
+	/** @test */
+	public function moduleBibNumeriqueShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="BIB_NUMERIQUE"]');
+	}
 }
 
 ?>

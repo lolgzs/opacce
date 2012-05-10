@@ -99,7 +99,7 @@ class ZendAfi_View_Helper_Accueil_BibNumerique extends ZendAfi_View_Helper_Accue
 	protected function _renderTree() {
 		$this->_init();
 		if ('' == $this->preferences['id_categories']) {
-			$this->contenu = '<div class="bib-numerique">' . $this->_getCollections() . '</div>';
+			$this->contenu = '<div class="bib-numerique liste">' . $this->_getCollections() . '</div>';
 			return $this->getHtmlArray();
 		}
 
@@ -122,7 +122,7 @@ class ZendAfi_View_Helper_Accueil_BibNumerique extends ZendAfi_View_Helper_Accue
 		$content = '';
 		foreach (Class_AlbumCategorie::getLoader()->getCollections() as $collection) {
 			$options = ($this->_isCurrentCategorie($collection)) ? array('class' => 'selected') : array();
-			$content .= '<li>' . $this->_getLinkedItemFor($collection, 'view-categorie', $options)
+			$content .= '<li class="lien">' . $this->_getLinkedItemFor($collection, 'view-categorie', $options)
 				. $this->_getCategoriesOf($collection)
 				. '</li>';
 		}

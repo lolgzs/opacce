@@ -47,11 +47,14 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 		if (array_isset('division', $params))
 			$this->division = $params["division"];
 
-		$this->preferences=$params["preferences"];
-		if (!$this->preferences) {
-			$cls=new Class_Systeme_ModulesAccueil();
-			$this->preferences=$cls->getValeursParDefaut($this->type_module);
-		}
+		$modules_accueil = new Class_Systeme_ModulesAccueil();
+	
+		$this->preferences = $params["preferences"];
+		if (!$this->preferences) 
+			$this->preferences = $modules_accueil->getValeursParDefaut($this->type_module);
+
+		$this->preferences = array_merge($modules_accueil->getValeursParDefaut($this->type_module), 
+																		 $this->preferences);
 	}
 
 
