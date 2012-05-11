@@ -734,13 +734,12 @@ class TreeViewFixtures {
 	public static function createOneCategoryWithoutItems() {
 		return array(array(
 			'bib' => Class_Bib::getLoader()->newInstanceWithId(0)->setLibelle('Portail'),
-			'containers' => array(
-					Class_ArticleCategorie::getLoader()
-						->newInstanceWithId(1)
-						->setLibelle('Actualités')
-						->setSousCategories(array())
-						->setArticles(array())
-			)
+			'containers' => array(Class_ArticleCategorie::getLoader()
+														->newInstanceWithId(1)
+														->setLibelle('Actualités')
+														->setSousCategories(array())
+														->setArticles(array())),
+			'add_link' => '<a href="admin/cms/catadd/id_bib/0">Ajouter une categorie</a>'
 		));
 	}
 

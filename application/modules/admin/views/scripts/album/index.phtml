@@ -10,13 +10,5 @@ echo $this->bouton('id=add_category',
 echo $this->form_import_ead;
 ?>
 
-
-
-<ul class="tree">
-	<?php
-		echo $this->partialCycle('album/_categorie.phtml',
-														 'categorie',
-														 $this->categories,
-														 array('first', 'second'));
-	?>
-</ul>
+<?php 
+echo $this->treeView($this->categories, $this->containersActions, $this->itemsActions, false); ?>

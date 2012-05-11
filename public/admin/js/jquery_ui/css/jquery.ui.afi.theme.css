@@ -13,18 +13,18 @@
 .ui-widget { font-family: Verdana,Arial,sans-serif; font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Verdana,Arial,sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #e0cfc2; background: #f4f0ec url(images/ui-bg_inset-soft_100_f4f0ec_1x100.png) 50% bottom repeat-x; color: #1e1b1d; }
+.ui-widget-content { border: 1px solid #e0cfc2; background: transparent; color: #1e1b1d; }
 .ui-widget-content a { color: #1e1b1d; }
 .ui-widget-header { border: 1px solid #d49768; background: #cb842e url(images/ui-bg_glass_25_cb842e_1x400.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
 .ui-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #cdc3b7; background: #ede4d4 url(images/ui-bg_glass_70_ede4d4_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #3f3731; }
+.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #cdc3b7; background: #f0f0f0; font-weight: normal; color: #3f3731; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #3f3731; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus { border: 1px solid #f5ad66; background: #f5f0e5 url(images/ui-bg_glass_100_f5f0e5_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #a46313; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #a46313; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #e0cfc2; background: #f4f0ec url(images/ui-bg_highlight-hard_100_f4f0ec_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #b85700; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #e0cfc2; background: #f0f0f0 url(../../../images/box/menu/titre.jpg); font-weight: normal; color: #b85700; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #b85700; text-decoration: none; }
 .ui-widget :active { outline: none; }
 
@@ -254,3 +254,9 @@
 .ui-selectable .ui-selected { background: #F39814; color: white; }
 .ui-selectable  { list-style-type: none; margin: 0; padding: 0; }
 .ui-selectable  li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+
+.ui-accordion .ui-accordion-header a {
+  padding-top:0;
+	padding-bottom:0;
+	color:#0058A5;
+}

@@ -690,6 +690,25 @@ form#sendparams dd {float: left}
 	min-height: 200px;
 }
 
+
+.tree .item {
+	padding:4px 0;
+}
+
+.tree .item div:first-child,
+.tree .item .actions {
+	position:absolute;
+}
+
+.tree .item .actions {
+  right:25px;
+}
+
+.tree .item .item-label{
+  margin-left:20px;
+	margin-right:105px;
+}
+
 .formations .actions a:hover,
 .profils .actions a:hover {
 		text-decoration: none;
@@ -719,7 +738,8 @@ form#sendparams dd {float: left}
 
 .formations ul li ul li:hover,
 .profils ul li ul li:hover,
-div.impressions>div:hover {
+div.impressions>div:hover,
+.tree .item:hover {
 		background-color: rgba(194, 221, 230, 0.4);
 		color:#0058A5;
 }

@@ -47,11 +47,18 @@ class Admin_CmsController extends Zend_Controller_Action {
 
 		$categories = array();
 
+		$add_link_label = $this->view->tagImg(URL_ADMIN_IMG . 'ico/add_cat.gif')
+			. $this->view->_(' Ajouter une catégorie');
+
+		$add_link_options = array('module' => 'admin',
+															'controller' => 'cms',
+															'action' => 'catadd');
+
 		foreach ($bibs as $bib) {
-			$categories[] = array(
-				'bib'					=> $bib,
-				'containers'	=> $bib->getArticleCategories()
-			);
+			$categories[] = array('bib'=> $bib,
+														'containers' => $bib->getArticleCategories(),
+														'add_link' => $this->view->tagAnchor($this->view->url(array_merge($add_link_options, array('id_bib' => $bib->getId()))),
+																																 $add_link_label));
 		}
 
 		$this->view->categories = $categories;

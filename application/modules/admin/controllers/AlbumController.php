@@ -28,9 +28,16 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	public function indexAction() {
-		$this->view->categories = Class_AlbumCategorie::getLoader()
-																->findAllBy(array('parent_id' => 0));
+		$this->view->categories = array(array('bib' => Class_Bib::getLoader()->getPortail(),
+																					'containers' => Class_AlbumCategorie::getLoader()
+																													 ->findAllBy(array('parent_id' => 0))));
+		$this->view->containersActions = $this->_getTreeViewContainerActions();
+		$this->view->itemsActions = $this->_getTreeViewItemActions();
 		$this->view->form_import_ead = $this->_formImportEAD();
+		$this->view->headScript()->appendScript('var treeViewSelectedCategory = '
+																			. (int)$this->_getParam('id_cat') . ';');
+		$this->view->headScript()->appendFile(URL_ADMIN_JS . 'tree-view.js');
+
 	}
 
 
@@ -566,5 +573,57 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		$this->view->errors	= $album->getErrors();
 		$this->view->album = $album;
 		$this->render('album_form');
+	}
+
+
+	protected function _getTreeViewContainerActions() {
+		return array(array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'add_categorie_to',
+											 'icon' => 'ico/add_cat.gif',
+											 'label' => 'Ajouter une sous-catégorie'),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'add_album_to',
+											 'icon' => 'ico/add_news.gif',
+											 'label' => 'Ajouter un album'),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'edit_categorie',
+											 'icon' => 'ico/edit.gif',
+											 'label' => 'Modifier la catégorie'),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'delete_categorie',
+											 'icon' => 'ico/del.gif',
+											 'label' => 'Supprimer la catégorie',
+											 'condition' => 'hasNoChild',
+											 'anchorOptions' => array('onclick' => "return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?')")));
+	}
+
+
+	protected function _getTreeViewItemActions() {
+		return array(array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'edit_album',
+											 'icon' => 'ico/edit.gif',
+											 'label' => "Modifier l'album"),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'edit_images',
+											 'icon' => 'ico/album_images.png',
+											 'label' => "Gérer les médias",
+											 'caption' => 'formatedCount'),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'preview_album',
+											 'icon' => 'ico/show.gif',
+											 'label' => "Visualisation de l'album"),
+								 array('module' => 'admin',
+											 'controller' => 'album',
+											 'action' => 'delete_album',
+											 'icon' => 'ico/del.gif',
+											 'label' => "Supprimer l'album",
+											 'anchorOptions' => array('onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer cet album');")));
 	}
 }

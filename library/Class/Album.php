@@ -951,6 +951,16 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function getStatus() {
+		return 'none';
+	}
+
+
+	public function formatedCount() {
+		return sprintf('%03d', $this->getRessourcesCount());
+	}
+
+
 	//-------------------------------------------------------------------------------
 	// Settings
 	//-------------------------------------------------------------------------------

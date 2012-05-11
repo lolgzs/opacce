@@ -143,7 +143,7 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 	/** @test */
 	public function albumMesBDShouldBeInCategorieFavoris() {
-		$this->assertXPathContentContains("//ul/li/ul/li[@class='album']", 'Mes BD');
+		$this->assertXPathContentContains("//div[@class='item-label']", 'Mes BD');
 	}
 
 
@@ -155,61 +155,55 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 	/** @test */
 	public function albumMesRomansShouldBeInCategorieAdulte() {
-		$this->assertXPathContentContains("//ul/li/ul/li/ul/li[@class='album']", 'Mes Romans');
+		$this->assertXPathContentContains("//div[@class='item-label']", 'Mes Romans');
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveAnAjouteCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/add_categorie_to/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'add_categorie_to/id/6')]");
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveAnAjouteAlbumLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/add_album_to/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'add_album_to/id/6')]");
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveEditCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/edit_categorie/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'edit_categorie/id/6')]");
 	}
 
 
 	/** @test */
-	public function categorieAdulteShouldHaveDeleteCategorieLinkDisabled() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, '#')]");
-	}
-
-
-	/** @test */
-	public function categorieAdulteShouldHaveAlertMessegeOnDeleteCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a/img[contains(@onclick, 'alert')]");
+	public function categorieAdulteShouldNotHaveDeleteCategorieLink() {
+		$this->assertNotXPath("//a[contains(@href, 'delete_categorie/id/6')]");
 	}
 
 
 	/** @test */
 	public function categoriePatrimoineShouldHaveDeleteCategorieLink() {
-		$this->assertXPath("//ul/li[@class='categorie']/div/a[contains(@href, 'album/delete_categorie/id/38')]");
+		$this->assertXPath("//a[contains(@href, 'delete_categorie/id/38')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHaveEditLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/edit_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'edit_album/id/24')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHavePreviewLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/preview_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/24')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHaveDeleteLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/delete_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'delete_album/id/24')]");
 	}
 
 

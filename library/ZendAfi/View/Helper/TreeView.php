@@ -35,8 +35,9 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	public function treeView(array $elements,
-														array $containerActions = array(),
-														array $itemActions = array()) {
+													 array $containerActions = array(),
+													 array $itemActions = array(),
+													 $withWorkflow = true) {
 		$html = '';
 
 		if (0 == count($elements)) {
@@ -48,7 +49,7 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 			<label for="treeViewSearch">' . $this->view->_('Rechercher') . '</label> :
 			<input type="text" size="20" class="treeViewSearch" id="treeViewSearch" />';
 
-		if (Class_AdminVar::isWorkflowEnabled()) {
+		if ($withWorkflow && Class_AdminVar::isWorkflowEnabled()) {
 			$html .= '<div class="treeViewSearchStatus" style="margin:5px 0;float:right;">'
 									. $this->view->_('Filtrer par statut : ');
 			$statuses = array($this->view->tagAnchor(
@@ -70,19 +71,11 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 		$this->_itemActions = $itemActions;
 
 		foreach ($elements as $data) {
-			$html .= '<h3><a href="#">' . $data['bib']->getLibelle() . '</a></h3>
-				<div>'
-						. $this->view->tagAnchor(
-								$this->view->url(array(
-																	'module' => 'admin',
-																	'controller' => 'cms',
-																	'action' => 'catadd',
-																	'id_bib' => $data['bib']->getId()
-																)),
-								$this->view->tagImg(URL_ADMIN_IMG . 'ico/add_cat.gif')
-										. $this->view->_(' Ajouter une catégorie')
-						)
-					.'<ul class="root">';
+			$html .= '<h3><a href="#">' . $data['bib']->getLibelle() . '</a></h3><div>';
+			if (array_key_exists('add_link', $data)) {
+				$html .= $data['add_link'];
+			}
+			$html .= '<ul class="root">';
 
 			foreach ($data['containers'] as $container) {
 				$html .= $this->_renderContainer($container);
@@ -176,6 +169,10 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 				}
 			}
 
+			if (array_key_exists('caption', $action)) {
+				$action['caption'] = $model->{$action['caption']}();
+			}
+
 			$action['id'] = $model->getId();
 
 			$html .= $this->_renderAction($action);
@@ -206,12 +203,12 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 			$anchorOptions = array_merge($anchorOptions, $options['anchorOptions']);
 		}
 
-		return $this->view->tagAnchor(
-			$url,
-			$this->view->tagImg(URL_ADMIN_IMG . $options['icon'],
-													array('alt' => $options['label'], 'class' => 'ico')),
-			$anchorOptions
-		);
+		$content = $this->view->tagImg(URL_ADMIN_IMG . $options['icon'],
+																	 array('alt' => $options['label'], 'class' => 'ico'));
+		if (array_key_exists('caption', $options))
+			$content .= $options['caption'];
+
+		return $this->view->tagAnchor($url, $content, $anchorOptions);
 	}
 }
 ?>
