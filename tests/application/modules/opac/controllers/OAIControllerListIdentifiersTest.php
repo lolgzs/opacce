@@ -179,6 +179,10 @@ class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTe
 			->whenCalled('countNoticesFor')
 			->answers(10000)
 
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers(array(Class_Catalogue::getLoader()->newInstanceWithId(2)))
+
 			->whenCalled('loadNoticesFor')
 			->answers(array(Class_Notice::getLoader()
 											->newInstanceWithId(2)
@@ -197,7 +201,7 @@ class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTe
 			->answers(true);
 		Class_WebService_OAI_ResumptionToken::defaultCache($this->_cache);
 
-		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork');
 		$this->_xml = $this->_response->getBody();
 	}
 
@@ -257,10 +261,16 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 
 	/** @test */
 	public function withoutNoticesErrorCodeShouldBeNoRecordsMatch() {
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers(array(Class_Catalogue::getLoader()->newInstanceWithId(2)));
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
 			->whenCalled('countBy')
 			->answers(0);
-		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc');
+
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork');
 		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="noRecordsMatch"]');
 	}
@@ -268,11 +278,19 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 
 	/** @test */
 	public function withUnknownResumptionTokenErrorCodeShouldBeBadResumptionToken() {
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers(array(Class_Catalogue::getLoader()->newInstanceWithId(2)))
+			
+			->whenCalled('countNoticesFor')
+			->answers(10000);
+
 		$cache = Storm_Test_ObjectWrapper::mock()
 			->whenCalled('load')
 			->answers(false);
 		Class_WebService_OAI_ResumptionToken::defaultCache($cache);
-		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&resumptionToken=Zork');
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork&resumptionToken=Zork');
 		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="badResumptionToken"]');
 	}

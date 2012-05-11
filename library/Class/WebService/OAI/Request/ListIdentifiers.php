@@ -68,6 +68,9 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		if ('oai_dc' != $this->_metadataPrefix) 
 			return $builder->error(array('code' => 'cannotDisseminateFormat'));
 
+		if (!$this->_set)
+			return $builder->error(array('code' => 'noRecordsMatch'));
+
 		if ($this->_set && !$this->_catalogue)
 			return $builder->error(array('code' => 'badArgument'), 'Set not found');
 

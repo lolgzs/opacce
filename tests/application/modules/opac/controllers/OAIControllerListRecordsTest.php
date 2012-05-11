@@ -20,7 +20,7 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class OAIControllerListRecordsTest extends AbstractControllerTestCase {
+class OAIControllerListRecordsInZorkSetTest extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -37,18 +37,18 @@ class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 
 			->whenCalled('loadNoticesFor')
 			->answers(array(Class_Notice::getLoader()
-																			   ->newInstanceWithId(2)
-																			   ->setClefAlpha('harrypotter-sorciers')
-																			   ->setDateMaj('2001-12-14 11:42:42')
-																			   ->setTitrePrincipal('Harry Potter a l\'ecole des sorciers'),
-																			 Class_Notice::getLoader()
-																			   ->newInstanceWithId(3)
-																			   ->setClefAlpha('harrypotter-chambresecrets')
-																			   ->setDateMaj('2005-10-24 11:42:42'),
-																			 Class_Notice::getLoader()
-																			   ->newInstanceWithId(4)
-																			   ->setClefAlpha('harrypotter-azkaban')
-																			   ->setDateMaj('2012-04-03 11:42:42')));
+											->newInstanceWithId(2)
+											->setClefAlpha('harrypotter-sorciers')
+											->setDateMaj('2001-12-14 11:42:42')
+											->setTitrePrincipal('Harry Potter a l\'ecole des sorciers'),
+											Class_Notice::getLoader()
+											->newInstanceWithId(3)
+											->setClefAlpha('harrypotter-chambresecrets')
+											->setDateMaj('2005-10-24 11:42:42'),
+											Class_Notice::getLoader()
+											->newInstanceWithId(4)
+											->setClefAlpha('harrypotter-azkaban')
+											->setDateMaj('2012-04-03 11:42:42')));
 		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=zork');
 	}
 
@@ -96,6 +96,25 @@ class OAIControllerListRecordsTest extends AbstractControllerTestCase {
 		$path = sprintf('//oai:ListRecords/oai:record[%s]/oai:header/oai:%s', 
 										$position, $header);
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), $path, $content);
+	}
+}
+
+
+class OAIControllerListRecordsWithoutSetTest extends AbstractControllerTestCase {
+	protected $_xpath;
+	protected $_xml;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_xpath = TestXPathFactory::newOaiDc();
+		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc');
+		$this->_xml = $this->_response->getBody();
+	}
+
+
+	/** @test */
+	public function shouldHaveNoRecordsError() {
+		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="noRecordsMatch"]');
 	}
 }
 
