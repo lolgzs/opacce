@@ -50,7 +50,8 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 			->setEditeur('Bloomsbury Publishing')
 			->setLangueCodes(array('fre', 'eng'))
 			->setIsbn('978-2-07-054127-0')
-			->setEan('');
+			->setEan('')
+			->setTypeDoc(1);
 		$this->_dublin_core_visitor->visit($potter);
 	}
 
@@ -165,6 +166,14 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 																							'978-2-07-054127-0');
 	}
 
+
+	/** @test */
+	public function shouldHaveEmptyRights() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:rights',
+																							'');
+	}
+
 }
 
 
@@ -249,5 +258,12 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 																							'4719-5120-0288-9');
 	}
 
+
+	/** @test */
+	public function shouldHavePublicDomainRights() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:rights',
+																							'domaine public');
+	}
 }
 ?>

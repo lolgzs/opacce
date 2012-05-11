@@ -108,6 +108,8 @@ class Class_Notice_DublinCoreVisitor {
 
 		if (in_array($id, array(Class_TypeDoc::LIVRE_NUM, Class_TypeDoc::DIAPORAMA))) 
 			$this->_xml .= $this->_builder->format('image/jpeg');
+
+		$this->_xml .= $this->_builder->rights((Class_TypeDoc::LIVRE_NUM == $id) ? 'domaine public' : '');
 	}
 
 
