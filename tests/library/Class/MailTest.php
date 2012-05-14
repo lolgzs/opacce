@@ -51,7 +51,7 @@ class Class_MailTesting extends Class_Mail {
 		return $this->_body;
 	}
 
-	public function getHeaders() {
+	public function getMailHeaders() {
 		return $this->_headers;
 	}
 }
@@ -100,7 +100,7 @@ class MailToZorkFromFlorenceTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	function headersShouldContainSenderFlorence() {
 		$this->assertContains('From: florence@astrolabe-melun.fr', 
-													$this->_mail_testing->getHeaders());
+													$this->_mail_testing->getMailHeaders());
 	}
 }
 

@@ -43,7 +43,7 @@ class OpsysServiceFactoryTest extends PHPUnit_Framework_TestCase {
 
 		Class_WebService_SIGB_Opsys_ServiceFactory::setSoapClientClass('StubSoapClient');
 		$this->assertInstanceOf('Class_WebService_SIGB_Opsys_Service',
-														Class_WebService_SIGB_Opsys::getService("http://localhost:8088/mockServiceRechercheSoap?WSDL"));
+														Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL")));
 	}
 }
 

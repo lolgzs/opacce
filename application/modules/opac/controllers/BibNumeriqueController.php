@@ -62,6 +62,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 
 
 		$json = new StdClass();
+		$json->album = new StdClass();
 		$json->album->id = $album->getId();
 		$json->album->titre = $album->getTitre();
 		$json->album->download_url = '';

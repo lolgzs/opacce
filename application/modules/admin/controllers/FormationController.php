@@ -521,6 +521,7 @@ class SessionFusionStrategy extends AbstractSessionFusionStrategy{
 class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy{
 	public function getContenuFusionne($session_formation) {
 		$date_context = new FusionDateContext($session_formation->getDateDebut());
+
 		$nb_jours = $date_context->numberOfDaysTo($session_formation->getDateFin());
 
 		$lettres = array();

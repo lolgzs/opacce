@@ -200,7 +200,7 @@ class Class_Date {
 	}
 
 
-	public function humanDate($datestr, $format='d MMMM yyyy HH:mm:ss') {
+	public static function humanDate($datestr, $format='d MMMM yyyy HH:mm:ss') {
 		$date = new Zend_Date($datestr, null, Zend_Registry::get('locale'));
 		return $date->toString($format);
 	}

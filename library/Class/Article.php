@@ -313,7 +313,7 @@ class ArticleLoader extends Storm_Model_Loader {
 	 * @param array $articles
 	 * @return array
 	 */
-	public function groupByBib(array $articles) {
+	public static function groupByBib(array $articles) {
 		$grouped = array();
 
 		foreach ($articles as $article) {

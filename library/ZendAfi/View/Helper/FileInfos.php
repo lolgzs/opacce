@@ -37,7 +37,8 @@ class ZendAfi_View_Helper_FileInfos extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	public function fileName($path) {
-		return end(explode('/', $path));
+		$parts = explode('/', $path);
+		return end($parts);
 	}
 
 

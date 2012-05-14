@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /**
  * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
@@ -31,7 +31,7 @@ class Class_Mail
 //---------------------------------------------------------------------------------
 // constructeur : init des parametres
 //---------------------------------------------------------------------------------
-	function __construct()	{
+	public function __construct()	{
 		$this->_translate = Zend_Registry::get('translate');
 		$this->params_ok = false;
 
@@ -68,17 +68,17 @@ class Class_Mail
 //---------------------------------------------------------------------------------
 // Envoi de mail
 //---------------------------------------------------------------------------------
-	public function sendMail($sujet,$body,$destinataire,$data=false)	
+	public function sendMail($sujet,$body,$destinataire,$data=false)
 	{
 		$error_message = sprintf('%s <br/> %s',
 														 $this->_translate("Les paramètres d'envoi de mails du portail sont incomplets."),
 														 $this->_translate("Merci de le signaler aux responsables de la bibliothèque."));
 
 		// Controle des parametres
-		if(!trim($destinataire)) 
+		if(!trim($destinataire))
 			return $this->_translate->_("Adresse du destinataire absente.");
 
-		if($this->params_ok==false or !trim($body))	
+		if($this->params_ok==false or !trim($body))
 			return $error_message;
 
 		// Fusion
@@ -96,12 +96,12 @@ class Class_Mail
 		$ret=$this->getHeaders($destinataire);
 		if (array_isset("erreur", $ret))
 			 return $ret["erreur"];
-		else 
+		else
 			$headers=$ret["headers"];
 
 		$statut = $this->mail($destinataire, $sujet, $body, $headers);
 
-		if($statut == false) 
+		if($statut == false)
 			return $error_message;
 
 		return "";
@@ -117,20 +117,21 @@ class Class_Mail
 //---------------------------------------------------------------------------------
 // Constitution des headers
 //---------------------------------------------------------------------------------
-	private function getHeaders($to)
+	protected function getHeaders($destinataire)
 	{
-		if (!$this->isMailValid($to)) {
+		$ret = array('headers' => '');
+		if (!$this->isMailValid($destinataire)) {
 			$ret["erreur"]= "L'adresse e-mail du destinataire est incorrecte.";
 			return $ret;
 		}
 		
 		// Headers
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-    $headers .= 'To: '.$to. "\r\n";
-    $headers .= 'From: '.$this->mail_from . "\r\n";
-    $ret["headers"]=$headers;
-    return $ret;
+		$headers	= 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+		$headers .= 'To: '.$destinataire. "\r\n";
+		$headers .= 'From: '.$this->mail_from . "\r\n";
+		$ret["headers"]=$headers;
+		return $ret;
 	}
 }
 

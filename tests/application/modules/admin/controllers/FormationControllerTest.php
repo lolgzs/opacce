@@ -1526,7 +1526,7 @@ class FormationControllerFicheEmargementSessionJavaFevrierTest extends Formation
 
 	/** @test */
 	public function pageShouldContainsParagraphWith17Fevrier2012() {
-		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//p', '17 février 2012');
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//p', '17 février 2012', $this->_response->getBody());
 	}
 
 

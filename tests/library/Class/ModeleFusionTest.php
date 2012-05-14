@@ -108,8 +108,9 @@ class ModeleFusionWithSessionFormationAndBibTest extends Storm_Test_ModelTestCas
 												'</table>', 
 
 												$this->modele
-												->setContenu(htmlentities(utf8_decode('éleves:{session_formation.stagiaires["Nom":nom, "Prénom":prenom, "Signature":]}'), 
-																									ENT_QUOTES))
+												->setContenu(htmlentities('éleves:{session_formation.stagiaires["Nom":nom, "Prénom":prenom, "Signature":]}', 
+																									ENT_QUOTES,
+																									'UTF-8'))
 												->getContenuFusionne());
 	}
 

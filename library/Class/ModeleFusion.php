@@ -83,7 +83,12 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 		if (is_array($value = $this->getValue($model, $attributes))) 
 			return $this->buildTable($value, array_shift($match));
 
-		return htmlentities(utf8_decode($value));
+		return $this->htmlize($value);
+	}
+
+
+	public function htmlize($value) {
+		return htmlentities($value, ENT_COMPAT | ENT_HTML5, 'UTF-8');
 	}
 
 	
@@ -112,7 +117,7 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 		$content = '<tr>';
 		foreach($columns as $label => $attribute)
-			$content .= '<td>'.htmlentities($label).'</td>';
+			$content .= '<td>'.$this->htmlize($label).'</td>';
 		$content .= '</tr>';
 
 			
@@ -131,7 +136,7 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 			$value = $this->getValue($model, $requested_attributes);
 
 			$row .= sprintf('<td>%s</td>', 
-											$attribute ? htmlentities(utf8_decode($value)) : '');
+											$attribute ? $this->htmlize($value) : '');
 		}
 
 		return sprintf('<tr>%s</tr>', $row);

@@ -62,8 +62,9 @@ class ResumptionTokenTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function cacheKeyShouldBeMd5sumOfSerializedToken() {
+		$attributes = $this->_cache->getAttributesForLastCallOn('save');
 		$this->assertEquals(md5(serialize($this->_token)), 
-												end($this->_cache->getAttributesForLastCallOn('save')));
+												end($attributes));
 	}
 
 
