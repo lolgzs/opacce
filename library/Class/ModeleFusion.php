@@ -88,7 +88,10 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 
 	public function htmlize($value) {
-		return htmlentities($value, ENT_COMPAT | ENT_HTML5, 'UTF-8');
+		//php 5.4 - 5.2 compat
+		if (!$in_utf8 =  htmlentities($value, ENT_QUOTES, 'UTF-8'))
+			return htmlentities($value, ENT_QUOTES);
+		return $in_utf8;
 	}
 
 	
