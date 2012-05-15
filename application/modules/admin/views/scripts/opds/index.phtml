@@ -12,7 +12,7 @@ echo $this->bouton('id=add_category',
 		<tr>
 			<th>Libellé</th>
 			<th>URL</th>
-			<th class="actions">Action</th>
+			<th class="actions" style="width:50px;">Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -24,6 +24,9 @@ echo $this->bouton('id=add_category',
 				echo $this->tagAnchor($this->url(array('action' => 'edit',
 																							 'id' => $catalog->getId())),
 															$this->boutonIco('type=edit'));
+				echo $this->tagAnchor($this->url(array('action' => 'browse',
+																							 'id' => $catalog->getId())),
+															$this->boutonIco('type=show'));
 				echo $this->tagAnchor($this->url(array('action' => 'delete',
 																							 'id' => $catalog->getId())),
 															$this->boutonIco('type=del'));

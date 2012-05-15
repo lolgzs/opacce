@@ -1,0 +1,6 @@
+<ul>
+	<?php foreach($this->entries as $entry) { ?>
+	<li><?php echo $this->tagAnchor(array('entry' => urlencode($entry->getLink())), 
+																	$entry->getTitle()) ;?></li>
+	<?php } ?>
+</ul>

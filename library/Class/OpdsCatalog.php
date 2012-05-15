@@ -21,10 +21,49 @@
 
 class Class_OpdsCatalog extends Storm_Model_Abstract {
 	protected $_table_name = 'opds_catalogs';
+	protected $_web_client;
 
 	public static function getLoader() {
 		return parent::getLoaderFor(__CLASS__);
 	}
+
+
+	public function getEntries() {
+		$xml = $this->getWebClient()->open_url($this->getUrl());
+		return Class_WebService_OPDS_CatalogReader::getEntriesFromXml($xml);
+	}
+
+
+	public function newForEntry($url) {
+		return Class_OpdsCatalog::getLoader()->newInstance()
+			->setLibelle($this->getLibelle())
+			->setWebClient($this->getWebClient())
+			->setUrl($url);
+	}
+
+
+	/**
+	 * @return Class_WebService_SimpleWebClient
+	 */
+	public function getWebClient() {
+		if (!isset($this->_web_client))
+			$this->_web_client = new Class_WebService_SimpleWebClient();
+		return $this->_web_client;
+	}
+
+
+	/**
+	 * @param Class_WebService_SimpleWebClient $web_client
+	 * @return Class_WebService_SIGB_AbstractRESTService
+	 */
+	public function setWebClient($web_client) {
+		$this->_web_client = $web_client;
+		return $this;
+	}
+
 }
+
+
+
 
 ?>

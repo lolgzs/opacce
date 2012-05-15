@@ -43,8 +43,8 @@ class Class_WebService_XMLParser {
 		$this->_parents = array() ;
 		$parser = $this->_createParser() ;
 		xml_parse($parser, $xml) ;
-		//echo xml_error_string(xml_get_error_code($parser));
-		//echo xml_get_current_line_number($parser);
+		// echo xml_error_string(xml_get_error_code($parser));
+		// echo xml_get_current_line_number($parser);
 		xml_parser_free($parser) ;
 		return $this ;
 	}

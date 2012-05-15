@@ -76,6 +76,20 @@ class Admin_OpdsController extends Zend_Controller_Action {
 	}
 
 
+	public function browseAction() {
+		if (!$catalog = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
+			$this->_redirect('/admin/opds/index');
+			return;
+		}
+
+		if ($entry_url = $this->_getParam('entry'))
+			$catalog = $catalog->newForEntry(urldecode($entry_url));
+
+		$this->view->titre = sprintf('Parcours du catalogue "%s"', $catalog->getLibelle());
+		$this->view->entries = $catalog->getEntries();
+	}
+
+
 	/**
 	 * Formulaire d'édition des catalogues
 	 * @param Class_OpdsCatalog $model
@@ -86,8 +100,7 @@ class Admin_OpdsController extends Zend_Controller_Action {
 			->addElement('text', 'libelle', array('label' => 'Libellé *',
 																						'size'	=> 30,
 																						'required' => true,
-																						'allowEmpty' => false
-																						))
+																						'allowEmpty' => false))
 			->addElement('text', 'url', array('label' => 'Url *',
 																				'size' => '90',
 																				'required' => true,
