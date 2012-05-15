@@ -19,6 +19,7 @@ echo $this->bouton('id=add_category',
 		<?php foreach ($this->catalogs as $catalog) { ?>
 		<tr>
 			<td><?php echo $this->escape($catalog->getLibelle());?></td>
+			<td><?php echo $this->escape($catalog->getUrl());?></td>
 			<td><?php 
 				echo $this->tagAnchor($this->url(array('action' => 'edit',
 																							 'id' => $catalog->getId())),

@@ -20,12 +20,81 @@
  */
 
 class Admin_OpdsController extends Zend_Controller_Action {
-	public function init() {
+	public function indexAction() {
 		$this->view->titre = 'Catalogues OPDS';
+		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
 	}
 
-	public function indexAction() {
-		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
+
+	public function addAction() {
+		$this->view->titre = 'Ajouter un catalogue OPDS';
+		$model = Class_OpdsCatalog::getLoader()->newInstance();
+
+		if ($this->_setupCatalogFormAndSave($model)) {
+			$this->_helper->notify(sprintf('Catalogue "%s" ajouté', $model->getLibelle()));
+			$this->_redirect('/admin/opds/edit/id/'.$model->getId());
+		}
+	}
+
+
+	public function editAction() {
+		$this->view->titre = 'Modifier un catalogue OPDS';
+
+		if (!$model = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
+			$this->_redirect('/admin/opds/index');
+			return;
+		}
+
+	
+		if ($this->_setupCatalogFormAndSave($model)) {
+			$this->_helper->notify(sprintf('Catalogue "%s" sauvegardé', $model->getLibelle()));
+			$this->_redirect('/admin/opds/edit/id/' . $model->getId());
+		}
+	}
+
+
+  protected function _setupCatalogFormAndSave($catalog) {
+		$form = $this->_getForm($catalog);
+	
+		$this->view->form = $form;
+
+		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			return $catalog
+				->updateAttributes($this->_request->getPost())
+				->save();
+		}
+		return false;
+  }
+
+
+	public function deleteAction() {
+		if ($model = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
+			$model->delete();
+			$this->_helper->notify(sprintf('Catalogue "%s" supprimé', $model->getLibelle()));
+		}
+		$this->_redirect('/admin/opds/index');
+	}
+
+
+	/**
+	 * Formulaire d'édition des catalogues
+	 * @param Class_OpdsCatalog $model
+	 * @return Zend_Form
+	 */
+	protected function _getForm($model) {
+		return $this->view->newForm(array('id' => 'catalog'))
+			->addElement('text', 'libelle', array('label' => 'Libellé *',
+																						'size'	=> 30,
+																						'required' => true,
+																						'allowEmpty' => false
+																						))
+			->addElement('text', 'url', array('label' => 'Url *',
+																				'size' => '90',
+																				'required' => true,
+																				'allowEmpty' => false,
+																				'validators' => array('url')))
+			->addDisplayGroup(array('libelle', 'url'), 'categorie', array('legend' => 'Catalogue'))
+			->populate($model->toArray());
 	}
 }
 
