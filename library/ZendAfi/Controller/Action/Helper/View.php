@@ -216,6 +216,8 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 		$form
 			->getPluginLoader(Zend_Form::DECORATOR)
 			->addPrefixPath('ZendAfi_Form_Decorator', 'ZendAfi/Form/Decorator');
+		$form
+			->addElementPrefixPath('ZendAfi_Validate', 'ZendAfi/Validate', 'validate');
 		return $form;
 	}
 
