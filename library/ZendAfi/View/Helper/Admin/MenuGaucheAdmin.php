@@ -97,6 +97,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_systeme .= $this->addMenu("tester.gif",			$this->translate()->_("Test des web-services"),		"/admin/systeme/webservices",	 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("images.png",			$this->translate()->_("Cache des images"),				"/admin/systeme/cacheimages",	 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("website.gif",		$this->translate()->_("Ressources OAI"),					"/admin/systeme/ressourcesoai",$acl_admins_portail);
+		$menu_systeme .= $this->addMenu("epub.png",		$this->translate()->_("Ressources OPDS"),					"/admin/opds",$acl_admins_portail);
 		$menu_systeme .= $this->addMenu("chat.gif.png",		$this->translate()->_("Import avis opac2"),					"/admin/systeme/importavisopac2",$acl_super_admin);
 		$menu_systeme .= $this->closeBoite();
 

@@ -131,6 +131,12 @@ class Admin_OpdsControllerAddActionTest extends Admin_OpdsControllerTestCase {
 	public function urlInputShouldBePresent() {
 		$this->assertXPath('//input[@name="url"]');
 	}
+
+
+	/** @test */
+	public function menuGaucheAdminShouldContainsLinkToOpds() {
+		$this->assertXPath('//div[@class="menuGaucheAdmin"]//a[contains(@href, "admin/opds")]');
+	}
 }
 
 
