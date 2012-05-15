@@ -65,6 +65,15 @@ class Admin_IndexController extends Zend_Controller_Action {
 
 	}
 
+
+
+	public function shouldEncodeVar($cle) {
+		return in_array($cle->getId(), 
+										array("REGISTER_OK", "RESA_CONDITION","TEXTE_MAIL_RESA",
+													"USER_VALIDATED", "USER_NON_VALIDATED"));
+	}
+
+
 	public function adminvareditAction() {
 		$id = $this->_getParam('cle');
 		$cle = Class_AdminVar::getLoader()->find($id);
@@ -73,10 +82,7 @@ class Admin_IndexController extends Zend_Controller_Action {
 			$filter = new Zend_Filter_StripTags();
 			$new_valeur = $this->_request->getPost('valeur');
 
-			if (in_array($cle->getId(),
-									 array("REGISTER_OK", "RESA_CONDITION","TEXTE_MAIL_RESA",
-													"USER_VALIDATED", "USER_NON_VALIDATED"))
-			) {
+			if ($this->shouldEncodeVar($cle)) {
 				$cle->setValeur(urlencode($new_valeur));
 
 			} else if ($cle->getId() == 'GOOGLE_ANALYTICS') {
@@ -84,18 +90,22 @@ class Admin_IndexController extends Zend_Controller_Action {
 
 			} else {
 				$cle->setValeur(trim($filter->filter($new_valeur)));
-
 			}
 
 			$cle->save();
 			$this->_redirect('admin/index/adminvar');
 		}
 
-		$this->view->var_valeur	= $cle->getValeur();
+		if ($this->shouldEncodeVar($cle))
+			$this->view->var_valeur	= urldecode($cle->getValeur());
+		else
+			$this->view->var_valeur	= $cle->getValeur();
+
 		$this->view->var_cle		= $cle->getId();
 		$this->view->tuto				= $this->_getAdminVarHelpFor($cle->getId());
 		$this->view->titre			= 'Modifier la variable: '.$cle->getId();
 	}
+
 
 	public function changelocaleAction() {
 		$locale= $this->_getParam('locale', 0);

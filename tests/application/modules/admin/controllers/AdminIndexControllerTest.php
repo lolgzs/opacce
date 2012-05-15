@@ -129,7 +129,10 @@ class AdminIndexControllerAdminVarActionTest extends Admin_AbstractControllerTes
 	}
 }
 
-class AdminIndexControllerAdminVarEditActionTest extends Admin_AbstractControllerTestCase {
+
+
+
+class AdminIndexControllerAdminVarEditModoBlogActionTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -161,4 +164,38 @@ class AdminIndexControllerAdminVarEditActionTest extends Admin_AbstractControlle
 	}
 }
 
+
+
+
+class AdminIndexControllerAdminVarEditResaConditionActionTest extends Admin_AbstractControllerTestCase {
+	protected $_resa_condition;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_resa_condition = Class_AdminVar::getLoader()
+			->newInstanceWithId('RESA_CONDITION')
+			->setValeur('Mes+conditions+de+reservation');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AdminVar')
+			->whenCalled('save')
+			->answers(true);
+	}
+
+
+	/** @test */
+	public function editResaConditionShouldDecodeItsValeur() {
+		$this->dispatch('/admin/index/adminvaredit/cle/RESA_CONDITION');
+		$this->assertXPathContentContains('//textarea', 'Mes conditions de reservation');
+	}
+
+
+	/** @test */
+	public function postResaConditionShouldEncodeItsValeur() {
+		$this->postDispatch('/admin/index/adminvaredit/cle/RESA_CONDITION', 
+												array('valeur' => 'Il faut demander'));
+		
+		$this->assertEquals('Il+faut+demander', $this->_resa_condition->getValeur());
+	}
+}
 ?>
