@@ -115,7 +115,7 @@ class OPDSEntryFile {
 		$ressource->save();
 
 		$fileName = $ressource->getId() . '_' . $album->getTitre() . $this->getExtension();
-		$destination = $album->getOriginalsPath() . $fileName;
+		$destination = $ressource->getOriginalsPath() . $fileName;
 		if (false === $this->getDownloader()->downloadFromUrlToDisk($this->_url, $destination))
 			$ressource->delete();
 
