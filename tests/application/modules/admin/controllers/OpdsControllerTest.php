@@ -353,14 +353,14 @@ class Admin_OpdsControllerBrowseActionTest extends Admin_OpdsControllerBrowseEbo
 
 	/** @test */
 	public function linkToLastPublishedShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/browse/id/1/entry/' . urlencode(urlencode('http://www.ebooksgratuits.com/opds/feed.php')) . '")]', 
+		$this->assertXPathContentContains('//a[contains(@href, "/browse/id/1?entry=' . urlencode('http://www.ebooksgratuits.com/opds/feed.php') . '")]', 
 																			'Dernieres parutions', $this->_response->getBody());
 	}
 
 
 	/** @test */
 	public function linkToAuteursShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/browse/id/1/entry/' . urlencode(urlencode('http://www.ebooksgratuits.com/opds/authors.php')) . '")]', 
+		$this->assertXPathContentContains('//a[contains(@href, "/browse/id/1?entry=' . urlencode('http://www.ebooksgratuits.com/opds/authors.php') . '")]', 
 																			'Auteurs');
 	}
 }
@@ -377,17 +377,76 @@ class Admin_OpdsControllerBrowseEbooksGratuitsLastUpdatedTest extends Admin_Opds
 			->whenCalled('open_url')
 			->with('http://www.opacsgratuits.com/opds/feed.php?mode=maj')
 			->answers(OPDSFeedFixtures::ebooksGratuitsLastUpdatedXml());
-			
-		$this->dispatch('/admin/opds/browse/id/1/entry/'.urlencode(urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj')));
+		
+		$this->dispatch('/admin/opds/browse/id/1?entry=' . urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj'));
 	}
 
 
   /** @test */
-  public function aLIShouldContainsDracula() {
+  public function draculaShouldBePresent() {
 		$this->assertXPathContentContains('//li', 'Dracula');
+	}
+
+
+	/** @test */
+	public function bramStokerShouldBePresent() {
+			$this->assertXPathContentContains('//li', '(Stoker, Bram)');
+	}
+
+
+	/** @test */
+	public function linkToImportDraculaShouldBePresent() {
+		$this->assertXPathContentContains(sprintf('//a[contains(@href, "admin/opds/import/id/1?feed=%s&entry=%s")]',
+																							urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj'),
+																							urlencode('http://www.ebooksgratuits.com/details.php?book=592')),
+																			'Importer');
 	}
 }
 
+
+
+class Admin_OpdsControllerBrowseEbooksGratuitsImportTest extends Admin_OpdsControllerBrowseEbooksGratuitsTestCase  {
+	public function setUp() {
+		parent::setUp();
+
+		Class_OpdsCatalog::getLoader()->find(1)
+			->getWebClient()
+			->whenCalled('open_url')
+			->with('http://www.opacsgratuits.com/opds/feed.php?mode=maj')
+			->answers(OPDSFeedFixtures::ebooksGratuitsLastUpdatedXml());
+		
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+			->whenCalled('save')
+			->willDo(function($model){
+					$model->setId(777);
+					return true;
+				});
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumRessource')
+			->whenCalled('save')
+			->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+			->whenCalled('save')
+			->answers(true);
+
+
+		OPDSEntryFile::defaultDownloader(Storm_Test_ObjectWrapper::mock()
+																		 ->whenCalled('downloadFromUrlToDisk')
+																		 ->answers(true));
+
+		$this->dispatch(sprintf('/admin/opds/import/id/1?feed=%s&entry=%s',
+														urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj'),
+														urlencode('http://www.ebooksgratuits.com/details.php?book=592')));
+	}
+
+
+	/** @test */
+	public function shouldRedirectToAlbumEdit() {
+		$this->assertRedirectTo('/admin/album/edit_album/id/777');
+	}
+
+}
 
 
 

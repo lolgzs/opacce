@@ -1,6 +1,14 @@
 <ul>
 	<?php foreach($this->entries as $entry) { ?>
-	<li><?php echo $this->tagAnchor(array('entry' => urlencode($entry->getLink())), 
-																	$entry->getTitle()) ;?></li>
+	<li>
+		<?php if ($entry->isNotice()) { ?>
+		  <?php echo $this->escape($entry->getTitle());?>
+		  <?php if ($entry->getAuthor()) echo '(' . $this->escape($entry->getAuthor()) . ')';?>
+			- <a href="<?php echo $this->url(array('action' => 'import'));?>?feed=<?php echo urlencode($this->catalogUrl);?>&entry=<?php echo urlencode($entry->getId());?>">Importer</a>
+		<?php } else { ?>
+				<a href="<?php echo $this->url();?>?entry=<?php echo urlencode($entry->getLink()); ?>">
+				<?php echo $this->escape($entry->getTitle());?></a>
+		<?php } ?>
+	</li>
 	<?php } ?>
 </ul>

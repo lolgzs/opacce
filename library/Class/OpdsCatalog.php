@@ -34,6 +34,16 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 	}
 
 
+	public function getEntry($id) {
+		$entries = $this->getEntries();
+		foreach($entries as $entry) {
+			if ($id == $entry->getId())
+				return $entry;
+		}
+		return null;
+	}
+
+
 	public function newForEntry($url) {
 		return Class_OpdsCatalog::getLoader()->newInstance()
 			->setLibelle($this->getLibelle())

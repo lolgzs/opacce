@@ -45,7 +45,7 @@ class Admin_OpdsController extends Zend_Controller_Action {
 			return;
 		}
 
-	
+		
 		if ($this->_setupCatalogFormAndSave($model)) {
 			$this->_helper->notify(sprintf('Catalogue "%s" sauvegardé', $model->getLibelle()));
 			$this->_redirect('/admin/opds/edit/id/' . $model->getId());
@@ -55,7 +55,7 @@ class Admin_OpdsController extends Zend_Controller_Action {
 
   protected function _setupCatalogFormAndSave($catalog) {
 		$form = $this->_getForm($catalog);
-	
+		
 		$this->view->form = $form;
 
 		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
@@ -83,10 +83,29 @@ class Admin_OpdsController extends Zend_Controller_Action {
 		}
 
 		if ($entry_url = $this->_getParam('entry'))
-			$catalog = $catalog->newForEntry(urldecode($entry_url));
+			$catalog = $catalog->newForEntry($entry_url);
 
 		$this->view->titre = sprintf('Parcours du catalogue "%s"', $catalog->getLibelle());
 		$this->view->entries = $catalog->getEntries();
+		$this->view->catalogUrl = $catalog->getUrl();
+	}
+
+
+	public function importAction() {
+		$this->_helper->getHelper('viewRenderer')->setNoRender();
+		if ((!$catalog = Class_OpdsCatalog::getLoader()->find($this->_getParam('id')))
+				|| !$this->_getParam('feed') || !$this->_getParam('entry')) {
+			$this->_redirect('/admin/opds/index');
+			return;
+		}
+
+		$catalog = $catalog->newForEntry($this->_getParam('feed'));
+		if (!$entry = $catalog->getEntry($this->_getParam('entry')))
+			return;
+ 
+		$album = $entry->import();
+
+		$this->_redirect('/admin/album/edit_album/id/' . $album->getId());
 	}
 
 

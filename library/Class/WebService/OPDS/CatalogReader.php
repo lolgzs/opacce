@@ -64,10 +64,37 @@ class Class_WebService_OPDS_CatalogReader {
 		if (!$this->_xml_parser->inParents('entry'))
 			return;
 
+		if (array_key_exists('REL', $attributes)
+				&& array_key_exists('TYPE', $attributes)
+				&& 'http://opds-spec.org/acquisition' == $attributes['REL']
+				&& in_array($attributes['TYPE'], array('application/epub+zip', 'application/pdf'))) {
+			$this->_current_entry->addFile($attributes['HREF'], $attributes['TYPE']);
+			return;
+		}
+
 		if (false === strpos($attributes['TYPE'], 'application/atom+xml'))
 			return;
 
 		$this->_current_entry->setLink($attributes['HREF']);
+	}
+
+
+	public function endName($data) {
+		if (!$this->_xml_parser->inParents('entry'))
+			return;
+		
+		if (!$this->_xml_parser->inParents('author'))
+			return;
+
+		$this->_current_entry->setAuthor($data);
+	}
+
+
+	public function endId($data) {
+		if (!$this->_xml_parser->inParents('entry'))
+			return;
+
+		$this->_current_entry->setId($data);
 	}
 }
 ?>
