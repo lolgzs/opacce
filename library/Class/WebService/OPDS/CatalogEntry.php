@@ -148,7 +148,7 @@ class OPDSEntryDownloader {
 	public function downloadFromUrlToDisk($url, $path) {
 		if (!$this->_ensureDirectory(dirname($path))) 
 			return false;
-		return file_put_contents($path, $url);
+		return copy($url, $path);
 	}
 
 	/**
