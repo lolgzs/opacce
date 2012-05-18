@@ -331,7 +331,11 @@ abstract class Admin_OpdsControllerBrowseEbooksGratuitsTestCase extends Admin_Op
 			->setWebClient(Storm_Test_ObjectWrapper::mock()
 										 ->whenCalled('open_url')
 										 ->with('http://www.ebooksgratuits.com/opds/')
-										 ->answers(OPDSFeedFixtures::ebooksGratuitsStartXml()));
+										 ->answers(OPDSFeedFixtures::ebooksGratuitsStartXml())
+										 
+										 ->whenCalled('open_url')
+										 ->with('http://www.ebooksgratuits.com/opds/opensearch.xml')
+										 ->answers(OPDSFeedFixtures::ebooksGratuitsSearchDescriptionXml()));
 	}
 }
 
@@ -443,6 +447,14 @@ class Admin_OpdsControllerBrowseEbooksGratuitsLastUpdatedTest extends Admin_Opds
 																							urlencode('http://www.ebooksgratuits.com/details.php?book=592')),
 																			'Importer');
 	}
+
+
+	/** @test */
+	public function linkToImportLesCompagnonsShouldNotBePresent() {
+			$this->assertNotXPath(sprintf('//a[contains(@href, "admin/opds/import/id/1?feed=%s&entry=%s")]',
+																		urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj'),
+																		urlencode('http://www.ebooksgratuits.com/details.php?book=329')));
+	}
 }
 
 
@@ -496,11 +508,7 @@ class Admin_OpdsControllerBrowseSearchPostActionTest extends Admin_OpdsControlle
 	public function setUp() {
 		parent::setUp();
 
-		Class_OpdsCatalog::getLoader()->find(1)
-			->getWebClient()
-			->whenCalled('open_url')
-			->with('http://www.ebooksgratuits.com/opds/opensearch.xml')
-			->answers(OPDSFeedFixtures::ebooksGratuitsSearchDescriptionXml());
+		
 
 		$this->postDispatch('/admin/opds/browse/id/1', array('search' => 'dracula'));
 	}
@@ -633,9 +641,7 @@ class OPDSFeedFixtures {
       <category term="Historique" label="Historique"/>
       <content type="text"><![CDATA[En 1799, sous le gouvernement corrompu du Directoire, coups de main et complots se multiplient en France. Les compagnons de Jehu pillent les diligences et remettent leur butin aux généraux royalistes qui veulent rétablir la monarchie. Cette bande est commandée par un gentilhomme masqué que l\'on surnomme Morgan. Mais Bonaparte, revenu incognito d\'Égypte, charge un de ses officiers, Roland de Montrevel, de le démasquer...<br /><br />Édition Ebooks libres et gratuits.<br />Mise à jour: 10/04/2012: Mise à jour de tous les formats - 26/01/2011: Mise à jour du format epub.]]></content>
       <dcterms:source>http://www.ebooksgratuits.com/ebooks.php</dcterms:source>
-      <link type="application/epub+zip" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=epub" rel="http://opds-spec.org/acquisition" />
       <link type="application/x-mobipocket-ebook" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=mp" rel="http://opds-spec.org/acquisition" />
-      <link type="application/pdf" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=pdf" rel="http://opds-spec.org/acquisition" />
       <link type="application/x-palmreader" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=pr" rel="http://opds-spec.org/acquisition" />
       <link type="application/zip" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=so" rel="http://opds-spec.org/acquisition" />
       <link type="application/octet-stream" href="http://www.ebooksgratuits.com/newsendbook.php?id=329&amp;format=lrf" rel="http://opds-spec.org/acquisition" />

@@ -19,7 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_WebService_OPDS_CatalogSearch {
-	const TOKEN = '{searchTerms}';
+	const TERM_TOKEN = '{searchTerms}';
+	const PAGE_TOKEN = '{startPage?}';
 
 	protected $_url;
 	protected $_web_client;
@@ -32,16 +33,18 @@ class Class_WebService_OPDS_CatalogSearch {
 
 
 	public function entryForTerm($term) {
-		$this->_template = null;
-		$xml = $this->getWebClient()->open_url($this->_url);
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance();
-		$this->_xml_parser->setElementHandler($this);
-		$this->_xml_parser->parse($xml);
-
-		if (null == $this->_template)
+		$this->_load();
+		if (!$this->hasTemplate())
 			return;
+		return str_replace(array(self::TERM_TOKEN, self::PAGE_TOKEN), 
+											 array(urlencode($term), 1), 
+											 $this->_template);
+	}
 
-		return str_replace(self::TOKEN, urlencode($term), $this->_template);
+
+	public function hasTemplate() {
+		$this->_load();
+		return null != $this->_template;
 	}
 
 
@@ -67,5 +70,14 @@ class Class_WebService_OPDS_CatalogSearch {
 		if (null != $this->_web_client)
 			return $this->_web_client;
 		return new Class_WebService_SimpleWebClient();
+	}
+
+
+	protected function _load() {
+		$this->_template = null;
+		$xml = $this->getWebClient()->open_url($this->_url);
+		$this->_xml_parser = Class_WebService_XMLParser::newInstance();
+		$this->_xml_parser->setElementHandler($this);
+		$this->_xml_parser->parse($xml);
 	}
 }

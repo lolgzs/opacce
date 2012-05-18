@@ -61,11 +61,8 @@ class Class_WebService_OPDS_CatalogReader {
 
 		if (null != $this->_searchUrl)
 			return $this->_search = new Class_WebService_OPDS_CatalogSearch($this->_normalizeUrl($this->_searchUrl));
-	}
 
-
-	public function hasSearch() {
-		return null !== $this->getSearch();
+		return new Class_WebService_OPDS_NullCatalogSearch();
 	}
 
 
@@ -103,9 +100,11 @@ class Class_WebService_OPDS_CatalogReader {
 		}
 
 		if (array_key_exists('REL', $attributes)
-				&& 'http://opds-spec.org/acquisition' == $attributes['REL']
-				&& in_array($attributes['TYPE'], array('application/epub+zip', 'application/pdf'))) {
-			$this->_current_entry->addFile($attributes['HREF'], $attributes['TYPE']);
+				&& ('http://opds-spec.org/acquisition' == $attributes['REL']
+						|| false != strpos($attributes['REL'], 'acquisition'))) {
+			$this->_current_entry->beNotice();
+			if (in_array($attributes['TYPE'], array('application/epub+zip', 'application/pdf')))
+				$this->_current_entry->addFile($attributes['HREF'], $attributes['TYPE']);
 			return;
 		}
 

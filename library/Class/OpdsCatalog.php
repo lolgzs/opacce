@@ -85,11 +85,6 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 	}
 
 
-	public function hasSearch() {
-		return $this->getCatalogueReader()->hasSearch();
-	}
-
-
 	public function getSearchForm() {
 		$form = new Zend_Form(array('method' => 'post'));
 		$form
@@ -101,9 +96,7 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 
 
 	public function getSearch() {
-		return $this->getCatalogueReader()
-			->getSearch()
-			->setWebClient($this->_web_client);
+		return $this->getCatalogueReader()->getSearch()->setWebClient($this->_web_client);
 	}
 }
 ?>

@@ -24,6 +24,7 @@ class Class_WebService_OPDS_CatalogEntry {
 	protected $_files;
 	
 	public function __construct() {
+		$this->_isNotice = false;
 		$this->_properties = array('id' => null,
 															 'title' => null,
 															 'link' => null,
@@ -38,6 +39,16 @@ class Class_WebService_OPDS_CatalogEntry {
 
 
 	public function isNotice() {
+		return $this->_isNotice;
+	}
+
+
+	public function beNotice() {
+		$this->_isNotice = true;
+	}
+
+
+	public function hasFiles() {
 		return 0 < count($this->_files);
 	}
 
