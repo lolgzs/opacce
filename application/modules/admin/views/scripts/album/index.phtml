@@ -11,4 +11,8 @@ echo $this->form_import_ead;
 ?>
 
 <?php 
-echo $this->treeView($this->categories, $this->containersActions, $this->itemsActions, false); ?>
+echo $this->getHelper('TreeView')->renderItemWithIconeSupport()->treeView($this->categories, 
+																																				 $this->containersActions, 
+																																				 $this->itemsActions, 
+																																				 false); 
+?>

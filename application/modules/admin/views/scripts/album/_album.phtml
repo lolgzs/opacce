@@ -1,5 +1,5 @@
 <li class='album'>
-    <div><img src="<?php echo URL_ADMIN_IMG ?>ico/liste.gif" alt="Catégorie" /></div>
+	 <div><?php echo $this->iconeSupport($this->album->getTypeDocId()); ?></div>
     <div><?php echo $this->album->getTitre(); ?></div>
 		<?php
 			$album_actions = array(

@@ -29,6 +29,15 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	/** @var array */
 	protected $_itemActions;
 
+	/** Abstract_TreeViewRenderItem  */
+	protected $_item_render_strategy;
+
+
+	public function renderItemWithIconeSupport() {
+		$this->_item_render_strategy = new TreeViewRenderItemWithIconeSupportStrategy($this->view);
+		return $this;
+	}
+
 	/**
 	 * @param array $elements
 	 * @param array $containerActions
@@ -123,13 +132,21 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 		return $html .= '</li>';
 	}
 
+
+	public function getItemRenderStrategy() {
+		if (isset($this->_item_render_strategy))
+			return $this->_item_render_strategy;
+
+		return $this->_item_render_strategy = new TreeViewRenderItemDefaultStrategy($this->view);
+	}
+
+
 	/**
 	 * @param Storm_Model_Abstract $item
 	 * @return string
 	 */
 	protected function _renderItem($item) {
-		$html = '<div>' . $this->view->tagImg(URL_ADMIN_IMG . 'ico/liste.gif') . '</div>'
-						. '<div class="item-label">' . $item->getTitre() . '</div>';
+		$html = $this->getItemRenderStrategy()->render($item);
 
 		$html .= $this->_renderItemActions($item);
 
@@ -211,4 +228,38 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 		return $this->view->tagAnchor($url, $content, $anchorOptions);
 	}
 }
+
+
+
+
+abstract class Abstract_TreeViewRenderItem {
+	protected $view;
+
+	public function __construct($view) {
+		$this->view = $view;
+	}
+
+	public function render($item) {}
+}
+
+
+
+
+class TreeViewRenderItemWithIconeSupportStrategy extends Abstract_TreeViewRenderItem {
+	public function render($item) {
+		return '<div>' . $this->view->iconeSupport($item->getTypeDocId()) . '</div>'
+			. '<div class="item-label">' . $item->getTitre() . '</div>';
+	}
+}
+
+
+
+
+class TreeViewRenderItemDefaultStrategy extends Abstract_TreeViewRenderItem {
+	public function render($item) {
+		return '<div>' . $this->view->tagImg(URL_ADMIN_IMG . 'ico/liste.gif') . '</div>'
+			. '<div class="item-label">' . $item->getTitre() . '</div>';
+	}
+}
+
 ?>

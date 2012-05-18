@@ -148,6 +148,12 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 	/** @test */
+	public function albumMesBDShouldHaveIconForRessourcesNumeriques() {
+		$this->assertXPath("//div//img[contains(@src, 'mls_s.png')]");
+	}
+
+
+	/** @test */
 	public function categorieAdulteShouldBeInCategorieFavoris() {
 		$this->assertXPathContentContains("//ul/li/ul/li[@class='categorie']", 'Adulte');
 	}
@@ -1000,6 +1006,7 @@ abstract class Admin_AlbumControllerAlbumHarlockTestCase extends Admin_AlbumCont
 			->newInstanceWithId(999)
 			->setTitre('Harlock')
 			->setIdOrigine('HL22')
+			->setTypeDocId(Class_TypeDoc::DIAPORAMA)
 			->setCategorie(
 										 Class_AlbumCategorie::getLoader()->newInstanceWithId(999)
 										 ->setLibelle('')
@@ -1156,6 +1163,12 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 	/** @test */
 	public function pageShouldDisplayNumberOfMediaInPanel() {
 		$this->assertXPathContentContains('//a[contains(@href, "album/edit_images/id/999")]', '002');
+	}
+
+	
+	/** @test */
+	public function panelShouldContainsIconSupportForAlbumHarlock() {
+		$this->assertXPath("//div//img[contains(@src, 'images.png')]");
 	}
 
 
