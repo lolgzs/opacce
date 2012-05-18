@@ -11,12 +11,12 @@
  *
  * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
  *
  * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
  * along with AFI-OPAC 2.0; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301	 USA 
  */
 //////////////////////////////////////////////////////////////////////////////////////////
 // OPAC3 - Menu admin
@@ -39,17 +39,17 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$acl_super_admin = array('super_admin');
 
 		// Menu Modules
-		$menu_modules  = $this->openBoite($this->translate()->_("Gestionnaire de contenu"));
+		$menu_modules	 = $this->openBoite($this->translate()->_("Gestionnaire de contenu"));
 		$menu_modules .= $this->addMenu("cms.gif",				$this->translate()->_("Articles"),								"/admin/cms",								 $acl_all);
 		$menu_modules .= $this->addMenu("catalogues.png",	$this->translate()->_("Catalogues dynamiques"),		"/admin/catalogue",					 $acl_admins);
 		$menu_modules .= $this->addMenu("rss.gif",				$this->translate()->_("Fils RSS"),								"/admin/rss",								 $acl_admins);
 		$menu_modules .= $this->addMenu("web.gif",				$this->translate()->_("Sitothèque"),							"/admin/sito",							 $acl_admins);
 		$menu_modules .= $this->addMenu("moderation.gif",	$this->translate()->_("Modération"),							"/admin/modo/",							 $acl_all,								 $nb_moderations);
-    $menu_modules .= $this->addMenu("vcard.png",			$this->translate()->_("Demandes d'inscription"),	"/admin/modo/membreview",		 $acl_all,								 $demandes_inscription);
+		$menu_modules .= $this->addMenu("vcard.png",			$this->translate()->_("Demandes d'inscription"),	"/admin/modo/membreview",		 $acl_all,								 $demandes_inscription);
 		$menu_modules .= $this->addMenu("mail.png",				$this->translate()->_("Lettres d'information"),		"/admin/newsletter",				 $acl_admins);
 		if (Class_AdminVar::isFormationEnabled()) {
 			$menu_modules .= $this->addMenu("formation.png", $this->translate()->_("Formations"),							"/admin/formation",					 $acl_admins);
-			$menu_modules .= $this->addMenu("compass.png",   $this->translate()->_("Lieux"),				  		  	"/admin/lieu",	 		  		   $acl_admins);
+			$menu_modules .= $this->addMenu("compass.png",	 $this->translate()->_("Lieux"),									"/admin/lieu",							 $acl_admins);
 		}
 		$menu_modules .= $this->closeBoite();
 
@@ -57,14 +57,14 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_bibnum = '';
 		if (Class_AdminVar::isBibNumEnabled()) {
 			$menu_bibnum .= $this->openBoite($this->translate()->_("Bibliothèque numérique"));
-			$menu_bibnum .= $this->addMenu("images.png",		$this->translate()->_("Collections"),           "/admin/album",							   $acl_admins);
-			$menu_bibnum .= $this->addMenu("epub.png",		  $this->translate()->_("Ressources OPDS"),				"/admin/opds",                 $acl_admins);
-			$menu_bibnum .= $this->addMenu("website.gif",	$this->translate()->_("Ressources OAI"),				  "/admin/systeme/ressourcesoai",$acl_admins);
+			$menu_bibnum .= $this->addMenu("images.png",		$this->translate()->_("Collections"),						"/admin/album",								 $acl_admins);
+			$menu_bibnum .= $this->addMenu("epub.png",			$this->translate()->_("Ressources OPDS"),				"/admin/opds",								 $acl_admins);
+			$menu_bibnum .= $this->addMenu("website.gif",	$this->translate()->_("Ressources OAI"),					"/admin/oai",									 $acl_admins);
 			$menu_bibnum .= $this->closeBoite();
 		}
 
 
-		$menu_page  = $this->openBoite($this->translate()->_("Mise en page"));
+		$menu_page	= $this->openBoite($this->translate()->_("Mise en page"));
 		$menu_page .= $this->addMenu("ecran.png",			$this->translate()->_("Profils"),									"/admin/profil",				 $acl_admins);
 		$menu_page .= $this->addMenu("ledred.png",		$this->translate()->_("Pictogrammes des genres"),	"/admin/profil/genres",	 $acl_admins);
 
@@ -83,7 +83,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_stat.= $this->closeBoite();
 
 
-		$menu_portail  = $this->openBoite($this->translate()->_("Administration du portail"));
+		$menu_portail	 = $this->openBoite($this->translate()->_("Administration du portail"));
 		$menu_portail .= $this->addMenu("map.gif",				$this->translate()->_("Territoires"),		"/admin/zone",	 $acl_admins_portail);
 		$menu_portail .= $this->addMenu("service.png",		$this->translate()->_("Bibliothèques"),	"/admin/bib",		 $acl_admins);
 		$menu_portail .= $this->addMenu("abonnes.gif",		$this->translate()->_("Utilisateurs"),	"/admin/users",	 $acl_admins);
@@ -96,9 +96,9 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 
 
 		// Menu systeme (super admin)
-		$menu_systeme  = $this->openBoite($this->translate()->_("Système"));
+		$menu_systeme	 = $this->openBoite($this->translate()->_("Système"));
 		$menu_systeme .= $this->addMenu("database.png",		$this->translate()->_("Accès à Cosmogramme"),			getVar("URL_COSMOGRAMME"),		 $acl_admins_portail);
-    $menu_systeme .= $this->addMenu("systeme.png",		$this->translate()->_("Variables"),								"/admin/index/adminvar",			 $acl_super_admin);
+		$menu_systeme .= $this->addMenu("systeme.png",		$this->translate()->_("Variables"),								"/admin/index/adminvar",			 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("tester.gif",			$this->translate()->_("Test des web-services"),		"/admin/systeme/webservices",	 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("images.png",			$this->translate()->_("Cache des images"),				"/admin/systeme/cacheimages",	 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("chat.gif.png",		$this->translate()->_("Import avis opac2"),					"/admin/systeme/importavisopac2",$acl_super_admin);
@@ -141,7 +141,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		if(!preg_match('^http://^',$lien))
 			$lien = BASE_URL.$lien;
 
-    $ico = '<img src="'.URL_ADMIN_IMG.'picto/'.$img.'" alt="'.$titre.'" />';
+		$ico = '<img src="'.URL_ADMIN_IMG.'picto/'.$img.'" alt="'.$titre.'" />';
 		$url= array('START'=>'<a href="'.$lien.'">','END'=>'</a>');
 
 		if (!empty($extra_infos))
