@@ -19,8 +19,36 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Admin_OpdsController extends Zend_Controller_Action {
+class Admin_OpdsController extends ZendAfi_Controller_Action {
+	protected $_ressource_definition = array(
+																					 'model' => 'Class_OpdsCatalog',
+																					 'messages' => array('successful_add' => 'Catalogue %s ajouté',
+																															 'successful_save' => 'Catalogue %s sauvegardé',
+																															 'successful_delete' => 'Catalogue %s supprimé'),
+
+																					 'actions' => array('index'),
+
+																					 'display_groups' => array('categorie' => array('legend' => 'Catalogue',
+																																													'elements' => array(
+																																																					 'libelle' => array('element' => 'text',
+																																																														 'options' =>  array('label' => 'Libellé *',
+																																																																								 'size'	=> 30,
+																																																																								 'required' => true,
+																																																																								 'allowEmpty' => false)),
+																																																					'url' => array('element' => 'text',
+																																																												 'options' => array('label' => 'Url *',
+																																																																						'size' => '90',
+																																																																						'required' => true,
+																																																																						'allowEmpty' => false,
+																																																																						'validators' => array('url'))
+																																																												 )
+																																																					)
+																																											)
+																																 )
+																					 );
+
 	public function init() {
+		parent::init();
 		$this->view->titre = 'Catalogues OPDS';
 		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
 	}
@@ -72,15 +100,6 @@ class Admin_OpdsController extends Zend_Controller_Action {
   }
 
 
-	public function deleteAction() {
-		if ($model = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
-			$model->delete();
-			$this->_helper->notify(sprintf('Catalogue "%s" supprimé', $model->getLibelle()));
-		}
-		$this->_redirect('/admin/opds/index');
-	}
-
-
 	public function browseAction() {
 		if (!$catalog = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
 			$this->_redirect('/admin/opds/index');
@@ -124,26 +143,6 @@ class Admin_OpdsController extends Zend_Controller_Action {
 		$this->_redirect('/admin/album/edit_album/id/' . $album->getId());
 	}
 
-
-	/**
-	 * Formulaire d'édition des catalogues
-	 * @param Class_OpdsCatalog $model
-	 * @return Zend_Form
-	 */
-	protected function _getForm($model) {
-		return $this->view->newForm(array('id' => 'catalog'))
-			->addElement('text', 'libelle', array('label' => 'Libellé *',
-																						'size'	=> 30,
-																						'required' => true,
-																						'allowEmpty' => false))
-			->addElement('text', 'url', array('label' => 'Url *',
-																				'size' => '90',
-																				'required' => true,
-																				'allowEmpty' => false,
-																				'validators' => array('url')))
-			->addDisplayGroup(array('libelle', 'url'), 'categorie', array('legend' => 'Catalogue'))
-			->populate($model->toArray());
-	}
 }
 
 ?>
