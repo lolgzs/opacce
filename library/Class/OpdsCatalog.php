@@ -84,9 +84,26 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 		return $this;
 	}
 
+
+	public function hasSearch() {
+		return $this->getCatalogueReader()->hasSearch();
+	}
+
+
+	public function getSearchForm() {
+		$form = new Zend_Form(array('method' => 'post'));
+		$form
+			->addElement('text', 'search', array('required' => true,
+																					 'allowEmpty' => false))
+			->addElement('submit', 'Rechercher');
+		return $form;
+	}
+
+
+	public function getSearch() {
+		return $this->getCatalogueReader()
+			->getSearch()
+			->setWebClient($this->_web_client);
+	}
 }
-
-
-
-
 ?>

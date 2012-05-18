@@ -388,6 +388,12 @@ class Admin_OpdsControllerBrowseActionTest extends Admin_OpdsControllerBrowseEbo
 
 
 	/** @test */
+	public function searchFieldShouldBePresent() {
+		$this->assertXPath('//div[@class="panel"]//input[@name="search"]');
+	}
+
+
+	/** @test */
 	public function linkToLastPublishedShouldBePresent() {
 		$this->assertXPathContentContains('//a[contains(@href, "/browse/id/1?entry=' . urlencode('http://www.ebooksgratuits.com/opds/feed.php') . '")]', 
 																			'Dernieres parutions', $this->_response->getBody());
@@ -482,6 +488,28 @@ class Admin_OpdsControllerBrowseEbooksGratuitsImportTest extends Admin_OpdsContr
 		$this->assertRedirectTo('/admin/album/edit_album/id/777');
 	}
 
+}
+
+
+
+class Admin_OpdsControllerBrowseSearchPostActionTest extends Admin_OpdsControllerBrowseEbooksGratuitsTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_OpdsCatalog::getLoader()->find(1)
+			->getWebClient()
+			->whenCalled('open_url')
+			->with('http://www.ebooksgratuits.com/opds/opensearch.xml')
+			->answers(OPDSFeedFixtures::ebooksGratuitsSearchDescriptionXml());
+
+		$this->postDispatch('/admin/opds/browse/id/1', array('search' => 'dracula'));
+	}
+
+
+	/** @test */
+	public function shouldRedirectToBrowseWithSearchEntry() {
+		$this->assertRedirectTo('/admin/opds/browse/id/1?entry=' . urlencode('http://www.ebooksgratuits.com/opds/feed.php?mode=search&query=dracula'));
+	}
 }
 
 
@@ -615,5 +643,22 @@ class OPDSFeedFixtures {
 	</feed>';
 	}
 	
+
+
+	public static function ebooksGratuitsSearchDescriptionXml() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Ebooksgratuits</ShortName>
+  <Description>Recherche d\'e-books sur ebooksgratuits</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <Image type="image/x-icon" width="16" height="16">http://www.ebooksgratuits.com/favicon.ico</Image>
+
+  <Url type="text/html" template="http://www.ebooksgratuits.com/ebooks.php?titre={searchTerms}"/>
+  <Url type="application/atom+xml" template="http://www.ebooksgratuits.com/opds/feed.php?mode=search&amp;query={searchTerms}"/>
+  <Url type="application/x-suggestions+json" rel="suggestions" template="http://www.ebooksgratuits.com/opds/search.php?mode=json&amp;query={searchTerms}"/>
+  <Query role="example" searchTerms="robot" />
+</OpenSearchDescription>';
+	}
 }
 ?>

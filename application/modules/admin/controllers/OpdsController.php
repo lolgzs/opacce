@@ -87,6 +87,15 @@ class Admin_OpdsController extends Zend_Controller_Action {
 			return;
 		}
 
+		if ($this->_request->isPost()
+				&& $catalog->hasSearch()
+				&& ($form = $catalog->getSearchForm())
+				&& $form->isValid($this->_request->getPost())) {
+			$this->_redirect('/admin/opds/browse/id/' . $catalog->getId() . '?entry=' . urlencode($catalog->getSearch()->entryForTerm($form->getValue('search'))));
+			return;
+		}
+
+
 		if ($entry_url = $this->_getParam('entry'))
 			$catalog = $catalog->newForEntry($entry_url);
 

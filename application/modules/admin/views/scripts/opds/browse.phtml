@@ -7,6 +7,7 @@
 		<?php } ?>
 	</ul>
 	<?php } ?>
+		 <?php if ($this->catalog->hasSearch()) echo $this->catalog->getSearchForm();?>
 </div>
 <ul>
 	<?php foreach($this->catalog->getEntries() as $entry) { ?>
