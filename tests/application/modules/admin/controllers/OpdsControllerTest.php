@@ -346,8 +346,44 @@ class Admin_OpdsControllerBrowseActionTest extends Admin_OpdsControllerBrowseEbo
 
 
 	/** @test */
+	public function listOfCatalogsShouldBePresent() {
+		$this->assertXPathContentContains('//h1', 'Catalogues OPDS');
+	}
+
+
+	/** @test */
 	public function titleShouldBeParcoursDuCatalogueEbooksGratuits() {
 		$this->assertXPathContentContains('//h1', 'Parcours du catalogue "Ebooks gratuits"');
+	}
+
+
+	/** @test */
+	public function libelleEbookLibresEtGratuitsShouldBePresent() {
+		$this->assertXPathContentContains('//div[@class="panel"]//li', 'Ebooks libres et gratuits');
+	}
+
+
+	/** @test */
+	public function lastUpdateDateShouldBeMayFifteen2012() {
+		$this->assertXPathContentContains('//div[@class="panel"]//li', '15 mai 2012');
+	}
+
+
+	/** @test */
+	public function authorShouldBeEbooksGratuits() {
+		$this->assertXPathContentContains('//div[@class="panel"]//li', 'Ebooksgratuits');
+	}
+
+
+	/** @test */
+	public function authorUriShouldBeEbooksgratuitsDotCom() {
+		$this->assertXPathContentContains('//div[@class="panel"]//li', 'http://www.ebooksgratuits.com');
+	}
+
+
+	/** @test */
+	public function authorMailShouldBeSupportAtBbooksgratuitsDotCom() {
+		$this->assertXPathContentContains('//div[@class="panel"]//li', 'support@ebooksgratuits.com');
 	}
 
 

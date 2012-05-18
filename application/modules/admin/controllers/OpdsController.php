@@ -20,9 +20,14 @@
  */
 
 class Admin_OpdsController extends Zend_Controller_Action {
-	public function indexAction() {
+	public function init() {
 		$this->view->titre = 'Catalogues OPDS';
 		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
+	}
+
+
+	public function indexAction() {
+
 	}
 
 
@@ -85,9 +90,11 @@ class Admin_OpdsController extends Zend_Controller_Action {
 		if ($entry_url = $this->_getParam('entry'))
 			$catalog = $catalog->newForEntry($entry_url);
 
-		$this->view->titre = sprintf('Parcours du catalogue "%s"', $catalog->getLibelle());
-		$this->view->entries = $catalog->getEntries();
-		$this->view->catalogUrl = $catalog->getUrl();
+		$this->view->subview = $this->view->partial('opds/browse.phtml',
+																								array('titre' => sprintf('Parcours du catalogue "%s"', $catalog->getLibelle()),
+																											'catalog' => $catalog));
+
+		$this->render('index');
 	}
 
 

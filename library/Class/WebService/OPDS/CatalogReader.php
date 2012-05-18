@@ -22,18 +22,18 @@
 class Class_WebService_OPDS_CatalogReader {
 	protected $_current_entry;
 	protected $_entries;
+	protected $_metadatas;
 	protected $_xml_parser;
 
-	public static function getEntriesFromXml($xml) {
-		$instance = new self();
-		return $instance
-			->parse($xml)
-			->getEntries();
+	public static function fromXML($xml) {
+			$instance = new self();
+			return $instance->parse($xml);
 	}
 
 
 	public function parse($xml) {
 		$this->_entries = array();
+		$this->_metadatas = array();
 		$this->_xml_parser = Class_WebService_XMLParser::newInstance();
 		$this->_xml_parser->setElementHandler($this);
 		$this->_xml_parser->parse($xml);
@@ -46,6 +46,11 @@ class Class_WebService_OPDS_CatalogReader {
 	}
 
 
+	public function getMetadatas() {
+		return $this->_metadatas;
+	}
+
+
 	public function startEntry() {
 		$this->_current_entry = new Class_WebService_OPDS_CatalogEntry();
 		$this->_entries[] = $this->_current_entry;
@@ -53,8 +58,10 @@ class Class_WebService_OPDS_CatalogReader {
 
 
 	public function endTitle($data) {
-		if (!$this->_xml_parser->inParents('entry'))
+		if (!$this->_xml_parser->inParents('entry')) {
+			$this->_metadatas['Titre'] = $data;
 			return;
+		}
 
 		$this->_current_entry->setTitle($data);
 	}
@@ -80,8 +87,11 @@ class Class_WebService_OPDS_CatalogReader {
 
 
 	public function endName($data) {
-		if (!$this->_xml_parser->inParents('entry'))
+		if (!$this->_xml_parser->inParents('entry')
+				&& $this->_xml_parser->inParents('author')) {
+			$this->_concatMetadata('Auteur', $data);
 			return;
+		}
 		
 		if (!$this->_xml_parser->inParents('author'))
 			return;
@@ -90,11 +100,42 @@ class Class_WebService_OPDS_CatalogReader {
 	}
 
 
+	public function endUri($data) {
+		if (!$this->_xml_parser->inParents('entry')
+				&& $this->_xml_parser->inParents('author')) {
+			$this->_concatMetadata('Auteur', $data);
+		}
+	}
+
+
+	public function endEmail($data) {
+		if (!$this->_xml_parser->inParents('entry')
+				&& $this->_xml_parser->inParents('author')) {
+			$this->_concatMetadata('Auteur', $data);
+		}
+	}
+
+
 	public function endId($data) {
 		if (!$this->_xml_parser->inParents('entry'))
 			return;
 
 		$this->_current_entry->setId($data);
+	}
+
+
+	public function endUpdated($data) {
+		if ($this->_xml_parser->inParents('entry'))
+			return;
+
+		$this->_metadatas['Dernière mise à jour'] = Class_Date::humanDate($data);
+	}
+
+
+	protected function _concatMetadata($name, $value, $separator = ' - ') {
+		$this->_metadatas[$name] = (isset($this->_metadatas[$name])) 
+				? $this->_metadatas[$name] . $separator . $value
+				: $value;
 	}
 }
 ?>

@@ -29,8 +29,21 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 
 
 	public function getEntries() {
+		return $this->getCatalogueReader()->getEntries();
+	}
+
+
+	public function getCatalogueReader() {
+		if (isset($this->_catalog_reader))
+			return $this->_catalog_reader;
+
 		$xml = $this->getWebClient()->open_url($this->getUrl());
-		return Class_WebService_OPDS_CatalogReader::getEntriesFromXml($xml);
+		return $this->_catalog_reader = Class_WebService_OPDS_CatalogReader::fromXML($xml);
+	}
+
+
+	public function getMetadatas() {
+		return $this->getCatalogueReader()->getMetadatas();
 	}
 
 
