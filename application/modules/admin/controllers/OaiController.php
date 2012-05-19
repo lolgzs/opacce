@@ -52,7 +52,14 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 	}
 
 
-	function browseAction() {
+	
+	public function indexAction() {
+		parent::indexAction();
+		$this->view->search_form = $this->searchForm();
+	}
+
+
+	public function browseAction() {
 		$entrepot_id = $this->_getparam("id");
 		if ($entrepot_id) {
 			$entrepot = Class_EntrepotOAI::getLoader()->find($entrepot_id);
@@ -77,7 +84,13 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 	}
 
 
-	function harvestAction() {
+	public function searchAction() {
+		$this->view->notices = Class_NoticeOAI::findNoticesByExpression($this->_getParam('expression'));
+		$this->_forward('index');
+	}
+
+
+	public function harvestAction() {
 		$this->_helper->viewRenderer->setNoRender();
 
 		$entrepot_id = $this->_getparam("entrepot_id");
@@ -98,6 +111,17 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 		if ($next_token)
 			echo $next_token->toJSON();
 	}
+
+
+	public function searchForm() {
+		return $this->view
+			->newForm(array('id' => 'search'))
+			->setAction($this->view->url(array('action' => 'search')))
+			->setMethod('get')
+			->addElement('text', 'expression', array('label' => 'Rechercher dans le catalogue OAI'))
+			->addElement('submit', 'OK');
+	}
+	
 }
 
 ?>

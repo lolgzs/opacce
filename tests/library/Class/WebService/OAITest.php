@@ -42,6 +42,7 @@ class OAITestGetSets extends PHPUnit_Framework_TestCase {
 												$this->oai_service->listSets());
 	}
 
+
 	public function testSetsCountEqualsOneHundred() {
 		$this->assertEquals(100,
 												count($this->oai_service->getSets()));
@@ -54,6 +55,8 @@ class OAITestGetSets extends PHPUnit_Framework_TestCase {
 												$sets['banqueimages']);
 	}	
 }
+
+
 
 
 class OAITestGetRecordsOfSetGallica extends PHPUnit_Framework_TestCase {

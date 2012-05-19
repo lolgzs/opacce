@@ -50,6 +50,19 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	}
 
 
+	public static function findNoticesByExpression($expression) {
+		$instance = new self();
+		$requetes = $instance->recherche(array('expressionRecherche' => $expression));
+		$rows = $instance->getPageResultat($requetes['req_liste']);
+		$notices = array();
+		
+		foreach($rows as $row)
+			$notices[] = self::getLoader()->newFromRow($row);
+		
+		return $notices;
+	}
+
+
 	public function updateAttributes(Array $datas) {
 		parent::updateAttributes($datas);
 		if (array_key_exists('data', $datas))
@@ -77,6 +90,9 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 
 	public function getTitre() {
+		if ($titre = $this->TITRE)
+			return $titre;
+
 	  $datas = $this->getDataAsArray();
 		if (array_key_exists('titre', $datas))
 			 return $datas['titre'];
@@ -258,8 +274,7 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 		// Execute la requete
 		$ids=fetchAll($req);
 		if($fin_limit) $ids=array_slice ($ids, $debut_limit, $fin_limit);
-		foreach($ids as $lig)
-		{
+		foreach($ids as $lig)	{
 			$ret[]=$this->getNotice($lig["id"]);
 		}
 		return $ret;

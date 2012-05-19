@@ -71,7 +71,20 @@ class Admin_OaiControllerIndexActionTest extends Admin_OaiControllerTestCase  {
 		$this->assertXPath('//a[contains(@href, "admin/oai/delete/id/4")]',
 											 $this->_response->getBody());
 	}
+
+
+	/** @test */
+	public function pageShouldContainsSearchForm() {
+		$this->assertXPath('//form[contains(@action, "search")][@method="get"]');
+	}
+
+
+	/** @test */
+	public function searchFormShouldHaveImputForExpressionRecherche() {
+		$this->assertXPath('//form//input[@name="expression"]');
+	}
 }
+
 
 
 

@@ -37,4 +37,20 @@ echo $this->bouton('id=add_category',
 	</tbody>
 </table>
 
-<?php echo $this->subview;?>
+
+
+
+<?php 
+	echo $this->subview;
+
+	echo $this->renderForm($this->search_form);
+
+	if ($this->notices) {
+		echo '<ul>';
+		foreach ($this->notices as $notice)
+			echo '<li>'.$notice->getTitre().'</li>';
+		echo '</ul>';
+	}
+
+
+?>
