@@ -36,6 +36,11 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 		return $this->getModelLoader()->find($id);
 	}
 
+
+	public function newModel() {
+		return $this->getModelLoader()->newInstance();
+	}
+
 	
 	public function successfulDeleteMessage($model) {
 		return sprintf($this->_definitions['messages']['successful_delete'],
@@ -49,8 +54,19 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
+	public function successfulAddMessage($model) {
+		return sprintf($this->_definitions['messages']['successful_add'],
+									 $model->getLibelle());
+	}
+
+
 	public function editActionTitle() {
 		return $this->_definitions['actions']['edit']['title'];
+	}
+
+
+	public function addActionTitle() {
+		return $this->_definitions['actions']['add']['title'];
 	}
 
 

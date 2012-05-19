@@ -27,7 +27,9 @@ class Admin_OpdsController extends ZendAfi_Controller_Action {
 																		 'successful_save' => 'Catalogue %s sauvegardé',
 																		 'successful_delete' => 'Catalogue %s supprimé'),
 
-								 'actions' => array('edit' => array('title' => 'Modifier un catalogue OPDS')),
+								 'actions' => array('edit' => array('title' => 'Modifier un catalogue OPDS'),
+																		'add'  => array('title' => 'Ajouter un catalogue OPDS'),
+																		'index' => array('title' => 'Catalogues OPDS')),
 
 								 'display_groups' => array('categorie' => array('legend' => 'Catalogue',
 																																'elements' => array(
@@ -50,27 +52,10 @@ class Admin_OpdsController extends ZendAfi_Controller_Action {
 	}
 
 
-
 	public function init() {
 		parent::init();
 		$this->view->titre = 'Catalogues OPDS';
 		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
-	}
-
-
-	public function indexAction() {
-
-	}
-
-
-	public function addAction() {
-		$this->view->titre = 'Ajouter un catalogue OPDS';
-		$model = Class_OpdsCatalog::getLoader()->newInstance();
-
-		if ($this->_setupFormAndSave($model)) {
-			$this->_helper->notify(sprintf('Catalogue "%s" ajouté', $model->getLibelle()));
-			$this->_redirect('/admin/opds/edit/id/'.$model->getId());
-		}
 	}
 
 

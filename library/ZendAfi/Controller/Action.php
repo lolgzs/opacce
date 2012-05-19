@@ -27,6 +27,10 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	}
 
 
+	public function indexAction() {
+	}
+
+
 	public function deleteAction() {
 		if ($model = $this->_definitions->find($this->_getParam('id'))) {
 			$model->delete();
@@ -46,6 +50,17 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 		
 		if ($this->_setupFormAndSave($model)) {
 			$this->_helper->notify($this->_definitions->successfulSaveMessage($model));
+			$this->_redirectToEdit($model);
+		}
+	}
+
+
+	public function addAction() {
+		$this->view->titre = $this->_definitions->addActionTitle();
+		$model = $this->_definitions->newModel();
+
+		if ($this->_setupFormAndSave($model)) {
+			$this->_helper->notify($this->_definitions->successfulAddMessage($model));
 			$this->_redirectToEdit($model);
 		}
 	}
