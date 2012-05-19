@@ -23,7 +23,7 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	protected $_definitions;
 
 	public function init() {
-		$this->_definitions = new ZendAfi_Controller_Action_RessourceDefinitions($this->_ressource_definition);
+		$this->_definitions = new ZendAfi_Controller_Action_RessourceDefinitions($this->getRessourceDefinitions());
 	}
 
 
@@ -32,8 +32,47 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 			$model->delete();
 			$this->_helper->notify($this->_definitions->successfulDeleteMessage($model));
 		}
+		$this->_redirectToIndex();
+	}
+
+
+	public function editAction() {
+		$this->view->titre = $this->_definitions->editActionTitle();
+
+		if (!$model = $this->_definitions->find($this->_getParam('id'))) {
+			$this->_redirectToIndex();
+			return;
+		}
+		
+		if ($this->_setupFormAndSave($model)) {
+			$this->_helper->notify($this->_definitions->successfulSaveMessage($model));
+			$this->_redirectToEdit($model);
+		}
+	}
+
+
+	protected function _redirectToIndex() {
 		$this->_redirect('/admin/'.$this->_request->getControllerName().'/index');
 	}
+
+
+	protected function _redirectToEdit($model) {
+		$this->_redirect('/admin/'.$this->_request->getControllerName().'/edit/id/'.$model->getId());
+	}
+
+
+  protected function _setupFormAndSave($model) {
+		$form = $this->_getForm($model);
+		
+		$this->view->form = $form;
+
+		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			return $model
+				->updateAttributes($this->_request->getPost())
+				->save();
+		}
+		return false;
+  }
 
 
 	/**

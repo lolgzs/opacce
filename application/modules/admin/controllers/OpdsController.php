@@ -20,32 +20,36 @@
  */
 
 class Admin_OpdsController extends ZendAfi_Controller_Action {
-	protected $_ressource_definition = array(
-																					 'model' => 'Class_OpdsCatalog',
-																					 'messages' => array('successful_add' => 'Catalogue %s ajouté',
-																															 'successful_save' => 'Catalogue %s sauvegardé',
-																															 'successful_delete' => 'Catalogue %s supprimé'),
+	public function getRessourceDefinitions() {
+		return array(
+								 'model' => 'Class_OpdsCatalog',
+								 'messages' => array('successful_add' => 'Catalogue %s ajouté',
+																		 'successful_save' => 'Catalogue %s sauvegardé',
+																		 'successful_delete' => 'Catalogue %s supprimé'),
 
-																					 'actions' => array('index'),
+								 'actions' => array('edit' => array('title' => 'Modifier un catalogue OPDS')),
 
-																					 'display_groups' => array('categorie' => array('legend' => 'Catalogue',
-																																													'elements' => array(
-																																																					 'libelle' => array('element' => 'text',
-																																																														 'options' =>  array('label' => 'Libellé *',
-																																																																								 'size'	=> 30,
-																																																																								 'required' => true,
-																																																																								 'allowEmpty' => false)),
-																																																					'url' => array('element' => 'text',
-																																																												 'options' => array('label' => 'Url *',
-																																																																						'size' => '90',
-																																																																						'required' => true,
-																																																																						'allowEmpty' => false,
-																																																																						'validators' => array('url'))
-																																																												 )
-																																																					)
-																																											)
-																																 )
-																					 );
+								 'display_groups' => array('categorie' => array('legend' => 'Catalogue',
+																																'elements' => array(
+																																										'libelle' => array('element' => 'text',
+																																																			 'options' =>  array('label' => 'Libellé *',
+																																																													 'size'	=> 30,
+																																																													 'required' => true,
+																																																													 'allowEmpty' => false)),
+																																										'url' => array('element' => 'text',
+																																																	 'options' => array('label' => 'Url *',
+																																																											'size' => '90',
+																																																											'required' => true,
+																																																											'allowEmpty' => false,
+																																																											'validators' => array('url'))
+																																																	 )
+																																										)
+																																)
+																					 )
+								 );
+	}
+
+
 
 	public function init() {
 		parent::init();
@@ -63,41 +67,11 @@ class Admin_OpdsController extends ZendAfi_Controller_Action {
 		$this->view->titre = 'Ajouter un catalogue OPDS';
 		$model = Class_OpdsCatalog::getLoader()->newInstance();
 
-		if ($this->_setupCatalogFormAndSave($model)) {
+		if ($this->_setupFormAndSave($model)) {
 			$this->_helper->notify(sprintf('Catalogue "%s" ajouté', $model->getLibelle()));
 			$this->_redirect('/admin/opds/edit/id/'.$model->getId());
 		}
 	}
-
-
-	public function editAction() {
-		$this->view->titre = 'Modifier un catalogue OPDS';
-
-		if (!$model = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
-			$this->_redirect('/admin/opds/index');
-			return;
-		}
-
-		
-		if ($this->_setupCatalogFormAndSave($model)) {
-			$this->_helper->notify(sprintf('Catalogue "%s" sauvegardé', $model->getLibelle()));
-			$this->_redirect('/admin/opds/edit/id/' . $model->getId());
-		}
-	}
-
-
-  protected function _setupCatalogFormAndSave($catalog) {
-		$form = $this->_getForm($catalog);
-		
-		$this->view->form = $form;
-
-		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-			return $catalog
-				->updateAttributes($this->_request->getPost())
-				->save();
-		}
-		return false;
-  }
 
 
 	public function browseAction() {

@@ -43,6 +43,17 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
+	public function successfulSaveMessage($model) {
+		return sprintf($this->_definitions['messages']['successful_save'],
+									 $model->getLibelle());
+	}
+
+
+	public function editActionTitle() {
+		return $this->_definitions['actions']['edit']['title'];
+	}
+
+
 	public function getModelName() {
 		return $this->_definitions['model'];
 	}
