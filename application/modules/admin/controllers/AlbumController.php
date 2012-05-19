@@ -33,7 +33,6 @@ class Admin_AlbumController extends Zend_Controller_Action {
 																													 ->findAllBy(array('parent_id' => 0))));
 		$this->view->containersActions = $this->_getTreeViewContainerActions();
 		$this->view->itemsActions = $this->_getTreeViewItemActions();
-		$this->view->form_import_ead = $this->_formImportEAD();
 		$this->view->headScript()->appendScript('var treeViewSelectedCategory = '
 																			. (int)$this->_getParam('id_cat') . ';');
 		$this->view->headScript()->appendFile(URL_ADMIN_JS . 'tree-view.js');
@@ -42,15 +41,24 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	public function importeadAction() {
+		$this->view->titre = 'Import EAD';
+
 		$form = $this->_formImportEAD();
+		$this->view->form_import_ead = $form;
+		
+		if (!$this->_request->isPost())
+			return;
+
 		if ($form->isValid($this->_request->getPost()) && $form->ead->receive()) {
 			$ead = new Class_EAD();
 			$ead->loadFile($form->ead->getFileName());
 			$this->_helper->notify(sprintf('%d albums importés', count($ead->getAlbums())));
-		} else {
-			$this->_helper->notify('Le fichier reçu n\'est pas valide');
-		}
-		$this->_redirect('admin/album');
+			$this->_redirect('admin/album');
+			return;
+		} 
+			
+		$this->_helper->notify('Le fichier reçu n\'est pas valide');
+		$this->_redirect('admin/album/importead');
 	}
 
 	

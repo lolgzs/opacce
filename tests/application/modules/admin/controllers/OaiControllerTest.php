@@ -54,7 +54,7 @@ class Admin_OaiControllerIndexActionTestCase extends Admin_OaiControllerTestCase
 
 	/** @test */
 	public function titleShouldBeRessourcesOAI() {
-		$this->assertXPathContentContains('//h1', 'Ressources OAI');
+		$this->assertXPathContentContains('//h1', 'Entrepôts OAI');
 	}
 
 

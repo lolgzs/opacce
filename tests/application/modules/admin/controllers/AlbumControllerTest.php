@@ -104,6 +104,8 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 }
 
 
+
+
 class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -217,26 +219,8 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	public function shouldHaveAButtonToAddACategory() {
 		$this->assertXPath("//div[contains(@onclick, '/admin/album/add_categorie')]");
 	}
-
-
-	/** @test */
-	public function pageShouldContainsFormImportEAD() {
-		$this->assertXPath('//form[contains(@action, "admin/album/import_ead")]');
-	}
-
-
-	/** @test */
-	public function formImportEADShouldContainsFileInputForXML() {
-		$this->assertXPath('//input[@type="file"][@name="ead"]');
-	}
-
-
-	/** @test */
-	public function formShouldHaveSubmitButtonImportEAD() {
-		$this->assertXPath('//input[@type="submit"][@value="Importer le fichier EAD"]');
-	}
-
 }
+
 
 
 
@@ -1447,8 +1431,49 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostWrongDataTest extends Ad
 
 
 
+
+class Admin_AlbumControllerImportEADTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/album/import_ead');
+	}
+
+
+	/** @test */
+	public function menuGaucheAdminShouldContainsLinkToImportEAD() {
+		$this->assertXPath('//div[@class="menuGaucheAdmin"]//a[contains(@href, "admin/album/import_ead")]');
+	}
+
+
+	/** @test */
+	public function titreShouldBeRessourcesEAD() {
+		$this->assertXPathContentContains('//h1', 'Import EAD');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsFormImportEAD() {
+		$this->assertXPath('//form[contains(@action, "admin/album/import_ead")]');
+	}
+
+
+	/** @test */
+	public function formImportEADShouldContainsFileInputForXML() {
+		$this->assertXPath('//input[@type="file"][@name="ead"]');
+	}
+
+
+	/** @test */
+	public function formShouldHaveSubmitButtonImportEAD() {
+		$this->assertXPath('//input[@type="submit"][@value="Importer le fichier EAD"]');
+	}
+}
+
+
+
+
 /** LL: quand j'aurais trouvé comment contourner is_uploaded_file */
-abstract class Admin_AlbumControllerImportEADTest extends Admin_AlbumControllerAlbumHarlockTestCase {
+abstract class Admin_AlbumControllerPostImportEADTest extends Admin_AlbumControllerAlbumHarlockTestCase {
 	public function setUp() {
 		parent::setUp();
 

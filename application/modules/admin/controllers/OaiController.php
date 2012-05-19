@@ -38,7 +38,7 @@ class Admin_OaiController extends Zend_Controller_Action {
 
 		$this->view->entrepots = Class_EntrepotOAI::findAllAsArray();
 		$this->view->entrepot_id = $entrepot_id;
-		$this->view->titre = 'Ressources OAI';
+		$this->view->titre = 'Entrepôts OAI';
 	}
 
 
