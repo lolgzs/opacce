@@ -198,27 +198,21 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	//------------------------------------------------------------------------------------------------------
 	// RECHERCHE
 	//------------------------------------------------------------------------------------------------------
-	public function recherche($rech)
-	{
+	public function recherche($rech)	{
 		$translate = Zend_Registry::get('translate');
 		$ix = new Class_Indexation();
-
-		// Entrepot
-		$id_entrepot=$criteres["id_oai"];
+		$ret = array('nb_mots' => 0);
 
 		// Analyse de l'expression
 		$mots=$ix->getMots($rech["expressionRecherche"]);
 		$recherche="";
-		foreach($mots as $mot)
-		{
-			$mot=$ix->getExpressionRecherche($mot);
-			if($mot)
-			{
+		foreach($mots as $mot)	{
+			if($mot = $ix->getExpressionRecherche($mot))	{
 				$ret["nb_mots"]++;
-				if($pertinence == true) $recherche.=" ".$mot;
-				else $recherche.=" +".$mot;
+				$recherche.=" +".$mot;
 			}
 		}
+
 		$recherche=trim($recherche);
 		if(!$recherche)  {
 			$ret["statut"]="erreur"; 
@@ -226,10 +220,11 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 			return $ret;}
 
 		// Constitution des requetes
-		if($pertinence == true) $against=" AGAINST('".$recherche."')";
-		else $against=" AGAINST('".$recherche."' IN BOOLEAN MODE)";
-		$where="Where MATCH(recherche)";
-		if($rech["id_entrepot"]>'') $conditions=" and id_entrepot=".$rech["id_entrepot"];
+		$against = " AGAINST('".$recherche."' IN BOOLEAN MODE)";
+		$where = 'where MATCH(recherche)';
+		$conditions = '';
+		if (isset($rech["id_entrepot"]))
+			$conditions = " and id_entrepot=".$rech["id_entrepot"];
 
 		$order_by=" order by alpha_titre";
 		$req_liste = "select id from oai_notices ".$where.$against.$conditions.$order_by;
@@ -237,8 +232,7 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 		// Lancer les requetes
 		$nb=fetchOne($req_comptage);
-		if(!$nb)
-		{
+		if(!$nb) {
 			$ret["statut"]="erreur";
 			$ret["erreur"]=$translate->_("Aucun résultat trouvé");
 			return $ret;
@@ -251,22 +245,20 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 //------------------------------------------------------------------------------------------------------
 // Execute une requete notices et rend 1 page
 //------------------------------------------------------------------------------------------------------
-	public function getPageResultat($req)
-	{
+	public function getPageResultat($req, $page = 1)	{
 		// Nombre par page
 		$this->nb_par_page=10;
 
 		// Calcul de la limite
-		$page=intval($_REQUEST["page"]);
-		if(!$page) $page=1;
-		if(strpos($req," LIMIT ") === false)
-		{
+		$page = (int)$page ? (int)$page : 1;
+		$debut_limit = $fin_limit = 0;
+
+		if(strpos($req," LIMIT ") === false) {
 			$limit = ($page-1) * $this->nb_par_page;
 			$limit = " LIMIT ".$limit.",". $this->nb_par_page;
 			$req.=$limit;
 		}
-		else
-		{
+		else {
 			$debut_limit=($page-1) * $this->nb_par_page;
 			$fin_limit=$this->nb_par_page;
 		}

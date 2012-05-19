@@ -58,9 +58,9 @@ class RechercheoaiController extends Zend_Controller_Action
 		else
 		{
 			$this->view->recherche=$_REQUEST["expressionRecherche"];
-			$this->view->notices=$cls_oai->getPageResultat($resultat["req_liste"]);
+			$this->view->notices=$cls_oai->getPageResultat($resultat["req_liste"], $this->_getParam('page'));
 			$this->view->nombre=$resultat["nombre"];
-			$this->view->page=$_REQUEST["page"];
+			$this->view->page = $this->_getParam('page');
 			$this->view->url_retour=BASE_URL."/rechercheoai/resultat?expressionRecherche=".$_REQUEST["expressionRecherche"]."&id_entrepot=".$_REQUEST["id_entrepot"];
 		}
 	}

@@ -102,8 +102,7 @@ class Class_Moderer {
 //----------------------------------------------------------
 // Ecrire moderation pour 1 tag (validation ou suppression)
 //----------------------------------------------------------
-	public function modererTag($action,$id_tag,$id_notice)
-	{
+	public function modererTag($action,$id_tag,$id_notice)	{
 		$cls_tag= new Class_TagNotice();
 
 		if($action=="1") $cls_tag->validerTagNotice($id_tag,$id_notice);
