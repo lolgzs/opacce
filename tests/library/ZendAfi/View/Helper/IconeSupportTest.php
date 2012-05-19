@@ -73,9 +73,9 @@ class ZendAfi_View_Helper_IconeSupportTest extends ViewHelperTestCase {
 
 
 	/** @test */
-	function imageForSupportGreaterThan100ShouldReturnSupportMLSInAdminDir() {
+	function imageForSupportGreaterThan102ShouldReturnSupportMLSInAdminDir() {
 		$this->assertEquals(URL_ADMIN_IMG.'supports/mls_s.png',
-												$this->_helper->imageForSupport(Class_TypeDoc::LIVRE_NUM));
+												$this->_helper->imageForSupport(105));
 	}
 }
 ?>

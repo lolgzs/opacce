@@ -20,7 +20,7 @@
  */
 class Admin_AlbumController extends Zend_Controller_Action {
 	public function init() {
-		$this->view->titre = 'Bibliothèque numérique';
+		$this->view->titre = 'Collections';
 
 		Class_ScriptLoader::getInstance()
 			->addJQueryReady('$("input.permalink").click(function(){$(this).select();})');

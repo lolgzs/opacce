@@ -30,6 +30,7 @@ class ZendAfi_View_Helper_IconeSupport extends Zend_View_Helper_HtmlElement {
 																					8 => 'per_s_dep.png',
 																					9 => 'support_9.gif',
 																					10 => 'support_10.gif',
+																					Class_TypeDoc::LIVRE_NUM => 'livre_num.png',
 																					Class_TypeDoc::DIAPORAMA => 'images.png',
 																					Class_TypeDoc::EPUB => 'epub.png'
 																					);
