@@ -91,15 +91,19 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 															->setAlbums(array())
 															->setLibelle('Patrimoine')))
 
-			->whenCalled('findAll')->answers(array($cat_adulte, $cat_patrimoine, $cat_favoris))
-			->getWrapper();
+			->whenCalled('findAll')->answers(array($cat_adulte, $cat_patrimoine, $cat_favoris));
 
 
-		$this->album_loader_wrapper = Storm_Test_ObjectWrapper
-			::onLoaderOfModel('Class_Album')
+		$this->album_loader_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
 			->whenCalled('save')
 			->answers(true)
-			->getWrapper();
+
+			->whenCalled('findAllBy')
+			->with(array('cat_id' => 0))
+		  ->answers(array(Class_Album::getLoader()
+											->newInstanceWithId(66)
+											->setParentId(0)
+											->setTitre("L'orphelin")));
 	}
 }
 
@@ -219,6 +223,31 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	public function shouldHaveAButtonToAddACategory() {
 		$this->assertXPath("//div[contains(@onclick, '/admin/album/add_categorie')]");
 	}
+
+
+	/** @test */
+	public function categorieAlbumsNonClassesShouldBeVisible() {
+		$this->assertXPathContentContains('//li', 'Albums non classés');
+	}
+
+
+	/** @test */
+	public function categorieAlbumsNonClassesShouldHaveNoActions() {
+		$this->assertNotXPath('//ul[@class="root"]/li[last()]/div[@class="actions"]');
+	}
+
+
+	/** @test */
+	public function categorieAlbumsNonClassesShouldHaveAlbumOrphelin() {
+		$this->assertXPathContentContains('//ul[@class="root"]/li[last()]//li', "L'orphelin");
+	}
+
+
+	/** @test */
+	public function categorieAlbumsNonClassesShouldNotHaveCategories() {
+		$this->assertNotXPath('//ul[@class="root"]/li[last()]//li[@class="categorie"]');
+	}
+
 }
 
 

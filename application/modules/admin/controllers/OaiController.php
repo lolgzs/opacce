@@ -121,6 +121,17 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 			->addElement('text', 'expression', array('label' => 'Rechercher dans le catalogue OAI'))
 			->addElement('submit', 'OK');
 	}
+
+
+	public function importAction() {
+		$notice = Class_NoticeOAI::getLoader()->find($this->_getParam('id'));
+		$album = Class_Album::getLoader()->newInstance()
+			->setTitre($notice->getTitre())
+			->setAuteur($notice->getAuteur())
+			->save();
+
+		$this->_redirect('oai/index');
+	}
 	
 }
 

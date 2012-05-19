@@ -63,12 +63,12 @@ class Class_AlbumCategorie extends Storm_Model_Abstract {
 																														  'referenced_in' => 'parent_id'));
 
 	protected $_has_many = array('sous_categories' => array('model' => 'Class_AlbumCategorie',
-																													 'role' => 'parent',
-																													 'dependents' => 'delete'),
+																													'role' => 'parent',
+																													'dependents' => 'delete'),
 
-                                 'albums' => array('model' => 'Class_Album',
-                                                   'role' => 'categorie',
-																									 'dependents' => 'delete'));
+															 'albums' => array('model' => 'Class_Album',
+																								 'role' => 'categorie',
+																								 'dependents' => 'delete'));
 
 
 	public static function getLoader() {

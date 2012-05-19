@@ -28,9 +28,15 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	public function indexAction() {
+		$categories = Class_AlbumCategorie::getLoader()->findAllBy(array('parent_id' => 0));
+		$categories []= Class_AlbumCategorie::getLoader()
+			->newInstance()
+			->setLibelle('Albums non classés')
+			->setAlbums(Class_Album::getLoader()->findAllBy(array('cat_id' => 0)))
+			->setSousCategories(array());
+
 		$this->view->categories = array(array('bib' => Class_Bib::getLoader()->getPortail(),
-																					'containers' => Class_AlbumCategorie::getLoader()
-																													 ->findAllBy(array('parent_id' => 0))));
+																					'containers' => $categories));
 		$this->view->containersActions = $this->_getTreeViewContainerActions();
 		$this->view->itemsActions = $this->_getTreeViewItemActions();
 		$this->view->headScript()->appendScript('var treeViewSelectedCategory = '

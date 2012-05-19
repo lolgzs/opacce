@@ -48,7 +48,11 @@ echo $this->bouton('id=add_category',
 	if ($this->notices) {
 		echo '<ul>';
 		foreach ($this->notices as $notice)
-			echo '<li>'.$notice->getTitre().'</li>';
+			echo sprintf('<li>%s - %s</li>',
+									 $notice->getTitre(),
+									 $this->tagAnchor(array('action' => 'import',
+																					'id' => $notice->getId()), 
+																		'Importer'));
 		echo '</ul>';
 	}
 

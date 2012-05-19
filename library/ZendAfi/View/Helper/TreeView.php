@@ -166,6 +166,8 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	protected function _renderContainerActions($container) {
+		if ($container->isNew())
+			return '';
 		return $this->_renderActions(self::NODE_CONTAINER, $container);
 	}
 

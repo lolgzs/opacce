@@ -148,6 +148,46 @@ class Admin_OaiControllerBrowseGallicaActionTest extends Admin_OaiControllerTest
 
 
 
+class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiControllerTestCase  {
+	protected $_new_album;
+	
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+			->whenCalled('save')
+			->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+			->whenCalled('save')
+			->answers(true);
+
+
+		$foundation = Class_NoticeOAI::getLoader()
+			->newInstanceWithId(23)
+			->setData(serialize(array('titre' => 'Prelude to foundation',
+																'auteur' => 'Isaac Asimov')));
+
+		$this->dispatch('/admin/oai/import/id/23');
+
+		$this->_new_album = Class_Album::getLoader()->getFirstAttributeForLastCallOn('save');
+	}
+
+
+	/** @test */
+	public function newAlbumTitreShouldBePreludeToFoundation() {
+		$this->assertEquals('Prelude to foundation', $this->_new_album->getTitre());
+	}
+
+
+	/** @test */
+	public function newAlbumAuteurShouldBeIsaacAsimov() {
+		$this->assertEquals('Isaac Asimov', $this->_new_album->getAuteur());
+	}
+
+}
+
+
+
 
 class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerTestCase  {
 	public function setUp() {
@@ -188,6 +228,12 @@ class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerTestCase  {
 	/** @test */
 	public function listItemShouldContainsMangezDesPommes() {
 		$this->assertXPathContentContains('//li', 'Mangez des pommes');
+	}
+
+
+	/** @test */
+	public function listItemShouldHaveLinkForImport() {
+		$this->assertXPath('//li[contains(text(),"Mangez des pommes")]//a[contains(@href, "oai/import/expression/pommes/id/2")]');
 	}
 }
 

@@ -93,11 +93,19 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 		if ($titre = $this->TITRE)
 			return $titre;
 
-	  $datas = $this->getDataAsArray();
-		if (array_key_exists('titre', $datas))
-			 return $datas['titre'];
-		return '';
+		return $this->extractData('titre');
   }
+
+
+	public function getAuteur() {
+		return $this->extractData('auteur');
+	}
+
+
+	public function extractData($name) {
+	  $datas = $this->getDataAsArray();
+		return isset($datas[$name]) ? $datas[$name] : '';
+	}
 
 
 	public function resumeHarvest($entrepot_oai, $resumptionToken) {
