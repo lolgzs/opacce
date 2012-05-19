@@ -22,7 +22,8 @@
 class Admin_OpdsController extends ZendAfi_Controller_Action {
 	public function getRessourceDefinitions() {
 		return array(
-								 'model' => 'Class_OpdsCatalog',
+								 'model' => array('class' => 'Class_OpdsCatalog',
+																	'name' => 'catalog'),
 								 'messages' => array('successful_add' => 'Catalogue %s ajouté',
 																		 'successful_save' => 'Catalogue %s sauvegardé',
 																		 'successful_delete' => 'Catalogue %s supprimé'),
@@ -52,13 +53,6 @@ class Admin_OpdsController extends ZendAfi_Controller_Action {
 	}
 
 
-	public function init() {
-		parent::init();
-		$this->view->titre = 'Catalogues OPDS';
-		$this->view->catalogs = Class_OpdsCatalog::getLoader()->findAllBy(array('order' => 'libelle'));
-	}
-
-
 	public function browseAction() {
 		if (!$catalog = Class_OpdsCatalog::getLoader()->find($this->_getParam('id'))) {
 			$this->_redirect('/admin/opds/index');
@@ -81,7 +75,7 @@ class Admin_OpdsController extends ZendAfi_Controller_Action {
 																								array('titre' => sprintf('Parcours du catalogue "%s"', $catalog->getLibelle()),
 																											'catalog' => $catalog));
 
-		$this->render('index');
+		$this->_forward('index');
 	}
 
 

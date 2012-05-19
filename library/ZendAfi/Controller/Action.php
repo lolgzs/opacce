@@ -28,6 +28,9 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 
 
 	public function indexAction() {
+		$var_name = $this->_definitions->pluralizeModelName();
+		$this->view->$var_name = $this->_definitions->findAll();
+		$this->view->titre = $this->_definitions->indexActionTitle();
 	}
 
 

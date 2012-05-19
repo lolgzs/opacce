@@ -28,12 +28,17 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 
 	public function getModelLoader() {
-		return Storm_Model_Abstract::getLoaderFor($this->getModelName());
+		return Storm_Model_Abstract::getLoaderFor($this->getModelClass());
 	}
 
 
 	public function find($id) {
 		return $this->getModelLoader()->find($id);
+	}
+
+
+	public function findAll() {
+		return $this->getModelLoader()->findAllBy(array('order' => 'libelle'));
 	}
 
 
@@ -60,6 +65,11 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
+	public function indexActionTitle() {
+		return $this->_definitions['actions']['index']['title'];
+	}
+
+
 	public function editActionTitle() {
 		return $this->_definitions['actions']['edit']['title'];
 	}
@@ -70,8 +80,18 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
+	public function getModelClass() {
+		return $this->_definitions['model']['class'];
+	}
+
+
 	public function getModelName() {
-		return $this->_definitions['model'];
+		return $this->_definitions['model']['name'];
+	}
+
+	
+	public function pluralizeModelName() {
+		return Storm_Inflector::pluralize($this->getModelName());
 	}
 
 
