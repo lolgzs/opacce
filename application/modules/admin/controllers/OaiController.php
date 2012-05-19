@@ -18,10 +18,42 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Admin_OaiController extends Zend_Controller_Action {
+class Admin_OaiController extends ZendAfi_Controller_Action {
+	public function getRessourceDefinitions() {
+		return array(
+								 'model' => array('class' => 'Class_EntrepotOAI',
+																	'name' => 'entrepot'),
+								 'messages' => array('successful_add' => 'Entrepôt %s ajouté',
+																		 'successful_save' => 'Entrepôt %s sauvegardé',
+																		 'successful_delete' => 'Entrepôt %s supprimé'),
 
-	function indexAction() {
-		$entrepot_id = $this->_getparam("entrepot_id");
+								 'actions' => array('edit' => array('title' => 'Modifier un entrepôt OAI'),
+																		'add'  => array('title' => 'Ajouter un entrepôt OAI'),
+																		'index' => array('title' => 'Entrepôts OAI')),
+
+								 'display_groups' => array('categorie' => array('legend' => 'Entrepôt',
+																																'elements' => array(
+																																										'libelle' => array('element' => 'text',
+																																																			 'options' =>  array('label' => 'Libellé *',
+																																																													 'size'	=> 30,
+																																																													 'required' => true,
+																																																													 'allowEmpty' => false)),
+																																										'handler' => array('element' => 'text',
+																																																			 'options' => array('label' => 'Url *',
+																																																													'size' => '90',
+																																																													'required' => true,
+																																																													'allowEmpty' => false,
+																																																													'validators' => array('url'))
+																																																	 )
+																																										)
+																																)
+																					 )
+								 );
+	}
+
+
+	function browseAction() {
+		$entrepot_id = $this->_getparam("id");
 		if ($entrepot_id) {
 			$entrepot = Class_EntrepotOAI::getLoader()->find($entrepot_id);
 
@@ -29,16 +61,19 @@ class Admin_OaiController extends Zend_Controller_Action {
 			$oai_service->setOAIHandler($entrepot->getHandler());
 
 			try {
-				$this->view->oai_sets = $oai_service->getSets();
-				$this->view->oai_set = $this->view->oai_sets[0];
+				$oai_sets = $oai_service->getSets();
+				$oai_set = $this->view->oai_sets[0];
 			} catch (Exception $e) {
 				$this->view->communication_error = $e->getMessage();
 			}
 		} 
 
-		$this->view->entrepots = Class_EntrepotOAI::findAllAsArray();
-		$this->view->entrepot_id = $entrepot_id;
-		$this->view->titre = 'Entrepôts OAI';
+		$this->view->subview = $this->view->partial('oai/browse.phtml',
+																								array('titre' => sprintf('Parcours de l\'entrepôt "%s"', $entrepot->getLibelle()),
+																											'entrepot_id' => $entrepot_id,
+																											'oai_sets' => $oai_sets,
+																											'oai_set' => $oai_set));
+		$this->_forward('index');
 	}
 
 

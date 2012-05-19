@@ -8,6 +8,10 @@
 	http://oai.bnf.fr/oai2/OAIHandler</request>
 	<ListSets>
 		<set>
+			<setSpec>afi</setSpec>
+			<setName>Catalogue AFI</setName>
+		</set>
+		<set>
 			<setSpec>banqueimages</setSpec>
 			<setName>Banque d'images</setName>
 		</set>
@@ -73,10 +77,6 @@
 		<set>
 			<setSpec>banqueimages:partitions</setSpec>
 			<setName>Banque d'images : partitions musicales</setName>
-		</set>
-		<set>
-			<setSpec>banqueimages:peintures</setSpec>
-			<setName>Banque d'images : tableaux et peintures</setName>
 		</set>
 		<set>
 			<setSpec>banqueimages:photographies</setSpec>

@@ -45,7 +45,7 @@ abstract class Admin_OaiControllerTestCase extends Admin_AbstractControllerTestC
 
 
 
-class Admin_OaiControllerIndexActionTestCase extends Admin_OaiControllerTestCase  {
+class Admin_OaiControllerIndexActionTest extends Admin_OaiControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/oai');
@@ -53,20 +53,82 @@ class Admin_OaiControllerIndexActionTestCase extends Admin_OaiControllerTestCase
 
 
 	/** @test */
-	public function titleShouldBeRessourcesOAI() {
-		$this->assertXPathContentContains('//h1', 'Entrepôts OAI');
+	public function pageShouldContainsLinkToEditEntrepotGallica() {
+		$this->assertXPath('//a[contains(@href, "admin/oai/edit/id/4")]',
+											 $this->_response->getBody());
 	}
 
 
 	/** @test */
-	public function selectOptionShouldContainsGallica() {
-		$this->assertXPathContentContains('//select[@name="entrepot_id"]//option[@value="4"]', 'Gallica');
+	public function pageShouldContainsLinkToDeleteEntrepotGallica() {
+		$this->assertXPath('//a[contains(@href, "admin/oai/delete/id/4")]',
+											 $this->_response->getBody());
 	}
 
 
 	/** @test */
-	public function selectOptionShouldContainsOpenArchive() {
-		$this->assertXPathContentContains('//select[@name="entrepot_id"]//option[@value="5"]', 'Open Archives');
+	public function pageShouldContainsLinkToBrowseEntrepotGallica() {
+		$this->assertXPath('//a[contains(@href, "admin/oai/delete/id/4")]',
+											 $this->_response->getBody());
+	}
+}
+
+
+
+class Admin_OaiControllerAddActionTest extends Admin_OaiControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/oai/add');
+	}
+
+	
+	/** @test */
+	public function pageShouldRenderEntrepotForm() {
+		$this->assertXPath('//input[@name="libelle"]');
+	}
+}
+
+
+
+
+class Admin_OaiControllerEditActionTest extends Admin_OaiControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/oai/edit/id/4');
+	}
+
+	
+	/** @test */
+	public function pageShouldRenderEntrepotForm() {
+		$this->assertXPath('//input[@name="libelle"][@value="Gallica"]');
+	}
+}
+
+
+
+
+class Admin_OaiControllerBrowseGallicaActionTest extends Admin_OaiControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$web_client = Storm_Test_ObjectWrapper::mock();
+		Class_WebService_OAI::setDefaultWebClient($web_client);
+
+		$web_client
+			->whenCalled('open_url')
+			->answers(file_get_contents('tests/library/Class/WebService/OAIListSets.xml'));
+		$this->dispatch('/admin/oai/browse/id/4');
+	}
+
+
+	/** @test */
+	public function h2ShouldContainsParcoursGallica() {
+		$this->assertXPathContentContains('//h2', 'Parcours de l\'entrepôt "Gallica"');
+	}
+
+
+	/** @test */
+	public function harvestFormShouldContainsSetAfi() {
+		$this->assertXPathContentContains('//form//select//option[@value="afi"]', 'Catalogue AFI', $this->_response->getBody());
 	}
 }
 ?>

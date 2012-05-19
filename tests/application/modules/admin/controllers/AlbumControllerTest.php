@@ -126,8 +126,8 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 	/** @test */
-	public function titreShouldBeBibliothequeNumerique() {
-		$this->assertXPathContentContains("//h1", 'Bibliothèque numérique');
+	public function titreShouldBeCollections() {
+		$this->assertXPathContentContains("//h1", 'Collections');
 	}
 
 

@@ -37,11 +37,27 @@
  *     $oai->service->getNextRecords();    // tant qu'il y en a
  */
 class Class_WebService_OAI {
+	protected static $_default_web_client;
+	protected $web_client;
+
 	const ListSets = 'ListSets';
 	const ListRecords = 'ListRecords';
 
 	public static function baseURL() {
 		return 'http://' . $_SERVER['SERVER_NAME'] . BASE_URL . '/opac/oai/request';
+	}
+
+
+	public static function setDefaultWebClient($web_client) {
+		self::$_default_web_client = $web_client;
+	}
+
+
+	public static function getDefaultWebClient() {
+		if (isset(self::$_default_web_client))
+			return self::$_default_web_client;
+
+		return new Class_WebService_SimpleWebClient();
 	}
 
 
@@ -51,14 +67,15 @@ class Class_WebService_OAI {
 	}
 
 
-	public function setWebClient($web_client) {
-		$this->web_client = $web_client;
+	public function setWebClient($client) {
+		$this->web_client = $client;
 		return $this;
 	}
 
+
 	public function getWebClient() {
 		if (!isset($this->web_client))
-			$this->setWebClient(new Class_WebService_SimpleWebClient());
+			$this->setWebClient(self::getDefaultWebClient());
 		return $this->web_client;
 	}
 
@@ -136,14 +153,17 @@ class Class_WebService_OAI {
 		return $this->parseListRecordsXML($xml_data);
 	}
 
+
 	public function setListRecordsResumptionToken($token) {
 		$this->_listRecordsResumptionToken = $token;
 		return $this;
 	}
 
+
 	public function getListRecordsResumptionToken() {
 		return $this->_listRecordsResumptionToken;
 	}
+
 
 	public function getTotalNumberOfRecords() {
 		if (!isset($this->_listRecordsResumptionToken)) return 0;
