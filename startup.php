@@ -171,13 +171,17 @@ function setupLanguage() {
 function setupDatabase($cfg) {
 	// setup database
 	$sql = Zend_Db::factory($cfg->sgbd->adapter, $cfg->sgbd->config->toArray());
+
 	Zend_Db_Table::setDefaultAdapter($sql);
+
 	$afi_sql = new Class_Systeme_Sql(
 																	 $cfg->sgbd->config->host,
 																	 $cfg->sgbd->config->username,
 																	 $cfg->sgbd->config->password,
 																	 $cfg->sgbd->config->dbname);
 	Zend_Registry::set('sql', $afi_sql);
+
+
 	Zend_Db_Table::getDefaultAdapter()->query('set names "UTF8"');
 }
 
@@ -239,7 +243,6 @@ function setupMail($cfg) {
 
 function setupFrontController() {
 	$front_controller = Zend_Controller_Front::getInstance()
-		->throwExceptions(true)
 		->addModuleDirectory(MODULEDIRECTORY)
 		->addControllerDirectory(ROOT_PATH.'afi/application/modules/opacpriv/controllers','opacpriv')	
 		->setDefaultModule('opac')
@@ -250,7 +253,6 @@ function setupFrontController() {
 		->registerPlugin(new ZendAfi_Controller_Plugin_InitModule())
 		->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib())
 		->setParam('useDefaultControllerAlways', true);
-
 
 	return setupRoutes($front_controller);
 }

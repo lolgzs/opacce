@@ -18,10 +18,10 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Admin_ErrorController extends Zend_Controller_Action {
+class ErrorController extends Zend_Controller_Action {
 	public function errorAction() {
-		$this->view->titre = 'Une erreur est survenue';
-		$this->view->errors = $this->_getParam('error_handler');
-		$this->view->database = Zend_Registry::get('cfg')->sgbd->config->dbname;
+		$this->_response->setHttpResponseCode(500);
+		$this->_response->clearBody();
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
 	}
 }

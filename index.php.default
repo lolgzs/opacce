@@ -24,8 +24,8 @@ if (!function_exists('xdebug_break')) {
 }
 
 set_include_path('.' . PATH_SEPARATOR . './library'
-. PATH_SEPARATOR . '../ZendFramework-1.6.2/library'
-. PATH_SEPARATOR . get_include_path());
+								 . PATH_SEPARATOR . '../ZendFramework-1.6.2/library'
+								 . PATH_SEPARATOR . get_include_path());
 
 // Includes de base
 include_once "local.php";
@@ -46,15 +46,7 @@ $frontController = setupOpac();
 
 try { 
 	$frontController->dispatch();
-} catch(Zend_Controller_Action_Exception $e) {
-    $url='' ;
-    $request= $frontController->getRequest() ;
-    $module= $request->getModuleName() ;
-    $controller= $request->getControllerName() ;
-    if($module != 'default') $url= '/' . $module ;
-    if($controller != 'default') $url= $url . '/' . $controller ;
-    header("Location: " . BASE_URL . $url) ;
+} catch(Exception $e) {
+	echo $e->getMessage();
 }
-
-
 ?>

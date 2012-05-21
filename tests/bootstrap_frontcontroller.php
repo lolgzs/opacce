@@ -29,7 +29,6 @@ $_REQUEST["id_profil"] = $_SESSION["id_profil"] = 2;
 $_SERVER['HTTP_HOST'] = 'localhost';
 
 $controller = Zend_Controller_Front::getInstance()
-	->setParam('noErrorHandler', true)
 	->throwExceptions(true)
 	->addModuleDirectory('application/modules')
 	->setDefaultModule('opac')
