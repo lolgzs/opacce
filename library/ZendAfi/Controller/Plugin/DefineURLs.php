@@ -34,10 +34,12 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		$id_profil = 0;
 		$profil = null;
 
-		if($requested_module != 'admin')
-			$id_profil=(int)$request->getParam("id_profil");
+		$_SESSION['previous_id_profil'] = isset($_SESSION['id_profil']) ? $_SESSION['id_profil'] : 1;
 
-		if ($id_profil <= 0 and array_key_exists("id_profil", $_SESSION))
+		if($requested_module != 'admin')
+			$id_profil=(int)$request->getParam('id_profil');
+
+		if ($id_profil <= 0 and isset($_SESSION['id_profil']))
 				$id_profil = intval($_SESSION["id_profil"]);
 		
 		if ($id_profil <= 0)

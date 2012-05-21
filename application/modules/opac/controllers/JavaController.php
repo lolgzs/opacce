@@ -22,7 +22,7 @@
 // OPAC3 - Objets java
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class JavaController extends ZendAfi_Controller_IFrameAction {
+class JavaController extends Zend_Controller_Action {
 
 //-------------------------------------------------------------------------------
 // Met le layout
@@ -30,6 +30,11 @@ class JavaController extends ZendAfi_Controller_IFrameAction {
 	function init()	{
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('iframe.phtml');
+	}
+
+
+	public function postDispatch() {
+		Class_Profil::goBackToPreviousProfil();
 	}
 
 
@@ -55,7 +60,7 @@ class JavaController extends ZendAfi_Controller_IFrameAction {
 		$this->view->notices=$catalogue->getNoticesByPreferences($preferences,"url");
 
 		// Redirection vers la bonne vue
-		$vue="/java/".$this->_getParam("vue").".phtml";
+		$vue = '/java/'.$this->_getParam('vue', 'diaporama').'.phtml';
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->renderScript($vue);
 	}

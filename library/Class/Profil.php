@@ -101,6 +101,12 @@ class Class_Profil extends Storm_Model_Abstract {
 	}
 
 
+
+	public static function goBackToPreviousProfil() {
+		$_SESSION['id_profil'] = $_SESSION['previous_id_profil'];
+	}
+
+
 	/**
 	 * @param Class_Profil $profil
 	 */

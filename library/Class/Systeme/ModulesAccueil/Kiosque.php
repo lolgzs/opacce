@@ -46,8 +46,11 @@ class Class_Systeme_ModulesAccueil_Kiosque extends Class_Systeme_ModulesAccueil_
 		'aleatoire' => 1,				// 0=non,1=oui
 		'tri' => 1,					 // 0=alpha,1=par date de creation,2=les plus consultées
 		'nb_analyse' => 50,			 // nbre a analyser pour le mode aleatoire
-		'op_hauteur_img' => 0,
-		'rss_avis' => 1,
+		'op_hauteur_img' => 0, // hauteur des vignettes
+		'op_transition' => '', //type de transition pour le diaporama
+		'op_largeur_img' => 0, //largeur des vignettes 
+		'rss_avis' => 1,    // afficher les RSS
+		'id_catalogue' => 0
 	);
 }
 ?>
