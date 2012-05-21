@@ -127,6 +127,17 @@ class CalendarWithEmptyPreferencesTest extends CalendarWithEmptyPreferencesTestC
 
 
 	/** @test */
+	public function cacheKeyShouldContainsBASE_URL() {
+		$params = array(BASE_URL, 
+										2, 
+										Class_Profil::getCurrentProfil()->getId(), 
+										Zend_Registry::get('translate')->getLocale(), 
+										$this->helper->getPreferences());
+		$this->assertEquals(md5(serialize($params)), $this->helper->getCacheKey());
+	}
+
+
+	/** @test */
 	public function titreShouldBeAgendaAndLinkToArticleViewByDate() {
 		$this->assertXPathContentContains($this->html, 
 																			'//a[contains(@href, "/cms/articleviewbydate/id_module/2/id_profil/2")]', 

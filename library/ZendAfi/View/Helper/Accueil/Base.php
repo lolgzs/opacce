@@ -78,10 +78,16 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 
 	// Calcul la clé qui référence le cache()
 	public function getCacheKey() {
-		return md5(serialize(array($this->id_module,
+		return md5(serialize(array(BASE_URL,
+															 $this->id_module,
 															 Class_Profil::getCurrentProfil()->getId(),
 															 $this->getLocale(),
 															 $this->preferences)));
+	}
+
+
+	public function getPreferences() {
+		return $this->preferences;
 	}
 
 
