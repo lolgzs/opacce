@@ -46,6 +46,10 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		// Entree dans fonctions admin
 		if ($module == 'admin' and $controller != 'error')
 		{
+			Zend_Controller_Front::getInstance()
+				->getPlugin('Zend_Controller_Plugin_ErrorHandler')
+				->setErrorHandlerModule('admin');
+
 			$acl = new ZendAfi_Acl_AdminControllerRoles();
 	    // Un user est connecté
 	    if($auth->hasIdentity())
