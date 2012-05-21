@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class CmsController extends ZendAfi_Controller_IFrameAction {
+class CmsController extends Zend_Controller_Action {
 	public function init() {
 		parent::init();
 
