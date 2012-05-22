@@ -134,6 +134,44 @@ class Admin_SystemeController extends Zend_Controller_Action {
 		}
 		else $this->view->mode="intro";
 	}
+
+
+
+	public function mailtestAction() {
+		$this->view->titre = 'Test de l\'envoi des mails';
+
+		$form = $this->view->newForm(array('id' => 'mailtest'))
+			->addElement('text', 'sender', array('label' => 'Emetteur',
+																					 'size' => 50,
+																					 'required' => true,
+																					 'allowEmpty' => false,
+																					 'validators' => array('emailAddress'),
+																					 'value' => Class_Profil::getLoader()->getPortail()->getMailSite()))
+			->addElement('text', 'recipient', array('label' => 'Destinataire',
+																							'size' => 50,
+																							'required' => true,
+																							'allowEmpty' => false,
+																							'validators' => array('emailAddress')))
+			->addDisplayGroup(array('sender', 'recipient'),
+												'mail',
+												array('legend' => 'Général'))
+			->addElement('submit', 'send', array('label' => 'Envoyer'));
+
+
+		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			$mail = new Zend_Mail('utf8');
+			$mail
+				->setFrom($this->_request->getPost('sender'))
+				->addTo($this->_request->getPost('recipient'))
+				->setSubject('[AFI-OPAC2.0] test envoi mails')
+				->setBodyText('Envoyé depuis '.BASE_URL)
+				->send();
+
+			$this->view->message = 'Le mail a bien été envoyé';
+		}
+
+		$this->view->form = $form;
+	}
 	
 }
 

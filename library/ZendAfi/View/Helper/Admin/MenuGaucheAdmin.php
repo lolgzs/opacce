@@ -101,8 +101,9 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_systeme .= $this->addMenu("database.png",		$this->translate()->_("Accès à Cosmogramme"),			getVar("URL_COSMOGRAMME"),		 $acl_admins_portail);
 		$menu_systeme .= $this->addMenu("systeme.png",		$this->translate()->_("Variables"),								"/admin/index/adminvar",			 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("tester.gif",			$this->translate()->_("Test des web-services"),		"/admin/systeme/webservices",	 $acl_super_admin);
+		$menu_systeme .= $this->addMenu("mail_send.png",	$this->translate()->_("Test envoi mails"),		    "/admin/systeme/mailtest",	   $acl_super_admin);
 		$menu_systeme .= $this->addMenu("images.png",			$this->translate()->_("Cache des images"),				"/admin/systeme/cacheimages",	 $acl_super_admin);
-		$menu_systeme .= $this->addMenu("chat.gif.png",		$this->translate()->_("Import avis opac2"),					"/admin/systeme/importavisopac2",$acl_super_admin);
+		$menu_systeme .= $this->addMenu("chat.gif.png",		$this->translate()->_("Import avis opac2"),				"/admin/systeme/importavisopac2",$acl_super_admin);
 		$menu_systeme .= $this->closeBoite();
 
 		// Activation des menus en fonction du rôle
