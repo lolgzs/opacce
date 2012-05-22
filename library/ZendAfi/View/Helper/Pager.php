@@ -67,15 +67,18 @@ class ZendAfi_View_Helper_Pager extends ZendAfi_View_Helper_BaseHelper
 		return $html;
 	}
 	
-	private function getLigne($href,$page,$libelle)
-	{
-		if($href == "#")
-		{ 
-			$style=' style="font-size:larger;color:#808080"';
-			$libelle='<big>'.$libelle.'</big>';
+	private function getLigne($href, $page, $libelle) {
+		$style = '';
+		if ($href == "#") { 
+			$style = ' style="font-size:larger;color:#808080"';
+			$libelle = '<big>' . $libelle . '</big>';
 		}
-		if(substr($href,0,4) == "java") $href=str_replace("@PAGE@",$page,$href);
-		else $href.=$page;
+
+		if (substr($href, 0, 4) == "java") 
+			$href = str_replace("@PAGE@", $page, $href);
+		else 
+			$href .= $page;
+
 		return '<span style="padding-left:5px;padding-right:5px"><a href="'.$href.'"'.$style.'><b>'.$libelle.'</b></a></span>';
 	}
 }

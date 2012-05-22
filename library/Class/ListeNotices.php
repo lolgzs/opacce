@@ -57,6 +57,7 @@ class Class_ListeNotices
 		if(!$page) 
 			$page=1;
 
+		$fin_limit = 0;
 		if(strpos($req," LIMIT ") === false)
 		{
 			$limit = ($page-1) * $this->nb_par_page;

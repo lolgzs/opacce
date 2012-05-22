@@ -7,7 +7,7 @@ $tagsPosition	= $preferences["tags_position"];
 
 $titre=$this->_("Résultat de la recherche");
 
-if ($_SESSION["recherche"]["selection"]["pertinence"] == true) {
+if ($this->is_pertinence) {
 	$titre .= $this->_(" (recherche élargie triée par pertinence)");
 }
 
@@ -17,17 +17,31 @@ print($this->texte_selection);
 ?>
 <br/><br/>
 <div>
-	<span style="padding-right:10px"><?php echo $this->tagAnchor($this->url_retour . '?statut=saisie', sprintf('&raquo; %s', $this->_('Retour à la recherche initiale'))); ?></span>
+	<span style="padding-right:10px">
+	<?php 
+	echo $this->tagAnchor($this->url_retour . '?statut=saisie', 
+												sprintf('&raquo; %s', 
+																$this->_('Retour à la recherche initiale')));?>
+  </span>
 	<?php if ($this->url_retour_notice) { ?>
-		<span style="padding-right:10px"><?php echo $this->tagAnchor($this->url_retour_notice, sprintf('&raquo; %s', $this->_('Retour à la notice'))); ?></span>
+		<span style="padding-right:10px">
+		<?php 
+		echo $this->tagAnchor($this->url_retour_notice, 
+													sprintf('&raquo; %s', 
+																	$this->_('Retour à la notice'))); ?>
+		</span>
 	<?php } ?>
-	<span><?php echo $this->tagAnchor($this->url_retour . '?statut=reset', sprintf('&raquo; %s', $this->_('Nouvelle recherche'))); ?></span>
+	<span>
+  <?php 
+  echo $this->tagAnchor($this->url_retour . '?statut=reset', 
+												sprintf('&raquo; %s', 
+																$this->_('Nouvelle recherche'))); ?>
+  </span>
 </div>
 <?php
 $this->closeBoite();
 
 extract($this->resultat);
-
 ?>
 <div style="width:100%" class="conteneur_simple">
 	<?php
@@ -42,11 +56,21 @@ extract($this->resultat);
 	}
 
 	// Liste notices
-	echo $this->listeNotices($this->liste, $nombre, $page_cours, $preferences, $this->url_retour, $_SESSION["recherche"]["selection"]["tri"]);
+	echo $this->listeNotices($this->liste, 
+													 $nombre, 
+													 $page_cours, 
+													 $preferences, 
+													 $this->url_retour, 
+													 $this->tri);
 	?>
 	<br/>
-	<div style="width:100%;text-align:center;"><?php echo $this->pager($nombre, $preferences["liste_nb_par_page"], $page_cours, $url_retour);?></div>
-
+	<div style="width:100%;text-align:center;">
+	<?php 
+	echo $this->pager($nombre, 
+										$preferences["liste_nb_par_page"], 
+										$page_cours, 
+										$this->url_retour);?>
+  </div>
 	<?php
 	// Container notice pour listes d'images
 	if (3 < $preferences["liste_format"]) {

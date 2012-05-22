@@ -124,6 +124,20 @@ class RechercheControllerReservationPickupAjaxActionTest extends AbstractControl
 	public function layoutShouldBeEmpty() {
 		$this->assertNotXPath('//div[@id="banniere"]');
 	}
+}
+
+
+class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/recherche/simple', array('expressionRecherche' => 'pomme'));
+	}
+
+	
+	/** @test */
+	public function pommeShouldBePresent() {
+		$this->assertXPathContentContains('//div', 'pomme');
+	}
 
 }
 

@@ -47,11 +47,13 @@ class RechercheController extends Zend_Controller_Action
 		}
 
 		// tri du résultat
-		if($tri = $this->_request->getParam("tri"))
-		{
+		if ($tri = $this->_getParam("tri")) {
 			unset($_SESSION["recherche"]["resultat"]);
-			$_SESSION["recherche"]["selection"]["tri"] = $this->_request->getParam("tri");
+			$_SESSION["recherche"]["selection"]["tri"] = $tri;
 		}
+
+		if (!isset($_SESSION["recherche"]["selection"]["tri"]))
+			$_SESSION["recherche"]["selection"]["tri"] = '*';
 
 		// elargir recherche par annexe
 		if($this->_getParam("annexe")=="reset") {
@@ -113,15 +115,20 @@ class RechercheController extends Zend_Controller_Action
 			foreach($sections as $section)
 				$_SESSION["recherche"]["selection"]["selection_sections"].=" S".$section;
 		}
-		if (!array_key_exists("recherche", $_SESSION)) $_SESSION["recherche"] = array("mode" => null, "retour_notice" => null);
+		if (!array_key_exists("recherche", $_SESSION)) 
+			$_SESSION["recherche"] = array("mode" => null, "retour_notice" => null);
 
 		// Urls retour
-		if(!$_SESSION["recherche"]["mode"])
-		$_SESSION["recherche"]["mode"]=$this->_request->action;
-		if($_SESSION["recherche"]["mode"]=="rebond") $_SESSION["recherche"]["mode"]="simple";
-		$this->view->url_retour=BASE_URL."/opac/recherche/".$_SESSION["recherche"]["mode"];
+		if (!isset($_SESSION["recherche"]['mode']))
+			$_SESSION["recherche"]["mode"] = $this->_request->getActionName();
+
+		if ($_SESSION["recherche"]["mode"]=="rebond") 
+			$_SESSION["recherche"]["mode"]="simple";
+
+		$this->view->url_retour=BASE_URL."/opac/recherche/" . $_SESSION["recherche"]["mode"];
 		$this->view->url_facette=$this->view->url_retour;
-		if($_SESSION["recherche"]["retour_notice"]) $this->view->url_retour_notice=$_SESSION["recherche"]["retour_notice"];
+		if (isset($_SESSION["recherche"]["retour_notice"])) 
+			$this->view->url_retour_notice=$_SESSION["recherche"]["retour_notice"];
 		$_SESSION["recherche"]["retour_notice"] = null;
 
 		// Préférences
@@ -146,45 +153,45 @@ class RechercheController extends Zend_Controller_Action
 		$this->_redirect('opac/recherche/simple?statut=reset');
 	}
 
-//------------------------------------------------------------------------------------------------------
-// RECHERCHE SIMPLE
-//------------------------------------------------------------------------------------------------------
-	function simpleAction()
-	{
+
+	public function simpleAction() {
     // Dernier mode de recherche
-		$_SESSION["recherche"]["mode"]="simple";
-		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
-		if($this->view->statut == "saisie") return;
+		$_SESSION["recherche"]["mode"] = 'simple';
+		$_SESSION["recherche"]["retour_liste"] = $this->_request->REQUEST_URI;
+
+		if ($this->view->statut == "saisie") return;
 
 		// Lancer la recherche
-		$this->view->texte_selection=$this->getTexteSelection();
-		if($_REQUEST["pertinence"] == 1) $_SESSION["recherche"]["selection"]["pertinence"]=true;
- 		if(!$_SESSION["recherche"]["resultat"])
- 		{
-			if (!$criteres = $_SESSION["recherche"]["selection"])
-			$criteres = array();
- 			$ret=$this->moteur->lancerRechercheSimple($criteres);
-			if($ret["statut"]=="erreur")
-			{
-				$ret["nombre"]=0;
-				$this->view->liste=$ret;
-				return false;
+		$this->view->texte_selection = $this->getTexteSelection();
+
+		$_SESSION["recherche"]["selection"]["pertinence"] = (1 == $this->_getParam('pertinence', 1));
+
+ 		if (!isset($_SESSION["recherche"]["resultat"])) {
+			$criteres = (isset($_SESSION['recherche']['selection'])) ?
+				$_SESSION['recherche']['selection'] :
+				array();
+
+			$ret = $this->moteur->lancerRechercheSimple($criteres);
+			if ($ret["statut"]=="erreur") {
+				$ret["nombre"] = 0;
+				$this->view->liste = $ret;
+				return;
 			}
-			// Histo recherche
+
 			$this->addHistoRecherche(1,$_SESSION["recherche"]["selection"]);
-			// Facettes et tags
-			$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
-			// Mettre les elements dans la session
-			$_SESSION["recherche"]["resultat"]=array_merge($facettes,$ret);
+			$facettes = $this->moteur->getFacettes($ret["req_facettes"], $this->preferences);
+			$_SESSION["recherche"]["resultat"] = array_merge($facettes, $ret);
 		}
 
 		// Get de la liste
-		$this->view->liste=$this->_getListNotices($_SESSION["recherche"]["resultat"]["req_liste"]);
+		$this->view->liste = $this->_getListNotices($_SESSION["recherche"]["resultat"]["req_liste"]);
 
 		// Variables viewer
-		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
-		$this->view->url_tri=BASE_URL."/recherche/simple";
+		$this->view->resultat = $_SESSION["recherche"]["resultat"];
+		$this->view->resultat["page_cours"] = $this->_getParam('page');
+		$this->view->url_tri = BASE_URL."/recherche/simple";
+		$this->view->is_pertinence = $_SESSION["recherche"]["selection"]["pertinence"];
+		$this->view->tri = $_SESSION["recherche"]["selection"]["tri"];
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -358,79 +365,97 @@ class RechercheController extends Zend_Controller_Action
 		$this->view->resultat["page_cours"]=$_REQUEST["page"];
 	}
 
-//------------------------------------------------------------------------------------------------------
-// CALCUL DU TEXTE DES CRITERES DE SELECTION
-//------------------------------------------------------------------------------------------------------
-	private function getTexteSelection()
-	{
-		$mode=$_SESSION["recherche"]["mode"];
-		$rech=$_SESSION["recherche"]["selection"];
+
+	private function getTexteSelection() {
+		$mode = $_SESSION["recherche"]["mode"];
+		$rech = $_SESSION["recherche"]["selection"];
 
 		// facettes
-		if($rech["facette"])
-		{
-			$items=explode(" ",$rech["facette"]);
-			foreach($items as $item)
-			{
-				$item=str_replace("[","",$item);
-				$item=str_replace("]","",$item);
-				if(!trim($item)) continue;
-				if($facette) $facette.=", ";
-				if($item[0]=="T") $item[0]="t";
-				$facette.=Class_Codification::getNomChamp($item). ' = ';
-				$facette.= Class_Codification::getLibelleFacette($item);
+		$facette = null;
+		if (isset($rech['facette'])) {
+			$items = explode(" ",$rech["facette"]);
+			foreach ($items as $item) {
+				$item = str_replace("[", "", $item);
+				$item = str_replace("]", "", $item);
+				if (!trim($item)) continue;
+				if ($facette) 
+					$facette .= ', ';
+				if ($item[0] == "T")
+					$item[0] = "t";
+
+				$facette .= Class_Codification::getNomChamp($item). ' = ';
+				$facette .= Class_Codification::getLibelleFacette($item);
 			}
-			$facette=BR.$this->view->_("Facettes : %s", $facette);
+
+			$facette = BR . $this->view->_("Facettes : %s", $facette);
 		}
 
 		// Rebond
-		if($rech["code_rebond"])
-		{
-			$texte=Class_Codification::getNomChamp($rech["code_rebond"])." : ";
-			$texte.=Class_Codification::getLibelleFacette($rech["code_rebond"]);
-			if($rech["type_doc"]) $texte.=BR.$this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+		if(isset($rech["code_rebond"])) {
+			$texte = Class_Codification::getNomChamp($rech["code_rebond"]) . " : ";
+			$texte .= Class_Codification::getLibelleFacette($rech["code_rebond"]);
+			if (isset($rech["type_doc"])) 
+				$texte .= BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T" . $rech["type_doc"]));
+			return $texte . $facette;
 		}
 
 		// Recherche simple
-		elseif($mode == "simple")
-		{
-			$texte="Recherche : ". $rech["expressionRecherche"];
-			if($rech["type_doc"]) $texte.=$this->view->_(", type de document: %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
-			if($rech["annexe"])
-			{
-				if(!$texte)$texte="  "; else $texte.=BR;
-				$texte.=$this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
-				$texte.='&nbsp;&raquo;&nbsp;<a href="'.BASE_URL.'/recherche/simple?annexe=reset">Elargir la recherche à tous les sites</a>';
+		if ('simple' == $mode) {
+			$texte = "Recherche : ". $rech["expressionRecherche"];
+
+			if (isset($rech["type_doc"]) && $rech['type_doc']) 
+				$texte .= $this->view->_(", type de document: %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+
+			if (isset($rech["annexe"]) && $rech['annexe'])	{
+				$texte .= BR;
+				$texte .= $this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
+				$texte .= '&nbsp;&raquo;&nbsp;<a href="' . $this->view->url(). '?annexe=reset">Elargir la recherche à tous les sites</a>';
 			}
+			return $texte . $facette;
 		}
+
 		// Recherche avancee
-		elseif($mode=="avancee")
-		{
-			$operateur=array("and" => $this->view->_(" et "), "or" => $this->view->_(" ou "),"and not" => $this->view->_(" sauf "));
-			if($rech["type_recherche"]=="commence") $signe =$this->view->_(" commence par :"); else $signe =$this->view->_(" contient :");
-			if($rech["rech_titres"]) $texte=$this->view->_(", Titre").$signe.$rech["rech_titres"];
-			if($rech["rech_auteurs"]) $texte.= ", ".$operateur[$rech["operateur_auteurs"]]."Auteur".$signe.$rech["rech_auteurs"];
-			if($rech["rech_matieres"]) $texte.= ", ".$operateur[$rech["operateur_matieres"]]."Sujet".$signe.$rech["rech_matieres"];
-			if($rech["rech_dewey"]) $texte.= ", ".$operateur[$rech["operateur_dewey"]]."Dewey /pcdm4".$signe.$rech["rech_dewey"];
-			if($rech["rech_editeur"]) $texte.= ", ".$operateur[$rech["operateur_editeur"]]."Editeur".$signe.$rech["rech_editeur"];
-			if($rech["rech_collection"]) $texte.= ", ".$operateur[$rech["operateur_collection"]]."Collection".$signe.$rech["rech_collection"];
-			if($rech["type_doc"]) $texte.=BR.$this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
-			if($rech["annexe"])
-			{
-				if(!$texte)$texte="  "; else $texte.=BR;
-				$texte.=$this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
-				$texte.='&nbsp;&raquo;&nbsp;<a href="'.BASE_URL.'/recherche/avancee?annexe=reset">Elargir la recherche à tous les sites</a>';
+		if ('avancee' == $mode) {
+			$operateur = array("and" => $this->view->_(" et "), 
+												 "or" => $this->view->_(" ou "),
+												 "and not" => $this->view->_(" sauf "));
+
+			$signe = ($rech["type_recherche"]=="commence") ? 
+				$this->view->_(" commence par :"):
+				$this->view->_(" contient :");
+
+			$texte = '';
+			if ($rech["rech_titres"]) 
+				$texte .= $this->view->_(", Titre") . $signe . $rech["rech_titres"];
+			if ($rech["rech_auteurs"]) 
+				$texte .= ", " . $operateur[$rech["operateur_auteurs"]] . "Auteur" . $signe . $rech["rech_auteurs"];
+			if ($rech["rech_matieres"]) 
+				$texte .= ", " . $operateur[$rech["operateur_matieres"]] . "Sujet" . $signe . $rech["rech_matieres"];
+			if ($rech["rech_dewey"]) 
+				$texte .= ", " . $operateur[$rech["operateur_dewey"]] . "Dewey /pcdm4" . $signe . $rech["rech_dewey"];
+			if ($rech["rech_editeur"]) 
+				$texte.= ", ". $operateur[$rech["operateur_editeur"]] . "Editeur" . $signe . $rech["rech_editeur"];
+			if ($rech["rech_collection"]) 
+				$texte.= ", " . $operateur[$rech["operateur_collection"]] . "Collection" . $signe . $rech["rech_collection"];
+			if ($rech["type_doc"]) 
+				$texte .= BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+
+			if ($rech["annexe"]) {
+				if ($texte) 
+					$texte .= BR;
+				$texte .= $this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
+				$texte .= '&nbsp;&raquo;&nbsp;<a href="'. $this->view->url() . '?annexe=reset">Elargir la recherche à tous les sites</a>';
 			}
-			if($rech["annee_debut"] and $rech["annee_fin"])
-			{
-				$texte.=BR.$this->view->_("Documents parus ");
-				if($rech["annee_debut"] == $rech["annee_fin"])$texte.="en ".$rech["annee_debut"];
-				else $texte.=$this->view->_("entre %s et %s", $rech["annee_debut"], $rech["annee_fin"]);
+
+			if ($rech["annee_debut"] and $rech["annee_fin"]) {
+				$texte .= BR . $this->view->_("Documents parus ");
+				$texte .= ($rech["annee_debut"] == $rech["annee_fin"]) ?
+					"en " . $rech["annee_debut"] :
+					$this->view->_("entre %s et %s", $rech["annee_debut"], $rech["annee_fin"]);
 			}
-			$texte=substr($texte,2);
+			$texte = substr($texte,2);
 		}
-		$texte.=$facette;
-		return $texte;
+		return $texte . $facette;
 	}
 
 //------------------------------------------------------------------------------------------------------
