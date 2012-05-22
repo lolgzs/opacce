@@ -31,11 +31,9 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 	}
 
 
-	function listeNotices($notices,$nombre_resultats,$page,$preferences)
-	{
+	public function listeNotices($notices, $nombre_resultats, $page, $preferences) 	{
 		// Message d'erreur
-		if($notices["statut"]=="erreur")
-		{
+		if (array_key_exists('statut', $notices) && ($notices["statut"]=="erreur")) {
 			$html='<h2>'.$notices["erreur"].'</h2>';
 			if($notices["nb_mots"] > 1) {
 				$html.=sprintf('<a href="%s?pertinence=1">&raquo;&nbsp;%s</a>',

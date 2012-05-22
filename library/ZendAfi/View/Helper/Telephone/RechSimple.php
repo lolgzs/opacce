@@ -32,7 +32,7 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 		$this->titre = '';
 		$html='<div>';
 		$html.= sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
-																																							 'action' => 'lancer')));
+																																							 'action' => 'simple')));
 		$html.=sprintf('<div style="text-align:center;font-size:16px">%s&nbsp;<input type="text" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
 									 $this->translate()->_('Recherche'));
 		$html.='&nbsp;<input type="submit" value="ok" style="cursor:pointer">';

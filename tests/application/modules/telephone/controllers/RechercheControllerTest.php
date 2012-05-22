@@ -18,9 +18,26 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once ROOT_PATH.'application/modules/opac/controllers/RechercheController.php';
+require_once 'AbstractControllerTestCase.php';
 
-class Telephone_RechercheController extends RechercheController {
+class Telephone_RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme'));
+	}
 
+	
+	/** @test */
+	public function pommeShouldBePresent() {
+		$this->assertXPathContentContains('//div', 'pomme');
+	}
+
+
+	/** @test */
+	public function toolbarUrlRetourShouldBeMaybeBaseUrl() {
+		$this->assertXPath('//div[@class="toolbar"]//a[@href="/"]', $this->_response->getBody());
+	}
 
 }
+
+?>

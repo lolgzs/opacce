@@ -97,7 +97,7 @@ class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTel
 
 	/** @test */
 	function formRechercheShouldBeVisible() {
-		$this->assertXPath('//form[contains(@action, "recherche/lancer")]');
+		$this->assertXPath('//form[contains(@action, "recherche/simple")]');
 	}
 
 
@@ -319,7 +319,7 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 
 	/** @test */
 	function formRechercheShouldContainsUrlEmbed() {
-		$this->assertXPath('//form[contains(@action, "embed/recherche/lancer")]');
+		$this->assertXPath('//form[contains(@action, "embed/recherche/simple")]');
 	}
 }
 

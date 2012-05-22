@@ -50,6 +50,9 @@ class Class_MoteurRecherche {
 		if ('B' == trim($selection_bib))
 			$selection_bib = '';
 
+		$ret = array('nb_mots' => null,
+								 'statut' => '',
+								 'nombre' => 0);
 		
 		// Analyse de l'expression
 		$expressionRecherche = trim($expressionRecherche);
@@ -72,8 +75,7 @@ class Class_MoteurRecherche {
 			}
 		}
 
-		$ret = array('nb_mots' => null,
-								 'statut' => '');
+
 		$recherche = '';
 		if (!isset($where) || !$where) {
 			$mots = $this->ix->getMots($expressionRecherche);

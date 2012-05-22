@@ -90,15 +90,19 @@ class RechercheController extends Zend_Controller_Action
 		if ($this->_getParam("bib_select")) unset($_SESSION["recherche"]["resultat"]);
 		unset($_SESSION["recherche"]["selection"]["selection_bib"]);
 
-		if (array_key_exists("id_bibs", $_SESSION["selection_bib"]))
-		{
+		if (!isset($_SESSION['selection_bib']))
+			$_SESSION['selection_bib'] = array();
+
+		if (array_key_exists("id_bibs", $_SESSION["selection_bib"])) {
 			$bibs=explode(",",$_SESSION["selection_bib"]["id_bibs"]);
 			if (!array_key_exists("recherche", $_SESSION))
 				$_SESSION["recherche"] = array("selection" => array("selection_bib" => array()),
 																			 "mode" => "",
 																			 "retour_notice" => "");
 
-			foreach($bibs as $bib) $_SESSION["recherche"]["selection"]["selection_bib"].=" B".$bib;
+			$_SESSION["recherche"]["selection"]["selection_bib"] = '';
+			foreach($bibs as $bib) 
+				$_SESSION["recherche"]["selection"]["selection_bib"] .=" B".$bib;
 		}
 
 		// Selection de types de docs lies au profil
@@ -172,9 +176,12 @@ class RechercheController extends Zend_Controller_Action
 				array();
 
 			$ret = $this->moteur->lancerRechercheSimple($criteres);
+
 			if ($ret["statut"]=="erreur") {
-				$ret["nombre"] = 0;
+				$ret['nombre'] = 0;
+				$ret['page_cours'] = 0;
 				$this->view->liste = $ret;
+				$this->view->resultat = $ret;
 				return;
 			}
 
