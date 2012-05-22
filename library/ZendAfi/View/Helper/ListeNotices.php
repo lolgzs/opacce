@@ -212,6 +212,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 	{
 
 		$lig=0;
+		$html = '';
 		foreach($data as $notice)
 		{
 			// calcul url en fonction du type de doc
