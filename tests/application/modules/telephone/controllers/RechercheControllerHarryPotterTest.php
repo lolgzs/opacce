@@ -51,7 +51,9 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 														 ->setCote('JRROW')
 														 ->setBib(Class_Bib::getLoader()
 																			->newInstanceWithId(1)
-																			->setLibelle('Bibliotheque du florilege'))))
+																			->setLibelle('Bibliotheque du florilege'))
+														 ->setSigbExemplaire(Class_WebService_SIGB_Exemplaire::newInstance()
+																								 ->setDisponibiliteIndisponible())))
 			->beLivre();
 	}
 }
@@ -200,14 +202,23 @@ class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_
 	}
 
 
+	/** @test */
 	public function pageShouldContainsBibFlorilege() {
 		$this->assertXPathContentContains('//td', 'Bibliotheque du florilege');
 	}
 
 
+	/** $test */
 	public function pageShouldContainsCoteJRROW() {
 		$this->assertXPathContentContains('//td', 'JRROW');
 	}
+
+
+	/** @test */
+	public function pageShouldContainsDispoIndisponible() {
+		$this->assertXPathContentContains('//td', 'Indisponible');
+	}
+
 }
 
 

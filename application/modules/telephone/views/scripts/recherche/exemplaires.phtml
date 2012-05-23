@@ -9,7 +9,9 @@ if (0 == count($exemplaires = $this->notice->getExemplaires()))
 	echo $this->_('Aucun exemplaire.');
 
 $num = 0;
-foreach ($exemplaires as $exemplaire) { ?>
+foreach ($exemplaires as $exemplaire) {
+  $sigb_exemplaire = $exemplaire->getSigbExemplaire();
+?>
 <div class="pave">
 	<table>
 		<tr><td colspan="2"><strong><?php echo $this->_('n°') . ' ' . ++$num;?></strong></td></tr>
@@ -25,7 +27,9 @@ foreach ($exemplaires as $exemplaire) { ?>
 		<?php	} ?>
 		<tr>
 			<td align="right"><?php echo $this->_('Disponibilité');?> : </td>
-			<td>non connue</td>
+			<td><?php 
+				echo ($sigb_exemplaire) ? $sigb_exemplaire->getDisponibilite() : $this->_('non connue');
+			?></td>
 		</tr>
 	</table>
 </div>
