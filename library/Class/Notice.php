@@ -293,17 +293,19 @@ class Class_Notice extends Storm_Model_Abstract {
 		return parent::__call($method, $args);
 	}
 
-// ----------------------------------------------------------------
-// Rend la structure notice pour affichage liste
-// ----------------------------------------------------------------
-	public function getNotice($id_notice, $champs="")
-	{
 
+	protected function _resetFieldsForCompatibility() {
 		// c'est LL le coupable, en attendant de convertir en joli objets
 		unset($this->_titre_principal);
 		unset($this->_auteur_principal);
 		unset($this->_resume);
-		// note: ne pas enlever sinon impossible à tester les notices
+	}
+
+// ----------------------------------------------------------------
+// Rend la structure notice pour affichage liste
+// ----------------------------------------------------------------
+	public function getNotice($id_notice, $champs="")	{
+		$this->_resetFieldsForCompatibility();	// note: ne pas enlever sinon impossible à tester les notices
 
 		if (!$id_notice) return null;
 
@@ -915,8 +917,12 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Langues
 // ----------------------------------------------------------------
-	public function getLangues()
-	{
+	public function getLangues()	{
+		return implode(', ', $this->getLanguesList());
+	}
+
+
+	public function getLanguesList()	{
 		$codes = $this->getLangueCodes();
 		if (0 == count($codes))
 			return '';
@@ -926,8 +932,7 @@ class Class_Notice extends Storm_Model_Abstract {
 			if ($langue = Class_CodifLangue::getLoader()->find($code))
 				$langues[] = ($langue->getLibelle()) ? $langue->getLibelle() : $code;
 		}
-
-		return implode(', ', $langues);
+		return $langues;
 	}
 
 
@@ -996,29 +1001,27 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Collation
 // ----------------------------------------------------------------
-	public function getCollation()
-	{
-		$collation = '';
-		$data = $this->get_subfield('215');
-		foreach ($data as $items)
-		{
-			$sous_champs = $this->decoupe_bloc_champ($items);
-			foreach ($sous_champs as $item)
-			{
-				if ($collation) $collation .= " ; ";
-				$collation.=$item["valeur"];
+	public function getCollation() {
+		if (!isset($this->_collation))	{
+			$collation = '';
+			$data = $this->get_subfield('215');
+			foreach ($data as $items)	{
+					$sous_champs = $this->decoupe_bloc_champ($items);
+					foreach ($sous_champs as $item)	{
+							if ($collation) $collation .= " ; ";
+							$collation.=$item["valeur"];
+						}
 			}
+			$this->_collation = $collation;
 		}
-		return $collation;
+		return $this->_collation;
 	}
 
 // ----------------------------------------------------------------
 // Résumé
 // ----------------------------------------------------------------
-	public function getResume()
-	{
-		if (!isset($this->_resume))
-		{
+	public function getResume()	{
+		if (!isset($this->_resume))	{
 			$resume = '';
 			$data = $this->get_subfield("330", "a");
 			foreach ($data as $item)

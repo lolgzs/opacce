@@ -301,3 +301,14 @@ div.clear {
 .vignette_notice a:first-child + a {
 		display: none;
 }
+
+table.notice_detail tr td:first-child {
+		text-align: right;
+}
+
+table.notice_detail tr ul,
+table.notice_detail tr li {
+		list-style: none;
+		padding: 0px;
+		margin: 0px;
+}

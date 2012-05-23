@@ -40,7 +40,8 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 			->setResume($this->_summary)
 			->setMatieres(array('Potions', 'Etude des runes'))
 			->setEditeur('Gallimard')
-			->setLangueCodes(array('fre'))
+			->setCollation('')
+			->setLangueCodes(array('fre', 'eng'))
 			->setIsbn('978-2-07-054127-0')
 			->setEan('')
 			->setUrlVignette('http://amazon.fr/potter.jpg')
@@ -146,6 +147,59 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 	/** @test */
 	public function pageShouldContainsLinkToRessourcesNumeriques() {
 		$this->assertXPathContentContains('//a[contains(@href, "recherche/ressourcesnumeriques/id/4")]', 'Ressources numériques');
+	}
+}
+
+
+
+
+class Telephone_RechercheControllerHarryPotterNoticeDetailleeTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/telephone/recherche/detail/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsUrlToViewNoticeInToolbar() {
+		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsTitres() {
+		$this->assertXPathContentContains('//td[preceding::td[contains(text(), "Titre(s)")]]',
+																			'Harry Potter à l\'ecole des sorciers');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsEditeurs() {
+		$this->assertXPathContentContains('//td[preceding::td[contains(text(), "Editeur(s)")]]',
+																			'Gallimard');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsAuteurs() {
+		$this->assertXPathContentContains('//td[preceding::td[contains(text(), "Auteur(s)")]]',
+																			'J.K. Rowling');
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsCollationAsEmpty() {
+		$this->assertNotXPath('//td[contains(text(), "Collation")]');
+	}
+
+
+	public function pageShouldContainsLanguesFrancaisAnglais() {
+		$this->assertXPathContentContains('//td[preceding::td[contains(text(), "Langue(s)")]]//li',
+																			'français');
+
+		$this->assertXPathContentContains('//td[preceding::td[contains(text(), "Langue(s)")]]//li',
+																			'anglais',
+																			$this->_response->getBody());
 	}
 }
 
