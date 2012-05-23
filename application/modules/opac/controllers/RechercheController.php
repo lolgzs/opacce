@@ -168,7 +168,7 @@ class RechercheController extends Zend_Controller_Action
 		// Lancer la recherche
 		$this->view->texte_selection = $this->getTexteSelection();
 
-		$_SESSION["recherche"]["selection"]["pertinence"] = (1 == $this->_getParam('pertinence', 1));
+		$_SESSION["recherche"]["selection"]["pertinence"] = (1 == $this->_getParam('pertinence', 0));
 
  		if (!isset($_SESSION["recherche"]["resultat"])) {
 			$criteres = (isset($_SESSION['recherche']['selection'])) ?

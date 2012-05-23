@@ -20,24 +20,96 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class Telephone_RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
+class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme'));
+		$this->postDispatch('/telephone/recherche/simple', 
+												array('expressionRecherche' => 'zzriuezz greuieub brfauiok'));
 	}
 
 	
 	/** @test */
 	public function pommeShouldBePresent() {
-		$this->assertXPathContentContains('//div', 'pomme');
+		$this->assertXPathContentContains('//div', 'zzriuezz greuieub brfauiok');
 	}
 
 
 	/** @test */
-	public function toolbarUrlRetourShouldBeMaybeBaseUrl() {
-		$this->assertXPath('//div[@class="toolbar"]//a[@href="/"]', $this->_response->getBody());
+	public function toolbarUrlRetourShouldBeRoot() {
+		$this->assertXPath('//div[@class="toolbar"]//a[@href="/"]');
 	}
 
+
+	/** @test */
+	public function modeRechercheShouldNotBePertinence() {
+		$this->assertFalse($_SESSION['recherche']['selection']['pertinence']);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToElargirLaRecherche() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/simple?pertinence=1")]', 
+																			'Elargir la recherche');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayAucunResultat() {
+		$this->assertXPathContentContains('//h2', 'Aucun résultat trouvé');
+	}
+
+}
+
+
+
+
+class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/telephone/recherche/simple', 
+												array('expressionRecherche' => 'zzriuezz'));
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsLinkToElargirLaRecherche() {
+		$this->assertNotXPath('//a[contains(@href, "recherche/simple?pertinence=1")]');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayAucunResultat() {
+		$this->assertXPathContentContains('//h2', 'Aucun résultat trouvé');
+	}
+}
+
+
+
+
+class Telephone_RechercheControllerSimpleByPertinenceActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme',
+																														 'pertinence' => 1));
+	}
+
+
+	/** @test */
+	public function modeRechercheShouldBePertinence() {
+		$this->assertTrue($_SESSION['recherche']['selection']['pertinence']);
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsLinkToElargirLaRecherche() {
+		$this->assertNotXPath('//a[contains(@href, "recherche/simple?pertinence=1")]');
+	}
+
+
+	/** @test */
+	public function pageShouldNotDisplayAucunResultat() {
+		$this->assertNotXPathContentContains('//h2', 'Aucun résultat trouvé');
+	}
 }
 
 ?>

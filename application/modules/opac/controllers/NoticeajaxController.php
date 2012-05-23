@@ -184,8 +184,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	function detailAction()
 	{
 		$notice=$this->notice->getTousChamps($this->id_notice);
-		if($notice["type_doc"]==2)
-		{
+		if($notice["type_doc"]==2) {
 			$notice=$this->notice->getArticlesPeriodique($this->id_notice);
 			$html=$this->notice_html->getArticlesPeriodique($notice);
 		}
