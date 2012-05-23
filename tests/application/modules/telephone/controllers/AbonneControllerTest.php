@@ -18,13 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
+require_once 'TelephoneAbstractControllerTestCase.php';
 
-abstract class AbonneControllerTelephoneTestCase extends AbstractControllerTestCase {
+abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		Class_Profil::getCurrentProfil()->beTelephone();
 
 		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()
 			->empruntsAddAll(array(Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()

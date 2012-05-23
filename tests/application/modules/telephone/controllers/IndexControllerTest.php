@@ -18,10 +18,10 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
+require_once 'TelephoneAbstractControllerTestCase.php';
 
 
-abstract class AbstractIndexControllerTelephoneWithModulesTest extends AbstractControllerTestCase {
+abstract class AbstractIndexControllerTelephoneWithModulesTest extends TelephoneAbstractControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "";
 		$account->ROLE_LEVEL = 0;
@@ -65,7 +65,6 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends AbstractC
 															 )); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
-			->beTelephone()
 			->setTitreSite('Smartphone')
 			->setLibelle(null)
 			->setCfgAccueil($cfg_accueil)

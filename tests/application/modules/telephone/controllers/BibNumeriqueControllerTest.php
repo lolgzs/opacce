@@ -18,14 +18,12 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
+require_once 'TelephoneAbstractControllerTestCase.php';
 
 
-abstract class BibNumeriqueControllerTelephoneTestCase extends AbstractControllerTestCase {
+abstract class BibNumeriqueControllerTelephoneTestCase extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		Class_Profil::getCurrentProfil()->beTelephone();
 
 		$categorie = Class_AlbumCategorie::getLoader()
 			->newInstanceWithId(3)

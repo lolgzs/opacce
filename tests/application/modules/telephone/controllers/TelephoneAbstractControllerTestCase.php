@@ -18,35 +18,16 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'TelephoneAbstractControllerTestCase.php';
+require_once 'AbstractControllerTestCase.php';
 
 
-class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCase {
-		protected function _loginHook($account) {
-		$account->ROLE = "";
-		$account->ROLE_LEVEL = 0;
-		$account->ID_USER = "";
-		$account->PSEUDO = "";
-	}
-
-
+class TelephoneAbstractControllerTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Class_Profil::getCurrentProfil()
-			->setCfgAccueil(array());
-
-		$this->postDispatch('auth/boitelogin',
-												array('identifiant' => 'joe', 'password' => 'secret'));
+		Class_Profil::getCurrentProfil()->beTelephone();
 	}
-
-
-	/** @test */
-	public function responseShouldRedirectToIndex() {
-		$this->assertRedirectTo('/telephone/index');
-	}
-	
-	
 }
+
 
 ?>

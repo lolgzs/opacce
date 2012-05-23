@@ -18,14 +18,13 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
 
-class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extends AbstractControllerTestCase {
+require_once 'TelephoneAbstractControllerTestCase.php';
+
+
+class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		Class_Profil::getCurrentProfil()->beTelephone();
-	
 		$this->postDispatch('/telephone/recherche/simple', 
 												array('expressionRecherche' => 'zzriuezz greuieub brfauiok'));
 	}
@@ -66,7 +65,7 @@ class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extend
 
 
 
-class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends AbstractControllerTestCase {
+class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->postDispatch('/telephone/recherche/simple', 
@@ -89,7 +88,7 @@ class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends Abs
 
 
 
-class Telephone_RechercheControllerSimpleByPertinenceActionTest extends AbstractControllerTestCase {
+class Telephone_RechercheControllerSimpleByPertinenceActionTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme',
