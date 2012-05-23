@@ -44,6 +44,13 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 			->setEan('')
 			->setUrlVignette('http://amazon.fr/potter.jpg')
 			->setUrlImage('http://amazon.fr/potter_grand.jpg')
+
+			->setExemplaires(array(Class_Exemplaire::getLoader()
+														 ->newInstanceWithId(33)
+														 ->setCote('JRROW')
+														 ->setBib(Class_Bib::getLoader()
+																			->newInstanceWithId(1)
+																			->setLibelle('Bibliotheque du florilege'))))
 			->beLivre();
 	}
 }
@@ -176,5 +183,42 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 	}
 }
 
+
+class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/telephone/recherche/exemplaires/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsUrlToViewNoticeInToolbar() {
+		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
+	}
+
+
+	/** @test */
+	public function titleShouldBeHarryPotter() {
+		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsOneExemplaire() {
+		$this->assertXPathContentContains('//div[@class="pave"]//td', 'n° 1');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsBibFlorilege() {
+		$this->assertXPathContentContains('//td', 'Bibliotheque du florilege');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsCoteJRROW() {
+		$this->assertXPathContentContains('//td', 'JRROW');
+	}
+}
 
 ?>

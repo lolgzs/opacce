@@ -38,4 +38,9 @@ class Telephone_RechercheController extends RechercheController {
 	public function grandeimageAction() {
 		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	}
+
+
+	public function exemplairesAction() {
+		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	}
 }
