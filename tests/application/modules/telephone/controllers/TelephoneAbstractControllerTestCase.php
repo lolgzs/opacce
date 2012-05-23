@@ -21,7 +21,7 @@
 require_once 'AbstractControllerTestCase.php';
 
 
-class TelephoneAbstractControllerTestCase extends AbstractControllerTestCase {
+abstract class TelephoneAbstractControllerTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
