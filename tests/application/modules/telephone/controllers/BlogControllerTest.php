@@ -22,24 +22,35 @@
 require_once 'TelephoneAbstractControllerTestCase.php';
 
 
-class Telephone_BlogControllerAvisActionTest extends TelephoneAbstractControllerTestCase {
+abstract class Telephone_BlogControllerAvisActionTestCase extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Class_AvisNotice::getLoader()
-			->newInstanceWithId(34)
-			->setDateAvis('2012-01-01')
-			->setNotices(array(Class_Notice::getLoader()
-												 ->newInstanceWithId(3)
-												 ->setTitrePrincipal('Harry Potter')))
-			->beWrittenByBibliothecaire()
-			->setNote(3)
-			->setEntete('bien')
-			->setAvis('bla bla')
-			->setUser(Class_Users::getLoader()
-								->newInstanceWithId(2)
-								->setPseudo('Patouche la mouche'));
+		$patouche = Class_Users::getLoader()
+			->newInstanceWithId(2)
+			->setPseudo('Patouche la mouche');
 
+		$patouche->setAvis(array(
+														 Class_AvisNotice::getLoader()
+														 ->newInstanceWithId(34)
+														 ->setDateAvis('2012-01-01')
+														 ->setNotices(array(Class_Notice::getLoader()
+																								->newInstanceWithId(3)
+																								->setTitrePrincipal('Harry Potter')))
+														 ->beWrittenByBibliothecaire()
+														 ->setNote(3)
+														 ->setEntete('bien')
+														 ->setAvis('bla bla')
+														 ->setUser($patouche)));
+	}
+}
+
+
+
+
+class Telephone_BlogControllerAvisActionTest extends Telephone_BlogControllerAvisActionTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->dispatch('/telephone/blog/viewavis/id/34', true);
 	}
@@ -47,13 +58,36 @@ class Telephone_BlogControllerAvisActionTest extends TelephoneAbstractController
 
 	/** @test */
 	public function pageShouldDisplayEnteteAvisBien() {
-		$this->assertXPathContentContains('//a', 'bien', $this->_response->getBody());
+		$this->assertXPathContentContains('//a', 'bien');
 	}
 
 
 	/** @test */
 	public function toolbarUrlRetourShouldBeNoticeAvis() {
 		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/avis/id/3")]');
+	}
+}
+
+
+
+
+class Telephone_BlogControllerViewAuteurActionTest extends Telephone_BlogControllerAvisActionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/telephone/blog/viewauteur/id/2', true);
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayPatouche() {
+		$this->assertXPathContentContains('//h1', 'Critiques de Patouche');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsCritiqueBien() {
+		$this->assertXPathContentContains('//a', 'bien');
 	}
 }
 

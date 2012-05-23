@@ -1,0 +1,15 @@
+<?php
+echo $this->toolbar($this->_("Critiques de %s", $this->name), 
+										false, 
+										true);
+?>
+
+<div class="liste">
+<ul>
+<?php
+foreach($this->liste_avis as $avis)
+	echo sprintf('<li class="lien">%s</li>', $this->enteteAvis($avis));
+?>
+</ul>
+
+</div>
