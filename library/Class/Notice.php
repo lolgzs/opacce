@@ -166,6 +166,14 @@ class Class_Notice extends Storm_Model_Abstract
 	}
 
 
+	/*
+	 * @return Class_Notice
+	 */
+	public function beLivre() {
+		return $this->setTypeDoc(Class_TypeDoc::LIVRE);
+	}
+
+
 	public function getAllAvisPerSource($page = null)
 	{
 		$all_avis = array('bib' => array('liste' => $avis_bib = $this->getAvisBibliothequaires(),

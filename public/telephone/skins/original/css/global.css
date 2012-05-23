@@ -281,3 +281,14 @@ div.clear {
 .right {
 		float: right;
 }
+
+
+.entete_notice img:first-child{
+		float:left;
+		padding: 0px 5px;
+}
+
+.entete_notice img:first-child + img{
+		float:right;
+		max-width: 40%;
+}

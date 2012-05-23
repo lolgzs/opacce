@@ -114,4 +114,5 @@ class Telephone_RechercheControllerSimpleByPertinenceActionTest extends Telephon
 	}
 }
 
+
 ?>

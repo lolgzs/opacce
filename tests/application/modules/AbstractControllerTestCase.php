@@ -165,6 +165,31 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 				return $header['value'];
 		return null;
 	}
+
+
+
+	public function dispatch($url = null, $throw_exceptions = false) {
+		// redirector should not exit
+		$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+		$redirector->setExit(false);
+
+		// json helper should not exit
+		$json = Zend_Controller_Action_HelperBroker::getStaticHelper('json');
+		$json->suppressExit = true;
+
+		$request    = $this->getRequest();
+		if (null !== $url) {
+			$request->setRequestUri($url);
+		}
+		$request->setPathInfo(null);
+		$controller = $this->getFrontController();
+		$this->frontController
+			->setRequest($request)
+			->setResponse($this->getResponse())
+			->throwExceptions($throw_exceptions)
+			->returnResponse(false);
+		$this->frontController->dispatch();
+	}
 }
 
 ?>
