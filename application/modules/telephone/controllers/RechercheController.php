@@ -33,4 +33,9 @@ class Telephone_RechercheController extends RechercheController {
 																 $this->view->_('Ressources numériques') => array('action' => 'ressourcesnumeriques'),
 																 );
 	}
+
+
+	public function grandeimageAction() {
+		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	}
 }

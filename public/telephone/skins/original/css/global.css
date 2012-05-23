@@ -288,7 +288,7 @@ div.clear {
 		padding: 0px 5px;
 }
 
-.entete_notice img:first-child + img{
+.entete_notice img:first-child + a{
 		float:right;
 		max-width: 40%;
 }
