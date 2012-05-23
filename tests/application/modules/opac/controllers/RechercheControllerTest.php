@@ -31,11 +31,18 @@ abstract class RechercheControllerNoticeTestCase extends AbstractControllerTestC
 
 class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 	public function setUp() {
+		Class_WebService_ReseauxSociaux::setDefaultWebClient(Storm_Test_ObjectWrapper::mock()
+																												 ->whenCalled('open_url')
+																												 ->answers(false));
 		parent::setUp();
 		$this->dispatch(sprintf('recherche/reseau/id_notice/%d/type_doc/1', 
 														$this->notice->getId()));
 	}
 	
+
+	public function tearDown() {
+		Class_WebService_ReseauxSociaux::setDefaultWebClient(null);
+	}
 
 	/** @test */
 	public function getResauShouldReturnTwitterLink() {
