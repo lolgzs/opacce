@@ -23,6 +23,9 @@ require_once 'AbstractControllerTestCase.php';
 class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Profil::getCurrentProfil()->beTelephone();
+	
 		$this->postDispatch('/telephone/recherche/simple', 
 												array('expressionRecherche' => 'zzriuezz greuieub brfauiok'));
 	}
