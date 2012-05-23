@@ -32,5 +32,21 @@ foreach ($exemplaires as $exemplaire) {
 			?></td>
 		</tr>
 	</table>
+	<?php 
+	if ((!$exemplaire->getBib()->getInterdireResa())
+			&& $sigb_exemplaire
+			&& $sigb_exemplaire->isReservable()) { 
+	?>
+	<div class="fonction">
+		<a href="<?php 
+			echo $this->url(array('controller' => 'recherche',
+			                      'action' => 'reservation',
+														'b' => $exemplaire->getBib()->getId(),
+														'e' => $exemplaire->getId(),
+														'a' => $sigb_exemplaire->getCodeAnnexe()), 
+										 null, true);
+		?>" style="display:block;"><?php echo $this->_('Réserver');?></a>
+	</div>
+	<?php	} ?>
 </div>
 <?php	} ?>

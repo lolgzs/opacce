@@ -45,15 +45,6 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 			->setEan('')
 			->setUrlVignette('http://amazon.fr/potter.jpg')
 			->setUrlImage('http://amazon.fr/potter_grand.jpg')
-
-			->setExemplaires(array(Class_Exemplaire::getLoader()
-														 ->newInstanceWithId(33)
-														 ->setCote('JRROW')
-														 ->setBib(Class_Bib::getLoader()
-																			->newInstanceWithId(1)
-																			->setLibelle('Bibliotheque du florilege'))
-														 ->setSigbExemplaire(Class_WebService_SIGB_Exemplaire::newInstance()
-																								 ->setDisponibiliteIndisponible())))
 			->beLivre();
 	}
 }
@@ -189,9 +180,21 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 
 
 
-class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_RechercheControllerHarryPotterTestCase {
+class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {
 		parent::setUp();
+		Class_Notice::getLoader()->find(4)
+			->setExemplaires(array(Class_Exemplaire::getLoader()
+														 ->newInstanceWithId(33)
+														 ->setCote('JRROW')
+														 ->setBib(Class_Bib::getLoader()
+																			->newInstanceWithId(1)
+																			->setLibelle('Bibliotheque du florilege')
+																			->setInterdireResa(0))
+														 ->setSigbExemplaire(Class_WebService_SIGB_Exemplaire::newInstance()
+																								 ->setDisponibiliteIndisponible()
+																								 ->setCodeAnnexe('MOUL')
+																								 ->beReservable())));
 		$this->dispatch('/telephone/recherche/exemplaires/id/4', true);
 	}
 
@@ -219,6 +222,11 @@ class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_
 		$this->assertXPathContentContains('//td', 'Indisponible');
 	}
 
+
+	/** @test */
+	public function pageShouldContainsHoldFunction() {
+		$this->assertXPath('//div[@class="fonction"]//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL")]');
+	}
 }
 
 
