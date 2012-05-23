@@ -18,15 +18,9 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Recherche
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper
-{
-		
-//---------------------------------------------------------------------
-// Main routine
-//--------------------------------------------------------------------- 
+
+
+class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
 	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
 		$html='<div class="toolbar">';
 		$html.='<table style="width:100%"><tr>';

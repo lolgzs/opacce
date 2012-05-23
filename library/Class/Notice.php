@@ -68,9 +68,7 @@ class NoticeLoader extends Storm_Model_Loader
 	}
 }
 
-class Class_Notice extends Storm_Model_Abstract
-{
-
+class Class_Notice extends Storm_Model_Abstract {
 	protected $_loader_class = 'NoticeLoader';
 	protected $_table_name = 'notices';
 	protected $_table_primary = 'id_notice';
@@ -95,27 +93,35 @@ class Class_Notice extends Storm_Model_Abstract
 																							 'ean' => null);
 
 
-	public static function getLoader()
-	{
+	public static function getLoader()	{
 		return self::getLoaderFor(__CLASS__);
 	}
 
-	public function getAvisByUser($user)
-	{
+
+	public function getAvisByUser($user)	{
 		return Class_AvisNotice::getLoader()
 			->findAllBy(array('clef_oeuvre' => $this->getClefOeuvre(),
 					'id_user' => $user->getId()));
 	}
 
-	public function getAvis()
-	{
-		if (!isset($this->_avis))
-		{
+
+	public function getAvis() {
+		if (!isset($this->_avis))	{
 			$avis_loader = Class_AvisNotice::getLoader();
 			$this->_avis = $avis_loader->findAllBy(array('clef_oeuvre' => $this->getClefOeuvre()));
 		}
 
 		return $this->_avis;
+	}
+
+
+	public function getAvisBibliothecaire() {
+		return Class_AvisNotice::filterByBibliothequaire($this->getAvis());
+	}
+
+
+	public function getAvisAbonne() {
+		return Class_AvisNotice::filterByAbonne($this->getAvis());
 	}
 
 
@@ -129,6 +135,7 @@ class Class_Notice extends Storm_Model_Abstract
 			
 		return $exemplaire_on_site;
 	}
+
 
 	/*
 	 * @return Class_Album

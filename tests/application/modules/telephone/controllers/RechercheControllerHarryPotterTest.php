@@ -32,6 +32,7 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 		$potter = Class_Notice::getLoader()
 			->newInstanceWithId(4)
 			->setClefAlpha('harrypotter-sorciers')
+			->setClefOeuvre('HARRYPOT')
 			->setTitrePrincipal('Harry Potter à l\'ecole des sorciers')
 			->setAuteurPrincipal('J.K. Rowling')
 			->setDateMaj('2012-04-23')
@@ -184,10 +185,75 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 }
 
 
+
+
 class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/telephone/recherche/exemplaires/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsOneExemplaire() {
+		$this->assertXPathContentContains('//div[@class="pave"]//td', 'n° 1');
+	}
+
+
+	public function pageShouldContainsBibFlorilege() {
+		$this->assertXPathContentContains('//td', 'Bibliotheque du florilege');
+	}
+
+
+	public function pageShouldContainsCoteJRROW() {
+		$this->assertXPathContentContains('//td', 'JRROW');
+	}
+}
+
+
+
+
+class Telephone_RechercheControllerHarryPotterAvisTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$avis = array(Class_AvisNotice::getLoader()
+									->newInstanceWithId(34)
+									->setDateAvis('2012-01-01')
+									->setClefOeuvre('HARRYPOT')
+									->beWrittenByBibliothecaire()
+									->setNote(3)
+									->setEntete('bien')
+									->setAvis('bla bla')
+									->setUser(Class_Users::getLoader()->newInstanceWithId(2)),
+
+									Class_AvisNotice::getLoader()
+									->newInstanceWithId(35)
+									->setDateAvis('2012-01-01')
+									->setClefOeuvre('HARRYPOT')
+									->beWrittenByBibliothecaire()
+									->setNote(5)
+									->setEntete('super')
+									->setAvis('blou blou')
+									->setUser(Class_Users::getLoader()->newInstanceWithId(3)),
+
+									Class_AvisNotice::getLoader()
+									->newInstanceWithId(46)
+									->setDateAvis('2012-01-01')
+									->setClefOeuvre('HARRYPOT')
+									->beWrittenByAbonne()
+									->setNote(1)
+									->setEntete('bof')
+									->setAvis('bli bli')
+									->setStatut(0)
+									->setUser(Class_Users::getLoader()->newInstanceWithId(4)));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AvisNotice')
+			->whenCalled('findAllBy')
+			->answers($avis);
+
+
+		$this->dispatch('/telephone/recherche/avis/id/4', true);
 	}
 
 
@@ -198,27 +264,46 @@ class Telephone_RechercheControllerHarryPotterExemplairesTest extends Telephone_
 
 
 	/** @test */
+	public function toolbarTitreShouldBeAvis() {
+		$this->assertXPathContentContains('//div[@class="toolbar"]', 'Avis');
+	}
+
+
+	/** @test */
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
 
 
-	/** @test */
-	public function pageShouldContainsOneExemplaire() {
-		$this->assertXPathContentContains('//div[@class="pave"]//td', 'n° 1');
+	public function pageShouldContainsBibliothecaire2Evaluation() {
+		$this->assertXPathContentContains('//div', 'Bibliothécaires (2 évaluations)');
 	}
 
 
 	/** @test */
-	public function pageShouldContainsBibFlorilege() {
-		$this->assertXPathContentContains('//td', 'Bibliotheque du florilege');
+	public function pageShouldContainsBibliothecaireStars4ForBibliothecaire() {
+		$this->assertXPath('//div[contains(text(), "Bibliothécaires")]//img[contains(@src, "stars-4.gif")]',
+											 $this->_response->getBody());
 	}
 
 
 	/** @test */
-	public function pageShouldContainsCoteJRROW() {
-		$this->assertXPathContentContains('//td', 'JRROW');
+	public function pageShouldContainsLecteursDuPortail1Evaluation() {
+		$this->assertXPathContentContains('//div', 'Lecteurs du portail (1 évaluation)');
+	}
+
+	
+	/** @test */
+	public function pageShouldContainsAvisBien() {
+		$this->assertXPathContentContains('//div', 'bien');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsAvisBof() {
+		$this->assertXPathContentContains('//div', 'bof');
 	}
 }
+
 
 ?>

@@ -500,7 +500,7 @@ class RssControllerViewAvisUserTest extends AvisControllersFixturesTestCase {
 	/** @test */
 	function firstItemNoteCritiqueShouldBeImgStars4Gif() {
 		$this->assertTrue(false !== strpos($this->_response->getBody(),
-																			 "src='http://localhost" . BASE_URL . "/public/admin/images/stars/stars-4.gif'"));
+																			 'src="http://localhost' . BASE_URL . '/public/admin/images/stars/stars-4.gif"'));
 	}
 }
 

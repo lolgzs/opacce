@@ -99,7 +99,6 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 																								  'referenced_in' => 'id_user'));
 	protected $_notices;
 
-	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
@@ -199,13 +198,26 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 		return $user->getNomAff();
 	}
 
+
 	public function isWrittenByBibliothequaire() {
 		return $this->getAbonOuBib() == 1;
 	}
 
+
+	public function beWrittenByBibliothecaire() {
+		return $this->setAbonOuBib(1);
+	}
+
+
 	public function isWrittenByAbonne() {
 		return $this->getAbonOuBib() == 0;
 	}
+
+
+	public function beWrittenByAbonne() {
+		return $this->setAbonOuBib(0);
+	}
+
 
 	public function setModerationOK() {
 		$this->setStatut(1);

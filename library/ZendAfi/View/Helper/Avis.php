@@ -81,9 +81,6 @@ class ZendAfi_View_Helper_Avis extends ZendAfi_View_Helper_BaseHelper {
 	public function contenu_avis($avis) {
 		$entete = $avis->getEntete();
 		$url_avis = $this->_getUrlAvis($avis);
-		$note = $avis->getNote();
-		$note_img_url = $this->_getNoteImgUrl($note);
-		
 		$format_text_avis = $this->_formatTextAvis($avis->getAvis());
 		$text_avis = $format_text_avis['text_avis'];
 		$lire_la_suite = '';
@@ -104,7 +101,7 @@ class ZendAfi_View_Helper_Avis extends ZendAfi_View_Helper_BaseHelper {
 
 		$html = 
 			"<div class='contenu_critique'>".
-					"<img class='note_critique' alt='note: $note' src='$note_img_url' />".
+			    $this->view->noteImg($avis->getNote()).
 					"<a class='entete_critique' href='$url_avis'>$entete</a>".
 					"<span class='auteur_critique'>".
 			       ('' != $auteur ? " <a href='$url_auteur'>$auteur</a>" : '').
@@ -168,12 +165,6 @@ class ZendAfi_View_Helper_Avis extends ZendAfi_View_Helper_BaseHelper {
 			return $this->_getUrlAvis($avis);
 
 		return $this->_getUrlNotice($avis);
-	}
-
-
-	protected function _getNoteImgUrl($note) {
-		$img = URL_ADMIN_IMG."stars/stars-".str_replace(".",",",$note).".gif"; 
-		return str_replace(",0","",$img);
 	}
 
 

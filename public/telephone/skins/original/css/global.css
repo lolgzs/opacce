@@ -292,3 +292,12 @@ div.clear {
 		float:right;
 		max-width: 40%;
 }
+
+
+.vignette_notice a:first-child {
+		float: right;
+}
+
+.vignette_notice a:first-child + a {
+		display: none;
+}

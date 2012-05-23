@@ -43,4 +43,8 @@ class Telephone_RechercheController extends RechercheController {
 	public function exemplairesAction() {
 		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	}
+
+	public function avisAction() {
+		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));;
+	}
 }

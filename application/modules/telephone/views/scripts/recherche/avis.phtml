@@ -1,47 +1,33 @@
 <?php
-echo $this->toolbar("Avis",$this->url_retour,true);
+echo $this->toolbar("Avis", array('action' => 'viewnotice'), true);
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
-echo '<div class="pave">';
 
-// Recap du haut
-foreach($this->avis as $source => $ligne) {
-	$ev="aucune évaluation";
-	if(0 <= $nb = $ligne["nombre"])	{
-		$ev=$nb." évaluation";
-		if($nb>1) $ev.="s";
-	}
-
-	$img=URL_IMG."stars-".str_replace(".",",",$ligne["note"]).".gif";$img=str_replace(",0","",$img);
-	$url_site="javascript:".$fct."('".$_REQUEST["onglet"]."','".$this->notice->getId()."','avis','".$source."',1,1)";
-	$html_source = '<div class="blank"><img src="'.$img.'">'. $ligne["titre"]. '&nbsp;<small>('.$ev.")</small>".$url_bibAvis.'</div>';
-	$url_source = $this->url(array('controller' => 'recherche',
-																 'action' => 'avis',
-																 'id_notice' => $this->notice->getId(),
-																 'source' => $source));
-	echo "<a href='$url_source'>$html_source</a>";
-}
-echo '</div>';
-
-
-$avis_to_show = $this->avis[$this->source_visible];
-$html.='<div class="pave" id="avis_'.$this->source_visible.'">';
-$html.='<h1>'.$avis_to_show["titre"].'</h1>';
-if($avis_to_show["nombre"]>0)	{
-	foreach($avis_to_show["liste"] as $detail) {
-			$html.='<div style="margin-bottom:10px">';
-			$img=URL_IMG."stars-".str_replace(".",",",$detail->getNote()).".gif"; $img=str_replace(",0","",$img);
-			$html.='<table cellspacing="0" width="100%"><tr>';
-			$html.='<td align="left"><img src="'.$img.'"></td>';
-			$html.='<td align="right"><b>'.$detail->getReadableDateAvis().'</b></td>';
-			$html.='</tr></table>';
-			if($detail->getUserName()) $html.='<div class="blank">par : '.$detail->getUserName()."</div>";
-			$html.='<div class="blank"><b>'.$detail->getEntete().'</b></div>';
-			$html.=$detail->getAvis();
-			$html.='</div>';
-	}
-}
-else
-	$html.='Aucun avis pour le moment';
-$html.='</div>';
-echo $html;
+$avis_bib = $this->notice->getAvisBibliothecaire();
+$avis_abon = $this->notice->getAvisAbonne();
 ?>
+
+
+<div class="pave">
+	<?php 
+	echo $this->resumeAvis($this->_('Bibliothécaires'), $avis_bib);
+
+	echo $this->resumeAvis($this->_('Lecteurs du portail'), $avis_abon);
+  ?>
+</div>
+
+
+<div class="pave">
+		<?php 
+		echo '<div>'.$this->_('Avis des bibliothécaires').'</div>';
+		foreach ($avis_bib as $avis) 
+			echo '<div class="fonction">'.$this->enteteAvis($avis).'</div>';	
+    ?>
+</div>
+
+
+<div class="pave">
+		<?php 
+		echo '<div>'.$this->_('Avis des lecteurs').'</div>';
+    foreach ($avis_abon as $avis) echo $this->enteteAvis($avis);	
+    ?>
+</div>
