@@ -43,6 +43,7 @@ abstract class Telephone_RechercheControllerHarryPotterTestCase extends Telephon
 			->setIsbn('978-2-07-054127-0')
 			->setEan('')
 			->setUrlVignette('http://amazon.fr/potter.jpg')
+			->setUrlImage('http://amazon.fr/potter_grand.jpg')
 			->beLivre();
 	}
 }
@@ -171,7 +172,7 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 
 	/** @test */
 	public function pageShouldContainsPotterJpg() {
-		$this->assertXPath('//a[contains(@href, "recherche/viewnotice/id/4")]//img[contains(@src, "potter.jpg")]');		
+		$this->assertXPath('//a[contains(@href, "recherche/viewnotice/id/4")]//img[contains(@src, "potter_grand.jpg")]');		
 	}
 }
 

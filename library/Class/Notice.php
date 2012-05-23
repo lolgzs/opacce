@@ -226,26 +226,33 @@ class Class_Notice extends Storm_Model_Abstract
 		parent::setUnimarc($unimarc);
 	}
 
-	public function getUrlVignette()
-	{
+
+	public function getUrlVignette() {
 		if ($this->hasVignette()) return $this->_attributes['url_vignette'];
 
 		$vignette_image = Class_WebService_Vignette::getUrl($this->getId());
 		return $vignette_image['vignette'];
 	}
 
-	public function hasVignette()
-	{
-		try
-		{
+
+	public function getUrlImage() {
+		if ($this->hasVignette()) return $this->_attributes['url_image'];
+
+		$image = Class_WebService_Vignette::getUrl($this->getId());
+		return $image['image'];
+	}
+
+
+	public function hasVignette()	{
+		try	{
 			$url = $this->_attributes['url_vignette'];
-		} catch (Exception $e)
-		{
+		} catch (Exception $e)	{
 			return false;
 		}
 		$has_vignette = (!empty($url) && ($url != 'NO'));
 		return $has_vignette;
 	}
+
 
 	public function isLivre()
 	{
