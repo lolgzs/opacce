@@ -1,0 +1,13 @@
+<?php 
+echo $this->toolbar($this->_("Site de retrait"), 
+										$this->url_retour, 
+false); ?>
+<div class="pave">
+	<?php foreach ($this->annexes as $annexe) { ?>
+	<div class="fonction">
+		<a href="<?php 
+			echo $this->url(array('action' => 'reservation', 'pickup' => $annexe->getCode()));
+		?>" style="display:block;"><?php echo $this->escape($annexe->getLibelle());?></a>
+	</div>
+	<?php } ?>
+</div>

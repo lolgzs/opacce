@@ -390,6 +390,200 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends T
 
 
 
+class Telephone_RechercheControllerHarryPotterReservationNotLogged extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('getIdentity')
+			->answers(false);
+
+		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL');
+	}
+
+
+	/** @test */
+	public function shouldRedirectToAuth() {
+		$this->assertRedirectTo('/auth/login-reservation');
+	}
+
+
+	/** @test */
+	public function shouldHaveSetReservationBibParam() {
+		$this->assertEquals(1, Zend_Registry::get('session')->lastReservationParams['b']);
+	}
+
+
+	/** @test */
+	public function shouldHaveSetReservationExemplaireParam() {
+		$this->assertEquals(33, Zend_Registry::get('session')->lastReservationParams['e']);
+	}
+
+
+	/** @test */
+	public function shouldHaveSetReservationAnnexeParam() {
+		$this->assertEquals('MOUL', Zend_Registry::get('session')->lastReservationParams['a']);
+	}
+}
+
+
+
+class Telephone_RechercheControllerHarryPotterReservationWithEnabledPickup extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()
+			->newInstanceWithId('site_retrait_resa')
+			->setValeur(1);
+
+		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL');
+	}
+
+
+	/** @test */
+	public function shouldRedirectToPickupChoice() {
+			$this->assertRedirectTo('/recherche/pickup-location/b/1/e/33/a/MOUL');
+	}
+
+}
+
+
+class Telephone_RechercheControllerHarryPotterExemplairePickupChoiceTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {  
+		parent::setUp();
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findAllBy')
+			->with(array('no_pickup' => '0',
+									 'order' => 'libelle'))
+			->answers(array(Class_CodifAnnexe::getLoader()->newInstanceWithId(2)
+											->setLibelle('Annecy')
+											->setCode('ANN'),
+											Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
+											->setLibelle('Cran')
+											->setCode('CRN')));
+		$this->dispatch('/recherche/pickup-location/b/1/e/33/a/MOUL', true);
+	}
+
+
+	/** @test */
+	public function titreShouldBeSiteDeRetrait() {
+			$this->assertXPathContentContains('//h1', 'Site de retrait');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsAnnecyChoice() {
+		$this->assertXPathContentContains('//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL/pickup/ANN")]', 
+																			'Annecy');
+	}
+}
+
+
+
+class Telephone_RechercheControllerHarryPotterReservationSuccessTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()
+			->newInstanceWithId('site_retrait_resa')
+			->setValeur(0);
+
+		Class_CommSigb::setInstance(Storm_Test_ObjectWrapper::mock()
+																->whenCalled('reserverExemplaire')
+																->answers(array()));
+		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL', true);
+	}
+
+	
+	/** @test */
+	public function shouldRedirectToFicheAbonne() {
+		$this->assertRedirectTo('/abonne/fiche');
+	}
+}
+
+
+
+class Telephone_RechercheControllerHarryPotterReservationErrorTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()
+			->newInstanceWithId('site_retrait_resa')
+			->setValeur(0);
+
+		Class_CommSigb::setInstance(Storm_Test_ObjectWrapper::mock()
+																->whenCalled('reserverExemplaire')
+																->answers(array('erreur' => 'A marche pas')));
+		
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
+		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL', true);
+	}
+
+	
+	/** @test */
+	public function titreShouldBeReservation() {
+		$this->assertXPathContentContains('//h1', 'Réservation');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsErrorMessage() {
+		$this->assertXPathContentContains('//div', 'A marche pas');
+	}
+
+
+	/** @test */
+	public function backLinkToExemplairesShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "/recherche/exemplaires/id/4")]');
+	}
+
+}
+
+
+
+class Telephone_RechercheControllerHarryPotterReservationWithPopupTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()
+			->newInstanceWithId('site_retrait_resa')
+			->setValeur(0);
+
+		Class_CommSigb::setInstance(Storm_Test_ObjectWrapper::mock()
+																->whenCalled('reserverExemplaire')
+																->answers(array('popup' => 'http://url.de/la-popup')));
+
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
+		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL', true);
+	}
+
+	
+	/** @test */
+	public function titreShouldBeReservation() {
+		$this->assertXPathContentContains('//h1', 'Réservation');
+	}
+
+
+	public function pageShouldContainsErrorMessage() {
+		$this->assertXPathContentContains('//div', 'non supportée');
+	}
+
+
+	/** @test */
+	public function backLinkToExemplairesShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "/recherche/exemplaires/id/4")]');
+	}
+}
+
+
 
 class Telephone_RechercheControllerHarryPotterAvisTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {

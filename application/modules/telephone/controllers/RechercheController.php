@@ -55,6 +55,51 @@ class Telephone_RechercheController extends RechercheController {
 	}
 
 
+	public function reservationAction() {
+		if (!Class_Users::getLoader()->getIdentity()) {
+			Zend_Registry::get('session')->lastReservationParams = array('b' => $this->_getParam('b'),
+																																	 'e' => $this->_getParam('e'),
+																																	 'a' => $this->_getParam('a'));
+			$this->_redirect('/auth/login-reservation');
+			return;
+		}
+
+		if (Class_CosmoVar::isSiteRetraitResaEnabled()
+				&& !$this->_getParam('pickup')) {
+			$this->_redirect(sprintf('/recherche/pickup-location/b/%s/e/%s/a/%s',
+															 urlencode($this->_getParam('b')),
+															 urlencode($this->_getParam('e')),
+															 urlencode($this->_getParam('a'))));
+			return;
+		}
+
+		$ret = Class_CommSigb::getInstance()
+			->reserverExemplaire($this->_getParam('b'), 
+													 $this->_getParam('e'), 
+													 ($this->_getParam('pickup')) ? $this->_getParam('pickup') : $this->_getParam('a'));
+
+		if (isset($ret["erreur"])) {
+			$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+			$this->view->message = $ret['erreur'];
+			return;
+		}
+
+		if (isset($ret["popup"]))	{
+			$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+			$this->view->message = $this->view->_('Réservation en ligne non supportée pour cette bibliothèque.');
+			return;
+		}
+
+		$this->_redirect('/abonne/fiche');
+	}
+
+
+	public function pickupLocationAction() {
+		$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+		$this->view->annexes = Class_CodifAnnexe::findAllByPickup();
+	}
+
+
 	public function resumeAction() {
 		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	}
@@ -72,4 +117,12 @@ class Telephone_RechercheController extends RechercheController {
 		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	}
 
+
+	protected function _loadUrlRetourForExemplaire($id_exemplaire) {
+		$exemplaire = Class_Exemplaire::getLoader()->find($id_exemplaire);
+		$this->view->url_retour = $this->view->url(array('controller' => 'recherche',
+																											 'action' => 'exemplaires',
+																											 'id' => $exemplaire->getNotice()->getId()),
+																								 null, true);
+	}
 }

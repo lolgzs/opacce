@@ -28,6 +28,8 @@ class Class_CommSigb {
 	const COM_ORPHEE = 8;
 	const COM_MICROBIB = 9;
 
+	protected static $_instance;
+
 	private $COM_CLASSES = array(self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
 															 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
 															 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
@@ -40,6 +42,18 @@ class Class_CommSigb {
 	private $mode_comm;								// memo de modes de comm pour les bibs
 	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
 	private $_translate;
+
+
+	public static function getInstance() {
+		if (null != self::$_instance)
+			return self::$_instance;
+		return new self();
+	}
+
+
+	public static function setInstance($instance) {
+		self::$_instance = $instance;
+	}
 
 
 	public function exemplaireFor($exemplaire) {
