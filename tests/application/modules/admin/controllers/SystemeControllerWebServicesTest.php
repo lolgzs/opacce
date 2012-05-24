@@ -54,6 +54,18 @@ class SystemeControllerWebServicesActionTest extends Admin_AbstractControllerTes
 		$this->assertXPathContentContains('//pre[@class="resultat"]', 
 																			'Tandis que Lisbeth Salander');
 	}
+
+
+	/** 
+	 * @group longtest
+	 * @group integration
+	 * @test 
+	 */
+	public function webServicePremiereGetResumeShouldWork() {
+		$this->dispatch('/admin/systeme/webservices/id_service/Premiere/id_fonction/1', true);
+		$this->assertXPathContentContains('//pre[@class="resultat"]', 
+																			'Jake Sully est un ancien marine');
+	}
 }
 
 ?>

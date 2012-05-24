@@ -1129,9 +1129,6 @@ class Class_Notice extends Storm_Model_Abstract {
 			$avis[] = array('source' => 'Bibliothèque',
 											'texte' => $resume);
 
-		if (!$this->getIsbnOrEan())
-			return $avis;
-
 		$providers = array('Class_WebService_Amazon',
 											 'Class_WebService_Fnac',
 											 'Class_WebService_Babelio',

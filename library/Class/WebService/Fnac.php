@@ -36,7 +36,10 @@ class Class_WebService_Fnac
 
 
 	public function getResumes($notice) {
-		if ($resume = $this->getResume($notice->getIsbnOrEan()))
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		if ($resume = $this->getResume($service))
 			return array(array('source' => 'Editeur',
 												 'texte' => $resume));
 		return array();

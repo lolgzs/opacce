@@ -22,8 +22,7 @@
 // OPAC3 - PREMIERE.fr
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Premiere
-{
+class Class_WebService_Premiere {
 	var $url_base;										// Urls de base
 	
 	function __construct()
@@ -39,7 +38,7 @@ class Class_WebService_Premiere
 		if (!$notice->isDVD())
 			return array();
 
-		if ($resume = $this->get_resume($notice->getTitre()))
+		if ($resume = $this->get_resume($notice->getTitrePrincipal()))
 			return array(array('source' => 'Premiere.fr',
 												 'texte' => $resume));
 		return array();
@@ -48,13 +47,12 @@ class Class_WebService_Premiere
 //------------------------------------------------------------------------------------------------------
 // Résumé
 //------------------------------------------------------------------------------------------------------
-	function get_resume($titre)
-	{
+	function get_resume($titre)	{
 		// Changer l'url pour recuperer la page
 		$titre=$this->encoder_titre($titre);
 		$url=str_replace("@TITRE@",$titre,$this->url_base["resume"]);
 		// Get http de la page
-			try{
+		try{
 			$httpClient = Zend_Registry::get('httpClient');
 			$httpClient->setUri($url);
 			$response = $httpClient->request();
@@ -63,13 +61,15 @@ class Class_WebService_Premiere
 		}catch (Exception $e){
 			return false;
 		}
+
 		// Recherche du bon bloc
-		$data=utf8_decode($data);
-		$pos=strPos($data,"<strong>Synopsis :</strong>");
-		if(!$pos) return false;
-		$posfin=strPos($data,"</li>",$pos);
-		$resume=substr($data,($pos+28),($posfin-$pos));
-		return utf8_encode($resume);
+		$start = '<div class="rSnippet" itemprop="description" content="';
+		if (!$pos = strPos($data, $start))
+			return '';
+		$pos = $pos + strlen($start);
+		$posfin=strPos($data,'">',$pos);
+
+		return trim(strip_tags(substr($data, $pos, ($posfin-$pos))));
 	}
 
 //------------------------------------------------------------------------------------------------------

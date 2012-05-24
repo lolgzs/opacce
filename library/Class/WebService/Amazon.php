@@ -167,7 +167,10 @@ class Class_WebService_Amazon
 // Résumés et analyses
 //------------------------------------------------------------------------------------------------------
 	public function getResumes($notice) {
-		return $this->rend_analyses($notice->getIsbnOrEan());
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		return $this->rend_analyses($service);
 	}
 
 

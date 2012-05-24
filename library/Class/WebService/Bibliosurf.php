@@ -63,7 +63,10 @@ class Class_WebService_Bibliosurf {
 
 
 	public function getResumes($notice) {
-		if ($resume = $this->getUrls($notice->getIsbnOrEan()))
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		if ($resume = $this->getUrls($service))
 			return array(array('source' => 'Bibliosurf (liens)',
 												 'texte' => $resume));
 		return array();
