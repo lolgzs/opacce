@@ -33,9 +33,20 @@ class Class_WebService_Premiere
 		$this->url_base["resume"]=$url_base."/film/@TITRE@/";
 		$this->url_base["image"]=$url_base."/film/@TITRE@/";
 	}
+
+
+	public function getResumes($notice) {
+		if (!$notice->isDVD())
+			return array();
+
+		if ($resume = $this->get_resume($notice->getTitre()))
+			return array(array('source' => 'Premiere.fr',
+												 'texte' => $resume));
+		return array();
+	}
 		
 //------------------------------------------------------------------------------------------------------
-// R�sum�
+// Résumé
 //------------------------------------------------------------------------------------------------------
 	function get_resume($titre)
 	{

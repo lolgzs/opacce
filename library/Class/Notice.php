@@ -261,15 +261,20 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
-	public function isLivre()
-	{
-		return $this->getTypeDoc() == 1;
+	public function isLivre()	{
+		return $this->getTypeDoc() == Class_TypeDoc::LIVRE;
 	}
 
-	public function isPeriodique()
-	{
-		return $this->getTypeDoc() == 2;
+
+	public function isPeriodique() {
+		return $this->getTypeDoc() == Class_TypeDoc::PERIODIQUE;
 	}
+
+
+	public function isDVD() {
+		return $this->getTypeDoc() == Class_TypeDoc::DVD;
+	}
+
 
 // ----------------------------------------------------------------
 // Constructeur 
@@ -300,6 +305,12 @@ class Class_Notice extends Storm_Model_Abstract {
 		unset($this->_auteur_principal);
 		unset($this->_resume);
 	}
+
+
+	public function getIsbnOrEan() {
+		return $this->hasIsbn() ? str_replace("-", "", $this->getIsbn()) :  $this->getEan();
+	}
+
 
 // ----------------------------------------------------------------
 // Rend la structure notice pour affichage liste
@@ -1021,22 +1032,25 @@ class Class_Notice extends Storm_Model_Abstract {
 // Résumé
 // ----------------------------------------------------------------
 	public function getResume()	{
-		if (!isset($this->_resume))	{
-			$resume = '';
-			$data = $this->get_subfield("330", "a");
-			foreach ($data as $item)
-			{
-				if (strlen($item) > strlen($resume)) $resume = trim($item);
-			}
+		if (isset($this->_resume))	
+			return $this->_resume;
 
-			if ($resume && substr($resume, -1) != ".") $resume.=".";
-			$this->_resume = $resume;
-		}
-		return $this->_resume;
+		if ($album = $this->getAlbum())
+			return $album->getDescription();
+
+		$resume = '';
+		$data = $this->get_subfield("330", "a");
+		foreach ($data as $item)
+			if (strlen($item) > strlen($resume)) $resume = trim($item);
+
+		if ($resume && substr($resume, -1) != ".") 
+			$resume.=".";
+		
+		return $this->_resume = $resume;
 	}
 
-	public function setResume($resume)
-	{
+
+	public function setResume($resume) {
 		$this->_resume = $resume;
 		return $this;
 	}
@@ -1111,75 +1125,24 @@ class Class_Notice extends Storm_Model_Abstract {
 	public function findAllResumes() {
 		$avis = array();
 
-		if ($album = $this->getAlbum()) {
-				$avis[]=array('source' => 'bibliothèque',
-											'texte' => $album->getDescription());
+		if($resume = $this->getResume())
+			$avis[] = array('source' => 'Bibliothèque',
+											'texte' => $resume);
+
+		if (!$this->getIsbnOrEan())
 			return $avis;
-		}
 
-		// Lire la notice 
-		$notice = $this->getNotice($this->getId(),"T");
+		$providers = array('Class_WebService_Amazon',
+											 'Class_WebService_Fnac',
+											 'Class_WebService_Babelio',
+											 'Class_WebService_Bibliosurf',
+											 'Class_WebService_Premiere');
+												 
+		foreach ($providers as $provider_class) {
+			$provider = new $provider_class();
+			$avis = array_merge($avis, $provider->getResumes($this));
+		}
 		
-		// Si isbn ou ean
-		if($notice["id_service"])	{
-			// resume interne
-			$resume = $this->getChampNotice("R");
-			if($resume)
-			{
-				$lig["source"]="bibliothèque";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-
-			// Amazon
-			$amazon=new Class_WebService_Amazon();
-			$ret = $amazon->rend_analyses($notice["id_service"]);
-			if($ret) foreach($ret as $item) $avis[]=$item;
-			
-			// Fnac
-			$fnac=new Class_WebService_Fnac();
-			$resume = $fnac->getResume($notice["id_service"]);
-			if($resume)
-			{
-				$lig["source"]="Editeur";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-
-			// Babelio citations
-			$babelio=new Class_WebService_Babelio();
-			$data=$babelio->getCitations($notice["isbn"]);
-			if($data)
-			{
-				$lig["source"]="Babelio (citations)";
-				$lig["texte"]=$data;
-				$avis[]=$lig;
-			}
-
-			// Bibliosurf
-			$bibliosurf=new Class_WebService_Bibliosurf();
-			$data=$bibliosurf->getUrls($notice["isbn"]);
-			if($data)
-			{
-				$lig["source"]="Bibliosurf (liens)";
-				$lig["texte"]=$data;
-				$avis[]=$lig;
-			}
-		}
-
-		// Resumé premiere
-		if($notice["type_doc"]==4)
-		{
-			$premiere=new Class_WebService_Premiere();
-			$resume=$premiere->get_resume($notice["T"]);
-			if($resume)
-			{
-				$lig["source"]="Premiere.fr";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-		}
-
 		return $avis;
 	}
 }

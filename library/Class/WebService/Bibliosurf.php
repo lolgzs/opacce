@@ -22,8 +22,7 @@
 // OPAC3 - WEB-SERVICE BIBLIOSURF
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Bibliosurf
-{
+class Class_WebService_Bibliosurf {
 	private $id_client;											// Id de la bib issue des variables
 	private $req;														// Racine requete http
 
@@ -61,7 +60,16 @@ class Class_WebService_Bibliosurf
 			return false;
 		}
 	}
-	
+
+
+	public function getResumes($notice) {
+		if ($resume = $this->getUrls($notice->getIsbnOrEan()))
+			return array(array('source' => 'Bibliosurf (liens)',
+												 'texte' => $resume));
+		return array();
+	}
+
+
 //------------------------------------------------------------------------------------------------------
 // Retourne les urls
 //------------------------------------------------------------------------------------------------------

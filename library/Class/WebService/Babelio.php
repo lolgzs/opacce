@@ -191,6 +191,13 @@ class Class_WebService_Babelio {
 	}
 
 
+	public function getResumes($notice) {
+		if ($resume = $this->getCitations($notice->getIsbnOrEan()))
+			return array(array('source' => 'Babelio (citations)',
+												 'texte' => $resume));
+		return array();
+	}
+
 	/**
 	 * @param string $isbn
 	 * @return string

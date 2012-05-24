@@ -34,6 +34,14 @@ class Class_WebService_Fnac
 		$this->url='http://www3.fnac.com/advanced/book.do?isbn=';
 	}
 
+
+	public function getResumes($notice) {
+		if ($resume = $this->getResume($notice->getIsbnOrEan()))
+			return array(array('source' => 'Editeur',
+												 'texte' => $resume));
+		return array();
+	}
+
 //------------------------------------------------------------------------------------------------------
 // Résumé de l'editeur
 //------------------------------------------------------------------------------------------------------	
@@ -51,9 +59,14 @@ class Class_WebService_Fnac
 		
 		// Bloc editeur
 		$pos=strPos($data,"avisediteur");
-		if(!$pos) return false;
+
+		if(!$pos) 
+			return false;
+
 		$pos=striPos($data,"lireLaSuite",$pos);
-		if(!$pos) return false;
+		if(!$pos) 
+			return false;
+
 		$pos=strPos($data,">",$pos)+1;
 		$posfin=strPos($data,"</div>",$pos);
 		$resume=substr($data,$pos,($posfin-$pos));
