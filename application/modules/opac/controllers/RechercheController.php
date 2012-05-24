@@ -340,8 +340,7 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // LIEN REBONDISSANT
 //------------------------------------------------------------------------------------------------------
-	function rebondAction()
-	{
+	function rebondAction()	{
 		// Lancer la recherche
  		$code=$_REQUEST["code_rebond"];
  		$_SESSION["recherche"]["selection"]["code_rebond"]=$code;

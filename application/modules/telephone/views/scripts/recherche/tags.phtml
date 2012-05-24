@@ -1,8 +1,9 @@
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>nuage_tags.css"/>
-<?php
-echo $this->toolbar("Tags",$this->url_retour,true);
-echo '<h1>'.$this->notice["T"].'</h1>';
-echo '<div class="pave">';
-echo $this->tags;
-echo '</div>'.BR;
+<?php 
+echo $this->toolbar($this->_("Tags"), array('action' => 'viewnotice') ,true); 
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
+
+<div class="pave">
+<?php echo $this->tags; ?>
+</div>
+

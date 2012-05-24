@@ -75,9 +75,10 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 
 
 
-class IndexControllerTelephoneWithModulesTest extends AbstractIndexControllerTelephoneWithModulesTest {
+class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexControllerTelephoneWithModulesTest {
 	public function setUp() {
 		parent::setUp();
+		unset($_SERVER['HTTP_USER_AGENT']);
 		$this->dispatch('/');
 	}
 

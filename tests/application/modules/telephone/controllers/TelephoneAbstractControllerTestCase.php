@@ -24,8 +24,13 @@ require_once 'AbstractControllerTestCase.php';
 abstract class TelephoneAbstractControllerTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
+		$_SERVER['HTTP_USER_AGENT'] = 'iPhone';
 		Class_Profil::getCurrentProfil()->beTelephone();
+	}
+
+	public function tearDown() {
+		unset($_SERVER['HTTP_USER_AGENT']);
+		parent::tearDown();
 	}
 }
 

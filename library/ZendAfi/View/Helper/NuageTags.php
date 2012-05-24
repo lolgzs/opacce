@@ -22,13 +22,14 @@
 // OPAC3 : Nuages de tags
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper
-{
+class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 
-	function nuageTags($tags,$calcul=3)
-	{
+	function nuageTags($tags,$calcul=3) {
+		Class_ScriptLoader::getInstance()->addSkinStyleSheet('nuage_tags');
+
 		// Parametres
 		if(!$tags) return;
+
 		$url = BASE_URL."/opac/recherche/rebond?facette=reset&amp;code_rebond=";
 		
 		// Déterminer les tranches

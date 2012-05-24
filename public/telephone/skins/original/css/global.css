@@ -312,3 +312,8 @@ table.notice_detail tr li {
 		padding: 0px;
 		margin: 0px;
 }
+
+
+.pave>.nuage+div {
+		display:none;
+}

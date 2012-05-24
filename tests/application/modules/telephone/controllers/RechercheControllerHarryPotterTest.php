@@ -170,7 +170,41 @@ class Telephone_RechercheControllerHarryPotterViewResumeTest extends Telephone_R
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
-	
+
+
+	/** @test */
+	public function pageShouldContainsResumeBib() {
+		$this->assertXPathContentContains('//div', 'Apres la mort');
+	}	
+}
+
+
+
+
+class Telephone_RechercheControllerHarryPotterTagsTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/telephone/recherche/tags/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsUrlToViewNoticeInToolbar() {
+		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
+	}
+
+
+	/** @test */
+	public function titleShouldBeHarryPotter() {
+		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsNuageTagsCss() {
+		$this->assertXPath('//link[contains(@href, "nuage_tags")]',
+											 $this->_response->getBody());
+	}
 }
 
 

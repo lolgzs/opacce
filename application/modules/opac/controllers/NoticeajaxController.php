@@ -81,8 +81,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Tags utilisateur
 //------------------------------------------------------------------------------------------------------
-	function tagsAction()
-	{
+	function tagsAction()	{
 		$tags=$this->notice->getTags($this->id_notice);
 		$html=$this->notice_html->getTags($tags,$this->id_notice);
 

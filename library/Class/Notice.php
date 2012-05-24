@@ -574,8 +574,10 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Tags
 // ----------------------------------------------------------------
-	public function getTags($id_notice)
-	{
+	public function getTags($id_notice = null)	{
+		if (!$id_notice)
+			$id_notice = $this->getId();
+
 		$ix = new Class_Indexation();
 
 		// Preferences

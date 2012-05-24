@@ -878,8 +878,7 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------	
 // Tags utilisateur
 //------------------------------------------------------------------------------------------------------	
-	public function getTags($tags,$id_notice)
-	{
+	public function getTags($tags,$id_notice)	{
 		// Identité user connecté
 		$user = Zend_Auth::getInstance()->getIdentity();
 		
