@@ -229,15 +229,17 @@ function setupHTTPClient($cfg) {
 }
 
 
-
-
 function setupMail($cfg) {
+	if (defined('SMTP_HOST')) {
+		Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Smtp(SMTP_HOST));
+		return;
+	}
+		
 	if (!$cfg->mail->transport->smtp)
 		return;
 
-	$transport = new Zend_Mail_Transport_Smtp($cfg->mail->transport->smtp->host,
-																						$cfg->mail->transport->smtp->toArray());
-	Zend_Mail::setDefaultTransport($transport);
+	Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Smtp($cfg->mail->transport->smtp->host,
+																															$cfg->mail->transport->smtp->toArray()));
 }
 
 
