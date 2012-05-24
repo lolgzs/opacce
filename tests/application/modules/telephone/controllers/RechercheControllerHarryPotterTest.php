@@ -209,6 +209,54 @@ class Telephone_RechercheControllerHarryPotterTagsTest extends Telephone_Recherc
 
 
 
+class Telephone_RechercheControllerHarryPotterBiographieTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	/**
+	 * @group longtest
+	 * @group integration
+	 * @test 
+	 */
+	public function dispatchBiographie() {
+		$this->dispatch('/telephone/recherche/biographie/id/4', true);
+		return $this->_response->getBody();
+	}
+
+	/** 
+	 * @depends dispatchBiographie
+	 * @test 
+	 */
+	public function pageShouldContainsUrlToViewNoticeInToolbar($response) {
+		Storm_Test_XPath::newInstance()
+			->assertXPath($response,
+										'//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
+	}
+
+
+	/** 
+	 * @depends dispatchBiographie
+	 * @test 
+	 */
+	public function titleShouldBeHarryPotter($response) {
+		Storm_Test_XPath::newInstance()
+			->assertXPathContentContains($response,
+																	 '//h1', 
+																	 'Harry Potter à l\'ecole des sorciers');
+	}
+
+
+	/** 
+	 * @depends dispatchBiographie
+	 * @test 
+	 */
+	public function pageShouldContainsInspirationEtControverse($response) {
+		Storm_Test_XPath::newInstance()
+			->assertXPathContentContains($response,
+																	 '//td', 
+																	 'Inspiration et controverse');
+	}	
+}
+
+
+
 
 class Telephone_RechercheControllerHarryPotterNoticeDetailleeTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {

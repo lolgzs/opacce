@@ -38,7 +38,7 @@ class NoticeAjaxControllerNonRegressionTest extends AbstractControllerTestCase {
 	function detailShouldRenderAucuneNoticeTrouvee() {
 		$mock_sql = $this->getSqlMock();
 		$mock_sql
-			->expects($this->at(2))
+			->expects($this->at(1))
 			->method('fetchEnreg')
 			->with('select titres,auteurs,collection,matieres,dewey from notices where id_notice=197143')
 			->will($this->returnValue(array('titres' => 'IRM',
@@ -48,7 +48,7 @@ class NoticeAjaxControllerNonRegressionTest extends AbstractControllerTestCase {
 																			'dewey' => '')));
 
 		$mock_sql
-			->expects($this->at(3))
+			->expects($this->at(2))
 			->method('fetchAll')
 			->with("select id_notice from notices where MATCH(titres,auteurs,editeur,collection,matieres,dewey) AGAINST(' (IRM IRMS )') and id_notice !=197143 Limit 0,10")
 			->will($this->returnValue(array(array('id_notice' => null))));

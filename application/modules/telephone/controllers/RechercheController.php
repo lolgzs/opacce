@@ -66,4 +66,10 @@ class Telephone_RechercheController extends RechercheController {
 		$this->view->tags = $notice_html->getTags($notice->getTags(), $notice->getId());
 		$this->view->notice = $notice;
 	}
+
+
+	public function biographieAction() {
+		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	}
+
 }

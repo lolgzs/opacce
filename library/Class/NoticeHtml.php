@@ -542,28 +542,30 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------
 // Biographie
 //------------------------------------------------------------------------------------------------------
-	public function getBiographie($data,$notice)
-	{
-		if(!$data["biographie"]) return $this->getNonTrouve("",true);
+	public function getBiographie($data,$notice)	{
+		if(!$data["biographie"]) 
+			return $this->getNonTrouve("",true);
+
+		$auteur = $notice->getAuteurPrincipal();
 		$html=$this->haut_onglet;
 		$html.='<table width="100%">';
 		$html.=sprintf('<tr><td class="notice_info_titre" align="left" width="100%%">%s<font size="-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(%s : %s)</font></td></tr>',
-									 $notice["A"],
+									 $auteur,
 									 $this->_translate->_('Source'),
 									 $data["source"]);
-		foreach($data["biographie"] as $ligne)
-		{
-			if(!$ligne["texte"]) continue;
-			if($ligne["liste"])
-			{
+		$suite = false;
+		foreach ($data["biographie"] as $ligne)	{
+			if(!isset($ligne["texte"])) continue;
+			if(isset($ligne["liste"])){
 				$liste='<ul class="notice_info">';
 				foreach($ligne["liste"] as $item) $liste.='<li class="notice_liste">'.$item.'</li>';
 				$liste.='</ul>';
 				$ligne["texte"]=str_replace("@LISTE@",$liste,$ligne["texte"]);
 			}
-			if($suite)
-			{
-				if($ligne["titre"]) $html.='<tr><td class="notice_info_titre" align="left" width="100%">'.$ligne["titre"].'</td></tr>';
+			if ($suite){
+				if(isset($ligne["titre"])) 
+					$html.='<tr><td class="notice_info_titre" align="left" width="100%">'.$ligne["titre"].'</td></tr>';
+
 				$html.='<tr><td class="notice_info" align="left" width="100%">'.$ligne["texte"].'</td></tr>';
 			}
 			else
@@ -577,8 +579,8 @@ class Class_NoticeHtml
 																					 $this->_translate->_('Vignette'));
 					if($data["image"])
 					{
-						$id="auteur_".$notice["id_notice"];
-						$vignette='<a id="'.$id.'" href="'.$data["image"].'" rel="lightbox" title="'.$notice["A"].'">'.$vignette;
+						$id="auteur_".$notice->getId();
+						$vignette='<a id="'.$id.'" href="'.$data["image"].'" rel="lightbox" title="'.$auteur.'">'.$vignette;
 						$vignette.='</a>';
 						$vignette.='<script type="text/javascript">$("a[id=\''.$id.'\']").slimbox({}, null, null)</script>';
 					}

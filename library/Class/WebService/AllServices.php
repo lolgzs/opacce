@@ -95,8 +95,12 @@ class Class_WebService_AllServices
 //------------------------------------------------------------------------------------------------------
 // Lance un service AFI et renvoie le resultat
 //------------------------------------------------------------------------------------------------------
-	static function runServiceAfi($service,$args)
-	{
+	static function runServiceAfiBiographie($args) {
+		return self::runServiceAfi(8, $args);
+	}
+
+
+	static function runServiceAfi($service,$args)	{
 		$url_service=fetchOne("select valeur from variables where clef ='url_services'");
 		if(!$url_service) return false;
 

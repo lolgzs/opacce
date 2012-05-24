@@ -49,7 +49,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		}
 
 		// Test services afi
-		$this->service_afi=fetchOne("select valeur from variables where clef ='url_services'");
+		$this->service_afi = Class_CosmoVar::get('url_services');
 	}
 //------------------------------------------------------------------------------------------------------
 // Notice complete (mode accordeon ou liste images)
@@ -228,20 +228,9 @@ class NoticeAjaxController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Biographie
 //------------------------------------------------------------------------------------------------------
-	function biographieAction()
-	{
-		$notice=$this->notice->getNotice($this->id_notice,"A");
-		if(!$notice["A"]) $html.=$this->notice_html->getNonTrouve($this->view->_("Cette notice n'a pas d'auteur"),true);
-		else if($this->service_afi > "")
-		{
-			$args=array("auteur" => $notice["A"]);
-			$data=Class_WebService_AllServices::runServiceAfi(8,$args);
-			$html=$this->notice_html->getBiographie($data,$notice);
-		}
-		else $html= $html=$this->notice_html->getNonTrouve($this->view->_("Service non disponible"));
-
+	function biographieAction() {
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->getResponse()->setBody($this->view->biographie($this->notice));
 	}
 	
 //------------------------------------------------------------------------------------------------------
