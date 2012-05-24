@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
+ * Copyright (c) 2012, Agence FranÃ§aise Informatique (AFI). All rights reserved.
  *
  * AFI-OPAC 2.0 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
@@ -43,10 +43,9 @@ class Class_WebService_Fnac
 	}
 
 //------------------------------------------------------------------------------------------------------
-// R�sum� de l'editeur
+// Résumé de l'editeur
 //------------------------------------------------------------------------------------------------------	
-	public function getResume($isbn)
-	{
+	public function getResume($isbn) {
 		if(!$isbn) return false;
 		$isbn=str_replace("-","",$isbn);
 		
@@ -56,22 +55,17 @@ class Class_WebService_Fnac
 		$httpClient->setUri($url);
 		$response = $httpClient->request();
 		$data = $response->getBody();
-		
-		// Bloc editeur
-		$pos=strPos($data,"avisediteur");
+		$matches = array();
 
+		$pos=striPos($data,"resume");
 		if(!$pos) 
-			return false;
+			return array();
 
-		$pos=striPos($data,"lireLaSuite",$pos);
-		if(!$pos) 
-			return false;
+		$pos = strPos($data,">",$pos)+1;
+		$posfin = strPos($data,"</div",$pos);
+		$resume = substr($data,$pos,($posfin-$pos));
 
-		$pos=strPos($data,">",$pos)+1;
-		$posfin=strPos($data,"</div>",$pos);
-		$resume=substr($data,$pos,($posfin-$pos));
-		//tracedebug($resume,true);
-		return $resume;
+		return trim(str_replace('Avis de la Fnac&nbsp;:', '', strip_tags($resume)));
 	}
 	
 }

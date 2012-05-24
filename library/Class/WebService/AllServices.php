@@ -76,7 +76,7 @@ class Class_WebService_AllServices
 				),
 			"Fnac" => array
 				(
-					"valeurs" => array("isbn" => "978-2-07-061239-0"),
+					"valeurs" => array("isbn" => "978-2-7427-6501-0"),
 					"services" => array("getResume(@isbn)")
 				 ),
 			"OAI" => array
@@ -126,6 +126,7 @@ class Class_WebService_AllServices
 		if(!$id_service) return false;
 		$instruction="\$cls=new Class_WebService_".$id_service."();";
 		eval($instruction);
+		$num_fonction = 0;
 		foreach($this->services[$id_service]["services"] as $instruction)
 		{
 			$num_fonction++;

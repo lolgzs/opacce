@@ -21,29 +21,6 @@
 require_once 'AdminAbstractControllerTestCase.php';
 
 
-class SystemeControllerWebServicesActionTest extends Admin_AbstractControllerTestCase {
-	public function setUp() {
-		parent::setUp();
-		$this->dispatch('admin/systeme/webservices');
-	}
-
-
-	/** @test */
-	public function titleShouldBeTestDesWebServices() {
-		$this->assertXPathContentContains('//h1', 'Test des Web Services');
-	}
-
-
-	/** @test */
-	public function amazonRendAvisShouldBeVisible() {
-		$this->assertXPathContentContains('//a[contains(@href, "webservices/id_service/Amazon/id_fonction/1")]', 
-																			'rend_avis(isbn,page)');
-	}
-}
-
-
-
-
 class SystemeControllerMailTestActionTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
