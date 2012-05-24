@@ -144,7 +144,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 }
 
 /* Bloc pavé interne */
-.pave
+.pave, .resumes>div>div
 {
 	background-color:#FFFFFF;
 	margin: 6px 6px 17px 6px;
@@ -154,7 +154,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 	-moz-border-radius : 8px;
 	overflow: hidden;
 }
-.pave h1{font: bold 14px Helvetica,Arial; padding: 2px;}
+.pave h1, .resumes div.notice_info_titre{font: bold 14px Helvetica,Arial; padding: 2px;}
 .pave td{font: normal 12px Helvetica,Arial; padding: 2px;}
 .pave div.blank{color: #666666;padding:5px 0px 3px 3px;}
 .pave div.fonction

@@ -83,7 +83,7 @@ class Class_WebService_Babelio {
 	public function requete($isbn) {
 		$isbn = str_replace('-', '', (string)$isbn);
 		$url = $this->_baseUrl . $isbn . $this->_getAuth();
-		
+
 		try {
 			$httpClient = $this->getHttpClient();
 			$httpClient->setUri($url);

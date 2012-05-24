@@ -68,7 +68,9 @@ class Class_WebService_Fnac
 		$posfin = strPos($data,"</div",$pos);
 		$resume = substr($data,$pos,($posfin-$pos));
 
-		return trim(str_replace('Avis de la Fnac&nbsp;:', '', strip_tags($resume)));
+		$resume = str_replace('Avis de la Fnac&nbsp;:', '', strip_tags($resume));
+		$resume = str_replace('&raquo;&nbsp;Lire la suite...', '', $resume);
+		return trim($resume);
 	}
 	
 }

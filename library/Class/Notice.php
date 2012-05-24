@@ -1129,10 +1129,8 @@ class Class_Notice extends Storm_Model_Abstract {
 			$avis[] = array('source' => 'Bibliothèque',
 											'texte' => $resume);
 
-		$providers = array('Class_WebService_Amazon',
-											 'Class_WebService_Fnac',
+		$providers = array('Class_WebService_Fnac',
 											 'Class_WebService_Babelio',
-											 'Class_WebService_Bibliosurf',
 											 'Class_WebService_Premiere');
 												 
 		foreach ($providers as $provider_class) {

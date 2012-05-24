@@ -5,7 +5,7 @@ echo $this->toolbar($this->_("Résumés"),
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
 
-<div class="pave">
+<div class="resumes">
 <?php
 $notice_html=new Class_NoticeHtml($this->notice);
 echo $notice_html->getResume($this->notice->findAllResumes());
