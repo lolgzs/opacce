@@ -208,87 +208,14 @@ class NoticeAjaxController extends Zend_Controller_Action
 // Résumés et analyses
 //------------------------------------------------------------------------------------------------------
 	function resumeAction()	{
-		$avis = $this->_getAvisCurrentNotice();
+		$avis = $this->notice->findAllResumes();
 		$html=$this->notice_html->getResume($avis);
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 		$this->getResponse()->setBody($html);
 	}
 
 
-	protected function _getAvisCurrentNotice() {
-		$avis = array();
-
-		if ($album = $this->notice->getAlbum()) {
-				$avis[]=array('source' => 'bibliothèque',
-											'texte' => $album->getDescription());
-			return $avis;
-		}
-
-		// Lire la notice 
-		$notice=$this->notice->getNotice($this->id_notice,"T");
-		
-		// Si isbn ou ean
-		if($notice["id_service"])	{
-			// resume interne
-			$resume=$this->notice->getChampNotice("R");
-			if($resume)
-			{
-				$lig["source"]="bibliothèque";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-
-			// Amazon
-			$amazon=new Class_WebService_Amazon();
-			$ret=$amazon->rend_analyses($notice["id_service"]);
-			if($ret) foreach($ret as $item) $avis[]=$item;
-			
-			// Fnac
-			$fnac=new Class_WebService_Fnac();
-			$resume = $fnac->getResume($notice["id_service"]);
-			if($resume)
-			{
-				$lig["source"]="Editeur";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-
-			// Babelio citations
-			$babelio=new Class_WebService_Babelio();
-			$data=$babelio->getCitations($notice["isbn"]);
-			if($data)
-			{
-				$lig["source"]="Babelio (citations)";
-				$lig["texte"]=$data;
-				$avis[]=$lig;
-			}
-
-			// Bibliosurf
-			$bibliosurf=new Class_WebService_Bibliosurf();
-			$data=$bibliosurf->getUrls($notice["isbn"]);
-			if($data)
-			{
-				$lig["source"]="Bibliosurf (liens)";
-				$lig["texte"]=$data;
-				$avis[]=$lig;
-			}
-		}
-
-		// Resumé premiere
-		if($notice["type_doc"]==4)
-		{
-			$premiere=new Class_WebService_Premiere();
-			$resume=$premiere->get_resume($notice["T"]);
-			if($resume)
-			{
-				$lig["source"]="Premiere.fr";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-		}
-
-		return $avis;
-	}
+	
 
 //------------------------------------------------------------------------------------------------------
 // Vignette

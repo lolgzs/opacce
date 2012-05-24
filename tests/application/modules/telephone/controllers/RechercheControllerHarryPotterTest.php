@@ -153,6 +153,29 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 
 
+class Telephone_RechercheControllerHarryPotterViewResumeTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/telephone/recherche/resume/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsUrlToViewNoticeInToolbar() {
+		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
+	}
+
+
+	/** @test */
+	public function titleShouldBeHarryPotter() {
+		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+	}
+	
+}
+
+
+
+
 class Telephone_RechercheControllerHarryPotterNoticeDetailleeTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {
 		parent::setUp();

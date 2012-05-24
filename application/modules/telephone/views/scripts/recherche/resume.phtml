@@ -1,9 +1,13 @@
 <?php
-echo $this->toolbar("Résumés",$this->url_retour,true);
-echo '<h1>'.$this->notice["T"].'</h1>';
-echo '<div class="pave">';
-$notice_html=new Class_NoticeHtml($this->notice);
-$notice_html->notice=$this->notice;
-echo $notice_html->getResume($this->avis);
-echo '</div>'.BR;
+echo $this->toolbar($this->_("Résumés"),
+										array('action' => 'viewnotice'),
+										true);
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
+
+<div class="pave">
+<?php
+$notice_html=new Class_NoticeHtml($this->notice);
+echo $notice_html->getResume($this->notice->findAllResumes());
+?>
+</div>

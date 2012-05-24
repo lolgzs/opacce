@@ -53,4 +53,9 @@ class Telephone_RechercheController extends RechercheController {
 	public function detailAction() {
 		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	}
+
+
+	public function resumeAction() {
+		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	}
 }
