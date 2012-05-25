@@ -105,14 +105,6 @@ class UsersLoader extends Storm_Model_Loader {
 			return false;
 		return $user->canAccessAllBibs();
 	}
-
-
-
-	public function getIdentityName() {
-		if (!$user = $this->getIdentity())
-			return '';
-		return $user->getNomAff();
-	}
 }
 
 
@@ -611,32 +603,31 @@ class Class_Users extends Storm_Model_Abstract {
 	//------------------------------------------------------------------------------------------------------
 	// Mot de passe oublié
 	//------------------------------------------------------------------------------------------------------
-	function lostpass($user)
-	{
-		if(!trim($user)) $error=1;
-		else
-		{
-			$enreg=fetchEnreg("Select * from bib_admin_users where LOGIN='$user'");
-			if(!$enreg) $enreg=fetchEnreg("Select * from bib_admin_users_non_valid where LOGIN='$user'");
-			if(!$enreg["LOGIN"]) $error=2;
-			if(!$error and !$enreg["MAIL"]) $error=4;
-		}
-		if($error) $ret["error"]= $error;
-		else
-		{
-			// envoi du mail
-			$message_mail.=sprintf("<h3>%s</h3>".BR,
-														 $this->_translate->_('Vous avez fait une demande de mot de passe sur le portail.'));
-			$message_mail.=$this->_translate->_("Votre identifiant : %s", "<b>".$enreg["LOGIN"].'</b>'.BR);
-			$message_mail.=$this->_translate->_("Votre mot de passe : %s", "<b>".$enreg["PASSWORD"].'</b>'.BR.BR);
-			$message_mail.=sprintf("<h3>%s</h3>".BR, $this->_translate->_('Bonne navigation sur le portail'));
-			$mail=new Class_Mail();
-			$erreur=$mail->sendMail(Class_Profil::getCurrentProfil()->getTitreSite(), $message_mail, $enreg["MAIL"]);
+	function lostpass($user) {
+		if(!trim($user)) 
+			return array('error' => 1);
 
-			if($erreur) $ret["message_mail"]='<p class="error">'.$erreur.'</p>';
-			else  $ret["message_mail"]=$this->_translate->_("Un mail vient de vous être envoyé avec vos paramètres de connexion.");
-		}
-		return $ret;
+		$enreg=fetchEnreg("Select * from bib_admin_users where LOGIN='$user'");
+		if (!$enreg) $enreg=fetchEnreg("Select * from bib_admin_users_non_valid where LOGIN='$user'");
+		if (!$enreg["LOGIN"]) 
+			return array('error' => 2);
+
+		if (!$enreg["MAIL"]) 
+			return array('error' => 4);
+	
+		// envoi du mail
+		$message_mail = sprintf("%s\n\n",
+														$this->_translate->_('Vous avez fait une demande de mot de passe sur le portail.'));
+		$message_mail .= $this->_translate->_("Votre identifiant : %s\n", $enreg["LOGIN"]);
+		$message_mail .= $this->_translate->_("Votre mot de passe : %s\nn", $enreg["PASSWORD"]);
+		$message_mail .= sprintf("%s\n\n", $this->_translate->_('Bonne navigation sur le portail'));
+		$mail = new Class_Mail();
+		$erreur = $mail->sendMail(Class_Profil::getCurrentProfil()->getTitreSite(), $message_mail, $enreg["MAIL"]);
+
+		if($erreur) 
+			return array('message_mail' => '<p class="error">'.$erreur.'</p>');
+			
+		return array('message_mail' => $this->_translate->_("Un mail vient de vous être envoyé avec vos paramètres de connexion."));
 	}
 
 	//------------------------------------------------------------------------------------------------------
