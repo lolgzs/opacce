@@ -31,91 +31,90 @@ class Telephone_RechercheController extends RechercheController {
 																 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
 																 $this->view->_('Notices similaires') =>	  array('action' => 'similaires'),
 																 $this->view->_('Ressources numériques') => array('action' => 'ressourcesnumeriques'),
-																 );
-	}
+																	);
+	 }
 
 
-	public function grandeimageAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function grandeimageAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
-	public function exemplairesAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function exemplairesAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
-	public function avisAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function avisAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
-	public function detailAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function detailAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
-	public function reservationAction() {
-		if (!Class_Users::getLoader()->getIdentity()) {
-			Zend_Registry::get('session')->lastReservationParams = array('b' => $this->_getParam('b'),
-																																	 'e' => $this->_getParam('e'),
-																																	 'a' => $this->_getParam('a'));
-			$this->_redirect('/auth/login-reservation');
-			return;
-		}
+	 public function reservationAction() {
+		 if (!Class_Users::getLoader()->getIdentity()) {
+			 $this->_setLastReservationParamsAndGotoLogin();
+			 return;
+		 }
 
-		if (Class_CosmoVar::isSiteRetraitResaEnabled()
-				&& !$this->_getParam('pickup')) {
-			$this->_redirect(sprintf('/recherche/pickup-location/b/%s/e/%s/a/%s',
-															 urlencode($this->_getParam('b')),
-															 urlencode($this->_getParam('e')),
-															 urlencode($this->_getParam('a'))));
-			return;
-		}
+		 $this->_loadReservationParamsFromSession();
 
-		$ret = Class_CommSigb::getInstance()
-			->reserverExemplaire($this->_getParam('b'), 
-													 $this->_getParam('e'), 
-													 ($this->_getParam('pickup')) ? $this->_getParam('pickup') : $this->_getParam('a'));
+		 if (Class_CosmoVar::isSiteRetraitResaEnabled()
+				 && !$this->_getParam('pickup')) {
+			 $this->_redirect(sprintf('/recherche/pickup-location/b/%s/e/%s/a/%s',
+																urlencode($this->_getParam('b')),
+																urlencode($this->_getParam('e')),
+																urlencode($this->_getParam('a'))));
+			 return;
+		 }
 
-		if (isset($ret["erreur"])) {
-			$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
-			$this->view->message = $ret['erreur'];
-			return;
-		}
+		 $ret = Class_CommSigb::getInstance()
+			 ->reserverExemplaire($this->_getParam('b'), 
+														$this->_getParam('e'), 
+														($this->_getParam('pickup')) ? $this->_getParam('pickup') : $this->_getParam('a'));
 
-		if (isset($ret["popup"]))	{
-			$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
-			$this->view->message = $this->view->_('Réservation en ligne non supportée pour cette bibliothèque.');
-			return;
-		}
+		 if (isset($ret["erreur"])) {
+			 $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+			 $this->view->message = $ret['erreur'];
+			 return;
+		 }
 
-		$this->_redirect('/abonne/fiche');
-	}
+		 if (isset($ret["popup"]))	{
+			 $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+			 $this->view->message = $this->view->_('Réservation en ligne non supportée pour cette bibliothèque.');
+			 return;
+		 }
 
-
-	public function pickupLocationAction() {
-		$this->_loadUrlRetourForExemplaire($this->_getParam('e'));
-		$this->view->annexes = Class_CodifAnnexe::findAllByPickup();
-	}
+		 $this->_redirect('/abonne/fiche');
+	 }
 
 
-	public function resumeAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function pickupLocationAction() {
+		 $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+		 $this->view->annexes = Class_CodifAnnexe::findAllByPickup();
+	 }
 
 
-	public function tagsAction() {
-		$notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-		$notice_html = new Class_NoticeHtml();
-		$this->view->tags = $notice_html->getTags($notice->getTags(), $notice->getId());
-		$this->view->notice = $notice;
-	}
+	 public function resumeAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
-	public function biographieAction() {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-	}
+	 public function tagsAction() {
+		 $notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+		 $notice_html = new Class_NoticeHtml();
+		 $this->view->tags = $notice_html->getTags($notice->getTags(), $notice->getId());
+		 $this->view->notice = $notice;
+	 }
+
+
+	 public function biographieAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
 
 
 	public function similairesAction() {
@@ -132,5 +131,25 @@ class Telephone_RechercheController extends RechercheController {
 																											 'action' => 'exemplaires',
 																											 'id' => $exemplaire->getNotice()->getId()),
 																								 null, true);
+	}
+
+
+	protected function _setLastReservationParamsAndGotoLogin() {
+		$exemplaire = Class_Exemplaire::getLoader()->find($this->_getParam('e'));
+		Zend_Registry::get('session')->lastReservationParams = array('b' => $this->_getParam('b'),
+																																 'e' => $this->_getParam('e'),
+																																 'a' => $this->_getParam('a'));
+		$this->_redirect('/auth/login-reservation/id/' . urlencode($exemplaire->getNotice()->getId()));
+	}
+
+
+	protected function _loadReservationParamsFromSession() {
+		if (!$params = Zend_Registry::get('session')->lastReservationParams)
+			return;
+
+		$this->_request
+			->setParam('b', $params['b'])
+			->setParam('e', $params['e'])
+			->setParam('a', $params['a']);
 	}
 }

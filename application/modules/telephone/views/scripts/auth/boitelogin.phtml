@@ -16,22 +16,21 @@ if($user = Class_Users::getLoader()->getIdentity()) {
 																	 $user->getNbReservations());
 
 } else {
-	echo $this->newForm(array('autocomplete' => 'off',
-														'decorators' => array('FormElements', 'Form')))
-		->setAction($this->url(array('controller' => 'auth', 
-																 'action' => 'boitelogin', 
-																 'id_module' => $this->id_module)))
-		->addElement('text', 'username', array('label' => $this->preferences['identifiant'],
-																					 'placeholder' => $this->preferences['identifiant_exemple'],
-																					 'size' => 15))
-		->addElement('password', 'password', array('label' => $this->preferences['mot_de_passe'],
-																							 'placeholder' => $this->preferences['mot_de_passe_exemple'],
-																							 'size' => 15))
-		->setElementDecorators(array('ViewHelper', 'Label'))
-		->addElement('submit', 'login', array('label' => $this->preferences['lien_connexion'],
-																					'decorators' => array('ViewHelper')));
+	$form = new ZendAfi_Form_Login();
+	$form->setAction($this->url(array('controller' => 'auth', 
+																		'action' => 'boitelogin', 
+																		'id_module' => $this->id_module)));
+
+	$form->getElement('username')
+		->setLabel($this->preferences['identifiant'])
+		->setAttrib('placeholder', $this->preferences['identifiant_exemple']);
+	$form->getElement('password')
+		->setLabel($this->preferences['mot_de_passe'])
+		->setAttrib('placeholder', $this->preferences['mot_de_passe_exemple']);
+	$form->getElement('login')
+		->setLabel($this->preferences['lien_connexion']);
+	echo $form;
 }
 
 ?>
-
 <div class="clear"></div>

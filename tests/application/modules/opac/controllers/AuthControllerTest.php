@@ -321,7 +321,10 @@ class AuthControllerPostTest extends AuthControllerNobodyLoggedTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @test 
+	 * @group integration
+	 */
 	public function validAuthenticationShouldRedirect()	{
 		$user = Class_Users::getLoader()->findFirstBy(array());
 

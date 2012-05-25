@@ -22,11 +22,32 @@
 require_once ROOT_PATH.'application/modules/opac/controllers/AuthController.php';
 
 class Telephone_AuthController extends AuthController {
-	function boiteloginAction() {
+	public function boiteloginAction() {
 		if ($this->_request->isPost())
 			$this->_authenticate();
 		$this->_redirect('/telephone/index');
 	}
-}
 
+
+	public function loginReservationAction() {
+		$form = $this->_getForm();
+		if ($this->_request->isPost()
+				&& !($this->view->error = $this->_authenticate())) {
+			$this->_redirect('/recherche/reservation');
+			return;
+		}
+		
+		$this->view->id_notice = $this->_getParam('id');
+		$this->view->form = $form;
+	}
+
+
+	protected function _getForm() {
+		$form = new ZendAfi_Form_Login();
+		$form->getElement('username')->setAttrib('placeholder', $this->view->_('Identifiant'));
+		$form->getElement('password')->setAttrib('placeholder', $this->view->_('Mot de passe'));
+		$form->getElement('login')->setLabel($this->view->_('Se connecter'));
+		return $form;
+	}
+}
 ?>

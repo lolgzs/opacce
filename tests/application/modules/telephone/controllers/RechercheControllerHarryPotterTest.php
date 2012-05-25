@@ -420,13 +420,18 @@ class Telephone_RechercheControllerHarryPotterReservationNotLogged extends Telep
 			->whenCalled('getIdentity')
 			->answers(false);
 
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
 		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL');
 	}
 
 
 	/** @test */
 	public function shouldRedirectToAuth() {
-		$this->assertRedirectTo('/auth/login-reservation');
+		$this->assertRedirectTo('/auth/login-reservation/id/4');
 	}
 
 
@@ -457,6 +462,11 @@ class Telephone_RechercheControllerHarryPotterReservationWithEnabledPickup exten
 			->newInstanceWithId('site_retrait_resa')
 			->setValeur(1);
 
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
 		$this->dispatch('/recherche/reservation/b/1/e/33/a/MOUL');
 	}
 
@@ -467,6 +477,40 @@ class Telephone_RechercheControllerHarryPotterReservationWithEnabledPickup exten
 	}
 
 }
+
+
+
+class Telephone_RechercheControllerHarryPotterReservationBackFromLoginWithEnabledPickup extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()
+			->newInstanceWithId('site_retrait_resa')
+			->setValeur(1);
+
+		Class_Exemplaire::getLoader()
+			->newInstanceWithId(33)
+			->setCote('JRROW')
+			->setNotice(Class_Notice::getLoader()->find(4));
+
+		Zend_Registry::get('session')->lastReservationParams = array('b' => 1,
+																																 'e' => 33,
+																																 'a' => 'MOUL');
+		$this->dispatch('/recherche/reservation');
+	}
+
+
+	public function tearDown() {
+		unset(Zend_Registry::get('session')->lastReservationParams);
+	}
+
+
+	/** @test */
+	public function shouldRedirectToPickupChoice() {
+			$this->assertRedirectTo('/recherche/pickup-location/b/1/e/33/a/MOUL');
+	}
+
+}
+
 
 
 class Telephone_RechercheControllerHarryPotterExemplairePickupChoiceTest extends Telephone_RechercheControllerHarryPotterTestCase {

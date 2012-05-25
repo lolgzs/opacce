@@ -1,0 +1,13 @@
+<?php
+echo $this->toolbar($this->_("Identification"), 
+										array('controller' => 'recherche',
+													'action' => 'exemplaires',
+													'id' => $this->id_notice),
+										false);
+?>
+<div class="pave">
+<?php 
+echo $this->form;
+?>
+<?php if ($this->error) echo '<strong style="color:red">' . $this->error . '</strong>';?>
+</div>
