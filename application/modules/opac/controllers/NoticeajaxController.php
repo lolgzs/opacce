@@ -195,8 +195,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Notices similaires
 //------------------------------------------------------------------------------------------------------
-	function similairesAction()
-	{
+	function similairesAction()	{
 		$notices=$this->notice->getNoticesSimilaires($this->id_notice);
 		$html=$this->notice_html->getListeNotices($notices, $this->view);
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');

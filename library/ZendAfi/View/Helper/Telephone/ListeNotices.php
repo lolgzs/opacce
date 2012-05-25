@@ -60,12 +60,13 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 //------------------------------------------------------------------------------------------------------
 // Format 3 : VIGNETTE
 //------------------------------------------------------------------------------------------------------
-	public function listeVignette($data,$champs)
-	{	
+	public function listeVignette($data,$champs) {	
 		$html='<div class="liste">';
 		$html.='<ul>';
-		foreach($data as $notice)
-		{
+		foreach($data as $notice)	{
+			if (!$titre = $notice['T']) $titre = $notice['titre_principal'];
+			if (!$auteur = $notice['A']) $auteur = $notice['auteur_principal'];
+
 			$html.='<li class="lien">';
 			$html.= sprintf('<a href="%s">',
 											$this->urlNotice($notice["id_notice"], $notice["type_doc"]));
@@ -76,7 +77,7 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 			$html.='<tr><td width="70px" valign="top"><img src="'.$img["vignette"].'" width="60px" style="cursor:pointer;"></td>';
 
 			// Titre / auteur principal
-			$html.='<td valign="top">'.$notice["T"].BR.$notice["A"];
+			$html.='<td valign="top">'.$titre.BR.$auteur;
 
 			// Données variables
 			for($i=0; $i < strlen($champs); $i++)

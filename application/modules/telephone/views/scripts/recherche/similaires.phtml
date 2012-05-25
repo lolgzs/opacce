@@ -1,9 +1,14 @@
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>nuage_tags.css"/>
 <?php
-echo $this->toolbar("Notices similaires",$this->url_retour,true);
-echo '<h1>'.$this->notice["T"].'</h1>';
-echo '<div class="pave">';
-
-echo $this->html;
-echo '</div>'.BR;
+echo $this->toolbar($this->_("Notices similaires"), array('action' => 'viewnotice') ,true); 
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
+
+<div class="pave">
+<?php
+	echo $this->listeNotices($this->notices, 
+													 count($this->notices), 
+													 1, 
+													 $this->preferences);
+?>
+</div>
+
