@@ -25,77 +25,87 @@
 class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 	public function urlNotice($id, $type_doc) {
 		return $this->view->url(array('controller' => 'recherche', 
-																	 'action' => 'viewnotice', 
-																	 'id' => $id, 
-																	 'type_doc' => $type_doc));
+																	'action' => 'viewnotice', 
+																	'id' => $id, 
+																	'type_doc' => $type_doc));
 	}
 
 
 	public function listeNotices($notices, $nombre_resultats, $page, $preferences) 	{
 		// Message d'erreur
-		if (array_key_exists('statut', $notices) && ($notices["statut"]=="erreur")) {
-			$html='<h2>'.$notices["erreur"].'</h2>';
-			if($notices["nb_mots"] > 1) {
-				$html.=sprintf('<a href="%s?pertinence=1">&raquo;&nbsp;%s</a>',
-											 $this->view->url(array('controller' => 'recherche', 
-																							'action' => 'simple')),
-											 $this->translate()->_('Elargir la recherche sur tous les mots'));
+		if (array_key_exists('statut', $notices) 
+				&& ($notices["statut"] == "erreur")) {
+			$html = '<h2>' . $notices["erreur"] . '</h2>';
+			if ($notices["nb_mots"] > 1) {
+				$html .= sprintf('<a href="%s?pertinence=1">&raquo;&nbsp;%s</a>',
+												 $this->view->url(array('controller' => 'recherche', 
+																								'action' => 'simple')),
+												 $this->translate()->_('Elargir la recherche sur tous les mots'));
 			}
 			return $html;
 		}
 		
 		// Nombre de resultats et n° de page
-		$html='<table><tr><td align="left" width="100%">';
-		if(!intval($page)) $page=1;
-    if(!$nombre_resultats) $html.= $this->translate()->_('Aucune notice trouvée');
-    if($nombre_resultats == 1) $html.=$this->translate()->_('1 notice trouvée');
-    if($nombre_resultats > 1) $html.=$this->translate()->_('%s notices trouvées', $nombre_resultats).'</td><td align="right">page&nbsp;'.$page;
-    $html.='</td></tr></table>';
-    if(!$nombre_resultats) return $html;
-    
+		$html = '<table><tr><td align="left" width="100%">';
+    if (!$nombre_resultats)
+			return $html . $this->translate()->_('Aucune notice trouvée') .	'</td></tr></table>';
+
+		if (!intval($page)) 
+			$page = 1;		
+
+    if ($nombre_resultats == 1) 
+			$html .= $this->translate()->_('1 notice trouvée');
+    if ($nombre_resultats > 1) 
+			$html .= $this->translate()->_('%s notices trouvées', $nombre_resultats) . '</td><td align="right">page&nbsp;' . $page;
+
+    $html .= '</td></tr></table>';
+
     // Liste en fonction du format
-		$html.=$this->listeVignette($notices,$preferences["liste_codes"]);
-    return ($html);
+		$html .= $this->listeVignette($notices, $preferences["liste_codes"]);
+    return $html;
 	}
-//------------------------------------------------------------------------------------------------------
-// Format 3 : VIGNETTE
-//------------------------------------------------------------------------------------------------------
-	public function listeVignette($data,$champs) {	
-		$html='<div class="liste">';
-		$html.='<ul>';
-		foreach($data as $notice)	{
-			$notice = array_merge(array('auteur_principal' => ''), 
-														$notice);
 
-			if (!$titre = $notice['T']) $titre = $notice['titre_principal'];
-			if (!$auteur = $notice['A']) $auteur = $notice['auteur_principal'];
 
-			$html.='<li class="lien">';
-			$html.= sprintf('<a href="%s">',
-											$this->urlNotice($notice["id_notice"], $notice["type_doc"]));
-			$html.='<table cellspacing="0" cellpadding="0">';
 
-			// Image
-			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
-			$html.='<tr><td width="70px" valign="top"><img src="'.$img["vignette"].'" width="60px" style="cursor:pointer;"></td>';
+	public function listeVignette($data, $champs) {	
+		$html = '';
+		foreach ($data as $notice)
+			$this->_writeNoticeOn($notice, $champs, $html);		
+		return '<div class="liste"><ul>' . $html . '</ul></div>';
+	}
 
-			// Titre / auteur principal
-			$html.='<td valign="top">'.$titre.BR.$auteur;
 
-			// Données variables
-			for($i=0; $i < strlen($champs); $i++)
-			{
-				$champ=$champs[$i];
-				if($champ=="T" or $champ=="A") continue;
-				if(trim($notice[$champ]) == '') continue;
-				$html.=BR.Class_Codification::getNomChamp($champ)." : ";
-				$html.=$notice[$champ];
-				$html.='</td>';
-			}
-			$html.='</tr></table>';
-			$html.='</a></li>';
+	protected function _writeNoticeOn($notice, $champs, &$html) {
+		$html .= '<li class="lien">' . 
+			sprintf('<a href="%s">', 
+							$this->urlNotice($notice["id_notice"], $notice["type_doc"])) .
+			'<table cellspacing="0" cellpadding="0">';
+
+		// Image
+		$img = Class_WebService_Vignette::getUrl($notice['id_notice']);
+		$html .= sprintf('<tr><td width="70px" valign="top"><img src="%s" width="60px" style="cursor:pointer;"></td>',
+										$img['vignette']);
+
+		// Titre / auteur principal
+		$notice = array_merge(array('auteur_principal' => '',
+																'titre_principal' => ''), 
+													$notice);
+
+		$titre = (isset($notice['T'])) ? $notice['T'] : $notice['titre_principal'];
+		$auteur = (isset($notice['A'])) ? $notice['A'] : $notice['auteur_principal'];
+
+		$html .= '<td valign="top">' . $titre . BR . $auteur;
+
+		// Données variables
+		$length = strlen($champs);
+		for ($i=0; $i < $length; $i++) {
+			$champ = $champs[$i];
+			if (in_array($champ, array('T', 'A'))
+					|| '' == trim($notice[$champ])) 
+				continue;
+			$html .= BR . Class_Codification::getNomChamp($champ) . ' : ' . $notice[$champ];
 		}
-		$html.='</ul></div>';
-		return $html;
-	}	
+
+		$html .= '</td></tr></table></a></li>';
+	}
 }
