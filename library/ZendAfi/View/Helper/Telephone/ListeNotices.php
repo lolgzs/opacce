@@ -64,6 +64,9 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 		$html='<div class="liste">';
 		$html.='<ul>';
 		foreach($data as $notice)	{
+			$notice = array_merge(array('auteur_principal' => ''), 
+														$notice);
+
 			if (!$titre = $notice['T']) $titre = $notice['titre_principal'];
 			if (!$auteur = $notice['A']) $auteur = $notice['auteur_principal'];
 

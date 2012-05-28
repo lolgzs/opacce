@@ -91,6 +91,8 @@ class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends Tel
 class Telephone_RechercheControllerSimpleByPertinenceActionTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+		if (isset($_SESSION['recherche'])) 
+			unset($_SESSION['recherche']);
 		$this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme',
 																														 'pertinence' => 1));
 	}
