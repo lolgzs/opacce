@@ -55,7 +55,8 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'DEWEY_LIB',
 		'VODECLIC_KEY',
 		'VODECLIC_ID',
-		'OAI_SERVER'
+		'OAI_SERVER',
+		'PACK_MOBILE'
 	);
 
 
@@ -172,6 +173,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	 */
 	public static function isOAIServerEnabled() {
 		return self::isModuleEnabled('OAI_SERVER');
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isPackMobileEnabled() {
+		return self::isModuleEnabled('PACK_MOBILE');
 	}
 
 

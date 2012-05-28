@@ -377,6 +377,10 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends T
 																								 ->setDisponibiliteIndisponible()
 																								 ->setCodeAnnexe('MOUL')
 																								 ->beReservable())));
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
+
 		$this->dispatch('/telephone/recherche/exemplaires/id/4', true);
 	}
 
@@ -409,6 +413,39 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends T
 	public function pageShouldContainsHoldFunction() {
 		$this->assertXPath('//div[@class="fonction"]//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL")]');
 	}
+}
+
+
+
+class Telephone_RechercheControllerHarryPotterExemplaireReservablePackMobileInactifTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_Notice::getLoader()->find(4)
+			->setExemplaires(array(Class_Exemplaire::getLoader()
+														 ->newInstanceWithId(33)
+														 ->setCote('JRROW')
+														 ->setBib(Class_Bib::getLoader()
+																			->newInstanceWithId(1)
+																			->setLibelle('Bibliotheque du florilege')
+																			->setInterdireResa(0))
+														 ->setSigbExemplaire(Class_WebService_SIGB_Exemplaire::newInstance()
+																								 ->setDisponibiliteIndisponible()
+																								 ->setCodeAnnexe('MOUL')
+																								 ->beReservable())));
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('PACK_MOBILE')
+			->setValeur(0);
+
+		$this->dispatch('/telephone/recherche/exemplaires/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsHoldFunction() {
+		$this->assertNotXPath('//div[@class="fonction"]//a[contains(@href, "/recherche/reservation")]');
+	}
+
 }
 
 

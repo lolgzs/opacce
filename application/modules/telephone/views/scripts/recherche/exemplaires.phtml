@@ -33,7 +33,8 @@ foreach ($exemplaires as $exemplaire) {
 		</tr>
 	</table>
 	<?php 
-	if ((!$exemplaire->getBib()->getInterdireResa())
+	if (Class_AdminVar::isPackMobileEnabled()
+			&& (!$exemplaire->getBib()->getInterdireResa())
 			&& $sigb_exemplaire
 			&& $sigb_exemplaire->isReservable()) { 
 	?>
