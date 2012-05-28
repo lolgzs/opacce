@@ -159,7 +159,7 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 					$retour = $_SESSION["recherche"]["retour_liste"];
 
 				if (!$retour or strpos($retour, "viewnotice") > 0)
-					$_SESSION["recherche"]["retour_liste"] = $_SERVER["HTTP_REFERER"];
+					$_SESSION["recherche"]["retour_liste"] = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER["HTTP_REFERER"] : '';
 				break;
 
 			case "AVIS": $url = BASE_URL . "/blog/lastcritique/nb/" . $preferences["nb"];
