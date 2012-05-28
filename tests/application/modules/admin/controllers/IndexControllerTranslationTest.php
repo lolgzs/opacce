@@ -26,6 +26,13 @@ class AdminIndexControllerTranslationTest extends Admin_AbstractControllerTestCa
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('LANGUES')
 			->setValeur('fr; en; ro');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('getIdentity')
+			->answers(Class_Users::getLoader()->newInstanceWithId(777)
+								->setLogin('sysadmin')
+								->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN)
+								->setPseudo('admin'));
 	}
 
 

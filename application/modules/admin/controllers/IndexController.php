@@ -45,6 +45,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 		if (null !== $expiration_date = $status_babelio['expire_at'])
 			$this->view->status_babelio .= ', expiration le '.$expiration_date->toString("d MMMM yyyy");
 		$this->view->show_babelio_info = !$status_babelio['enabled'] || $expiration_date !== null;
+
+		$this->view->user = Class_Users::getLoader()->getIdentity();
 	}
 
 	public function adminvarAction()	{

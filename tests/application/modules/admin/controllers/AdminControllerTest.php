@@ -24,7 +24,12 @@ require_once 'Class/Newsletter.php';
 class AdminControllerSitoOKTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('getIdentity')
+			->answers(Class_Users::getLoader()->newInstanceWithId(777)
+								->setLogin('sysadmin')
+								->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN)
+								->setPseudo('admin'));
 		setVar("SITE_OK", 1);
 		$this->dispatch('/admin');
 	}

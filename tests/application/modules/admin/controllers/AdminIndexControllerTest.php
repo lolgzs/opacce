@@ -20,13 +20,27 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
+abstract class AdminIndexControllerTestCase extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('getIdentity')
+			->answers(Class_Users::getLoader()->newInstanceWithId(777)
+								->setLogin('sysadmin')
+								->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN)
+								->setPseudo('admin'));
+	}
+}
+
+
+class AdminIndexControllerTestBabelio extends AdminIndexControllerTestCase {
 	protected function _setExpiration($expire_at) {
 		Zend_Registry::set('cfg', new Zend_Config(array('babelio' => array('expire_at' => $expire_at))));
 	}
 
 
-	public function testDefaultBabelioDisabled() {
+	/** @test */
+	public function withNullExpirationShouldBeDisabled() {
 		$this->_setExpiration(null);
 
 		$this->dispatch('/admin/index');
@@ -34,7 +48,9 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 		$this->assertQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testActivatedNoExpiration() {
+
+	/** @test */
+	public function withExpirationNeverShouldBeActivated() {
 		$this->_setExpiration('never');
 
 		$this->dispatch('/admin/index');
@@ -42,7 +58,9 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 		$this->assertNotQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testExpirated() {
+
+  /** @test */
+  public function withPastExpirationDateShouldBeDisabled() {
 		$yesterday = new Zend_Date();
 		$yesterday->addDay(-1);
 		$this->_setExpiration($yesterday->toString('yyyy/MM/dd'));
@@ -52,7 +70,9 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 		$this->assertQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testNotExpirated() {
+
+  /** @test */
+  public function withFutureExpirationDateShouldBeActivated() {
 		$tomorrow = new Zend_Date();
 		$tomorrow->addDay(1);
 		$this->_setExpiration($tomorrow->toString('yyyy/MM/dd'));
@@ -66,7 +86,7 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 
 
 
-class AdminIndexControllerIndexActionTest extends Admin_AbstractControllerTestCase {
+class AdminIndexControllerIndexActionTest extends AdminIndexControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -74,7 +94,7 @@ class AdminIndexControllerIndexActionTest extends Admin_AbstractControllerTestCa
 			->newInstanceWithId('LANGUES')
 			->setValeur('');
 
-		$this->dispatch('/admin/index');
+		$this->dispatch('/admin/index', true);
 	}
 
 	/** @test */
