@@ -142,10 +142,10 @@ class Class_Localisation
 		// Analyse des regles
 		foreach($localisations as $localisation)
 		{
-			if($localisation["TYPE_DOC"] and strpos($localisation["TYPE_DOC"].";",$ex["type_doc"].";") === false) continue;
-			if($localisation["ANNEXE"] and strpos($localisation["ANNEXE"].";",$ex["annexe"].";") === false) continue;
-			if($localisation["SECTION"] and strpos($localisation["SECTION"].";",$ex["section"].";") === false) continue;
-			if($localisation["EMPLACEMENT"] and strpos($localisation["EMPLACEMENT"].";",$ex["emplacement"].";") === false) continue;
+			if($localisation["TYPE_DOC"] and strpos(";".$localisation["TYPE_DOC"].";",";".$ex["type_doc"].";") === false) continue;
+			if($localisation["ANNEXE"] and strpos(";".$localisation["ANNEXE"].";",";".$ex["annexe"].";") === false) continue;
+			if($localisation["SECTION"] and strpos(";".$localisation["SECTION"].";",";".$ex["section"].";") === false) continue;
+			if($localisation["EMPLACEMENT"] and strpos(";".$localisation["EMPLACEMENT"].";",";".$ex["emplacement"].";") === false) continue;
 			if($localisation["COTE_DEBUT"] and substr($ex["cote"],0,strlen($localisation["COTE_DEBUT"])) < $localisation["COTE_DEBUT"]) continue;
 			if($localisation["COTE_FIN"] and substr($ex["cote"],0,strlen($localisation["COTE_FIN"])) > $localisation["COTE_FIN"]) continue;
 			$ok=true;
