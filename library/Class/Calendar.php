@@ -47,7 +47,7 @@ class Class_Calendar {
 				month_link.click(function(event) {
 					event.preventDefault();
 					var url = $(this).attr('href');
-					$(this).parents(".calendar").load(url, 
+					$(this).parents(".calendar").load(url+' .calendar>div', 
 																						ajaxify_calendars);
 				});
 

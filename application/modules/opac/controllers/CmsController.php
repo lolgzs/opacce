@@ -239,8 +239,10 @@ class CmsController extends Zend_Controller_Action {
 
 		$date = $this->_getParam("date");
 		$id_module = $this->_getParam("id_module");
-		$preferences = $this->_modulesPreferences($id_module);
 
+		$module_calendrier = new Class_Systeme_ModulesAccueil_Calendrier();
+		$preferences = array_merge($module_calendrier->getDefaultValues(),
+															 $this->_modulesPreferences($id_module));
 		if (!preg_match('/[0-9]{4}-[0-9]{2}/', $date)) {
 			$date = date('Y-m-d');
 		}
@@ -254,12 +256,12 @@ class CmsController extends Zend_Controller_Action {
 		$param["NB_NEWS"]= (int)$preferences["nb_events"];
 		$param["ALEATOIRE"]=1;
 		$param["ID_MODULE"] = $id_module;
-		$param["ID_CAT"] = $preferences["id_categorie"];
+		$param["ID_CAT"] = $preferences['id_categorie'];
 		$param["SELECT_ID_CAT"] = $preferences["display_cat_select"]
 																? $this->_getParam("select_id_categorie")
 																: "all";
 		$param["DISPLAY_CAT_SELECT"] = $preferences["display_cat_select"];
-		$param["DISPLAY_NEXT_EVENT"] = array_key_exists('display_next_event', $preferences) ? $preferences["display_next_event"] : '1';
+		$param["DISPLAY_NEXT_EVENT"] = $preferences["display_next_event"];
 		$param["EVENT_INFO"] = $preferences["display_event_info"];
 		$class_calendar = new Class_Calendar($param);
 		$this->getResponse()->setBody($class_calendar->rendHTML());

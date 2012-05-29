@@ -1,0 +1,39 @@
+<?php 
+echo $this->toolbar($this->_('Articles'), 
+										$this->url(array(), null, true),
+										false); 
+?>
+
+
+<?php if (0 < count($this->articles)) { ?>
+		<div class="liste">
+			<?php foreach ($this->articles as $bibliotheque => $articles) { ?>
+				<h2><?php echo ('' == $bibliotheque) ? $this->_('Portail') : $bibliotheque;?></h2>
+				<ul>
+				<?php
+				foreach ($articles as $article) {	?>
+					<li class="lien">
+						<?php echo $this->tagArticleEvent($article);?>
+						<span><?php
+						echo $this->tagAnchor(
+							$this->url(array('cat' => $article->getIdCat())),
+							$article->getCategorie()->getLibelle(),
+							array('class' => 'calendar_event_info')
+						);?> - <?php
+						echo $this->tagAnchor(
+							$article->getUrl(),
+							$article->getTitre(),
+							array('class' => 'calendar_event_title')
+						); ?>
+						</span>
+					</li>
+				<?php } ?>
+			</ul>
+		<?php } ?>
+		</div>
+<?php
+
+} else {
+	echo '<div class="pave">'.$this->_('Aucun contenu').'</div>';
+
+} ?>
