@@ -18,11 +18,32 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once ROOT_PATH.'application/modules/opac/controllers/ErrorController.php';
+require_once 'AbstractControllerTestCase.php';
 
-class Telephone_ErrorController extends ErrorController {
+class Telephone_ErrorControllerTest extends TelephoneAbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/telephone/non-existing-controller/unknown-action');
+	}
 
 
+	/** @test */
+	public function controllerShouldBeError() {
+		$this->assertController('error');
+	}
+
+
+	/** @test */
+	public function moduleShouldBeTelephone() {
+		$this->assertModule('telephone');
+	}
+
+
+	/** @test */
+	public function actionShouldBeError() {
+		$this->assertAction('error');
+	}
 }
+
 
 ?>
