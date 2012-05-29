@@ -35,7 +35,7 @@ class Class_Systeme_ModulesAccueil_Calendrier extends Class_Systeme_ModulesAccue
 	protected $_popupHeight = 700;
 
 	/** @var bool */
-	protected $_isPhone = false;
+	protected $_isPhone = true;
 
 	/** @var array */
 	protected $_defaultValues = array(

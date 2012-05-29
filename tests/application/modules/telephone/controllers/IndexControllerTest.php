@@ -61,7 +61,11 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 																																	 'lien_connexion' => 'go')),
 															 '4' => array('division' => '1',
 																						'type_module' => 'BIB_NUMERIQUE',
-																						'preferences' => array('titre' => 'Mes albums'))
+																						'preferences' => array('titre' => 'Mes albums')),
+
+															 '5' => array('division' => '1',
+																						'type_module' => 'CALENDAR',
+																						'preferences' => array('titre' => 'Agenda'))
 															 )); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
@@ -79,7 +83,7 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 	public function setUp() {
 		parent::setUp();
 		unset($_SERVER['HTTP_USER_AGENT']);
-		$this->dispatch('/');
+		$this->dispatch('/', true);
 	}
 
 
@@ -178,6 +182,13 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 	function titreBoiteBibNumeriqueShouldBeMesAlbums() {
 		$this->assertXPathContentContains('//div[@class="titre"]', 'Mes albums');
 	}
+
+
+	/** @test */
+	public function boiteCalendrierShouldBeVisible() {
+		$this->assertXPathContentContains('//h1', 'Agenda', $this->_response->getBody());
+	}
+
 }
 
 
