@@ -35,7 +35,7 @@ class Class_Systeme_ModulesAccueil_Kiosque extends Class_Systeme_ModulesAccueil_
 	protected $_popupHeight = 520;
 
 	/** @var bool */
-	protected $_isPhone = false;
+	protected $_isPhone = true;
 
 	/** @var array */
 	protected $_defaultValues = array(
