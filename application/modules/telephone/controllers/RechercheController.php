@@ -30,8 +30,6 @@ class Telephone_RechercheController extends RechercheController {
 																 $this->view->_('Tags') =>								  array('action' => 'tags'),
 																 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
 																 $this->view->_('Notices similaires') =>	  array('action' => 'similaires'),
-																 $this->view->_('Ressources numériques') => array('action' => 'ressourcesnumeriques'),
-																 $this->view->_('Notices similaires') =>	  array('action' => 'similaires')
 																 //																 $this->view->_('Ressources numériques') => array('action' => 'ressourcesnumeriques'),
 																 );
 	}

@@ -144,7 +144,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 }
 
 /* Bloc pavé interne */
-.pave, .resumes>div>div
+.pave, .resumes>div>div, .calendar
 {
 	background-color:#FFFFFF;
 	margin: 6px 6px 17px 6px;
@@ -316,4 +316,13 @@ table.notice_detail tr li {
 
 .pave>.nuage+div {
 		display:none;
+}
+
+
+tr.calendar_title {
+		text-align: center;
+}
+
+table.calendar_table {
+		text-align: right;
 }

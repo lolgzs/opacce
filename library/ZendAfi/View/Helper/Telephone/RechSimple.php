@@ -21,14 +21,12 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OPAC3 - Recherche
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accueil_Base
-{
+class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accueil_Base {
 		
 //---------------------------------------------------------------------
 // Main routine
 //---------------------------------------------------------------------  
-	public function getHtml()
-	{
+	public function getHtml()	{
 		$this->titre = '';
 		$html='<div>';
 		$html.= sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 

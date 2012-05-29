@@ -186,7 +186,13 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 
 	/** @test */
 	public function boiteCalendrierShouldBeVisible() {
-		$this->assertXPathContentContains('//h1', 'Agenda', $this->_response->getBody());
+		$this->assertXPathContentContains('//h2', 'Agenda', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function pageShouldContainsScriptToAjaxifyCalendar() {
+		$this->assertXPathContentContains('//script', 'ajaxify_calendars');
 	}
 
 }

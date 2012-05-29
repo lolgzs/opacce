@@ -41,6 +41,28 @@ class Class_Calendar {
 	protected $_translate;
 	protected $_article_event_helper;
 
+	const AJAX_CALENDAR_SCRIPT = <<<SCRIPT
+			var ajaxify_calendars = function () {
+				var month_link = $("a.calendar_title_month_clickable:first-child, a.calendar_title_month_clickable:last-child");
+				month_link.click(function(event) {
+					event.preventDefault();
+					var url = $(this).attr('href');
+					$(this).parents(".calendar").load(url, 
+																						ajaxify_calendars);
+				});
+
+				$("form#calendar_select_categorie").change(function(event) {
+					var url = $(this).attr('action');
+					$(this).parents(".calendar").load(url, 
+																						{'select_id_categorie':$(this).children('select').val(),
+																						 'id_module':$(this).children('input').val()},
+																						ajaxify_calendars);
+				});
+  	};
+	ajaxify_calendars();
+SCRIPT;
+
+
 
 	public function __construct($param_array) {
 		$this->_translate = Zend_Registry::get('translate');
@@ -82,6 +104,8 @@ class Class_Calendar {
 		$this->id_module = $param_array["ID_MODULE"];
 
 		$this->_loadArticles();
+
+		Class_ScriptLoader::getInstance()->addJQueryReady(self::AJAX_CALENDAR_SCRIPT);
 	}
 
 
@@ -485,6 +509,10 @@ class Class_Calendar {
 	// Rend array('0' => jour, '1' => mois, '2' => an) sans 0 pour le calendrier
 	function filtreDateZend($zend) {
 		$date_zend = explode('-',$zend);
+
+		if (count($date_zend) != 3)
+			return array(0,0,0);
+
 		if (substr($date_zend[2],0,1) == 0)
 			$day = substr($date_zend[2],1,1);
 		else

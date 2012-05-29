@@ -27,7 +27,6 @@ $head_scripts = Class_ScriptLoader::newInstance()
 	->addAdminScripts(array('onload_utils', 'global', 'toolbar', 'common', 'subModal'))			 
 	->addOPACScripts(array('abonne', 'menu', 'bib', 'avis', 'recherche', 'jquery.placeholder.min'))
 	->addJQueryReady('$("input").placeholder()')
-	->addJQueryReady('ajaxify_calendars()')
 	->addJQueryReady('setupAnchorsTarget()')
 	->showNotifications();
 
