@@ -5,24 +5,29 @@ $(document).ready(function() {
 	(function($) {
 		$.fn.gesturedSlideshow = function() {
 			var stack = this,
-			inMotion,
 			moveOrigin,
 			hasMoved,
-			ratio,
 			film,
 			filmPos,
 			filmWidth,
+			maxOffset,
 			containerWidth,
 
 			init = function() {
+				var itemWidth = 0;
+				var width = 0;
 				stack.find('ul').each(function() {
-					var width = 0;
-					$(this).find('li').each( function() { 
-						width += $(this).outerWidth()
+					$(this).find('li').each(function() { 
+						itemWidth = $(this).outerWidth()
 							+ parseInt($(this).css('margin-left')) 
-							+ parseInt($(this).css('margin-right'));});
+							+ parseInt($(this).css('margin-right'));
+						width += itemWidth;
+					});					
 					$(this).width(width);
 				});
+				
+				filmWidth = width;
+				maxOffset = filmWidth - itemWidth;
 
 				stack
 					.bind('touchstart',	start)
@@ -33,18 +38,15 @@ $(document).ready(function() {
 			start = function(e) {
 				containerWidth = $(this).width(); 
 				film = $(this).find('ul'); 
-				filmWidth = film.width();
-
-				impulse = e.originalEvent.touches[0].pageX; 
+				impulse = e.originalEvent.touches[0].pageX;
 				e.preventDefault();
+				hasMoved = false;
 
 				if (containerWidth > filmWidth)
 					return false;
 
-				hasMoved = false;
 				moveOrigin = impulse;
 				filmPos = parseInt(film.css('left'));
-				ratio	= filmWidth / containerWidth;
 				film.stop(true, true);
 			},
 
@@ -54,19 +56,25 @@ $(document).ready(function() {
 					return false;
 
 				impulse = e.originalEvent.touches[0].pageX; 
-				destination = filmPos - ((impulse - moveOrigin) * ratio);
-				if ((0 < destination) || (0 > containerWidth + destination) )
-					return false;
+				destination = filmPos + (impulse - moveOrigin);
+				if (0 < destination)
+					destination = 0;
 
-				console.info('Moving to : ' + destination);
+				if (destination < -maxOffset) 
+					destination = -maxOffset;
+
 				film
 					.stop(true,true)
 					.css({'left' : destination + 'px'});
 			},
 
 			end = function(e) {
-				if (hasMoved)
-					e.preventDefault();
+				if (!hasMoved) {
+					anchor = $(e.target).parent();
+					$(location).attr('href', anchor.attr('href'));
+					return;
+				}
+					
 				if (containerWidth > filmWidth) 
 					return false;
 				film.stop(true, true);
