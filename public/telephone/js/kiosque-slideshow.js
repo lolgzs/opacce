@@ -1,9 +1,6 @@
-/**
- * original work from Osvaldas Valutis, www.osvaldas.info
- */
 $(document).ready(function() {
 	(function($) {
-		$.fn.gesturedSlideshow = function() {
+		$.fn.kiosqueSlideshow = function() {
 			var stack = this,
 			moveOrigin,
 			hasMoved,
@@ -71,10 +68,12 @@ $(document).ready(function() {
 			end = function(e) {
 				if (!hasMoved) {
 					anchor = $(e.target).parent();
-					$(location).attr('href', anchor.attr('href'));
-					return;
+					if (anchor) {
+						$(location).attr('href', anchor.attr('href'));
+						return;
+					}
 				}
-					
+				
 				if (containerWidth > filmWidth) 
 					return false;
 				film.stop(true, true);

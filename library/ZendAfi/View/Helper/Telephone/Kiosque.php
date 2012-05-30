@@ -21,8 +21,8 @@
 class ZendAfi_View_Helper_Telephone_Kiosque extends ZendAfi_View_Helper_Accueil_Base {
 	protected function _renderHeadScriptsOn($script_loader) {
 		$script_loader
-			->addScript(BASE_URL . '/public/telephone/js/gestured-slideshow')
-			->addJQueryReady('$(\'#slideshow\').gesturedSlideshow()')
+			->addScript(BASE_URL . '/public/telephone/js/kiosque-slideshow')
+			->addJQueryReady('$(\'#slideshow\').kiosqueSlideshow()')
 			->addInlineStyle('
 #slideshow {
   width: 100%;
