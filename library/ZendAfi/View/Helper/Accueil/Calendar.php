@@ -18,14 +18,36 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Class_Module_Calendar
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_Base {
 
-//---------------------------------------------------------------------
-// Fabrique le html
-//---------------------------------------------------------------------  
+	const AJAX_CALENDAR_SCRIPT = <<<SCRIPT
+			var ajaxify_calendars = function () {
+				var month_link = $("a.calendar_title_month_clickable:first-child, a.calendar_title_month_clickable:last-child");
+				month_link.click(function(event) {
+					event.preventDefault();
+					var url = $(this).attr('href');
+					$(this).parents(".calendar").load(url+' .calendar>div', 
+																						ajaxify_calendars);
+				});
+
+				$("form#calendar_select_categorie").change(function(event) {
+					var url = $(this).attr('action');
+					$(this).parents(".calendar").load(url, 
+																						{'select_id_categorie':$(this).children('select').val(),
+																						 'id_module':$(this).children('input').val()},
+																						ajaxify_calendars);
+				});
+  	};
+	ajaxify_calendars();
+SCRIPT;
+
+
+	protected function _renderHeadScriptsOn($script_loader) {
+		$script_loader->addJQueryReady(self::AJAX_CALENDAR_SCRIPT);
+	}
+
+
 	public function getHtml()	{
 		$this->titre = $this->view->tagAnchor(array('controller' => 'cms',
 																								'action' => 'articleviewbydate',

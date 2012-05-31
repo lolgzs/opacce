@@ -1,11 +1,11 @@
 /* Simulation iphone sur un ecran normal */
-body.iphone
-{
+body.iphone {
     background: transparent url(../images/boites/gradient_fond_site.gif) repeat-x scroll bottom;
     font: 14px Helvetica,Arial;
     margin: 0px;
     padding: 0px;
 }
+
 
 body.iphone>div:first-child {
 		float: left;
@@ -55,7 +55,7 @@ img{border:none;}
 a{color:rgb(76,86,108); text-decoration:none;}
 a:hover{color:rgb(76,86,108); text-decoration:none;}
 a:visited{color:rgb(76,86,108); text-decoration:none;}
-h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
+h1 {color:#666666;margin:0px; font-size:1.2em;padding:5px 3px 3px 3px}
 
 .toolbar
 {
@@ -72,7 +72,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 {
     color: #fff;
     font-weight: bold;
-    font-size:20px;
+    font-size: 1.4em;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -101,7 +101,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 
 .boite_saisie h2
 {
-    font-size:14px;
+    font-size: 1em;
     font-weight:bold;
     margin:0.2em 5px 0.3em;
     padding:0.3em 10px;
@@ -110,17 +110,11 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 .boite_saisie td.contenu{}
 
 /* Listes */
-.liste{}
-.liste ul
-{
+.liste ul {
     color: black;
     background: #ffffff;
-    border: 1px solid #B4B4B4;
-    font: bold 14px Helvetica,Arial;
+    font-weight: bold 14px;
     padding: 0;
-    margin: 15px 6px 17px 6px;
-		-webkit-border-radius: 8px;
-		-moz-border-radius : 8px;
 }
 
 .liste li
@@ -144,8 +138,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 }
 
 /* Bloc pavé interne */
-.pave, .resumes>div>div, .calendar>div
-{
+.pave, .resumes>div>div, .calendar>div, .liste ul {
 	background-color:#FFFFFF;
 	margin: 6px 6px 17px 6px;
 	border: 1px solid #B4B4B4;
@@ -154,6 +147,7 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 	-moz-border-radius : 8px;
 	overflow: hidden;
 }
+
 .pave h1, .resumes div.notice_info_titre{font: bold 14px Helvetica,Arial; padding: 2px;}
 .pave td{font: normal 12px Helvetica,Arial; padding: 2px;}
 .pave div.blank{color: #666666;padding:5px 0px 3px 3px;}
@@ -184,14 +178,10 @@ h1 {color:#666666;margin:0px; font-size:16px;padding:5px 3px 3px 3px}
 .pager a{color:#ffffff;}
 
 
-.titre 
-{
-		height: 7px;
-}
+.titre { margin-top: 5px }
 
-.titre h2 
-{
-		padding:  5px 0px 2px 10px;
+.titre h2 {
+		padding:  0px 0px 2px 10px;
 		margin: 0px;
 }
 
