@@ -22,34 +22,22 @@
 
 class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
 	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
-		$html='<div class="toolbar" data-role="header">';
-		$html.='<table style="width:100%"><tr>';
-		$html.='<td class="gauche">';
-		
-		if(is_array($url_retour))
-			$url_retour = $this->view->url($url_retour);
+		$html='<div data-theme="c" data-role="header" data-id="main-toolbar" class="toolbar">';
+		  if(is_array($url_retour))
+			  $url_retour = $this->view->url($url_retour);
 
-		if($url_retour) 
-			$html.=sprintf('<a href="%s" data-rel="back"><img src="%s" alt="%s"></a>',
-										 $url_retour,
-										 URL_IMG.'systeme/bouton_retour.png',
-										 $this->view->_('Retour'));  
-		else 
-			$html.="&nbsp;";
+		  if($url_retour) 
+			  $html.=sprintf('<a href="%s" data-rel="back" data-icon="back">%s</a>',
+											 $url_retour,
+											 $this->view->_('Retour'));  
 
-		$html.='</td>';
-		$html.='<td style="text-align:center; width:50%"><h1>'.$titre.'</h1></td>';
-		$html.='<td class="droite">';
+		$html.='<h1>'.$titre.'</h1>';
 
 		if($accueil) 
-			$html.=sprintf('<a href="%s"><img src="%s" alt="%s"></a>',
+			$html.=sprintf('<a href="%s" data-icon="home">%s</a>',
 										 $this->view->url(array(), null, true),
-										 URL_IMG.'systeme/bouton_accueil.png',
 										 $this->view->_('Accueil')); 
-		else 
-			$html.="&nbsp;";
-		$html.='</td>';
-		$html.='</tr></table></div>';
+		$html.='</div>';
 		return $html;
 	}
 }

@@ -57,54 +57,13 @@ a:hover{color:rgb(76,86,108); text-decoration:none;}
 a:visited{color:rgb(76,86,108); text-decoration:none;}
 h1 {color:#666666;margin:0px; font-size:1.2em;padding:5px 3px 3px 3px}
 
-.toolbar
-{
-    background: rgb(109,133,163) url(../images/systeme/barre_nav.png) repeat-x top;
-    border-top: 1px solid rgb(205,213,223);
-    border-bottom: 1px solid rgb(46,55,68);
-    padding: 0px;
-    margin: 0px;
-    height: 44px;
-    vertical-align:middle;
-}
-
-.toolbar h1
-{
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.4em;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    padding: 0px 3px 0px 3px;
-    margin-top:5px;
-}
-.toolbar td.gauche{padding-left:5px; padding-top:7px;vertical-align: middle;text-align: left;width: 25%}
-.toolbar td.droite{padding-right:5px; padding-top:7px;vertical-align: middle;text-align: right;width: 25%}
-.boite_saisie
-{
-    border-top:1px solid #D8D8D8;
-    margin:0px;
-    width:100%;
-}
-
 
 form{
    background: #FFFFFF url(../images/boites/gradient_gris.png) repeat-x scroll bottom;
    padding-bottom:10px;
    padding-top:10px;
-	 margin: 0px;
+	 padding-left: 5px;
 }
-
-.boite_saisie h2
-{
-    font-size: 1em;
-    font-weight:bold;
-    margin:0.2em 5px 0.3em;
-    padding:0.3em 10px;
-}
-.boite_saisie td.titre{}
-.boite_saisie td.contenu{}
 
 /* Listes */
 .liste ul {
@@ -323,4 +282,9 @@ tr.calendar_title {
 
 .ui-btn {
 		margin: 0.2em 10px;
+}
+
+
+.ui-content {
+		padding: 0px;
 }
