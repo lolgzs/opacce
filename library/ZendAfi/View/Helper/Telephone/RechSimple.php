@@ -27,18 +27,24 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 // Main routine
 //---------------------------------------------------------------------  
 	public function getHtml()	{
-		$this->titre = '';
-		$html='<div>';
-		$html.= sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
+		$html = sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
 																																							 'action' => 'simple')));
-		$html.=sprintf('<div style="text-align:center;font-size:16px">%s&nbsp;<input type="text" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
-									 $this->translate()->_('Recherche'));
-		$html.='&nbsp;<input type="submit" value="ok" style="cursor:pointer">';
-		$html.='</div>';
-		$html.='</form>';
-		$html.='</div>';
+		$html .= '<div class="ui-grid-a">';
+
+		$html .= '<div class="ui-block-a">';
+		$html .= sprintf('<input type="text" placeholder="%s" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
+										 $this->translate()->_('Recherche'));
+		$html .= '</div>';
+
+		$html .= '<div class="ui-block-b">';
+		$html .= '<button type="submit" value="ok" >';
+		$html .= '</div>';
+
+		$html .= '</div>';
+		$html .= '</form>';
 
 		$this->contenu = $html;
 		return $this->getHtmlArray();
+
 	}
 }

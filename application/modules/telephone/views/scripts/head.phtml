@@ -5,31 +5,29 @@
 
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <link rel="apple-touch-icon" href="<?php echo URL_IMG ?>apple-touch-icon.png" />
-<meta id="viewport" name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="<?php echo $this->ref_description;?>"/>
 <meta name="keywords" content="<?php echo $this->ref_tags;?>"/>
 <meta content="all" name="robots"/>
 <meta content="3 days" name="revisit-after"/>
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>global.css"/>
-
-<?php if ($this->profil->hasHeaderCss()) {?>
-   <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->profil->getHeaderCss() ?>" />
-<?php } ?>
-
-
-<script src="<?php echo JQUERY?>" type="text/javascript"> </script>
-<script type="text/javascript" >
-	<?php  echo("var baseUrl = \"" . BASE_URL . "\";");?>
-	<?php  echo("var imagesUrl = \"" . URL_IMG . "\";");?>
-	<?php  echo("var cssUrl = \"" . URL_CSS . "\";");?>
-	<?php  echo("var userFilesUrl = \"" . USERFILESURL . "\";");?>
-	<?php  echo("var idAbon = \"" . $this->session->idAbon . "\";");?>
-</script>
-<script src="<?php echo URL_JS?>global.js" type="text/javascript"> </script>
 
 <?php
-Class_ScriptLoader::getInstance()
-	 ->renderStyleSheets()
-	 ->renderJavaScripts();
+
+$head_scripts = Class_ScriptLoader::newInstance()
+	 ->loadJQuery()
+	 ->loadJQueryMobile()
+	 ->addSkinStyleSheet('global');
+
+if ($this->profil->hasHeaderCss())
+	$head_scripts->addStyleSheeet($this->header_css);
+
+$script_loader = Class_ScriptLoader::getInstance();	 
+
+$head_scripts->renderStyleSheets();
+$script_loader->renderStyleSheets();
+
+$head_scripts->renderJavaScripts();
+$script_loader->renderJavaScripts();
 ?>
+
 </head>

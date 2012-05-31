@@ -131,6 +131,16 @@ class Class_ScriptLoader {
 	/**
 	 * @return ScriptLoader
 	 */
+	public function loadJQueryMobile() {
+		return $this
+			->addScript(BASE_URL.'/public/telephone/js/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
+			->addSkinStyleSheet('jquery.mobile-'.JQUERYMOBILE_VERSION.'.min');
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
 	public function loadJQueryUI() {
 		return $this->addScript(JQUERYUI);
 	}
