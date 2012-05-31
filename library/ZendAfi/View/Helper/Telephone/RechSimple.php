@@ -27,9 +27,8 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 // Main routine
 //---------------------------------------------------------------------  
 	public function getHtml()	{
-		$html = sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
+		$html = sprintf('<form method="post" action="%s" class="ui-grid-a">', $this->view->url(array('controller' => 'recherche', 
 																																							 'action' => 'simple')));
-		$html .= '<div class="ui-grid-a">';
 
 		$html .= '<div class="ui-block-a">';
 		$html .= sprintf('<input type="text" placeholder="%s" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
@@ -40,7 +39,6 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 		$html .= '<button type="submit" value="ok" >';
 		$html .= '</div>';
 
-		$html .= '</div>';
 		$html .= '</form>';
 
 		$this->contenu = $html;

@@ -19,16 +19,22 @@ if($user = Class_Users::getLoader()->getIdentity()) {
 	$form = new ZendAfi_Form_Login();
 	$form->setAction($this->url(array('controller' => 'auth', 
 																		'action' => 'boitelogin', 
-																		'id_module' => $this->id_module)));
+																		'id_module' => $this->id_module)))
+		->setAttrib('class', 'ui-grid-b');
 
 	$form->getElement('username')
 		->setLabel($this->preferences['identifiant'])
-		->setAttrib('placeholder', $this->preferences['identifiant_exemple']);
+		->setAttrib('placeholder', $this->preferences['identifiant_exemple'])
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-a'));
+
 	$form->getElement('password')
 		->setLabel($this->preferences['mot_de_passe'])
-		->setAttrib('placeholder', $this->preferences['mot_de_passe_exemple']);
+		->setAttrib('placeholder', $this->preferences['mot_de_passe_exemple'])
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-b'));
+
 	$form->getElement('login')
-		->setLabel($this->preferences['lien_connexion']);
+		->setLabel($this->preferences['lien_connexion'])
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-c'));
 	echo $form;
 }
 

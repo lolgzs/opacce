@@ -30,7 +30,7 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 			$url_retour = $this->view->url($url_retour);
 
 		if($url_retour) 
-			$html.=sprintf('<a href="%s"><img src="%s" alt="%s"></a>',
+			$html.=sprintf('<a href="%s" data-rel="back"><img src="%s" alt="%s"></a>',
 										 $url_retour,
 										 URL_IMG.'systeme/bouton_retour.png',
 										 $this->view->_('Retour'));  

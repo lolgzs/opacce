@@ -26,10 +26,10 @@ class ZendAfi_Form_Login extends ZendAfi_Form {
 			->setMethod(Zend_Form::METHOD_POST)
 			->setAttrib('autocomplete', 'off')
 			->setDecorators(array('FormElements', 'Form'))
-			->addElement('text', 'username', array('size' => 15,
+			->addElement('text', 'username', array(
 																						 'required' => true,
 																						 'allowEmpty' => false))
-			->addElement('password', 'password', array('size' => 15,
+			->addElement('password', 'password', array(
 																								 'required' => true,
 																								 'allowEmpty' => false))
 			->setElementDecorators(array('ViewHelper', 'Label'))

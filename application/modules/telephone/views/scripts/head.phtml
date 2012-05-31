@@ -15,6 +15,13 @@
 
 $head_scripts = Class_ScriptLoader::newInstance()
 	 ->loadJQuery()
+	 ->addInlineScript('
+$(document).bind("mobileinit", function(){
+  $.extend(  $.mobile , {
+    defaultPageTransition: \'slidefade\'
+  });
+});
+')
 	 ->loadJQueryMobile()
 	 ->addSkinStyleSheet('global');
 

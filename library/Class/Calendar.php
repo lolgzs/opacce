@@ -290,9 +290,9 @@ class Class_Calendar {
 		$html.="	<tr class=\"calendar_title\">";
 		$html.="		<td class=\"calendar_title_left_arrow\"></td>";
 		$html.="		<td class=\"calendar_title_month\">
-										<a href=\"".$this->getURL("LAST_MONTH")."\" class=\"calendar_title_month_clickable\">&laquo;&nbsp;</a>
+										<a  data-ajax='false' href=\"".$this->getURL("LAST_MONTH")."\" class=\"calendar_title_month_clickable\">&laquo;&nbsp;</a>
 										<a href=\"".$this->getURL("MONTH")."\" class=\"calendar_title_month_clickable\" target='_parent'>".$this->MONTHS[$this->month-1].strftime(" %Y", mktime(5,0,0, $this->month, 1, $this->year))."</a>
-										<a href=\"".$this->getURL("NEXT_MONTH")."\" class=\"calendar_title_month_clickable\">&nbsp;&raquo;</a></td>";
+										<a  data-ajax='false' href=\"".$this->getURL("NEXT_MONTH")."\" class=\"calendar_title_month_clickable\">&nbsp;&raquo;</a></td>";
 
 		$html.="		<td class=\"calendar_title_right_arrow\"></td>";
 		$html.="	</tr>";

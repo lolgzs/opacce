@@ -134,7 +134,7 @@ class Class_ScriptLoader {
 	public function loadJQueryMobile() {
 		return $this
 			->addScript(BASE_URL.'/public/telephone/js/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
-			->addSkinStyleSheet('jquery.mobile-'.JQUERYMOBILE_VERSION.'.min');
+			->addSkinStyleSheet('../jquerymobile/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min');
 	}
 
 
