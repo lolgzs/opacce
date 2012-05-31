@@ -22,12 +22,11 @@
 // OPAC3 :	Activation du profil et du skin
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstract
-{
+class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstract {
 
 	function preDispatch(Zend_Controller_Request_Abstract $request)	{
 		$requested_module = $request->getModuleName();
-		if (isTelephone())
+		if (isTelephone() and ($requested_module != 'admin'))
 			$requested_module = 'telephone';
 
 		// Initialisation du profil
@@ -36,7 +35,7 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 
 		$_SESSION['previous_id_profil'] = isset($_SESSION['id_profil']) ? $_SESSION['id_profil'] : 1;
 
-		if($requested_module != 'admin')
+		if ($requested_module != 'admin')
 			$id_profil=(int)$request->getParam('id_profil');
 
 		if ($id_profil <= 0 and isset($_SESSION['id_profil']))
@@ -57,7 +56,7 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 
 		Class_Profil::setCurrentProfil($profil);
 		$module = $requested_module;
-		if ('telephone' == $profil->getBrowser())
+		if (('telephone' == $profil->getBrowser()) &&  ($requested_module != 'admin'))
 			$module = 'telephone';
 
 		if ($requested_module == 'telephone' && $profil->getBrowser() == 'opac')
