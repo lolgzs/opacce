@@ -29,6 +29,8 @@ class Class_ScriptLoader {
 	protected $_should_load_amber;
 	protected $_amber_files;
 	protected $_amber_ready_scripts;
+	protected $_jquery_ready_scripts;
+	protected $_is_mobile = false;
 
 	/**
 	 * @return ScriptLoader
@@ -56,6 +58,7 @@ class Class_ScriptLoader {
 	public function __construct() {
 		$this->_script_lines = array();
 		$this->_css_lines = array();
+		$this->_jquery_ready_scripts = array();
 		$this->_should_load_amber = false;
 	}
 
@@ -131,7 +134,26 @@ class Class_ScriptLoader {
 	/**
 	 * @return ScriptLoader
 	 */
+	public function beMobile() {
+		$this->_is_mobile = true;
+		return $this;
+	}
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isMobile() {
+		return $this->_is_mobile;
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
 	public function loadJQueryMobile() {
+		$this->beMobile();
+
 		return $this
 			->addScript(BASE_URL.'/public/telephone/js/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
 			->addSkinStyleSheet('../jquerymobile/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min');
@@ -150,7 +172,8 @@ class Class_ScriptLoader {
 	 * @return ScriptLoader
 	 */
 	public function addJQueryReady($js) {
-		return $this->addInlineScript(sprintf("$(function(){%s});", $js));
+		$this->_jquery_ready_scripts []= $js;
+		return $this;
 	}
 
 
@@ -177,6 +200,14 @@ class Class_ScriptLoader {
 	 */
 	public function addOPACScript($script) {
 		return $this->addScript(BASE_URL."/public/opac/js/".$script);
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
+	public function addPhoneScript($script) {
+		return $this->addScript(BASE_URL."/public/telephone/js/".$script);
 	}
 
 
@@ -434,8 +465,22 @@ class Class_ScriptLoader {
 	 * @return String
 	 */
 	public function javaScriptsHTML() {
-		$this->_deferredLoadAmber();
+		$this
+			->_deferredLoadAmber()
+			->_injectJQueryReadyScripts();
+
 		return	implode('',array_unique($this->_script_lines));
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
+	public function _injectJQueryReadyScripts() {
+		$template = $this->isMobile() ? "$(document).bind('pageinit', function(event){%s});" : "$(function(){%s});";
+		foreach ($this->_jquery_ready_scripts as $js) 
+			$this->addInlineScript(sprintf($template, $js));
+		return $this;
 	}
 
 

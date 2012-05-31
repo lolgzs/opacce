@@ -22,7 +22,7 @@
 
 class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
 	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
-		$html='<div class="toolbar">';
+		$html='<div class="toolbar" data-role="header">';
 		$html.='<table style="width:100%"><tr>';
 		$html.='<td class="gauche">';
 		

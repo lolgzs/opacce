@@ -1,5 +1,5 @@
 <?php echo $this->toolbar("Accueil",false,false); ?>
-<div class="boite_saisie">
+<div data-role="content">
 <?php 
 $contenu_divisions = $this->portail($this->profil->getCfgAccueilAsArray());
 echo $contenu_divisions[1];

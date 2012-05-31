@@ -23,12 +23,13 @@ $(document).bind("mobileinit", function(){
 });
 ')
 	 ->loadJQueryMobile()
+	 ->addPhoneScript('global')
 	 ->addSkinStyleSheet('global');
 
 if ($this->profil->hasHeaderCss())
 	$head_scripts->addStyleSheeet($this->header_css);
 
-$script_loader = Class_ScriptLoader::getInstance();	 
+$script_loader = Class_ScriptLoader::getInstance()->beMobile();	 
 
 $head_scripts->renderStyleSheets();
 $script_loader->renderStyleSheets();

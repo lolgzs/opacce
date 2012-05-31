@@ -10,8 +10,7 @@ $(document).ready(function(){
 //-----------------------------------------------------------
 // Click sur le container (pour le mode simulation telephone)
 //-----------------------------------------------------------
-function clickContainer(event)
-{
+function clickContainer(event) {
 	var position=$('#iphone_container').offset();
 	var x=event.clientX-position.left;
 	var y=event.clientY;
@@ -21,4 +20,9 @@ function clickContainer(event)
 		if(x >221 && x <250) document.location=baseUrl + "/admin";
 		if(x >311 && x <333) document.location=baseUrl + "?id_profil=1";
 	}
+}
+
+
+function showPopWin(url) {
+	$('<a href="'+url+'" data-rel="dialog" data-transition="pop"></a>').click();
 }

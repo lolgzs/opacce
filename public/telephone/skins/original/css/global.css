@@ -89,15 +89,11 @@ h1 {color:#666666;margin:0px; font-size:1.2em;padding:5px 3px 3px 3px}
 }
 
 
-.boite_saisie table {
-		width: 100%;
-}
-
-.boite_saisie form{
+form{
    background: #FFFFFF url(../images/boites/gradient_gris.png) repeat-x scroll bottom;
    padding-bottom:10px;
    padding-top:10px;
-	 padding-left:5px;
+	 margin: 0px;
 }
 
 .boite_saisie h2
@@ -313,8 +309,9 @@ tr.calendar_title {
 		text-align: center;
 }
 
-table.calendar_table {
+.calendar table {
 		text-align: right;
+		width: 100%;
 }
 
 

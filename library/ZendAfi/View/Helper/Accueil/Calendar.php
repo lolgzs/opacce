@@ -22,13 +22,16 @@
 class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_Base {
 
 	const AJAX_CALENDAR_SCRIPT = <<<SCRIPT
+
 			var ajaxify_calendars = function () {
 				var month_link = $("a.calendar_title_month_clickable:first-child, a.calendar_title_month_clickable:last-child");
 				month_link.click(function(event) {
-					event.preventDefault();
 					var url = $(this).attr('href');
+					if (url == '#')
+						url = $(this).jqmData('href');
 					$(this).parents(".calendar").load(url+' .calendar>div', 
 																						ajaxify_calendars);
+					event.preventDefault();
 				});
 
 				$("form#calendar_select_categorie").change(function(event) {
