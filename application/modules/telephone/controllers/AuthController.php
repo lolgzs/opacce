@@ -44,6 +44,7 @@ class Telephone_AuthController extends AuthController {
 
 	protected function _getForm() {
 		$form = new ZendAfi_Form_Login();
+		$form->setAttrib('data-ajax', 'false');
 		$form->getElement('username')->setAttrib('placeholder', $this->view->_('Identifiant'));
 		$form->getElement('password')->setAttrib('placeholder', $this->view->_('Mot de passe'));
 		$form->getElement('login')->setLabel($this->view->_('Se connecter'));
