@@ -27,14 +27,14 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 			  $url_retour = $this->view->url($url_retour);
 
 		  if($url_retour) 
-			  $html.=sprintf('<a href="%s" data-rel="back" data-icon="back">%s</a>',
+			  $html.=sprintf('<a href="%s" data-rel="back" data-icon="back" data-iconpos="notext">%s</a>',
 											 $url_retour,
 											 $this->view->_('Retour'));  
 
 		$html.='<h1>'.$titre.'</h1>';
 
 		if($accueil) 
-			$html.=sprintf('<a href="%s" data-icon="home">%s</a>',
+			$html.=sprintf('<a href="%s" data-icon="home" rel="external" data-ajax="false" data-iconpos="notext">%s</a>',
 										 $this->view->url(array(), null, true),
 										 $this->view->_('Accueil')); 
 		$html.='</div>';
