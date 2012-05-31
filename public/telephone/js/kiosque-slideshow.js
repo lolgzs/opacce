@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).bind('pageinit', function() {
 	(function($) {
 		$.fn.kiosqueSlideshow = function() {
 			var stack = this,
@@ -15,11 +15,11 @@ $(document).ready(function() {
 				var width = 0;
 				stack.find('ul').each(function() {
 					$(this).find('li').each(function() { 
-						itemWidth = $(this).outerWidth()
+						itemWidth = $(this).find('img').width()
 							+ parseInt($(this).css('margin-left')) 
 							+ parseInt($(this).css('margin-right'));
 						width += itemWidth;
-					});					
+					});
 					$(this).width(width);
 				});
 				
