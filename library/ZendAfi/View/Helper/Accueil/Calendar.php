@@ -34,6 +34,16 @@ class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_B
 					event.preventDefault();
 				});
 
+				$('.calendar').bind('swiperight', 
+														function () {
+															$("a.calendar_title_month_clickable:first-child").click();
+														}); 
+				$('.calendar').bind('swipeleft', 
+														function () {
+															$("a.calendar_title_month_clickable:last-child").click();
+														}); 
+
+
 				$("form#calendar_select_categorie").change(function(event) {
 					var url = $(this).attr('action');
 					$(this).parents(".calendar").load(url, 
