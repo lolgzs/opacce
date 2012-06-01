@@ -1,25 +1,21 @@
 /* Simulation iphone sur un ecran normal */
 body.iphone {
-    background: transparent url(../images/boites/gradient_fond_site.gif) repeat-x scroll bottom;
+    background-color: white;
     font: 14px Helvetica,Arial;
     margin: 0px;
     padding: 0px;
 }
 
 
-body.iphone>div:first-child {
-		float: left;
-		width: 300px;
-}
-div.iphone_container
-{
+
+div.iphone_container {
   background: transparent url(../images/systeme/iphone_container.jpg) no-repeat;
   margin:0 auto;
   padding:135px 0px 0px 1px;
   width:390px;
   min-height: 700px;
-	
 }
+
 
 div.embed_hint {
 		clear:left;
@@ -51,6 +47,7 @@ body.main
 
 /* tags de base */
 table, td {padding:0px; margin:0px}
+table {width: 100%}
 img{border:none;}
 a{color:rgb(76,86,108); text-decoration:none;}
 a:hover{color:rgb(76,86,108); text-decoration:none;}
