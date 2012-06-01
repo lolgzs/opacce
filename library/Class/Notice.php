@@ -151,7 +151,9 @@ class Class_Notice extends Storm_Model_Abstract {
 	 * @return Class_Exemplaire
 	 */
 	public function getFirstExemplaire() {
-		Class_Exemplaire::getLoader()->findFirstBy(array('id_notice' => $this->getId()));
+		if (!$this->hasExemplaires())
+			return null;
+		return array_first($this->getExemplaires());
 	}
 
 
