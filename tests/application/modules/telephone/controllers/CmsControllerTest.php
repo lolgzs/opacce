@@ -67,7 +67,7 @@ class CmsControllerTelephoneEmbeddedTest extends AbstractCmsControllerTelephoneT
 
 	/** @test */
 	function urlReturnShouldContainsEmbed() {
-		$this->assertXPath('//td[@class="gauche"]//a[contains(@href,"/embed")]');
+		$this->assertXPath('//a[contains(@href,"/embed")][@data-rel="back"]');
 	}
 }
 
