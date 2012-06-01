@@ -27,17 +27,11 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 // Main routine
 //---------------------------------------------------------------------  
 	public function getHtml()	{
-		$html = sprintf('<form method="post" action="%s" data-mini="true" class="ui-grid-a">', $this->view->url(array('controller' => 'recherche', 
+		$html = sprintf('<form method="post" action="%s" >', $this->view->url(array('controller' => 'recherche', 
 																																							 'action' => 'simple')));
 
-		$html .= '<div class="ui-block-a">';
-		$html .= sprintf('<input data-mini="true" type="text" placeholder="%s" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
-										 $this->translate()->_('Recherche'));
-		$html .= '</div>';
-
-		$html .= '<div class="ui-block-b">';
-		$html .= '<button data-mini="true" type="submit" value="ok" >';
-		$html .= '</div>';
+		$html .= sprintf('<input data-mini="true" type="search"  placeholder="%s" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
+										 $this->preferences["message"]);
 
 		$html .= '</form>';
 

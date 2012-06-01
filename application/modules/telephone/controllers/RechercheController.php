@@ -22,16 +22,22 @@ require_once ROOT_PATH.'application/modules/opac/controllers/RechercheController
 
 class Telephone_RechercheController extends RechercheController {
 	public function viewnoticeAction()  {
-		$this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-		$this->view->actions = array($this->view->_('Notice détaillée') =>		  array('action' => 'detail'),
-																 $this->view->_('Avis') =>								  array('action' => 'avis'),
-																 $this->view->_('Exemplaires') =>					  array('action' => 'exemplaires'),
-																 $this->view->_('Résumés, analyses') =>		  array('action' => 'resume'),
-																 $this->view->_('Tags') =>								  array('action' => 'tags'),
-																 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
-																 $this->view->_('Notices similaires') =>	  array('action' => 'similaires'),
-																 //																 $this->view->_('Ressources numériques') => array('action' => 'ressourcesnumeriques'),
-																 );
+		$notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+
+		$actions = array($this->view->_('Notice détaillée') =>		  array('action' => 'detail'),
+										 $this->view->_('Avis') =>								  array('action' => 'avis'),
+										 $this->view->_('Exemplaires') =>					  array('action' => 'exemplaires'),
+										 $this->view->_('Résumés, analyses') =>		  array('action' => 'resume'),
+										 $this->view->_('Tags') =>								  array('action' => 'tags'),
+										 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
+										 $this->view->_('Notices similaires') =>	  array('action' => 'similaires')
+										 );
+
+		if ($notice->isLivreNumerique())
+			$actions[$this->view->_('Feuilleter le livre')] = array('action' => 'ressourcesnumeriques');
+
+		$this->view->notice = $notice;
+		$this->view->actions = $actions;
 	}
 
 
@@ -51,6 +57,11 @@ class Telephone_RechercheController extends RechercheController {
 
 
 	 public function detailAction() {
+		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
+
+
+	 public function ressourcesnumeriquesAction() {
 		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 	 }
 

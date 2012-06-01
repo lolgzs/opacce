@@ -277,3 +277,12 @@ tr.calendar_title {
 .ui-content {
 		padding: 0px;
 }
+
+
+
+div.bk-widget div.b-menu,
+div.bk-widget div.b-zoom-fullscreen,
+div.bk-widget div.b-zoom-magnify,
+div.bk-widget div.b-counter {
+		display: none;
+}

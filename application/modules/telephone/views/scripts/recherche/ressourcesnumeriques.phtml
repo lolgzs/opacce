@@ -1,0 +1,9 @@
+<?php 
+echo $this->toolbar($this->_("Livre numérisé"), 
+										array('action' => 'simple'));
+
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
+
+echo $this->renderAlbum($this->notice->getAlbum());
+
+?>
