@@ -24,5 +24,10 @@ function clickContainer(event) {
 
 
 function showPopWin(url) {
-	$('<a href="'+url+'" data-rel="dialog" data-transition="pop"></a>').click();
+	window.open(url);
+}
+
+
+function hidePopWin() {
+	window.location = window.parent.location;
 }
