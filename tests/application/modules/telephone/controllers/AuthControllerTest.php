@@ -55,6 +55,10 @@ class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractContr
 		Class_Profil::getCurrentProfil()
 			->setCfgAccueil(array());
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('hasIdentity')
+			->answers(false);
+
 		$this->dispatch('auth/login-reservation/id/45324', true);
 	}
 
@@ -88,13 +92,25 @@ class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractContr
 class AuthControllerTelephoneLoginReservationInvalidPostTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('hasIdentity')
+			->answers(false);
+
 		$this->postDispatch('auth/login-reservation/id/45324', array());
 	}
 
 
 	/** @test */
-	public function pageShouldContainsErrorMessage() {
-			$this->assertXPathContentContains('//strong', 'Entrez votre identifiant');
+	public function shouldRedirectToCurrentUrl() {
+		$this->assertRedirectTo('/auth/login-reservation/id/45324');
+	}
+
+
+	/** @test */
+	public function flashMessengerShouldContainsErrorMessage() {
+		$this->assertTrue(0 < count($messages = $_SESSION['FlashMessenger']['default']));
+		$this->assertEquals('Entrez votre identifiant S.V.P.', $messages[0]);
 	}
 }
 

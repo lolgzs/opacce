@@ -22,6 +22,11 @@
 require_once ROOT_PATH.'application/modules/opac/controllers/AuthController.php';
 
 class Telephone_AuthController extends AuthController {
+	public function init() {
+		parent::init();
+		$this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+	}
+
 	public function boiteloginAction() {
 		if ($this->_request->isPost())
 			$this->_authenticate();
@@ -30,13 +35,23 @@ class Telephone_AuthController extends AuthController {
 
 
 	public function loginReservationAction() {
-		$form = $this->_getForm();
-		if ($this->_request->isPost()
-				&& !($this->view->error = $this->_authenticate())) {
+		if (Class_Users::getLoader()->hasIdentity()) {
 			$this->_redirect('/recherche/reservation');
 			return;
 		}
+
+		$form = $this->_getForm();
+		if ($this->_request->isPost()) {
+			if (!($error = $this->_authenticate())) {
+				$this->_redirect('/recherche/reservation');
+				return;
+			}
+
+			$this->_flashMessenger->addMessage($error);
+			$this->_redirect($this->view->url(), array('prependBase' => false));
+		}
 		
+		$this->view->error = $this->_flashMessenger->getMessages();
 		$this->view->id_notice = $this->_getParam('id');
 		$this->view->form = $form;
 	}
@@ -44,7 +59,7 @@ class Telephone_AuthController extends AuthController {
 
 	protected function _getForm() {
 		$form = new ZendAfi_Form_Login();
-		$form->setAttrib('data-ajax', 'false');
+		$form->setAction($this->view->url());
 		$form->getElement('username')->setAttrib('placeholder', $this->view->_('Identifiant'));
 		$form->getElement('password')->setAttrib('placeholder', $this->view->_('Mot de passe'));
 		$form->getElement('login')->setLabel($this->view->_('Se connecter'));
