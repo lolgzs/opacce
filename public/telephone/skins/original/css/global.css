@@ -237,6 +237,7 @@ div.clear {
 
 table.notice_detail tr td:first-child {
 		text-align: right;
+		min-width: 80px;
 }
 
 table.notice_detail tr ul,
