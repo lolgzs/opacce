@@ -71,6 +71,14 @@ class UsersLoader extends Storm_Model_Loader {
 	}
 
 
+	/**
+	 * @return bool
+	 */
+	public function hasIdentity() {
+		return null != $this->getIdentity();
+	}
+
+
 	public function isCurrentUserAdmin() {
 		if (!$user = $this->getIdentity())
 			return false;
