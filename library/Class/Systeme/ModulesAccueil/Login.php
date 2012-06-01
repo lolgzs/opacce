@@ -35,7 +35,7 @@ class Class_Systeme_ModulesAccueil_Login extends Class_Systeme_ModulesAccueil_Nu
 	protected $_popupHeight = 400;
 
 	/** @var bool */
-	protected $_isPhone = true;
+	protected $_isPhone = false;
 
 	/** @var array */
 	protected $_defaultValues = array(
