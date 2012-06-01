@@ -22,7 +22,7 @@
 require_once ROOT_PATH.'application/modules/opac/controllers/AbonneController.php';
 
 class Telephone_AbonneController extends AbonneController {
-	
+
 }
 
 ?>

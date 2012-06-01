@@ -34,16 +34,29 @@ class Telephone_AuthController extends AuthController {
 	}
 
 
+	public function loginAction() {
+		$this->_loginCommon('/abonne');
+		$this->render('login-reservation');
+	}
+
+
 	public function loginReservationAction() {
+		$this->_loginCommon('/recherche/reservation');
+		$this->view->id_notice = $this->_getParam('id');
+	}
+
+
+
+	protected function _loginCommon($redirectUrl) {
 		if (Class_Users::getLoader()->hasIdentity()) {
-			$this->_redirect('/recherche/reservation');
+			$this->_redirect($redirectUrl);
 			return;
 		}
 
 		$form = $this->_getForm();
 		if ($this->_request->isPost()) {
 			if (!($error = $this->_authenticate())) {
-				$this->_redirect('/recherche/reservation');
+				$this->_redirect($redirectUrl);
 				return;
 			}
 
@@ -52,17 +65,30 @@ class Telephone_AuthController extends AuthController {
 		}
 		
 		$this->view->error = $this->_flashMessenger->getMessages();
-		$this->view->id_notice = $this->_getParam('id');
 		$this->view->form = $form;
 	}
 
 
 	protected function _getForm() {
 		$form = new ZendAfi_Form_Login();
-		$form->setAction($this->view->url());
-		$form->getElement('username')->setAttrib('placeholder', $this->view->_('Identifiant'));
-		$form->getElement('password')->setAttrib('placeholder', $this->view->_('Mot de passe'));
-		$form->getElement('login')->setLabel($this->view->_('Se connecter'));
+		$form->setAction($this->view->url())
+			->setAttrib('class', 'ui-grid-b');
+
+		$form->getElement('username')
+			->setAttrib('placeholder', $this->view->_('Identifiant'))
+			->setAttrib('data-mini', 'true')
+			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-a'));
+
+		$form->getElement('password')
+			->setAttrib('placeholder', $this->view->_('Mot de passe'))
+			->setAttrib('data-mini', 'true')
+			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-b'));
+
+		$form->getElement('login')
+			->setLabel($this->view->_('Se connecter'))
+			->setAttrib('data-mini', 'true')
+			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-c'));
+
 		return $form;
 	}
 }

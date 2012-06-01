@@ -1,0 +1,6 @@
+<div data-position="fixed" data-role="footer" data-theme="c" style="text-align:right;">
+  <div style="float:left;padding-top:8px"><?php echo $this->escape($this->user->getNomAff());?></div>
+	<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout'));?>" 
+		 data-role="button" data-icon="back" data-iconpos="right" data-mini="true"
+		 data-ajax="false" ><?php echo $this->_('Se déconnecter'); ?></a>
+</div>

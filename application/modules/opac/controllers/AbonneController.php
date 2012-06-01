@@ -34,7 +34,7 @@ class AbonneController extends Zend_Controller_Action
 				return;
 		
 		if (!$this->_user = Class_Users::getLoader()->getIdentity()) {
-			$this->_redirect('opac/auth/login');
+			$this->_redirect('auth/login');
 			return;
 		}	
 			
@@ -397,6 +397,7 @@ class AbonneController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	function pretsAction()	{
 		$this->view->fiche = $this->_user->getFicheSigb();
+		$this->view->user = $this->_user;
 	}
 
 
@@ -428,6 +429,7 @@ class AbonneController extends Zend_Controller_Action
 		}
 
 		$this->view->fiche = $this->_user->getFicheSigb();
+		$this->view->user = $this->_user;
 	}
 
 

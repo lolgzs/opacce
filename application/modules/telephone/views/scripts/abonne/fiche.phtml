@@ -1,31 +1,17 @@
-<?php echo $this->toolbar($this->_('Fiche abonné'), $this->url(array(), null, true) ,false); ?>
-
-<div class="liste">
-<ul>
+<?php echo $this->toolbar($this->_('Fiche abonné')); ?>
+<?php echo $this->partial('abonne/identity.phtml', array('user' => $this->user));?>
+<ul data-role="listview">
 <?php
+	if ($this->abonnement) 
+		echo '<li>' . $this->abonnement . '</li>';
 
-if($this->abonnement) 
-	echo '<li>'.$this->abonnement.'</li>';
-
-if($this->nb_prets) 
-	echo sprintf('<li class="lien">%s</li>', $this->nb_prets);
-
-if($this->nb_resas) 
-	echo '<li  class="lien">'.$this->nb_resas.'</li>';
+	if ($this->nb_prets) 
+		echo sprintf('<li>%s</li>', $this->nb_prets);
+		
+	if ($this->nb_resas) 
+		echo '<li>' . $this->nb_resas.'</li>';
 
 ?>
 </ul>
-
-</div>
-
-
-<div class="pave">
-<?php 
-echo $this->tagAnchor(array('controller' => 'auth', 'action' => 'logout'),
-											$this->tagImg(URL_IMG.'systeme/exit.png',
-																		array('alt' => $this->_('Déconnexion'),
-																					'class' => 'right')).$this->_('Se déconnecter'));
-?>
-</div>
 
 

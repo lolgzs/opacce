@@ -22,22 +22,21 @@
 
 class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
 	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
-		$html='<div data-theme="c" data-role="header" data-id="main-toolbar" class="toolbar">';
-		  if(is_array($url_retour))
-			  $url_retour = $this->view->url($url_retour);
+		$html = '<div data-theme="c" data-role="header" data-id="main-toolbar" class="toolbar">';
 
-		  if($url_retour) 
-			  $html.=sprintf('<a href="%s" data-rel="back" data-icon="back" data-iconpos="notext">%s</a>',
-											 $url_retour,
-											 $this->view->_('Retour'));  
+		if (Class_AdminVar::isPackMobileEnabled()) 
+			$html .= sprintf('<a href="%s" data-icon="star" data-iconpos="notext" data-ajax="false">%s</a>',
+											 $this->view->url(array('controller' => 'abonne'), null, true),
+											 $this->view->_('Mon compte'));  
 
-		$html.='<h1>'.$titre.'</h1>';
+		$html .= '<h1>' . $titre . '</h1>';
 
-		if($accueil) 
-			$html.=sprintf('<a href="%s" data-icon="home" rel="external" data-ajax="false" data-iconpos="notext">%s</a>',
-										 $this->view->url(array(), null, true),
-										 $this->view->_('Accueil')); 
-		$html.='</div>';
+		if ($accueil) 
+			$html .= sprintf('<a href="%s" data-icon="home" rel="external" data-ajax="false" data-iconpos="notext">%s</a>',
+											 $this->view->url(array(), null, true),
+											 $this->view->_('Accueil')); 
+		$html .= '</div>';
+
 		return $html;
 	}
 }

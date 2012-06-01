@@ -7,7 +7,6 @@ body.iphone {
 }
 
 
-
 div.iphone_container {
   background: transparent url(../images/systeme/iphone_container.jpg) no-repeat;
   margin:0 auto;
@@ -269,10 +268,9 @@ tr.calendar_title {
 }
 
 
-.ui-btn {
+form .ui-btn {
 		margin: 0.2em 10px;
 }
-
 
 .ui-content {
 		padding: 0px;

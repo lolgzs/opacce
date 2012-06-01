@@ -1,22 +1,11 @@
+<?php echo $this->toolbar($this->_('Prêts'));?>
+<?php echo $this->partial('abonne/identity.phtml', array('user' => $this->user));?>
+<ul data-role="listview" data-inset="true">
 <?php 
-echo $this->toolbar($this->_('Prêts'), 
-										$this->url(array('controller' => 'abonne',
-																		 'action' => 'fiche'), 
-															 null, 
-															 true),
-										false); 
-?>
-
-<div class="liste">
-<ul>
-
-<?php 
-
-foreach($this->fiche["fiche"]->getEmprunts() as $emprunt) {
+foreach ($this->fiche["fiche"]->getEmprunts() as $emprunt) {
 	echo sprintf('<li>%s</li>',
 							 $emprunt->getTitre());
 }
 
 ?>
-
 </ul>

@@ -1,13 +1,5 @@
-<?php
-echo $this->toolbar($this->_("Identification"), 
-										array('controller' => 'recherche',
-													'action' => 'exemplaires',
-													'id' => $this->id_notice),
-										false);
-?>
-<div class="pave">
-<?php 
-echo $this->form;
-?>
-<?php if (0 < count($this->error)) echo '<strong style="color:red">' . $this->error[0] . '</strong>';?>
+<?php echo $this->toolbar($this->_("Identification"));?>
+<div data-role="content">
+	<?php echo $this->form;?>
+	<?php if (0 < count($this->error)) echo '<strong style="color:red">' . $this->error[0] . '</strong>';?>
 </div>
