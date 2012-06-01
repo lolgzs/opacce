@@ -66,7 +66,7 @@ $.widget("ui.treeselect", {
 													"</li>").
 										data("label", catOrItem.label).
 										data("type", type).
-										data("id", catOrItem.id).
+										data("elid", catOrItem.id).
 										appendTo(parent).
 										children('a').hover(
 												function (event) {
@@ -214,7 +214,9 @@ $.widget("ui.treeselect", {
 
 		_findConnectedIn: function(li, items) {
 				var sid = li.data('sid');
-				return items.find('li[sid='+sid+']');
+			  return items.find('li').filter(function(index) { 
+					return $(this).data('sid') == sid; 
+				});
 		},
 
 
@@ -368,8 +370,9 @@ $.widget("ui.treeselect", {
 		_selectByIdAndType: function(ids, type) {
 				var self = this;
 				jQuery.each(ids, function(index, id) { 
-					self.itemsTree.find('li[id='+id+']').each(function(index, li) {
-						if ($(li).data('type') == type)
+					self.itemsTree.find('li').each(function(index, li) {
+						var listitem = $(li);
+						if ((listitem.data('elid') == id) && (listitem.data('type') == type))
 							self._select($(li));
 					});
 				});
@@ -380,7 +383,7 @@ $.widget("ui.treeselect", {
 				var datas = [];
 				this.selectedItems.find('li').each(function(index,li){
 					if ($(li).data('type') == type) {
-						datas.push({"id": $(li).data('id'), 
+						datas.push({"id": $(li).data('elid'), 
 												"label": $(li).data('label')});
 					}
 				});
