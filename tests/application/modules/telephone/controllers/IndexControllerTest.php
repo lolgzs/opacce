@@ -72,6 +72,7 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 			->setTitreSite('Smartphone')
 			->setLibelle(null)
 			->setCfgAccueil($cfg_accueil)
+			->setHeaderCss('mon_style.css')
 			->setHauteurBanniere(150);
 	}
 }
@@ -96,6 +97,12 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 	/** @test	 */
 	public function shouldBeDisplayedInIPhoneSimulation() {
 		$this->assertQuery('div#iphone_container');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsMonStyleCss() {
+		$this->assertXPath('//link[contains(@href, "mon_style.css")]');
 	}
 
 

@@ -27,7 +27,7 @@ $(document).bind("mobileinit", function(){
 	 ->addSkinStyleSheet('global');
 
 if ($this->profil->hasHeaderCss())
-	$head_scripts->addStyleSheeet($this->header_css);
+	$head_scripts->addStyleSheet($this->profil->getHeaderCss());
 
 $script_loader = Class_ScriptLoader::getInstance()->beMobile();	 
 
