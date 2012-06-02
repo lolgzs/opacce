@@ -144,5 +144,25 @@ class SystemeControllerPostInvalidPostTest extends Admin_AbstractControllerTestC
 
 
 
+class SystemeControllerPHPInfoActionTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('admin/systeme/phpinfo', true);
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayPHPInfo() {
+		$this->assertXPathContentContains('//dt', 'Version PHP');
+	}
+
+
+	/** @test */
+	public function menuGaucheAdminShouldContainsLinkToPHPInfoTest() {
+		$this->assertXPathContentContains('//div[@class="menuGaucheAdmin"]//a[contains(@href, "systeme/phpinfo")]', 
+																			'Informations système');
+	}
+
+}
 
 ?>

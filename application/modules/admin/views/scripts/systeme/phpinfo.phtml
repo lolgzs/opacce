@@ -1,0 +1,29 @@
+<style>
+dt {margin-top: 5px; font-weight:bold}
+</style>
+
+<dl>
+
+<dt>Version PHP</dt>
+<dd><?php echo phpversion() ?></dd>
+
+<dt>Extensions PHP chargées</dt>
+<?php 
+$extensions = get_loaded_extensions();
+sort($extensions); 
+foreach($extensions as $extension)
+	echo '<dd>'.$extension.'</dd>';
+?>
+
+
+<dt>Configuration PHP</dt>
+<?php 
+$vars = ini_get_all();
+foreach($vars as $label => $var) {
+	if ($var['local_value'])
+		echo '<dd>'.$label.' : '.$var['local_value'] .'</dd>';
+}
+?>
+</dt>
+
+</dl>

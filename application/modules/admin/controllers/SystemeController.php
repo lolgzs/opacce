@@ -136,6 +136,10 @@ class Admin_SystemeController extends Zend_Controller_Action {
 	}
 
 
+	public function phpinfoAction() {	
+		$this->view->titre = 'Informations système';
+	}
+
 
 	public function mailtestAction() {
 		$this->view->titre = 'Test de l\'envoi des mails';
