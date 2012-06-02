@@ -22,8 +22,9 @@
 // OPAC3 : REPERTOIRE DES WEB_SERVICES
 //////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_AllServices
-{
+class Class_WebService_AllServices {
+	private static $_http_client;
+
 	private $services = array
 		(
 			"Amazon" => array
@@ -100,33 +101,46 @@ class Class_WebService_AllServices
 	}
 
 
-	static function runServiceAfi($service,$args)	{
-		$url_service=fetchOne("select valeur from variables where clef ='url_services'");
-		if(!$url_service) return false;
-
-		// Clef de securite
-		$clef="IMG".date("DxzxYxM")."VIG";
-		$clef=md5($clef);
-
-		// Contacter le service
-		$http = new Zend_Http_Client($url_service);
-		$http->setParameterGet('src', $clef);
-		$http->setParameterGet('action', $service);
-		$http->setParameterGet($args);
-
-		$response = $http->request();
-		$data = $response->getBody();
-
-		// Decouper la reponse
-		$ret=json_decode($data,true);
-		return $ret;
+	static function runServiceAfiVideo($args) {
+		return self::runServiceAfi(9, $args);
 	}
+
+	static function setHttpClient($client) {
+		self::$_http_client = $client;
+	}
+
+
+	static function httpGet($url, $args) {
+		if (!isset(self::$_http_client))
+			self::$_http_client = new Class_WebService_SimpleWebClient();
+		return self::$_http_client->open_url($url.'?'.http_build_query($args));
+	}
+
+
+	static function runServiceAfi($service,$args)	{
+		if (!$url_service = Class_CosmoVar::get('url_services'))
+			return false;
+
+		if (!$args)
+			$args = array();
+
+		$args['src'] = self::createSecurityKey();
+		$args['action'] = $service;
+
+		return json_decode(self::httpGet($url_service, $args),
+											 true);
+	}
+
+
+	public static function createSecurityKey() {
+		return md5("IMG".date("DxzxYxM")."VIG");
+	}
+	
 
 //------------------------------------------------------------------------------------------------------
 // Test d'un service
 //------------------------------------------------------------------------------------------------------
-	public function testService($id_service,$id_fonction)
-	{
+	public function testService($id_service,$id_fonction)	{
 		if(!$id_service) return false;
 		$instruction="\$cls=new Class_WebService_".$id_service."();";
 		eval($instruction);

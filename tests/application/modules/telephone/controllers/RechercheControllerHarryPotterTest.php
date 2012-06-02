@@ -127,6 +127,12 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 
 	/** @test */
+	public function pageShouldContainsLinkToVideos() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/videos/id/4")]', 'Vidéos');
+	}
+
+
+	/** @test */
 	public function pageShouldContainsLinkToBiographies() {
 		$this->assertXPathContentContains('//a[contains(@href, "recherche/biographie/id/4")]', 'Biographies');
 	}
@@ -713,6 +719,73 @@ class Telephone_RechercheControllerHarryPotterAvisTest extends Telephone_Recherc
 	/** @test */
 	public function pageShouldContainsAvisBof() {
 		$this->assertXPathContentContains('//div', 'bof');
+	}
+}
+
+
+
+
+class Telephone_RechercheControllerHarryPotterVideosTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$answer = array('statut_recherche' => 2,
+										'erreur' => '',
+										'source' => 'youtube',
+										'video' => '<object width="500" height="400"><param name="movie" value="http://www.youtube.com/v/np9U1pmRsGs&fs=1&source=uds&autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/np9U1pmRsGs&fs=1&source=uds&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="400"></embed></object>',
+										'statut' => 'OK');
+
+		$http_client = Storm_Test_ObjectWrapper::mock();
+		$http_client
+			->whenCalled('open_url')
+			->answers(json_encode($answer));
+
+		Class_WebService_AllServices::setHttpClient($http_client);
+
+		$this->dispatch('/telephone/recherche/videos/id/4', true);
+	}
+
+
+	/** @test */
+	public function titleShouldBeHarryPotter() {
+		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsIFrameWithEmbedVideoUrl() {
+		$this->assertXPath('//iframe[@src="http://www.youtube.com/embed/np9U1pmRsGs"]');
+	}
+
+}
+
+
+
+
+class Telephone_RechercheControllerHarryPotterVideoNotFoundTest extends Telephone_RechercheControllerHarryPotterTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$answer = array('statut_recherche' => 1,
+										'erreur' => '',
+										'source' => '',
+										'video' => '',
+										'statut' => 'OK');
+
+		$http_client = Storm_Test_ObjectWrapper::mock();
+		$http_client
+			->whenCalled('open_url')
+			->answers(json_encode($answer));
+
+		Class_WebService_AllServices::setHttpClient($http_client);
+
+		$this->dispatch('/telephone/recherche/videos/id/4', true);
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayAucuneVideoTrouvee() {
+		$this->assertXPathContentContains('//p', 'Aucune vidéo');
 	}
 }
 

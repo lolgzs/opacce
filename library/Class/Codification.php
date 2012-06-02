@@ -35,7 +35,7 @@ class Class_Codification
 		$types=explode(chr(13).chr(10),$data);
 		foreach($types as $type)
 		{
-			$elem=split(":",$type);
+			$elem=explode(":",$type);
 			if(trim($elem[0])=="") continue;
 			$ret[$elem[0]]=$elem[1];
 		}
@@ -51,10 +51,10 @@ class Class_Codification
 		if($events > "") $events=" ".$events;
 		$combo='<select name="type_doc" '.$events.'>';
 		if($tous == true) $combo.='<option value="">tous</option>';
-		$v=split(chr(13).chr(10),$data);
+		$v=explode(chr(13).chr(10),$data);
 		for($i=0; $i<count($v); $i++)
 		{
-			$elem=split(":",$v[$i]);
+			$elem=explode(":",$v[$i]);
 			if(trim($elem[0])>"")
 			{
 				if($valeur==$elem[0]) $selected=" selected"; else $selected="";
@@ -100,7 +100,7 @@ class Class_Codification
 					$items=explode(chr(13).chr(10),$td);
 					foreach($items as $item)
 					{
-						$elem=split(":",$item);
+						$elem=explode(":",$item);
 						if(trim($elem[0])>"") $_SESSION["libelles_types_docs"][$elem[0]]=trim($elem[1]);
 					}
 				}

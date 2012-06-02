@@ -1,5 +1,5 @@
 <?php
-echo $this->toolbar("Avis", array('action' => 'viewnotice'), true);
+echo $this->toolbar($this->_("Avis"));
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 
 $avis_bib = $this->notice->getAvisBibliothecaire();

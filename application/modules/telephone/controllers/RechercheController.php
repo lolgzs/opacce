@@ -28,6 +28,7 @@ class Telephone_RechercheController extends RechercheController {
 										 $this->view->_('Avis') =>								  array('action' => 'avis'),
 										 $this->view->_('Exemplaires') =>					  array('action' => 'exemplaires'),
 										 $this->view->_('Résumés, analyses') =>		  array('action' => 'resume'),
+										 $this->view->_('Vidéos') =>							  array('action' => 'videos'),
 										 $this->view->_('Tags') =>								  array('action' => 'tags'),
 										 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
 										 $this->view->_('Notices similaires') =>	  array('action' => 'similaires')
@@ -112,6 +113,23 @@ class Telephone_RechercheController extends RechercheController {
 
 	 public function resumeAction() {
 		 $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 }
+
+
+	 public function videosAction() {
+	 	 $notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+	 	 $video = Class_WebService_AllServices::runServiceAfiVideo(array('titre' => $notice->getTitrePrincipal(),
+																																		 'auteur' => $notice->getAuteurPrincipal()));
+	 	 $video_id = null;
+	 	 if ($html = $video['video']) {
+	 		 if (1==preg_match('/value=\"([^\"\&]+)/', $html, $matches)) {
+	 			 $parts = explode('/', $matches[1]);
+	 			 $video_id = end($parts);
+	 		 }
+	 	 }
+
+	 	 $this->view->notice = $notice;
+	 	 $this->view->video_id = $video_id;
 	 }
 
 
