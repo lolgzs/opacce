@@ -89,7 +89,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 		$this->_logUserGaston();
 
 		$menu_url = $this->module_menu->getUrl('VODECLIC', array());
-		$this->assertContains('javascript:alert(\'Votre abonnement est terminé\')', $menu_url['url']);
+		$this->assertContains('javascript:alert(\\\'Votre abonnement est terminé\\\')', $menu_url['url']);
 		$this->assertEquals('1', $menu_url['target']);
 	}
 }

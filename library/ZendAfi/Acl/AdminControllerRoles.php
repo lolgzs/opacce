@@ -139,7 +139,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 	$html[]='<select name="role">';
 	if($tous==true)
 	{
-		if($selected=="") $sel=' selected="selected"';
+		$sel = ($selected=="") ? ' selected="selected"' : '';
 		$html[]='<option value=""'.$sel.'>&nbsp;</option>';
 	}
 	foreach(self::$listeRole as $level => $role)

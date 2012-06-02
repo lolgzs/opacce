@@ -422,6 +422,10 @@ class Class_Users extends Storm_Model_Abstract {
 				$cond[]="ID_SITE in($inSql)";
 			}
 		}
+		
+		$recherche = array_merge(array('role' => '', 'login' => '', 'nom' => ''),
+														 $recherche);
+
 		if($recherche["role"]>"") $cond[]="ROLE_LEVEL=".$recherche["role"];
 		else $cond[]="ROLE_LEVEL<=$role_level";
 		if($recherche["login"]) $cond[]="LOGIN like '".addslashes($recherche["login"])."%'";

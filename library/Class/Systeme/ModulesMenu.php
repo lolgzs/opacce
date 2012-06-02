@@ -232,7 +232,7 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		if ($user->isAbonne() && $user->isAbonnementValid()) 
 			return Class_VodeclicLink::forUser($user)->url();
 	
-		return 'javascript:alert(\'Votre abonnement est terminé\')';
+		return 'javascript:alert(\\\'Votre abonnement est terminé\\\')';
 	}
 
 

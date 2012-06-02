@@ -74,7 +74,7 @@ class ZendAfi_View_Helper_Admin_ProfileSelect extends ZendAfi_View_Helper_BaseHe
 			$html.='<br/>Recherche';
 			$html.='<form method="post" action="'.BASE_URL.'/admin/users/index?recherche=1">';
 			$html.='<table cellpadding="3" cellspacing="1" border="0">';
-			$rech_user=$_SESSION["admin"]["rech_user"];
+			$rech_user = isset($_SESSION["admin"]["rech_user"]) ? $_SESSION["admin"]["rech_user"] : array('role' => 0, 'login' => '', 'nom' => '');
 			$cls=new ZendAfi_Acl_AdminControllerRoles();
 			$combo_roles=$cls->rendCombo($rech_user["role"],$this->user->ROLE_LEVEL,true);
 			$html.='
