@@ -168,7 +168,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 																	 ),
 			'VODECLIC_KEY'              => 'Clé de sécurité Vodeclic',
 			'VODECLIC_ID'               => 'Identifiant partenaire Vodeclic',
-			'OAI_SERVER'                => 'Activation du serveur OAI'
+			'OAI_SERVER'                => 'Activation du serveur OAI. 0 = inactif, 1 = actif',
+			'PACK_MOBILE'               => 'Activation des fonctions avancées du téléphone.  0 = inactif, 1 = actif'
 		);
 
 		if (!array_key_exists($name, $help)) {
