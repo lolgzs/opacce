@@ -79,12 +79,6 @@ class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractContr
 	public function titleShouldBeIdentification() {
 		$this->assertXPathContentContains('//h1', 'Identification');
 	}
-
-
-	/** @test */
-	public function backLinkToExemplairesShouldBePresent() {
-			$this->assertXPath('//a[contains(@href, "/recherche/exemplaires/id/45324")]');
-	}
 }
 
 

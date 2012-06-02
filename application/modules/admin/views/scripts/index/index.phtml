@@ -28,7 +28,7 @@ if ($this->show_babelio_info) { ?>
 <?php
 $acl = new ZendAfi_Acl_AdminControllerRoles();
 echo $this->ligneInfos($this->traduire("Utilisateur"), $this->user->getLogin());
-echo $this->ligneInfos("Pseudo", $this->user->getPseudo());
+echo $this->ligneInfos("Pseudo", $this->user->getNomAff());
 echo $this->ligneInfos("Rôle", $acl->getLibelleRole($this->user->getRoleLevel()));
 $bib = $this->user->getBib();
 $bib = (!$bib) ? 'Portail' : $bib->getLibelle();

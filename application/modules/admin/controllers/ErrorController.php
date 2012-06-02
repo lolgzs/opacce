@@ -22,6 +22,7 @@ class Admin_ErrorController extends Zend_Controller_Action {
 	public function errorAction() {
 		$this->view->titre = 'Une erreur est survenue';
 		$this->view->errors = $this->_getParam('error_handler');
-		$this->view->database = Zend_Registry::get('cfg')->sgbd->config->dbname;
+		$this->view->database = array_at('dbname',
+																		 Zend_Db_Table::getDefaultAdapter()->getConfig());
 	}
 }

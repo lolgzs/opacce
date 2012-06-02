@@ -25,7 +25,7 @@ require_once 'TelephoneAbstractControllerTestCase.php';
 class AdminModuleIndexControllerTest extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/admin');
+		$this->dispatch('/admin', true);
 	}
 
 

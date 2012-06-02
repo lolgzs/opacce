@@ -33,7 +33,23 @@ abstract class AdminIndexControllerTestCase extends Admin_AbstractControllerTest
 }
 
 
+
+
 class AdminIndexControllerTestBabelio extends AdminIndexControllerTestCase {
+	protected $_old_cfg;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_old_cfg = Zend_Registry::get('cfg');
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('cfg', $this->_old_cfg);
+		parent::tearDown();
+	}
+
+
 	protected function _setExpiration($expire_at) {
 		Zend_Registry::set('cfg', new Zend_Config(array('babelio' => array('expire_at' => $expire_at))));
 	}

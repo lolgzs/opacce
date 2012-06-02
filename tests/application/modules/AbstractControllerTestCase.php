@@ -77,7 +77,11 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		$account->enabled      = true;
 
 		$user = Class_Users::getLoader()
-			->newInstanceWithId(666);
+			->newInstanceWithId(666)
+			->setLogin($account->username)
+			->setRoleLevel($account->ROLE_LEVEL)
+			->setRole($account->ROLE)
+			->setIdSite($account->ID_SITE);
 
 		Class_Bib::getLoader()
 			->newInstanceWithId(1)
@@ -99,27 +103,33 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		parent::setUp();
 
 		$this->_login();
-
-		Class_AdminVar::getLoader()
+		
+		$admin_var_loader = Class_AdminVar::getLoader();
+		$admin_var_loader
 			->newInstanceWithId('WORKFLOW')
 			->setValeur(0);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('LANGUES')
 			->setValeur(null);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('CACHE_ACTIF')
 			->setValeur(0);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('BIBNUM')
 			->setValeur(1);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('OAI_SERVER')
 			->setValeur(1);	
+
+		$admin_var_loader
+			->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
 	}
+
 
 	public function tearDown() {
 		Storm_Model_Abstract::unsetLoaders();

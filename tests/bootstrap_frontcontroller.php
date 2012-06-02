@@ -23,8 +23,6 @@
  * sinon les paramètres de requête sont gardés.
  */
 
-$cfg = loadConfig();
-
 $_REQUEST["id_profil"] = $_SESSION["id_profil"] = 2;
 $_SERVER['HTTP_HOST'] = 'localhost';
 

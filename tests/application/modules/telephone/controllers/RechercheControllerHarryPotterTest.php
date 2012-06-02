@@ -61,12 +61,6 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 
 	/** @test */
-	public function pageShouldContainsUrlToRechercheInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/simple")]');
-	}
-
-
-	/** @test */
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
@@ -161,12 +155,6 @@ class Telephone_RechercheControllerHarryPotterViewResumeTest extends Telephone_R
 
 
 	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
-	}
-
-
-	/** @test */
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
@@ -185,12 +173,6 @@ class Telephone_RechercheControllerHarryPotterTagsTest extends Telephone_Recherc
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/telephone/recherche/tags/id/4', true);
-	}
-
-
-	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
 	}
 
 
@@ -218,12 +200,6 @@ class Telephone_RechercheControllerHarryPotterNoticesSimilairesTest extends Tele
 
 
 	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
-	}
-
-
-	/** @test */
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
@@ -241,16 +217,6 @@ class Telephone_RechercheControllerHarryPotterBiographieTest extends Telephone_R
 	public function dispatchBiographie() {
 		$this->dispatch('/telephone/recherche/biographie/id/4', true);
 		return $this->_response->getBody();
-	}
-
-	/** 
-	 * @depends dispatchBiographie
-	 * @test 
-	 */
-	public function pageShouldContainsUrlToViewNoticeInToolbar($response) {
-		Storm_Test_XPath::newInstance()
-			->assertXPath($response,
-										'//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
 	}
 
 
@@ -285,12 +251,6 @@ class Telephone_RechercheControllerHarryPotterNoticeDetailleeTest extends Teleph
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/telephone/recherche/detail/id/4', true);
-	}
-
-
-	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
 	}
 
 
@@ -338,12 +298,6 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/telephone/recherche/grandeimage/id/4', true);
-	}
-
-
-	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
 	}
 
 
@@ -639,13 +593,6 @@ class Telephone_RechercheControllerHarryPotterReservationErrorTest extends Telep
 	public function pageShouldContainsErrorMessage() {
 		$this->assertXPathContentContains('//div', 'A marche pas');
 	}
-
-
-	/** @test */
-	public function backLinkToExemplairesShouldBePresent() {
-		$this->assertXPath('//a[contains(@href, "/recherche/exemplaires/id/4")]');
-	}
-
 }
 
 
@@ -678,12 +625,6 @@ class Telephone_RechercheControllerHarryPotterReservationWithPopupTest extends T
 
 	public function pageShouldContainsErrorMessage() {
 		$this->assertXPathContentContains('//div', 'non supportée');
-	}
-
-
-	/** @test */
-	public function backLinkToExemplairesShouldBePresent() {
-		$this->assertXPath('//a[contains(@href, "/recherche/exemplaires/id/4")]');
 	}
 }
 
@@ -730,12 +671,6 @@ class Telephone_RechercheControllerHarryPotterAvisTest extends Telephone_Recherc
 
 
 		$this->dispatch('/telephone/recherche/avis/id/4', true);
-	}
-
-
-	/** @test */
-	public function pageShouldContainsUrlToViewNoticeInToolbar() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/viewnotice/id/4")]');
 	}
 
 

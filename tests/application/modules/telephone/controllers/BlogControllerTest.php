@@ -60,12 +60,6 @@ class Telephone_BlogControllerAvisActionTest extends Telephone_BlogControllerAvi
 	public function pageShouldDisplayEnteteAvisBien() {
 		$this->assertXPathContentContains('//a', 'bien');
 	}
-
-
-	/** @test */
-	public function toolbarUrlRetourShouldBeNoticeAvis() {
-		$this->assertXPath('//div[@class="toolbar"]//a[contains(@href, "recherche/avis/id/3")]');
-	}
 }
 
 

@@ -94,12 +94,6 @@ class BibNumeriqueControllerTelephoneViewAlbumMonumentsTest extends BibNumerique
 		$this->assertXPathContentContains('//a[contains(@href, "bib-numerique/download-resource/id/123")]', 
 																			'versailles.epub');
 	}
-
-	/** @test */
-	public function pageShouldContainsLinkToGoBackToCategorieMonuments() {
-		$this->assertXPath('//a[contains(@href, "/bib-numerique/view-categorie/id/3")]');
-		
-	}
 }
 
 ?>

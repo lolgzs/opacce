@@ -38,7 +38,6 @@ set_include_path( realpath(dirname(__FILE__)).'/../library'
 
 // Includes de base
 include_once( "fonctions/fonctions.php");
-//include_once( "grouik/init.php" );
 require_once "Zend/Loader.php";
 require_once "startup.php";
 
@@ -53,6 +52,9 @@ define("URL_SHARED_IMG", BASE_URL . "/public/opac/images");
 setupOpac();
 
 Zend_Registry::get('cache')->setOption('caching', true);
+$cfg = new Zend_Config(Zend_Registry::get('cfg')->toArray(), true);
+$cfg->amber = new Zend_Config(array('deploy' => false));
+Zend_Registry::set('cfg', $cfg);
 
 $_SERVER['SERVER_NAME'] = 'localhost';
 

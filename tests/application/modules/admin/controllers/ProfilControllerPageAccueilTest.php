@@ -178,7 +178,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 
 
-class ProfilControllerWithTelephoneAccueilTest extends Admin_AbstractControllerTestCase {
+class ProfilControllerPageAccueilWithTelephoneTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$profil_telephone = Class_Profil::getLoader()
@@ -202,8 +202,8 @@ class ProfilControllerWithTelephoneAccueilTest extends Admin_AbstractControllerT
 
 
 	/** @test */
-	public function moduleLoginShouldBeAvailable() {
-		$this->assertXPath('//ul/li[@id="LOGIN"]');
+	public function moduleLoginShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="LOGIN"]');
 	}
 
 

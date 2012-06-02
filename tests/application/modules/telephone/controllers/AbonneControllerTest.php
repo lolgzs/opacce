@@ -97,12 +97,6 @@ class AbonneControllerTelephonePretsTest extends AbonneControllerTelephoneTestCa
 	public function pageShouldDisplayLinkToAlice() {
 		$this->assertXPathContentContains('//li', 'Alice au pays des merveilles');
 	}
-
-
-	/** @test */
-	public function pageShouldDisplayLinkToFicheAbonne() {
-		$this->assertXPath('//a[@href = "/abonne/fiche"]');
-	}
 }
 
 
@@ -118,12 +112,6 @@ class AbonneControllerTelephoneReservationsTest extends AbonneControllerTelephon
 	/** @test */
 	public function pageShouldDisplayLinkToHarryPotter() {
 		$this->assertXPathContentContains('//li', 'Star Wars');
-	}
-
-
-	/** @test */
-	public function pageShouldDisplayLinkToFicheAbonne() {
-		$this->assertXPath('//a[@href = "/abonne/fiche"]');
 	}
 }
 
