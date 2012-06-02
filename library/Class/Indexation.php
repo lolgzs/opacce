@@ -217,8 +217,8 @@ class Class_Indexation
 			$pattern_singulier = "(".$regle[0]."$)";
 			$pattern_pluriel="(".$regle[1]."$)";
 
-			$pluriel=ereg_replace($pattern_singulier, $regle[1], $mot);
-			$singulier=ereg_replace($pattern_pluriel, $regle[0], $mot);
+			$pluriel=preg_replace($pattern_singulier, $regle[1], $mot);
+			$singulier=preg_replace($pattern_pluriel, $regle[0], $mot);
 			if($singulier != $mot or $pluriel != $mot) break;
 		}
 		// Si inchangé on ajoute le S

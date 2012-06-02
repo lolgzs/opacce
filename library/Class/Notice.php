@@ -910,16 +910,13 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // CENTRE D'INTERET PERGAME
 // ----------------------------------------------------------------
-	public function getCentreInteret()
-	{
+	public function getCentreInteret() {
+		$interet = array();
 		$data = $this->get_subfield("932");
-		foreach ($data as $items)
-		{
+		foreach ($data as $items)	{
 			$sous_champs = $this->decoupe_bloc_champ($items);
-			foreach ($sous_champs as $item)
-			{
-				if ($item["code"] == "a")
-				{
+			foreach ($sous_champs as $item)	{
+				if ($item["code"] == "a")	{
 					if (trim($item["valeur"])) $interet[] = $item["valeur"];
 				}
 			}
@@ -1060,14 +1057,13 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Champ 856$a et 856$u (liens internet)
 // ----------------------------------------------------------------
-	public function get856a()
-	{
+	public function get856a()	{
+		$lien = array();
 		$data = $this->get_subfield(856, "a");
 		$data1 = $this->get_subfield(856, "u");
 		$result = array_merge($data, $data1);
 
-		if ($result[0])
-		{
+		if (isset($result[0]))	{
 			// black list
 			$trav = fetchOne("select valeur from variables where clef='black_list_856'");
 			if (trim($trav)) $black_list = explode(";", $trav);

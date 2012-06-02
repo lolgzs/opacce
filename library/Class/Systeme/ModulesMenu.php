@@ -125,6 +125,7 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		if (!$preferences)
 			$preferences = $this->getValeursParDefaut($type);
 
+		$url = '';
 		switch ($type) {
 			case "MENU": $url = "#";
 				break;
