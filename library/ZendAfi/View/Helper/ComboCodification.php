@@ -35,12 +35,12 @@ class ZendAfi_View_Helper_ComboCodification extends ZendAfi_View_Helper_BaseHelp
 				$controle=";".$profil->getSelTypeDoc().";";
 
 			$data=fetchOne("Select liste from variables where clef='types_docs'");
-			$v=split(chr(13).chr(10),$data);
+			$v=explode(chr(13).chr(10),$data);
 			$items[]=array("value"=>"","libelle"=>"tous");
 			$controle = '';
 			for($i=0; $i < count($v); $i++)
 			{
-				$elem=split(":",$v[$i]);
+				$elem=explode(":",$v[$i]);
 				if($controle) if(strpos($controle,';'.$elem[0].';')=== false) continue;
 				if($elem[0]) $items[]=array("value" => $elem[0],"libelle" => $elem[1]);
 			}

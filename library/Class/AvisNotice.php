@@ -76,6 +76,11 @@ class AvisNoticeLoader extends Storm_Model_Loader {
 			->select()
 			->order('DATE_AVIS DESC');
 
+		$preferences = array_merge(array('id_panier' => 0,
+																		 'id_catalogue' => 0,
+																		 'abon_ou_bib' => 'all'),
+															 $preferences);
+
 		$id_panier = $preferences['id_panier'];
 		$id_catalogue = $preferences['id_catalogue'];
 		$abon_ou_bib = $preferences['abon_ou_bib'];

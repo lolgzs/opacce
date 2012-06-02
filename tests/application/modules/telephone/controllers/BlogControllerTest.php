@@ -85,4 +85,20 @@ class Telephone_BlogControllerViewAuteurActionTest extends Telephone_BlogControl
 	}
 }
 
+
+class Telephone_BlogControllerViewCritiquesActionTest extends Telephone_BlogControllerAvisActionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/telephone/blog/viewcritiques', true);
+	}
+
+
+	/** @test */
+	public function actionShouldBeViewCritiques() {
+		$this->assertAction('viewcritiques');
+	}
+	
+}
+
 ?>

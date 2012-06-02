@@ -51,10 +51,12 @@ class Admin_AccueilController extends Zend_Controller_Action {
 			$this->preferences = $this->profil->getOrCreateConfigAccueil($this->id_module,
 																																	 $this->type_module);
 
+		$boite = isset($this->preferences["boite"]) ? $this->preferences["boite"] : '';
 		$this->view->preferences = $this->preferences;
 		$this->view->url = $this->_request->getRequestUri();
-		$this->view->combo_templates = ZendAfi_View_Helper_Accueil_Base::getComboTemplates($this->preferences["boite"],
-																																											     $this->profil->getPathTemplates());
+		
+		$this->view->combo_templates = ZendAfi_View_Helper_Accueil_Base::getComboTemplates($boite,
+																																											 $this->profil->getPathTemplates());
 		$this->view->id_profil = $this->profil->getId();
 		$this->view->id_bib = $this->profil->getIdSite();
 

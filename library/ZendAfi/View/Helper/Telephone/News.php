@@ -18,15 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - News
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class ZendAfi_View_Helper_Telephone_News extends ZendAfi_View_Helper_Accueil_News {
-		
-//---------------------------------------------------------------------
-// Main routine
-//---------------------------------------------------------------------  
-
 	protected function getArticles($articles) {
 		if (!$articles) return "";
   	$html = "<div class='liste'><ul class='articles'>";

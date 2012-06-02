@@ -18,27 +18,21 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-
-class ZendAfi_View_Helper_EnteteAvis extends ZendAfi_View_Helper_BaseHelper {
-	public function avis($avis) {
-		return sprintf('<div class="vignette_notice"><img src="%s" /></div>%s',
-									 $avis->getFirstNotice()->getUrlVignette(),
-									 $this->enteteAvis($avis));
+class ZendAfi_View_Helper_Telephone_Critiques extends ZendAfi_View_Helper_Accueil_Critiques {
+	protected function _newHelperAvis() {
+		return new ZendAfi_View_Helper_EnteteAvis();
 	}
 
-	public function enteteAvis($avis) {
-		$auteur = $avis->getUserName();
-		$date_avis = $avis->getReadableDateAvis();
-		$url_avis = $this->view->url(array("controller" => "blog","action" => "viewavis", "id" => $avis->getId()));
-		$entete = $avis->getEntete();
 
-		return sprintf('<a class="entete_critique" href="%s">%s %s<div class="auteur_critique">%s - %s</div></a>',
-									 $url_avis,
-									 $this->view->noteImg($avis->getNote()),
-									 $entete,
-									 $auteur,
-									 $date_avis);
+	protected function decorateAvisHtml($html) {
+		return '<li class="lien">'.$html.'</li>';
 	}
+
+
+	protected function decorateContenu($html) {
+		return '<div class="liste"><ul>'.$html.'</ul></div>';
+	}
+
 }
 
 ?>

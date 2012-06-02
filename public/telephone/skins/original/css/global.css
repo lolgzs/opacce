@@ -285,3 +285,14 @@ div.bk-widget div.b-zoom-magnify,
 div.bk-widget div.b-counter {
 		display: none;
 }
+
+
+.contenu div.vignette_notice {
+		float:left;
+		margin-right: 5px;
+}
+
+
+.contenu  div.vignette_notice img {
+		height: 40px;
+}

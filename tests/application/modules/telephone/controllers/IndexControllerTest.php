@@ -65,7 +65,11 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 
 															 '5' => array('division' => '1',
 																						'type_module' => 'CALENDAR',
-																						'preferences' => array('titre' => 'Agenda'))
+																						'preferences' => array('titre' => 'Agenda')),
+
+															 '6' => array('division' => '1',
+																						'type_module' => 'CRITIQUES',
+																						'preferences' => array('titre' => 'Critiques'))
 															 )); 
 
 		$this->profil_adulte = Class_Profil::getCurrentProfil()
@@ -83,6 +87,25 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexControllerTelephoneWithModulesTest {
 	public function setUp() {
 		parent::setUp();
+
+		$avis = array(Class_AvisNotice::getLoader()
+									->newInstanceWithId(34)
+									->setDateAvis('2012-01-01')
+									->setClefOeuvre('HARRYPOT')
+									->beWrittenByBibliothecaire()
+									->setNote(3)
+									->setEntete('bien')
+									->setAvis('bla bla')
+									->setNotice(Class_Notice::getLoader()
+															->newInstanceWithId(3)
+															->setUrlVignette('http://opac.com/potter.jpg'))
+									->setUser(Class_Users::getLoader()->newInstanceWithId(2)));
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AvisNotice')
+			->whenCalled('getAvisFromPreferences')
+			->answers($avis);
+
+
+
 		unset($_SERVER['HTTP_USER_AGENT']);
 		$this->dispatch('/', true);
 	}
@@ -201,6 +224,19 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 	public function pageShouldContainsScriptToAjaxifyCalendar() {
 		$this->assertXPathContentContains('//script', 'ajaxify_calendars');
 	}
+
+
+	/** @test */
+	function titreCritiquesShouldBeCritiques() {
+		$this->assertXPathContentContains('//div[@class="titre"]', 'Critiques');
+	}
+
+
+	/** @test */
+	public function critiqueOnPotterShouldBeVisible() {
+		$this->assertXPathContentContains('//a[@class="entete_critique"]', 'bien', $this->_response->getBody());
+	}
+
 
 }
 
