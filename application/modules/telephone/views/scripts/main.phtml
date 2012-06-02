@@ -4,9 +4,9 @@ ob_start();
 
 <body class="main" <?php echo $this->bodyParam; ?>>
   <div class="main" data-role="page">
-	<img src="<?php  echo $this->profil->getHeaderImg(); ?>" style="width:100%" alt="<?php echo $this->_('Bannière') ?>">
-	<?php 
-		echo $this->render($this->actionScript);
+	<?php	
+	 echo $this->partial("banniere.phtml", array("profil" => $this->profil));
+	 echo $this->render($this->actionScript);
 	?>
 	</div>
 <?php echo $this->render('footer.phtml'); ?>

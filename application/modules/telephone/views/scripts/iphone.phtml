@@ -23,7 +23,7 @@ ob_start();
 
  <div id="iphone_container" class="iphone_container" onclick="clickContainer(event)">
 	 <div class="iphone_application">
-		 <img src="<?php echo $this->profil->getHeaderImg(); ?>" width="100%">
+		 <?php echo $this->partial("banniere.phtml", array("profil" => $this->profil)); ?>
 		 <div style="background-color: transparent">
 			 <?php echo $this->render($this->actionScript);?>
 		 </div>
