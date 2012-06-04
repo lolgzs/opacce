@@ -1,0 +1,11 @@
+<div data-role="header" data-theme="d">
+	<h1><?php echo $this->_('Confirmation');?></h1>
+</div>
+<div data-role="content" data-theme="c">
+	<p><?php echo $this->_('Êtes-vous sur de vouloir supprimer votre réservation de <strong>%s</strong>', 
+												 $this->resa->getTitre()); ?></p>
+  <a href="<?php echo $this->url(array('confirmed' => 1));?>" 
+	   data-ajax="false" data-role="button" data-inline="true" 
+	   data-theme="b" style="color:white"><?php echo $this->_('Supprimer');?></a>
+	<a href="#" data-role="button" data-inline="true" data-rel="back"><?php echo $this->_('Annuler');?></a>
+</div>

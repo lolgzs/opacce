@@ -21,24 +21,46 @@
 require_once 'TelephoneAbstractControllerTestCase.php';
 
 abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractControllerTestCase {
+	protected $_service;
+
 	public function setUp() {
 		parent::setUp();
+		$potter = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
+			->setId(11)
+			->setTitre('Harry Potter')
+			->setAuteur('JKR')
+			->setBibliotheque('Annecy')
+			->setDateRetour('23/45/6789')
+			->setNoticeOPAC(Class_Notice::getLoader()->newInstanceWithId(45));
+		
+		$alice = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
+			->setId(12)
+			->setTitre('Alice au pays des merveilles')
+			->setAuteur('PBA')
+			->setBibliotheque('Cran-Gevrier')
+			->setDateRetour('24/45/6789')
+			->setNoticeOPAC(Class_Notice::getLoader()->newInstanceWithId(46));
 
 		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()
-			->empruntsAddAll(array(Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
-														 ->setTitre('Harry Potter')
-														 ->setNoticeOPAC(Class_Notice::getLoader()->newInstanceWithId(45)),
+			->empruntsAddAll(array($potter, $alice))
 
-														 Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
-														 ->setTitre('Alice au pays des merveilles')))
-			->reservationsAddAll(array(														 
-																 Class_WebService_SIGB_Reservation::newInstanceWithEmptyExemplaire()
-																 ->setTitre('Star Wars')));
+			->reservationsAddAll(array(Class_WebService_SIGB_Reservation::newInstanceWithEmptyExemplaire()
+																 ->setTitre('Star Wars')
+																 ->setId(123)));
 
 		Class_Users::getLoader()->getIdentity()
 			->setIdabon(23)
-			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_NANOOK,
+			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART,
 													 'fiche' => $emprunteur));
+
+		$this->_service = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('supprimerReservation')
+			->answers(true)
+
+			->whenCalled('isConnected')
+			->answers(true);
+
+		Class_WebService_SIGB_VSmart::setService($this->_service);
 	}
 }
 
@@ -53,15 +75,33 @@ class AbonneControllerTelephoneFicheTest extends AbonneControllerTelephoneTestCa
 
 
 	/** @test */
-	public function pageShouldDisplayUnPretEnCoursLink() {
-		$this->assertXPathContentContains('//a[contains(@href, "abonne/prets")]', 'Vous avez 2 prêts en cours');
+	public function pageShouldDisplayLoanCount() {
+		$this->assertXPathContentContains('//span[@class="ui-li-count"]', '2',
+																			$this->_response->getBody());
 	}
 
 
 	/** @test */
-	public function pageShouldDisplayAucunReservationLink() {
-		$this->assertXPathContentContains('//a[contains(@href, "abonne/reservations")]', 'Vous avez 1 réservation en cours',
-																			$this->_response->getBody());
+	public function pageShouldDisplayFirstEmpruntLink() {
+		$this->assertXPath('//a[contains(@href, "viewnotice/id/45")]');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayFirstRenewLink() {
+		$this->assertXPath('//a[contains(@href, "abonne/prolongerpret/id_pret/11")]');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayHoldCount() {
+		$this->assertXPathContentContains('//span[@class="ui-li-count"]', '1');
+	}
+
+
+	/** @test */
+	public function contextShouldExpectation() {
+		$this->assertXPath('//a[contains(@href, "cancel-hold/id/123")]');
 	}
 
 
@@ -79,39 +119,48 @@ class AbonneControllerTelephoneFicheTest extends AbonneControllerTelephoneTestCa
 
 
 
-
-class AbonneControllerTelephonePretsTest extends AbonneControllerTelephoneTestCase {
+class AbonneControllerTelephoneCancelHoldTest extends AbonneControllerTelephoneTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('abonne/prets');
+		$this->dispatch('abonne/cancel-hold/id/123');
+	}
+
+
+  /** @test */
+	public function pageShouldContainConfirmationDialog() {
+		$this->assertXPathContentContains('//p', 'Star Wars');
 	}
 
 
 	/** @test */
-	public function pageShouldDisplayLinkToHarryPotter() {
-		$this->assertXPathContentContains('//li', 'Harry Potter');
+	public function pageShouldContainConfirmationLink() {
+		$this->assertXPathContentContains('//a[contains(@href, "cancel-hold/id/123/confirmed/1")]', 'Supprimer');
 	}
 
 
 	/** @test */
-	public function pageShouldDisplayLinkToAlice() {
-		$this->assertXPathContentContains('//li', 'Alice au pays des merveilles');
+	public function pageShouldContainBackLink() {
+		$this->assertXPathContentContains('//a', 'Annuler');
 	}
 }
 
 
-
-
-class AbonneControllerTelephoneReservationsTest extends AbonneControllerTelephoneTestCase {
+class AbonneControllerTelephoneConfirmedCancelHoldTest extends AbonneControllerTelephoneTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('abonne/reservations');
+		$this->dispatch('abonne/cancel-hold/id/123/confirmed/1', true);
 	}
 
 
 	/** @test */
-	public function pageShouldDisplayLinkToHarryPotter() {
-		$this->assertXPathContentContains('//li', 'Star Wars');
+	public function shouldCallHoldDeletion() {
+		$this->assertTrue($this->_service->methodHasBeenCalled('supprimerReservation'));
+	}
+
+
+  /** @test */
+	public function shouldRedirectToFiche() {
+		$this->assertRedirectTo('/abonne/fiche');
 	}
 }
 

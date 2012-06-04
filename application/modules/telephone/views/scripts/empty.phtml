@@ -1,1 +1,13 @@
- 
+ <?php
+ob_start();
+?>
+<body class="main" <?php echo $this->bodyParam; ?>>
+	<?php echo $this->render($this->actionScript);?>
+</div>
+<?php echo $this->render('footer.phtml'); ?>
+<?php
+$html = ob_get_contents();
+ob_end_clean();
+echo $this->render('head.phtml');
+echo $html;
+?>

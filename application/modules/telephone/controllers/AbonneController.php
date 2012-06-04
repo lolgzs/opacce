@@ -22,7 +22,31 @@
 require_once ROOT_PATH.'application/modules/opac/controllers/AbonneController.php';
 
 class Telephone_AbonneController extends AbonneController {
+	public function cancelHoldAction() {
+		$this->_helper->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
+		$fiche_sigb = $this->_user->getFicheSigb();
 
+		if (isset($fiche_sigb['erreur'])) {
+			$this->view->error = $fiche_sigb['erreur'];
+			return;
+		}
+
+		foreach($fiche_sigb['fiche']->getReservations() as $resa) {
+			if ($resa->getId() == $this->_getParam('id')) {
+				$this->view->resa = $resa;
+				break;
+			}
+		}
+
+
+		if ($this->view->resa 
+				&& $this->_getParam('confirmed')) {
+			$sigb = new Class_CommSigb();
+			$sigb->supprimerReservation($this->_user, $this->view->resa->getId());
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+	}
 }
 
 ?>

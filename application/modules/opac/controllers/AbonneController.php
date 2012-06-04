@@ -24,7 +24,7 @@
 
 class AbonneController extends Zend_Controller_Action
 {
-	private $_user = null;								// Le user connecté
+	protected $_user = null;								// Le user connecté
 
 //------------------------------------------------------------------------------------------------------
 // Initialisation controller

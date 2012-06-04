@@ -115,6 +115,12 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	}
 
 
+	public function setBibliotheque($data) {
+		$this->_exemplaire->setBibliotheque($data);
+		return $this;
+	}
+
+
 	/**
 	 * @return string
 	 */
@@ -128,7 +134,8 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */
 	public function setAuteur($data) {
-		return $this->_exemplaire->setAuteur($data);
+		$this->_exemplaire->setAuteur($data);
+		return $this;
 	}
 	
 
