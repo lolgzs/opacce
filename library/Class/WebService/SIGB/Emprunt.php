@@ -71,7 +71,7 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	 */
 	public function enRetard() {
 		if (!isset($this->enRetard)) {
-			$this->enRetard = ($this->getDateRetourTimestamp() <= time());
+			$this->enRetard = ($this->getDateRetourTimestamp() <= strtotime('Yesterday'));
 		}
 
 		return $this->enRetard;
