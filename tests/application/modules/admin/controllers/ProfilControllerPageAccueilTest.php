@@ -202,14 +202,14 @@ class ProfilControllerPageAccueilWithTelephoneTest extends Admin_AbstractControl
 
 
 	/** @test */
-	public function moduleLoginShouldNotBeAvailable() {
-		$this->assertNotXPath('//ul/li[@id="LOGIN"]');
+	public function moduleBibNumeriqueShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="BIB_NUMERIQUE"]');
 	}
 
 
 	/** @test */
-	public function moduleBibNumeriqueShouldBeAvailable() {
-		$this->assertXPath('//ul/li[@id="BIB_NUMERIQUE"]');
+	public function moduleLoginShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="LOGIN"]');
 	}
 }
 
