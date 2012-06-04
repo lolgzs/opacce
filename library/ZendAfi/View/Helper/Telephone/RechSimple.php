@@ -31,7 +31,7 @@ class ZendAfi_View_Helper_Telephone_RechSimple extends ZendAfi_View_Helper_Accue
 																																							 'action' => 'simple')));
 
 		$html .= sprintf('<input data-mini="true" type="search"  placeholder="%s" name="expressionRecherche" x-webkit-speech="x-webkit-speech">',
-										 $this->preferences["message"]);
+										 $this->preferences["exemple"]);
 
 		$html .= '</form>';
 

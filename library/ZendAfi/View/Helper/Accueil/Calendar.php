@@ -20,8 +20,13 @@
  */
 
 class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_Base {
+	protected function _renderHeadScriptsOn($script_loader) {
+		$script_loader->addJQueryReady($this->_getAjaxCalendarScript());
+	}
 
-	const AJAX_CALENDAR_SCRIPT = <<<SCRIPT
+
+	protected function _getAjaxCalendarScript() {
+		return <<<SCRIPT
 
 			var ajaxify_calendars = function () {
 				var month_link = $("a.calendar_title_month_clickable:first-child, a.calendar_title_month_clickable:last-child");
@@ -54,10 +59,6 @@ class ZendAfi_View_Helper_Accueil_Calendar extends ZendAfi_View_Helper_Accueil_B
   	};
 	ajaxify_calendars();
 SCRIPT;
-
-
-	protected function _renderHeadScriptsOn($script_loader) {
-		$script_loader->addJQueryReady(self::AJAX_CALENDAR_SCRIPT);
 	}
 
 
