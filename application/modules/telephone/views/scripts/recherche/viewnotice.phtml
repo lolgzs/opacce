@@ -25,9 +25,9 @@ echo $this->toolbar($this->_("Recherche"),
 
 <?php
 foreach ($this->actions as $libelle => $action) {
-	echo sprintf('<a href="%s"><div class="fonction">%s</div></a>',
-							 $this->url($action),
-							 $libelle);
+	echo $this->tagAnchor(array('action' => $action['action']),
+												'<div class="fonction">'.$libelle.'</div>',
+												isset($action['attribs']) ? $action['attribs'] : array());
 }
 
 ?>

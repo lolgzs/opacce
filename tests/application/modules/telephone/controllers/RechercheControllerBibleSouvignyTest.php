@@ -56,7 +56,8 @@ class Telephone_RechercheControllerBibleSouvignyViewNoticeTest extends Telephone
 	
 	/** @test */
 	public function pageShouldContainsLinkToRessouresNumeriques() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/ressourcesnumeriques/id/9")]', 'Feuilleter le livre');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/ressourcesnumeriques/id/9")][@data-ajax="false"]', 
+																			'Feuilleter le livre');
 	}
 
 }

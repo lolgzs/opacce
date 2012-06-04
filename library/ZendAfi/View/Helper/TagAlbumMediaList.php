@@ -29,7 +29,8 @@ class ZendAfi_View_Helper_TagAlbumMediaList extends Zend_View_Helper_HtmlElement
 											 $this->view->tagAnchor(array('controller' => 'bib-numerique',
 																										'action' => 'download-resource',
 																										'id' => $ressource->getId()),
-																							$this->view->albumRessourceInfos($ressource)));
+																							$this->view->albumRessourceInfos($ressource),
+																							array('data-ajax' => 'false')));
 		}
 		
 		$html .= '</ul>';

@@ -35,7 +35,8 @@ class Telephone_RechercheController extends RechercheController {
 										 );
 
 		if ($notice->isLivreNumerique())
-			$actions[$this->view->_('Feuilleter le livre')] = array('action' => 'ressourcesnumeriques');
+			$actions[$this->view->_('Feuilleter le livre')] = array('action' => 'ressourcesnumeriques',
+																															'attribs' => array('data-ajax' => 'false'));
 
 		$this->view->notice = $notice;
 		$this->view->actions = $actions;

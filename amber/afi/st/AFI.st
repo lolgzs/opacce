@@ -740,7 +740,6 @@ bookletOptions
                                at: 'tabs' put: false;
                                at: 'keyboard' put: false;
                                at: 'arrows' put: true;
-                               at: 'hash' put: true;
                                at: 'closed' put: true;
                                at: 'covers' put: true;
                                at: 'autoCenter' put: true;
@@ -761,6 +760,7 @@ bookletOptions
 			       at: 'nextPageTitle' put: 'Suivant';
 			       at: 'before' put: [:data| self beforePageChange:data]; 
                                at: 'after' put: [:data|  self afterPageChange: data];
+			       at: 'hash' put: self isJQueryMobile not;
                                yourself
 !
 
@@ -1448,6 +1448,10 @@ isIE
 	|ie|
 	ie := <jQuery.browser.msie>.
 	^ ie notNil.
+!
+
+isJQueryMobile
+	^ (window jQuery at: 'jqmData') isNil not
 !
 
 isRunInTestCase
