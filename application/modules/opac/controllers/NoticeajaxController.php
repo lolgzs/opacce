@@ -363,7 +363,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 // Videos : INTERVIEWS
 //------------------------------------------------------------------------------------------------------
 	function videosAction()	{
-		if ($num_video = $this->_getParam("num_video"))	{
+		if ($num_video = $this->_getParam("num_video", 0))	{
 			$num_video = $num_video-1;
 			$html.=$_SESSION["video_interview"][$num_video]["player"];
 		}
@@ -376,7 +376,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 			else if($this->service_afi > "")
 			{
 				$args=array("titre"=>$notice["T"],"auteur" => $notice["A"]);
-				$data=Class_WebService_AllServices::runServiceAfiVideos($args);
+				$data=Class_WebService_AllServices::runServiceAfiInterviews($args);
 				$source=$data["source"];
 				$videos=$data["videos"];
 				$_SESSION["video_interview"]=$videos;

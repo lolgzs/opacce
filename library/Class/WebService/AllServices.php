@@ -105,6 +105,11 @@ class Class_WebService_AllServices {
 		return self::runServiceAfi(9, $args);
 	}
 
+
+	static function runServiceAfiInterviews($args) {
+		return self::runServiceAfi(7, $args);
+	}
+
 	static function setHttpClient($client) {
 		self::$_http_client = $client;
 	}
