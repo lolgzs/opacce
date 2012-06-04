@@ -421,7 +421,8 @@ function getFacettes($req,$preferences)	{
 		$facettes = array();
 		foreach($rows as $notice)	
 		{
-			$items=explode(" ",trim($notice["facettes"]));
+			$items = array_filter(explode(" ",trim($notice["facettes"])));
+			
 			foreach($items as $item)
 			{ 
 				$type=substr($item,0,1);

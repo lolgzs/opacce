@@ -49,7 +49,7 @@ class CatalogueControllerAppelMenuTest extends AbstractControllerTestCase {
 
 		$query = "titre=Catalogue&aleatoire=0&tri=1&nb_notices=+&nb_analyse=&id_catalogue=151&id_panier=0&id_user=0&reset=true";
 		$this->_updateMagicREQUESTWith($query);
-		$this->dispatch('catalogue/appelmenu?'.$query);
+		$this->dispatch('catalogue/appelmenu?'.$query, true);
 		$this->assertXPathContentContains('//h1', 'Catalogue');
 	}
 
