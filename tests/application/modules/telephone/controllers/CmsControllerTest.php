@@ -140,12 +140,6 @@ class CmsControllerArticleViewByDateActionTest extends AbstractCmsControllerTele
 		$this->assertXpathContentContains('//ul//li//a[contains(@href, "cms/articleview/id/1")]', 
 																			'La fête de la banane');
 	}
-
-
-	/** @test */
-	public function toolbarUrlRetourShouldBeRoot() {
-		$this->assertXPath('//div[@class="toolbar"]//a[@href="/"]');
-	}
 }
 
 ?>

@@ -206,8 +206,8 @@ class Telephone_RechercheControllerHarryPotterNoticesSimilairesTest extends Tele
 
 
 	/** @test */
-	public function titleShouldBeHarryPotter() {
-		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+	public function shouldHaveFound() {
+		$this->assertXPathContentContains('//div', 'notices trouv');
 	}
 }
 
@@ -533,12 +533,6 @@ class Telephone_RechercheControllerHarryPotterExemplairePickupChoiceTest extends
 
 
 	/** @test */
-	public function titreShouldBeSiteDeRetrait() {
-			$this->assertXPathContentContains('//h1', 'Site de retrait');
-	}
-
-
-	/** @test */
 	public function pageShouldContainsAnnecyChoice() {
 		$this->assertXPathContentContains('//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL/pickup/ANN")]', 
 																			'Annecy');
@@ -590,12 +584,6 @@ class Telephone_RechercheControllerHarryPotterReservationErrorTest extends Telep
 
 	
 	/** @test */
-	public function titreShouldBeReservation() {
-		$this->assertXPathContentContains('//h1', 'Réservation');
-	}
-
-
-	/** @test */
 	public function pageShouldContainsErrorMessage() {
 		$this->assertXPathContentContains('//div', 'A marche pas');
 	}
@@ -624,11 +612,6 @@ class Telephone_RechercheControllerHarryPotterReservationWithPopupTest extends T
 
 	
 	/** @test */
-	public function titreShouldBeReservation() {
-		$this->assertXPathContentContains('//h1', 'Réservation');
-	}
-
-
 	public function pageShouldContainsErrorMessage() {
 		$this->assertXPathContentContains('//div', 'non supportée');
 	}
@@ -677,12 +660,6 @@ class Telephone_RechercheControllerHarryPotterAvisTest extends Telephone_Recherc
 
 
 		$this->dispatch('/telephone/recherche/avis/id/4', true);
-	}
-
-
-	/** @test */
-	public function toolbarTitreShouldBeAvis() {
-		$this->assertXPathContentContains('//div[@class="toolbar"]', 'Avis');
 	}
 
 

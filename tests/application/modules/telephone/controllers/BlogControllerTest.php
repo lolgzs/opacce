@@ -74,12 +74,6 @@ class Telephone_BlogControllerViewAuteurActionTest extends Telephone_BlogControl
 
 
 	/** @test */
-	public function pageShouldDisplayPatouche() {
-		$this->assertXPathContentContains('//h1', 'Critiques de Patouche');
-	}
-
-
-	/** @test */
 	public function pageShouldContainsCritiqueBien() {
 		$this->assertXPathContentContains('//a', 'bien');
 	}

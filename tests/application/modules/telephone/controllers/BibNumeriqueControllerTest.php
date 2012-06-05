@@ -56,12 +56,6 @@ class BibNumeriqueControllerTelephoneViewCategorieEPUBTest extends BibNumeriqueC
 
 
 	/** @test */
-	public function h1ShouldContainsEpubs() {
-		$this->assertXPathContentContains('//h1', 'epubs');
-	}
-
-
-	/** @test */
 	public function liShouldContainsLinkToAlbumMonuments() {
 		$this->assertXPathContentContains('//li/a[contains(@href, "bib-numerique/view-album/id/234")]', 'Monuments');
 	}
@@ -80,12 +74,6 @@ class BibNumeriqueControllerTelephoneViewAlbumMonumentsTest extends BibNumerique
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/bib-numerique/view-album/id/234');
-	}
-
-
-	/** @test */
-	public function h1ShouldContainsMonuments() {
-		$this->assertXPathContentContains('//h1', 'Monuments');
 	}
 
 

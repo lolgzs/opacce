@@ -73,12 +73,6 @@ class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCa
 	public function pageShouldContainsPassInput() {
 		$this->assertXPath('//form//input[@name="password"]');
 	}
-
-
-	/** @test */
-	public function titleShouldBeIdentification() {
-		$this->assertXPathContentContains('//h1', 'Identification');
-	}
 }
 
 
@@ -106,12 +100,6 @@ class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractContr
 	/** @test */
 	public function pageShouldContainsPassInput() {
 		$this->assertXPath('//form//input[@name="password"]');
-	}
-
-
-	/** @test */
-	public function titleShouldBeIdentification() {
-		$this->assertXPathContentContains('//h1', 'Identification');
 	}
 }
 

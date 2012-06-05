@@ -50,7 +50,7 @@ table {width: 100%}
 img{border:none;}
 a{color:rgb(76,86,108); text-decoration:none;}
 a:hover{color:rgb(76,86,108); text-decoration:none;}
-a:visited{color:rgb(76,86,108); text-decoration:none;}
+/*a:visited{color:rgb(76,86,108); text-decoration:none;}*/
 h1 {color:#666666;margin:0px; font-size:1.2em;padding:5px 3px 3px 3px}
 
 

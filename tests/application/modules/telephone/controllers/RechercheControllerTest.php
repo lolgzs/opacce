@@ -37,12 +37,6 @@ class Telephone_RechercheControllerSimpleSeveralInexistingWordsActionTest extend
 
 
 	/** @test */
-	public function toolbarUrlRetourShouldBeRoot() {
-		$this->assertXPath('//div[@class="toolbar"]//a[@href="/"]');
-	}
-
-
-	/** @test */
 	public function modeRechercheShouldNotBePertinence() {
 		$this->assertFalse($_SESSION['recherche']['selection']['pertinence']);
 	}
