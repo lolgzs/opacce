@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 :	Notice OAI
-//////////////////////////////////////////////////////////////////////////////////////////
 
 class TableNoticesOAI extends Zend_Db_Table_Abstract {
     protected $_name = 'oai_notices';
@@ -53,6 +50,10 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	public static function findNoticesByExpression($expression) {
 		$instance = new self();
 		$requetes = $instance->recherche(array('expressionRecherche' => $expression));
+
+		if ($requetes['erreur'])
+			throw new Class_SearchException($requetes['erreur']);
+
 		$rows = $instance->getPageResultat($requetes['req_liste']);
 		$notices = array();
 		

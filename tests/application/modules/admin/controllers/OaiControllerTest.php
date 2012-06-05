@@ -189,33 +189,12 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 
 
 
-class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerTestCase  {
+abstract class Admin_OaiControllerSearchActionTestCase extends Admin_OaiControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
 		$this->old_sql = Zend_Registry::get('sql');
 		$this->mock_sql = Storm_Test_ObjectWrapper::on($this->old_sql);
 		Zend_Registry::set('sql', $this->mock_sql);
-
-
-		$this->mock_sql
-			->whenCalled('fetchOne')
-			->with("Select count(*) from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE)")
-			->answers(1)
-
-			->whenCalled('fetchAll')
-			->with("select id from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE) order by alpha_titre LIMIT 0,10",
-						 false)
-			->answers(array(array('id' => 2)))
-
-
-			->whenCalled('fetchEnreg')
-			->with("select * from oai_notices where id=2",
-						 false)
-			->answers(array('id' => 2,
-											'id_entrepot' => 4,
-											'data' => serialize(array('titre' => 'Mangez des pommes'))));
-
-		$this->dispatch('/admin/oai/search/expression/pommes');
 	}
 
 
@@ -223,17 +202,23 @@ class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerTestCase  {
 		Zend_Registry::set('sql', $this->old_sql);
 		parent::tearDown();
 	}
+}
 
 
-	/** @test */
-	public function listItemShouldContainsMangezDesPommes() {
-		$this->assertXPathContentContains('//li', 'Mangez des pommes');
+
+class Admin_OaiControllerSearchInsignifantWordActionTest extends Admin_OaiControllerSearchActionTestCase  {
+	//test de non-régression sur les recherches mots cours
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/admin/oai/search/expression/te', true);
 	}
 
 
+
 	/** @test */
-	public function listItemShouldHaveLinkForImport() {
-		$this->assertXPath('//li[contains(text(),"Mangez des pommes")]//a[contains(@href, "oai/import/expression/pommes/id/2")]');
+	public function pageShouldContainsPasAssezDeMotsSignifications() {
+		$this->assertXPathContentContains('//div[@class="error"]', "Il n'y aucun mot assez significatif pour la recherche");
 	}
 }
 

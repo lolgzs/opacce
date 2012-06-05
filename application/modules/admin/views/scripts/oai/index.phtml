@@ -45,6 +45,8 @@ echo $this->bouton('id=add_category',
 
 	echo $this->renderForm($this->search_form);
 
+  if ($this->error) echo '<div class="error">'.$this->error.'</div>';
+
 	if ($this->notices) {
 		echo '<ul>';
 		foreach ($this->notices as $notice)

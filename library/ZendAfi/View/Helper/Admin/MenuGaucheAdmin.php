@@ -98,7 +98,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 
 		// Menu systeme (super admin)
 		$menu_systeme	 = $this->openBoite($this->translate()->_("Système"));
-		$menu_systeme .= $this->addMenu("database.png",		$this->translate()->_("Accès à Cosmogramme"),			getVar("URL_COSMOGRAMME"),			 $acl_admins_portail);
+		$menu_systeme .= $this->addMenu("database.png",		$this->translate()->_("Accès à Cosmogramme"),			Class_AdminVar::get("URL_COSMOGRAMME"),	$acl_admins_portail);
 		$menu_systeme .= $this->addMenu("systeme.png",		$this->translate()->_("Variables"),								"/admin/index/adminvar",				 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("tester.gif",			$this->translate()->_("Test des web-services"),		"/admin/systeme/webservices",		 $acl_super_admin);
 		$menu_systeme .= $this->addMenu("mail_send.png",	$this->translate()->_("Test envoi mails"),				"/admin/systeme/mailtest",			 $acl_super_admin);

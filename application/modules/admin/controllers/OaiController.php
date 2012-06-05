@@ -85,7 +85,13 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 
 
 	public function searchAction() {
-		$this->view->notices = Class_NoticeOAI::findNoticesByExpression($this->_getParam('expression'));
+		try {
+			$this->view->notices = Class_NoticeOAI::findNoticesByExpression($this->_getParam('expression'));
+		} catch (Class_SearchException $e) {
+			$this->view->notices = array();
+			$this->view->error = $e->getMessage();
+		}
+
 		$this->_forward('index');
 	}
 
