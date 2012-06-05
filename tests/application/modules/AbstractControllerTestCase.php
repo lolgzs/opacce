@@ -161,7 +161,7 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 			->setMethod('POST')
 			->setPost($data);
 
-		return $this->dispatch($url);
+		return $this->dispatch($url, true);
 	}
 
 	/**

@@ -51,7 +51,7 @@ if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visue
 		->addJQueryReady('initAccessibilityOptions();');
 }
 
-if (getVar('ID_READ_SPEAKER'))
+if (Class_AdminVar::get('ID_READ_SPEAKER'))
 	$head_scripts
 		->addJQueryReady(sprintf('$.getScript("http://wr.readspeaker.com/webreader/webreader.js.php?cid=%s")',
 														 getVar('ID_READ_SPEAKER')));

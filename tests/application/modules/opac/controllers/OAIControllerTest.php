@@ -146,6 +146,68 @@ class OaiControllerUnknownVerbRequestTest extends OaiControllerRequestTestCase {
 																							'//oai:error[@code="badVerb"]',
 																							'Illegal OAI verb');
 	}
-
 }
+
+
+
+
+class OAIControllerResultatActionTest extends AbstractControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->mock_sql = Storm_Test_ObjectWrapper::on(Zend_Registry::get('sql'));
+		Zend_Registry::set('sql', $this->mock_sql);
+
+		$this->mock_sql
+			->whenCalled('fetchOne')
+			->with('select count(*) from exemplaires')
+			->answers(0)
+
+			->whenCalled('fetchAll')
+			->with("select distinct(id_entrepot) from oai_notices", false)
+			->answers(array(array('id_entrepot' => 1)))
+
+
+			->whenCalled('fetchOne')
+			->with("select libelle from oai_entrepots where id=1")
+			->answers('Gallica')
+
+			->whenCalled('fetchOne')
+			->with("Select count(*) from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE)")
+			->answers(1)
+
+			->whenCalled('fetchAll')
+			->with("select id from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE) order by alpha_titre LIMIT 0,10",
+						 false)
+			->answers(array(array('id' => 2)))
+			->beStrict();
+
+		$pommes = Class_NoticeOAI::getLoader()
+			->newInstanceWithId(2)
+			->setTitre('Mangez des pommes')
+			->setEntrepot(Class_EntrepotOAI::getLoader()
+										->newInstanceWithId(3)
+										->setLibelle('Gallica'));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_NoticeOAI')
+			->whenCalled('findAllBy')
+			->with(array('id' => array(2)))
+			->answers(array($pommes))
+			->beStrict();
+
+		$this->dispatch('/opac/rechercheoai/resultat/expressionRecherche/pomme', true);
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('sql', $this->old_sql);
+		parent::tearDown();
+	}
+
+
+	/** @test */
+	public function tdShouldContainsMangezDesPommes() {
+		$this->assertXPathContentContains('//td', 'Mangez des pommes', $this->_response->getBody());
+	}
+}
+
 ?>

@@ -192,15 +192,8 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 abstract class Admin_OaiControllerSearchActionTestCase extends Admin_OaiControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
-		$this->old_sql = Zend_Registry::get('sql');
-		$this->mock_sql = Storm_Test_ObjectWrapper::on($this->old_sql);
+		$this->mock_sql = Storm_Test_ObjectWrapper::on(Zend_Registry::get('sql'));
 		Zend_Registry::set('sql', $this->mock_sql);
-	}
-
-
-	public function tearDown() {
-		Zend_Registry::set('sql', $this->old_sql);
-		parent::tearDown();
 	}
 }
 

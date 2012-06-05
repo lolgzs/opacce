@@ -22,46 +22,37 @@
 // OPAC3 - Controleur pour les recherches OAI
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class RechercheoaiController extends Zend_Controller_Action
-{
-  								
-//------------------------------------------------------------------------------------------------------
-// Initialisation du controler
-//------------------------------------------------------------------------------------------------------
-	function init()
-	{
-		
-	}
-
-//------------------------------------------------------------------------------------------------------
-// INDEX
-//------------------------------------------------------------------------------------------------------
-	function indexAction()
-	{
+class RechercheoaiController extends Zend_Controller_Action {
+	function indexAction() {
 		$cls_oai=new Class_NoticeOAI();
 		$this->view->statut=$_REQUEST["statut"];
 		$this->view->id_entrepot=$_REQUEST["id_entrepot"];
 		$this->view->entrepots =$cls_oai->getEntrepots();
 	}
 
-//------------------------------------------------------------------------------------------------------
-// RESULTAT DE LA RECHERCHE
-//------------------------------------------------------------------------------------------------------
-	function resultatAction()
-	{
+
+	function resultatAction()	{
     $cls_oai=new Class_NoticeOAI();
 		$this->view->entrepots =$cls_oai->getEntrepots();
-		$this->view->expressionRecherche = $_REQUEST["expressionRecherche"];
-		$this->view->id_entrepot=$_REQUEST["id_entrepot"];
-		$resultat=$cls_oai->recherche($_REQUEST);
-		if($resultat["statut"]=="erreur") $this->view->erreur=$resultat["erreur"];
-		else
-		{
-			$this->view->recherche=$_REQUEST["expressionRecherche"];
-			$this->view->notices=$cls_oai->getPageResultat($resultat["req_liste"], $this->_getParam('page'));
-			$this->view->nombre=$resultat["nombre"];
+
+		$this->view->expressionRecherche = $this->_getParam("expressionRecherche", '');
+		$this->view->id_entrepot = $this->_getParam("id_entrepot", 0);
+
+		$params_recherche = array('expressionRecherche' => $this->view->expressionRecherche);
+		if ($this->view->id_entrepot)
+			$params_recherche['id_entrepot'] = $this->view->id_entrepot;
+
+		$resultat = $cls_oai->recherche($params_recherche);
+
+		if (isset($resultat["statut"])) {
+			$this->view->erreur=$resultat["erreur"];
+		}	else	{
+			$this->view->recherche = $this->_getParam("expressionRecherche", '');
+			$this->view->notices = $cls_oai->getPageResultat($resultat["req_liste"], 
+																											 $this->_getParam('page'));
+			$this->view->nombre = $resultat["nombre"];
 			$this->view->page = $this->_getParam('page');
-			$this->view->url_retour=BASE_URL."/rechercheoai/resultat?expressionRecherche=".$_REQUEST["expressionRecherche"]."&id_entrepot=".$_REQUEST["id_entrepot"];
+			$this->view->url_retour = $this->view->url($params_recherche);
 		}
 	}
 

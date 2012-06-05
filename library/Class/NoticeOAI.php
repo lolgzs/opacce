@@ -40,7 +40,8 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	protected $_table_notices;
 	protected $_oai_service;
 	protected $_entrepot_oai;
-	protected $_default_attribute_values = array('data' => '');
+	protected $_default_attribute_values = array('data' => '', 
+																							 'date' => '');
 
 
 	public static function getLoader() {
@@ -95,6 +96,11 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 	public function getAuteur() {
 		return $this->extractData('auteur');
+	}
+
+
+	public function getEditeur() {
+		return $this->extractData('editeur');
 	}
 
 
