@@ -83,6 +83,62 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 
 
 
+class IndexControllerTelephoneToolbarWithoutPackMobileTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	public function setUp() {
+		parent::setUp();
+		
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(0);
+
+		$this->dispatch('/', true);
+	}
+
+
+	/** @test */
+	public function homeButtonShouldBePresent() {
+		$this->assertXPathContentContains('//div[@data-role="navbar"]//a[@href="/"]', 'Accueil');
+	}
+
+
+	/** @test */
+	public function searchButtonShouldBePresent() {
+		$this->assertXPathContentContains('//div[@data-role="navbar"]//a', 'Recherche');
+	}
+
+
+	/** @test */
+	public function searchFormShouldBePresent() {
+		$this->assertXPath('//div[contains(@class, "search-bar")]//form');
+	}
+
+
+  /** @test */
+	public function accountButtonShouldNotBePresent() {
+		$this->assertNotXPath('//div[@data-role="navbar"]//a[contains(@href, "abonne")]');
+	}
+}
+
+
+
+class IndexControllerTelephoneToolbarWithPackMobileTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	public function setUp() {
+		parent::setUp();
+		
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
+
+		$this->dispatch('/', true);
+	}
+
+
+	/** @test */
+	public function accountButtonShouldBePresent() {
+		$this->assertXPathContentContains('//div[@data-role="navbar"]//a[contains(@href, "abonne")]', 
+																			'Mon compte');
+	}
+}
+
+
 
 class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexControllerTelephoneWithModulesTest {
 	public function setUp() {
@@ -264,7 +320,7 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 			->setIdabon(23)
 			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_NANOOK,
 													 'fiche' => $emprunteur));
-			
+		
 		parent::setUp();
 		$this->dispatch('/');
 	}
@@ -311,11 +367,11 @@ class IndexControllerTelephoneTelephoneSwitchProfilTest extends Zend_Test_PHPUni
  		parent::setUp();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
-							->whenCalled('findFirstBy')
-							->with(array('BROWSER' => 'telephone'))
-							->answers(Class_Profil::getLoader()->newInstanceWithId(4)
-												->setBrowser('telephone')
-												->setTitreSite('Smartphone'));
+			->whenCalled('findFirstBy')
+			->with(array('BROWSER' => 'telephone'))
+			->answers(Class_Profil::getLoader()->newInstanceWithId(4)
+								->setBrowser('telephone')
+								->setTitreSite('Smartphone'));
 
 		$this->dispatch('/');
 	}
@@ -404,8 +460,7 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 																						'preferences' => array('titre' => 'Concerts',
 																																	 'rss_avis' => 0)))); 
 
-		Class_Profil::setCurrentProfil(
-																	 Class_Profil::getLoader()
+		Class_Profil::setCurrentProfil(Class_Profil::getLoader()
 																	 ->newInstanceWithId(1)
 																	 ->setBrowser('opac')
 																	 ->setTitreSite('portail')
@@ -413,9 +468,9 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 		$_SESSION['id_profil'] = 1;
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
-							->whenCalled('findFirstBy')
-							->with(array('BROWSER' => 'telephone'))
-							->answers(null);
+			->whenCalled('findFirstBy')
+			->with(array('BROWSER' => 'telephone'))
+			->answers(null);
 		$this->dispatch('/');
 	}
 
@@ -427,4 +482,3 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 		$this->assertModule('opac');
 	}
 }
-?>
