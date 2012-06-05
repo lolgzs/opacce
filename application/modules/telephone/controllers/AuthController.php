@@ -74,11 +74,11 @@ class Telephone_AuthController extends AuthController {
 		$form->setAction($this->view->url());
 
 		$form->getElement('username')
-			->setAttrib('placeholder', $this->view->_('Identifiant'))
+			->setAttrib('placeholder', $this->view->_('N° de carte'))
 			->setAttrib('data-mini', 'true');
 
 		$form->getElement('password')
-			->setAttrib('placeholder', $this->view->_('Mot de passe'))
+			->setAttrib('placeholder', $this->view->_('Mot de passe ou date de naissance'))
 			->setAttrib('data-mini', 'true');
 
 		$form->getElement('login')
