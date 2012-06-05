@@ -21,14 +21,11 @@ echo $this->renderForm($this->search_form);
 if ($this->error) echo '<div class="error">'.$this->error.'</div>';
 
 if ($this->notices) {
-	echo '<ul>';
-	foreach ($this->notices as $notice)
-		echo sprintf('<li>%s - %s</li>',
-								 $notice->getTitre(),
-								 $this->tagAnchor(array('action' => 'import',
-																				'id' => $notice->getId()), 
-																	'Importer'));
-	echo '</ul>';
+	echo $this->tagModelTable($this->notices, 
+														array($this->_('Entrepot'), $this->_('Titre')),
+														array('libelle_entrepot', 'titre'),
+														array(array('action' => 'import', 'content' => $this->boutonIco('type=add'))),
+														'notices');
 }
 
 

@@ -206,6 +206,54 @@ abstract class Admin_OaiControllerSearchActionTestCase extends Admin_OaiControll
 
 
 
+
+class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerSearchActionTestCase  {
+	public function setUp() {
+		parent::setUp();
+
+		$this->mock_sql
+			->whenCalled('fetchOne')
+			->with("Select count(*) from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE)")
+			->answers(1)
+
+			->whenCalled('fetchAll')
+			->with("select id from oai_notices where MATCH(recherche) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE) order by alpha_titre LIMIT 0,10",
+						 false)
+			->answers(array(array('id' => 2)));
+
+		$pommes = Class_NoticeOAI::getLoader()
+			->newInstanceWithId(2)
+			->setTitre('Mangez des pommes')
+			->setEntrepot(Class_EntrepotOAI::getLoader()
+										->newInstanceWithId(3)
+										->setLibelle('Gallica'));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_NoticeOAI')
+			->whenCalled('findAllBy')
+			->with(array('id' => array(2)))
+			->answers(array($pommes))
+			->beStrict();
+
+
+		$this->dispatch('/admin/oai/search/expression/pommes', true);
+	}
+
+
+	/** @test */
+	public function tdShouldContainsMangezDesPommes() {
+		$this->assertXPathContentContains('//td', 'Mangez des pommes');
+	}
+
+
+	/** @test */
+	public function listItemShouldHaveLinkForImport() {
+		$this->assertXPath('//td//a[contains(@href, "oai/import/expression/pommes/id/2")]');
+	}
+}
+
+
+
+
 class Admin_OaiControllerSearchInsignifantWordActionTest extends Admin_OaiControllerSearchActionTestCase  {
 	//test de non-régression sur les recherches mots cours
 	public function setUp() {
