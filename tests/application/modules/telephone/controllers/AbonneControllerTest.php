@@ -22,6 +22,7 @@ require_once 'TelephoneAbstractControllerTestCase.php';
 
 abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractControllerTestCase {
 	protected $_service;
+	protected $_user;
 
 	public function setUp() {
 		parent::setUp();
@@ -49,12 +50,12 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 																 ->setTitre('Star Wars')
 																 ->setId(123)));
 
-		$user = Class_Users::getLoader()->getIdentity()
+		$this->_user = Class_Users::getLoader()->getIdentity()
 			->setIdabon(23)
 			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART,
 													 'fiche' => $emprunteur));
 
-		Class_IntBib::getLoader()->newInstanceWithId($user->getIdSite())
+		Class_IntBib::getLoader()->newInstanceWithId($this->_user->getIdSite())
 			->setCommParams(array())
 			->setCommSigb(Class_CommSigb::COM_VSMART);
 	}
@@ -124,7 +125,7 @@ class AbonneControllerTelephoneCancelHoldTest extends AbonneControllerTelephoneT
 
   /** @test */
 	public function pageShouldContainConfirmationDialog() {
-		$this->assertXPathContentContains('//p', 'Star Wars');
+		$this->assertXPathContentContains('//p', 'Star Wars', $this->_response->getBody());
 	}
 
 
@@ -139,6 +140,25 @@ class AbonneControllerTelephoneCancelHoldTest extends AbonneControllerTelephoneT
 		$this->assertXPathContentContains('//a', 'Annuler');
 	}
 }
+
+
+class AbonneControllerTelephoneCancelHoldWithErrorTest extends AbonneControllerTelephoneTestCase {
+	public function setUp() {
+		parent::setUp();
+		
+		$fiche_sigb = $this->_user->getFicheSigb();
+		$fiche_sigb['erreur'] = 'Soucis avec le webservice';
+		$this->_user->setFicheSigb($fiche_sigb);
+
+		$this->dispatch('abonne/cancel-hold/id/123');
+	}
+
+
+	/** @test */
+	public function pageShouldContainSoucisAvecLeWebservice() {
+		$this->assertXPathContentContains('//div', 'Soucis avec le webservice');
+	}
+ }
 
 
 class AbonneControllerTelephoneConfirmedCancelHoldTest extends AbonneControllerTelephoneTestCase {

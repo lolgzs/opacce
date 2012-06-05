@@ -21,7 +21,7 @@
 require_once 'TelephoneAbstractControllerTestCase.php';
 
 
-class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCase {
+class AuthControllerTelephoneBoiteLoginTest extends TelephoneAbstractControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "";
 		$account->ROLE_LEVEL = 0;
@@ -44,6 +44,40 @@ class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCa
 	/** @test */
 	public function responseShouldRedirectToIndex() {
 		$this->assertRedirectTo('/telephone/index');
+	}
+}
+
+
+
+class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::getCurrentProfil()
+			->setCfgAccueil(array());
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('hasIdentity')
+			->answers(false);
+
+		$this->dispatch('auth/login', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLoginInput() {
+		$this->assertXPath('//form//input[@name="username"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsPassInput() {
+		$this->assertXPath('//form//input[@name="password"]');
+	}
+
+
+	/** @test */
+	public function titleShouldBeIdentification() {
+		$this->assertXPathContentContains('//h1', 'Identification');
 	}
 }
 
