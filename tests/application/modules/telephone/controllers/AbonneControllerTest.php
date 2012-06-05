@@ -25,6 +25,7 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 
 	public function setUp() {
 		parent::setUp();
+
 		$potter = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
 			->setId(11)
 			->setTitre('Harry Potter')
@@ -32,7 +33,7 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 			->setBibliotheque('Annecy')
 			->setDateRetour('23/45/6789')
 			->setNoticeOPAC(Class_Notice::getLoader()->newInstanceWithId(45));
-		
+ 
 		$alice = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
 			->setId(12)
 			->setTitre('Alice au pays des merveilles')
@@ -48,19 +49,14 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 																 ->setTitre('Star Wars')
 																 ->setId(123)));
 
-		Class_Users::getLoader()->getIdentity()
+		$user = Class_Users::getLoader()->getIdentity()
 			->setIdabon(23)
 			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART,
 													 'fiche' => $emprunteur));
 
-		$this->_service = Storm_Test_ObjectWrapper::mock()
-			->whenCalled('supprimerReservation')
-			->answers(true)
-
-			->whenCalled('isConnected')
-			->answers(true);
-
-		Class_WebService_SIGB_VSmart::setService($this->_service);
+		Class_IntBib::getLoader()->newInstanceWithId($user->getIdSite())
+			->setCommParams(array())
+			->setCommSigb(Class_CommSigb::COM_VSMART);
 	}
 }
 
@@ -148,6 +144,16 @@ class AbonneControllerTelephoneCancelHoldTest extends AbonneControllerTelephoneT
 class AbonneControllerTelephoneConfirmedCancelHoldTest extends AbonneControllerTelephoneTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		$this->_service = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('supprimerReservation')
+			->answers(true)
+
+			->whenCalled('isConnected')
+			->answers(true);
+
+		Class_WebService_SIGB_VSmart::setService($this->_service);
+
 		$this->dispatch('abonne/cancel-hold/id/123/confirmed/1', true);
 	}
 
