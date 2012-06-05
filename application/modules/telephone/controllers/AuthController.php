@@ -71,23 +71,19 @@ class Telephone_AuthController extends AuthController {
 
 	protected function _getForm() {
 		$form = new ZendAfi_Form_Login();
-		$form->setAction($this->view->url())
-			->setAttrib('class', 'ui-grid-b');
+		$form->setAction($this->view->url());
 
 		$form->getElement('username')
 			->setAttrib('placeholder', $this->view->_('Identifiant'))
-			->setAttrib('data-mini', 'true')
-			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-a'));
+			->setAttrib('data-mini', 'true');
 
 		$form->getElement('password')
 			->setAttrib('placeholder', $this->view->_('Mot de passe'))
-			->setAttrib('data-mini', 'true')
-			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-b'));
+			->setAttrib('data-mini', 'true');
 
 		$form->getElement('login')
 			->setLabel($this->view->_('Se connecter'))
-			->setAttrib('data-mini', 'true')
-			->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-c'));
+			->setAttrib('data-mini', 'true');
 
 		return $form;
 	}
