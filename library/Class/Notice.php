@@ -591,13 +591,13 @@ class Class_Notice extends Storm_Model_Abstract {
 		if (!$notice) return false;
 
 		// Decoupage des mots index
-		foreach ($notice as $champ)
-		{
+		$recherche = '';
+		foreach ($notice as $champ) {
 			$mots = explode(" ", trim($champ));
-			foreach ($mots as $mot)
-			{
+			foreach ($mots as $mot) {
 				$mot = $ix->getExpressionRecherche($mot);
-				if ($mot) $recherche.=" " . $mot;
+				if ($mot) 
+					$recherche .= ' ' . $mot;
 			}
 		}
 
