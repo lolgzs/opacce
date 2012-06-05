@@ -28,7 +28,7 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 										 $this->view->url(array(), null, true),
 										 $this->view->_('Accueil'));
 
-		$html .= sprintf('<li><a href="#" onclick="$(\'.search-bar\').slideToggle();return false;" data-icon="search"  data-iconpos="notext">%s</a></li>',
+		$html .= sprintf('<li><a href="#" onclick="$(\'.search-bar\').slideToggle();$(\'.navbar-search-input\').focus();return false;" data-icon="search"  data-iconpos="notext">%s</a></li>',
 										 $this->view->_('Recherche'));
 
 
@@ -44,7 +44,7 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 		$html .= '<div class="ui-bar ui-bar-c search-bar" style="display:none;padding:0;">';
 		$html .= sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
 																																								'action' => 'simple')));
-		$html .= sprintf('<input data-mini="true" type="search" name="expressionRecherche" x-webkit-speech="x-webkit-speech">');
+		$html .= sprintf('<input class="navbar-search-input" data-mini="true" type="search" name="expressionRecherche" x-webkit-speech="x-webkit-speech">');
 
 		$html .= '</form>';
 		$html .= '</div>';
