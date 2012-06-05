@@ -251,9 +251,12 @@ class Class_WebService_SIGB_Exemplaire {
 
 
 	public function getLibelleDispoEnPret() {
-		$tmp=Class_Profil::getCurrentProfil()->getCfgNoticeAsArray();
+		if (!$tmp = Class_Profil::getCurrentProfil()->getCfgNoticeAsArray())
+			return self::DISPO_EN_PRET;
+
 		if (array_isset("en_pret", $tmp["exemplaires"]))
 			 return $tmp["exemplaires"]["en_pret"];
+
 		return self::DISPO_EN_PRET;
 	}
 
