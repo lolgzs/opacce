@@ -104,9 +104,9 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 		}
 
 		// Min et max
-		$nb_elements=count($tableau);
-		$max=$tableau[1]["nombre"];
-		$min=$tableau[$nb_elements]["nombre"];
+		$nb_elements = count($tableau);
+		$max = $tableau[1]["nombre"];
+		$min = isset($tableau[$nb_elements]["nombre"]) ? $tableau[$nb_elements]["nombre"] : 0;
 		
 		// Si peu de nombres on fabrique les tranches en dur
 		if($max < 11)
@@ -128,12 +128,13 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 			return $tranches;
 		}
 		
-		// Calcul par ecart � la moyenne		
-		foreach($tableau as $data)
-		{
+		// Calcul par ecart à la moyenne
+		$sumX = $sumX2 = 0;
+		foreach($tableau as $data) {
 			$sumX += $data["nombre"];
 			$sumX2 += $data["nombre"] * $data["nombre"];
 		}
+
 		$mean = $sumX / $nb_elements;
 		$stdDev = intval(sqrt($sumX2 - $mean * $mean * $nb_elements) / $nb_elements); 
 		$fBreakVal = intval($mean - ($stdDev * 3));
