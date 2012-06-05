@@ -5,36 +5,14 @@ echo $this->bouton('id=add_category',
 									 'url=' . $this->url(array('action' => 'add',
 																						 'id' => null))
 									 );
+
+echo $this->tagModelTable($this->catalogs, 
+													array($this->_('Libellé'), 'URL'),
+													array('libelle', 'url'),
+													array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+																array('action' => 'browse', 'content' => $this->boutonIco('type=show')),
+																array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+													'opds');
+
+echo $this->subview;
 ?>
-
-<table id="opds" class="models">
-	<thead>
-		<tr>
-			<th>Libellé</th>
-			<th>URL</th>
-			<th class="actions" style="width:50px;">Action</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($this->catalogs as $catalog) { ?>
-		<tr>
-			<td><?php echo $this->escape($catalog->getLibelle());?></td>
-			<td><?php echo $this->escape($catalog->getUrl());?></td>
-			<td><?php 
-				echo $this->tagAnchor($this->url(array('action' => 'edit',
-																							 'id' => $catalog->getId())),
-															$this->boutonIco('type=edit'));
-				echo $this->tagAnchor($this->url(array('action' => 'browse',
-																							 'id' => $catalog->getId())),
-															$this->boutonIco('type=show'));
-				echo $this->tagAnchor($this->url(array('action' => 'delete',
-																							 'id' => $catalog->getId())),
-															$this->boutonIco('type=del'));
-				?>
-			</td>
-		</tr>
-		<?php } ?>
-	</tbody>
-</table>
-
-<?php echo $this->subview;?>

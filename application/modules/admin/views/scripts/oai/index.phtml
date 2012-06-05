@@ -5,58 +5,31 @@ echo $this->bouton('id=add_category',
 									 'url=' . $this->url(array('action' => 'add',
 																						 'id' => null))
 									 );
-?>
 
-<table id="entrepots_oai" class="models">
-	<thead>
-		<tr>
-			<th>Libellé</th>
-			<th>URL</th>
-			<th class="actions" style="width:50px;">Action</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($this->entrepots as $entrepot) { ?>
-		<tr>
-			<td><?php echo $this->escape($entrepot->getLibelle());?></td>
-			<td><?php echo $this->escape($entrepot->getHandler());?></td>
-			<td><?php 
-				echo $this->tagAnchor($this->url(array('action' => 'edit',
-																							 'id' => $entrepot->getId())),
-															$this->boutonIco('type=edit'));
-				echo $this->tagAnchor($this->url(array('action' => 'browse',
-																							 'id' => $entrepot->getId())),
-															$this->boutonIco('type=show'));
-				echo $this->tagAnchor($this->url(array('action' => 'delete',
-																							 'id' => $entrepot->getId())),
-															$this->boutonIco('type=del'));
-				?>
-			</td>
-		</tr>
-		<?php } ?>
-	</tbody>
-</table>
+echo $this->tagModelTable($this->entrepots, 
+													array($this->_('Libellé'), 'URL'),
+													array('libelle', 'handler'),
+													array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+																array('action' => 'browse', 'content' => $this->boutonIco('type=show')),
+																array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+													'entrepots_oai');
 
+echo $this->subview;
 
+echo $this->renderForm($this->search_form);
 
+if ($this->error) echo '<div class="error">'.$this->error.'</div>';
 
-<?php 
-	echo $this->subview;
-
-	echo $this->renderForm($this->search_form);
-
-  if ($this->error) echo '<div class="error">'.$this->error.'</div>';
-
-	if ($this->notices) {
-		echo '<ul>';
-		foreach ($this->notices as $notice)
-			echo sprintf('<li>%s - %s</li>',
-									 $notice->getTitre(),
-									 $this->tagAnchor(array('action' => 'import',
-																					'id' => $notice->getId()), 
-																		'Importer'));
-		echo '</ul>';
-	}
+if ($this->notices) {
+	echo '<ul>';
+	foreach ($this->notices as $notice)
+		echo sprintf('<li>%s - %s</li>',
+								 $notice->getTitre(),
+								 $this->tagAnchor(array('action' => 'import',
+																				'id' => $notice->getId()), 
+																	'Importer'));
+	echo '</ul>';
+}
 
 
 ?>
