@@ -197,23 +197,6 @@ class Telephone_RechercheControllerHarryPotterTagsTest extends Telephone_Recherc
 
 
 
-
-class Telephone_RechercheControllerHarryPotterNoticesSimilairesTest extends Telephone_RechercheControllerHarryPotterTestCase {
-	public function setUp() {
-		parent::setUp();
-		$this->dispatch('/telephone/recherche/similaires/id/4', true);
-	}
-
-
-	/** @test */
-	public function shouldHaveFound() {
-		$this->assertXPathContentContains('//div', 'notices trouv');
-	}
-}
-
-
-
-
 class Telephone_RechercheControllerHarryPotterBiographieTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	/**
 	 * @group longtest
