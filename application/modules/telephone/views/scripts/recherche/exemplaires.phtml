@@ -46,7 +46,7 @@ foreach ($exemplaires as $exemplaire) {
 														'e' => $exemplaire->getId(),
 														'a' => $sigb_exemplaire->getCodeAnnexe()), 
 										 null, true);
-		?>" style="display:block;"><?php echo $this->_('Réserver');?></a>
+		?>" style="display:block;" data-ajax="false" rel="external"><?php echo $this->_('Réserver');?></a>
 	</div>
 	<?php	} ?>
 </div>

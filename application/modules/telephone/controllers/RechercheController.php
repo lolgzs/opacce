@@ -90,13 +90,13 @@ class Telephone_RechercheController extends RechercheController {
 														$this->_getParam('e'), 
 														($this->_getParam('pickup')) ? $this->_getParam('pickup') : $this->_getParam('a'));
 
-		 if (isset($ret["erreur"])) {
+		 if (isset($ret["erreur"]) && '' != $ret['erreur']) {
 			 $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
 			 $this->view->message = $ret['erreur'];
 			 return;
 		 }
 
-		 if (isset($ret["popup"]))	{
+		 if (isset($ret["popup"]) && '' != $ret['popup'])	{
 			 $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
 			 $this->view->message = $this->view->_('Réservation en ligne non supportée pour cette bibliothèque.');
 			 return;
