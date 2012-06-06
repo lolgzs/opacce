@@ -1,18 +1,10 @@
 <?php echo $this->toolbar($this->categorie->getLibelle(), $this->url(array(), null, true) ,false); ?>
-<div class="liste">
-	 <ul>
 
-	 <?php 
-
-	 foreach($this->albums as $album) {
-		 echo sprintf('<li class="lien">%s</li>',
-									$this->tagAnchor(
-																	 $this->url(array('action' => 'view-album', 
-																										'id' => $album->getId())),
-																	 $album->getTitre()
-																	 ));
-	 }
-
-	 ?>
-	 </ul>
-</div>
+<ul data-role="listview">
+	<li data-role="list-divider"><?php echo $this->categorie->getLibelle();?></li>
+	<?php foreach($this->albums as $album) { ?>
+		<li><?php echo $this->tagAnchor($this->url(array('action' => 'view-album', 
+																										 'id' => $album->getId())),
+																		$album->getTitre());?></li>
+	<?php } ?>
+</ul>
