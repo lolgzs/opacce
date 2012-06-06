@@ -20,6 +20,9 @@
  */
 
 class ZendAfi_View_Helper_Telephone_BibNumerique extends ZendAfi_View_Helper_Accueil_BibNumerique {
+	public function getTreeRenderer() {
+		return new ZendAfi_View_Helper_Telephone_BibNumerique_TreeRenderer($this->view, $this->preferences);
+	}
 }
 
 ?>
