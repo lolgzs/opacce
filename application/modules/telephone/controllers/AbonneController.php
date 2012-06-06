@@ -22,6 +22,20 @@
 require_once ROOT_PATH.'application/modules/opac/controllers/AbonneController.php';
 
 class Telephone_AbonneController extends AbonneController {
+	protected $_messenger;
+
+	public function init() {
+		parent::init();
+		$this->_messenger = $this->_helper->getHelper('FlashMessenger');
+	}
+
+
+	public function ficheAction() {
+		parent::ficheAction();
+		$this->view->messages = $this->_messenger->getMessages();
+	}
+
+
 	public function cancelHoldAction() {
 		$this->_helper->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
 		$fiche_sigb = $this->_user->getFicheSigb();
@@ -41,6 +55,16 @@ class Telephone_AbonneController extends AbonneController {
 			$this->_redirect('/abonne/fiche');
 			return;
 		}
+	}
+
+
+	public function prolongerpretAction() {
+		$sigb = new Class_CommSigb();
+		$result = $sigb->prolongerPret($this->_user, $this->_getParam('id_pret'));
+		$this->_messenger->addMessage((1 == $result['statut']) ?
+																	$this->view->_('Prêt prolongé') :
+																	$result['erreur']);
+		$this->_redirect('/abonne/fiche');
 	}
 
 

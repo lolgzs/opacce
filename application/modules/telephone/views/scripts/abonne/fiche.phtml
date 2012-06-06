@@ -1,8 +1,16 @@
 <?php echo $this->toolbar($this->_('Fiche abonné')); ?>
 <?php echo $this->partial('abonne/identity.phtml', array('user' => $this->user));?>
 
-<ul data-role="listview">
-	<li data-role="list-divider"><?php echo $this->_('Abonnement');?></li>
+<?php if ($this->messages) { ?>
+<div data-role="navbar" data-iconpos="left">
+	<ul>
+		<?php foreach($this->messages as $message) { ?>
+		<li><a href="#" data-icon="info" data-theme="a"><?php echo $this->escape($message);?></a></li>
+		<?php } ?>
+	</ul>
+</div>
+<?php } ?>
+
 <?php 
 if ($this->user->isAbonne()) {
 	$date_fin = formatDate($this->user->getDateFin(), '1');
@@ -10,28 +18,28 @@ if ($this->user->isAbonne()) {
 		"Votre abonnement est valide jusqu'au %s." :
 		"Votre abonnement est terminé depuis le %s.";
 ?>
+<ul data-role="listview">
+	<li data-role="list-divider"><?php echo $this->_('Abonnement');?></li>
 	<li><?php echo $this->_($format, $date_fin);?></li>
-<?php } else { ?>
-  <li><?php echo $this->_('Vous n\'avez aucun abonnement en cours');?></li>
-<?php } ?>
 </ul>
+<?php } ?>
 
 
 <?php 
 $fiche_sigb = $this->user->getFicheSigb();
 
 if (array_key_exists("erreur", $fiche_sigb)) { ?>
-<div data-role="navbar" data-theme="a" data-iconpos="left">
+<div data-role="navbar" data-iconpos="left">
 	<ul>
-		<li><a href="#" data-icon="alert" ><?php echo $this->escape($fiche_sigb["erreur"]);?></a></li>
+		<li><a href="#" data-icon="alert" data-theme="a"><?php echo $this->escape($fiche_sigb["erreur"]);?></a></li>
 	</ul>
 </div>
 <?php } ?>
 
 <?php if (array_key_exists("message", $fiche_sigb)) { ?>
-<div data-role="navbar" data-theme="a" data-iconpos="left">
+<div data-role="navbar" data-iconpos="left">
 	<ul>
-		<li><a href="#" data-icon="info" ><?php echo $this->escape($fiche_sigb["message"]);?></a></li>
+		<li><a href="#" data-icon="info" data-theme="a"><?php echo $this->escape($fiche_sigb["message"]);?></a></li>
 	</ul>
 </div>
 <?php } ?>
@@ -62,7 +70,7 @@ if (array_key_exists("fiche", $fiche_sigb)) {
 	  <?php if ($emprunt->isRenewable()) { ?>
 	  <a href="<?php echo $this->url(array('action' => 'prolongerpret',
 		                                     'id_pret' => $emprunt->getId()));?>" 
-		   data-theme="c" data-position="notext"><?php echo $this->_('Prolonger');?></a>
+		   data-theme="c"><?php echo $this->_('Prolonger');?></a>
 		<?php } ?>
 	</li>
 	<?php } ?>

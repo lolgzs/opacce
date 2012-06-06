@@ -190,4 +190,29 @@ class AbonneControllerTelephoneConfirmedCancelHoldTest extends AbonneControllerT
 	}
 }
 
+
+
+class AbonneControllerTelephoneRenewSuccessTest extends AbonneControllerTelephoneTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->_service = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('prolongerPret')
+			->answers(true)
+
+			->whenCalled('isConnected')
+			->answers(true);
+
+		Class_WebService_SIGB_VSmart::setService($this->_service);
+
+		$this->dispatch('/abonne/prolongerpret/id_pret/11', true);
+	}
+
+
+	/** @test */
+	public function shouldRedirectToFicheAbonne() {
+		$this->assertRedirectTo('/abonne/fiche');
+	}
+}
+
 ?>
