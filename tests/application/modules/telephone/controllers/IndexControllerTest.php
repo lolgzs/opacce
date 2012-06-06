@@ -193,7 +193,7 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 
 	/** @test */
 	function articlesShouldBeVisible() {
-		$this->assertXPath('//ul[@class="articles"]');
+		$this->assertXPath('//ul[@class="listview-news"]');
 	}
 
 
@@ -423,13 +423,13 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 
 	/** @test */
 	function articlesShouldBeVisible() {
-		$this->assertXPath('//ul[@class="articles"]');
+		$this->assertXPath('//ul[@class="listview-news"]');
 	}
 
 
 	/** @test */
 	function articleErikTruffazUrlShouldKeepModuleEmbed() {
-		$this->assertXPath('//ul[@class="articles"]//a[contains(@href, "/embed/cms/articleview/id/3")]', $this->_response->getBody());
+		$this->assertXPath('//ul[@class="listview-news"]//a[contains(@href, "/embed/cms/articleview/id/3")]', $this->_response->getBody());
 	}
 
 

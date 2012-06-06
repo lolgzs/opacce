@@ -278,6 +278,12 @@ form .ui-btn {
 }
 
 
+ul.listview-news .ui-btn-inner,
+ul.listview-news .ui-li .ui-btn-text a.ui-link-inherit {
+		white-space:normal;
+}
+
+
 
 div.bk-widget div.b-menu,
 div.bk-widget div.b-zoom-fullscreen,
