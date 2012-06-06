@@ -50,7 +50,8 @@ class Class_Systeme_ModulesAccueil_Kiosque extends Class_Systeme_ModulesAccueil_
 		'op_transition' => '', //type de transition pour le diaporama
 		'op_largeur_img' => 0, //largeur des vignettes 
 		'rss_avis' => 1,    // afficher les RSS
-		'id_catalogue' => 0
+		'id_catalogue' => 0,
+		'id_panier' => 0
 	);
 }
 ?>

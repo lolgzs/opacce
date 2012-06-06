@@ -70,7 +70,7 @@ class ZendAfi_View_Helper_TagObjetsImgProperties extends ZendAfi_View_Helper_Bas
 		$combo = '<select name="style_liste" onchange="'.$onchange.'">';
 
 		$combo = $this->addOptGroupOn($combo, 
-																	$this->translate()->_('Objets java-script'), 
+																	$this->translate()->_('Objets javascript'), 
 																	$styles["java"], 
 																	$valeur_select);
 
@@ -90,7 +90,7 @@ class ZendAfi_View_Helper_TagObjetsImgProperties extends ZendAfi_View_Helper_Bas
 
 	private function addOptGroupOn($html, $groupLabel, $options, $current) {
 		$html .= sprintf('<optgroup label="%s" style="font-style:normal;color:#FF6600">',
-										 $this->translate()->_('Objets java-script'));
+										 $groupLabel);
 
 		foreach ($options as $clef => $libelle) {
 			$selected = ($current == $clef) ? ' selected="selected"' : '';

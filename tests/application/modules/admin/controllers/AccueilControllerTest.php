@@ -495,3 +495,32 @@ class AccueilControllerConfigBoiteLoginTest extends Admin_AbstractControllerTest
 		$this->assertXPath('//input[@name="lien_mot_de_passe_oublie"][@value="» Mot de passe oublié ?"]');
 	}
 }
+
+
+
+
+class AccueilControllerConfigBoiteKiosqueTest extends Admin_AbstractControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::getCurrentProfil()
+			->updateModuleConfigAccueil(25,
+																	array('type_module' => 'KIOSQUE',
+																				'division' => 4,
+																				'id_module' => 32,
+																				'preferences' => array()));		
+		$this->dispatch('/admin/accueil/kiosque?config=accueil&type_module=KIOSQUE&id_module=32', true);
+	}
+
+
+	/** @test */
+	public function selectStyleListeShouldContainsOptGroupObjetsJS() {
+		$this->assertXPath('//select[@name="style_liste"]//optgroup[@label="Objets javascript"]');
+	}
+
+
+	/** @test */
+	public function selectStyleListeShouldContainsOptGroupObjetsFlash() {
+		$this->assertXPath('//select[@name="style_liste"]//optgroup[@label="Objets flash"]');
+	}
+	
+}
