@@ -24,14 +24,14 @@ class Telephone_RechercheController extends RechercheController {
 	public function viewnoticeAction()  {
 		$notice = Class_Notice::getLoader()->find($this->_getParam('id'));
 
-		$actions = array($this->view->_('Notice détaillée') =>		  array('action' => 'detail'),
-										 $this->view->_('Avis') =>								  array('action' => 'avis'),
-										 $this->view->_('Exemplaires') =>					  array('action' => 'exemplaires'),
-										 $this->view->_('Résumés, analyses') =>		  array('action' => 'resume'),
-										 $this->view->_('Vidéos') =>							  array('action' => 'videos'),
-										 $this->view->_('Tags') =>								  array('action' => 'tags'),
-										 $this->view->_('Biographies') =>					  array('action' => 'biographie'),
-										 $this->view->_('Notices similaires') =>	  array('action' => 'similaires')
+		$actions = array($this->view->_('Description du document') =>	array('action' => 'detail'),
+										 $this->view->_('Où le trouver ?') =>				array('action' => 'exemplaires'),
+										 $this->view->_('Critiques') =>						  array('action' => 'avis'),
+										 $this->view->_('Résumé') =>							  array('action' => 'resume'),
+										 $this->view->_('Vidéos associées') =>		  array('action' => 'videos'),
+										 $this->view->_('Nuage de tags') =>				  array('action' => 'tags'),
+										 $this->view->_('Biographie de l\'auteur') => array('action' => 'biographie'),
+										 $this->view->_('Documents similaires') =>	array('action' => 'similaires')
 										 );
 
 		if ($notice->isLivreNumerique())
