@@ -1,0 +1,21 @@
+<?php echo $this->toolbar($this->_("Bib"));?>
+<h1><?php echo $this->escape($this->bib->getLibelle());?></h1>
+<ul data-role="listview">
+	<li data-role="list-divider"><?php echo $this->_('Coordonnées')?></li>
+	<li>
+		<?php echo nl2br($this->bib->getAdresse());?><br>
+		<?php echo $this->bib->getCp();?> <?php echo $this->bib->getVille();?>
+	</li>
+	<?php if ($this->bib->getTelephone()) { ?>
+	<li><?php echo $this->bib->getTelephone();?></li>
+	<?php } ?>
+	<?php if ($this->bib->getMail()) { ?>
+	<li><a href="mailto:<?php echo $this->bib->getMail();?>"><?php echo $this->bib->getMail();?></a></li>
+	<?php } ?>
+	<?php if ($this->bib->getHoraire()) { ?>
+	<li data-role="list-divider"><?php echo $this->_('Horaires')?></li>
+	<li>
+		<?php echo nl2br(urldecode($this->bib->getHoraire()));?>
+	</li>
+	<?php } ?>
+</lu>

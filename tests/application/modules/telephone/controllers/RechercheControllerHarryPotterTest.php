@@ -98,55 +98,55 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 	/** @test */
 	public function pageShouldContainsLinkToNoticeDetaillee() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/detail/id/4")]', 'Notice détaillée');
+		$this->assertXPath('//a[contains(@href, "recherche/detail/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToAvis() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/avis/id/4")]', 'Avis');
+		$this->assertXPath('//a[contains(@href, "recherche/avis/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToExemplaires() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/exemplaires/id/4")]', 'Exemplaires');
+		$this->assertXPath('//a[contains(@href, "recherche/exemplaires/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToResumes() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/resume/id/4")]', 'Résumés, analyses');
+		$this->assertXPath('//a[contains(@href, "recherche/resume/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToTags() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/tags/id/4")]', 'Tags');
+		$this->assertXPath('//a[contains(@href, "recherche/tags/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToVideos() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/videos/id/4")]', 'Vidéos');
+		$this->assertXPath('//a[contains(@href, "recherche/videos/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToBiographies() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/biographie/id/4")]', 'Biographies');
+		$this->assertXPath('//a[contains(@href, "recherche/biographie/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToNoticesSimilaires() {
-		$this->assertXPathContentContains('//a[contains(@href, "recherche/similaires/id/4")]', 'Notices similaires');
+		$this->assertXPath('//a[contains(@href, "recherche/similaires/id/4")]');
 	}
 
 
 	/** @test */
 	public function pageShouldNotContainsLinkToRessourcesNumeriques() {
-		$this->assertNotXPathContentContains('//a[contains(@href, "recherche/ressourcesnumeriques/id/4")]', 'Ressources numériques');
+		$this->assertNotXPath('//a[contains(@href, "recherche/ressourcesnumeriques/id/4")]');
 	}
 }
 

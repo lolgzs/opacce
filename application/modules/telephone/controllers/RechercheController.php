@@ -155,6 +155,11 @@ class Telephone_RechercheController extends RechercheController {
 	}
 
 
+	public function bibliothequeAction() {
+		$this->view->bib = Class_Bib::getLoader()->find($this->_getParam('id'));
+	}
+
+
 	protected function _loadUrlRetourForExemplaire($id_exemplaire) {
 		$exemplaire = Class_Exemplaire::getLoader()->find($id_exemplaire);
 		$this->view->url_retour = $this->view->url(array('controller' => 'recherche',
