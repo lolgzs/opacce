@@ -11,7 +11,7 @@
 <?php } ?>
 
 <?php if ($this->resa) { ?>
-	<p><?php echo $this->_('Êtes-vous sur de vouloir supprimer votre réservation de <strong>%s</strong>', 
+	<p><?php echo $this->_('Êtes-vous sur de vouloir supprimer votre réservation de <strong>%s</strong> ?', 
 												 $this->resa->getTitre()); ?></p>
   <a href="<?php echo $this->url(array('confirmed' => 1));?>"
 	   data-ajax="false" data-role="button" data-inline="true" 
