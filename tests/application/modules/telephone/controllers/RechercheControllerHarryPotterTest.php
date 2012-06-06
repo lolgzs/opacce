@@ -330,7 +330,7 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends T
 
 	/** @test */
 	public function pageShouldContainsOneExemplaire() {
-		$this->assertXPathContentContains('//div[@class="pave"]//td', 'n° 1');
+		$this->assertXPathContentContains('//td', 'n° 1', $this->_response->getBody());
 	}
 
 
@@ -354,7 +354,7 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends T
 
 	/** @test */
 	public function pageShouldContainsHoldFunction() {
-		$this->assertXPath('//div[@class="fonction"]//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL")]');
+		$this->assertXPath('//a[contains(@href, "/recherche/reservation/b/1/e/33/a/MOUL")]');
 	}
 }
 
