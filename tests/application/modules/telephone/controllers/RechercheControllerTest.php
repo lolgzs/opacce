@@ -111,4 +111,64 @@ class Telephone_RechercheControllerSimpleByPertinenceActionTest extends Telephon
 }
 
 
+
+class Telephone_RechercheControllerBibliothequeActionTest extends TelephoneAbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_Bib::getLoader()->newInstanceWithId(34)
+			->setLibelle('La turbine')
+			->setAdresse('5 av. des Harmonies')
+			->setCp('74960')
+			->setVille('Cran-Gevrier')
+			->setTelephone('04 50 50 50 50')
+			->setMail('turbine@bib.com')
+			->setHoraire(urlencode('Tous les jours'));
+
+		$this->dispatch('/telephone/recherche/bibliotheque/id/34', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainName() {
+		$this->assertXPathContentContains('//h1', 'La turbine');
+	}
+
+
+	/** @test */
+	public function pageShouldContainAddress() {
+		$this->assertXPathContentContains('//li', '5 av. des Harmonies');
+	}
+
+
+	/** @test */
+	public function pageShouldContainZipCode() {
+		$this->assertXPathContentContains('//li', '74960');
+	}
+
+
+	/** @test */
+	public function pageShouldContainCity() {
+		$this->assertXPathContentContains('//li', 'Cran-Gevrier');
+	}
+
+
+	/** @test */
+	public function pageShouldContainPhone() {
+		$this->assertXPathContentContains('//li', '04 50 50 50 50');
+	}
+
+
+	/** @test */
+	public function pageShouldContainMail() {
+		$this->assertXPath('//a[@href="mailto:turbine@bib.com"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainHoraires() {
+			$this->assertXPathContentContains('//li', 'Tous les jours');
+	}
+
+}
+
 ?>
