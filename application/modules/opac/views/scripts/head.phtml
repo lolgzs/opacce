@@ -63,7 +63,11 @@ if (($user = Class_Users::getLoader()->getIdentity())
                       toDivision: newDivision,
                       fromPosition: $(ui.item).attr("data-position"),
                       toPosition: newPosition,
-                      profil:' . $current_profil->getId() . '}});
+                      profil:' . $current_profil->getId() . '},
+               success: function(data, textStatus, jqXHR){
+                 $(ui.item).attr("data-division", newDivision);
+                 $(ui.item).attr("data-position", newPosition);
+               }});
       }});
   ');
 
