@@ -30,9 +30,11 @@ $head_scripts = Class_ScriptLoader::newInstance()
 	->addJQueryReady('setupAnchorsTarget()')
 	->showNotifications();
 
-
+$request = Zend_Controller_Front::getInstance()->getRequest();
 if (($user = Class_Users::getLoader()->getIdentity())
-		&& $user->isAdmin())
+		&& $user->isAdmin()
+		&& 'index' == $request->getControllerName()
+		&& 'index' == $request->getActionName())
 	$head_scripts->addJQueryReady('
     var currentPositions = [0, 0, 0];
     $("div.layout-division>div>div").each(function(k, item) {
