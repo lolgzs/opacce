@@ -152,14 +152,14 @@ class Class_Codification
 	static function getNomOnglet($onglet)	{
 			$translate = Zend_Registry::get('translate');
 			$libs=array(
-								"detail" => $translate->_("Notice détaillée"),
-								"avis" => $translate->_("Avis"),
+								"detail" => $translate->_("Description du document"),
+								"avis" => $translate->_("Critiques"),
 								"exemplaires" => $translate->_("Exemplaires"),
-								"resume" => $translate->_("Résumés, analyses"),
-								"tags" => $translate->_("Tags"),
-								"biographie" => $translate->_("Biographies"),
-								"similaires" => $translate->_("Notices similaires"),
-								"bibliographie"	=> $translate->_("Bibliographies"),
+								"resume" => $translate->_("Résumés"),
+								"tags" => $translate->_("Rebondir dans le catalogue"),
+								"biographie" => $translate->_("Biographie de l'auteur"),
+								"similaires" => $translate->_("Documents similaires"),
+								"bibliographie"	=> $translate->_("Discographie"),
 								"morceaux" => $translate->_("Morceaux"),
 								"bandeAnnonce"	=> $translate->_("Bande-annonce"),
 								"photos" => $translate->_("Photos"),

@@ -29,7 +29,7 @@ class Telephone_RechercheController extends RechercheController {
 										 $this->view->_('Critiques') =>						  array('action' => 'avis'),
 										 $this->view->_('Résumé') =>							  array('action' => 'resume'),
 										 $this->view->_('Vidéos associées') =>		  array('action' => 'videos'),
-										 $this->view->_('Nuage de tags') =>				  array('action' => 'tags'),
+										 $this->view->_('Rebondir dans le catalogue') =>  array('action' => 'tags'),
 										 $this->view->_('Biographie de l\'auteur') => array('action' => 'biographie'),
 										 $this->view->_('Documents similaires') =>	array('action' => 'similaires')
 										 );
