@@ -3,8 +3,10 @@
 <ul data-role="listview">
 	<li data-role="list-divider"><?php echo $this->_('Coordonnées')?></li>
 	<li>
-		<?php echo nl2br($this->bib->getAdresse());?><br>
+		<address>
+	  <?php echo nl2br($this->bib->getAdresse());?><br>
 		<?php echo $this->bib->getCp();?> <?php echo $this->bib->getVille();?>
+    </address>
 	</li>
 	<?php if ($this->bib->getTelephone()) { ?>
 	<li><?php echo $this->bib->getTelephone();?></li>

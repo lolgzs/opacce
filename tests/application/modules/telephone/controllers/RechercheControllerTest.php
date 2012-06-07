@@ -136,19 +136,19 @@ class Telephone_RechercheControllerBibliothequeActionTest extends TelephoneAbstr
 
 	/** @test */
 	public function pageShouldContainAddress() {
-		$this->assertXPathContentContains('//li', '5 av. des Harmonies');
+		$this->assertXPathContentContains('//li//address', '5 av. des Harmonies');
 	}
 
 
 	/** @test */
 	public function pageShouldContainZipCode() {
-		$this->assertXPathContentContains('//li', '74960');
+		$this->assertXPathContentContains('//li//address', '74960');
 	}
 
 
 	/** @test */
 	public function pageShouldContainCity() {
-		$this->assertXPathContentContains('//li', 'Cran-Gevrier');
+		$this->assertXPathContentContains('//li//address', 'Cran-Gevrier');
 	}
 
 
