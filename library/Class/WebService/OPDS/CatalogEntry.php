@@ -54,8 +54,10 @@ class Class_WebService_OPDS_CatalogEntry {
 
 
 	public function import() {
-		$category = Class_AlbumCategorie::getLoader()->newInstance()
-			->setLibelle(sprintf('import opds du %s', date('d M Y')));
+		$libelle = sprintf('import opds du %s', date('d M Y'));
+		if (!$category = Class_AlbumCategorie::getLoader()->findFirstBy(array('libelle' => $libelle)))
+			$category = Class_AlbumCategorie::getLoader()->newInstance()->setLibelle($libelle);
+
 		$category->save();
 
 		$album = Class_Album::getLoader()->newInstance()
