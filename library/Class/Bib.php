@@ -103,6 +103,15 @@ class Class_Bib extends Storm_Model_Abstract {
 	}
 
 
+	public function getLieu() {
+		return Class_Lieu::getLoader()
+			->newInstance()
+			->setAdresse($this->getAdresse())
+			->setCodePostal($this->getCp())
+			->setVille($this->getVille());
+	}
+
+
 	//----------------------------------------------------------------------------
 	// Rend une bib
 	//----------------------------------------------------------------------------
