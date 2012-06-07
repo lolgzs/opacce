@@ -38,6 +38,8 @@ if (($user = Class_Users::getLoader()->getIdentity())
 	$head_scripts->addJQueryReady('
     var currentPositions = [0, 0, 0];
     $("div.layout-division>div>div").each(function(k, item) {
+      if ("barre_nav" == $(item).attr("class")) 
+        return;
       var division = $(item).parents("div.layout-division").attr("id").split("-").pop();
       $(item).attr("data-position", currentPositions[division-1]);
       currentPositions[division-1]++;
@@ -49,7 +51,7 @@ if (($user = Class_Users::getLoader()->getIdentity())
       connectWith:"div.layout-division>div",
       stop: function(event, ui){
         var newDivision = $(ui.item).parents("div.layout-division").attr("id").split("-").pop();
-        var newPosition = $(ui.item).prevAll().length;
+        var newPosition = $(ui.item).prevAll("div[data-position]").length;
         if (newDivision == $(ui.item).attr("data-division")
             && newPosition == $(ui.item).attr("data-position")) 
           return;
