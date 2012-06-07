@@ -97,50 +97,50 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 
 	/** @test */
-	public function pageShouldContainsLinkToNoticeDetaillee() {
-		$this->assertXPath('//a[contains(@href, "recherche/detail/id/4")]');
+	public function pageShouldContainsLinkToDescriptionDuDocument() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/detail/id/4")]', 'Description du document');
 	}
 
 
 	/** @test */
-	public function pageShouldContainsLinkToAvis() {
-		$this->assertXPath('//a[contains(@href, "recherche/avis/id/4")]');
+	public function pageShouldContainsLinkToCritiques() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/avis/id/4")]', 'Critiques');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToExemplaires() {
-		$this->assertXPath('//a[contains(@href, "recherche/exemplaires/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/exemplaires/id/4")]', 'Où le trouver');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToResumes() {
-		$this->assertXPath('//a[contains(@href, "recherche/resume/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/resume/id/4")]', 'Résumé');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToTags() {
-		$this->assertXPath('//a[contains(@href, "recherche/tags/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/tags/id/4")]', 'Rebondir dans le catalogue');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToVideos() {
-		$this->assertXPath('//a[contains(@href, "recherche/videos/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/videos/id/4")]', 'Vidéos associées');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToBiographies() {
-		$this->assertXPath('//a[contains(@href, "recherche/biographie/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/biographie/id/4")]', 'Biographie');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToNoticesSimilaires() {
-		$this->assertXPath('//a[contains(@href, "recherche/similaires/id/4")]');
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/similaires/id/4")]', 'Documents similaires');
 	}
 
 
