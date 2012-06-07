@@ -56,7 +56,10 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 	}
 
 
-	/** @test */
+	/**
+	 * @group integration
+	 * @test 
+	 */
 	public function xmlShouldBeValid() {
 		$dom = new DOMDocument();
 		$dom->loadXml($this->_dublin_core_visitor->xml());

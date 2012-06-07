@@ -165,7 +165,13 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 		$foundation = Class_NoticeOAI::getLoader()
 			->newInstanceWithId(23)
 			->setData(serialize(array('titre' => 'Prelude to foundation',
-																'auteur' => 'Isaac Asimov')));
+																'auteur' => 'Isaac Asimov',
+																'editeur' => 'Gallimard')))
+			->setDate('1982')
+			->setIdOai('http://gallica.bnf.fr/ark:/12148/bpt6k86704c')
+			->setEntrepot(Class_EntrepotOAI::getLoader()
+										->newInstanceWithId(2)
+										->setLibelle('BNF:Gallica'));
 
 		$this->dispatch('/admin/oai/import/id/23');
 
@@ -182,6 +188,37 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 	/** @test */
 	public function newAlbumAuteurShouldBeIsaacAsimov() {
 		$this->assertEquals('Isaac Asimov', $this->_new_album->getAuteur());
+	}
+
+
+	/** @test */
+	public function newAlbumEditeurShouldBeGallimard() {
+		$this->assertEquals('Gallimard', $this->_new_album->getEditeur());
+	}
+
+
+	/** @test */
+	public function newAlbumAnneeShouldBe1982() {
+		$this->assertEquals(1982, $this->_new_album->getAnnee());
+	}
+
+
+	/** @test */
+	public function newAlbumTypeDocShouldBeOAI() {
+		$this->assertEquals(Class_TypeDoc::OAI, $this->_new_album->getTypeDocId());
+	}
+
+
+	/** @test */
+	public function idOrigineShouldBeArk() {
+		$this->assertEquals('http://gallica.bnf.fr/ark:/12148/bpt6k86704c', 
+												$this->_new_album->getIdOrigine());
+	}
+
+
+	/** @test */
+	public function isGallicaShouldAnswerTrue() {
+		$this->assertTrue($this->_new_album->isGallica());
 	}
 
 }

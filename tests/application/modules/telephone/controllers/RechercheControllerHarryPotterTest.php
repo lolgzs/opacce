@@ -160,13 +160,19 @@ class Telephone_RechercheControllerHarryPotterViewResumeTest extends Telephone_R
 	}
 
 
-	/** @test */
+	/**
+	 * @group integration
+	 * @test 
+	 */
 	public function titleShouldBeHarryPotter() {
 		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
 	}
 
 
-	/** @test */
+	/**
+	 * @group integration
+	 * @test 
+	 */
 	public function pageShouldContainsResumeBib() {
 		$this->assertXPathContentContains('//div', 'Apres la mort');
 	}	

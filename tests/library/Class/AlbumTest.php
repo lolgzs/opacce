@@ -131,7 +131,8 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 															'auteur' => '',
 															'matiere' => '',
 															'provenance' => '',
-															'cote' => ''), 
+															'cote' => '',
+															'editeur' => ''), 
 												$this->_album->toArray());
 	}
 
@@ -213,6 +214,12 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 	public function notesAsArrayShouldContains305and317() {
 		$this->assertEquals(array('305$a' => '20eme siecle', '317$a' => 'viens de l\'espace'), 
 												$this->_album->getNotesAsArray());
+	}
+
+
+	/** @test */
+	public function isGallicaShouldAnswersFalse() {
+		$this->assertFalse($this->_album->isGallica());
 	}
 }
 

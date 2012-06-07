@@ -117,6 +117,7 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 	const LIVRE_NUM = 100;
 	const DIAPORAMA = 101;
 	const EPUB = 102;
+	const OAI = 103;
 
 
 	/**

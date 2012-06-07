@@ -132,8 +132,12 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 	public function importAction() {
 		$notice = Class_NoticeOAI::getLoader()->find($this->_getParam('id'));
 		$album = Class_Album::getLoader()->newInstance()
+			->beOAI()
 			->setTitre($notice->getTitre())
 			->setAuteur($notice->getAuteur())
+			->setEditeur($notice->getEditeur())
+			->setAnnee($notice->getDate())
+			->setIdOrigine($notice->getIdOai())
 			->save();
 
 		$this->_redirect('oai/index');

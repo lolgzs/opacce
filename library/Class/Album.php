@@ -88,6 +88,7 @@ class Class_Album extends Storm_Model_Abstract {
 
 	protected $_default_attribute_values = array('titre' => '',
 																							 'sous_titre' => '',
+																							 'editeur' => '',
 																							 'fichier' => '',
 																							 'pdf' => '',
 																							 'auteur' => '',
@@ -320,6 +321,11 @@ class Class_Album extends Storm_Model_Abstract {
 
 	public function beEPUB() {
 		return $this->setTypeDocId(Class_TypeDoc::EPUB);
+	}
+
+
+	public function beOAI() {
+		return $this->setTypeDocId(Class_TypeDoc::OAI);
 	}
 
 
@@ -960,60 +966,9 @@ class Class_Album extends Storm_Model_Abstract {
 		return sprintf('%03d', $this->getRessourcesCount());
 	}
 
-
-	//-------------------------------------------------------------------------------
-	// Settings
-	//-------------------------------------------------------------------------------
-	public function ecrireSettings($id_album,$largeur_flash)
-	{
-		if(!$id_album) return false;
-		if(!$largeur_flash) $largeur_flash=750;
-
-		// chemins
-		$path=getcwd()."/userfiles/album/".$id_album."/";
-		$path_relatif="../../../../userfiles/album/".$id_album."/";
-
-		// settings
-		$settings=file_get_contents($this->path_flash."settings.xml");
-		$settings=str_replace('<width value="760"/>', '<width value="'.$largeur_flash.'"/>', $settings);
-		$settings=str_replace("images.xml", $path_relatif."images.xml", $settings);
-		file_put_contents($path."settings.xml",$settings);
-
-		// Lire les images
-		$handle = opendir($path."thumbs");
-		if(!$handle) return false;
-		while ($img = readdir($handle))
-		{
-			if($img=="." or $img=="..") continue;
-			if($this->isImage($path."thumbs/".$img)==false) continue;
-			$data[]=array("image"=>$img);
-			$nb_pages++;
-		}
-		closedir($handle);
-		sort($data);
-
-		// images.xml
-		$xml="<settings><slideshow>";
-		$xml.='<page>';
-		foreach($data as $photo)
-		{
-			$page++;
-			if($page % 2 == 0)
-			{
-				$xml.='</page>'.CRLF;
-				if($page == $nb_pages) $xml.='<lastpage>';
-				else $xml.='<page>';
-			}
-			$xml.='<photo image="'.$path_relatif.'thumbs/'.$photo["image"].'" url="javascript:imageZoom(\''.$photo["image"].'\');" >';
-			$xml.='<![CDATA[<head>Page '.$page.'</head><body></body>]]>';
-			$xml.='</photo>';
-		}
-		if($nb_pages % 2 ==0) $xml.='</lastpage>';
-		else $xml.='</page>';
-		$xml.="</slideshow></settings>";
-		file_put_contents($path."images.xml",$xml);
-
-		return true;
+	
+	public function isGallica() {
+		return false !== strpos($this->getIdOrigine(), 'gallica');
 	}
 }
 

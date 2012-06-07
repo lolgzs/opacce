@@ -34,7 +34,7 @@ class Class_WebService_OPDS_CatalogEntry {
 
 
 	public function addFile($url, $mimeType) {
-		$this->_files[] = OPDSEntryFile::newWith($url, $mimeType);
+		$this->_files[] = Class_WebService_OPDS_EntryFile::newWith($url, $mimeType);
 	}
 
 
@@ -96,79 +96,4 @@ class Class_WebService_OPDS_CatalogEntry {
 	}
 }
 
-
-class OPDSEntryFile {
-	protected $_url;
-	protected $_type;
-	protected static $_downloader;
-
-	public static function newWith($url, $mimeType) {
-		$instance = new self($url, $mimeType);
-		return $instance;
-	}
-
-
-	public static function defaultDownloader($downloader) {
-		self::$_downloader = $downloader;
-	}
-
-
-	public function __construct($url, $mimeType) {
-		$this->_url = $url;
-		$this->_type = $mimeType;
-	}
-
-
-	public function newRessourceInAlbum($album) {
-		$ressource = Class_AlbumRessource::getLoader()
-			->newInstance()
-			->setAlbum($album);
-		$ressource->save();
-
-		$fileName = $ressource->getId() . '_' . $album->getTitre() . $this->getExtension();
-		$destination = $ressource->getOriginalsPath() . $fileName;
-		if (false === $this->getDownloader()->downloadFromUrlToDisk($this->_url, $destination))
-			$ressource->delete();
-
-		$ressource
-			->setFichier($fileName)
-			->save();
-	}
-
-
-	public function getExtension() {
-		if ('application/pdf' == strtolower($this->_type)) 
-			return '.pdf';
-
-		if ('application/epub+zip' == strtolower($this->_type)) 
-			return '.epub';
-
-		return '';
-	}
-
-
-	public function getDownloader() {
-		if (null != self::$_downloader) 
-			return self::$_downloader;
-		return new OPDSEntryDownloader();
-	}
-}
-
-
-class OPDSEntryDownloader {
-	public function downloadFromUrlToDisk($url, $path) {
-		if (!$this->_ensureDirectory(dirname($path))) 
-			return false;
-		return copy($url, $path);
-	}
-
-	/**
-	 * @param string $path
-	 * @return bool
-	 */
-	protected function _ensureDirectory($path) {
-		$folderManager = new Class_Folder_Manager();
-		return $folderManager->ensure($path);
-	}
-}
 ?>

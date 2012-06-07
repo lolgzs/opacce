@@ -485,9 +485,9 @@ class Admin_OpdsControllerBrowseEbooksGratuitsImportTest extends Admin_OpdsContr
 			->answers(true);
 
 
-		OPDSEntryFile::defaultDownloader(Storm_Test_ObjectWrapper::mock()
-																		 ->whenCalled('downloadFromUrlToDisk')
-																		 ->answers(true));
+		Class_WebService_OPDS_EntryFile::defaultDownloader(Storm_Test_ObjectWrapper::mock()
+																											 ->whenCalled('downloadFromUrlToDisk')
+																											 ->answers(true));
 
 		$this->dispatch(sprintf('/admin/opds/import/id/1?feed=%s&entry=%s',
 														urlencode('http://www.opacsgratuits.com/opds/feed.php?mode=maj'),

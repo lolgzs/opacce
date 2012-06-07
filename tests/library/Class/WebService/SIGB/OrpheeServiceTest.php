@@ -77,7 +77,10 @@ class OrpheeServiceGetServiceTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @group integration
+	 * @test 
+	 */
 	public function integrationTestNoticeWithRealServer() {
 		Class_WebService_SIGB_Orphee_Service::setSoapClientClass('Class_WebService_MappedSoapClient');
 		$orphee = Class_WebService_SIGB_Orphee_Service::getService('http://opac3.pergame.net/bibliotheque-agglo-stomer.fr/userfiles/webservices/orphee.wsdl');
