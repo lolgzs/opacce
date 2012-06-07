@@ -49,6 +49,12 @@ class TypeDocLoader {
 			$instances [$instance->getId()]= $instance;
 		}
 
+		$default_types = Class_TypeDoc::getDefaultTypeDocs();
+		foreach($default_types as $id => $label) {
+			if (!isset($instances[$id]))
+				$instances[$id] = Class_TypeDoc::newWithLabel($label)->setId($id);
+		}
+		
 		return $instances;
 	}
 
@@ -118,6 +124,14 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 	const DIAPORAMA = 101;
 	const EPUB = 102;
 	const OAI = 103;
+
+
+	public static function getDefaultTypeDocs() {
+		return array(self::LIVRE_NUM => 'Livres numérisés',
+								 self::DIAPORAMA => 'Diaporamas',
+								 self::EPUB => 'E-Books',
+								 self::OAI => 'OAI');
+	}
 
 
 	/**

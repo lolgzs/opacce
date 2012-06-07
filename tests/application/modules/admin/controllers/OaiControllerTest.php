@@ -173,7 +173,7 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 										->newInstanceWithId(2)
 										->setLibelle('BNF:Gallica'));
 
-		$this->dispatch('/admin/oai/import/id/23');
+		$this->dispatch('/admin/oai/import/expression/asimov/id/23');
 
 		$this->_new_album = Class_Album::getLoader()->getFirstAttributeForLastCallOn('save');
 	}
@@ -221,6 +221,22 @@ class Admin_OaiControllerImportIsaacAsimovFoundationTest extends Admin_OaiContro
 		$this->assertTrue($this->_new_album->isGallica());
 	}
 
+
+	/** @test */
+	public function pageShouldRedirectToOaiIndexWithExpressionRecherche() {
+		$this->assertRedirectTo('/admin/oai/index/expression/asimov');
+	}
+}
+
+
+
+
+class Admin_OaiControllerSearchAsimovActionTest extends Admin_OaiControllerTestCase  {
+	/** @test */
+	public function pageShouldRedirectToOaiIndexWithExpressionRecherche() {
+		$this->dispatch('/admin/oai/search?expression=asimov', true);
+		$this->assertRedirectTo('/admin/oai/index/expression/asimov');
+	}
 }
 
 
@@ -237,7 +253,7 @@ abstract class Admin_OaiControllerSearchActionTestCase extends Admin_OaiControll
 
 
 
-class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerSearchActionTestCase  {
+class Admin_OaiControllerIndexWithSearchActionTest extends Admin_OaiControllerSearchActionTestCase  {
 	public function setUp() {
 		parent::setUp();
 
@@ -265,7 +281,7 @@ class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerSearchActio
 			->beStrict();
 
 
-		$this->dispatch('/admin/oai/search/expression/pommes', true);
+		$this->dispatch('/admin/oai/index/expression/pommes', true);
 	}
 
 
@@ -284,12 +300,12 @@ class Admin_OaiControllerSearchActionTest extends Admin_OaiControllerSearchActio
 
 
 
-class Admin_OaiControllerSearchInsignifantWordActionTest extends Admin_OaiControllerSearchActionTestCase  {
+class Admin_OaiControllerIndexSearchInsignifantWordActionTest extends Admin_OaiControllerSearchActionTestCase  {
 	//test de non-régression sur les recherches mots cours
 	public function setUp() {
 		parent::setUp();
 
-		$this->dispatch('/admin/oai/search/expression/te', true);
+		$this->dispatch('/admin/oai/index/expression/te', true);
 	}
 
 

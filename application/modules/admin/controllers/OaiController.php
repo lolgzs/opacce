@@ -55,7 +55,15 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 	
 	public function indexAction() {
 		parent::indexAction();
-		$this->view->search_form = $this->searchForm();
+		if ($expression_recherche = $this->_getParam('expression')) {
+			try {
+				$this->view->notices = Class_NoticeOAI::findNoticesByExpression($expression_recherche);
+			} catch (Class_SearchException $e) {
+				$this->view->notices = array();
+				$this->view->error = $e->getMessage();
+			}
+		}
+		$this->view->search_form = $this->searchForm($expression_recherche);
 	}
 
 
@@ -85,14 +93,8 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 
 
 	public function searchAction() {
-		try {
-			$this->view->notices = Class_NoticeOAI::findNoticesByExpression($this->_getParam('expression'));
-		} catch (Class_SearchException $e) {
-			$this->view->notices = array();
-			$this->view->error = $e->getMessage();
-		}
-
-		$this->_forward('index');
+		$expression_recherche = $this->_getParam('expression');
+		$this->_redirect('admin/oai/index/expression/'.$expression_recherche);
 	}
 
 
@@ -119,12 +121,13 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 	}
 
 
-	public function searchForm() {
+	public function searchForm($expression) {
 		return $this->view
 			->newForm(array('id' => 'search'))
 			->setAction($this->view->url(array('action' => 'search')))
 			->setMethod('get')
-			->addElement('text', 'expression', array('label' => 'Rechercher dans le catalogue OAI'))
+			->addElement('text', 'expression', array('label' => 'Rechercher dans le catalogue OAI',
+																							 'value' => $expression))
 			->addElement('submit', 'OK');
 	}
 
@@ -137,10 +140,11 @@ class Admin_OaiController extends ZendAfi_Controller_Action {
 			->setAuteur($notice->getAuteur())
 			->setEditeur($notice->getEditeur())
 			->setAnnee($notice->getDate())
-			->setIdOrigine($notice->getIdOai())
-			->save();
+			->setIdOrigine($notice->getIdOai());
 
-		$this->_redirect('oai/index');
+		$album->save();
+		$this->_helper->notify($this->view->_('L\'album "%s" a été créé', $album->getTitre()));
+		$this->_redirect('admin/oai/index/expression/'.$this->_getParam('expression'));
 	}
 	
 }
