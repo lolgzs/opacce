@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 : Classe de gestion des profils
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class ProfilLoader extends Storm_Model_Loader {
 	public function findAllByZoneAndBib($id_zone=0,$id_bib=0) {
@@ -50,6 +47,8 @@ class ProfilLoader extends Storm_Model_Loader {
 		return $this->find(1);
 	}
 }
+
+
 
 
 class Class_Profil extends Storm_Model_Abstract {
@@ -1183,5 +1182,27 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $this->getMailSite();
 
 		return $this->getLoader()->getPortail()->getMailSite();
+	}
+
+
+	public function moveModuleIdDivPos($id, $div, $pos) {
+		$cfg_accueil = $this->getCfgAccueilAsArray();
+
+		$moved_module = $cfg_accueil['modules'][$id];
+		$moved_module['division'] = $div;
+		unset($cfg_accueil['modules'][$id]);
+
+		$new_modules = array();
+		$i = 0;
+		foreach($cfg_accueil['modules'] as $module_id => $module) {
+			if ($i == $pos)
+				$new_modules[$id] = $module;
+			$new_modules[$module_id] = $module;
+			$i++;
+		}
+			
+		$cfg_accueil['modules'] = $new_modules;
+
+		$this->setCfgAccueil($cfg_accueil);
 	}
 }

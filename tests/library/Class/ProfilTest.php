@@ -289,17 +289,18 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 
 
 
-class ProfilAdulteChatenayTest extends ModelTestCase {
+abstract class ProfilAdulteChatenayTestCase extends ModelTestCase {
 	public function setUp() {
-		$cfg_accueil = array('modules' => array('1' => array('division' => '4',
+		parent::setUp();
+				$cfg_accueil = array('modules' => array('1' => array('division' => '4',
 																												 'type_module' => 'RECH_SIMPLE',
 																												 'preferences' => array()),
 
-																						'2' => array('division' => '4',
-																												 'type_module' => 'LOGIN',
-																												 'preferences' => array()),
-																						'4' => array('division' => '1',
-																												 'type_module' => 'NEWS')),
+																								'2' => array('division' => '4',
+																														 'type_module' => 'LOGIN',
+																														 'preferences' => array()),
+																								'4' => array('division' => '1',
+																														 'type_module' => 'NEWS')),
 												 'options' => 	array());
 
 		$this->profil = Class_Profil::getLoader()
@@ -314,8 +315,15 @@ class ProfilAdulteChatenayTest extends ModelTestCase {
 			->setLargeurDivision3(0)
 			->setCfgAccueil($cfg_accueil)
 			->setAccessLevel('-1');
+	}
+}
 
 
+
+
+class ProfilAdulteChatenayTest extends ProfilAdulteChatenayTestCase  {
+	public function setUp() {
+		parent::setUp();
 
 		$cfg_accueil_histoire = array('modules' => array(
 																										 '4' => array('division' => '1',
@@ -529,6 +537,29 @@ class ProfilAdulteChatenayTest extends ModelTestCase {
 		$this->assertTrue($loader
 											->methodHasBeenCalledWithParams('delete',
 																											array($this->page_histoire)));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleMoveNEWSToDivFourPositionOneTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleIdDivPos(4, 4, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdFourShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['4']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdFourShouldBeBetweenOneAndTwo() {
+		$this->assertEquals(array(1, 4, 2), array_keys($this->modules));
 	}
 }
 
