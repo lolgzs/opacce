@@ -30,6 +30,39 @@ $head_scripts = Class_ScriptLoader::newInstance()
 	->addJQueryReady('setupAnchorsTarget()')
 	->showNotifications();
 
+
+if (($user = Class_Users::getLoader()->getIdentity())
+		&& $user->isAdmin())
+	$head_scripts->addJQueryReady('
+    var currentPositions = [0, 0, 0];
+    $("div.layout-division>div>div").each(function(k, item) {
+      var division = $(item).parents("div.layout-division").attr("id").split("-").pop();
+      $(item).attr("data-position", currentPositions[division-1]);
+      currentPositions[division-1]++;
+      $(item).attr("data-division", division);
+    });
+
+    $("div.layout-division>div").sortable({
+      cursor:"move",
+      connectWith:"div.layout-division>div",
+      stop: function(event, ui){
+        var newDivision = $(ui.item).parents("div.layout-division").attr("id").split("-").pop();
+        var newPosition = $(ui.item).prevAll().length;
+        if (newDivision == $(ui.item).attr("data-division")
+            && newPosition == $(ui.item).attr("data-position")) 
+          return;
+
+        $.ajax("' . $this->url(array('module' => 'admin',
+																					'controller' => 'profil',
+																					'action' => 'module-sort'), null, true) . '",
+               {data: {fromDivision: $(ui.item).attr("data-division"),
+                      toDivision: newDivision,
+                      fromPosition: $(ui.item).attr("data-position"),
+                      toPosition: newPosition,
+                      profil:' . $current_profil->getId() . '}});
+      }});
+  ');
+
 if (file_exists(PATH_SKIN.'/css/bib.css'))
 	$head_scripts->addSkinStyleSheet('bib');
 

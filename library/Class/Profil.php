@@ -1214,7 +1214,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$i = 0;
 		foreach($cfg_accueil['modules'] as $module_id => $module) {
 			if ($i == $new_pos)
-				$new_modules[$id] = $module;
+				$new_modules[$id] = $moved_module;
 			$new_modules[$module_id] = $module;
 			$i++;
 		}

@@ -39,7 +39,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		if (!$this->_profil = Class_Profil::getLoader()->find($id_profil_param)) {
 			if (!in_array(
 							$this->_request->getActionName(),
-							array('index', 'redirect-to-index', 'add', 'genres'))
+							array('index', 'redirect-to-index', 'add', 'genres', 'module-sort'))
 			) {
 				$this->_forward('redirect-to-index');
 				return;
@@ -465,6 +465,19 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			->save();
 
 		$this->getHelper('ViewRenderer')->setNoRender();
+	}
+
+
+	public function moduleSortAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+		if (!$profil = Class_Profil::getLoader()->find($this->_getParam('profil')))
+			return;
+
+		$profil->moveModuleOldDivPosNewDivPos($this->_getParam('fromDivision'), 
+																					$this->_getParam('fromPosition'), 
+																					$this->_getParam('toDivision'), 
+																					$this->_getParam('toPosition'));
+		$profil->save();
 	}
 
 
