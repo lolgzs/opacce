@@ -1185,17 +1185,35 @@ class Class_Profil extends Storm_Model_Abstract {
 	}
 
 
-	public function moveModuleIdDivPos($id, $div, $pos) {
+	protected function _getIdModuleAtDivPosInCfg($div, $pos, $cfg_accueil) {
+		$id_module = 0;
+		$i = 0;
+		foreach($cfg_accueil['modules'] as $module_id => $module) {
+			if ($module['division'] == $div) {
+				if ($pos == $i) {
+					$id_module = $module_id;
+					break;
+				}
+				$i++;
+			}
+		}
+
+		return $id_module;
+	}
+
+
+	public function moveModuleOldDivPosNewDivPos($old_div, $old_pos, $new_div, $new_pos) {
 		$cfg_accueil = $this->getCfgAccueilAsArray();
 
+		$id = $this->_getIdModuleAtDivPosInCfg($old_div, $old_pos, $cfg_accueil);
 		$moved_module = $cfg_accueil['modules'][$id];
-		$moved_module['division'] = $div;
+		$moved_module['division'] = $new_div;
 		unset($cfg_accueil['modules'][$id]);
 
 		$new_modules = array();
 		$i = 0;
 		foreach($cfg_accueil['modules'] as $module_id => $module) {
-			if ($i == $pos)
+			if ($i == $new_pos)
 				$new_modules[$id] = $module;
 			$new_modules[$module_id] = $module;
 			$i++;

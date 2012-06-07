@@ -543,10 +543,10 @@ class ProfilAdulteChatenayTest extends ProfilAdulteChatenayTestCase  {
 
 
 
-class ProfilAdulteChatenayMoveModuleMoveNEWSToDivFourPositionOneTest extends ProfilAdulteChatenayTestCase {
+class ProfilAdulteChatenayMoveModuleMoveNEWSFromDiv1PosZeroToDivFourPositionOneTest extends ProfilAdulteChatenayTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->profil->moveModuleIdDivPos(4, 4, 1);
+		$this->profil->moveModuleOldDivPosNewDivPos(1, 0, 4, 1);
 		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
 	}
 
