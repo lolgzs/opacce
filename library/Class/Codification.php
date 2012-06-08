@@ -28,18 +28,8 @@ class Class_Codification
 //------------------------------------------------------------------------------------------------------
 // Liste des types de documents 
 //------------------------------------------------------------------------------------------------------
-	static function getTypesDocs()
-	{
-		$ret = array();
-		$data=fetchOne("select liste from variables where clef='types_docs'");
-		$types=explode(chr(13).chr(10),$data);
-		foreach($types as $type)
-		{
-			$elem=explode(":",$type);
-			if(trim($elem[0])=="") continue;
-			$ret[$elem[0]]=$elem[1];
-		}
-		return $ret;
+	static function getTypesDocs()	{
+		return Class_TypeDoc::allByIdLabel();
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -92,19 +82,10 @@ class Class_Codification
 			case "Y": return fetchOne("select libelle from codif_annexe where code='$id'");
 			case "Z": return fetchOne("select libelle from codif_tags where id_tag=$id");
 			case "T":
-			case "t":
-			{
-				if(!array_key_exists("libelles_types_docs", $_SESSION)){
-					$_SESSION["libelles_types_docs"] = array($id => '');
-					$td=fetchOne("select liste from variables where clef='types_docs'");
-					$items=explode(chr(13).chr(10),$td);
-					foreach($items as $item)
-					{
-						$elem=explode(":",$item);
-						if(trim($elem[0])>"") $_SESSION["libelles_types_docs"][$elem[0]]=trim($elem[1]);
-					}
-				}
-				return $_SESSION["libelles_types_docs"][$id];
+			case "t":	{
+				if ($type_doc = Class_TypeDoc::getLoader()->find((int)$id))
+					return $type_doc->getLabel();
+				return '';
 			}
 		}
 	}

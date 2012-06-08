@@ -23,7 +23,7 @@ class ModulesControllerRechercheTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$_SESSION["recherche"] = array("mode" => '');
-		$this->dispatch('/admin/modules/recherche?id_profil=2&action1=viewnotice&type_module=recherche&config=site');
+		$this->dispatch('/admin/modules/recherche?id_profil=2&action1=viewnotice&type_module=recherche&config=site', true);
 	}
 
 	/** @test */
