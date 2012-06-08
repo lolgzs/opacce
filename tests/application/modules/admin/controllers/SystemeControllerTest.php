@@ -153,7 +153,7 @@ class SystemeControllerPHPInfoActionTest extends Admin_AbstractControllerTestCas
 
 	/** @test */
 	public function pageShouldDisplayPHPInfo() {
-		$this->assertXPathContentContains('//dt', 'Version PHP');
+		$this->assertXPathContentContains('//div', 'PHP Version');
 	}
 
 
