@@ -58,6 +58,7 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 
 
 	public function newForEntry($url) {
+		$url = $this->_normalizeUrl($url);
 		return Class_OpdsCatalog::getLoader()->newInstance()
 			->setLibelle($this->getLibelle())
 			->setWebClient($this->getWebClient())
@@ -97,6 +98,21 @@ class Class_OpdsCatalog extends Storm_Model_Abstract {
 
 	public function getSearch() {
 		return $this->getCatalogueReader()->getSearch()->setWebClient($this->_web_client);
+	}
+
+
+	protected function _normalizeUrl($url) {
+		if (!$this->getUrl()) 
+			return $url;
+
+		if ('http' == substr($url, 0, 4)) 
+			return $url;
+
+		$urlInfos = parse_url($this->getUrl());
+		$normalized = $urlInfos['scheme'] . '://' . $urlInfos['host'];
+		if ('/' == substr($url, 0, 1)) 
+			return $normalized . $url;
+		return $normalized . dirname($urlInfos['path']) . $url;
 	}
 }
 ?>
