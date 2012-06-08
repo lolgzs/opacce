@@ -86,7 +86,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$html=$this->notice_html->getTags($tags,$this->id_notice);
 
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->getResponse()->setBody($html.Class_ScriptLoader::getInstance()->html());
 	}
 	
 //------------------------------------------------------------------------------------------------------
