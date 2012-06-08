@@ -321,6 +321,30 @@ class Admin_OpdsControllerUnknownIdsActionErrorsTest extends Admin_OpdsControlle
 
 
 
+class Admin_OpdsControllerActionsWithUnknowCatalogTest extends Admin_OpdsControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_OpdsCatalog')
+			->whenCalled('find')
+			->answers(null);
+	}
+
+	
+	/** @test */
+	public function browseShouldRedirectToIndex() {
+		$this->dispatch('/admin/opds/browse/id/666');
+		$this->assertRedirectTo('/admin/opds/index');
+	}
+
+
+	/** @test */
+	public function importShouldRedirectToIndex() {
+		$this->dispatch('/admin/opds/import/id/666');
+		$this->assertRedirectTo('/admin/opds/index');
+	}
+}
+
+
 
 abstract class Admin_OpdsControllerBrowseEbooksGratuitsTestCase extends Admin_OpdsControllerTestCase {
 	public function setUp() {
