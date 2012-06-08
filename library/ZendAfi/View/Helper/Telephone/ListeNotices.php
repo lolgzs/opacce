@@ -94,7 +94,7 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 		$titre = (isset($notice['T'])) ? $notice['T'] : $notice['titre_principal'];
 		$auteur = (isset($notice['A'])) ? $notice['A'] : $notice['auteur_principal'];
 
-		$html .= '<td valign="top">' . $titre . BR . $auteur;
+		$html .= '<td valign="top">' . $this->view->iconeSupport($notice["type_doc"]) . '&nbsp;' . $titre . BR . $auteur;
 
 		// Données variables
 		$length = strlen($champs);
