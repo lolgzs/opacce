@@ -29,6 +29,8 @@ class ZendAfi_View_Helper_RenderAlbum extends Zend_View_Helper_HtmlElement {
 			Class_ScriptLoader::getInstance()->loadBooklet($album->getId(), '#resnum');
 		else if ($album->isDiaporama())
 			$content = $this->view->tagSlideshow($album);
+		else if ($album->isGallica())
+			$content = $this->view->gallicaPlayer($album);
 		else
 			$content = $this->view->tagAlbumMediaList($album);
 		

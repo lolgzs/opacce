@@ -329,6 +329,11 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function isOAI() {
+		return $this->getTypeDocId() == Class_TypeDoc::OAI;
+	}
+
+
 	/**
 	 * @param Zend_Controller_Request_Http $request
 	 * @return array
@@ -968,7 +973,14 @@ class Class_Album extends Storm_Model_Abstract {
 
 	
 	public function isGallica() {
-		return false !== strpos($this->getIdOrigine(), 'gallica');
+		return ($this->isOAI() && (false !== strpos($this->getIdOrigine(), 'gallica')));
+	}
+
+
+	public function getGallicaArkId() {
+		if (!$this->isGallica())
+			return '';
+		return array_last(explode('/', $this->getIdOrigine()));
 	}
 }
 

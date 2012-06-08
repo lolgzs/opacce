@@ -20,7 +20,12 @@
  */
 
 class ZendAfi_View_Helper_GallicaPlayer extends Zend_View_Helper_HtmlElement {
-	public function gallicaPlayer($id_ark) {
+	public function gallicaPlayer($album_or_id_ark) {
+		if (is_int($album_or_id_ark))
+			$id_ark = $album_or_id_ark;
+		else
+			$id_ark = $album_or_id_ark->getGallicaArkId();
+
 		return sprintf(
 					 '<object
 							classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 

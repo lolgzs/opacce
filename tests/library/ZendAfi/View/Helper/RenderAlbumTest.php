@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_RenderAlbumEPUBTest extends ViewHelperTestCase {
+abstract class ZendAfi_View_Helper_RenderAlbumTestCase extends ViewHelperTestCase {
 	/** @var ZendAfi_View_Helper_RenderForm */
 	protected $_helper;
 
@@ -32,6 +32,14 @@ class ZendAfi_View_Helper_RenderAlbumEPUBTest extends ViewHelperTestCase {
 		$view = new ZendAfi_Controller_Action_Helper_View();
 		$this->_helper = new ZendAfi_View_Helper_RenderAlbum();
 		$this->_helper->setView($view);
+	}
+}
+
+
+
+class ZendAfi_View_Helper_RenderAlbumEPUBTest extends ZendAfi_View_Helper_RenderAlbumTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->_album_epub = Class_Album::getLoader()
 			->newInstanceWithId(999)
@@ -59,3 +67,32 @@ class ZendAfi_View_Helper_RenderAlbumEPUBTest extends ViewHelperTestCase {
 																			'versailles.epub');
 	}
 }
+
+
+
+
+class ZendAfi_View_Helper_RenderAlbumGallicaTest extends ZendAfi_View_Helper_RenderAlbumTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->_album_gallica = Class_Album::getLoader()
+			->newInstanceWithId(999)
+			->setLibelle('Fleurs de nice')
+			->beOAI()
+			->setIdOrigine('http://gallica.bnf.fr/ark:/1234');
+
+		$this->html = $this->_helper->renderAlbum($this->_album_gallica);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsGallicaPlayer() {
+		$this->assertXPath($this->html,
+											 '//object//param[@name="FlashVars"][contains(@value, "1234")]', 
+											 $this->html);
+	}
+	
+}
+
+
+?>
