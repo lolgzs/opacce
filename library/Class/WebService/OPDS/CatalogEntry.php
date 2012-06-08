@@ -53,6 +53,13 @@ class Class_WebService_OPDS_CatalogEntry {
 	}
 
 
+	public function getAuthor() {
+		if (null == $this->_properties['author'])
+			return 'inconnu';
+		return $this->_properties['author'];
+	}
+
+
 	public function import() {
 		$libelle = sprintf('import opds du %s', date('d M Y'));
 		if (!$category = Class_AlbumCategorie::getLoader()->findFirstBy(array('libelle' => $libelle)))
