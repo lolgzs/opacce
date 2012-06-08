@@ -1,29 +1,29 @@
-<style>
-dt {margin-top: 5px; font-weight:bold}
+<style type="text/css">
+	#accordion h2 {
+	text-decoration:none;
+	color:black;
+	padding-left:25px;
+}
 </style>
 
-<dl>
+<script>
+	$(function(){$('#accordion').accordion({autoHeight:false});});
+</script>
+<div id="accordion">
 
-<dt>Version PHP</dt>
-<dd><?php echo phpversion() ?></dd>
-
-<dt>Extensions PHP chargées</dt>
 <?php 
-$extensions = get_loaded_extensions();
-sort($extensions); 
-foreach($extensions as $extension)
-	echo '<dd>'.$extension.'</dd>';
-?>
-
-
-<dt>Configuration PHP</dt>
-<?php 
-$vars = ini_get_all();
-foreach($vars as $label => $var) {
-	if ($var['local_value'])
-		echo '<dd>'.$label.' : '.$var['local_value'] .'</dd>';
-}
-?>
-</dt>
-
-</dl>
+ob_start();
+phpinfo(INFO_MODULES);
+$info = ob_get_clean();
+$info = preg_replace('#<a[^>]*>#m', '', $info);
+$info = str_replace('</a>', '', $info);
+$info = preg_replace('#<meta[^>]*>#m', '', $info);
+$info = preg_replace('#<title>[^<]*</title>#m', '', $info);
+$info = preg_replace('#<style type="text/css">[^<]*</style>#m', '', $info);
+$info = preg_replace('#<head>[^<]*</head>#m', '', $info);
+$info = preg_replace('#<html[^>]*>#m', '', $info);
+$info = str_replace(array('<body>', '</body>', '<br />', '</html>'), '', $info);
+$info = str_replace(array('</h2>', '<h2>'), array('</h2><div>', '</div><h2>'), $info);
+$info = preg_replace('#<div class="center">[^<]*</div>#m', '', $info);
+echo $info;
+?></div>
