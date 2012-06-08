@@ -82,7 +82,9 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 
 	public function getDataAsArray() {
-		return unserialize($this->getData());
+		if ($datas = unserialize($this->getData()))
+			return $datas;
+		return array();
 	}
 
 
@@ -301,6 +303,18 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 		if ($this->hasEntrepot())
 			return $this->getEntrepot()->getLibelle();
 		return '';
+	}
+
+
+	public function isGallica() {
+		return $this->getEntrepot()->isGallica();
+	}
+
+ 
+	public function getGallicaArkId() {
+		if (!$this->isGallica())
+			return '';
+		return array_last(explode('/', $this->getIdOai()));
 	}
 }
 

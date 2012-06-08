@@ -210,4 +210,29 @@ class OAIControllerResultatActionTest extends AbstractControllerTestCase  {
 	}
 }
 
+
+
+class OAIControllerViewNoticeGallicaTest extends AbstractControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		Class_NoticeOAI::getLoader()
+			->newInstanceWithId(2)
+			->setTitre('Fleurs de nice')
+			->setIdOai('http://gallica.bnf.fr/ark://12345')
+			->setEntrepot(Class_EntrepotOAI::getLoader()
+										->newInstanceWithId(3)
+										->setLibelle('Gallica')
+										->setHandler('http://oai.bnf.fr'));
+
+		$this->dispatch('/opac/rechercheoai/viewnotice/id/2', true);
+	}
+
+
+	/** @test */
+	public function playerGallicaShouldBeEmbedded() {
+		$this->assertXPath('//object//param[@name="FlashVars"][contains(@value, "12345")]', $this->_response->getBody());
+	}
+}
+
+
 ?>
