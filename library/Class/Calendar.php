@@ -394,7 +394,7 @@ class Class_Calendar {
 
 		$news_html = sprintf(
 			"<div class='calendar_event_list'>".
-				"<p align='center' style='font-size:13px;'>".
+				"<p style='text-align:center'>".
 					"<b>%s</b>".
 			"</p>", $this->_translate->_('Prochains rendez-vous'));
 
