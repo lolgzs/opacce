@@ -79,7 +79,7 @@ SCRIPT;
 					$param["DATE"] = $this->preferences['display_date'];
 		$param["URL"]="";
 		$param["ID_BIB"]=Class_Profil::getCurrentProfil()->getIdSite();
-		$param["NB_NEWS"]=3;
+		$param["NB_NEWS"]=(int)$this->preferences["nb_events"];
 		$param["ID_MODULE"] = $this->id_module;
 		$param["ID_CAT"] = $this->preferences["id_categorie"];
 		$param["SELECT_ID_CAT"] = array_isset("select_id_categorie", $this->preferences) ? $this->preferences["select_id_categorie"] : "all";

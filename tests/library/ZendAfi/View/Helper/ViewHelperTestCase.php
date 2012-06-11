@@ -39,6 +39,13 @@ abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function assertXpathCount() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
+	}
+
+
 	public function assertNotXpath() {
 		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
 												 func_get_args());

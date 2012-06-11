@@ -196,6 +196,48 @@ class CalendarWithEmptyPreferencesTest extends CalendarWithEmptyPreferencesTestC
 }
 
 
+
+
+class CalendarWithPreferencesNbEventsOneTest extends CalendarWithEmptyPreferencesTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+			->whenCalled('getArticlesByPreferences')
+			->with(array(
+									 'display_order' => 'EventDebut',
+									 'id_categorie' => '',
+									 'event_date' => strftime('%Y-%m'),
+									 'events_only' => true,
+									 'published' => false))
+			->answers(array($this->nanook2, $this->opac4, $this->amber))
+			->getWrapper()
+			->beStrict();
+
+
+		$params = array('division' => '1',
+										'type_module' => 'CALENDAR',
+										'preferences' => array('titre' => 'Calendrier',
+																					 'rss_avis' => '0',
+																					 'id_categorie' => '',
+																					 'nb_events' => 1));
+		$this->helper = new ZendAfi_View_Helper_Accueil_Calendar(2, $params);
+
+		$this->html = $this->helper->getBoite();
+	}
+
+
+	/** @test */
+	function calendarEventListShouldContainsOneArticle() {
+		$this->assertXPathCount($this->html,
+														'//a[@class="calendar_event_title"][contains(@href, "cms/articleview")]',
+														1);
+	}
+}
+
+
+
+
 class CalendarWithEmptyParamsLocaleEnAndOnlyTwoArticlesReturned Extends CalendarWithEmptyPreferencesTestCase {
 	public function setUp() {
 		parent::setUp();
