@@ -853,3 +853,20 @@ dl.session_formation + .actions a:last-child {
 .lieu img {
 		float: right;
 }
+
+
+div.ui-sortable-placeholder {
+		visibility: visible !important;
+		background-color: rgba(100, 100, 255, 0.3);
+		min-height: 100px;
+		width: 98%;
+		margin: 5px auto;
+		border: 5px dashed rgba(100, 100, 255, 0.8);
+}
+
+.ui-sortable-helper {
+		box-shadow: 0px 0px 10px rgba(0,0,0,0.8);
+		max-width: 200px;
+		max-height: 200px;
+		cursor: move;
+}
