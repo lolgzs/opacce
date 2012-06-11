@@ -44,9 +44,9 @@ if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visue
 																								'title' => $this->_('Noir sur blanc'))) 
 		->addOPACStyleSheet('bleu_sur_jaune', array('rel' => 'alternate stylesheet',
 																								'title' => $this->_('Bleu sur jaune')))
-		->cssAddLine($this->_('<link rel="alternate stylesheet" type="text/css" href="" title="%s" />', 
+		->cssAddLine($this->_('<link rel="alternate stylesheet" type="text/css" href="" title="%s">', 
 													'Style par défaut'))
-		->cssAddLine('<link id="accessibility_stylesheet" rel="stylesheet" type="text/css" href="" title="" />')
+		->cssAddLine('<link id="accessibility_stylesheet" rel="stylesheet" type="text/css" href="" title="">')
 		->addAdminScript('jquery.cookie')
 		->addJQueryReady('initAccessibilityOptions();');
 }

@@ -256,6 +256,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return self::$FORWARDED_ATTRIBUTES;
 	}
 
+
 	/**
 	 * @param string $field
 	 * @return bool
@@ -336,7 +337,6 @@ class Class_Profil extends Storm_Model_Abstract {
 		$default_values = Class_Systeme_ModulesAccueil::getInstance()->getValeursParDefaut($type_module);
 		return array_merge($default_values, $data);
 	}
-
 
 
 	/**
@@ -517,14 +517,6 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	/**
-	 * @return array
-	 */
-	public function getDefaultCfgAccueil() {
-		return $this->_unserialize(self::getDefaultValue('cfg_accueil'));
-	}
-
-
-	/**
 	 * @param string $name
 	 * @return array
 	 */
@@ -640,6 +632,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_set($cfg_name, $cfg);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
@@ -647,6 +640,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function setCfgAccueil($string_or_array) {
 		return $this->_setCfgNamed('cfg_accueil', $string_or_array);
 	}
+
 
 	/**
 	 * @param mixed $string_or_array
@@ -656,6 +650,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_setCfgNamed('cfg_menus', $string_or_array);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
@@ -663,6 +658,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function setCfgNotice($string_or_array) {
 		return $this->_setCfgNamed('cfg_notice', $string_or_array);
 	}
+
 
 	/**
 	 * @param mixed $string_or_array
@@ -672,6 +668,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_setCfgNamed('cfg_modules', $string_or_array);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
@@ -679,6 +676,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function setCfgSite($string_or_array) {
 		return $this->_setCfgNamed('cfg_site', $string_or_array);
 	}
+
 
 	/**
 	 * @return string
@@ -689,6 +687,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $this->getLibelle('libelle');
 	}
+
 
 	/**
 	 * @return array
@@ -701,6 +700,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $attributes;
 	}
 
+
 	/**
 	 * @param string $param
 	 * @param mixed $value
@@ -712,6 +712,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setCfgSite(ZendAfi_Filters_Serialize::serialize($cfg_site));
 	}
 
+
 	/**
 	 * @param string $param
 	 * @return bool
@@ -719,6 +720,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function hasDefaultValue($param) {
 		return array_key_exists($param, self::getDefaultValues());
 	}
+
 
 	/**
 	 * @param string $param
@@ -728,6 +730,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$default_values = self::getDefaultValues();
 		return $default_values[$param];
 	}
+
 
 	/**
 	 * @param string $param
@@ -739,6 +742,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $this->getDefaultValue($param);
 		return $cfg_site[$param];
 	}
+
 
 	/**
 	 * @return bool
@@ -771,6 +775,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $availableSkins;
 
 	}
+
 
 	/**
 	 * Si un attribut n'est pas trouvé, regarde s'il n'est pas dans cfgSite.
@@ -820,6 +825,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			return parent::_set($field, $value);
 	}
 
+
 	/**
 	 * @return Class_Profil
 	 */
@@ -861,6 +867,7 @@ class Class_Profil extends Storm_Model_Abstract {
     return $this;
 	}
 
+
 	/**
 	 * @param string $color
 	 * @return bool
@@ -868,6 +875,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	protected function _isCSSColorValid($color) {
 		return !$color or preg_match('/^#([A-F0-9]{3}|[A-F0-9]{6})$/i', $color);
 	}
+
 
 	/**
 	 * @return string
@@ -889,6 +897,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $css;
 	}
 
+
 	/**
 	 * @return array
 	 */
@@ -901,12 +910,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $roles;
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function isPublic() {
 		return (int)$this->getAccessLevel() === -1;
 	}
+
 
 	/**
 	 * @param string $type_module
@@ -916,6 +927,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$modules_accueil = new Class_Systeme_ModulesAccueil();
 		return $modules_accueil->getValeursParDefaut($type_module);
 	}
+
 
 	/**
 	 * @param string $type_module
@@ -930,6 +942,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return false;
 	}
 
+
 	/**
 	 * @param int $division
 	 * @return array
@@ -940,17 +953,18 @@ class Class_Profil extends Storm_Model_Abstract {
 		else
 			$cfg_accueil = $this->getCfgAccueilAsArray();
 
-		$cls_module = new Class_Systeme_ModulesAccueil();
-
 		$boites = array();
 		foreach ($cfg_accueil['modules'] as $id => $module) {
 			if (!$module) $module = array();
 			$module = array_merge(array('type_module' => null,
 																	'preferences' => array()),
 														$module);
-			
-			$module['preferences'] = array_merge(																			
-																					 $cls_module->getValeursParDefaut($module['type_module']),
+
+			$module_accueil = Class_Systeme_ModulesAccueil::moduleBycode($module['type_module']);
+			if (!$module_accueil->isVisibleForProfil($this))
+				continue;
+
+			$module['preferences'] = array_merge($module_accueil->getDefaultValues(),	
 																					 $module['preferences']);
 
 			if (array_key_exists('division', $module) and $module['division'] == $division)
@@ -959,6 +973,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $boites;
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -989,6 +1004,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setCfgAccueil($cfg_accueil);
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -996,12 +1012,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->isTypeBoiteInBanniere('LOGIN');
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function getBoiteRechercheSimpleInBanniere() {
 		return $this->isTypeBoiteInBanniere('RECH_SIMPLE');
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -1013,6 +1031,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $this->setBoiteOfTypeInBanniere($is_present, 'LOGIN');
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -1026,6 +1045,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setBoiteOfTypeInBanniere($is_present, 'RECH_SIMPLE');
 	}
 
+
 	/**
 	 * @param int $id_menu
 	 * @return array
@@ -1033,6 +1053,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function getMenu($id_menu) {
 		return array_at($id_menu, $this->getCfgMenusAsArray());
 	}
+
 
 	/**
 	 * @param array $menu
@@ -1048,6 +1069,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $last_index;
 	}
 
+
 	/**
 	 * @return array
 	 */
@@ -1060,6 +1082,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		}
 		return $boites_menu;
 	}
+
 
 	/**
 	 * @return array
@@ -1074,6 +1097,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $menus;
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -1083,6 +1107,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return '';
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -1090,12 +1115,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return null === $this->getBib();
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function isPortail() {
 		return 1 === $this->getId();
 	}
+
 
 	/**
 	 * @return Class_Profil
@@ -1109,6 +1136,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			->updateAttributes($attributes)
 			->setLibelle('** Nouveau Profil **');
 	}
+
 
 	/**
 	 * @param Class_Profil $new_parent
@@ -1136,6 +1164,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setCfgAccueil($cfg_accueil);
 	}
 
+
 	/**
 	 * @param Class_Profil $new_parent
 	 * @return Class_Profil
@@ -1152,6 +1181,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $this;
 	}
+
 
 	/**
 	 * @return array

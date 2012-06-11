@@ -58,6 +58,15 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	 * @param string $code
 	 * @return Class_Systeme_ModulesAccueil_Null or subclass
 	 */
+	public static function moduleByCode($code) {
+		return self::getInstance()->getModuleByCode($code);
+	}
+
+
+	/** 
+	 * @param string $code
+	 * @return Class_Systeme_ModulesAccueil_Null or subclass
+	 */
 	public function getModuleByCode($code) {
 		$modules = $this->_getModules();
 		if (array_key_exists((string)$code, $modules)) {
@@ -92,16 +101,7 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	 * @return array
 	 */
 	public function getValeursParDefaut($type) {
-		$modules = $this->_getModules();
-
-		if (array_key_exists($type, $modules))
-			$values = $modules[$type]->getDefaultValues();
-		else
-			$values = array();
-
-		return array_merge(array('boite' => null,
-														  'titre' => ''),
-											 $values);
+		return $this->getModuleByCode($type)->getDefaultValues();
 	}
 
 

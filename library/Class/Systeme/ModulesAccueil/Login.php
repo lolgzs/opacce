@@ -37,6 +37,9 @@ class Class_Systeme_ModulesAccueil_Login extends Class_Systeme_ModulesAccueil_Nu
 	/** @var bool */
 	protected $_isPhone = false;
 
+	/** @var bool */
+	protected $_isPackMobile = true;
+
 	/** @var array */
 	protected $_defaultValues = array(
 		'titre' => "Se connecter",			// Titre de la boite

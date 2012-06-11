@@ -1,7 +1,7 @@
 <?php echo $this->toolbar("Accueil",false,false); ?>
 <div data-role="content">
 <?php 
-$contenu_divisions = $this->portail($this->profil->getCfgAccueilAsArray());
-echo $contenu_divisions[1];
+	 $contenu_divisions = $this->portail(array('modules' => $this->profil->getBoitesDivision(1)));
+   echo $contenu_divisions[1];
 ?>
 </div>

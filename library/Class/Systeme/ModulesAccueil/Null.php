@@ -37,12 +37,30 @@ class Class_Systeme_ModulesAccueil_Null {
 	/** @var bool */
 	protected $_isPhone = false;
 
+	/** @var bool */
+	protected $_isPackMobile = true;
+
 	/** @var array */
 	protected $_defaultValues = array();
+
+
+	/** @return boolean */
+	public function isVisibleForProfil($profil) {
+		if (!$profil->isTelephone())
+			return true;
+
+		return $this->_isPhone && (!$this->_isPackMobile || Class_AdminVar::isPackMobileEnabled());
+	}
 
 	
 	/** @return array */
 	public function getDefaultValues() {
+		if (!isset($this->_defaultValues['boite']))
+			$this->_defaultValues['boite'] = null;
+
+		if (!isset($this->_defaultValues['titre']))
+			$this->_defaultValues['titre'] = '';
+
 		return $this->_defaultValues;
 	}
 
@@ -92,4 +110,6 @@ class Class_Systeme_ModulesAccueil_Null {
 								 'popup_height' => $this->getPopupHeight(),
 								 'phone' => $this->isPhone());
 	}
-}?>
+}
+
+?>
