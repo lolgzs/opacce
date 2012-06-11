@@ -71,5 +71,11 @@ class Class_Systeme_ModulesAccueil_BibliothequeNumerique extends Class_Systeme_M
 	public function getOrderModes() {
 		return $this->_orderModes;
 	}
+
+
+	/** @return boolean */
+	public function isVisibleForProfil($profil) {
+		return Class_AdminVar::isBibNumEnabled();
+	}
 }
 ?>

@@ -84,12 +84,15 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 
 
 
-class IndexControllerTelephoneWithoutPackMobileTest extends AbstractIndexControllerTelephoneWithModulesTest {
+class IndexControllerTelephoneWithoutPackMobileButBibNumTest extends AbstractIndexControllerTelephoneWithModulesTest {
 	public function setUp() {
 		parent::setUp();
 		
 		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
 			->setValeur(0);
+
+		Class_AdminVar::getLoader()->newInstanceWithId('BIB_NUMERIQUE')
+			->setValeur(1);
 
 		$this->dispatch('/', true);
 	}
@@ -123,6 +126,31 @@ class IndexControllerTelephoneWithoutPackMobileTest extends AbstractIndexControl
 	public function boiteLoginShouldNotBePresent() {
 		$this->assertNotXPath('//form[contains(@action, "auth/boitelogin")]');
 	}
+
+
+	/** @test */
+	function boiteCalendrierShouldNotBePresent() {
+		$this->assertNotXPathContentContains('//h2', 'Agenda');
+	}
+
+
+	/** @test */
+	function boiteCritiquesShouldNotBePresent() {
+		$this->assertNotXPathContentContains('//div[@class="titre"]', 'Critiques');
+	}
+
+
+	/** @test */
+	function bibNumeriqueShouldBeVisible() {
+		$this->assertXPathContentContains('//div[@class="titre"]', 'Mes albums');
+	}
+
+
+	/** @test */
+	function boiteNewsShouldBeVisible() {
+		$this->assertXPath('//ul[@class="listview-news"]');
+	}
+
 }
 
 

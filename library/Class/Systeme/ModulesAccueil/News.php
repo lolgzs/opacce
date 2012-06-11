@@ -37,6 +37,9 @@ class Class_Systeme_ModulesAccueil_News extends Class_Systeme_ModulesAccueil_Nul
 	/** @var bool */
 	protected $_isPhone = true;
 
+	/** @var bool */
+	protected $_isPackMobile = false;
+
 	/** @var array */
 	protected $_defaultValues = array(
 		'titre' => 'Articles', // Titre de la boite
