@@ -865,7 +865,7 @@ div.ui-sortable-placeholder {
 }
 
 .ui-sortable-helper {
-		box-shadow: 0px 0px 15px rgba(0,0,0,0.8);
+		box-shadow: 0px 0px 25px rgba(0,0,0,0.8);
 		max-height: 200px;
 		cursor: move;
 		overflow: hidden;

@@ -470,6 +470,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 	public function moduleSortAction() {
 		$this->getHelper('ViewRenderer')->setNoRender();
+
 		if (!$profil = Class_Profil::getLoader()->find($this->_getParam('profil')))
 			return;
 

@@ -1204,7 +1204,6 @@ class Class_Profil extends Storm_Model_Abstract {
 
 	public function moveModuleOldDivPosNewDivPos($old_div, $old_pos, $new_div, $new_pos) {
 		$cfg_accueil = $this->getCfgAccueilAsArray();
-
 		$id = $this->_getIdModuleAtDivPosInCfg($old_div, $old_pos, $cfg_accueil);
 		$moved_module = $cfg_accueil['modules'][$id];
 		$moved_module['division'] = $new_div;
@@ -1213,11 +1212,19 @@ class Class_Profil extends Storm_Model_Abstract {
 		$new_modules = array();
 		$i = 0;
 		foreach($cfg_accueil['modules'] as $module_id => $module) {
-			if ($i == $new_pos)
+			$in_new_div = $module['division'] == $new_div;
+
+			if (($i == $new_pos) && $in_new_div) 
 				$new_modules[$id] = $moved_module;
+
+			if ($in_new_div)
+				$i++;
+
 			$new_modules[$module_id] = $module;
-			$i++;
 		}
+
+		if (!isset($new_modules[$id]))
+			$new_modules[$id] = $moved_module;
 			
 		$cfg_accueil['modules'] = $new_modules;
 

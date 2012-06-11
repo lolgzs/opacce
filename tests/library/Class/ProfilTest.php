@@ -561,6 +561,99 @@ class ProfilAdulteChatenayMoveModuleMoveNEWSFromDiv1PosZeroToDivFourPositionOneT
 	public function moduleIdFourShouldBeBetweenOneAndTwo() {
 		$this->assertEquals(array(1, 4, 2), array_keys($this->modules));
 	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleLOGINToFirstPosInDivFourTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 1, 4, 0);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['2']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeOnTop() {
+		$this->assertEquals(array(2, 1, 4), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleRECH_SIMPLEToSecondPosInDivFourTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 0, 4, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdOneShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['1']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeOnTop() {
+		$this->assertEquals(array(2, 4, 1), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleLOGINToLastPosInDivOneTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 1, 1, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeInDivOne() {
+		$this->assertEquals(1, $this->modules['2']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeLast() {
+		$this->assertEquals(array(1, 4, 2), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
 }
 
 
