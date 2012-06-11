@@ -156,7 +156,7 @@ class ScriptLoaderJsAndCssTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	function shouldNotContainNuagesCssCss() {
-		$this->assertXPath('//link[@type="text/css"][@href="public/css/nuages.css"]', $this->html);
+		$this->assertXPath('//link[@type="text/css"][contains(@href, "public/css/nuages.css")]', $this->html);
 	}
 
 
@@ -171,15 +171,52 @@ class ScriptLoaderJsAndCssTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('<style type="text/css">body {font-size: 10px}</style>', $this->html);
 	}
 
+
 	/** @test */
 	function jsShouldContainsCylcleDotJs() {
 		$this->assertContains('opac/cycle.min.js', $this->html);
 	}
 
+
 	/** @test */
 	function jsShouldContainsSlidesDotJs() {
-		$this->assertContains('opac/slides.min.js"', $this->html);
+		$this->assertContains('opac/slides.min.js', $this->html);
 	}
 }
 
+
+
+class ScriptLoaderVersionHashTest extends PHPUnit_Framework_TestCase {
+	protected $_html;
+	protected $_versionHash;
+
+	public function setUp() {
+		Class_ScriptLoader::resetInstance();
+		$this->_html = Class_ScriptLoader::getInstance()
+			->addStyleSheet('public/css/nuages.css')
+			->addStyleSheet('normal.css?param=value')
+			->addScript('opac/cycle.min')
+			->html();
+
+		$this->_versionHash = md5(VERSION_PERGAME);
+	}
+
+
+	/** @test */
+	public function hashShouldBeAppendedToCss() {
+		$this->assertContains('nuages.css?v=' . $this->_versionHash, $this->_html);
+	}
+
+
+	/** @test */
+	public function hashShouldBeAppendedToCssWithAmperstand() {
+		$this->assertContains('normal.css?param=value&v=' . $this->_versionHash, $this->_html);
+	}
+
+
+	/** @test */
+	public function hashShouldBeAppendedToJs() {
+		$this->assertContains('cycle.min.js?v=' . $this->_versionHash, $this->_html);
+	}	
+}
 ?>

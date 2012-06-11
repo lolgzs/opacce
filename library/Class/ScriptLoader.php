@@ -31,6 +31,7 @@ class Class_ScriptLoader {
 	protected $_amber_ready_scripts;
 	protected $_jquery_ready_scripts;
 	protected $_is_mobile = false;
+	protected $_version_pergame_hash;
 
 	/**
 	 * @return ScriptLoader
@@ -191,6 +192,7 @@ class Class_ScriptLoader {
 	public function addScript($file) {
 		if (false === strpos($file, '.js'))
 				$file .= '.js';
+		$file = $this->_addVersionParam($file);
 		return $this->_scriptsAddLine(sprintf('<script src="%s" type="text/javascript"></script>', $file));
 	}
 
@@ -262,6 +264,7 @@ class Class_ScriptLoader {
 
 		if (false === strpos($file, '.css'))
 				$file .= '.css';
+		$file = $this->_addVersionParam($file);
 
 		$attributes = array_merge(array('type' => 'text/css', 
 																		'rel' => 'stylesheet', 
@@ -498,6 +501,23 @@ class Class_ScriptLoader {
 	 */
 	public function html() {
 		return $this->styleSheetsHTML().$this->javaScriptsHTML();
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	protected function _addVersionParam($file) {
+		return $file . ((false == strpos($file, '?')) ? '?' : '&') . 'v=' . $this->getVersionPergameHash();
+	}
+
+
+	
+	protected function getVersionPergameHash() {
+		if (null == $this->_version_pergame_hash)
+			$this->_version_pergame_hash = md5(VERSION_PERGAME);
+		return $this->_version_pergame_hash;
 	}
 }
 

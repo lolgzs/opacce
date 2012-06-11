@@ -367,7 +367,7 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 
 	/** @test */
 	function headerCssJeunesseShouldBeIncluded() {
-		$this->assertXPath('//link[@rel="stylesheet"][@type="text/css"][@href="afi-opac3/userfiles/jeunesse.css"]');
+		$this->assertXPath('//link[@rel="stylesheet"][@type="text/css"][contains(@href, "afi-opac3/userfiles/jeunesse.css")]');
 	}
 
 
