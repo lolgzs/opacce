@@ -46,6 +46,9 @@ class Class_Systeme_ModulesAccueil_Null {
 
 	/** @return boolean */
 	public function isVisibleForProfil($profil) {
+		if (get_class($this) == 'Class_Systeme_ModulesAccueil_Null')
+			return false;
+
 		if (!$profil->isTelephone())
 			return true;
 

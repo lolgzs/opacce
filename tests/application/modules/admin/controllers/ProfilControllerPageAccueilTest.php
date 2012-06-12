@@ -20,7 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractControllerTestCase {
+abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -39,7 +39,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 																												 'type_module' => 'CRITIQUES',
 																												 'preferences' => array()),
 
-																						'666' => array('division' => 8,
+																						'666' => array('division' => 1,
 																													 'type_module' => 'WRONG',
 																													 'preferences' => array())));
 
@@ -51,6 +51,13 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 			->setCfgAccueil($cfg_accueil);
 
 		Class_Profil::getLoader()->cacheInstance($this->profil_jeunesse);
+	}
+}
+
+
+class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->profil_wrapper = Storm_Test_ObjectWrapper
 			::onLoaderOfModel('Class_Profil')
@@ -86,6 +93,12 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 
 	/** @test */
+	public function boiteWrongShouldNotBeVisible() {
+		$this->assertNotXPath('//li[@id_module="666"]');
+	}
+
+
+	/** @test */
 	public function boiteCritiquesShouldBeInDivisionTwo() {
 		$this->assertXPath('//ul[@id="box2"]/li[@id="CRITIQUES"][@id_module="6"]');
 	}
@@ -93,7 +106,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 	/** @test */
 	public function preferencesBoiteKiosqueShouldBeEncodedInAttributeProprietes() {
-		$this->assertXPath('//li[@id_module="3"][@proprietes="nb_notices=12/nb_analyse=36/only_img=1/"]');
+		$this->assertXPath('//li[@id_module="3"][contains(@proprietes,"nb_notices=12/only_img=1/aleatoire=1")]');
 	}
 
 
@@ -233,7 +246,7 @@ class ProfilControllerPageAccueilWithTelephonePackMobileTest extends Admin_Abstr
 
 
 
-class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_AbstractControllerTestCase {
+class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -243,11 +256,9 @@ class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends A
 		Class_AdminVar::getLoader()->newInstanceWithId('BIBNUM')
 			->setValeur(0);
 
-		$profil_telephone = Class_Profil::getLoader()
-			->newInstanceWithId(3)
-			->setLibelle('iPhone')
-			->beTelephone();
-		$this->dispatch('/admin/profil/accueil/id_profil/3');
+		$this->profil_jeunesse->beTelephone();
+
+		$this->dispatch('/admin/profil/accueil/id_profil/'.$this->profil_jeunesse->getId());
 	}
 
 

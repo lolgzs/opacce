@@ -342,20 +342,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		else {
 			// Html des modules sélectionnés triés par divisions
 			$box = array(1 => '', 2 => '', 3 => '', 4 => '');
-			$cfg_acc = $profil->getCfgAccueilAsArray();
-			if($cfg_acc['modules']) {
-				foreach($cfg_acc['modules'] as $id_module => $module) {
-					$division=$module["division"];
-					$type_module=$module["type_module"];
-
-					if (!isset($liste_module[$type_module])) continue;
-
-					$box[$division].=$this->_getItemModule($type_module,
-																								 $liste_module[$type_module],
-																								 $module["preferences"],
-																								 $id_module);
-				}
-			}
+			foreach($box as $division => $content) 
+				$box[$division] = $this->_getHTMLForProfilModulesDivision($profil, $division);
 
 			// Html des objets disponibles
 			$groupes=$class_module->getGroupes();
@@ -388,7 +376,20 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
-	private function _getItemModule($type_module, $module, $preferences = '', $id_module = 0) {
+	protected function _getHTMLForProfilModulesDivision($profil, $division) {
+		$html = '';
+		$modules = $profil->getBoitesDivision($division);
+
+		foreach($modules as $id_module => $module)
+			$html .= $this->_getItemModule($module['type_module'], 
+																		 Class_Systeme_ModulesAccueil::moduleByCode($module['type_module']), 
+																		 $module['preferences'],
+																		 $id_module);
+		return $html;
+	}
+
+
+	protected function _getItemModule($type_module, $module, $preferences = '', $id_module = 0) {
 		$properties = '';
 		if ($preferences)	{
 			foreach($preferences as $clef => $valeur)
