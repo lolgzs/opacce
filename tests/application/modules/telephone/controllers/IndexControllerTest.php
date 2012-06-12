@@ -91,7 +91,7 @@ class IndexControllerTelephoneWithoutPackMobileButBibNumTest extends AbstractInd
 		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
 			->setValeur(0);
 
-		Class_AdminVar::getLoader()->newInstanceWithId('BIB_NUMERIQUE')
+		Class_AdminVar::getLoader()->newInstanceWithId('BIBNUM')
 			->setValeur(1);
 
 		$this->dispatch('/', true);

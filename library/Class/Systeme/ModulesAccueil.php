@@ -68,32 +68,12 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	 * @return Class_Systeme_ModulesAccueil_Null or subclass
 	 */
 	public function getModuleByCode($code) {
-		$modules = $this->_getModules();
+		$modules = self::getModules();
 		if (array_key_exists((string)$code, $modules)) {
 			return $modules[(string)$code];
 		}
 
 		return new Class_Systeme_ModulesAccueil_Null;
-	}
-
-
-	/**
-	 * @param string $type_module
-	 * @return array
-	 */
-	public function getModules($type_module=false) {
-		$modules = $this->_getModules();
-		if ($type_module && array_key_exists($type_module, $modules)) {
-			return $modules[$type_module]->getProperties();
-
-		}
-		
-		$modulesProperties = array();
-		foreach ($modules as $k => $module) {
-			$modulesProperties[$k] = $module->getProperties();
-		}
-
-		return $modulesProperties;
 	}
 
 
@@ -118,7 +98,7 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 
 
 	/** @return array */
-	private function _getModules() {
+	public static function getModules() {
 		if (null === self::$_modules) {
 			self::$_modules = array('NEWS' => new Class_Systeme_ModulesAccueil_News,
 															'CRITIQUES' => new Class_Systeme_ModulesAccueil_Critiques,
@@ -135,13 +115,9 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 															'LOGIN' => new Class_Systeme_ModulesAccueil_Login,
 															'CONTENEUR_DEUX_COLONNES' => new Class_Systeme_ModulesAccueil_ConteneurDeuxColonnes,
 															'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
-															'LANGUE' => new Class_Systeme_ModulesAccueil_Langue
-															);
-			
-			if (Class_AdminVar::isBibNumEnabled()) {
-				self::$_modules['BIB_NUMERIQUE'] = new Class_Systeme_ModulesAccueil_BibliothequeNumerique;
+															'LANGUE' => new Class_Systeme_ModulesAccueil_Langue,
+															'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique);
 			}
-		}
 
 		return self::$_modules;
 	}

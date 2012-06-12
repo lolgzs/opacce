@@ -259,10 +259,10 @@ class Admin_AccueilController extends Zend_Controller_Action {
 			return;
 		}
 
-		$modules_accueil = new Class_Systeme_ModulesAccueil();
+		$modules_accueil = Class_Systeme_ModulesAccueil::getModules();
 		$modules = array();
-		foreach ($modules_accueil->getModules() as $key => $values)
-			$modules[$key] = $values['libelle'];
+		foreach ($modules_accueil as $key => $module)
+			$modules[$key] = $module->getLibelle();
 
 		$this->view->modules = $modules;
 	}

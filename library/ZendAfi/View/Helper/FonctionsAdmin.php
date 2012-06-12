@@ -76,14 +76,17 @@ class ZendAfi_View_Helper_FonctionsAdmin extends ZendAfi_View_Helper_BaseHelper
 //------------------------------------------------------------------------------------------------------
 // Modules de la page d'accueil
 //------------------------------------------------------------------------------------------------------ 
-	private function getModuleAccueil($type_module,$id_module)
-	{
-		$cls_module=new Class_Systeme_ModulesAccueil();
-		$module=$cls_module->getModules($type_module);
+	private function getModuleAccueil($type_module,$id_module){
+		$module = Class_Systeme_ModulesAccueil::moduleByCode($type_module);
 
-		$ret["url"]='/admin/accueil/'.$module["action"]."?config=accueil&id_profil=".$this->id_profil."&id_module=".$id_module."&type_module=".$type_module;
-		$ret["popup_height"]=$module["popup_height"];
-		$ret["popup_width"]=$module["popup_width"];
+		$ret["url"] = sprintf('/admin/accueil/%s?config=accueil&id_profil=%d&id_module=%d&type_module=%s',
+													$module->getAction(),
+													$this->id_profil,
+													$id_module,
+													$type_module);
+
+		$ret["popup_height"] = $module->getPopupHeight();
+		$ret["popup_width"] = $module->getPopupWidth();
 		
 		return $ret;
 	}

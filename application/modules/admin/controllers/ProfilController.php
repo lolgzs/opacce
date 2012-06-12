@@ -347,10 +347,13 @@ class Admin_ProfilController extends Zend_Controller_Action {
 				foreach($cfg_acc['modules'] as $id_module => $module) {
 					$division=$module["division"];
 					$type_module=$module["type_module"];
+
+					if (!isset($liste_module[$type_module])) continue;
+
 					$box[$division].=$this->_getItemModule($type_module,
-																								$liste_module[$type_module],
-																								$module["preferences"],
-																								$id_module);
+																								 $liste_module[$type_module],
+																								 $module["preferences"],
+																								 $id_module);
 				}
 			}
 
@@ -364,11 +367,12 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			}
 
 			foreach($liste_module as $type_module => $module) {
-				$groupe=$module["groupe"];
-				if($profil->isTelephone() and $module["phone"]==false) continue;
-				$box_dispo[$groupe].=$this->_getItemModule($type_module,$module);
+				if (!$module->isVisibleForProfil($profil)) continue;
+				$box_dispo[$module->getGroup()].=$this->_getItemModule($type_module,$module);
 			}
-			foreach($groupes as $groupe => $libelle) $box_dispo[$groupe].='</ul></div>';
+
+			foreach($groupes as $groupe => $libelle) 
+				$box_dispo[$groupe].='</ul></div>';
 
 			// Get le nombre de divisions dans le profil
 			$this->view->nb_divisions = $profil->getNbDivisions();
@@ -392,10 +396,10 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		}
 
 		if($id_module) $display="block"; else $display="none";
-		$onclick="majProprietes(this,'".BASE_URL."/admin/accueil/".$module["action"]."?config=admin&amp;id_profil=".$this->id_profil."',".$module['popup_width'].",".$module['popup_height'].");";
+		$onclick="majProprietes(this,'".BASE_URL."/admin/accueil/".$module->getAction()."?config=admin&amp;id_profil=".$this->id_profil."',".$module->getPopupWidth().",".$module->getPopupHeight().");";
 
 		$item='<li id="'.$type_module.'" id_module="'.$id_module.'" proprietes="'.$properties.'"><table width="97%"><tr>';
-		$item.='<td align="left" class="cfg_accueil">'.$module["libelle"].'</td>';
+		$item.='<td align="left" class="cfg_accueil">'.$module->getLibelle().'</td>';
 		$item.='<td align="right"><img src="'.URL_ADMIN_IMG.'ico/fonctions_admin.png" onclick="'.$onclick.'" title="propriétés" style="display:'.$display.'" alt="Propriétés"/></td>';
 		$item.='</tr></table></li>';
 		return $item;

@@ -37,7 +37,11 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 																																								'only_img' => 1)),
 																						'6' => array('division' => 2,
 																												 'type_module' => 'CRITIQUES',
-																												 'preferences' => array())));
+																												 'preferences' => array()),
+
+																						'666' => array('division' => 8,
+																													 'type_module' => 'WRONG',
+																													 'preferences' => array())));
 
 
 		$this->profil_jeunesse = new Class_Profil();
@@ -59,7 +63,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 
 		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
-		$this->dispatch('/admin/profil/accueil/id_profil/7');
+		$this->dispatch('/admin/profil/accueil/id_profil/7', true);
 	}
 
 
@@ -178,9 +182,16 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 
 
-class ProfilControllerPageAccueilWithTelephoneTest extends Admin_AbstractControllerTestCase {
+class ProfilControllerPageAccueilWithTelephonePackMobileTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
+
+		Class_AdminVar::getLoader()->newInstanceWithId('BIB_NUMERIQUE')
+			->setValeur(1);
+
 		$profil_telephone = Class_Profil::getLoader()
 			->newInstanceWithId(3)
 			->setLibelle('iPhone')
@@ -202,8 +213,65 @@ class ProfilControllerPageAccueilWithTelephoneTest extends Admin_AbstractControl
 
 
 	/** @test */
+	public function moduleCritiquesShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="CRITIQUES"]');
+	}
+
+
+	/** @test */
+	public function moduleKiosqueShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="KIOSQUE"]');
+	}
+
+
+	/** @test */
 	public function moduleLoginShouldNotBeAvailable() {
 		$this->assertNotXPath('//ul/li[@id="LOGIN"]');
+	}
+}
+
+
+
+
+class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(0);
+
+		Class_AdminVar::getLoader()->newInstanceWithId('BIBNUM')
+			->setValeur(0);
+
+		$profil_telephone = Class_Profil::getLoader()
+			->newInstanceWithId(3)
+			->setLibelle('iPhone')
+			->beTelephone();
+		$this->dispatch('/admin/profil/accueil/id_profil/3');
+	}
+
+
+	/** @test */
+	public function moduleNewsShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="NEWS"]');
+	}
+
+
+	/** @test */
+	public function moduleBibNumeriqueShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="BIB_NUMERIQUE"]');
+	}
+
+
+	/** @test */
+	public function moduleCritiquesShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="CRITIQUES"]');
+	}
+
+
+	/** @test */
+	public function moduleKiosqueShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="KIOSQUE"]');
 	}
 }
 
