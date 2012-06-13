@@ -19,20 +19,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-/* Client simple pour charger une page depuis une url donnée */
-class Class_WebService_SimpleWebClient {
-	public function open_url($url) {
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		return $response->getBody();
-	}
+class Admin_HarvestController extends Zend_Controller_Action {
+	public function arteVodAction() {
+		if (!Class_AdminVar::isArteVodEnabled())
+			$this->_redirect('/admin/index');
 
+		$logger = new Zend_Log();
+		$logger->addWriter(new Zend_Log_Writer_Stream('php://output'));
+		ob_start();
+		$logger->info('Début du moissonnage');
+		
+		$service = new Class_WebService_ArteVOD();
+		$service->setLogger($logger);
+		$service->harvest();
 
-	public function setAuth($user, $pass) {
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setAuth($user, $pass);
+		$logger->info('Fin du moissonnage');
+		
+		$this->view->log = ob_get_clean();
 	}
 }
-
-?>

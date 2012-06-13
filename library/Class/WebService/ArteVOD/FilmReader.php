@@ -19,20 +19,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-/* Client simple pour charger une page depuis une url donnée */
-class Class_WebService_SimpleWebClient {
-	public function open_url($url) {
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		return $response->getBody();
-	}
+class Class_WebService_ArteVOD_FilmReader {
+	protected $_xml_parser;
+	protected $_film;
 
+	public function parseContentOn($xml, $film) {
+		$this->_film = $film;
+		
+		$this->_xml_parser = Class_WebService_XMLParser::newInstance();
+		$this->_xml_parser->setElementHandler($this);
+		$this->_xml_parser->parse($xml);
 
-	public function setAuth($user, $pass) {
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setAuth($user, $pass);
+		return $this;
 	}
 }
-
-?>

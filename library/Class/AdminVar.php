@@ -56,7 +56,10 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'VODECLIC_KEY',
 		'VODECLIC_ID',
 		'OAI_SERVER',
-		'PACK_MOBILE'
+		'PACK_MOBILE',
+		'ARTE_VOD',
+		'ARTE_VOD_LOGIN',
+		'ARTE_VOD_KEY'
 	);
 
 
@@ -182,6 +185,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	public static function isPackMobileEnabled() {
 		return self::isModuleEnabled('PACK_MOBILE');
 	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isArteVodEnabled() {
+		return self::isModuleEnabled('ARTE_VOD');
+	}	
 
 
 	/**
