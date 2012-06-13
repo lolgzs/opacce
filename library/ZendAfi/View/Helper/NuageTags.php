@@ -28,80 +28,84 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 		Class_ScriptLoader::getInstance()->addSkinStyleSheet('nuage_tags');
 
 		// Parametres
-		if(!$tags) return;
+		if (!$tags)
+      return;
 
-		$url = BASE_URL."/opac/recherche/rebond?facette=reset&amp;code_rebond=";
+		$url = BASE_URL . '/opac/recherche/rebond?facette=reset&amp;code_rebond=';
 		
 		// Déterminer les tranches
-		$tranches=$this->calcultranches($tags,$calcul);
-	
+		$tranches = $this->calcultranches($tags, $calcul);
+		
 		// Remettre dans un ordre aleatoire
 		shuffle($tags);
 		
 		// Fabriquer le Html
 		$html='<div class="nuage">';
-		foreach($tags as $tag)
-		{
-			for($niveau=0; $niveau < 9; $niveau++) if($tag["nombre"]>=$tranches[$niveau]) break;
-			$niveau=(10-$niveau);
-			//for($niveau=9; $niveau > 0; $niveau--) if($tag["nombre"]>=$tranches[$niveau]) break;
-			$classe="nuage_niveau".$niveau;
+		foreach ($tags as $tag) {
+			for ($niveau = 0; $niveau < 9; $niveau++) {
+				if (!array_key_exists($niveau, $tranches))
+					break;
+				if ($tag['nombre'] >= $tranches[$niveau])
+          break;
+			}
+			$niveau = (10 - $niveau);
+			$classe="nuage_niveau" . $niveau;
 			$html.='<span class="nuage"><a class="'.$classe.'" href="'.$url.$tag["id"].'">'.$tag["libelle"].' </a></span>';
 		}
 		$html.='</div>';
 		return $html;
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Calcul des tranches selon methode parametree
-//------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------
+	// Calcul des tranches selon methode parametree
+	//------------------------------------------------------------------------------------------------------
 	private function calcultranches($tableau,$methode=3)
 	{
 		// Nouveau mode
 		if($methode == 3)
-		{
-			$distinct = array();
-			// determiner le nombre de valeurs distinctes
-			foreach ($tableau as $index => $value)
-				$distinct[$value['nombre']] = $value['nombre'];
+			{
+				$distinct = array();
+				// determiner le nombre de valeurs distinctes
+				foreach ($tableau as $index => $value)
+					$distinct[$value['nombre']] = $value['nombre'];
 
-			// Si plus de 10 tranches on fusionne les tranches de plus faible ecart
-			if(count($distinct) > 10)
-			{
-				while( count($distinct) > 10)
-				{
-					// Recherche du plus petit ecart
-					$ecart_min=100000;
-					$sauve_index_nombre=0;
-					foreach($distinct as $key => $index_nombre)
+				// Si plus de 10 tranches on fusionne les tranches de plus faible ecart
+				if(count($distinct) > 10)
 					{
-						$ecart= abs($index_nombre-$key);
-						if($ecart <= $ecart_min) 
-						{
-							$ecart_min=$ecart;
-							$ecart_index_suppr=$sauve_index_nombre;
-							$ecart_index_ref=$key;
-						}
-						$sauve_index_nombre=$key;
+						while( count($distinct) > 10)
+							{
+								// Recherche du plus petit ecart
+								$ecart_min=100000;
+								$sauve_index_nombre=0;
+								foreach($distinct as $key => $index_nombre)
+									{
+										$ecart= abs($index_nombre-$key);
+										if($ecart <= $ecart_min) 
+											{
+												$ecart_min=$ecart;
+												$ecart_index_suppr=$sauve_index_nombre;
+												$ecart_index_ref=$key;
+											}
+										$sauve_index_nombre=$key;
+									}
+								// Fusionner les tranches qui ont l'ecart mini
+								if (array_key_exists($ecart_index_suppr, $distinct))
+									$distinct[$ecart_index_ref]=$distinct[$ecart_index_suppr];
+								else
+									$distinct[$ecart_index_ref] = 0;
+								unset($distinct[$ecart_index_suppr]);
+							}
 					}
-					// Fusionner les tranches qui ont l'ecart mini
-					if (array_key_exists($ecart_index_suppr, $distinct))
-						$distinct[$ecart_index_ref]=$distinct[$ecart_index_suppr];
-					else
-						$distinct[$ecart_index_ref] = 0;
-					unset($distinct[$ecart_index_suppr]);
-				}
+				
+				// Constitution des tranches
+				$index=10;
+				foreach($distinct as $tranche => $valeur) 
+					{
+						$index--;
+						if($valeur >  0)$tranches[]=$valeur;
+					}		
+				return $tranches;
 			}
-			
-			// Constitution des tranches
-			$index=10;
-			foreach($distinct as $tranche => $valeur) 
-			{
-				$index--;
-				if($valeur >  0)$tranches[]=$valeur;
-			}		
-			return $tranches;
-		}
 
 		// Min et max
 		$nb_elements = count($tableau);
@@ -110,23 +114,23 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 		
 		// Si peu de nombres on fabrique les tranches en dur
 		if($max < 11)
-		{ 
-			$tranches=array(10,9,8,7,6,5,4,3,2,1);
-			return $tranches;
-		}
+			{ 
+				$tranches=array(10,9,8,7,6,5,4,3,2,1);
+				return $tranches;
+			}
 		
 		// Calcul par répartition simple
 		if(!$methode)
-		{
-			if($max < 11) $tranches=array(10,9,8,7,6,5,4,3,2,1);
-			else
 			{
-				$tranche=intVal(($max - $min)/10);
-				for($i=0;$i<10; $i++) $tranches[$i]=intval($min + ($i * $tranche));
-				$tranches=array_reverse($tranches);
+				if($max < 11) $tranches=array(10,9,8,7,6,5,4,3,2,1);
+				else
+					{
+						$tranche=intVal(($max - $min)/10);
+						for($i=0;$i<10; $i++) $tranches[$i]=intval($min + ($i * $tranche));
+						$tranches=array_reverse($tranches);
+					}
+				return $tranches;
 			}
-			return $tranches;
-		}
 		
 		// Calcul par ecart à la moyenne
 		$sumX = $sumX2 = 0;
@@ -139,21 +143,21 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 		$stdDev = intval(sqrt($sumX2 - $mean * $mean * $nb_elements) / $nb_elements); 
 		$fBreakVal = intval($mean - ($stdDev * 3));
 		for( $i = 0; $i < 10; $i++)
-		{
-			if($fBreakVal >= $min and $fBreakVal <= $max) $tranches[]= $fBreakVal;
-			$fBreakVal = $fBreakVal + $stdDev;
-		}
-	
+			{
+				if($fBreakVal >= $min and $fBreakVal <= $max) $tranches[]= $fBreakVal;
+				$fBreakVal = $fBreakVal + $stdDev;
+			}
+		
 		// Calcul par ecart à la moyenne pondéré
 		if($methode == 2)
-		{
-			$nb=count($tranches)-1;
-			$tranches[$nb+1]=$max;
-			for($i=$nb; $i > $nb-5; $i--)
 			{
-				$tranches[$i]=intval(($tranches[$i+1] + $tranches[$i]) /2);
+				$nb=count($tranches)-1;
+				$tranches[$nb+1]=$max;
+				for($i=$nb; $i > $nb-5; $i--)
+					{
+						$tranches[$i]=intval(($tranches[$i+1] + $tranches[$i]) /2);
+					}
 			}
-		}
 		$tranches=array_reverse($tranches);
 		return $tranches;
 	}
