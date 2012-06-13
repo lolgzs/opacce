@@ -1,15 +1,15 @@
 <!DOCTYPE html >
 <html lang="<?php echo $this->_translate()->getLocale() ?>">
 <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<title><?php echo $this->titre ?></title>
-<?php $current_profil = Class_Profil::getCurrentProfil(); ?>
+	<?php $current_profil = Class_Profil::getCurrentProfil(); ?>
 
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="description" content="<?php echo $current_profil->getCommentaire();?>" />
-<meta name="keywords" content="<?php echo $current_profil->getRefTags();?>" />
-<meta content="all" name="robots" />
-<meta content="10 days" name="revisit-after" />
-<?php 
+	<meta name="description" content="<?php echo $current_profil->getCommentaire();?>" />
+	<meta name="keywords" content="<?php echo $current_profil->getRefTags();?>" />
+	<meta content="all" name="robots" />
+	<meta content="10 days" name="revisit-after" />
+	<?php 
 	echo $current_profil->getStyleCss();
   if ($current_profil->hasFavicon())
 		echo sprintf('<link rel="shortcut icon" href="%s"/>', $current_profil->getFavicon());
