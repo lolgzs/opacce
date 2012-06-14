@@ -71,6 +71,12 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractContr
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('ARTE_VOD')
 			->setValeur('1');
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('ARTE_VOD_LOGIN')
+			->setValeur('user');
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('ARTE_VOD_KEY')
+			->setValeur('pass');
 
 		Class_WebService_ArteVOD::setDefaultWebClient(Storm_Test_ObjectWrapper::mock()
 																									->whenCalled('open_url')
@@ -82,7 +88,7 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractContr
 																									->answers(HarvestArteVODFixtures::film())
 
 																									->whenCalled('setAuth')
-																									->with('yerres', 'An]ot5Shoo2')
+																									->with('user', 'pass')
 																									->answers(null)
 																									->beStrict());
 		$this->dispatch('/admin/harvest/arte-vod', true);		
