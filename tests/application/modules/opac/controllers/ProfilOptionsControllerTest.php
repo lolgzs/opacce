@@ -229,6 +229,12 @@ class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControlle
 	function cycleBanniereScriptsShouldNotBeIncluded() {
 		$this->assertNotXPathContentContains('//script', '$("#banniere a").cycle');
 	}
+
+
+	/** @test */
+	public function pageShouldIncludeNuageCss() {
+		$this->assertXPath('//link[contains(@href, "nuage_tags.css")]');
+	}
 }
 
 

@@ -16,8 +16,8 @@
 
 $head_scripts = Class_ScriptLoader::newInstance()
 	->addStyleSheet(URL_ADMIN_JS.'jquery_ui/css/jquery.ui.afi.theme')
-	->addOPACStyleSheet('global', 'nuages')
-	->addSkinStyleSheets(array('global', 'erreur', 'dialog', 'popup'))
+	->addOPACStyleSheet('global')
+	->addSkinStyleSheets(array('global', 'erreur', 'dialog', 'popup', 'nuage_tags'))
 	->addAdminStyleSheet('subModal')
 	->addOPACStyleSheet('print', array('media' => 'print'))
 	->addInlineScript(sprintf('var baseUrl="%s"; var imagesUrl="%s"; var cssUrl="%s"; var userFilesUrl="%s"',
