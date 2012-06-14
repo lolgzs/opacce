@@ -149,4 +149,70 @@ class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 	}
 }
 
+
+
+
+class RechercheControllerPostReservationAction extends AbstractControllerTestCase {
+	protected $_sent_mails;
+
+	public function setUp() {
+		parent::setUp();
+
+		$_SESSION["captcha_code"] = '1234';
+
+		$mock_transport = new MockMailTransport();
+		Zend_Mail::setDefaultTransport($mock_transport);
+
+
+		Class_Bib::getLoader()->newInstanceWithId(4)->setLibelle('Astrolabe');
+
+		$this->postDispatch('/recherche/reservation',
+												array('id_notice' => 4,
+															'id_bib' => 4,
+															'mail_bib' => 'zork@gloub.fr',
+															'user_name' => 'nanuk',
+															'demande' => 'je veux le livre',
+															'user_mail' => 'nanuk@gloub.com',
+															'code_saisi' => '1234',
+															'cote' => 'XYZ'),
+												true);
+		$this->_sent_mails = $mock_transport->getSentMails();
+	}
+
+
+	/** @test */
+	public function twoMailsShouldHaveBeenSent() {
+		$this->assertEquals(2, count($this->_sent_mails));
+	}
+
+
+	/** @test */
+	public function firstMailFromShouldBeNanuk() {
+		$this->assertEquals('nanuk@gloub.com', 
+												array_first($this->_sent_mails)->getFrom());
+	}
+
+
+	/** @test */
+	public function firstMailToShouldBeZork() {
+		$this->assertContains('zork@gloub.fr', 
+													array_first($this->_sent_mails)->getRecipients());
+	}
+
+
+	/** @test */
+	public function secondMailFromShouldBeNobody() {
+		$this->assertEquals('nobody@noreply.fr', 
+												array_last($this->_sent_mails)->getFrom());
+	}
+
+
+	/** @test */
+	public function secondMailToShouldBeNanuk() {
+		$this->assertContains('nanuk@gloub.com', 
+													array_last($this->_sent_mails)->getRecipients());
+	}
+
+}
+
 ?>

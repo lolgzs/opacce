@@ -551,11 +551,10 @@ class RechercheController extends Zend_Controller_Action
 				$messages []= $this->view->_("Le code anti-spam est incorrect.");
 			$errorMessage = implode(',', $messages);
 
-			if($errorMessage=="")
-			{
+			if($errorMessage=="")	{
 				// Stats réservation
-				$stat=new Class_StatsNotices();
-				$stat->addStatReservation($id_notice);
+				//$stat=new Class_StatsNotices();
+				//$stat->addStatReservation($id_notice);
 
 				$class_notice = new Class_Notice();
 				$notice = $class_notice->getNotice($id_notice,"TAE");
@@ -577,13 +576,26 @@ class RechercheController extends Zend_Controller_Action
 				$messages []= utf8_decode($demande);
 				$message = implode("\r\n", $messages);
 
-				ini_set('sendmail_from', 'nobody@afi-sa.net');
-				// Pour la bib
-				$header = "From: ". utf8_decode($user_name) . " <" . $user_mail . ">\r\n";
-				mail($mail_bib, utf8_decode($this->view->_("Demande de réservation de document")), $message, $header);
-				// Pour le user
-				$header_user = "From: Calice68 <nobody@calice68.fr>\r\n";
-				mail($user_mail, utf8_decode($this->view->_("Demande de réservation de document")), $message_user.$message, $header_user);
+				//pour la bibliothèque
+				$mail = new Zend_Mail('utf8');
+				$mail
+					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
+					->setBodyText($message)
+					->setFrom($user_mail,
+										$user_name)
+					->addTo($mail_bib)
+					->send();
+
+				//pour l'utilisateur
+				$mail = new Zend_Mail('utf8');
+				$mail
+					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
+					->setBodyText($message_user.$message)
+					->setFrom('nobody@noreply.fr',
+										Class_Bib::getLoader()->find($id_bib)->getLibelle())
+					->addTo($user_mail)
+					->send();
+
 				$this->_redirect('opac/recherche/viewnotice/id/'.$id_notice."?type_doc=".$notice["type_doc"]);
 			}
 			else
