@@ -430,7 +430,7 @@ class Admin_BibController extends Zend_Controller_Action
 					{
 						$data["ID_BIB"]=$id_bib;
 						if(!$data["ANIMATION"]) $data["ANIMATION"]="etoile.gif";
-						setVar("animation",$data["ANIMATION"]);
+						Class_AdminVar::set("animation",$data["ANIMATION"]);
 						$cls_loc->ecrireLocalisation($id_localisation,$data);
 						$this->_redirect('admin/bib/localisations?id_bib='.$id_bib);
 					}

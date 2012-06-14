@@ -56,22 +56,10 @@ function debug_log($chaine,$stop=false)
 //----------------------------------------------------------------------------------
 // Rend une variable admin
 //----------------------------------------------------------------------------------
-function getVar($cle)
-{
-	$valeur=fetchOne("select VALEUR from bib_admin_var where CLEF='$cle'");
-	return $valeur;
+function getVar($cle) {
+	return Class_AdminVar::get($cle);
 }
 
-//----------------------------------------------------------------------------------
-// Ecrit une variable admin
-//----------------------------------------------------------------------------------
-function setVar($clef,$valeur)
-{
-	$valeur=addslashes($valeur);
-	$existe=fetchOne("select count(*) from bib_admin_var where CLEF='$clef'");
-	if(!$existe)sqlExecute("insert into bib_admin_var(CLEF,VALEUR) values('$clef','$valeur')");
-	else sqlExecute("update bib_admin_var set VALEUR='$valeur' where CLEF='$clef'");
-}
 
 //----------------------------------------------------------------------------------
 // Variables cosmogramme : rend une liste

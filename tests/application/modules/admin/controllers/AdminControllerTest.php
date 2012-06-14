@@ -30,7 +30,7 @@ class AdminControllerSitoOKTest extends Admin_AbstractControllerTestCase {
 								->setLogin('sysadmin')
 								->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN)
 								->setPseudo('admin'));
-		setVar("SITE_OK", 1);
+		Class_AdminVar::set("SITE_OK", 1);
 		$this->dispatch('/admin');
 	}
 

@@ -134,6 +134,8 @@ class RechercheControllerReservationPickupAjaxActionTest extends AbstractControl
 }
 
 
+
+
 class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -145,7 +147,6 @@ class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 	public function pommeShouldBePresent() {
 		$this->assertXPathContentContains('//div', 'pomme');
 	}
-
 }
 
 ?>
