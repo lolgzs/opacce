@@ -110,7 +110,6 @@ class Class_WebService_Lastfm {
 		if(!$album) return false;
 
 		$data = self::getHttpClient()->open_url($album['url']);
-		xdebug_break();
 		// Get de la tables des tracks
 		$pos=strPos($data,'<table id="albumTracklist"');
 		if(!$pos) return false;
@@ -138,7 +137,7 @@ class Class_WebService_Lastfm {
 
 			$pos=strScanReverse($lig,'">',-1)+1;
 			$piste++;
-			$track=trim(substr($lig,($pos+1)));
+			$track=trim(str_replace('">', '', substr($lig,($pos+1))));
 			$album["morceaux"][$volume][$piste]["titre"]=strip_tags(str_replace('</a>','',$track));
 			// Calcul url ecoute
 			if($url_ecoute == true)

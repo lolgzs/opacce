@@ -43,8 +43,6 @@ class Class_Xml {
 	function open_url( $url ) {
 		try{
 			$data = self::getHttpClient()->open_url($url);
-			xdebug_break();
-			
 			// Decodage utf-8
 			$test=strtoUpper(strleft($data,50));
 			if(strScan($test,"UTF-8",0) >0) $charset="UTF-8"; else $charset="ISO-8859-1";

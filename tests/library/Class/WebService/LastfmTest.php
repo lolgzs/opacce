@@ -12,22 +12,46 @@
  * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more detail.
  *
  * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class LastfmFixParserErrorTest extends PHPUnit_Framework_TestCase {
+abstract class LastfmParserTestCase extends PHPUnit_Framework_TestCase {
 	protected 
 		$_http_client, 
 		$_last_fm;
 
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->_http_client = Storm_Test_ObjectWrapper::mock()
+		$this->_http_client = Storm_Test_ObjectWrapper::mock();
+
+		Class_WebService_Lastfm::setDefaultHttpClient($this->_http_client);
+		Class_Xml::setDefaultHttpClient($this->_http_client);
+
+		$this->_last_fm = new Class_WebService_Lastfm();
+	}
+
+
+	public function tearDown() {
+		Class_WebService_Lastfm::setDefaultHttpClient(null);
+		Class_Xml::setDefaultHttpClient(null);
+		parent::tearDown();
+	}
+}
+
+
+
+
+class LastfmFixParserErrorTest extends LastfmParserTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->_http_client
 			->whenCalled('open_url')
 			->with('http://ws.audioscrobbler.com/2.0/?api_key=b25b959554ed76058ac220b7b2e0a026&method=album.search&album=ANNEES+PELERINAGE')
 			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/as_wrong_franz_liszt_pelerinage.xml'))
@@ -38,20 +62,9 @@ class LastfmFixParserErrorTest extends PHPUnit_Framework_TestCase {
 
 			->beStrict();
 
-		Class_WebService_Lastfm::setDefaultHttpClient($this->_http_client);
-		Class_Xml::setDefaultHttpClient($this->_http_client);
-
-		$this->_last_fm = new Class_WebService_Lastfm();
-
 		$this->_album = $this->_last_fm->getMorceaux('Les années de pélerinage', 'Franz Liszt');
 	}
 
-
-	public function tearDown() {
-		Class_WebService_Lastfm::setDefaultHttpClient(null);
-		Class_Xml::setDefaultHttpClient(null);
-		parent::tearDown();
-	}
 
 
 	/** @test */
@@ -79,15 +92,11 @@ class LastfmFixParserErrorTest extends PHPUnit_Framework_TestCase {
 
 
 
-class LastfmParserTest extends PHPUnit_Framework_TestCase {
-	protected 
-		$_http_client, 
-		$_last_fm;
-
+class LastfmParserTest extends LastfmParserTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->_http_client = Storm_Test_ObjectWrapper::mock()
+		$this->_http_client 
 			->whenCalled('open_url')
 			->with('http://ws.audioscrobbler.com/2.0/?api_key=b25b959554ed76058ac220b7b2e0a026&method=album.search&album=ANNEES+PELERINAGE')
 			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/as_right_franz_liszt_pelerinage.xml'))
@@ -98,19 +107,7 @@ class LastfmParserTest extends PHPUnit_Framework_TestCase {
 
 			->beStrict();
 
-		Class_WebService_Lastfm::setDefaultHttpClient($this->_http_client);
-		Class_Xml::setDefaultHttpClient($this->_http_client);
-
-		$this->_last_fm = new Class_WebService_Lastfm();
-
 		$this->_album = $this->_last_fm->getMorceaux('Les années de pélerinage', 'Franz Liszt');
-	}
-
-
-	public function tearDown() {
-		Class_WebService_Lastfm::setDefaultHttpClient(null);
-		Class_Xml::setDefaultHttpClient(null);
-		parent::tearDown();
 	}
 
 
