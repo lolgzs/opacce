@@ -198,17 +198,17 @@ function strScan( $chaine, $cherche, $posDeb)
 	return -1;
 }
 
-function strScanReverse( $chaine, $cherche, $pos )
-{
+function strScanReverse( $chaine, $cherche, $pos ) {
 
 	$chaine = convertFromUtf8($chaine);
 	$cherche = convertFromUtf8($cherche);
 
 	$len = strLen($cherche);
-	if( $pos == -1 ) $pos = strLen($chaine);
-	for( $i=$pos; $i>=0; $i-- )
-	{
-		if( substr( $chaine, $i, $len ) == $cherche ) return $i;
+	if( $pos == -1 ) 
+		$pos = strLen($chaine);
+	for( $i=$pos; $i>=0; $i-- )	{
+		if( substr( $chaine, $i, $len ) == $cherche ) 
+			return $i;
 	}
 	return -1;
 }

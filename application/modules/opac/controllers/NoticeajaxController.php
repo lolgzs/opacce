@@ -306,7 +306,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	function morceauxAction()
 	{
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
-		
+
 		// Chez amazon
 		$source="Amazon";
 		$amazon = new Class_WebService_AmazonSonores();

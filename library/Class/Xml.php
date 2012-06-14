@@ -22,18 +22,28 @@
 // OPAC3 - XML Parser
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_Xml
-{
+class Class_Xml {
 	public $index;								// Tableau des index
 	public $valeurs;							// Tableau des valeurs
+	public static $_http_client;
 
-	function open_url( $url )
-	{
+	public static function setDefaultHttpClient($http_client) {
+		self::$_http_client = $http_client;
+	}
+
+	
+	public static function getHttpClient() {
+		if (!isset(self::$_http_client))
+			self::$_http_client = new Class_WebService_SimpleWebClient();
+
+		return	self::$_http_client;
+	}
+
+
+	function open_url( $url ) {
 		try{
-			$httpClient = Zend_Registry::get('httpClient');
-			$httpClient->setUri($url);
-			$response = $httpClient->request();
-			$data = $response->getBody();
+			$data = self::getHttpClient()->open_url($url);
+			xdebug_break();
 			
 			// Decodage utf-8
 			$test=strtoUpper(strleft($data,50));

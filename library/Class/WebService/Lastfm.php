@@ -22,13 +22,27 @@
 // OPAC3 - LAST FM (docs sonores)
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Lastfm
-{
+class Class_WebService_Lastfm {
+	protected static $_http_client;
+
 	var $xml;																// Pointeur sur la classe xml de base
 	var $req;																// Racine requete http
 	var $id_afi;														// ID afi chez LastFm dans cfg
 	var $ix;																// Classe d'indexation
 	var $player;														// Template du player
+
+
+	public static function setDefaultHttpClient($http_client) {
+		self::$_http_client = $http_client;
+	}
+
+	
+	public static function getHttpClient() {
+		if (!isset(self::$_http_client))
+			self::$_http_client = new Class_WebService_SimpleWebClient();
+
+		return	self::$_http_client;
+	}
 	
 //------------------------------------------------------------------------------------------------------
 // Constructeur
@@ -58,8 +72,9 @@ class Class_WebService_Lastfm
 //------------------------------------------------------------------------------------------------------	
 // Cherche album 
 //------------------------------------------------------------------------------------------------------	
-	public function getAlbum($titre,$auteur)
-	{
+	public function getAlbum($titre,$auteur)	{
+		$titre = implode(' ', $this->ix->getMots($this->ix->codeAlphaTitre($titre)));
+
 		$req=$this->getRequete("album.search","album",$titre);
 		if($this->requete($req)==false) return false;
 		
@@ -94,12 +109,8 @@ class Class_WebService_Lastfm
 		$album=$this->getAlbum($titre,$auteur);
 		if(!$album) return false;
 
-		// Get de la page
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($album["url"]);
-		$response = $httpClient->request();
-		$data = $response->getBody();
-		
+		$data = self::getHttpClient()->open_url($album['url']);
+		xdebug_break();
 		// Get de la tables des tracks
 		$pos=strPos($data,'<table id="albumTracklist"');
 		if(!$pos) return false;
@@ -124,6 +135,7 @@ class Class_WebService_Lastfm
 			if(!$pos) break;
 			$posfin=strPos($data,"</td>",$pos);
 			$lig=substr($data,$pos,($posfin-$pos));
+
 			$pos=strScanReverse($lig,'">',-1)+1;
 			$piste++;
 			$track=trim(substr($lig,($pos+1)));
@@ -139,7 +151,7 @@ class Class_WebService_Lastfm
 			$data=substr($data,$posfin);
 		}
 		$album["nb_resultats"]=$piste;
-		//tracedebug($album,true);
+
 		return $album;
 	}
 
@@ -167,11 +179,7 @@ class Class_WebService_Lastfm
 		if(substr($url,0,4)!="http") $url="http://".$url;
 		$url=str_replace(" ","+",$url);
 
-		// Get de la page
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		$data = $response->getBody();
+		$data = self::getHttpClient()->open_url($url);
 		
 		// Bloc des photos
 		$pos=strPos($data,'<ul id="pictures"',0);
@@ -215,11 +223,7 @@ class Class_WebService_Lastfm
 		if(substr($url,0,4)!="http") $url="http://".$url;
 		$url=str_replace(" ","+",$url);
 
-		// Get de la page
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		$data = $response->getBody();
+		$data = self::getHttpClient()->open_url($url);
 		
 		// Bloc des albums
 		$pos=strPos($data,'<ul class="albums',0);
