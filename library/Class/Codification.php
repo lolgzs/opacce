@@ -72,11 +72,11 @@ class Class_Codification
 			case "D": return Class_Dewey::getLibelle($id);
 			case "P": return Class_Pcdm4::getLibelle($id);
 			case "A": return fetchOne("select libelle from codif_auteur where id_auteur=".(int)$id);
-			case "M": return fetchOne("select libelle from codif_matiere where id_matiere=$id");
-			case "F": return fetchOne("select libelle from codif_interet where id_interet=$id");
-			case "G": return fetchOne("select libelle from codif_genre where id_genre=$id");
+		  case "M": return fetchOne("select libelle from codif_matiere where id_matiere=".(int)$id);
+			case "F": return fetchOne("select libelle from codif_interet where id_interet=");
+			case "G": return fetchOne("select libelle from codif_genre where id_genre=".(int)$id);
 			case "L": return fetchOne("select libelle from codif_langue where id_langue='$id'");
-			case "S": return fetchOne("select libelle from codif_section where id_section=$id");
+			case "S": return fetchOne("select libelle from codif_section where id_section=".(int)$id);
 			case "E": return fetchOne("select libelle from codif_emplacement where id_emplacement=$id");
 		  case "B": return fetchOne("select nom_court from int_bib where id_bib=".(int)$id);
 		  case "Y": return fetchOne("select libelle from codif_annexe where code='".addslashes($id)."'");
