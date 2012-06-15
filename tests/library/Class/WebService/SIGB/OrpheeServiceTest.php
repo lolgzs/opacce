@@ -35,6 +35,9 @@ class MapppedSoapClientForTesting extends Class_WebService_MappedSoapClient {
 	public function getId() {
 		return GetIdResponse::withIdResult('clong');
 	}
+
+	public function EndSession() {
+	}
 }
 
 
@@ -115,7 +118,10 @@ abstract class OrpheeServiceTestCase extends Storm_Test_ModelTestCase {
 		
 		$this->_search_client
 			->whenCalled('__setCookie')
-			->answers(null);
+			->answers(null)
+
+			->whenCalled('EndSession')
+			->answers(new EndSessionResponse());
 
 		$this->_beforeOrpheeServiceCreate();
 		$this->_orphee = new Class_WebService_SIGB_Orphee_ServiceForTesting($this->_search_client);
@@ -172,6 +178,15 @@ class OrpheeServiceTestAutoConnectError extends OrpheeServiceTestCase {
 			->whenCalled('GetId')
 			->answers(new GetIdResponse());
 	}
+
+
+	public function tearDown() {
+		unset($this->_orphee);
+		unset($this->_henry_dupont);
+		gc_collect_cycles();
+		$this->assertFalse($this->_search_client->methodHasBeenCalled('EndSession'));
+		parent::tearDown();
+	}
 	
 	
 	/** @test */
@@ -216,6 +231,14 @@ class OrpheeServiceTestGetLstDmntWithMillenium extends OrpheeServiceTestCase {
 			->answers(GetLstDmtResponse::withResult(OrpheeFixtures::xmlGetLstDmtMillenium()));
 		
 		$this->millenium = $this->_orphee->getNotice('frOr1301700727');
+	}
+
+
+	public function tearDown() {
+		unset($this->_orphee);
+		gc_collect_cycles();
+		$this->assertTrue($this->_search_client->methodHasBeenCalled('EndSession'));
+		parent::tearDown();
 	}
 
 
