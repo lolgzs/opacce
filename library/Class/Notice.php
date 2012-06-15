@@ -736,6 +736,12 @@ class Class_Notice extends Storm_Model_Abstract {
 			$deb = substr($titre, 0, 6);
 			$titre = str_replace("?", "", $deb) . substr($titre, 6);
 		}
+		// filtrage caractères terminaux
+		$filtre=array("/",";",",",":");
+		foreach($filtre as $car)
+		{
+			if(substr($titre,-1,1)==$car) $titre=substr($titre,0,strlen($titre)-1);
+		}
 		$titre = str_replace("#BR#",BR, $titre);
 		return $titre;
 	}
