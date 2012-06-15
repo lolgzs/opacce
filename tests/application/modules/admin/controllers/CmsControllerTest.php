@@ -1158,6 +1158,15 @@ class CmsControllerCategorieEvenementTest extends CmsControllerTestCase {
 
 
 	/** @test */
+	function editCategorieShouldDisplayAllCat() {
+		$this->dispatch('/admin/cms/catedit/id/34');
+		$this->assertXPath('//input[@value="Evènements"]');
+		$this->assertXPathContentContains('//select[@name="id_cat_mere"]//option[@value="0"]', "Aucune");
+		$this->assertXPathContentContains('//select[@name="id_cat_mere"]//option[@value="23"]', "A la Une");
+	}
+
+
+	/** @test */
 	function postAddCategorieShouldRedirectWithIdCat() {
 		$this
 			->getRequest()
@@ -1187,6 +1196,7 @@ class CmsControllerCategorieEvenementTest extends CmsControllerTestCase {
 		$this->assertEquals('/admin/cms/index/id_cat/34', $this->getResponseLocation());
 		$this->assertEquals('Actualite', $this->cat_evenements->getLibelle());
 		$this->assertEquals(254, $this->cat_evenements->getIdCatMere());
+		$this->assertTrue($this->categorie_wrapper->methodHasBeenCalled('save'));
 	}
 }
 
