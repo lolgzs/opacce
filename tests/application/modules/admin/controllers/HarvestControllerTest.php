@@ -79,10 +79,12 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractContr
 			->setValeur('pass');
 
 		Class_WebService_ArteVOD::setDefaultWebClient(Storm_Test_ObjectWrapper::mock()
+																									// liste des films
 																									->whenCalled('open_url')
 																									->with('http://www.mediatheque-numerique.com/ws/films')
 																									->answers(HarvestArteVODFixtures::films())
 
+																									// fiche d'un film
 																									->whenCalled('open_url')
 																									->with('http://www.mediatheque-numerique.com/ws/films/5540')
 																									->answers(HarvestArteVODFixtures::film())
@@ -91,7 +93,16 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractContr
 																									->with('user', 'pass')
 																									->answers(null)
 																									->beStrict());
-		$this->dispatch('/admin/harvest/arte-vod', true);		
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+			->whenCalled('save')
+			->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+			->whenCalled('save')
+			->answers(true);
+
+		$this->dispatch('/admin/harvest/arte-vod', true);
 	}
 
 

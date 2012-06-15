@@ -124,13 +124,15 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 	const DIAPORAMA = 101;
 	const EPUB = 102;
 	const OAI = 103;
+	const ARTEVOD = 104;
 
 
 	public static function getDefaultTypeDocs() {
 		return array(self::LIVRE_NUM => 'Livres numérisés',
 								 self::DIAPORAMA => 'Diaporamas',
 								 self::EPUB => 'E-Books',
-								 self::OAI => 'OAI');
+								 self::OAI => 'OAI',
+								 self::ARTEVOD => 'Arte VOD');
 	}
 
 

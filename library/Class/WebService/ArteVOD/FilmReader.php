@@ -32,4 +32,45 @@ class Class_WebService_ArteVOD_FilmReader {
 
 		return $this;
 	}
+
+
+	public function endExternalUri($data) {
+		$this->_film->setExternalUri($data);
+	}
+
+
+	public function endTitle($data) {
+		$this->_film->setTitle($data);
+	}
+
+
+	public function endBody($data) {
+		$this->_film->setDescription($data);
+	}
+
+
+	public function endProduction_Year($data) {
+		$this->_film->setYear($data);
+	}
+
+
+	public function endFull_Name($data) {
+		if ($this->_xml_parser->inParents('authors')) 
+			$this->_film->addAuthor($data);
+	}
+
+
+	public function startMedia($attributes) {
+		if (!array_key_exists('SRC', $attributes))
+			return;
+
+		if ($this->_xml_parser->inParents('posters'))
+			$this->_film->addPoster($attributes['SRC']);
+
+		if ($this->_xml_parser->inParents('trailers'))
+			$this->_film->addTrailer($attributes['SRC']);
+
+		if ($this->_xml_parser->inParents('photos'))
+			$this->_film->addPhoto($attributes['SRC']);
+	}
 }

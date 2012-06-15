@@ -334,6 +334,16 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function beArteVOD() {
+		return $this->setTypeDocId(Class_TypeDoc::ARTEVOD);
+	}
+
+
+	public function isArteVOD() {
+		return $this->getTypeDocId() == Class_TypeDoc::ARTEVOD;
+	}
+
+
 	/**
 	 * @param Zend_Controller_Request_Http $request
 	 * @return array

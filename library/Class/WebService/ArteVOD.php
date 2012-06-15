@@ -29,6 +29,8 @@ class Class_WebService_ArteVOD {
 	const AUTHORS = 'authors';
 	const ACTORS = 'actors';
 
+	const CATEGORY_LABEL = 'ArteVOD';
+
 
 	public static function setDefaultWebClient($web_client) {
 		self::$_default_web_client = $web_client;
@@ -88,6 +90,7 @@ class Class_WebService_ArteVOD {
 		foreach ($reader->getFilms() as $film) {
 			$existing_ids[] = $film->getId();
 			$this->loadFilm($film);
+			$film->import();
 		}
 	}
 
