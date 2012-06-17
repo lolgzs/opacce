@@ -20,7 +20,25 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class HarvestControllerArteVodNotActivatedTest extends Admin_AbstractControllerTestCase {
+
+abstract class HarvestControllerArteVodTestCase extends Admin_AbstractControllerTestCase {
+	protected $_web_client;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_web_client = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('open_url')->answers('')
+			->whenCalled('setAuth')->answers(null);
+
+		Class_WebService_ArteVOD::setDefaultWebClient($this->_web_client);
+	}
+}
+
+
+
+
+class HarvestControllerArteVodNotActivatedTest extends HarvestControllerArteVodTestCase {
 	/** @test */
 	public function withoutActivatedArteVodShouldRedirect() {
 		Class_AdminVar::getLoader()
@@ -34,7 +52,8 @@ class HarvestControllerArteVodNotActivatedTest extends Admin_AbstractControllerT
 
 
 
-class HarvestControllerArteVodActivatedWithErrorTest extends Admin_AbstractControllerTestCase {
+
+class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerArteVodTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -42,11 +61,6 @@ class HarvestControllerArteVodActivatedWithErrorTest extends Admin_AbstractContr
 			->newInstanceWithId('ARTE_VOD')
 			->setValeur('1');
 
-		Class_WebService_ArteVOD::setDefaultWebClient(Storm_Test_ObjectWrapper::mock()
-																									->whenCalled('open_url')
-																									->answers('')
-																									->whenCalled('setAuth')
-																									->answers(null));
 		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
 
@@ -64,7 +78,9 @@ class HarvestControllerArteVodActivatedWithErrorTest extends Admin_AbstractContr
 }
 
 
-class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractControllerTestCase {
+
+
+class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerArteVodTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -78,31 +94,21 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends Admin_AbstractContr
 			->newInstanceWithId('ARTE_VOD_KEY')
 			->setValeur('pass');
 
-		Class_WebService_ArteVOD::setDefaultWebClient(Storm_Test_ObjectWrapper::mock()
-																									// liste des films
-																									->whenCalled('open_url')
-																									->with('http://www.mediatheque-numerique.com/ws/films')
-																									->answers(HarvestArteVODFixtures::films())
+		$this->_web_client
+			->whenCalled('open_url')
+			->with('http://www.mediatheque-numerique.com/ws/films')
+			->answers(HarvestArteVODFixtures::films())
 
-																									// fiche d'un film
-																									->whenCalled('open_url')
-																									->with('http://www.mediatheque-numerique.com/ws/films/5540')
-																									->answers(HarvestArteVODFixtures::film())
+			->whenCalled('open_url')
+			->with('http://www.mediatheque-numerique.com/ws/films/5540')
+			->answers(HarvestArteVODFixtures::film())
 
-																									->whenCalled('setAuth')
-																									->with('user', 'pass')
-																									->answers(null)
-																									->beStrict());
+			->whenCalled('setAuth')
+			->with('user', 'pass')
+			->answers(null)
+			->beStrict();
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
-			->whenCalled('save')
-			->answers(true);
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
-			->whenCalled('save')
-			->answers(true);
-
-		$this->dispatch('/admin/harvest/arte-vod', true);
+		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
 
 

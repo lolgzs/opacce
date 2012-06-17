@@ -38,9 +38,9 @@ class Class_WebService_ArteVOD {
 
 
 	public static function getDefaultWebClient() {
-		if (isset(self::$_default_web_client))
-			return self::$_default_web_client;
-		return new Class_WebService_SimpleWebClient();
+		if (!isset(self::$_default_web_client))
+			self::$_default_web_client = new Class_WebService_SimpleWebClient();
+		return self::$_default_web_client;
 	}
 
 
@@ -51,6 +51,7 @@ class Class_WebService_ArteVOD {
 
 
 	public function getWebClient() {
+		xdebug_break();
 		if (!isset($this->web_client))
 			$this->setWebClient(self::getDefaultWebClient());
 		return $this->web_client;
