@@ -27,6 +27,13 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	protected $_album;
 
 
+	public static function getTransitionDefinitions() {
+		return array('fade' => 'Transparence',
+								 'shuffle' => 'Mélange',
+								 'scrollHorz' => 'Défilement horizontal');
+	}
+
+
 	public function setPreferences($preferences) {
 		if (null == $preferences)
 			$this->_preferences = $this->_default_preferences;
@@ -75,7 +82,7 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 		$cycle_options = array('pause' => 1, 
 													 'fx' => 'fade');
 		if (array_isset('op_transition', $this->_preferences)
-				&& in_array($this->_preferences['op_transition'], array('fade', 'shuffle', 'scrollHorz')))
+				&& in_array($this->_preferences['op_transition'], array_keys(self::getTransitionDefinitions())))
 			$cycle_options['fx'] = $this->_preferences['op_transition'];
 
 		if (array_isset('op_timeout', $this->_preferences))

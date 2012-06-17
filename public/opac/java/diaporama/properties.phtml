@@ -5,9 +5,7 @@
 			echo $this->formSelect('op_transition',
 														 $this->preferences['op_transition'],
 														 '', 
-														 array('fade' => 'Transparence',
-																	 'shuffle' => 'Mélange',
-																	 'scrollHorz' => 'Défilement horizontal'));
+														 ZendAfi_View_Helper_TagSlideshow::getTransitionDefinitions());
 		?></td>
 	</tr>
 	<tr>

@@ -872,12 +872,19 @@ div.ui-sortable-placeholder {
 }
 
 
+
 .slideshow .controls {
 		width: 100%;
 		height: 0px;
 		overflow: visible;
 		position: relative;
+		opacity: 0.3;
 }
+
+.slideshow:hover .controls {
+		opacity: 1;
+}
+
 
 .slideshow .controls a {
 		display: block;
