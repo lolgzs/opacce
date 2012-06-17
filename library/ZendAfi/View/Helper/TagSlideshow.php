@@ -59,7 +59,7 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 		if (!$this->_album)
 			return $this;
 
-		return $this->renderSlideShowScriptsOn(
+		return $this->renderSlideShowScriptsOn(Class_ScriptLoader::getInstance(),
 																					 sprintf('div.slideshow-%d .medias',
 																									 $this->_album->getId()),
 																					 array('width' => $this->_preferences['op_largeur_img'],
@@ -71,10 +71,10 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	 * @param Class_Album $album
 	 * @return ZendAfi_View_Helper_Accueil_BibNumerique
 	 */
-	public function renderSlideShowScriptsOn($selector, $options=null) {
+	public function renderSlideShowScriptsOn($script_loader, $selector, $options=null) {
 		$cycle_options = array('pause' => 1, 
 													 'fx' => 'fade');
-		if (array_isset('op_transition', $this->_preferences) 
+		if (array_isset('op_transition', $this->_preferences)
 				&& in_array($this->_preferences['op_transition'], array('fade', 'shuffle', 'scrollHorz')))
 			$cycle_options['fx'] = $this->_preferences['op_transition'];
 
@@ -84,10 +84,22 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 		if ($options)
 			$cycle_options = array_merge($cycle_options, $options);
 
-		Class_ScriptLoader::getInstance()
+		$script_loader
 			->addScript(URL_JAVA . 'diaporama/jquery.cycle.all.min')
 			->addJQueryReady(sprintf(
-										 '$(\'%s\').cycle(%s);',
+															 '$(\'%s\').cycle(%s);
+                                var container = $(\'%1$s\').parent();
+                                container.addClass(\'slideshow\');
+										            container.prepend(\'<div class="controls"><a href="#"></a><a href="#"></a></div>\');
+                                container.find(\'.controls a:first-child\').click( 
+                                                                  function(event){ 
+                                                                         event.preventDefault(); 
+                                                                         $(\'%1$s\').cycle(\'prev\') } );
+                                container.find(\'.controls a + a\').click(
+                                                                  function(event){
+                                                                         event.preventDefault(); 
+                                                                         $(\'%1$s\').cycle(\'next\') } );
+                                container.find(\'.controls a\').css(\'top\', (container.parent().height()/3)+\'px\')',
 										 $selector,
 										 json_encode($cycle_options)))
 			->loadPrettyPhoto();
@@ -104,7 +116,7 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 
 		$html = sprintf('<div class="slideshow slideshow-%d">'.
 										  '<h2></h2>'.
-										    '<div class="medias">%s</div>'.
+									    '<div class="medias">%s</div>'.
 										  '<p></p>'.
 										'</div>', 
 										$this->_album->getId(),

@@ -374,25 +374,8 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	 * @return ZendAfi_View_Helper_Accueil_BibNumerique
 	 */
 	public function renderSlideShowScriptsOn($script_loader, $selector, $options=null) {
-		$cycle_options = array('pause' => 1, 
-													 'fx' => 'fade');
-		if (array_isset('op_transition', $this->preferences) 
-				&& in_array($this->preferences['op_transition'], 
-										array('fade', 'shuffle', 'scrollHorz')))
-			$cycle_options['fx'] = $this->preferences['op_transition'];
-
-		if (array_isset('op_timeout', $this->preferences))
-			$cycle_options['timeout'] = 1000 * $this->preferences['op_timeout'];
-
-		if ($options)
-			$cycle_options = array_merge($cycle_options, $options);
-
-		$script_loader
-			->addScript(URL_JAVA . 'diaporama/jquery.cycle.all.min')
-			->addJQueryReady(sprintf(
-										 '$(\'%s\').cycle(%s);',
-										 $selector,
-										 json_encode($cycle_options)));
-		return $this;
+		$this->view->getHelper('TagSlideshow')
+			->setPreferences($this->preferences)
+			->renderSlideShowScriptsOn($script_loader, $selector, $options);
 	}
 }
