@@ -72,14 +72,14 @@ class ArteVOD_FilmReaderTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function shouldHavePosterUrl() {
 		$this->assertEquals('http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg',
-												$this->_film->getPosters()[0]);
+												array_first($this->_film->getPosters()));
 	}
 
 
 	/** @test */
 	public function shouldHaveTrailerUrl() {
 		$this->assertEquals('http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4',
-												$this->_film->getTrailers()[0]);
+												array_first($this->_film->getTrailers()));
 	}
 
 
@@ -92,6 +92,6 @@ class ArteVOD_FilmReaderTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function lastPhotoShouldBeCorrect() {
 		$this->assertEquals('http://media.universcine.com/7e/28/7e28cbe1-7d56-11e1-a80d-d78d88d4aa56.jpg',
-												$this->_film->getPhotos()[4]);
+												array_at(4, $this->_film->getPhotos()));
 	}
 }
