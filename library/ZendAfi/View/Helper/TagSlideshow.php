@@ -30,7 +30,10 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	public static function getTransitionDefinitions() {
 		return array('fade' => 'Transparence',
 								 'shuffle' => 'Mélange',
-								 'scrollHorz' => 'Défilement horizontal');
+								 'scrollHorz' => 'Défilement horizontal',
+								 'scrollVert' => 'Défilement vertical',
+								 'curtainX' => 'Rideau horizontal',
+								 'curtainY' => 'Rideau vertical');
 	}
 
 
@@ -70,7 +73,9 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 																					 sprintf('div.slideshow-%d .medias',
 																									 $this->_album->getId()),
 																					 array('width' => $this->_preferences['op_largeur_img'],
-																								 'height' => $this->_preferences['op_hauteur_boite']));
+																								 'height' => $this->_preferences['op_hauteur_boite'],
+																								 'fit' => true,
+																								 'aspect' => true));
 	}
 
 
@@ -80,7 +85,10 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	 */
 	public function renderSlideShowScriptsOn($script_loader, $selector, $options=null) {
 		$cycle_options = array('pause' => 1, 
-													 'fx' => 'fade');
+													 'fx' => 'fade',
+													 'animIn' => array('opacity' =>  1),
+													 'animOut' => array('opacity' =>  0),
+													 );
 		if (array_isset('op_transition', $this->_preferences)
 				&& in_array($this->_preferences['op_transition'], array_keys(self::getTransitionDefinitions())))
 			$cycle_options['fx'] = $this->_preferences['op_transition'];
