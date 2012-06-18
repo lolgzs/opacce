@@ -19,24 +19,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_RenderAlbum extends Zend_View_Helper_HtmlElement {
-	public function renderAlbum($album) {
-		if (!$album)
-			return '';
+class ZendAfi_View_Helper_TagVideo extends Zend_View_Helper_HtmlElement {
+	public function tagVideo($album) {
+		Class_ScriptLoader::getInstance()
+			->addScript('http://vjs.zencdn.net/c/video.js')
+			->addStylesheet('http://vjs.zencdn.net/c/video-js.css')
+			->addInlineStyle('.video-js {margin: 5px auto}');
 
-		$content = '';
-		if ($album->isLivreNumerique())
-			Class_ScriptLoader::getInstance()->loadBooklet($album->getId(), '#resnum');
-		else if ($album->isDiaporama())
-			$content = $this->view->tagSlideshow($album);
-		else if ($album->isGallica())
-			$content = $this->view->gallicaPlayer($album);
-		else if ($album->isArteVod())
-			$content = $this->view->tagVideo($album);
-		else
-			$content = $this->view->tagAlbumMediaList($album);
-		
-		return sprintf('<div id="resnum">%s</div>', $content); 
+		return '<video id="my_vid" class="video-js vjs-default-skin" controls preload="auto" data-setup="{}" width="640" height="400">
+<source src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4" type="video/mp4"> 
+</video>';
 	}
 }
 

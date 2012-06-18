@@ -1543,7 +1543,14 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 		Class_Album::getLoader()
 			->newInstanceWithId(102)
 			->setTitre('Mulholland drive')
-			->beArteVOD();
+			->beArteVOD()
+			->addNote('856', array('data' => array(array('x' => 'trailer',
+																									 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4'),
+																						 array('x' => 'trailer',
+																									 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv'),
+																						 array('x' => 'poster',
+																									 'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg')
+																						 )));
 			
 
 		$this->dispatch('/admin/album/preview_album/id/102');
@@ -1565,6 +1572,17 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 	/** @test */
 	public function pageShouldNotContainsPoidsDeLaVignette() {
 		$this->assertNotXPathContentContains('//div', 'Poids de la première vignette');
+	}
+
+	/** @test */
+	public function videoTagShouldContainsMp4() {
+		$this->assertXPath('//video//source[@src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4"][@type="video/mp4"]');
+	}
+
+	/** @test */
+	public function pageShouldContainsVideoJS() {
+		$this->assertXPath('//link[contains(@href, "http://vjs.zencdn.net/c/video-js.css")]');
+		$this->assertXPath('//script[contains(@src, "http://vjs.zencdn.net/c/video.js")]');
 	}
 }
 
