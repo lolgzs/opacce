@@ -45,7 +45,7 @@ function defineConstant($name, $value) {
 
 
 function setupConstants($cfg) {
-	defineConstant('VERSION_PERGAME','V-05.18 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
+	defineConstant('VERSION_PERGAME','V-05.19 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
 	defineConstant('ROOT_PATH',  './');
 
 	defineConstant('MODULEDIRECTORY','./application/modules');

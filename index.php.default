@@ -29,9 +29,9 @@ set_include_path('.' . PATH_SEPARATOR . './library'
 
 // Includes de base
 include_once "local.php";
-
 $site= substr($_SERVER['SCRIPT_NAME'], 1, strpos($_SERVER['SCRIPT_NAME'], "index.php") -2);
-if(!file_exists("../" . end(split('/', $site)))) {
+$parts=explode('/', $site);
+if(!file_exists("../" . end($parts))) {
 	echo "Erreur de vhost !" ;
 	exit ;
 }
