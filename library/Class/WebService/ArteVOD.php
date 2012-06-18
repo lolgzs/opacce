@@ -72,6 +72,31 @@ class Class_WebService_ArteVOD {
 
 
 	public function harvest() {
+		$current_page = 1;
+		$total_page = 0;
+		do {
+			if (null == ($reader = $this->loadPage($current_page)))
+				return;
+
+			$total_page = $reader->getPageCount();
+
+			$this->getLogger()->info(sprintf('Traitement de la page %s / %s',
+																			 $current_page,
+																			 $total_page));
+
+			foreach ($reader->getFilms() as $film) {
+				$existing_ids[] = $film->getId();
+				$this->loadFilm($film);
+				$film->import();
+			
+			}
+			
+			$current_page++;
+		} while ($current_page <= $total_page);
+	}
+
+
+	protected function loadPage($page_number = 1) {
 		$content = $this->open_authenticated_url(self::BASE_URL . self::FILMS);
 		if ('' == $content) {
 			$this->getLogger()->err('Erreur de communication');
@@ -82,17 +107,9 @@ class Class_WebService_ArteVOD {
 
 		$this->getLogger()->info('Réponse reçue');
 		$reader = $this->getFilmsReader()->parse($content);
-
-		$this->getLogger()->info($reader->getTotalCount() .' films dans la base');
-		$this->getLogger()->info(sprintf('Traitement de la page %s / %s',
-																		 $reader->getPageNumber(),
-																		 $reader->getPageCount()));
-
-		foreach ($reader->getFilms() as $film) {
-			$existing_ids[] = $film->getId();
-			$this->loadFilm($film);
-			$film->import();
-		}
+		if (1 == $page_number) 
+			$this->getLogger()->info($reader->getTotalCount() .' films dans la base');
+		return $reader;
 	}
 
 
