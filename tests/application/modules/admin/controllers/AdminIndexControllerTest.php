@@ -135,12 +135,6 @@ class AdminIndexControllerIndexActionTest extends AdminIndexControllerTestCase {
 	public function PATH_JAVAShouldExists() {
 		$this->assertTrue(file_exists(PATH_JAVA));
 	}
-
-
-	/** @test */
-	public function PATH_FLASHShouldExists() {
-		$this->assertTrue(file_exists(PATH_FLASH));
-	}
 }
 
 class AdminIndexControllerAdminVarActionTest extends Admin_AbstractControllerTestCase {

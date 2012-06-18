@@ -134,12 +134,6 @@ class ProfilOptionsControllerProfilAdulteTest extends ProfilOptionsControllerWit
 
 
 	/** @test */
-	public function PATH_FLASHShouldExists() {
-		$this->assertTrue(file_exists(PATH_FLASH));
-	}
-
-
-	/** @test */
 	function withSiteDownShouldDisplaySiteBloque() {
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('SITE_OK')
