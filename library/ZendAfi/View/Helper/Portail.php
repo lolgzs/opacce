@@ -55,7 +55,8 @@ class ZendAfi_View_Helper_Portail extends ZendAfi_View_Helper_BaseHelper {
 		if (($user = Class_Users::getLoader()->getIdentity())
 				&& $user->isAdmin()
 				&& 'index' == $request->getControllerName()
-				&& 'index' == $request->getActionName()) {
+				&& 'index' == $request->getActionName()
+				&& 'opac' == $request->getModuleName()) {
 			Class_ScriptLoader::getInstance()
 				->addAdminScript('cfg.accueil')
 				->addJQueryReady('opacBlocksSorting("'. $this->view->url(array('module' => 'admin',

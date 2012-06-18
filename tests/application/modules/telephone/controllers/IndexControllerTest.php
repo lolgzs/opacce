@@ -448,3 +448,36 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 		$this->assertModule('opac');
 	}
 }
+
+
+
+class IndexControllerTelephoneWithModulesAndAdminLoggedTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	protected function _loginHook($account) {
+		$account->ROLE = "admin_portail";
+		$account->ROLE_LEVEL = 6;
+		$account->ID_USER = 54321;
+		$account->PSEUDO = "admin";
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+		Class_Users::getLoader()
+			->newInstanceWithId(54321)
+			->setRoleLevel(6);
+
+		$this->dispatch('/', true);
+	}
+
+
+	/** @test */
+	public function fonctionsAdminShouldBeVisible() {
+		$this->assertXPath('//div[@class="configuration_module"]');
+	}
+
+
+	/** @test */
+	public function modulesShouldNotBeSortableAsNotSupporterOnPhoneYet() {
+		$this->assertNotXPath('//script[contains(@src, "cfg.accueil")]');
+	}
+}
