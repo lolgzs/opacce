@@ -53,13 +53,26 @@ class HarvestControllerArteVodNotActivatedTest extends HarvestControllerArteVodT
 
 
 
-class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerArteVodTestCase {
+abstract class HarvestControllerArteVodActivatedTestCase extends HarvestControllerArteVodTestCase {
 	public function setUp() {
 		parent::setUp();
 
 		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD')
-			->setValeur('1');
+			->newInstanceWithId('ARTE_VOD_LOGIN')
+			->setValeur('user');
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('ARTE_VOD_KEY')
+			->setValeur('pass');
+
+	}
+}
+
+
+
+
+class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerArteVodActivatedTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
@@ -80,19 +93,9 @@ class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerAr
 
 
 
-class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerArteVodTestCase {
+class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerArteVodActivatedTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD')
-			->setValeur('1');
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD_LOGIN')
-			->setValeur('user');
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD_KEY')
-			->setValeur('pass');
 
 		$this->_web_client
 			->whenCalled('open_url')

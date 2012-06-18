@@ -57,7 +57,6 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'VODECLIC_ID',
 		'OAI_SERVER',
 		'PACK_MOBILE',
-		'ARTE_VOD',
 		'ARTE_VOD_LOGIN',
 		'ARTE_VOD_KEY'
 	);
@@ -191,7 +190,7 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	 * @return bool
 	 */
 	public static function isArteVodEnabled() {
-		return self::isModuleEnabled('ARTE_VOD');
+		return (('' != self::get('ARTE_VOD_LOGIN')) && ('' != self::get('ARTE_VOD_KEY')));
 	}	
 
 
