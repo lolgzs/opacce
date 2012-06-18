@@ -108,6 +108,12 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerAr
 			->answers(null)
 			->beStrict();
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+			->whenCalled('save')->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+			->whenCalled('save')->answers(true);
+
 		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
 
