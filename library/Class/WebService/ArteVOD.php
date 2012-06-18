@@ -97,7 +97,8 @@ class Class_WebService_ArteVOD {
 
 
 	protected function loadPage($page_number = 1) {
-		$content = $this->open_authenticated_url(self::BASE_URL . self::FILMS);
+		$url = self::BASE_URL . self::FILMS . ((1 != $page_number) ? '?page_nb=' . $page_number: '');
+		$content = $this->open_authenticated_url($url);
 		if ('' == $content) {
 			$this->getLogger()->err('Erreur de communication');
 			return;

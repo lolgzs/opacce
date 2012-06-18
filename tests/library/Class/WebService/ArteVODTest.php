@@ -37,7 +37,6 @@ abstract class ArteVODHarverstingTestCase extends PHPUnit_Framework_TestCase {
 			->setValeur('pass');
 
 		$this->_web_client = Storm_Test_ObjectWrapper::mock()
-			->whenCalled('open_url')->answers('')
 			->whenCalled('setAuth')->with('user', 'pass')->answers(null);
 
 		Class_WebService_ArteVOD::setDefaultWebClient($this->_web_client);
@@ -79,13 +78,14 @@ class ArteVODHarverstingTwoFilmsInTwoPages extends ArteVODHarverstingTestCase {
 			->whenCalled('save')->answers(true);
 
 		$service = new Class_WebService_ArteVOD();
+		xdebug_break();
 		$service->harvest();
 	}
 
 
 	/** @test */
 	public function shouldHaveCreatedCategorie() {
-		$this->assertEquals(1, $this->_category_wrapper->methodHasBeenCalled('save'));
+		$this->assertTrue($this->_category_wrapper->methodHasBeenCalled('save'));
 	}
 
 
