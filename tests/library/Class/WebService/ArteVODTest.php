@@ -78,7 +78,6 @@ class ArteVODHarverstingTwoFilmsInTwoPages extends ArteVODHarverstingTestCase {
 			->whenCalled('save')->answers(true);
 
 		$service = new Class_WebService_ArteVOD();
-		xdebug_break();
 		$service->harvest();
 	}
 
