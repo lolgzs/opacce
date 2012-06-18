@@ -529,6 +529,10 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	public function _thumbnailsForm($album) {
+		if (! ($album->isLivreNumerique() || $album->isDiaporama())) {
+			return;
+		}
+
 		$groups = array('thumbnails' => array('legend' => 'Vignettes',
 																					'elements' => array('thumbnail_width' => 'Largeur')));
 

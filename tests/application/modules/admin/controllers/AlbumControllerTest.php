@@ -56,7 +56,7 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 																		 ->setDateMaj('2011-10-05 17:12:00')
 																		 ->setDescription('Les préférées')
 																		 ->setAnnee(1978)
-																		 ->setTypeDocId(202)
+																		 ->beDiaporama()
 																		 ->setIdOrigine('DC023')
 																		 ->setMatiere('1;3;5')
 																		 ->setDewey('10;12')
@@ -154,8 +154,8 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 	/** @test */
-	public function albumMesBDShouldHaveIconForRessourcesNumeriques() {
-		$this->assertXPath("//div//img[contains(@src, 'mls_s.png')]");
+	public function albumMesBDShouldHaveIconForDiaporama() {
+		$this->assertXPath("//div//img[contains(@src, 'images.png')]");
 	}
 
 
@@ -814,8 +814,8 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@value='201']", 
 																			'livres');
 
-		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@selected='selected'][@value='202']", 
-																			'bd',
+		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@selected='selected'][@value='101']", 
+																			'Diaporama',
 																			$this->_response->getBody());
 	}
 
@@ -1376,6 +1376,12 @@ class Admin_AlbumControllerPreviewMesBDTest extends Admin_AlbumControllerTestCas
 	public function formThumbnailsShouldNotHaveInputForThumbnailLeftPageCropLeft() {
 		$this->assertNotXPath('//input[@name="thumbnail_left_page_crop_left"]');
 	}
+
+
+	/** @test */
+	public function pageShouldContainsPoidsDeLaVignette() {
+		$this->assertXPathContentContains('//div', 'Poids de la première vignette');
+	}
 }
 
 
@@ -1525,6 +1531,40 @@ abstract class Admin_AlbumControllerPostImportEADTest extends Admin_AlbumControl
 	/** @test */
 	public function saveAlbumCategorieShouldHaveBeenCalled() {
 		$this->assertTrue(Class_AlbumCategorie::getLoader()->methodHasBeenCalled('save'));
+	}
+}
+
+
+
+class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		
+		Class_Album::getLoader()
+			->newInstanceWithId(102)
+			->setTitre('Mulholland drive')
+			->beArteVOD();
+			
+
+		$this->dispatch('/admin/album/preview_album/id/102');
+	}
+
+
+	/** @test */
+	public function formVignetteShouldNotBeVisible() {
+		$this->assertNotXPath('//form');
+	}
+
+
+	/** @test */
+	public function albumhouldHaveIconForArteVOD() {
+		$this->assertXPath("//div//img[contains(@src, 'artevod.png')]");
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsPoidsDeLaVignette() {
+		$this->assertNotXPathContentContains('//div', 'Poids de la première vignette');
 	}
 }
 

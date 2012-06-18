@@ -24,6 +24,9 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 	 * @return string
 	 */
 	public function renderForm($form) {
+		if (!$form)
+			return;
+
 		$form->setAttrib('class', trim($form->getAttrib('class').' form'));
 
 		// compatibilité avec les tables admin standard

@@ -34,6 +34,7 @@ class ZendAfi_View_Helper_IconeSupport extends Zend_View_Helper_HtmlElement {
 																					Class_TypeDoc::DIAPORAMA => 'images.png',
 																					Class_TypeDoc::EPUB => 'epub.png',
 																					Class_TypeDoc::OAI => 'oai.gif',
+																					Class_TypeDoc::ARTEVOD => 'artevod.png',
 																					);
 	
 	public function iconeSupport($type_doc_id) {
