@@ -51,7 +51,8 @@ class Class_Systeme_ModulesAccueil_News extends Class_Systeme_ModulesAccueil_Nul
 		'display_order' => 'Selection', // Ordre d'affichage des articles
 		'display_titles_only' => false, // Afficher seulement les titres
 		'rss_avis' => true, // Afficher les rss
-		'op_largeur_img' => 200
+		'op_largeur_img' => 200, // Largeur de la boite pour l'affichage diaporama
+		'op_hauteur_boite' => 400 // Hauteur de la boite pour l'affichage diaporama
 	);
 }
 ?>

@@ -30,8 +30,10 @@ class ZendAfi_View_Helper_Accueil_News extends ZendAfi_View_Helper_Accueil_Base 
 		if ($this->isDisplayDiaporama())
 			$this->renderSlideShowScriptsOn($script_loader,
 																			sprintf('.news-%d',	$this->id_module),
-																			array('width' => $this->preferences['op_largeur_img']));
+																			array('width' => $this->preferences['op_largeur_img'],																								 
+																						'height' => $this->preferences['op_hauteur_boite']));
 	}
+
 
 	public function getHtml()	{
 		$this->read_speaker_helper = new ZendAfi_View_Helper_ReadSpeaker();
