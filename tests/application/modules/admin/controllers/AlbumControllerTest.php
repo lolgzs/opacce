@@ -1544,16 +1544,19 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 			->newInstanceWithId(102)
 			->setTitre('Mulholland drive')
 			->beArteVOD()
-			->addNote('856', array('data' => array(array('x' => 'trailer',
-																									 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4'),
-																						 array('x' => 'trailer',
-																									 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv'),
-																						 array('x' => 'poster',
-																									 'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg')
-																						 )));
+			->setNotes(array(
+											 array('field' => '856',
+														 'data' => array('x' => 'trailer',
+																						 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4')),
+											 array('field' => '856',
+														 'data' => array('x' => 'trailer',
+																						 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv')),
+											 
+											 array('field' => '856',
+														 'data' => array('x' => 'poster',
+																						 'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg'))));
 			
-
-		$this->dispatch('/admin/album/preview_album/id/102');
+		$this->dispatch('/admin/album/preview_album/id/102', true);
 	}
 
 
@@ -1574,10 +1577,30 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 		$this->assertNotXPathContentContains('//div', 'Poids de la première vignette');
 	}
 
+
+	/** @test */
+	public function videoTagShouldContainsTwoSources() {
+		$this->assertXPathCount('//video//source', 2, $this->_response->getBody());
+	}
+
+
 	/** @test */
 	public function videoTagShouldContainsMp4() {
 		$this->assertXPath('//video//source[@src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4"][@type="video/mp4"]');
 	}
+
+
+	/** @test */
+	public function videoTagShouldContainsFlv() {
+		$this->assertXPath('//video//source[@src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv"][@type="video/flv"]');
+	}
+
+
+	/** @test */
+	public function posterShouldBeInVideoTag() {
+		$this->assertXPath('//video[@poster="http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg"]');
+	}
+
 
 	/** @test */
 	public function pageShouldContainsVideoJS() {

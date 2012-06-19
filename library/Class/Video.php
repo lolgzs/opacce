@@ -19,25 +19,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_TagVideo extends Zend_View_Helper_HtmlElement {
-	public function tagVideo($album) {
-		Class_ScriptLoader::getInstance()
-			->addScript('http://vjs.zencdn.net/c/video.js')
-			->addStylesheet('http://vjs.zencdn.net/c/video-js.css')
-			->addInlineStyle('.video-js {margin: 5px auto}');
+class Class_Video {
+	protected $_url;
+
+	public static function newWithUrl($url) {
+		$instance = new self();
+		return $instance->setUrl($url);
+	}
 
 
-		$html = '';
-		$trailers = $album->getTrailers();
-		foreach($trailers as $trailer) {
-			$html .= sprintf('<source src="%s" type="%s">',
-											 $trailer->getUrl(),
-											 $trailer->getMimeType());
-		}
+	public function setUrl($url) {
+		$this->_url = $url;
+		return $this;
+	}
 
-		return sprintf('<video id="my_vid" class="video-js vjs-default-skin" poster="%s" controls preload="auto" data-setup="{}" width="640" height="400">%s</video>',
-									 $album->getPoster(),
-									 $html);
+
+	public function getUrl() {
+		return $this->_url;
+	}
+
+
+	public function getMimeType() {
+		$parts = explode('.', $this->_url);
+		return 'video/'.end($parts);
 	}
 }
 
