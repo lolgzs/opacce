@@ -83,7 +83,11 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @param string $code_annexe
 	 * @return array
 	 */
-	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
+	public function reserverExemplaire($user, $exemplaire, $code_bib_or_annexe) {
+		$code_annexe = $code_bib_or_annexe;
+		if ($annexe = Class_CodifAnnexe::getLoader()->findFirstBy(array('id_bib' => $code_bib_or_annexe)))
+			$code_annexe = $annexe->getCode();
+
 		try {
 			$xml = $this->httpGet(array('service'					=> 'HoldTitle',
 																	'bibId'						=> $exemplaire->getIdOrigine(),

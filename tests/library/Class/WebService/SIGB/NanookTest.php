@@ -558,6 +558,19 @@ class NanookGetEmprunteurWithErrorTest extends NanookTestCase {
 
 
 class NanookOperationsTest extends NanookTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findFirstBy')
+			->answers(null)
+
+			->whenCalled('findFirstBy')
+			->with(array('id_bib' => 3))
+			->answers(Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
+								->setIdBib(3)
+								->setCode(10));
+	}
+	
 	/** @test */
 	public function prolongerPretShouldReturnSuccessIfNoErrors() {
 		$this->_mock_web_client
@@ -595,18 +608,18 @@ class NanookOperationsTest extends NanookTestCase {
 
 
 	/** @test */
-	public function reserverExemplaireShouldReturnSuccessIfNoErrors() {
+	public function reserverExemplaireOnExistingAnnexeWithNoErrorsShouldReturnSuccess() {
 		$this->_mock_web_client
 			->expects($this->once())
 			->method('open_url')
-			->with('http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/Site+Principal')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/10')
 			->will($this->returnValue(NanookFixtures::xmlHoldTitleSuccess()));
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
 												$this->_service->reserverExemplaire(
 													Class_Users::getLoader()->newInstance()	->setIdSigb('1'),
 													Class_Exemplaire::getLoader()->newInstance()->setIdOrigine('196895'),
-													'Site Principal'
+													'3'
 												));
 	}
 
