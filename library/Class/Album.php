@@ -1000,19 +1000,9 @@ class Class_Album extends Storm_Model_Abstract {
 	 */
 	public function getTrailers() {
 		$trailers = array();
-		$unimarc_array = $this->getNotesAsArray();
-		foreach($unimarc_array as $unimarc_value) {
-			if (!is_array($unimarc_value) 
-					|| !isset($unimarc_value['field']) 
-					|| '856' !== $unimarc_value['field'] 
-					|| !isset($unimarc_value['data']) 
-					|| !isset($unimarc_value['data']['x'])
-					|| !isset($unimarc_value['data']['a'])
-					|| 'trailer' !== $unimarc_value['data']['x'])
-				continue;
-			
-			$trailers []= Class_Video::newWithUrl($unimarc_value['data']['a']);
-		}
+		$trailers_url = $this->getUnimarc856Values('trailer');
+		foreach($trailers_url as $url)
+			$trailers []= Class_Video::newWithUrl($url);
 
 		return $trailers;
 	}
@@ -1023,19 +1013,32 @@ class Class_Album extends Storm_Model_Abstract {
 	 * @return string 
 	 */
 	public function getPoster() {
+		if ($posters_url = $this->getUnimarc856Values('poster'))
+			return $posters_url[0];
+		return '';
+	}
+
+
+	/** 
+	 * Return arteVOD poster url
+	 * @return string 
+	 */
+	public function getUnimarc856Values($field) {
+		$values = array();
 		$unimarc_array = $this->getNotesAsArray();
 		foreach($unimarc_array as $unimarc_value) {
 			if (!is_array($unimarc_value) 
-					|| !isset($unimarc_value['field']) 
-					|| '856' !== $unimarc_value['field'] 
-					|| !isset($unimarc_value['data']) 
-					|| !isset($unimarc_value['data']['x'])
-					|| !isset($unimarc_value['data']['a'])
-					|| 'poster' !== $unimarc_value['data']['x'])
+				|| !isset($unimarc_value['field']) 
+				|| '856' !== $unimarc_value['field'] 
+				|| !isset($unimarc_value['data']) 
+				|| !isset($unimarc_value['data']['x'])
+				|| !isset($unimarc_value['data']['a'])
+				|| $field !== $unimarc_value['data']['x'])
 				continue;
-			return $unimarc_value['data']['a'];
+
+			$values []= $unimarc_value['data']['a'];
 		}
-		return '';
+		return $values;
 	}
 }
 
