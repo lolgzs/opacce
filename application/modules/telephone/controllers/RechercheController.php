@@ -38,6 +38,10 @@ class Telephone_RechercheController extends RechercheController {
 			$actions[$this->view->_('Feuilleter le livre')] = array('action' => 'ressourcesnumeriques',
 																															'attribs' => array('data-ajax' => 'false'));
 
+		if ($notice->isArteVOD())
+			$actions[$this->view->_('Bande-annonce')] = array('action' => 'ressourcesnumeriques',
+																												'attribs' => array('data-ajax' => 'false'));
+
 		$this->view->notice = $notice;
 		$this->view->actions = $actions;
 	}

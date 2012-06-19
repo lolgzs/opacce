@@ -276,6 +276,12 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
+	public function isArteVOD() {
+		return ($this->getTypeDoc() == Class_TypeDoc::ARTEVOD);
+	}
+
+
+
 // ----------------------------------------------------------------
 // Constructeur 
 // ----------------------------------------------------------------
