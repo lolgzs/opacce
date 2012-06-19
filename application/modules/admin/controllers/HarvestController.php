@@ -37,4 +37,19 @@ class Admin_HarvestController extends Zend_Controller_Action {
 		
 		$this->view->log = ob_get_clean();
 	}
+
+
+	public function arteVodBrowseAction() {
+		$this->view->titre = $this->view->_('Moissonnage ArteVOD');
+	}
+
+
+	public function arteVodAjaxAction() {
+		$this->_helper->viewRenderer->setNoRender();
+		if (!Class_AdminVar::isArteVodEnabled())
+			return;
+
+		$service = new Class_WebService_ArteVOD();
+		echo json_encode($service->harvestPage($this->_getParam('page', 1)));
+	}
 }

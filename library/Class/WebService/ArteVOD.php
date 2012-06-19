@@ -87,11 +87,31 @@ class Class_WebService_ArteVOD {
 				$existing_ids[] = $film->getId();
 				$this->loadFilm($film);
 				$film->import();
-			
 			}
 			
 			$current_page++;
 		} while ($current_page <= $total_page);
+	}
+
+
+	public function harvestPage($page_number = 1) {
+		$response = array();
+		if (null == ($reader = $this->loadPage($page_number))) {
+			$response['error'] = 'Erreur de communication';
+			return $response;
+		}
+		
+		$response['total_count'] = $reader->getTotalCount();
+		$response['current_page'] = $reader->getPageNumber();
+		$response['page_count'] = $reader->getPageCount();
+		$response['has_next'] = $reader->getPageNumber() < $reader->getPageCount();
+
+		foreach ($reader->getFilms() as $film) {
+			$this->loadFilm($film);
+			$film->import();
+		}
+
+		return $response;
 	}
 
 

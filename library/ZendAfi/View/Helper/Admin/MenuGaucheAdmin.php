@@ -60,6 +60,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 			$menu_bibnum .= $this->addMenu("images.png",		$this->translate()->_("Collections"),						"/admin/album",								 $acl_admins);
 			$menu_bibnum .= $this->addMenu("epub.png",			$this->translate()->_("Catalogues OPDS"),				"/admin/opds",								 $acl_admins);
 			$menu_bibnum .= $this->addMenu("website.gif",		$this->translate()->_("Entrepôts OAI"),					"/admin/oai",									 $acl_admins);
+			$menu_bibnum .= $this->addMenu("artevod.png",		$this->translate()->_("Arte VOD"),					    "/admin/harvest/arte-vod-browse",	$acl_admins);
 			$menu_bibnum .= $this->addMenu("ead.png",				$this->translate()->_("Import EAD"),						"/admin/album/import_ead",		 $acl_admins);
 			$menu_bibnum .= $this->closeBoite();
 		}

@@ -20,7 +20,6 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-
 abstract class HarvestControllerArteVodTestCase extends Admin_AbstractControllerTestCase {
 	protected $_web_client;
 
@@ -37,43 +36,78 @@ abstract class HarvestControllerArteVodTestCase extends Admin_AbstractController
 
 
 
-
-class HarvestControllerArteVodNotActivatedTest extends HarvestControllerArteVodTestCase {
-	/** @test */
-	public function withoutActivatedArteVodShouldRedirect() {
+abstract class HarvestControllerArteVodNotActivatedTestCase extends HarvestControllerArteVodTestCase {
+	public function setUp() {
+		parent::setUp();
 		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD')
-			->setValeur('0');
-
-		$this->dispatch('/admin/harvest/arte-vod', true);
-		$this->assertRedirectTo('/admin/index');
+			->newInstanceWithId('ARTE_VOD_LOGIN')
+			->setValeur('');
 	}
 }
-
 
 
 
 abstract class HarvestControllerArteVodActivatedTestCase extends HarvestControllerArteVodTestCase {
 	public function setUp() {
 		parent::setUp();
-
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('ARTE_VOD_LOGIN')
 			->setValeur('user');
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('ARTE_VOD_KEY')
 			->setValeur('pass');
-
 	}
 }
 
+
+
+abstract class HarvestControllerArteVodWithFilmTestCase extends HarvestControllerArteVodActivatedTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_web_client
+			->whenCalled('open_url')
+			->with('http://www.mediatheque-numerique.com/ws/films')
+			->answers(HarvestArteVODFixtures::films())
+
+			->whenCalled('open_url')
+			->with('http://www.mediatheque-numerique.com/ws/films/5540')
+			->answers(HarvestArteVODFixtures::film())
+
+			->whenCalled('setAuth')
+			->with('user', 'pass')
+			->answers(null)
+			->beStrict();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+			->whenCalled('findFirstBy')->answers(null)
+			->whenCalled('save')->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+			->whenCalled('findFirstBy')->answers(null)
+			->whenCalled('save')->answers(true);
+	}
+}
+
+
+
+class HarvestControllerArteVodActionNotActivatedTest extends HarvestControllerArteVodNotActivatedTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/harvest/arte-vod', true);
+	}
+
+
+	/** @test */
+	public function shouldRedirect() {
+		$this->assertRedirectTo('/admin/index');
+	}
+}
 
 
 
 class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerArteVodActivatedTestCase {
 	public function setUp() {
 		parent::setUp();
-
 		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
 
@@ -93,30 +127,9 @@ class HarvestControllerArteVodActivatedWithErrorTest extends HarvestControllerAr
 
 
 
-class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerArteVodActivatedTestCase {
+class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerArteVodWithFilmTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		$this->_web_client
-			->whenCalled('open_url')
-			->with('http://www.mediatheque-numerique.com/ws/films')
-			->answers(HarvestArteVODFixtures::films())
-
-			->whenCalled('open_url')
-			->with('http://www.mediatheque-numerique.com/ws/films/5540')
-			->answers(HarvestArteVODFixtures::film())
-
-			->whenCalled('setAuth')
-			->with('user', 'pass')
-			->answers(null)
-			->beStrict();
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
-			->whenCalled('save')->answers(true);
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
-			->whenCalled('save')->answers(true);
-
 		$this->dispatch('/admin/harvest/arte-vod', true);		
 	}
 
@@ -136,6 +149,51 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerAr
 	/** @test */
 	public function shouldLogFirstPage() {
 		$this->assertXPathContentContains('//div', 'Traitement de la page 1 / 1');
+	}
+
+}
+
+
+
+class HarvestControllerArteVodAjaxNotActivatedTest extends HarvestControllerArteVodNotActivatedTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/harvest/arte-vod-ajax', true);
+	}
+
+
+	/** @test */
+	public function shouldReturnEmptyResponse() {
+		$this->assertEquals('', $this->_response->getBody());
+	}
+}
+
+
+
+class HarvestControllerArteVodAjaxFirstPageTest extends HarvestControllerArteVodWithFilmTestCase {
+	protected $_json;
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/harvest/arte-vod-ajax', true);
+		$this->_json = json_decode($this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function responseShouldContainFilmsCount() {
+		$this->assertEquals(1, $this->_json->total_count);
+	}
+
+
+	/** @test */
+	public function responseShouldContainCurrentPage() {
+		$this->assertEquals(1, $this->_json->current_page);
+	}
+
+
+	/** @test */
+	public function responseShouldNotHaveNextPage() {
+		$this->assertFalse($this->_json->has_next);
 	}
 
 }
