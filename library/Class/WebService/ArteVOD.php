@@ -85,6 +85,9 @@ class Class_WebService_ArteVOD {
 
 			foreach ($reader->getFilms() as $film) {
 				$existing_ids[] = $film->getId();
+				if ($film->isAlreadyHarvested())
+					continue;
+				
 				$this->loadFilm($film);
 				$film->import();
 			}

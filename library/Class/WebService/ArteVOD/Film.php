@@ -134,11 +134,7 @@ class Class_WebService_ArteVOD_Film {
 
 
 	public function import() {
-		$album = Class_Album::getLoader()
-			->findFirstBy(array('url_origine' => Class_WebService_ArteVOD::BASE_URL,
-													'id_origine' => $this->_id));
-
-		if (null != $album)
+		if ($this->isAlreadyHarvested())
 			return;
 
 		$category = $this->_ensureArteVODCategory();
@@ -152,6 +148,15 @@ class Class_WebService_ArteVOD_Film {
 			->setNotes($this->getSerializedNotes())
 			->beArteVOD();
 		$album->save();
+	}
+
+
+	public function isAlreadyHarvested() {
+		$album = Class_Album::getLoader()
+			->findFirstBy(array('url_origine' => Class_WebService_ArteVOD::BASE_URL,
+													'id_origine' => $this->_id));
+
+		return (null != $album);
 	}
 
 
