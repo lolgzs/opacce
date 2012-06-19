@@ -32,10 +32,16 @@ class ZendAfi_View_Helper_SocialShare extends Zend_View_Helper_HtmlElement {
 
 
 	public function htmlForNetwork($profil, $network) {
-		return  sprintf('<img class="%s" src="%s"  onclick="socialShare(\'%s\')" alt="%s"/>',
+		$onclick_attr = array('facebook' => 'socialShare(\'facebook\')',
+													'twitter' => 'socialShare(\'twitter\')',
+													'mail' => sprintf('window.location=\'%s\'', 
+																						$this->view->url(array('controller' => 'index',
+																																	 'action' => 'formulairecontact'))));
+
+		return  sprintf('<img class="%s" src="%s"  onclick="%s; return false" alt="%s"/>',
 										$network,
 										URL_IMG.'/site/'.$network.'.png',										
-										$network,
+										$onclick_attr[$network],
 										'partager sur '.$network);
 	}
 

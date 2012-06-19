@@ -64,11 +64,12 @@ class ZendAfi_View_Helper_SocialShareTwitterTest extends ZendAfi_View_Helper_Soc
 
 
 
-class ZendAfi_View_Helper_SocialShareFacebookAndTwitterTest extends ZendAfi_View_Helper_SocialShareTestCase {
+
+class ZendAfi_View_Helper_SocialShareFacebookTwitterAndMailTest extends ZendAfi_View_Helper_SocialShareTestCase {
 	public function setUp() {
 		parent::setUp();
 		$profil = Class_Profil::getLoader()->newInstanceWithId(26)->setLibelle('Section adultes');
-		$this->html = $this->_helper->socialShare($profil, array('facebook', 'twitter'));
+		$this->html = $this->_helper->socialShare($profil, array('facebook', 'twitter', 'mail'));
 	}
 
 
@@ -81,6 +82,12 @@ class ZendAfi_View_Helper_SocialShareFacebookAndTwitterTest extends ZendAfi_View
 	/** @test */
 	public function imgFacebookShouldBeVisible() {
 		$this->assertXPath($this->html, '//div[@class="share"]//img[@class="facebook"][contains(@onclick, "socialShare(\'facebook\')")][contains(@src, "facebook")]');
+	}
+
+
+	/** @test */
+	public function imgMailShouldLinkToFormulaireContact() {
+		$this->assertXPath($this->html, '//div[@class="share"]//img[@class="mail"][contains(@onclick, "index/formulairecontact")][contains(@src, "mail")]');	
 	}
 }
 
