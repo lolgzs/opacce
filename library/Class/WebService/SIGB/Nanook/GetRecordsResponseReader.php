@@ -133,7 +133,10 @@ class Class_WebService_SIGB_Nanook_GetRecordsResponseReader {
 	 * @param string $data
 	 */
 	public function endLocationId($data) {
-		$this->_current_item->setCodeAnnexe((int)$data);
+		if ($annexe = Class_CodifAnnexe::getLoader()->findFirstBy(array('code' => $data)))
+			$this->_current_item->setCodeAnnexe($annexe->getIdBib());
+		else	
+			$this->_current_item->setCodeAnnexe((int)$data);
 	}
 
 

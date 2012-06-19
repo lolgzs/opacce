@@ -63,7 +63,7 @@ class NanookGetServiceTest extends PHPUnit_Framework_TestCase {
 
 
 
-abstract class NanookTestCase extends PHPUnit_Framework_TestCase {
+abstract class NanookTestCase extends Storm_Test_ModelTestCase {
 	/** @var PHPUnit_Framework_MockObject_MockObject */
 	protected $_mock_web_client;
 
@@ -71,11 +71,23 @@ abstract class NanookTestCase extends PHPUnit_Framework_TestCase {
 	protected $_service;
 
 	public function setUp() {
+		parent::setUp();
+
 		$this->_mock_web_client = $this->getMock('Class_WebService_SimpleWebClient');
 
 		$this->_service = Class_WebService_SIGB_Nanook_Service::newInstance()
 			->setServerRoot('http://localhost:8080/afi_Nanook/ilsdi/')
 			->setWebClient($this->_mock_web_client);
+
+		$annexe_cran = Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
+								->setLibelle('Annexe Cran-Gevrier')
+								->setIdBib(3)
+			          ->setCode(10);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findFirstBy')->answers(null)
+			->whenCalled('findFirstBy')->with(array('id_bib' => 3))->answers($annexe_cran)
+			->whenCalled('findFirstBy')->with(array('code' => 10))->answers($annexe_cran);
 	}
 }
 
@@ -197,8 +209,8 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 
 
 	/** @test */
-	public function getExemplairesShouldReturnAnArrayWithSizeTwo() {
-		$this->assertEquals(2, count($this->_notice->getExemplaires()));
+	public function getExemplairesShouldReturnAnArrayWithSizeThree() {
+		$this->assertEquals(3, count($this->_notice->getExemplaires()));
 	}
 
 
@@ -276,6 +288,18 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 		$this->assertEquals('12/01/2029',
 																$this->_notice->exemplaireAt(1)->getDateRetour());
 	}
+
+
+	/** @test */
+	public function thirdExemplaireBibliothequeShouldBeCran() {
+		$this->assertEquals('Annexe Cran-Gevrier', $this->_notice->exemplaireAt(2)->getBibliotheque());
+	}
+
+	/** @test */
+	public function thirdExemplaireCodeAnnexeShouldBeThree() {
+		$this->assertEquals(3, $this->_notice->exemplaireAt(2)->getCodeAnnexe());
+	}
+
 }
 
 
@@ -558,19 +582,6 @@ class NanookGetEmprunteurWithErrorTest extends NanookTestCase {
 
 
 class NanookOperationsTest extends NanookTestCase {
-	public function setUp() {
-		parent::setUp();
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
-			->whenCalled('findFirstBy')
-			->answers(null)
-
-			->whenCalled('findFirstBy')
-			->with(array('id_bib' => 3))
-			->answers(Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
-								->setIdBib(3)
-								->setCode(10));
-	}
-	
 	/** @test */
 	public function prolongerPretShouldReturnSuccessIfNoErrors() {
 		$this->_mock_web_client

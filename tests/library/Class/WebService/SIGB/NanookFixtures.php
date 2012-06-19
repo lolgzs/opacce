@@ -103,6 +103,16 @@ class NanookFixtures {
 										<locationLabel>Cran-Gevrier</locationLabel>
 										<locationId>2</locationId>
 								</item>
+								<item>
+										<barcode>L-072669</barcode>
+										<itemId>10718</itemId>
+										<available>0</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate>2029-01-15</dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
 						</items>
 				</record>
 		</GetRecords>';
