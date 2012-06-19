@@ -375,7 +375,7 @@ class GetLstPret {
 		$instance = new self();
 		$instance->adh = $adh;
 		$instance->scrit = '';
-		$instance->nb_res = 10;
+		$instance->nb_res = -1;
 		$instance->export = 0;
 		return $instance;
 	}
