@@ -113,6 +113,16 @@ class AdminVarTestGet extends AdminVarTestCase {
 		$this->assertFalse(Class_AdminVar::isWorkflowEnabled());
 	}
 
+
+	/** @test */
+	public function getVarShouldStripSlashes() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('GOOGLE_ANALYTICS')
+			->setValeur(addslashes('<script type="text/javascript">\'test\''));
+		$this->assertEquals('<script type="text/javascript">\'test\'',
+												Class_AdminVar::get('GOOGLE_ANALYTICS'));
+	}
+
 }
 
 class AdminVarTestSet extends AdminVarTestCase {

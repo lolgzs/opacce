@@ -77,6 +77,7 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		return $var->getValeur();
 	}
 
+
 	/**
 	 * @param string $name
 	 * @param mixed $value
@@ -205,5 +206,10 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	/** @return bool */
 	public static function isCacheEnabled() {
 		return self::isModuleEnabled('CACHE_ACTIF');
+	}
+
+
+	public function getValeur() {
+		return stripslashes($this->_get('valeur'));
 	}
 }
