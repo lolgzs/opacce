@@ -21,9 +21,19 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 // OPAC3 - Menu admin
 //////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_BaseHelper
-{
+class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_BaseHelper {
+	public function addTitleIconJS() {
+		Class_ScriptLoader::getInstance()
+			->addJQueryReady(
+												'var icon_url = $(\'.menuAdmin li.selected img\').attr(\'src\').replace(\'16.png\', \'48.png\');'.
+												'var title_img = $(\'<img style="float:left; margin-right: 10px; width: 48px">\').attr(\'src\', icon_url);'.
+												'$(\'.modules>h1:first-child\').before(title_img).css(\'margin\', \'15px 0px 20px 50px\');');
+	}
+
+
 	public function menuGaucheAdmin() {
+		$this->addTitleIconJS();
+
 		// User connecté
 		$auth = Zend_Auth::getInstance();
 		if ($auth->hasIdentity()) $this->user = Zend_Auth::getInstance()->getIdentity();
@@ -41,11 +51,11 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		// Menu Modules
 		$menu_modules	 = $this->openBoite($this->translate()->_("Gestionnaire de contenu"));
 		$menu_modules .= $this->addMenu("articles_16.png",				$this->translate()->_("Articles"),								"/admin/cms",								 $acl_all);
-		$menu_modules .= $this->addMenu("domaines_16.png",	$this->translate()->_("Catalogues dynamiques"),		"/admin/catalogue",					 $acl_admins);
+		$menu_modules .= $this->addMenu("domaines_16.png",	      $this->translate()->_("Catalogues dynamiques"),		"/admin/catalogue",					 $acl_admins);
 		$menu_modules .= $this->addMenu("rss.gif",				$this->translate()->_("Fils RSS"),								"/admin/rss",								 $acl_admins);
 		$menu_modules .= $this->addMenu("sitotheque_16",				$this->translate()->_("Sitothèque"),							"/admin/sito",							 $acl_admins);
 		$menu_modules .= $this->addMenu("moderation_16.png",	$this->translate()->_("Modération"),							"/admin/modo/",							 $acl_all,								 $nb_moderations);
-		$menu_modules .= $this->addMenu("demande_incri_16.png",			$this->translate()->_("Demandes d'inscription"),	"/admin/modo/membreview",		 $acl_all,								 $demandes_inscription);
+		$menu_modules .= $this->addMenu("demande_inscri_16.png",			$this->translate()->_("Demandes d'inscription"),	"/admin/modo/membreview",		 $acl_all,								 $demandes_inscription);
 		$menu_modules .= $this->addMenu("lettres_16.png",				$this->translate()->_("Lettres d'information"),		"/admin/newsletter",				 $acl_admins);
 		if (Class_AdminVar::isFormationEnabled()) {
 			$menu_modules .= $this->addMenu("formations_16.png", $this->translate()->_("Formations"),							"/admin/formation",					 $acl_admins);
