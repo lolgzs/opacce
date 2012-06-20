@@ -17,7 +17,7 @@ a, .menuAdmin li {
 .menuGaucheAdmin table {border:none; width: 100%; border-radius: 5px}
 .menuGaucheAdmin td.titre {background:transparent url(../images/box/menu/titre.jpg) repeat-x scroll bottom;border-bottom:1px solid #93A6B4;color:#003687;font-size:12px;height:20px;padding-left:3px;padding-right:2px;}
 .menuGaucheAdmin ul.menuAdmin{padding:3px 3px 3px 0pt;margin:0pt 0pt 0pt 4px; list-style-image: url(../images/blank.gif);}
-.menuGaucheAdmin img{padding-right:4px; width:15px; height:15px;}
+.menuGaucheAdmin img{padding-right:4px; width:16px; height:16px;}
 .menuGaucheAdmin .menu_info {margin-left: -5px; float: right; margin-top: 2px}
 .menu_info {margin-left: 5px; padding: 1px 5px 1px 5px; background-color:#cddcf3; border-radius: 10px; -moz-border-radius:10px;}
 .menuAdmin li{color:#0058A5;padding:3px 3px 3px 0pt;font-size:11px;cursor:pointer;}
