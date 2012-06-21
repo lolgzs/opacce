@@ -118,7 +118,7 @@ class Class_WebService_SIGB_Opsys {
 		if (!isset(self::$service)) {
 			$instance = new self();
 			self::$service = $instance->createService($params['url_serveur'], 
-																								isset($params['catalogue_web']) ? $params['catalogue_web'] : true);
+																								array_key_exists('catalogue_web', $params) ? $params['catalogue_web'] : true);
 		}
 
 		return self::$service;
