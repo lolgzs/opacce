@@ -25,7 +25,9 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 	public function addTitleIconJS() {
 		Class_ScriptLoader::getInstance()
 			->addJQueryReady(
-												'var icon_url = $(\'.menuAdmin li.selected img\').attr(\'src\').replace(\'16.png\', \'48.png\');'.
+												'var icon_url = $(\'.menuAdmin li.selected img\').attr(\'src\');'.
+                        'if (icon_url==undefined) return;'.
+                        'icon_url = icon_url.replace(\'16.png\', \'48.png\');'.
 												'var title_img = $(\'<img style="float:left; margin-right: 10px; width: 48px">\').attr(\'src\', icon_url);'.
 												'$(\'.modules>h1:first-child\').before(title_img).css(\'margin\', \'15px 0px 20px 50px\');');
 	}
