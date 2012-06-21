@@ -43,7 +43,12 @@ abstract class ProfilOptionsControllerWithProfilAdulteTestCase extends AbstractC
 																													 'libelle' => 'Google',
 																													 'picto' => 'vide.gif',
 																													 'preferences' => array('url' => 'http://www.google.com',
-																																									'target' => 0)))),
+																																									'target' => 0)),
+																										 array('type_menu' => 'NEWS',
+																													 'libelle' => 'Articles',
+																													 'picto' => 'vide.gif',
+																													 'preferences' => array('id_items' => '1-3',
+																																									'display_order' => 'Selection')) )),
 											 'V' => array(
 																		"libelle" => "Menu vertical",
 																		"picto" => "vide.gif"));
@@ -197,7 +202,14 @@ class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControlle
 
 	/** @test */
 	public function menuHorizontalShouldIncludeExternalLinkToGoogle() {
-		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[@href='http://www.google.com'][@target='_blank']", 'Google', $this->_response->getBody());
+		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[@href='http://www.google.com'][@target='_blank']", 'Google');
+	}
+
+
+	/** @test */
+	public function menuHorizontalShouldIncludeLinkToArticleCms() {
+		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[contains(@href, 'cms/articleviewpreferences?id_items=1-3&display_order=Selection')]", 
+																			'Articles');
 	}
 
 

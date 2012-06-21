@@ -177,14 +177,7 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 			case "LAST_NEWS": $url = BASE_URL . "/cms/articleviewrecent/nb/" . $preferences["nb"];
 				break;
 			case "NEWS": // Pour l'instant 1 seul article et 1 seule categorie
-				if ($preferences["id_items"]) {
-					$items = explode("-", $preferences["id_items"]);
-					$url = BASE_URL . "/cms/articleview/id/" . $items[0];
-				}
-				if ($preferences["id_categorie"]) {
-					$items = explode("-", $preferences["id_categorie"]);
-					$url = BASE_URL . "/cms/categorieview/id/" . $items[0];
-				}
+				$url = BASE_URL . '/cms/articleviewpreferences?' . http_build_query($preferences);
 				break;
 			case "SITO": // Pour l'instant 1 seul site et pas de categorie
 				if ($preferences["id_items"]) {

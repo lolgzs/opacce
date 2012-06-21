@@ -200,12 +200,14 @@ class CmsController extends Zend_Controller_Action {
 
 	}
 
+
 	/**
 	 * @see ZendAfi_View_Helper_Accueil_MenuVertical
 	 */
 	public function viewsummaryAction() {
 		$this->_viewArticlesByPreferences($this->_getAllParams());
 	}
+
 
 	/**
 	 * @see ZendAfi_View_Helper_Accueil_News
@@ -218,6 +220,14 @@ class CmsController extends Zend_Controller_Action {
 		if (!array_isset('display_order', $preferences) || ('Random' == $preferences['display_order']))
 			$preferences['display_order'] = 'DateCreationDesc';
 		$this->_viewArticlesByPreferences($preferences);
+	}
+
+
+	/**
+	 * @see ZendAfi_View_Helper_Accueil_News
+	 */
+	public function articleviewpreferencesAction() {
+		$this->_viewArticlesByPreferences($this->_request->getParams());
 	}
 
 

@@ -472,17 +472,25 @@ abstract class CmsControllerListTestCase extends AbstractControllerTestCase {
 	}
 }
 
+
+
+
 class CmsControllerArticleViewRecentTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
 		$this->dispatch('/cms/articleviewrecent/nb/2');
 	}
 }
 
+
+
+
 class CmsControllerViewSummaryTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
 		$this->dispatch('/cms/viewsummary');
 	}
 }
+
+
 
 class CmsControllerArticleViewSelectionTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
@@ -507,6 +515,36 @@ class CmsControllerArticleViewSelectionTest extends CmsControllerListTestCase {
 		$this->assertEquals('DateCreationDesc', $this->preferences['display_order']);
 	}
 }
+
+
+
+
+class CmsControllerArticleViewPreferencesTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection');
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+		$this->preferences = Class_Article::getLoader()->getFirstAttributeForLastCallOn('getArticlesByPreferences');
+	}
+
+
+	/** @test */
+	public function itemsShouldBeOneAndThree() {
+		$this->assertEquals('1-3', $this->preferences['id_items']);
+	}
+
+
+	/** @test */
+	public function orderShouldBeDatePublicationDesc() {
+		$this->assertEquals('Selection', $this->preferences['display_order']);
+	}
+}
+
+
+
 
 class CmsControllerCategorieViewTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
