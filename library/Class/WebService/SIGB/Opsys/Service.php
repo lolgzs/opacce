@@ -45,6 +45,11 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+	public function getCatalogClient() {
+		return $this->catalog_client;
+	}
+
+
 	public function isConnected(){
 		return (isset($this->guid) && ($this->guid !== ""));
 	}

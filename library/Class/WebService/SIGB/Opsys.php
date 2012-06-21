@@ -104,6 +104,7 @@ class Class_WebService_SIGB_Opsys {
 		self::$service = null;
 	}
 
+
 	public static function setProxy($proxy_host, $proxy_port,	$proxy_login, $proxy_password){
 		self::$service_options=array(
 																 'proxy_host' => $proxy_host, 
@@ -112,10 +113,12 @@ class Class_WebService_SIGB_Opsys {
 																 'proxy_password' =>	$proxy_password);
 	}
 
+
 	public static function getService($params) {
 		if (!isset(self::$service)) {
 			$instance = new self();
-			self::$service = $instance->createService($params['url_serveur']);
+			self::$service = $instance->createService($params['url_serveur'], 
+																								isset($params['catalogue_web']) ? $params['catalogue_web'] : true);
 		}
 
 		return self::$service;
@@ -147,8 +150,9 @@ class Class_WebService_SIGB_Opsys {
 		return self::$service_options;
 	}
 
-	public function createService($url_aloes){
+	public function createService($url_aloes, $with_catalog_web = true){
 		return $this->newOpsysServiceFactory()->createOpsysService($url_aloes, 
+																															 $with_catalog_web,
 																															 self::getServiceOptions());
 	}
 

@@ -36,16 +36,72 @@ class StubSoapClient {
 
 
 
-class OpsysServiceFactoryTest extends PHPUnit_Framework_TestCase {
-	/** @test */
-	public function getServiceShouldReturnAnInstanceOfOpsysService() {
-		Class_WebService_SIGB_Opsys::reset();
 
+abstract class OpsysServiceFactoryWithCatalogueWebTestCase extends PHPUnit_Framework_TestCase {
+	protected $_service;
+
+	public function setUp() {
+		Class_WebService_SIGB_Opsys::reset();
 		Class_WebService_SIGB_Opsys_ServiceFactory::setSoapClientClass('StubSoapClient');
-		$this->assertInstanceOf('Class_WebService_SIGB_Opsys_Service',
-														Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL")));
 	}
 }
+
+
+
+
+class OpsysServiceFactoryWithCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
+																																		'catalogue_web' => true));
+	}
+
+
+	/** @test */
+	public function getServiceShouldReturnAnInstanceOfOpsysService() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Opsys_Service', $this->_service);
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfStupSoapClient() {
+		$this->assertInstanceOf('StubSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
+
+
+
+class OpsysServiceFactoryWithoutCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
+																																		'catalogue_web' => false));
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfNullCatalogClient() {
+		$this->assertInstanceOf('NullCatalogSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
+
+
+
+class OpsysServiceFactoryWithoutParamCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL"));
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfStupSoapClient() {
+		$this->assertInstanceOf('StubSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
 
 
 
@@ -152,6 +208,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 			->method('createOpsysService')
 			->with(
 						 $this->equalTo('opsys.wsdl'),
+						 $this->equalTo(true),
 						 $this->equalTo( array(
 																	 'proxy_host' => '192.168.2.2',
 																	 'proxy_port' => '3128',
@@ -176,6 +233,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 			->method('createOpsysService')
 			->with(
 						 $this->equalTo('afi.wsdl'),
+						 $this->equalTo(true),
 						 $this->equalTo( array(
 																	 'proxy_host' => '10.0.0.5',
 																	 'proxy_port' => '8080',
