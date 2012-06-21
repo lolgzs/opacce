@@ -53,7 +53,7 @@ class OpsysServiceFactoryWithCatalogueWebTest extends OpsysServiceFactoryWithCat
 	public function setUp() {
 		parent::setUp();
 		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
-																																		'catalogue_web' => true));
+																																		'catalogue_web' => '1'));
 	}
 
 
@@ -76,7 +76,7 @@ class OpsysServiceFactoryWithoutCatalogueWebTest extends OpsysServiceFactoryWith
 	public function setUp() {
 		parent::setUp();
 		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
-																																		'catalogue_web' => false));
+																																		'catalogue_web' => '0'));
 	}
 
 
