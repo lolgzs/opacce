@@ -391,10 +391,10 @@ class Class_Article extends Storm_Model_Abstract {
 																											'role' => 'article_original',
 																											'dependents' => 'delete'),
 
-															 'avis' => array('model' => 'Class_Avis',
-																							 'role' => 'article',
-																							 'dependents' => 'delete',
-																							 'order' => 'date_avis desc'));
+															 'avis_users' => array('model' => 'Class_Avis',
+																										 'role' => 'article',
+																										 'dependents' => 'delete',
+																										 'order' => 'date_avis desc'));
 
 	protected $_belongs_to = array('categorie' => array('model' => 'Class_ArticleCategorie',
 																											 'referenced_in' => 'id_cat'),

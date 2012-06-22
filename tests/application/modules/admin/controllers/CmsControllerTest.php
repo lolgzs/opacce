@@ -61,7 +61,8 @@ abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 			->setTags('concert;jazz')
 			->setAvis(true)
 			->setIndexation(false)
-			->setDateCreation('2010-12-25');
+			->setDateCreation('2010-12-25')
+			->setAvisUsers(array());
 
 
 		$this->article_wrapper = Storm_Test_ObjectWrapper
@@ -1117,8 +1118,7 @@ class CmsControllerDeleteArticleTest extends CmsControllerTestCase {
 			->whenCalled('delete')
 			->answers(true);
 
-
-		$this->dispatch('/admin/cms/delete/id/4');
+		$this->dispatch('/admin/cms/delete/id/4', true);
 	}
 
 

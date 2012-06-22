@@ -77,8 +77,8 @@ class AvisCmsOnArticleConcertTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
-	public function concertGetAvisShouldAnswersArrayWithAvisLaurent() {
-		$this->assertEquals(array($this->_avis_laurent), $this->_concert->getAvis());
+	public function concertGetAvisUsersShouldAnswersArrayWithAvisLaurent() {
+		$this->assertEquals(array($this->_avis_laurent), $this->_concert->getAvisUsers());
 	}
 }
 
