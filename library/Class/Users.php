@@ -130,6 +130,10 @@ class Class_Users extends Storm_Model_Abstract {
 																							 'role' => 'user',
 																							 'order' => 'date_avis desc'),
 
+															 'avis_articles' => array('model' => 'Class_Avis',
+																												'role' => 'auteur',
+																												'order' => 'date_avis desc'),
+
 															 'paniers' => array('model' => 'Class_PanierNotice',
 																									'role' => 'user'),
 
@@ -178,6 +182,7 @@ class Class_Users extends Storm_Model_Abstract {
 	public function __construct() {
 		$this->_translate = Zend_Registry::get('translate');
 	}
+
 
 	/**
 	 * @return UsersLoader

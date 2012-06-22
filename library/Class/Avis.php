@@ -22,10 +22,20 @@
 // OPAC3: classe de Gestion des Avis sur les documents
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_Avis
-{
+class Class_Avis extends Storm_Model_Abstract {
+	protected $_table_name = 'cms_avis';
+	protected $_belongs_to = array('auteur' => array('model' => 'Class_Users',
+																									 'referenced_in' => 'id_user'),
+
+																 'article' => array('model' => 'Class_Article',
+																										'referenced_in' => 'id_cms'));
+
 	var $sql;	// Curseur sql
 	var $_today;
+
+	public static function getLoader() {
+		return self::getLoaderFor(__CLASS__);
+	}
 
 	//------------------------------------------------------------------------------------------------------  
 	// Constructeur
@@ -161,9 +171,9 @@ class Class_Avis
 				return(' ');
 			}	
 	}
+
     
-	function rendHtmlBlockAvis($id_news)
-	{
+	function rendHtmlBlockAvis($id_news)	{
 		$class_user = new Class_Users();
 		$user = Zend_Auth::getInstance()->getIdentity();
 		$info_bib = $this->rendInfoCmsAvis($id_news,1);
@@ -211,12 +221,10 @@ class Class_Avis
 		$html.='</div>';
 		$html.='<div style="width:100%;background:transparent url('.URL_IMG.'box/menu/separ.gif) repeat-x scroll center bottom">&nbsp;</div>';
         
-		$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news order by DATE_AVIS DESC";
-		$ret = count($this->sql->fetchAll($sqlStmt));
-        
 		return($html);
 	}
-    
+
+
 	public function rendInfoCmsAvis($id_news,$abon_ou_bib)
 	{
 		$sqlStmt = "Select * from cms_rank Where ID_CMS=$id_news";
@@ -287,7 +295,7 @@ class Class_Avis
 						$img=URL_ADMIN_IMG."stars/stars-".str_replace(".",",",$avis["NOTE"]).".gif"; $img=str_replace(",0","",$img);
 
 						$html[]='<style type="text/css">';
-						$html[]='table.avis {border: 2px solid #ddd; padding: 4px; -moz-border-radius: 5px; -webkit-border-radius: 5px}';
+						$html[]='table.avis {border: 2px solid #ddd; padding: 4px; border-radius: 5px}';
 						$html[]='table.avis tr:first-child {font-weight: bold;}';
 						$html[]='table.avis tr:first-child td {padding-bottom: 10px;}';
 						$html[]='table.avis tr:first-child td:last-child {text-align:right}';
