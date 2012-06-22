@@ -105,7 +105,8 @@ class Class_CommSigb {
 					$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
 					//Cas Nanook pour la localisation de l'exemplaire en temps reel
 					if ($code_annexe = $sigb_exemplaire->getCodeAnnexe()) {
-						$exemplaire["id_bib"] = $code_annexe;
+						if (is_numeric($code_annexe))
+							$exemplaire["id_bib"] = $code_annexe;
 						$exemplaire["annexe"] = $code_annexe;
 					}
 				}
