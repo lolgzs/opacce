@@ -238,41 +238,15 @@ class AbonneController extends Zend_Controller_Action
 	}
 
 
-	function avissupprimerAction()
-	{
-		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->getId();
-		$avis = new Class_Avis();
-		$avis->supprimerAvis($id_user,$id_notice);
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->setNoRender();
-	}
-
 
 //------------------------------------------------------------------------------------------------------
 // AVIS CMS
 //------------------------------------------------------------------------------------------------------
-	function cmsavisAction()
-	{
+	function cmsavisAction()	{
 		$this->handleAvis('getCmsAvisById', 'ecrireCmsAvis');
 	}
 
 
-	function aviscmssupprimerAction()
-	{
-		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->getId();
-		$avis = new Class_Avis();
-		$avis->supprimerCmsAvis($id_user,$id_notice);
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->setNoRender();
-	}
 
 //------------------------------------------------------------------------------------------------------
 // Proposer des tags
