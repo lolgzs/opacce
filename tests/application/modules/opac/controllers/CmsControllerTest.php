@@ -441,6 +441,12 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 
 
 	/** @test */
+	public function avisHmmShouldHaveLinkForDeletion() {
+		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Hmmm")]//a[contains(@href, "admin/modo/delete-cms-avis/id/34")]');
+	}
+
+
+	/** @test */
 	public function avisShouldContainsEnteteArgg() {
 		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
 	}

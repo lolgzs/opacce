@@ -101,16 +101,6 @@ class Class_Avis extends Storm_Model_Abstract {
 	}
 
 	//------------------------------------------------------------------------------------------------------  
-	// Suppression d'un avis
-	//------------------------------------------------------------------------------------------------------ 
-	public function supprimerCmsAvis($id_user,$id_news)
-	{
-		sqlExecute("delete from cms_avis where ID_USER=$id_user and ID_CMS=$id_news");
-		$role_level=fetchOne("select ROLE_LEVEL from bib_admin_users where ID_USER=$id_user");
-		if($role_level < 3) $abon_ou_bib=0; else $abon_ou_bib=1;
-		$this->maj_note_cms($id_news,$abon_ou_bib);
-	}
-	//------------------------------------------------------------------------------------------------------  
 	// Maj note et rang notice
 	//------------------------------------------------------------------------------------------------------  
 	function maj_note_cms($id_news,$abon_ou_bib)
@@ -306,7 +296,9 @@ class Class_Avis extends Storm_Model_Abstract {
 
 			$html[]='<table class="avis">';
 			$html[]='<tr>';
-			$html[]='<td>'. $avis->getEntete() .'</td>';
+			$html[]=sprintf('<td>%s %s</td>',
+				'<a href="admin/modo/delete-cms-avis/id/34">supprimer</a>',
+											$avis->getEntete());
 			$html[]='<td><img src="'.$img.'"></td>';
 			$html[]='</tr>';
 			$html[]='<tr>';
