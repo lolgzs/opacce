@@ -356,7 +356,19 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Avis')
 			->whenCalled('findAllBy')
-			->answers(array($avis_mimi));
+			->with(array(
+				'id_cms' => 224,
+				'order' => 'date_avis desc',
+				'abon_ou_bib' => 0))
+			->answers(array($avis_mimi))
+
+
+			->whenCalled('findAllBy')
+			->with(array(
+				'id_cms' => 224,
+				'order' => 'date_avis desc',
+				'abon_ou_bib' => 1))
+			->answers(array($avis_florence));
 
 	}
 }
@@ -424,7 +436,13 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 
 	/** @test */
 	public function avisShouldContainsEnteteHmmm() {
-		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Hmmm', $this->_response->getBody());
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Hmmm');
+	}
+
+
+	/** @test */
+	public function avisShouldContainsEnteteArgg() {
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
 	}
 }
 
