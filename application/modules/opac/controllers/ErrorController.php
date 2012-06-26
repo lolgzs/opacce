@@ -23,5 +23,10 @@ class ErrorController extends Zend_Controller_Action {
 		$this->_response->setHttpResponseCode(500);
 		$this->_response->clearBody();
 		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
+
+		if ($this->_request->getServer('HTTP_HOST') !== 'localhost')
+			return;
+		
+		echo $this->_response->setBody($this->_getParam('error_handler')->exception->xdebug_message);
 	}
 }
