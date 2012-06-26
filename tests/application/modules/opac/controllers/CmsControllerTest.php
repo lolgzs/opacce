@@ -335,13 +335,24 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 					->setAvisUsers(array($avis_mimi = Class_Avis::getLoader()
 															 ->newInstanceWithId(34)
 															 ->setAuteur(Class_Users::getLoader()
-																				   ->newInstanceWithId(98)
-																				   ->setPseudo('Mimi'))
+																					 ->newInstanceWithId(98)
+																					 ->setPseudo('Mimi'))
 															 ->setDateAvis('2012-02-05')
 															 ->setNote(4)
 															 ->setEntete('Hmmm')
 															 ->setAvis('ça a l\'air bon')
-															 ->beWrittenByAbonne())));
+															 ->beWrittenByAbonne(),
+
+															 $avis_florence = Class_Avis::getLoader()
+															 ->newInstanceWithId(35)
+															 ->setAuteur(Class_Users::getLoader()
+																					 ->newInstanceWithId(123)
+																					 ->setPseudo('Florence'))
+															 ->setDateAvis('2012-12-05')
+															 ->setNote(2)
+															 ->setEntete('Argg')
+															 ->setAvis('ça ne me tente pas')
+															 ->beWrittenByBibliothecaire())));
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Avis')
 			->whenCalled('findAllBy')

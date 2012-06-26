@@ -336,4 +336,9 @@ class Class_Avis extends Storm_Model_Abstract {
 		return $this->setAbonOuBib(self::AVIS_ABONNE);
 	}
 
+
+	public function beWrittenByBibliothecaire() {
+		return $this->setAbonOuBib(self::AVIS_BIBLIO);
+	}
+
 }
