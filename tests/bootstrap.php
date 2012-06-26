@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-chdir('..');
+chdir(realpath(dirname(__FILE__)).'/../');
 
 error_reporting(E_ALL^E_DEPRECATED);
 ini_set('display_startup_errors', 1);
