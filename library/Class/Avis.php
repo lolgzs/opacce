@@ -23,6 +23,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Class_Avis extends Storm_Model_Abstract {
+	const AVIS_ABONNE = 0;
+	const AVIS_BIBLIO = 1;
+
 	protected $_table_name = 'cms_avis';
 	protected $_belongs_to = array('auteur' => array('model' => 'Class_Users',
 																									 'referenced_in' => 'id_user'),
@@ -174,21 +177,22 @@ class Class_Avis extends Storm_Model_Abstract {
 
     
 	function rendHtmlBlockAvis($id_news)	{
-		$class_user = new Class_Users();
-		$user = Zend_Auth::getInstance()->getIdentity();
 		$info_bib = $this->rendInfoCmsAvis($id_news,1);
 		$info_abo = $this->rendInfoCmsAvis($id_news,0);
         
 		$sqlStmt = "Select * from cms_rank Where ID_CMS=$id_news";
-		$ret = $this->sql->fetchAll($sqlStmt);
-		$nb_avis = (int)$ret[0]["BIB_NOMBRE_AVIS"] + (int)$ret[0]["ABON_NOMBRE_AVIS"];
+		if (!$ret = $this->sql->fetchAll($sqlStmt))
+			$nb_avis = 0;
+		else
+			$nb_avis = (int)$ret[0]["BIB_NOMBRE_AVIS"] + (int)$ret[0]["ABON_NOMBRE_AVIS"];
+
 		if($nb_avis ==0) $txt_nb_avis = "&nbsp;Aucun avis";
 		else $txt_nb_avis = "&nbsp;Avis (".$nb_avis.")";
        
-		$html.='<div class="avis_show_avis" onclick="showCmsAvis('.$id_news.', this)"><img src="'.URL_IMG.'bouton/plus_carre.gif" style="float:left" border="0" alt="Voir les avis" title="Voir les avis" id="plus"/> '.$txt_nb_avis.' </div>';
+		$html = '<div class="avis_show_avis" onclick="showCmsAvis('.$id_news.', this)"><img src="'.URL_IMG.'bouton/plus_carre.gif" style="float:left" border="0" alt="Voir les avis" title="Voir les avis" id="plus"/> '.$txt_nb_avis.' </div>';
 		$html.='<div id="avis_'.$id_news.'" style="display:none;padding-left:5px;">';
 		$html.='<br />';
-		$html.='<a href="#" onclick="javascript:fonction_abonne(\''.$user->ID_USER.'\',\'/opac/abonne/cmsavis?id='.$id_news.'\')">&raquo; Donner ou modifier votre avis</a>';
+		$html.='<a href="#" onclick="javascript:fonction_abonne(\''.Class_Users::currentUserId().'\',\'/opac/abonne/cmsavis?id='.$id_news.'\')">&raquo; Donner ou modifier votre avis</a>';
 		$html.='<ul class="notice_info">';
 		$html.='<li>'.$info_bib["NOTE"].' <a href="#" onclick="showAvis('.$id_news.',\'bib\');return false;">Avis de bibliothécaires</a> '.$info_bib["AVIS"].'</li>';
 		$html.='<li>'.$info_abo["NOTE"].' <a href="#" onclick="showAvis('.$id_news.',\'abo\');return false;">Avis de lecteurs du portail</a> '.$info_abo["AVIS"].'</li>';
@@ -225,10 +229,11 @@ class Class_Avis extends Storm_Model_Abstract {
 	}
 
 
-	public function rendInfoCmsAvis($id_news,$abon_ou_bib)
-	{
+	public function rendInfoCmsAvis($id_news,$abon_ou_bib) {
 		$sqlStmt = "Select * from cms_rank Where ID_CMS=$id_news";
-		$data = $this->sql->fetchAll($sqlStmt);
+		if (!$data = $this->sql->fetchAll($sqlStmt))
+			return array('NOTE' => 0, 'AVIS' => 0, 'ABON_NOMBRE_AVIS' => 0, 'BIB_NOMBRE_AVIS' => 0);
+
 		$data = $data[0];
 
 		if($abon_ou_bib == 0)	{
@@ -255,77 +260,80 @@ class Class_Avis extends Storm_Model_Abstract {
 		return($info);
 	}
     
-	// rend avis biblio par id_news
-	function getCmsAvisBiblio($id_news,$statut = "")
-	{
-		if($statut == 1) {$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=1 AND STATUT=1 order by DATE_AVIS DESC";}
-		if($statut == 0) {$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=1 AND STATUT=0 order by DATE_AVIS DESC";}
-		if($statut =="") {$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=1  order by DATE_AVIS DESC";}
 
-		return($this->sql->fetchAll($sqlStmt));
+	function getCmsAvisBiblio($id_news,$statut = "")	{
+		return $this->getCmsAvis($id_news, self::AVIS_BIBLIO, $statut);
 	}
 
-	// rend avis Abonne par id_news
-	function getCmsAvisAbo($id_news,$statut = "")
-	{
-		if($statut == 1) {$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=0 AND STATUT=1 order by DATE_AVIS DESC";}
-		if($statut == 0) {$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=0 AND STATUT=0 order by DATE_AVIS DESC";}
-		if($statut ==""){$sqlStmt = "Select * from cms_avis Where ID_CMS=$id_news AND ABON_OU_BIB=0  order by DATE_AVIS DESC";}
-    
-		return($this->sql->fetchAll($sqlStmt));
+
+	function getCmsAvisAbo($id_news,$statut = "") {
+		return $this->getCmsAvis($id_news, self::AVIS_ABONNE, $statut);
 	}
+
+
+	function getCmsAvis($id_news, $abon_ou_bib, $statut = "")	{
+		$params = array('id_cms' => $id_news,
+										'order' => 'date_avis desc',
+										'abon_ou_bib' => $abon_ou_bib);
+		if ("" !== $statut)
+			$params['statut'] = $statut;
+
+		return self::getLoader()->findAllBy($params);
+	}
+
     
 	// type =0 -> rend bulle blanche pour abonne
 	// type =1 -> rend bulle bleue pour bibliothecaire
-	function rendHTMLCmsAvis($avis_array,$type=0)
-	{
-		$class_user = new Class_Users();
-        
-		if(is_array($avis_array))
-			{
-				foreach($avis_array as $avis)
-					{
-						$user = $class_user->getUser($avis["ID_USER"]);
+	function rendHTMLCmsAvis($avis_array,$type=0)	{
+		if(!is_array($avis_array))	
+			return '';
 
-						$zendDate =  new Zend_Date($avis["DATE_AVIS"]);
-						$date_avis = $zendDate->toString('dd-MM-yyyy');
-						$txt_avis = urlencode($avis["AVIS"]);
-						$contenu_avis = str_replace('%0D%0A','<br />',$txt_avis );
+		$html = array();
+		foreach($avis_array as $avis)	{
+			$date_avis = Class_Date::humanDate($avis->getDateAvis(), 'd MMMM yyyy');
+			$contenu_avis = nl2br($avis->getAvis());
 
-						$img=URL_ADMIN_IMG."stars/stars-".str_replace(".",",",$avis["NOTE"]).".gif"; $img=str_replace(",0","",$img);
+			$img = URL_ADMIN_IMG."stars/stars-".str_replace(".",",",$avis->getNote()).".gif"; $img=str_replace(",0","",$img);
 
-						$html[]='<style type="text/css">';
-						$html[]='table.avis {border: 2px solid #ddd; padding: 4px; border-radius: 5px}';
-						$html[]='table.avis tr:first-child {font-weight: bold;}';
-						$html[]='table.avis tr:first-child td {padding-bottom: 10px;}';
-						$html[]='table.avis tr:first-child td:last-child {text-align:right}';
-						$html[]='table.avis tr:last-child td:last-child {text-align:right}';
-						$html[]='</style>';
+			$html[]='<style type="text/css">';
+			$html[]='table.avis {border: 2px solid #ddd; padding: 4px; border-radius: 5px}';
+			$html[]='table.avis tr:first-child {font-weight: bold;}';
+			$html[]='table.avis tr:first-child td {padding-bottom: 10px;}';
+			$html[]='table.avis tr:first-child td:last-child {text-align:right}';
+			$html[]='table.avis tr:last-child td:last-child {text-align:right}';
+			$html[]='</style>';
 
 
-						$html[]='<table class="avis">';
-						$html[]='<tr>';
-						$html[]='<td>'. $avis["ENTETE"] .'</td>';
-						$html[]='<td><img src="'.$img.'"></td>';
-						$html[]='</tr>';
-						$html[]='<tr>';
-						$html[]='<td colspan="2">';
-						$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_up.jpg"/>';
-						$html[]='&nbsp;'.urldecode($contenu_avis).'&nbsp;';
-						$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_down.jpg" />';
-						$html[]='</td>';
-						$html[]='</tr>';
-						$html[]='<tr>';
-						$html[]='<td></td>';
-						$html[]='<td>';
-						$html[]='<div style="padding-bottom:10px;">';
-						$html[]='par : <b>'.$class_user->getNomAff($user['ID_USER']).'</b>&nbsp;le&nbsp;<i>'.$date_avis.'</i></div></td>';
-						$html[]='</tr>';
-						$html[]='</table>';
-					}
-				if(is_array($html)) return(implode("",$html));
-				else return('<div style="padding-left:7px">&nbsp;Aucun avis pour le moment.</div>');
-			}
-		else return(' ');
+			$html[]='<table class="avis">';
+			$html[]='<tr>';
+			$html[]='<td>'. $avis->getEntete() .'</td>';
+			$html[]='<td><img src="'.$img.'"></td>';
+			$html[]='</tr>';
+			$html[]='<tr>';
+			$html[]='<td colspan="2">';
+			$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_up.jpg"/>';
+			$html[]='&nbsp;'.$contenu_avis.'&nbsp;';
+			$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_down.jpg" />';
+			$html[]='</td>';
+			$html[]='</tr>';
+			$html[]='<tr>';
+			$html[]='<td></td>';
+			$html[]='<td>';
+			$html[]='<div style="padding-bottom:10px;">';
+			$html[]='par : <b>'.$avis->getAuteur()->getNomAff().'</b>&nbsp;le&nbsp;<i>'.$date_avis.'</i></div></td>';
+			$html[]='</tr>';
+			$html[]='</table>';
+		}
+
+		if(is_array($html)) 
+			return(implode("", $html));
+
+		return('<div style="padding-left:7px">&nbsp;Aucun avis pour le moment.</div>');
 	}
+
+
+	public function beWrittenByAbonne() {
+		return $this->setAbonOuBib(self::AVIS_ABONNE);
+	}
+
 }

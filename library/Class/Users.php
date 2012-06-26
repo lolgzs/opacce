@@ -192,6 +192,14 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
+	public static function currentUserId() {
+		if (!$user = self::getLoader()->getIdentity())
+			return 0;
+
+		return $user->getId();
+	}
+
+
 	public static function sortByNom($user1, $user2) {
 		return (strtolower($user1->getNom()) > strtolower($user2->getNom()));
 	}

@@ -330,31 +330,53 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 																 ->setLangue('en')
 																 ->setParentId(224)
 																 ->setTitre('Feast of fried')
-																 ->setContenu('<div>an appetizing feast</div>'))));
+																 ->setContenu('<div>an appetizing feast</div>')))
+					->setAvis(1)
+					->setAvisUsers(array($avis_mimi = Class_Avis::getLoader()
+															 ->newInstanceWithId(34)
+															 ->setAuteur(Class_Users::getLoader()
+																				   ->newInstanceWithId(98)
+																				   ->setPseudo('Mimi'))
+															 ->setDateAvis('2012-02-05')
+															 ->setNote(4)
+															 ->setEntete('Hmmm')
+															 ->setAvis('ça a l\'air bon')
+															 ->beWrittenByAbonne())));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Avis')
+			->whenCalled('findAllBy')
+			->answers(array($avis_mimi));
+
 	}
 }
+
+
 
 
 class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/cms/articleview/id/224');
+		$this->dispatch('/cms/articleview/id/224', true);
 	}
+
 
 	/** @test */
 	public function titleShouldBeFeteDeLaFrite() {
 		$this->assertXpathContentContains('//h1', 'La fête de la frite');
 	}
 
+
 	/** @test */
 	public function calendarDateShouldBeDu3SeptembreAu5Octobre() {
 		$this->assertXpathContentContains('//span[@class="calendar_event_date"]', 'Du 03 septembre au 05 octobre');
 	}
 
+
 	/** @test */
 	public function socialNetworksContainerShouldBePresent() {
 		$this->assertXpath('//div[@id="reseaux-sociaux-224"]');
 	}
+
 
 	/** @test */
 	public function contentShouldBePresent() {
@@ -387,14 +409,21 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 		$this->dispatch('/cms/articleview/id/224');
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
+
+
+	/** @test */
+	public function avisShouldContainsEnteteHmmm() {
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Hmmm', $this->_response->getBody());
+	}
 }
+
 
 
 
 class CmsControllerArticleReadTest extends CmsControllerWithFeteDeLaFriteTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/cms/articleread/id/224');
+		$this->dispatch('/cms/articleread/id/224', true);
 	}
 
 	/** @test */
@@ -411,7 +440,7 @@ class CmsControllerArticleReadTest extends CmsControllerWithFeteDeLaFriteTestCas
 	/** @test */
 	function withLanguageEnArticleReadShouldReturnEnglishTranslation() {
 		$this->bootstrap();
-		$this->dispatch('/cms/articleread/id/224/language/en');
+		$this->dispatch('/cms/articleread/id/224/language/en', true);
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
 }
