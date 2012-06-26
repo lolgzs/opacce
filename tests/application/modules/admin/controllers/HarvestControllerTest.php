@@ -62,6 +62,9 @@ abstract class HarvestControllerArteVodActivatedTestCase extends HarvestControll
 
 
 abstract class HarvestControllerArteVodWithFilmTestCase extends HarvestControllerArteVodActivatedTestCase {
+	protected $_categoryWrapper;
+	protected $_albumWrapper;
+
 	public function setUp() {
 		parent::setUp();
 		$this->_web_client
@@ -78,11 +81,11 @@ abstract class HarvestControllerArteVodWithFilmTestCase extends HarvestControlle
 			->answers(null)
 			->beStrict();
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
+		$this->_categoryWrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
 			->whenCalled('findFirstBy')->answers(null)
 			->whenCalled('save')->answers(true);
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
+		$this->_albumWrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
 			->whenCalled('findFirstBy')->answers(null)
 			->whenCalled('save')->answers(true);
 	}
@@ -151,6 +154,15 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerAr
 		$this->assertXPathContentContains('//div', 'Traitement de la page 1 / 1');
 	}
 
+
+	/** @test */
+	public function shouldDeleteNotHarvestedIds() {
+		$this->assertTrue($this->_albumWrapper->methodHasBeenCalled('deleteBy'));
+		$parameter = $this->_albumWrapper->getFirstAttributeForLastCallOn('deleteBy');
+		$this->assertEquals(2, count($parameter));
+		$this->assertTrue(false !== strpos($parameter[0], Class_WebService_ArteVOD::BASE_URL));
+		$this->assertTrue(false !== strpos($parameter[1], "not in ('5540')"));
+	}
 }
 
 
@@ -195,7 +207,6 @@ class HarvestControllerArteVodAjaxFirstPageTest extends HarvestControllerArteVod
 	public function responseShouldNotHaveNextPage() {
 		$this->assertFalse($this->_json->has_next);
 	}
-
 }
 
 

@@ -23,6 +23,7 @@ class Class_WebService_ArteVOD {
 	protected static $_default_web_client;
 	protected $web_client;
 	protected $_logger;
+	protected $_harvested_ids = array();
 
 	const BASE_URL = 'http://www.mediatheque-numerique.com/ws/';
 	const FILMS = 'films';
@@ -73,6 +74,7 @@ class Class_WebService_ArteVOD {
 	public function harvest() {
 		$current_page = 1;
 		$total_page = 0;
+		$this->_harvested_ids = array();
 		do {
 			if (null == ($reader = $this->loadPage($current_page)))
 				return;
@@ -84,7 +86,7 @@ class Class_WebService_ArteVOD {
 																			 $total_page));
 
 			foreach ($reader->getFilms() as $film) {
-				$existing_ids[] = $film->getId();
+				$this->_harvested_ids[] = $film->getId();
 				if ($film->isAlreadyHarvested())
 					continue;
 				
@@ -94,6 +96,11 @@ class Class_WebService_ArteVOD {
 			
 			$current_page++;
 		} while ($current_page <= $total_page);
+	}
+
+
+	public function getHarvestedIds() {
+		return $this->_harvested_ids;
 	}
 
 
