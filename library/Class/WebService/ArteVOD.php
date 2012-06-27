@@ -20,7 +20,11 @@
  */
 
 class Class_WebService_ArteVOD {
+	const SESSION_NAMESPACE = 'ARTEVOD';
+
 	protected static $_default_web_client;
+	protected static $_harvested_ids_cache;
+
 	protected $web_client;
 	protected $_logger;
 	protected $_harvested_ids = array();
@@ -42,6 +46,18 @@ class Class_WebService_ArteVOD {
 		if (!isset(self::$_default_web_client))
 			self::$_default_web_client = new Class_WebService_SimpleWebClient();
 		return self::$_default_web_client;
+	}
+
+
+	public static function setHarvestedIdsCache($cache) {
+		self::$_harvested_ids_cache = $cache;
+	}
+
+
+	public static function getHarvestedIdsCache() {
+		if (!isset(self::$_harvested_ids_cache))
+			self::$_harvested_ids_cache = new Zend_Session_Namespace(self::SESSION_NAMESPACE);
+		return self::$_harvested_ids_cache;
 	}
 
 
@@ -85,17 +101,12 @@ class Class_WebService_ArteVOD {
 																			 $current_page,
 																			 $total_page));
 
-			foreach ($reader->getFilms() as $film) {
-				$this->_harvested_ids[] = $film->getId();
-				if ($film->isAlreadyHarvested())
-					continue;
-				
-				$this->loadFilm($film);
-				$film->import();
-			}
-			
+			$this->_harvested_ids = array_merge($this->_harvested_ids,
+				                                  $this->_importFilms($reader->getFilms()));
 			$current_page++;
 		} while ($current_page <= $total_page);
+
+		$this->_deleteNonHarvested();
 	}
 
 
@@ -105,6 +116,10 @@ class Class_WebService_ArteVOD {
 
 
 	public function harvestPage($page_number = 1) {
+		if (1 == $page_number)
+			$this->getHarvestedIdsCache()->harvestedIds = array();
+		$harvestedIds = $this->getHarvestedIdsCache()->harvestedIds;
+			
 		$response = array();
 		if (null == ($reader = $this->loadPage($page_number))) {
 			$response['error'] = 'Erreur de communication';
@@ -116,14 +131,43 @@ class Class_WebService_ArteVOD {
 		$response['page_count'] = $reader->getPageCount();
 		$response['has_next'] = $reader->getPageNumber() < $reader->getPageCount();
 
-		foreach ($reader->getFilms() as $film) {
-			$this->loadFilm($film);
-			$film->import();
-		}
+		$harvestedIds = array_merge($harvestedIds, $this->_importFilms($reader->getFilms()));
+		$this->getHarvestedIdsCache()->harvestedIds = $harvestedIds;
+
+		if (!$response['has_next'])
+			$this->_harvested_ids = $harvestedIds;
+
+		$this->_deleteNonHarvested();
 
 		return $response;
 	}
 
+
+	/**
+	 * @param $films array
+	 * @return array of harvested ids
+	 */
+	protected function _importFilms($films) {
+		$harvestedIds = array();
+		foreach ($films as $film) {
+			$harvestedIds[] = $film->getId();
+			if ($film->isAlreadyHarvested())
+				continue;
+				
+			$this->loadFilm($film);
+			$film->import();
+		}
+		return $harvestedIds;
+	}
+
+
+	protected function _deleteNonHarvested() {
+		if (0 < count($this->_harvested_ids))
+			Class_Album::getLoader()
+				->deleteBy(array('url_origine = \'' . Class_WebService_ArteVOD::BASE_URL . '\'',
+						             'id_origine not in (\'' . implode("', '", $this->_harvested_ids) . '\')'));
+	}
+		
 
 	protected function loadPage($page_number = 1) {
 		$url = self::BASE_URL . self::FILMS . ((1 != $page_number) ? '?page_nb=' . $page_number: '');

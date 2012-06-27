@@ -89,6 +89,16 @@ abstract class HarvestControllerArteVodWithFilmTestCase extends HarvestControlle
 			->whenCalled('findFirstBy')->answers(null)
 			->whenCalled('save')->answers(true);
 	}
+
+
+	/** @test */
+	public function shouldDeleteNotHarvestedIds() {
+		$this->assertTrue($this->_albumWrapper->methodHasBeenCalled('deleteBy'));
+		$parameter = $this->_albumWrapper->getFirstAttributeForLastCallOn('deleteBy');
+		$this->assertEquals(2, count($parameter));
+		$this->assertTrue(false !== strpos($parameter[0], Class_WebService_ArteVOD::BASE_URL));
+		$this->assertTrue(false !== strpos($parameter[1], "not in ('5540')"));
+	}
 }
 
 
@@ -153,16 +163,6 @@ class HarvestControllerArteVodActivatedWithFilmsTest extends HarvestControllerAr
 	public function shouldLogFirstPage() {
 		$this->assertXPathContentContains('//div', 'Traitement de la page 1 / 1');
 	}
-
-
-	/** @test */
-	public function shouldDeleteNotHarvestedIds() {
-		$this->assertTrue($this->_albumWrapper->methodHasBeenCalled('deleteBy'));
-		$parameter = $this->_albumWrapper->getFirstAttributeForLastCallOn('deleteBy');
-		$this->assertEquals(2, count($parameter));
-		$this->assertTrue(false !== strpos($parameter[0], Class_WebService_ArteVOD::BASE_URL));
-		$this->assertTrue(false !== strpos($parameter[1], "not in ('5540')"));
-	}
 }
 
 
@@ -207,6 +207,9 @@ class HarvestControllerArteVodAjaxFirstPageTest extends HarvestControllerArteVod
 	public function responseShouldNotHaveNextPage() {
 		$this->assertFalse($this->_json->has_next);
 	}
+
+
+	
 }
 
 

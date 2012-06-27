@@ -33,11 +33,6 @@ class Admin_HarvestController extends Zend_Controller_Action {
 		$service->setLogger($logger);
 		$service->harvest();
 
-		if (0 < count($ids = $service->getHarvestedIds()))
-			Class_Album::getLoader()
-				->deleteBy(array('url_origine = \'' . Class_WebService_ArteVOD::BASE_URL . '\'',
-						             'id_origine not in (\'' . implode("', '", $service->getHarvestedIds()) . '\')'));
-
 		$logger->info('Fin du moissonnage');
 		
 		$this->view->log = ob_get_clean();
