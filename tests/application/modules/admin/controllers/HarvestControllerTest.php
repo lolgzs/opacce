@@ -87,7 +87,8 @@ abstract class HarvestControllerArteVodWithFilmTestCase extends HarvestControlle
 
 		$this->_albumWrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
 			->whenCalled('findFirstBy')->answers(null)
-			->whenCalled('save')->answers(true);
+			->whenCalled('save')->answers(true)
+			->whenCalled('deleteBy')->answers(null);
 	}
 
 
@@ -207,9 +208,6 @@ class HarvestControllerArteVodAjaxFirstPageTest extends HarvestControllerArteVod
 	public function responseShouldNotHaveNextPage() {
 		$this->assertFalse($this->_json->has_next);
 	}
-
-
-	
 }
 
 

@@ -76,7 +76,8 @@ class ArteVODHarverstingTwoFilmsInTwoPages extends ArteVODHarverstingTestCase {
 
 		$this->_album_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
 			->whenCalled('findFirstBy')->answers(null)
-			->whenCalled('save')->answers(true);
+			->whenCalled('save')->answers(true)
+			->whenCalled('deleteBy')->answers(null);
 
 		$service = new Class_WebService_ArteVOD();
 		$service->harvest();
