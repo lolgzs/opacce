@@ -705,7 +705,9 @@ class NoticeFille {
 
 	public function getDisponibilite(){
 		$dispo = $this->getData("Disponibilité");
-		$piege = $this->getData("Piège");
+		if (!$piege = $this->getData("Piège"))
+			$piege = $this->getData("Piege");
+		
 		if (strlen($piege) > 0) $dispo .= " ($piege)";
 		return $dispo;
 	}

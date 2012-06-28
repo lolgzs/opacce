@@ -783,6 +783,7 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 		$code_barre_scrap->NomDonnee = "Code barre";
 		$code_barre_scrap->ValeurDonnee = "5678";
 
+
 		$scrap = new NoticeFille();
 		$scrap->NumFille = "scrap";
 		$scrap->Reservable = "false";
