@@ -66,9 +66,23 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+		/** @codeCoverageIgnore */
+	protected function _dumpSoapTrace() {
+		var_dump($this->search_client->__getLastRequestHeaders());
+		var_dump($this->search_client->__getLastRequest());
+		var_dump($this->search_client->__getLastResponseHeaders());
+		var_dump($this->search_client->__getLastResponse());
+	}
+
+
+
 	public function disconnect(){
 		$fs=new FermerSession($this->guid);
-		$fsr = $this->search_client->FermerSession($fs);
+		try {
+			$fsr = $this->search_client->FermerSession($fs);
+		} catch (Exception $e) {
+				//Aloes V190 plante parfois sur les FermerSession
+		}
 	}
 
 
@@ -165,9 +179,13 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 
 
 	public function getNotice($id){
-		$notice_result = $this->search_client->RecupererNotice(
-																										new RecupererNotice($this->guid, $id));
-		return $notice_result->createNotice();
+		try {
+			$notice_result = $this->search_client->RecupererNotice(
+				new RecupererNotice($this->guid, $id));
+			return $notice_result->createNotice();
+		} catch (Exception $e) {
+			$this->_dumpSoapTrace();
+		}
 	}
 
 
@@ -589,10 +607,12 @@ class EntRecupererNotice extends Entree{
 	public $IDEtape; // string
 	public $Affichage; // AffichageNotice
 	public $Restricteurs; // ArrayOfString
+	public $FondsEnPret; // boolean;
 
 	function __construct(){
 		$this->RangNotice="1";
 		$this->Affichage=new AffichageNotice();
+		$this->FondsEnPret = true;
 	}
 }
 

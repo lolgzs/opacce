@@ -64,6 +64,8 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 		$this->setDateRetour($this->getAttribute('Dateretourprevue'));
 		if ($this->getDateRetour() == '')
 			$this->setDateRetour($this->getAttribute('Retour prévu'));
+		if ($this->getDateRetour() == '')
+			$this->setDateRetour($this->getAttribute('Date de retour prévue'));
 	}
 
 	/**
