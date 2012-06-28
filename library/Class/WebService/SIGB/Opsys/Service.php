@@ -1041,14 +1041,25 @@ class EntiteEmp {
 	public $Donnees; // ArrayOfDonneeEmp
 	public $Nombre; // int
 
+
+	protected function findAttribute($name, &$attributes) {
+		foreach($attributes as $libelle => $value) {
+			if (false !== strpos(strtolower($libelle), strtolower($name)))
+				return $value;
+		}
+		return "";
+	}
+	
+
 	public function getExemplaires($container_class){
 		$entites = array();
 		foreach($this->Donnees->Lignes as $data){
 			$attributes = array_combine($this->LibelleDonnee->string, $data->ValeursDonnees->string);
 
 			$exemplaire = new Class_WebService_SIGB_Exemplaire(NULL);
-			$exemplaire->setTitre($attributes['Titre']);
-
+			$exemplaire->setTitre($this->findAttribute('Titre', $attributes));
+			$exemplaire->setExemplaireOPAC(Class_Exemplaire::getLoader()->findFirstBy(
+				array('code_barres' => $this->findAttribute('code', $attributes))));
 			$entite = new $container_class($data->ValeursDonnees->string[0], $exemplaire);
 			$entite->parseExtraAttributes($attributes);
 

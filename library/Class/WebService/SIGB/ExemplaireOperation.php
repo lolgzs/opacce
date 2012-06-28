@@ -219,8 +219,11 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	 */
 	protected function getAttribute($name) {
 		if (!isset($this->_attributes)) return '';
-		if (!array_key_exists($name, $this->_attributes)) return '';
-		return $this->_attributes[$name];
+		foreach($this->_attributes as $attribute => $value) {
+			if (false !== strpos(strtolower($attribute), strtolower($name)))
+				return $value;
+		}
+		return '';
 	}
 }
 

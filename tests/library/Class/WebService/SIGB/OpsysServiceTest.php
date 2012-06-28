@@ -1139,4 +1139,75 @@ class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase
 	}
 }
 
+
+
+
+class OpsysServiceTestEntiteEmprWithPret extends Storm_Test_ModelTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+		  ->with(array('code_barres' => 'C0002054291'))
+			->answers(Class_Exemplaire::getLoader()->newInstanceWithId(34));
+
+
+		
+		$entite = new EntiteEmp();
+		$entite->LibelleDonnee = new StdClass();
+		$entite->LibelleDonnee->string = array('No Prêt',
+																					  'Code barre',
+																					  'Titre',
+																					  'Support',
+																				    'Section',
+																						'Cote',
+																						'A rendre le');
+		$entite->Donnees = new StdClass();
+		$entite->Donnees->Lignes = array($first_pret = new DonneeEmp());
+		$first_pret->ValeursDonnees = new StdClass();
+		$first_pret->ValeursDonnees->string = array('5486439',
+																								'C0002054291',
+																								'Petit Grounch à l\'école / Yak Rivais. - l\'Ecole des loisirs, 1988',
+																								'Livre',
+																								'Fiction jeunesse',
+																								'RIV',
+																								'27/06/2012');
+		$this->emprunts = $entite->getExemplaires('Class_WebService_SIGB_Emprunt');
+	}
+
+
+	/** @test */
+	public function empruntsShouldHaveSizeOfOne() {
+		$this->assertEquals(1, count($this->emprunts));
+		return $this->emprunts[0];
+	}
+
+
+	/**
+	 * @depends empruntsShouldHaveSizeOfOne
+	 * @test
+	 */
+	public function exemplaireOPACShouldBeSet($emprunt) {
+		$this->assertEquals(34, $emprunt->getExemplaireOpac()->getId());
+	}
+
+
+	/**
+	* @depends empruntsShouldHaveSizeOfOne
+	* @test
+	*/
+	public function titreShouldBePetitGrounch($emprunt) {
+		$this->assertContains('Petit Grounch', $emprunt->getTitre());
+	}
+
+
+	/** 
+	* @test 
+	* @depends empruntsShouldHaveSizeOfOne
+	*/
+	public function dateRetourShouldBe27_06_2012($emprunt) {
+		$this->assertEquals('27/06/2012', $emprunt->getDateRetour());
+	}
+}
+
 ?>
