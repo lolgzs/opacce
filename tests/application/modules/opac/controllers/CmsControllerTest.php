@@ -354,6 +354,16 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 															 ->setAvis('ça ne me tente pas')
 															 ->beWrittenByBibliothecaire())));
 
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CmsRank')
+			->whenCalled('findFirstBy')
+			->answers(null)
+			
+			->whenCalled('findFirstBy')
+			->with(array('id_cms' => 224))
+			->answers(Class_CmsRank::getLoader()->newInstanceWithId(987));
+      
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Avis')
 			->whenCalled('findAllBy')
 			->with(array(
@@ -449,6 +459,12 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 	/** @test */
 	public function avisShouldContainsEnteteArgg() {
 		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
+	}
+
+
+	/** @test */
+	public function avisArgShouldHaveLinkForDeletion() {
+		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Argg")]//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
 	}
 }
 

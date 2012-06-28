@@ -881,6 +881,11 @@ class Class_Article extends Storm_Model_Abstract {
 	public function getBibLibelle() {
 		return $this->getCategorie()->getBib()->getLibelle();
 	}
+
+
+	public function getRank() {
+		return Class_CmsRank::getLoader()->findFirstBy(array('id_cms' => $this->getId()));
+	}
 }
 
 

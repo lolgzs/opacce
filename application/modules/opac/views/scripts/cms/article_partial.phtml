@@ -56,12 +56,10 @@ echo $this->tagEditArticle($this->article);
 		</script>
 	<?php } ?>
 
-	<?php if (1 == $this->article->getAvis()) { ?>
-		<?php
-		$class_avis = new Class_Avis();
-		echo $class_avis->rendHtmlBlockAvis($this->article->getId());
-		?>
-	<?php } ?>
+	<?php
+	if (1 == $this->article->getAvis()) { 
+		echo $this->avisCms($this->article);
+	} ?>
 </div>
 
 <?php echo $this->closeBoite(); ?>
