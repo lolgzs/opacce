@@ -146,15 +146,16 @@ abstract class AuthControllerNobodyLoggedTestCase extends PortailWithOneLoginMod
 }
 
 
-class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControllerNobodyLoggedTestCase {
-	public function setUp() {
-		$interdire_enregistrement = new Class_AdminVar();
-		$interdire_enregistrement
-			->setId('INTERDIRE_ENREG_UTIL')
-			->setValeur(0);
-		Class_AdminVar::getLoader()->cacheInstance($interdire_enregistrement);
 
+
+class AuthControllerNobodyLoggedAndRegistrationAllowedBoiteLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
 		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(0);
+
 		$this->dispatch('/opac/');
 	}
 
@@ -219,6 +220,33 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 
 
 
+class AuthControllerNobodyLoggedAndRegistrationAllowedAjaxLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(0);
+
+		$this->dispatch('/opac/auth/ajaxlogin', true);
+	}
+
+
+	public function testLinkLostPassword() {
+		$this->assertXPath('//div//a[contains(@onclick, "getUsername")]');
+	}
+
+	
+	public function testLinkSenregistrer() {
+		$this->assertXPath('//div//a[contains(@href, "auth/register")]');
+		$this->assertXPathContentContains('//div//a[contains(@href, "auth/register")]',
+																			"S'enregistrer");
+	}
+}
+
+
+
+
 class AuthControllerNobodyLoggedAndNoRegistrationTest extends AuthControllerNobodyLoggedTestCase {
 	public function setUp() {
 		$interdire_enregistrement = new Class_AdminVar();
@@ -240,6 +268,31 @@ class AuthControllerNobodyLoggedAndNoRegistrationTest extends AuthControllerNobo
 	public function testCannotAccessRegisterPage() {
 		$this->dispatch('auth/register');
 		$this->assertRedirect('/');
+	}
+}
+
+
+
+
+class AuthControllerNobodyLoggedAndNoRegistrationAllowedAjaxLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(1);
+
+		$this->dispatch('/opac/auth/ajaxlogin', true);
+	}
+
+
+	public function testLinkLostPassword() {
+		$this->assertXPath('//div//a[contains(@onclick, "getUsername")]');
+	}
+
+	
+	public function testNoLinkSenregistrer() {
+		$this->assertNotXPath('//div//a[contains(@href, "auth/register")]');
 	}
 }
 

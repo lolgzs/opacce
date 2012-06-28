@@ -118,7 +118,7 @@ class AuthController extends Zend_Controller_Action
 		}
 
 		// Affichage du formulaire
-		$this->view->message = $error;
+		$this->view->message = isset($error) ? $error : null;
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('subModal.phtml');
 	}

@@ -209,6 +209,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	}
 
 
+	/**
+	 * @return bool
+	 */
+	public static function isEnregUtilAllowed() {
+		return !self::isModuleEnabled('INTERDIRE_ENREG_UTIL');
+	}
+
+
 	public function getValeur() {
 		return stripslashes($this->_get('valeur'));
 	}

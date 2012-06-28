@@ -30,7 +30,9 @@ function getUsername()
 				<tr height="45px">
 					<td colspan="2" style="text-align:center">
 						<a  href="#" onclick="getUsername();">&raquo;&nbsp;<?php echo $this->_('Mot de passe oublié ?') ?></a> &nbsp;&nbsp;
-						<a href="<?php echo BASE_URL; ?>/auth/register" target="_parent">&raquo;&nbsp;<?php echo $this->_("S'enregistrer") ?></a>
+            <?php if (Class_AdminVar::isEnregUtilAllowed())  { ?>
+						  <a href="<?php echo BASE_URL; ?>/auth/register" target="_parent">&raquo;&nbsp;<?php echo $this->_("S'enregistrer") ?></a>
+            <?php } ?>
 				</tr>
 			</table>
 	</fieldset>
