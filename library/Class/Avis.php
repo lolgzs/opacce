@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3: classe de Gestion des Avis sur les documents
+// OPAC3: classe de Gestion des Avis sur les articles
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Class_Avis extends Storm_Model_Abstract {
@@ -31,7 +31,7 @@ class Class_Avis extends Storm_Model_Abstract {
 																									 'referenced_in' => 'id_user'),
 
 																 'article' => array('model' => 'Class_Article',
-																										'referenced_in' => 'id_cms'));
+																                 	  'referenced_in' => 'id_cms'));
 
 	var $sql;	// Curseur sql
 	var $_today;
@@ -101,16 +101,6 @@ class Class_Avis extends Storm_Model_Abstract {
 	}
 
 	//------------------------------------------------------------------------------------------------------  
-	// Suppression d'un avis
-	//------------------------------------------------------------------------------------------------------ 
-	public function supprimerCmsAvis($id_user,$id_news)
-	{
-		sqlExecute("delete from cms_avis where ID_USER=$id_user and ID_CMS=$id_news");
-		$role_level=fetchOne("select ROLE_LEVEL from bib_admin_users where ID_USER=$id_user");
-		if($role_level < 3) $abon_ou_bib=0; else $abon_ou_bib=1;
-		$this->maj_note_cms($id_news,$abon_ou_bib);
-	}
-	//------------------------------------------------------------------------------------------------------  
 	// Maj note et rang notice
 	//------------------------------------------------------------------------------------------------------  
 	function maj_note_cms($id_news,$abon_ou_bib)
@@ -176,162 +166,6 @@ class Class_Avis extends Storm_Model_Abstract {
 	}
 
     
-	function rendHtmlBlockAvis($id_news)	{
-		$info_bib = $this->rendInfoCmsAvis($id_news,1);
-		$info_abo = $this->rendInfoCmsAvis($id_news,0);
-        
-		$sqlStmt = "Select * from cms_rank Where ID_CMS=$id_news";
-		if (!$ret = $this->sql->fetchAll($sqlStmt))
-			$nb_avis = 0;
-		else
-			$nb_avis = (int)$ret[0]["BIB_NOMBRE_AVIS"] + (int)$ret[0]["ABON_NOMBRE_AVIS"];
-
-		if($nb_avis ==0) $txt_nb_avis = "&nbsp;Aucun avis";
-		else $txt_nb_avis = "&nbsp;Avis (".$nb_avis.")";
-       
-		$html = '<div class="avis_show_avis" onclick="showCmsAvis('.$id_news.', this)"><img src="'.URL_IMG.'bouton/plus_carre.gif" style="float:left" border="0" alt="Voir les avis" title="Voir les avis" id="plus"/> '.$txt_nb_avis.' </div>';
-		$html.='<div id="avis_'.$id_news.'" style="display:none;padding-left:5px;">';
-		$html.='<br />';
-		$html.='<a href="#" onclick="javascript:fonction_abonne(\''.Class_Users::currentUserId().'\',\'/opac/abonne/cmsavis?id='.$id_news.'\')">&raquo; Donner ou modifier votre avis</a>';
-		$html.='<ul class="notice_info">';
-		$html.='<li>'.$info_bib["NOTE"].' <a href="#" onclick="showAvis('.$id_news.',\'bib\');return false;">Avis de bibliothécaires</a> '.$info_bib["AVIS"].'</li>';
-		$html.='<li>'.$info_abo["NOTE"].' <a href="#" onclick="showAvis('.$id_news.',\'abo\');return false;">Avis de lecteurs du portail</a> '.$info_abo["AVIS"].'</li>';
-		$html.='</ul>';
-        
-		$modo_avis_bib = getVar('MODO_AVIS_BIBLIO');
-		if($modo_avis_bib == 1) $view = 1;
-		if($modo_avis_bib == 0) $view = "";
-        
-		$liste_avis = $this->getCmsAvisBiblio($id_news,$view);
-		if(count($liste_avis) == 0)$style="none"; else $style="block";
-		// Tableau bib
-		$html.='<div id="bib_'.$id_news.'" style="display:'.$style.'"><table cellpadding="0" cellspacing="0" border="0" style="width:100%">';
-		$html.='<tr><td class="avis_from">Avis des bibliothécaires</td></tr>';
-		$html.='<tr><td>'.$this->rendHTMLCmsAvis($liste_avis,1).'</td></tr>';
-		$html.='</table></div>';
-        
-		$modo_avis_abo = getVar('MODO_AVIS');
-		if($modo_avis_abo == 1) $view = 1;
-		if($modo_avis_abo == 0) $view = "";
-        
-		// Tableau Abonne
-		$liste_avis_abo = $this->getCmsAvisAbo($id_news,$view);
-		if(count($liste_avis_abo) == 0)$style="none"; else $style="block";
-		$html.='<div id="abo_'.$id_news.'" style="display:'.$style.'"><table cellpadding="0" cellspacing="0" border="0" style="width:100%">';
-		$html.='<tr><td class="avis_from">Avis des lecteurs du portail</td></tr>';
-		$html.='<tr><td>'.$this->rendHTMLCmsAvis($liste_avis_abo,0).'</td></tr>';
-        
-		$html.='</table></div>';
-		$html.='</div>';
-		$html.='<div style="width:100%;background:transparent url('.URL_IMG.'box/menu/separ.gif) repeat-x scroll center bottom">&nbsp;</div>';
-        
-		return($html);
-	}
-
-
-	public function rendInfoCmsAvis($id_news,$abon_ou_bib) {
-		$sqlStmt = "Select * from cms_rank Where ID_CMS=$id_news";
-		if (!$data = $this->sql->fetchAll($sqlStmt))
-			return array('NOTE' => 0, 'AVIS' => 0, 'ABON_NOMBRE_AVIS' => 0, 'BIB_NOMBRE_AVIS' => 0);
-
-		$data = $data[0];
-
-		if($abon_ou_bib == 0)	{
-				if($data["ABON_NOMBRE_AVIS"] == 0 || $data["ABON_NOMBRE_AVIS"] == null) $nb_eva = "(aucune évaluation)";
-				elseif($data["ABON_NOMBRE_AVIS"] == 1) $nb_eva = "(1 évaluation)";
-				elseif($data["ABON_NOMBRE_AVIS"] > 1) $nb_eva = "(".$data["ABON_NOMBRE_AVIS"]." évaluations)";
-            
-				$note = $data["ABON_NOTE"];
-		}	else {
-				if($data["BIB_NOMBRE_AVIS"] == 0 || $data["BIB_NOMBRE_AVIS"] == null) $nb_eva = "(aucune évaluation)";
-				elseif($data["BIB_NOMBRE_AVIS"] == 1) $nb_eva = "(1 évaluation)";
-				elseif($data["BIB_NOMBRE_AVIS"] > 1) $nb_eva = "(".$data["BIB_NOMBRE_AVIS"]." évaluations)";
-
-				$note = $data["BIB_NOTE"];
-		}
-
-		$note_r = str_replace('.','-',$note);
-		$note_r = str_replace('-0','',$note_r);
-		if ($note_r == '') $note_r = "0";
-		$img = '<img src="'.URL_ADMIN_IMG.'stars/stars-'.$note_r.'.gif"  alt="note:'.$note.'" border="0"/>';
-		$info["NOTE"] = $img;
-
-		$info["AVIS"] = $nb_eva;
-		return($info);
-	}
-    
-
-	function getCmsAvisBiblio($id_news,$statut = "")	{
-		return $this->getCmsAvis($id_news, self::AVIS_BIBLIO, $statut);
-	}
-
-
-	function getCmsAvisAbo($id_news,$statut = "") {
-		return $this->getCmsAvis($id_news, self::AVIS_ABONNE, $statut);
-	}
-
-
-	function getCmsAvis($id_news, $abon_ou_bib, $statut = "")	{
-		$params = array('id_cms' => $id_news,
-										'order' => 'date_avis desc',
-										'abon_ou_bib' => $abon_ou_bib);
-		if ("" !== $statut)
-			$params['statut'] = $statut;
-
-		return self::getLoader()->findAllBy($params);
-	}
-
-    
-	// type =0 -> rend bulle blanche pour abonne
-	// type =1 -> rend bulle bleue pour bibliothecaire
-	function rendHTMLCmsAvis($avis_array,$type=0)	{
-		if(!is_array($avis_array))	
-			return '';
-
-		$html = array();
-		foreach($avis_array as $avis)	{
-			$date_avis = Class_Date::humanDate($avis->getDateAvis(), 'd MMMM yyyy');
-			$contenu_avis = nl2br($avis->getAvis());
-
-			$img = URL_ADMIN_IMG."stars/stars-".str_replace(".",",",$avis->getNote()).".gif"; $img=str_replace(",0","",$img);
-
-			$html[]='<style type="text/css">';
-			$html[]='table.avis {border: 2px solid #ddd; padding: 4px; border-radius: 5px}';
-			$html[]='table.avis tr:first-child {font-weight: bold;}';
-			$html[]='table.avis tr:first-child td {padding-bottom: 10px;}';
-			$html[]='table.avis tr:first-child td:last-child {text-align:right}';
-			$html[]='table.avis tr:last-child td:last-child {text-align:right}';
-			$html[]='</style>';
-
-
-			$html[]='<table class="avis">';
-			$html[]='<tr>';
-			$html[]='<td>'. $avis->getEntete() .'</td>';
-			$html[]='<td><img src="'.$img.'"></td>';
-			$html[]='</tr>';
-			$html[]='<tr>';
-			$html[]='<td colspan="2">';
-			$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_up.jpg"/>';
-			$html[]='&nbsp;'.$contenu_avis.'&nbsp;';
-			$html[]='<img src="'.URL_ADMIN_IMG.'avis/quote_down.jpg" />';
-			$html[]='</td>';
-			$html[]='</tr>';
-			$html[]='<tr>';
-			$html[]='<td></td>';
-			$html[]='<td>';
-			$html[]='<div style="padding-bottom:10px;">';
-			$html[]='par : <b>'.$avis->getAuteur()->getNomAff().'</b>&nbsp;le&nbsp;<i>'.$date_avis.'</i></div></td>';
-			$html[]='</tr>';
-			$html[]='</table>';
-		}
-
-		if(is_array($html)) 
-			return(implode("", $html));
-
-		return('<div style="padding-left:7px">&nbsp;Aucun avis pour le moment.</div>');
-	}
-
-
 	public function beWrittenByAbonne() {
 		return $this->setAbonOuBib(self::AVIS_ABONNE);
 	}
