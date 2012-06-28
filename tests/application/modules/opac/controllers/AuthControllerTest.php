@@ -121,6 +121,20 @@ class AuthControllerAbonneSIGBLoggedTest extends PortailWithOneLoginModuleTestCa
 
 
 
+class AuthControllerAbonneSIGBLoggedLogoutTest extends PortailWithOneLoginModuleTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/auth/logout');
+	}
+
+	/** @test */
+	public function answerShouldRedirectToRoot() {
+		$this->assertRedirectTo('/');
+	}
+}
+
+
+
 
 abstract class AuthControllerNobodyLoggedTestCase extends PortailWithOneLoginModuleTestCase {
 	protected function _loginHook($account) {
