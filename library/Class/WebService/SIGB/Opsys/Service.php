@@ -697,7 +697,7 @@ class NoticeFille {
 
 	protected function getData($name){
 		foreach($this->DonneesFille->DonneeFille as $data){
-			if ($data->NomDonnee == $name)
+			if (false !== strpos(strtolower($data->NomDonnee), strtolower($name)))
 				return $data->ValeurDonnee;
 		}
 		return "";
@@ -723,11 +723,11 @@ class NoticeFille {
 	}
 
 	public function getCodeBarre(){
-		return $this->getData("Code barre exemplaire");
+		return $this->getData("Code barre");
 	}
 
 	public function getDateRetour(){
-		return $this->getData("Retour prévu le");
+		return $this->getData("Retour");
 	}
 }
 
