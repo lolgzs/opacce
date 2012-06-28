@@ -42,7 +42,7 @@
 
 		(if debug (progn (geben 1) 
 										 (window-configuration-to-register 'g)
-										 (add-to-list 'compilation-finish-functions 'stop-geben)
+										 (add-to-list 'compilation-finish-functions 'opac3-stop-geben)
 										 (beginning-of-line)
 										 (insert "xdebug_break();")
 										 (indent-according-to-mode)
