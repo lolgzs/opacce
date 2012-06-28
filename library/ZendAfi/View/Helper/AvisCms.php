@@ -152,11 +152,13 @@ class ZendAfi_View_Helper_AvisCms extends Zend_View_Helper_HtmlElement {
 			$html[]='<table class="avis">';
 			$html[]='<tr>';
 			$html[]=sprintf('<td>%s %s</td>',
-				              $this->view->tagAnchor(array('module' => 'admin',
+				              Class_Users::getLoader()->isCurrentUserAdmin()
+				              ? $this->view->tagAnchor(array('module' => 'admin',
 													'controller' => 'modo',
 													'action' => 'delete-cms-avis',
 													'id' => $avis->getId()),
-												$this->view->boutonIco('type=del')),
+												$this->view->boutonIco('type=del'))
+				              : '',
 				              
 											$avis->getEntete());
 			$html[]='<td><img src="'.$img.'"></td>';

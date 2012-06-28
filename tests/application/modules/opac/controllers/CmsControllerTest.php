@@ -443,6 +443,33 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
 
+	/** @test */
+	public function avisArgShouldNotHaveLinkForDeletion() {
+		$this->assertNotXPath('//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewAsAdminTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+		$account->PSEUDO = "admin";
+	}
+	
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/cms/articleview/id/224', true);
+	}
+
+
+	/** @test */
+	public function avisShouldContainsEnteteArgg() {
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
+	}
+
+
 
 	/** @test */
 	public function avisShouldContainsEnteteHmmm() {
@@ -453,12 +480,6 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 	/** @test */
 	public function avisHmmShouldHaveLinkForDeletion() {
 		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Hmmm")]//a[contains(@href, "admin/modo/delete-cms-avis/id/34")]');
-	}
-
-
-	/** @test */
-	public function avisShouldContainsEnteteArgg() {
-		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
 	}
 
 
@@ -495,6 +516,7 @@ class CmsControllerArticleReadTest extends CmsControllerWithFeteDeLaFriteTestCas
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
 }
+
 
 
 
