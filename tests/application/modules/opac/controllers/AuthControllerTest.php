@@ -294,6 +294,12 @@ class AuthControllerNobodyLoggedAndNoRegistrationAllowedAjaxLoginTest extends Au
 	public function testNoLinkSenregistrer() {
 		$this->assertNotXPath('//div//a[contains(@href, "auth/register")]');
 	}
+
+
+	/** @test */
+	public function iframeCssShouldIncluded() {
+		$this->assertXPath('//link[contains(@href, "iframe.css")]');
+	}
 }
 
 
