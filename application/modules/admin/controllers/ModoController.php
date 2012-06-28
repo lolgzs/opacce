@@ -56,6 +56,16 @@ class Admin_ModoController extends Zend_Controller_Action
 		$this->_redirect('admin/modo/avisnotice');
 	}
 
+
+	public function deleteCmsAvisAction() {
+		$avis = Class_Avis::getLoader()->find($this->_getParam('id'));
+		$avis->delete();
+		$avis->maj_note_cms($avis->getIdCms(), $avis->getAbonOuBib());
+		$this->_redirect('opac/cms/articleview/id/'.$avis->getIdCms());
+		
+		$this->_helper->notify($this->view->_('Avis %s supprimé', $avis->getEntete()));
+	}
+
 //-----------------------------------------------------------------------
 // Avis sur les notices (validation)
 //-----------------------------------------------------------------------
