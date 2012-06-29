@@ -20,8 +20,9 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTestCase {
-	protected $_souvigny;
+abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTestCase { 
+	protected $_category_wrapper;
+	protected $_album_wrapper;
 
 	public function setUp() {
 		parent::setUp();
@@ -39,71 +40,66 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 			->whenCalled('findAllBy')
 			->answers(array($cus, $fre, $dak));
 
-		$this->loader_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
-			->whenCalled('findAllBy')
-			->answers(array(
-											 $cat_favoris = Class_AlbumCategorie::getLoader()
-													->newInstanceWithId(2)
-													->setParentId(0)
-													->setLibelle('Favoris')
-													->setSousCategories(array())
-													->setAlbums(array())
-													->addAlbum(Class_Album::getLoader()
-																		 ->newInstanceWithId(43)
-																		 ->setTitre('Mes BD')
-																		 ->setAuteur('Laurent')
-																		 ->setTags('bd;dessin')
-																		 ->setDateMaj('2011-10-05 17:12:00')
-																		 ->setDescription('Les préférées')
-																		 ->setAnnee(1978)
-																		 ->beDiaporama()
-																		 ->setIdOrigine('DC023')
-																		 ->setMatiere('1;3;5')
-																		 ->setDewey('10;12')
-																		 ->setGenre('65;66;67')
-																		 ->setPdf('souvigny.pdf')
-																		 ->setProvenance('Prieuré, Souvigny')
-																		 ->setCote('MS001'))
-													->addAlbum($this->_souvigny = Class_Album::getLoader()
-													  				 ->newInstanceWithId(44)
-																		 ->setTitre('Bible Souvigny')
-																		 ->beLivreNumerique()
-																		 ->setThumbnailAttributes(array('thumbnail_width' => 350,
-																																		'thumbnail_left_page_crop_left' => 10,
-																																		'thumbnail_left_page_crop_right' => 5,
-																																		'thumbnail_left_page_crop_bottom' => 2,
-																																		'thumbnail_right_page_crop_left' => 5))
-																		 ->setRessources(array()))
-													->addSousCategorie($cat_adulte = Class_AlbumCategorie::getLoader()
-																						 ->newInstanceWithId(6)
-																						 ->setLibelle('Adulte')
-																						 ->setParentId(2)
-																						 ->setSousCategories(array())
-																						 ->setAlbums(array())
-																						 ->addAlbum(Class_Album::getLoader()
-																												->newInstanceWithId(24)
-																												->setTitre('Mes Romans')
-																												->setLangue(''))),
-													$cat_patrimoine = Class_AlbumCategorie::getLoader()
-															->newInstanceWithId(38)
-															->setParentId(0)
-															->setSousCategories(array())
-															->setAlbums(array())
-															->setLibelle('Patrimoine')))
+		$this->_category_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie');
+		$this->_album_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album');
 
-			->whenCalled('findAll')->answers(array($cat_adulte, $cat_patrimoine, $cat_favoris));
+		Class_AlbumCategorie::getLoader()
+				->newInstanceWithId(2)
+				->setParentId(0)
+				->setLibelle('Favoris')
+				->setSousCategories(array())
+				->setAlbums(array());
 
+		Class_AlbumCategorie::getLoader()
+				->newInstanceWithId(6)
+				->setLibelle('Adulte')
+				->setParentId(2)
+				->setSousCategories(array())
+				->setAlbums(array());
+				
+		Class_AlbumCategorie::getLoader()
+				->newInstanceWithId(38)
+				->setParentId(0)
+				->setSousCategories(array())
+				->setAlbums(array())
+				->setLibelle('Patrimoine');
 
-		$this->album_loader_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album')
-			->whenCalled('save')
-			->answers(true)
+		Class_Album::getLoader()
+				->newInstanceWithId(43)
+				->setTitre('Mes BD')
+				->setAuteur('Laurent')
+				->setTags('bd;dessin')
+				->setDateMaj('2011-10-05 17:12:00')
+				->setDescription('Les préférées')
+				->setAnnee(1978)
+				->beDiaporama()
+				->setIdOrigine('DC023')
+				->setMatiere('1;3;5')
+				->setDewey('10;12')
+				->setGenre('65;66;67')
+				->setPdf('souvigny.pdf')
+				->setProvenance('Prieuré, Souvigny')
+				->setCote('MS001');
 
-			->whenCalled('findAllBy')
-			->with(array('cat_id' => 0))
-		  ->answers(array(Class_Album::getLoader()
-											->newInstanceWithId(66)
-											->setParentId(0)
-											->setTitre("L'orphelin")));
+		Class_Album::getLoader()
+				->newInstanceWithId(44)
+				->setTitre('Bible Souvigny')
+				->beLivreNumerique()
+				->setThumbnailAttributes(
+						array(
+							'thumbnail_width' => 350,
+							'thumbnail_left_page_crop_left' => 10,
+							'thumbnail_left_page_crop_right' => 5,
+							'thumbnail_left_page_crop_bottom' => 2,
+							'thumbnail_right_page_crop_left' => 5))
+				->setRessources(array());
+
+	  Class_Album::getLoader()
+				->newInstanceWithId(24)
+				->setTitre('Mes Romans')
+				->setLangue('');
+
+	
 	}
 }
 
@@ -113,6 +109,45 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		$this->_category_wrapper
+				->whenCalled('findAllBy')
+				->with(array('parent_id' => 0))
+				->answers(array(
+						Class_AlbumCategorie::getLoader()
+						->newInstanceWithId(2)
+						->setParentId(0)
+						->setLibelle('Favoris')
+						->setSousCategories(array(Class_AlbumCategorie::getLoader()->find(6)
+								->setAlbums(array(Class_Album::getLoader()->find(24)))))
+						->setAlbums(array(Class_Album::getLoader()->find(43))),
+						Class_AlbumCategorie::getLoader()
+					  ->newInstanceWithId(38)
+					  ->setParentId(0)
+					  ->setSousCategories(array())
+					  ->setAlbums(array())
+					  ->setLibelle('Patrimoine')
+				));
+
+		$this->_album_wrapper
+				->whenCalled('getItemsOf')
+				->with(0)
+				->answers(array(Class_Album::getLoader()
+						->newInstanceWithId(66)
+						->setParentId(0)
+						->setTitre("L'orphelin")))
+
+				->whenCalled('getItemsOf')
+				->with(2)
+				->answers(array(Class_Album::getLoader()->find(43)))
+
+				->whenCalled('getItemsOf')
+				->with(6)
+				->answers(array(Class_Album::getLoader()->find(24)))
+
+				->whenCalled('countBy')
+				->answers(1);
+				
 		$this->dispatch('/admin/album');
 	}
 
@@ -316,12 +351,12 @@ class Admin_AlbumControllerPostAddCategorieToFavorisTest extends Admin_AlbumCont
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
 		$this->dispatch('/admin/album/add_categorie_to/id/2');
-		$this->new_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->new_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -357,7 +392,7 @@ class Admin_AlbumControllerInvalidPostAddCategorieToFavorisTest extends Admin_Al
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
@@ -367,7 +402,7 @@ class Admin_AlbumControllerInvalidPostAddCategorieToFavorisTest extends Admin_Al
 
 	/** @test */
 	public function saveShouldNotHaveBeenCalled() {
-		$this->assertFalse($this->loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertFalse($this->_category_wrapper->methodHasBeenCalled('save'));
 	}
 
 
@@ -417,12 +452,12 @@ class Admin_AlbumControllerPostAddCategorieAtRootTest extends Admin_AlbumControl
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
 		$this->dispatch('/admin/album/add_categorie');
-		$this->new_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->new_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -481,7 +516,7 @@ class Admin_AlbumControllerDeleteCategorieFavorisTest extends Admin_AlbumControl
 	public function setUp() {
 		parent::setUp();
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('delete')
 			->answers(true);
 
@@ -491,7 +526,7 @@ class Admin_AlbumControllerDeleteCategorieFavorisTest extends Admin_AlbumControl
 
 	/** @test */
 	public function deleteShouldHaveBeenCalledOnFavoris() {
-		$this->deleted_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('delete');
+		$this->deleted_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('delete');
 		$this->assertEquals('Favoris', $this->deleted_cat->getLibelle());
 	}
 
@@ -611,7 +646,7 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 													 'tmp_name' => '', 
 													 'error' => 4);
 
-		$this->album_loader_wrapper
+		$this->_album_wrapper
 			->whenCalled('save')
 			->willDo(function($model) {
 					$model->setId(67);
@@ -619,7 +654,7 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 				});
 
 		$this->dispatch('/admin/album/add_album_to/id/38');
-		$this->new_album = $this->album_loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->new_album = $this->_album_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -677,7 +712,7 @@ class Admin_AlbumControllerPostAlbumWithoutTitreToPatrimoineTest extends Admin_A
 
 	/** @test */
 	public function saveShouldNotHaveBeenCalled() {
-		$this->assertFalse($this->album_loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertFalse($this->_album_wrapper->methodHasBeenCalled('save'));
 	}
 
 
@@ -705,6 +740,10 @@ class Admin_AlbumControllerPostAlbumWithoutTitreToPatrimoineTest extends Admin_A
 class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+		$this->_category_wrapper
+				->whenCalled('getAllLibelles')
+				->answers(array('2' => 'Favoris',
+				'6' => 'Favoris>Adulte'));
 		$this->dispatch('/admin/album/edit_album/id/43');
 	}
 
@@ -854,9 +893,14 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 class Admin_AlbumControllerEditAlbumMesRomans extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+		Class_Album::getLoader()
+				->newInstanceWithId(24)
+				->setTitre('Mes Romans')
+				->setLangue('');
 		$this->dispatch('/admin/album/edit_album/id/24');
 	}
 
+	
 	/** @test */
 	function formShouldHaveEmptyTagSuggestForMatiere() {
 		$this->assertXPath("//input[@name='matiere'][@value='']");
@@ -989,7 +1033,7 @@ class Admin_AlbumControllerDeleteAlbumMesBDTest extends Admin_AlbumControllerTes
 	public function setUp() {
 		parent::setUp();
 
-		$this->album_loader_wrapper
+		$this->_album_wrapper
 			->whenCalled('delete')
 			->answers(true);
 
@@ -999,7 +1043,7 @@ class Admin_AlbumControllerDeleteAlbumMesBDTest extends Admin_AlbumControllerTes
 
 	/** @test */
 	public function deleteShouldHaveBeenCalledOnMesBD() {
-		$this->deleted_album = $this->album_loader_wrapper->getFirstAttributeForLastCallOn('delete');
+		$this->deleted_album = $this->_album_wrapper->getFirstAttributeForLastCallOn('delete');
 		$this->assertEquals('Mes BD', $this->deleted_album->getTitre());
 	}
 
@@ -1318,7 +1362,7 @@ class Admin_AlbumControllerAlbumHarlocPostRessourceOneActionTest extends Admin_A
 
 	/** @test */
 	function albumShouldHaveBeenSaved() {
-		$this->assertTrue($this->album_loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertTrue($this->_album_wrapper->methodHasBeenCalled('save'));
 	}
 
 	/** @test */
@@ -1422,15 +1466,16 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 
 
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_AlbumControllerTestCase {
+	protected $_souvigny;
 	public function setUp() {
 		parent::setUp();
+		$this->_souvigny = Class_Album::getLoader()->find(44);
 		$this->postDispatch('/admin/album/preview_album/id/44',
 												array('thumbnail_right_page_crop_right' => 34));
 	}
 
 	/** @test */
 	public function thumbnailRightPageCropRightShouldBeThirtyFour() {
-		$souvigny = $this->_souvigny;
 		$this->assertEquals(34, $this->_souvigny->getThumbnailRightPageCropRight(),
 												$this->_response->getBody());
 	}

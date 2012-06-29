@@ -86,10 +86,9 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 			}
 			$html .= '<ul class="root">';
 
-			foreach ($data['containers'] as $container) {
+			foreach ($data['containers'] as $container)
 				$html .= $this->_renderContainer($container);
-			}
-
+		 
 			$html .= '</ul></div>';
 		}
 
@@ -115,17 +114,16 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 
 		$html .= $this->_renderContainerActions($container);
 
+				xdebug_break();
 		if ($container->hasChildren()) {
 			$html .= '<ul style="display:none;" id="child-of-' . $container->getId() . '">';
-
-			foreach ($container->getSousCategories() as $subContainer) {
+			
+			foreach ($container->getSousCategories() as $subContainer)
 				$html .= $this->_renderContainer($subContainer);
-			}
 
-			foreach ($container->getItems() as $item) {
+			$items = $container->getItems();
+			foreach ($items as $item)
 				$html .= $this->_renderItem($item);
-			}
-
 			$html .= '</ul>';
 		}
 
@@ -147,9 +145,7 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 */
 	protected function _renderItem($item) {
 		$html = $this->getItemRenderStrategy()->render($item);
-
-		$html .= $this->_renderItemActions($item);
-
+    $html .= $this->_renderItemActions($item);
 		return '<li class="item status-' . $item->getStatus() . '">' . $html . '</li>';
 	}
 
@@ -192,7 +188,7 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 				$action['caption'] = $model->{$action['caption']}();
 			}
 
-			$action['id'] = $model->getId();
+			$action['url'] = sprintf($action['url'], $model->getId());
 
 			$html .= $this->_renderAction($action);
 		}
@@ -205,18 +201,6 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	protected function _renderAction(array $options) {
-		$url = $this->view->url(
-			array(
-				'module'			=> $options['module'],
-				'controller'	=> $options['controller'],
-				'action'			=> $options['action'],
-				(array_key_exists('idName', $options)) ? $options['idName'] : 'id'
-					=> $options['id']
-			),
-			null,
-			true
-		);
-
 		$anchorOptions = array();
 		if (array_key_exists('anchorOptions', $options)) {
 			$anchorOptions = array_merge($anchorOptions, $options['anchorOptions']);
@@ -227,7 +211,7 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 		if (array_key_exists('caption', $options))
 			$content .= $options['caption'];
 
-		return $this->view->tagAnchor($url, $content, $anchorOptions);
+		return $this->view->tagAnchor($options['url'], $content, $anchorOptions);
 	}
 }
 

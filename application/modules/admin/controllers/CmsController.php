@@ -284,16 +284,12 @@ class Admin_CmsController extends Zend_Controller_Action {
 	private function _getTreeViewContainerActions() {
 		return array(
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'catedit',
+				'url' => $this->_getUrlForActionAndIdName('catedit'),
 				'icon'			=> 'ico/edit.gif',
 				'label'			=> 'Modifier'
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'catdel',
+				'url' => $this->_getUrlForActionAndIdName('catdel'),
 				'icon'			=> 'ico/del.gif',
 				'label'			=> 'Supprimer',
 				'condition' => 'hasNoChild',
@@ -302,17 +298,12 @@ class Admin_CmsController extends Zend_Controller_Action {
 				)
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'newsadd',
-				'idName'		=> 'id_cat',
+				'url' => $this->_getUrlForActionAndIdName('newsadd', 'id_cat'),
 				'icon'			=> 'ico/add_news.gif',
 				'label'			=> 'Ajouter un article',
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'catadd',
+				'url' => $this->_getUrlForActionAndIdName('catadd'),
 				'icon'			=> 'ico/add_cat.gif',
 				'label'			=> 'Ajouter une sous-catégorie'
 			),
@@ -323,32 +314,24 @@ class Admin_CmsController extends Zend_Controller_Action {
 	private function _getTreeViewItemActions() {
 		return array(
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'makeinvisible',
+				'url' => $this->_getUrlForActionAndIdName('makeinvisible'),
 				'icon'			=> 'ico/show.gif',
 				'label'			=> 'Rendre cet article invisible',
 				'condition' => 'isVisible'
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'makevisible',
+				'url' => $this->_getUrlForActionAndIdName('makevisible'),
 				'icon'			=> 'ico/hide.gif',
 				'label'			=> 'Rendre cet article visible',
 				'condition' => 'isNotVisible'
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'newsedit',
+				'url' => $this->_getUrlForActionAndIdName('newsedit'),
 				'icon'			=> 'ico/edit.gif',
 				'label'			=> 'Modifier',
 			),
 			array(
-				'module'		=> 'admin',
-				'controller'=> 'cms',
-				'action'		=> 'delete',
+				'url' => $this->_getUrlForActionAndIdName('delete'),
 				'icon'			=> 'ico/del.gif',
 				'label'			=> 'Supprimer',
 				'anchorOptions' => array(
@@ -356,6 +339,14 @@ class Admin_CmsController extends Zend_Controller_Action {
 				),
 			)
 		);
+	}
+
+
+	protected function _getUrlForActionAndIdName($action, $idName = 'id') {
+		return $this->view->url(array(
+				'module' => 'admin',
+				'controller'=> 'cms',
+				'action'		=> $action), null, true) . '/' . $idName . '/%s';
 	}
 
 

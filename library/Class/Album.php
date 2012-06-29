@@ -55,6 +55,13 @@
  *
  */
 
+class AlbumLoader extends Storm_Model_Loader {
+	public function getItemsOf($categoryId) {
+		return $this->findAll('select id, titre, type_doc_id from album where cat_id=' . $categoryId);
+	}
+}
+
+
 class Class_Album extends Storm_Model_Abstract {
 	const BASE_PATH			= 'album/';
 	const THUMBS_PATH		= 'thumbs/';
@@ -66,6 +73,7 @@ class Class_Album extends Storm_Model_Abstract {
 
   protected $_table_name = 'album';
   protected $_table_primary = 'id';
+	protected $_loader_class = 'AlbumLoader';
 	protected $_belongs_to = array(
 		'categorie' => array(
 			'model'					=> 'Class_AlbumCategorie',

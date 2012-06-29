@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_AlbumController extends Zend_Controller_Action {
+	protected $_baseUrlOptions = array('module' => 'admin', 'controller' => 'album');
+		
 	public function init() {
 		$this->view->titre = 'Collections';
 
@@ -30,19 +32,39 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	public function indexAction() {
 		$categories = Class_AlbumCategorie::getLoader()->findAllBy(array('parent_id' => 0));
 		$categories []= Class_AlbumCategorie::getLoader()
-			->newInstance()
-			->setLibelle('Albums non classés')
-			->setAlbums(Class_Album::getLoader()->findAllBy(array('cat_id' => 0)))
-			->setSousCategories(array());
+				->newInstanceWithId(0)
+				->setLibelle('Albums non classés')
+				->setSousCategories(array());
 
 		$this->view->categories = array(array('bib' => Class_Bib::getLoader()->getPortail(),
 																					'containers' => $categories));
 		$this->view->containersActions = $this->_getTreeViewContainerActions();
 		$this->view->itemsActions = $this->_getTreeViewItemActions();
 		$this->view->headScript()->appendScript('var treeViewSelectedCategory = '
-																			. (int)$this->_getParam('id_cat') . ';');
+			. (int)$this->_getParam('id_cat') . ';'
+			. 'var treeViewAjaxBaseUrl = "' . $this->view->url(array('action' => 'items-of')) . '"');
 		$this->view->headScript()->appendFile(URL_ADMIN_JS . 'tree-view.js');
 
+	}
+
+
+	public function itemsOfAction() {
+		$this->_helper->getHelper('viewRenderer')->setNoRender(true);
+		$response = array();
+
+		if (null == ($category = Class_AlbumCategorie::getLoader()->find($this->_getParam('id')))) {
+			echo json_encode($response);
+			exit;
+		}
+
+		new ZendAfi_View_Helper_TreeView();
+		$renderStrategy = new TreeViewRenderItemWithIconeSupportStrategy($this->view);
+		foreach ($category->getItems() as $item) {
+			$response[] = array('label' => $renderStrategy->render($item));
+		}
+
+		echo json_encode($response);
+		exit;
 	}
 
 
@@ -595,53 +617,42 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	protected function _getTreeViewContainerActions() {
-		return array(array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'add_categorie_to',
+		return array(array('url' => $this->_getUrlForAction('add_categorie_to'),
 											 'icon' => 'ico/add_cat.gif',
 											 'label' => 'Ajouter une sous-catégorie'),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'add_album_to',
+			           array('url' => $this->_getUrlForAction('add_album_to'),
 											 'icon' => 'ico/add_news.gif',
 											 'label' => 'Ajouter un album'),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'edit_categorie',
+			           array('url' => $this->_getUrlForAction('edit_categorie'),
 											 'icon' => 'ico/edit.gif',
 											 'label' => 'Modifier la catégorie'),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'delete_categorie',
+			           array('url' => $this->_getUrlForAction('delete_categorie'),
 											 'icon' => 'ico/del.gif',
 											 'label' => 'Supprimer la catégorie',
-											 'condition' => 'hasNoChild',
+									     'condition' => 'hasNoChild',
 											 'anchorOptions' => array('onclick' => "return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?')")));
 	}
 
 
 	protected function _getTreeViewItemActions() {
-		return array(array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'edit_album',
+		return array(array('url' => $this->_getUrlForAction('edit_album'),
 											 'icon' => 'ico/edit.gif',
 											 'label' => "Modifier l'album"),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'edit_images',
+			           array('url' => $this->_getUrlForAction('edit_images'),
 											 'icon' => 'ico/album_images.png',
 											 'label' => "Gérer les médias",
 											 'caption' => 'formatedCount'),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'preview_album',
+								 array('url' => $this->_getUrlForAction('preview_album'),
 											 'icon' => 'ico/show.gif',
 											 'label' => "Visualisation de l'album"),
-								 array('module' => 'admin',
-											 'controller' => 'album',
-											 'action' => 'delete_album',
+								 array('url' => $this->_getUrlForAction('delete_album'),
 											 'icon' => 'ico/del.gif',
 											 'label' => "Supprimer l'album",
 											 'anchorOptions' => array('onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer cet album');")));
+	}
+
+
+	protected function _getUrlForAction($action) {
+		return $this->view->url($this->_baseUrlOptions + array('action' => $action), null, true) . '/id/%s';
 	}
 }

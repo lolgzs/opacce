@@ -81,13 +81,30 @@ class Class_AlbumCategorie extends Storm_Model_Abstract {
 	}
 
 
+	public function hasAlbums() {
+		return 0 < $this->numberOfAlbums();
+	}
+
+
+	public function getChildrenCount() {
+		return $this->numberOfAlbums();
+	}
+		
+
 	public function hasNoChild() {
 		return !$this->hasChildren();
 	}
 
 	public function getItems() {
-		return $this->getAlbums();
+		xdebug_break();
+		return Class_Album::getLoader()->getItemsOf($this->getId());
 	}
+
+
+	public function isNew() {
+		return parent::isNew() || 0 == $this->getId();
+	}
+	
 
 	/**
 	 * @param array $datas
