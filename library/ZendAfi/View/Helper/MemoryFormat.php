@@ -18,47 +18,20 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ZendAfi_View_Helper_FileInfos extends Zend_View_Helper_Abstract {
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	public function fileInfos($path) {
-		return $this->fileName($path) . $this->fileSize($path);
-	}
+class ZendAfi_View_Helper_MemoryFormat extends Zend_View_Helper_Abstract {
+	/** @var array */
+	protected $_units = array('o', 'Ko', 'Mo', 'Go', 'To', 'Po');
 
 
 	/**
-	 * @param string $path
+	 * @param $size int
 	 * @return string
 	 */
-	public function fileName($path) {
-		$parts = explode('/', $path);
-		return end($parts);
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	public function fileExtension($path) {
-		$parts = explode('.', $path);
-		return '.' . end($parts);
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	public function fileSize($path) {
-		if (!file_exists($path)) {
-			return '';
-		}
-
-		$size = filesize($path);
-		return ', ' . $this->view->memoryFormat($size);
+	public function memoryFormat($size) {
+		$mod = 1024;		
+		for ($i = 0; $size > $mod; $i++)
+			$size /= $mod;
+		return round($size, 2) . ' ' . $this->_units[$i];		
 	}
 }
 ?>
