@@ -1037,6 +1037,9 @@ class RspEmprListerEntite {
 	}
 }
 
+
+
+
 class EntiteEmp {
 	public $LibelleDonnee; // ArrayOfString
 	public $Titre; // string
@@ -1060,8 +1063,15 @@ class EntiteEmp {
 
 			$exemplaire = new Class_WebService_SIGB_Exemplaire(NULL);
 			$exemplaire->setTitre($this->findAttribute('Titre', $attributes));
-			$exemplaire->setExemplaireOPAC(Class_Exemplaire::getLoader()->findFirstBy(
-				array('code_barres' => $this->findAttribute('code', $attributes))));
+
+			if ($code_barre = $this->findAttribute('code', $attributes))
+				$exemplaire_params = array('code_barres' => $code_barre);
+			else
+				$exemplaire_params = array('id_origine' => $this->findAttribute('notice', $attributes));
+			
+			$exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy($exemplaire_params);
+			$exemplaire->setExemplaireOPAC($exemplaire_opac);
+			
 			$entite = new $container_class($data->ValeursDonnees->string[0], $exemplaire);
 			$entite->parseExtraAttributes($attributes);
 
@@ -1071,6 +1081,9 @@ class EntiteEmp {
 		return $entites;
 	}
 }
+
+
+
 
 class DonneeEmp {
 	public $ValeursDonnees; // ArrayOfString
