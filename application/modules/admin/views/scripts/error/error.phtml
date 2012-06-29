@@ -1,12 +1,1 @@
-<h2>N'hésitez pas à contacter notre support</h2>
-<div class="panel">
-Par courriel (de préférence) : <a href="mailto:hotline@afi-sa.fr">hotline@afi-sa.fr</a><br>
-Par téléphone : 01.60.17.12.34</div>
-<a href="javascript:$('#error_tech').toggle();">Voir le détail technique de l'erreur &gt;&gt;</a>
-<div class="panel" id="error_tech" style="display:none;overflow:auto;">
-	<strong>Erreur :</strong> <?php echo $this->escape($this->errors->exception->getMessage()); ?><br>
-	<strong>Date :</strong> <?php echo date('c');?><br>
-	<strong>Pile d'appel :</strong> <pre><code><?php echo $this->escape($this->errors->exception->getTraceAsString()); ?></code></pre><br>
-	<strong>Base de données : </strong> <?php echo $this->escape($this->database);?><br>
-	<strong>Version : </strong> <?php echo $this->escape(VERSION_PERGAME);?><br>
-</div>
+<?php echo $this->error($this->errors); ?>

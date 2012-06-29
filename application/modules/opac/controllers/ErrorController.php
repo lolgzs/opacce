@@ -11,22 +11,26 @@
  *
  * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
  *
  * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
  * along with AFI-OPAC 2.0; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301	 USA 
  */
 class ErrorController extends Zend_Controller_Action {
 	public function errorAction() {
 		$this->_response->setHttpResponseCode(500);
 		$this->_response->clearBody();
-		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
-
-		if ($this->_request->getServer('HTTP_HOST') !== 'localhost')
+				
+		if (($this->_request->getServer('HTTP_HOST') == 'localhost')
+			|| ((null != ($user = Class_Users::getLoader()->getIdentity()))
+				&& $user->isAdmin())) {
+			$this->view->errors = $this->_getParam('error_handler');
 			return;
-		
-		echo $this->_response->setBody($this->_getParam('error_handler')->exception->xdebug_message);
+		}
+
+		$this->_helper->getHelper('viewRenderer')->setNoRender(true);
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
 	}
 }
