@@ -909,3 +909,14 @@ div.ui-sortable-placeholder {
 		background-image: url(../java/slide_show/arrow_right_over.gif);
 }
 
+
+
+.back_to_phone {
+		text-align: center;
+		line-height: 2em;
+		position: absolute;
+		z-index: 1000;
+		background-color: #ddd;
+		width: 100%;
+		box-shadow: 5px 0px 10px rgba(0,0,0,0.5);
+}

@@ -35,7 +35,12 @@ class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_Bas
 		if (Class_AdminVar::isPackMobileEnabled()) 
 			$html .= sprintf('<li><a href="%s" data-icon="star" data-iconpos="notext" data-ajax="false">%s</a></li>',
 											 $this->view->url(array('controller' => 'abonne'), null, true),
-											 $this->view->_('Mon compte'));  
+											 $this->view->_('Compte'));  
+
+		$html .= sprintf('<li><a href="%s"  data-icon="grid" rel="external" data-ajax="false" data-iconpos="notext">%s</a></li>',
+										 $this->view->url(array('id_profil' => 1), null, true),
+										 $this->view->_('Complet'));
+
 
 		$html .= '</ul></div>';
 

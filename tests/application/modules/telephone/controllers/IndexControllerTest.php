@@ -110,6 +110,12 @@ class IndexControllerTelephoneWithoutPackMobileButBibNumTest extends AbstractInd
 
 
 	/** @test */
+	public function viewInClassicMode() {
+		$this->assertXPathContentContains('//div[@data-role="navbar"]//a[@href="/index/index/id_profil/1"]', 'Complet');
+	}
+
+
+	/** @test */
 	public function searchButtonShouldBePresent() {
 		$this->assertXPathContentContains('//div[@data-role="navbar"]//a', 'Recherche');
 	}
@@ -495,7 +501,7 @@ class IndexControllerTelephoneWithForceModuleOPACTest extends AbstractIndexContr
 																	 ->setBrowser('opac')
 																	 ->setLibelle('desktop'));
 
-		$this->dispatch('/opac?id_profil=1', true);
+		$this->dispatch('/opac/index/index/id_profil/1', true);
 	}
 
 
@@ -510,6 +516,12 @@ class IndexControllerTelephoneWithForceModuleOPACTest extends AbstractIndexContr
 	/** @test */
 	public function pageTitleShouldBeDesktop() {
 		$this->assertXPathContentContains('//title', 'desktop');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToGoBackToTelephone() {
+		$this->assertXPath('//a[@href="/telephone"]');
 	}
 }
 

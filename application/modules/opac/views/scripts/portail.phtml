@@ -2,6 +2,14 @@
 ob_start();
 echo '<body '.$this->bodyParam.'>';
 ?>
+
+<?php 
+if (isTelephone()) 
+	echo sprintf('<div class="back_to_phone">%s</div>', 
+								 $this->tagAnchor($this->url(array('module' => 'telephone'), null, true), 
+																	$this->_('Afficher le site en mode mobile')));  
+?>
+
 <div id="site_web_wrapper" style="width:<?php echo $this->profil->getLargeurSite(); ?>px; margin-left:auto; margin-right:auto">
 <div class="siteWeb portail_background_img">
 	<div id="site_web_content">
