@@ -26,11 +26,26 @@ class ModulesControllerRechercheTest extends Admin_AbstractControllerTestCase {
 		$this->dispatch('/admin/modules/recherche?id_profil=2&action1=viewnotice&type_module=recherche&config=site', true);
 	}
 
+	
 	/** @test */
 	public function helpLinkShouldBePresent() {
     $this->assertXPath("//a[@href='https://akm.ardans.fr/AFI2/invite/listerFiche.do?idFiche=3647']//img");
 	}
+
+
+	/** @test */
+	public function ressourcesNumeriquesShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Ressources numériques');
+	}
+
+
+	/** @test */
+	public function babelthequeShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Babelthèque');
+	}
 }
+
+
 
 
 class ModulesControllerVariousConfigTest extends Admin_AbstractControllerTestCase {
@@ -40,6 +55,7 @@ class ModulesControllerVariousConfigTest extends Admin_AbstractControllerTestCas
 		$this->assertAction('auth');
 	}
 }
+
 
 
 

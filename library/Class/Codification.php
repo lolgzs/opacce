@@ -145,7 +145,8 @@ class Class_Codification
 								"bandeAnnonce"	=> $translate->_("Bande-annonce"),
 								"photos" => $translate->_("Photos"),
 								"videos" => $translate->_("Archives vidéo"),
-								"resnumeriques" => $translate->_("Ressources numériques"));
+								"resnumeriques" => $translate->_("Ressources numériques"),
+								"babeltheque" => $translate->_('Babelthèque'));
 		if($onglet) return $libs[$onglet];
 		else return $libs;
 	}
