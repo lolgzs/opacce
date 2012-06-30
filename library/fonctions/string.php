@@ -21,26 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //                  FONCTIONS CHAINES DE CARACTERES
 //
-// @TODO@ : Ya plein de fonctions a virer mais avec prudence
 /////////////////////////////////////////////////////////////////////////////////////
-
-//----------------------------------------------------------------------------------
-// Teste si on est sur un telephone portable
-//----------------------------------------------------------------------------------
-function isTelephone() {
-	if (!array_key_exists('HTTP_USER_AGENT', $_SERVER))
-		return false;
-
-	// Test sur le user-agent
-	$regex_match="/(mobile|nokia|iphone|android|motorola|^mot\-|softbank|foma|docomo|kddi|up\.browser|up\.link|";
-	$regex_match.="htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|";
-	$regex_match.="blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|";	
-	$regex_match.="symbian|smartphone|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|";
-	$regex_match.="jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220";
-	$regex_match.=")/i";		
-
-	return (isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE']) or preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']))); 
-}
 
 //----------------------------------------------------------------------------------
 // Debug dans un fichier log
@@ -70,13 +51,13 @@ function getVarListeCosmogramme($clef)
 	$data=$sql->fetchOne("Select liste from variables where clef='$clef'");
 	$v=split(chr(13).chr(10),$data);
 	for($i=0; $i<count($v); $i++)
-	{
-		$elem=split(":",$v[$i]);
-		if(!trim($elem[1])) continue;
-		$item["code"]=$elem[0];
-		$item["libelle"]=$elem[1];
-		$liste[]=$item;
-	}
+		{
+			$elem=split(":",$v[$i]);
+			if(!trim($elem[1])) continue;
+			$item["code"]=$elem[0];
+			$item["libelle"]=$elem[1];
+			$liste[]=$item;
+		}
 	return $liste;
 }
 
@@ -101,15 +82,15 @@ function formatDate($date,$format)
 	$date=str_replace("/","-",$date);
 	$elem = explode( "-", $date);
 	if(strLen($elem[0]) == 4)
-	{
-		$an =$elem[0];
-		$jour =(int)$elem[2];
-	}
+		{
+			$an =$elem[0];
+			$jour =(int)$elem[2];
+		}
 	else
-	{
-		$an =$elem[2];
-		$jour =(int)$elem[0];
-	}
+		{
+			$an =$elem[2];
+			$jour =(int)$elem[0];
+		}
 	$mois =(int)$elem[1];
 	if(strlen($jour)==1) $jour2="0".$jour; else $jour2=$jour;
 	if(strlen($mois)==1) $mois2="0".$mois; else $mois2=$mois;
@@ -117,10 +98,10 @@ function formatDate($date,$format)
 
 	// Formatter
 	switch( $format)
-	{
+		{
 		case 0: $date = $dateUs; break;
 		case 1: $date = $jour2 . "-" . $mois2. "-" . $an;	break;
-	}
+		}
 	return $date;
 }
 
@@ -139,9 +120,9 @@ function splitArg( $arg )
 {
 	$res = explode('&',$arg);
 	foreach($res as $args)
-	{
-		$res2[] = explode('=',$args);
-	}
+		{
+			$res2[] = explode('=',$args);
+		}
 	return $res2;
 }
 
@@ -205,9 +186,9 @@ function strScanReverse( $chaine, $cherche, $pos ) {
 function array_find( $tableau, $valeur )
 {
 	for($i=0; $i < count($tableau); $i++)
-	{
-		if( strScan( $tableau[$i], $valeur, 0 ) >= 0 ) return $i;
-	}
+		{
+			if( strScan( $tableau[$i], $valeur, 0 ) >= 0 ) return $i;
+		}
 	return -1;
 }
 
@@ -215,32 +196,32 @@ function convertFromUtf8($string){
 	if (is_array($string)){
 		$modified = false;
 		foreach	($string as $key => $value)
-		{
-			$encoding = mb_detect_encoding($value, 'UTF-8, ISO-8859-1');
-			if ($encoding == 'UTF-8'){
-				$tmp[$key] = mb_convert_encoding($value, "ISO-8859-1", mb_detect_encoding($value, "UTF-8, ISO-8859-1, ISO-8859-15", true));
-				$modified = true;
+			{
+				$encoding = mb_detect_encoding($value, 'UTF-8, ISO-8859-1');
+				if ($encoding == 'UTF-8'){
+					$tmp[$key] = mb_convert_encoding($value, "ISO-8859-1", mb_detect_encoding($value, "UTF-8, ISO-8859-1, ISO-8859-15", true));
+					$modified = true;
+				}
 			}
-		}
 		if ($modified){
 			$string = $tmp;
 		}
-		}else{
-			$encoding = mb_detect_encoding($string, 'UTF-8, ISO-8859-1');
-			if ($encoding == 'UTF-8'){
-				$tmp = mb_convert_encoding($string, "ISO-8859-1", mb_detect_encoding($string, "UTF-8, ISO-8859-1, ISO-8859-15", true));
-				$string = $tmp;
-			}
-
+	}else{
+		$encoding = mb_detect_encoding($string, 'UTF-8, ISO-8859-1');
+		if ($encoding == 'UTF-8'){
+			$tmp = mb_convert_encoding($string, "ISO-8859-1", mb_detect_encoding($string, "UTF-8, ISO-8859-1, ISO-8859-15", true));
+			$string = $tmp;
 		}
 
-		return $string;
 	}
 
-	function convertToUtf8($string){
-		if (is_array($string)){
-			$modified = false;
-			foreach	($string as $key => $value)
+	return $string;
+}
+
+function convertToUtf8($string){
+	if (is_array($string)){
+		$modified = false;
+		foreach	($string as $key => $value)
 			{
 				$encoding = mb_detect_encoding($value, 'UTF-8, ISO-8859-1');
 				if ($encoding != 'UTF-8'){
@@ -248,58 +229,58 @@ function convertFromUtf8($string){
 					$modified = true;
 				}
 			}
-			if ($modified){
-				$string = $tmp;
-			}
-
-			}else{
-				$encoding = mb_detect_encoding($string, 'UTF-8, ISO-8859-1');
-				if ($encoding != 'UTF-8'){
-					$tmp = mb_convert_encoding($string, "UTF-8", mb_detect_encoding($string, "UTF-8, ISO-8859-1, ISO-8859-15", true));
-					$string = $tmp;
-				}
-
-			}
-
-			return $string;
+		if ($modified){
+			$string = $tmp;
 		}
 
-		function utf8_substr($str,$from,$len){
-			return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
-			'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s',
-			'$1',$str);
+	}else{
+		$encoding = mb_detect_encoding($string, 'UTF-8, ISO-8859-1');
+		if ($encoding != 'UTF-8'){
+			$tmp = mb_convert_encoding($string, "UTF-8", mb_detect_encoding($string, "UTF-8, ISO-8859-1, ISO-8859-15", true));
+			$string = $tmp;
 		}
 
-		function strlen_utf8 ($str)
+	}
+
+	return $string;
+}
+
+function utf8_substr($str,$from,$len){
+	return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
+											'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s',
+											'$1',$str);
+}
+
+function strlen_utf8 ($str)
+{
+	$i = 0;
+	$count = 0;
+	$len = strlen ($str);
+	while ($i < $len)
 		{
-			$i = 0;
-			$count = 0;
-			$len = strlen ($str);
-			while ($i < $len)
-			{
-				$chr = ord ($str[$i]);
-				$count++;
-				$i++;
-				if ($i >= $len)
+			$chr = ord ($str[$i]);
+			$count++;
+			$i++;
+			if ($i >= $len)
 				break;
 
-				if ($chr & 0x80)
+			if ($chr & 0x80)
 				{
 					$chr <<= 1;
 					while ($chr & 0x80)
-					{
-						$i++;
-						$chr <<= 1;
-					}
+						{
+							$i++;
+							$chr <<= 1;
+						}
 				}
-			}
-			return $count;
 		}
+	return $count;
+}
 
-		function isPositiveInt($number) {
-			if(ereg("^[0-9]+$", $number) && (int)$number >= 0){
-				return true;
-				} else {
-					return false;
-				}
-			}
+function isPositiveInt($number) {
+	if(ereg("^[0-9]+$", $number) && (int)$number >= 0){
+		return true;
+	} else {
+		return false;
+	}
+}

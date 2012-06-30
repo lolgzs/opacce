@@ -22,4 +22,5 @@ include_once( "string.php" );
 include_once( "error.php" );
 include_once( "sql.php" );
 include_once( "array.php" );
+include_once( "phone.php" );
 ?>
