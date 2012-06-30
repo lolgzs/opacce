@@ -181,7 +181,7 @@ class IndexControllerTelephoneToolbarWithPackMobileTest extends AbstractIndexCon
 	/** @test */
 	public function accountButtonShouldBePresent() {
 		$this->assertXPathContentContains('//div[@data-role="navbar"]//a[contains(@href, "abonne")]', 
-																			'Mon compte');
+																			'Compte');
 	}
 }
 
