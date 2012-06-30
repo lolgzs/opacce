@@ -35,7 +35,7 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 
 
 	public function shouldSelectTelephone($request) {
-		return isTelephone() and ('admin' !== $request->getModuleName());
+		return ($request->getModuleName()=='telephone') || (isTelephone() and ('admin' !== $request->getModuleName()));
 	}
 
 

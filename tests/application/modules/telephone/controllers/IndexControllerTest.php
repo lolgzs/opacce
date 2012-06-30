@@ -394,6 +394,8 @@ class IndexControllerTelephoneTelephoneSwitchProfilTest extends Zend_Test_PHPUni
 class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTelephoneWithModulesTest {
 	public function setUp() {
 		parent::setUp();
+		$_SESSION['id_profil'] = 1;
+		unset($_SERVER['HTTP_USER_AGENT']);
 		$this->dispatch('/embed');
 	}
 
@@ -429,6 +431,12 @@ class IndexControllerTelephoneEmbedModuleTest extends AbstractIndexControllerTel
 	/** @test */
 	function formRechercheShouldContainsUrlEmbed() {
 		$this->assertXPath('//form[contains(@action, "embed/recherche/simple")]');
+	}
+
+
+	/** @test */
+	public function currentProfilShouldBeProfilAdulte() {
+		$this->assertEquals($this->profil_adulte, Class_Profil::getCurrentProfil());
 	}
 }
 
