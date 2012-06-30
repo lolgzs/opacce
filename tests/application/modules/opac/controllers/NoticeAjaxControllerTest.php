@@ -264,4 +264,49 @@ class NoticeAjaxControllerExemplairesTest extends AbstractControllerTestCase {
 		$this->assertXPathContentContains('//td', 'VOD-T-DLJ');
 	}
 }
+
+
+
+
+class NoticeAjaxControllerBabelthequeTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Notice::getLoader()
+			->newInstanceWithId(157675)
+			->setIsbn('978-2-226-21993-0');
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('BABELTHEQUE_JS')
+			->setValeur('http://www.babeltheque.com/bw_85.js');
+
+		$this->dispatch('/opac/noticeajax/babeltheque?id_notice=N157675', true);
+	}
+
+
+	/** @test */
+	public function responseShouldContainsBabelthequeScript() {
+		$this->assertXPath('//script[@src="http://www.babeltheque.com/bw_85.js"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsInputHiddenWithIsbn() {
+		$this->assertXPath('//input[@type="hidden"][@id="BW_id_isbn"][@value="978-2-226-21993-0"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsNotes() {
+		$this->assertXPath('//div[@id="BW_notes"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsCritiques() {
+		$this->assertXPath('//div[@id="BW_critiques"]');
+	}
+}
+
+
 ?>

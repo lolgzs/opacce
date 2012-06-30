@@ -403,4 +403,18 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 		$this->getResponse()->setBody($html);
 	}
+
+
+	public function babelthequeAction() {
+		$html = sprintf('<script type="text/javascript" src="%s"></script>', 
+										Class_AdminVar::get('BABELTHEQUE_JS'));
+		$html .= sprintf('<input type="hidden" id="BW_id_isbn" value="%s"\>', 
+										 $this->notice->getIsbn());
+		
+		$blocs = array('notes', 'critiques', 'critiques_pro', 'citations', 'videos');
+		foreach($blocs as $bloc)
+			$html .= sprintf('<div id="BW_%s"></div>', $bloc);
+		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
+		$this->getResponse()->setBody($html);
+	}
 }
