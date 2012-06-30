@@ -23,46 +23,67 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstract {
-
 	function preDispatch(Zend_Controller_Request_Abstract $request)	{
+		$this->memorizeLastProfil();
+		$profil = $this->selectProfilFromRequest($request);
+		$module = $this->getModuleNameForProfilAndRequest($profil, $request);
+		$this->setUpSkin($module, $profil);
+
+		if ($module=="admin")
+			$this->setUpBibZoneFilters($request);
+	}
+
+
+	public function shouldSelectTelephone($request) {
+		return isTelephone() and ('admin' !== $request->getModuleName());
+	}
+
+
+	public function findProfilTelephoneId() {
+		if (!$profil = Class_Profil::getLoader()->findFirstBy(array('BROWSER' => 'telephone'))) 
+			return 0;
+		return $profil->getId();
+	}
+
+	
+	public function selectProfilFromRequest($request) {
 		$requested_module = $request->getModuleName();
-		if (isTelephone() and ($requested_module != 'admin'))
-			$requested_module = 'telephone';
 
 		// Initialisation du profil
-		$id_profil = 0;
-		$profil = null;
-
-		$_SESSION['previous_id_profil'] = isset($_SESSION['id_profil']) ? $_SESSION['id_profil'] : 1;
-
-		if ($requested_module != 'admin')
-			$id_profil=(int)$request->getParam('id_profil');
-
-		if ($id_profil <= 0 and isset($_SESSION['id_profil']))
+		$id_profil = ($requested_module === 'admin') ? 0 : (int)$request->getParam('id_profil');
+		
+		if ($id_profil <= 0 && (isset($_SESSION['id_profil']) && ($requested_module !== 'telephone')))
 				$id_profil = intval($_SESSION["id_profil"]);
 		
-		if ($id_profil <= 0)
-			$id_profil = 1; //portail
+		if ($id_profil <= 0 && $this->shouldSelectTelephone($request))
+				$id_profil = $this->findProfilTelephoneId();
 
-		if(!$profil = Class_Profil::getLoader()->find($id_profil))
+		if ($id_profil <= 0)
+			$id_profil = 1;
+			
+		if (!$profil = Class_Profil::getLoader()->find($id_profil))
 			$profil = Class_Profil::getLoader()->findFirstBy(array('order' => 'id_profil'));
 
+		$_SESSION["id_profil"] = $profil->getId();
 
-		if ($requested_module == 'telephone' and $profil->getBrowser() != 'telephone') {
-			$first_profil_tel = Class_Profil::getLoader()->findFirstBy(array('BROWSER' => 'telephone'));
-			if ($first_profil_tel)	$profil = $first_profil_tel;
-		}
+		return Class_Profil::setCurrentProfil($profil);
+	}
 
 
-		Class_Profil::setCurrentProfil($profil);
-		$module = $requested_module;
+	public function memorizeLastProfil() {
+		$_SESSION['previous_id_profil'] = isset($_SESSION['id_profil']) ? $_SESSION['id_profil'] : 1;
+		return $this;
+	}
+
+
+	public function getModuleNameForProfilAndRequest($profil, $request) {
+		$module = $requested_module = $request->getModuleName();
 		if (('telephone' == $profil->getBrowser()) &&  ($requested_module != 'admin'))
 			$module = 'telephone';
 
 		if ($requested_module == 'telephone' && $profil->getBrowser() == 'opac')
 			$module = 'opac';
-
-
+			
 		/**
 		 * Si l'ouverture du profil nécessite un niveau d'accès et que
 		 * le niveau requis est trop faible, on redirige sur la page de login
@@ -77,11 +98,11 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		}
 
 		$request->setModuleName($module);
+		return $module;
+	}
 
 
-		$_SESSION["id_profil"] = $profil->getId();
-
-		// Initialisation du skin
+	public function setUpSkin($module, $profil) {
 		$skin = $profil->getSkin();
 
 		$skindir = "./public/".$module."/skins";
@@ -91,12 +112,13 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		$url_skin = BASE_URL . substr($skindir,1)."/".$skin;
 
 		$this->_defineConstants($module, $skindir."/".$skin."/", $url_skin);
+	}
 
-		// Initialisation du filtre zone et bibliotheque pour l'admin
-		if($module=="admin") {
-			if (!array_key_exists('admin', $_SESSION))
-				$_SESSION["admin"] = array("filtre_localisation" => array("id_zone" => 'ALL',
-																																	"id_bib" => 'ALL'));
+
+	public function setUpBibZoneFilters($request) {
+		if (!array_key_exists('admin', $_SESSION))
+			$_SESSION["admin"] = array("filtre_localisation" => array("id_zone" => 'ALL',
+																																"id_bib" => 'ALL'));
 			$session=$_SESSION["admin"]["filtre_localisation"];
 
 
@@ -132,8 +154,6 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 			$session["id_zone"]=$id_zone;
 			$session["id_bib"]=$id_bib;
 			$_SESSION["admin"]["filtre_localisation"]=$session;
-		}
-		//tracedebug($_SESSION,true);
 	}
 
 

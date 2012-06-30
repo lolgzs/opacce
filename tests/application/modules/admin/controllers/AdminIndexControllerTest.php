@@ -59,7 +59,7 @@ class AdminIndexControllerTestBabelio extends AdminIndexControllerTestCase {
 	public function withNullExpirationShouldBeDisabled() {
 		$this->_setExpiration(null);
 
-		$this->dispatch('/admin/index');
+		$this->dispatch('/admin/index', true);
 		$this->assertQueryContentContains('div.ligne_info b', 'Désactivé');
 		$this->assertQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}

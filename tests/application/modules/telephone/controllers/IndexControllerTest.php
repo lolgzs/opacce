@@ -78,6 +78,11 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 			->setCfgAccueil($cfg_accueil)
 			->setHeaderCss('mon_style.css')
 			->setHauteurBanniere(150);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
+			->whenCalled('findFirstBy')
+			->with(array('BROWSER' => 'telephone'))
+			->answers($this->profil_adulte);
 	}
 }
 
@@ -322,12 +327,34 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 
 
 
+class IndexControllerWithProfilPortailGoBackPhoneTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::setCurrentProfil(Class_Profil::getLoader()
+																	 ->newInstanceWithId(1)
+																	 ->setBrowser('opac')
+																	 ->setTitreSite('portail'));
+		$_SESSION['id_profil'] = 1;
+		$this->dispatch('/telephone');
+	}
+
+
+	/** @test */
+	public function currentProfilShouldBeTelephoneAdulte() {
+		$this->assertEquals($this->profil_adulte, Class_Profil::getCurrentProfil());
+	}
+}
+
+
+
+
 class IndexControllerTelephoneTelephoneSwitchProfilTest extends Zend_Test_PHPUnit_ControllerTestCase {
 	public $bootstrap = 'bootstrap_frontcontroller.php';
 
  	public function setUp() {
- 		$_SERVER['HTTP_USER_AGENT'] = 'iphone';
  		parent::setUp();
+ 		$_SERVER['HTTP_USER_AGENT'] = 'iphone';
+		unset($_SESSION['id_profil']);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
 			->whenCalled('findFirstBy')
@@ -336,7 +363,7 @@ class IndexControllerTelephoneTelephoneSwitchProfilTest extends Zend_Test_PHPUni
 								->setBrowser('telephone')
 								->setTitreSite('Smartphone'));
 
-		$this->dispatch('/');
+		$this->dispatch('/', true);
 	}
 
 
@@ -448,6 +475,36 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 		$this->assertModule('opac');
 	}
 }
+
+
+
+
+class IndexControllerTelephoneWithForceModuleOPACTest extends AbstractIndexControllerTelephoneWithModulesTest {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::setCurrentProfil(Class_Profil::getLoader()
+																	 ->newInstanceWithId(1)
+																	 ->setBrowser('opac')
+																	 ->setLibelle('desktop'));
+
+		$this->dispatch('/opac?id_profil=1', true);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function moduleShouldBeOpac() {
+		$this->assertModule('opac');
+	}
+
+
+	/** @test */
+	public function pageTitleShouldBeDesktop() {
+		$this->assertXPathContentContains('//title', 'desktop');
+	}
+}
+
 
 
 

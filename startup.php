@@ -269,7 +269,6 @@ function setupRoutes($front_controller) {
 																								'embed/:controller/:action/*', 
 																								array('module' => 'telephone',
 																											'controller' => 'index',
-
 																											'action' => 'index')))
 		->addRoute('flash', 
 							 new Zend_Controller_Router_Route(

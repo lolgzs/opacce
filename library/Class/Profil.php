@@ -110,7 +110,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @param Class_Profil $profil
 	 */
 	public static function setCurrentProfil($profil) {
-		self::$_current_profil = $profil;
+		return self::$_current_profil = $profil;
 	}
 
 
