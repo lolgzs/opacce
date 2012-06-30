@@ -637,7 +637,6 @@ class RecupererNoticeResponse {
 			$exemplaire->setCodeBarre($nfille->getCodeBarre());
 			$exemplaire->setDateRetour($nfille->getDateRetour());
 			$exemplaire->setReservable($nfille->Reservable);
-			$exemplaire->setCodeAnnexe($nfille->getSite());
 			$notice->addExemplaire($exemplaire);
 		}
 		return $notice;
@@ -714,10 +713,6 @@ class NoticeFille {
 
 	public function getSection(){
 		return $this->getData('Section');
-	}
-
-	public function getSite() {
-		return $this->getData('Site');
 	}
 
 	public function getBibliotheque(){
