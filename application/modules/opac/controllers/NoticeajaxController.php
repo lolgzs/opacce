@@ -173,8 +173,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 
 		// Retour
 		$ret =json_encode($data);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($ret);
+		$this->_sendResponse($ret);
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -188,8 +187,8 @@ class NoticeAjaxController extends Zend_Controller_Action
 			$html=$this->notice_html->getArticlesPeriodique($notice);
 		}
 		else $html=$this->notice_html->getNoticeDetaillee($notice,$_REQUEST["onglet"]);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+
+		$this->_sendResponse($html);
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -198,8 +197,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	function similairesAction()	{
 		$notices=$this->notice->getNoticesSimilaires($this->id_notice);
 		$html=$this->notice_html->getListeNotices($notices, $this->view);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -208,8 +206,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	function resumeAction()	{
 		$avis = $this->notice->findAllResumes();
 		$html=$this->notice_html->getResume($avis);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 
@@ -228,8 +225,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 // Biographie
 //------------------------------------------------------------------------------------------------------
 	function biographieAction() {
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($this->view->biographie($this->notice));
+		$this->_sendResponse($this->view->biographie($this->notice));
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -247,10 +243,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 			$html=$this->notice_html->getBandeAnnonce($source,$bo);
 		}
 		else $html= $html=$this->notice_html->getNonTrouve($this->view->_("Service non disponible"),true);
-		
-		// Envoi de la reponse
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -268,8 +261,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		}
 		
 		$html=$this->notice_html->getPhotos($photos);	
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -286,8 +278,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		}
 		
 		$html=$this->notice_html->getBibliographie($biblio,$notice["A"]);	
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 
@@ -295,9 +286,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$html = sprintf('<p>%s</p>', $this->view->_('Aucune ressource correspondante'));
 		if (null !== $exemplaire = Class_Exemplaire::getLoader()->findFirstBy(array('id_notice' => $this->id_notice)))
 			$html = $this->view->renderAlbum($exemplaire->getAlbum());
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html.Class_ScriptLoader::getInstance()->html());
+		$this->_sendResponse($html.Class_ScriptLoader::getInstance()->html());
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -322,8 +311,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		}
 		$morceaux["auteur"]=$notice["A"];
 		$html=$this->notice_html->getMorceaux($morceaux,$source);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -340,11 +328,9 @@ class NoticeAjaxController extends Zend_Controller_Action
 			if(!$video) $html=$this->notice_html->getNonTrouve();
 			else $html=$video;
 		}
-		else $html= $html=$this->notice_html->getNonTrouve($this->view->_("Service non disponible"),true);
-
-		// Envoi de la reponse
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		else 
+			$html= $html=$this->notice_html->getNonTrouve($this->view->_("Service non disponible"),true);
+		$this->_sendResponse($html);
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -354,8 +340,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	{
 		$lastfm=new Class_WebService_Lastfm();
 		$html=$lastfm->getPlayer($_REQUEST["url"]);
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 
@@ -384,10 +369,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 			}
 			else $html= $html=$this->notice_html->getNonTrouve($this->view->_("Service non disponible"),true);
 		}
-
-		// Renvoi du résultat
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -399,21 +381,29 @@ class NoticeAjaxController extends Zend_Controller_Action
 
 		$all_avis = $notice->getAllAvisPerSource($_REQUEST["page"]);
 		$html=$this->notice_html->getAvis($notice,$all_avis);
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html);
+		$this->_sendResponse($html);
 	}
 
 
 	public function babelthequeAction() {
-		$html = sprintf('<script type="text/javascript" src="%s"></script>', 
-										Class_AdminVar::get('BABELTHEQUE_JS'));
+		if (!$script = Class_AdminVar::get('BABELTHEQUE_JS')) {
+			$this->_sendResponse('');
+			return;
+		}
+
+		$html = sprintf('<script type="text/javascript" src="%s"></script>', $script);
 		$html .= sprintf('<input type="hidden" id="BW_id_isbn" value="%s"\>', 
 										 $this->notice->getIsbn());
 		
 		$blocs = array('notes', 'critiques', 'critiques_pro', 'citations', 'videos');
 		foreach($blocs as $bloc)
 			$html .= sprintf('<div id="BW_%s"></div>', $bloc);
+
+		$this->_sendResponse($html);
+	}
+
+
+	protected function _sendResponse($html) {
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 		$this->getResponse()->setBody($html);
 	}

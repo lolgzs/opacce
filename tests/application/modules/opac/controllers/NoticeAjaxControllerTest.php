@@ -309,4 +309,25 @@ class NoticeAjaxControllerBabelthequeTest extends AbstractControllerTestCase {
 }
 
 
+
+
+class NoticeAjaxControllerBabelthequeWithoutOptionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('BABELTHEQUE_JS')
+			->setValeur('');
+
+		$this->dispatch('/opac/noticeajax/babeltheque?id_notice=N157675', true);
+	}
+
+
+	/** @test */
+	public function responseShouldBeEmpty() {
+		$this->assertEquals('', $this->_response->getBody());
+	}
+}
+
+
 ?>
