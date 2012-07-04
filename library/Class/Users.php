@@ -330,6 +330,17 @@ class Class_Users extends Storm_Model_Abstract {
 		return $groupes;
 	}
 
+
+	/**
+	 * @return array
+	 */
+	public function getUserGroupsLabels() {
+		$labels = array();
+		foreach ($this->getUserGroups() as $group)
+			$labels[] = $group->getLibelle();
+		return $labels;
+	}
+
 	
 	/**
 	 * @return string

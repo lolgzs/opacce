@@ -18,18 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  OPAC3: ABONNE
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 class AbonneController extends Zend_Controller_Action
 {
 	protected $_user = null;								// Le user connecté
 
-//------------------------------------------------------------------------------------------------------
-// Initialisation controller
-//------------------------------------------------------------------------------------------------------
-	function init()	{
+	public function init()	{
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
 		
@@ -104,26 +97,19 @@ class AbonneController extends Zend_Controller_Action
 		$this->view->session = $session;
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Voir ses avis
-//------------------------------------------------------------------------------------------------------
+
 	public function viewavisAction(){
 		$this->_redirect('blog/viewauteur/id/'.$this->_user->getId());
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Donner son avis
-//------------------------------------------------------------------------------------------------------
 
-	private function handleAvis($readSourceMethod, $writeAvisMethod)
-	{
+	private function handleAvis($readSourceMethod, $writeAvisMethod) {
 		$cls_user= new Class_Users();
 
 		$avis = new Class_Avis();
 
 		// Validation du formulaire
-		if ($this->_request->isPost())
-		{
+		if ($this->_request->isPost()) {
 			// Bornage du texte
 			$longueur_min = Class_AdminVar::get("AVIS_MIN_SAISIE");
 			$longueur_max = Class_AdminVar::get("AVIS_MAX_SAISIE");
@@ -185,16 +171,16 @@ class AbonneController extends Zend_Controller_Action
 
 	protected function _renderRefreshOnglet() {
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
+		$js = 'location.reload()';
 		if (array_key_exists('onglets', $_SESSION))
-			$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		else
-			$this->getResponse()->setBody("<script>window.top.hidePopWin(false); window.top.location.reload();</script>");
+			$js = "refreshOnglet('" . $_SESSION["onglets"]["avis"] . "')";
+		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top." . $js. ";</script>");
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setNoRender();
 	}
 
 
-	function avisAction()	{
+	public function avisAction()	{
 		$id_notice = $this->_request->getParam('id_notice', 0);
 		$this
 			->getHelper('ViewRenderer')
@@ -238,24 +224,13 @@ class AbonneController extends Zend_Controller_Action
 	}
 
 
-
-//------------------------------------------------------------------------------------------------------
-// AVIS CMS
-//------------------------------------------------------------------------------------------------------
-	function cmsavisAction()	{
+	public function cmsavisAction()	{
 		$this->handleAvis('getCmsAvisById', 'ecrireCmsAvis');
 	}
 
 
-
-//------------------------------------------------------------------------------------------------------
-// Proposer des tags
-//------------------------------------------------------------------------------------------------------
-	function tagnoticeAction()
-	{
-
-		if ($this->_request->isPost())
-		{
+	public function tagnoticeAction() {
+		if ($this->_request->isPost()) {
 			$filter = new Zend_Filter_StripTags();
 			$abonneTag1 = trim($filter->filter($this->_request->getPost('abonneTag1')));
 			$abonneTag2 = trim($filter->filter($this->_request->getPost('abonneTag2')));
@@ -292,10 +267,8 @@ class AbonneController extends Zend_Controller_Action
 		}
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Fiche abonné
-//------------------------------------------------------------------------------------------------------
-	function ficheAction() {
+
+	public function ficheAction() {
 		$abonnement = '';
 		$nb_prets = '';
 		$nb_resas = '';
@@ -366,16 +339,14 @@ class AbonneController extends Zend_Controller_Action
 		$this->view->error = $error;
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Liste des prets en cours
-//------------------------------------------------------------------------------------------------------
-	function pretsAction()	{
+
+	public function pretsAction()	{
 		$this->view->fiche = $this->_user->getFicheSigb();
 		$this->view->user = $this->_user;
 	}
 
 
-	function prolongerpretAction() {
+	public function prolongerpretAction() {
 		$id_pret = $this->_request->getParam('id_pret');
 		$cls_comm = new Class_CommSigb();
 
@@ -392,10 +363,8 @@ class AbonneController extends Zend_Controller_Action
 		$this->renderScript('abonne/prets.phtml');
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Liste des reservations en cours
-//------------------------------------------------------------------------------------------------------
-	function reservationsAction()	{
+
+	public function reservationsAction()	{
 		// Mode Suppression
 		if (null !== ($delete = $this->_getParam('id_delete'))) {
 			$cls_comm = new Class_CommSigb();
@@ -486,7 +455,7 @@ class AbonneController extends Zend_Controller_Action
 	}
 
 
-	function editAction() {
+	public function editAction() {
 		$form = $this->_userForm($this->_user);
 
 		if ($this->getRequest()->isPost() && $form->isValid($_POST)) {
@@ -522,29 +491,47 @@ class AbonneController extends Zend_Controller_Action
 		$this->view->help = nl2br(Class_AdminVar::get('AIDE_FICHE_ABONNE'));
 	}
 	
-	public function authenticateAction(){
+
+	public function authenticateAction() {
 		$this->getHelper('ViewRenderer')->setNoRender();
+		
 		$response = new StdClass();
-		
-		$login = $this->_getParam('login');
-		$password = $this->_getParam('password');
-		
-		$user = Class_Users::getLoader()->findFirstBy(array('login' => $login));
-		
-		if(!$user )
-			$response->error = 'UserNotFound';
-		else if (($user->getPassword() !== $password)) 
-			$response->error = 'PasswordIsWrong';
-		else if (!$user->isAbonnementValid()) 
-			$response->error='SubscriptionExpired';
-		else {
-			foreach(array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
-				$response->$attribute = $user->$attribute;
-			}
-			$response->groupes=$user->getGroupes();
-			$response->date_naissance=$user->getDateNaissanceIso8601();
+		$response->auth = 0;
+		$response->until = '';
+
+		if (!($login = $this->_getParam('login'))
+				|| !($password = $this->_getParam('password'))
+				|| !($poste = $this->_getParam('poste'))) {
+			$response->error = 'MissingParameter';
+			$this->_response->setBody(json_encode($response));
+			return;
 		}
-				
+		
+		if (!$user = Class_Users::getLoader()->findFirstBy(array('login' => $login))) {
+			$response->error = 'UserNotFound';
+			$this->_response->setBody(json_encode($response));
+			return;
+		}
+
+		if (($user->getPassword() !== $password)) {
+			$response->error = 'PasswordIsWrong';
+			$this->_response->setBody(json_encode($response));
+			return;
+	  }
+
+		if (!$user->isAbonnementValid()) {
+			$response->error='SubscriptionExpired';
+			$this->_response->setBody(json_encode($response));
+			return;
+    }
+		
+		foreach(array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
+			$response->$attribute = $user->$attribute;
+		}
+
+		$response->groupes = $user->getUserGroupsLabels();
+		$response->date_naissance = $user->getDateNaissanceIso8601();
+
 		$this->_response->setBody(json_encode($response));
 	}
 }

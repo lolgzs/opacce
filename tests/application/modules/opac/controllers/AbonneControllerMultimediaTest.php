@@ -21,9 +21,7 @@
 
 require_once 'AbstractControllerTestCase.php';
 
-
 class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
-	
 	public function setUp() {
 		parent::setUp();
 		Zend_Auth::getInstance()->clearIdentity();
@@ -71,23 +69,51 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 						
 						->whenCalled('findFirstBy')
 						->answers(null);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroupMembership')
+				->whenCalled('findAllBy')
+				->with(array('role' => 'user', 'model' => $laurent))
+				->answers(array(Class_UserGroupMembership::getLoader()
+						->newInstance()
+						->setUserGroup(Class_UserGroup::getLoader()
+							->newInstanceWithId(1)
+							->setLibelle('Devs agiles'))))
+
+				->whenCalled('findAllBy')
+				->with(array('role' => 'user', 'model' => $baptiste))
+				->answers(array(Class_UserGroupMembership::getLoader()
+						->newInstance()
+						->setUserGroup(Class_UserGroup::getLoader()
+							->newInstanceWithId(2)
+							->setLibelle('Devs Oldschool'))))
+
+				->whenCalled('findAllBy')
+				->with(array('role' => 'user', 'model' => $arnaud))
+				->answers(array(Class_UserGroupMembership::getLoader()
+						->newInstance()
+						->setUserGroup(Class_UserGroup::getLoader()
+							->newInstanceWithId(3)
+							->setLibelle('Invité'))));
 	}
-	
-	
-	protected function getJson($url) {
-		$this->dispatch($url);
-		return json_decode($this->_response->getBody());
-	}
+
 
 	/** @test */
 	public function responseShouldNotBeARedirect() {
 		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi');
 		$this->assertNotRedirect();
 	}
-	
+
+
+	/** @test */
+	public function withoutPosteShouldReturnErrorMissingParameter() {
+		$json = $this->getJson('/abonne/authenticate/login/laurent/password');
+		$this->assertEquals('MissingParameter', $json->error);
+	}
+
+
 	/** @test */
 	public function getAbonneZorkShouldReturnErrorUserNotFound() {
-		$json= $this->getJson('/abonne/authenticate/login/zork/password/toto');
+		$json= $this->getJson('/abonne/authenticate/login/zork/password/toto/poste/1');
 		$this->assertEquals("UserNotFound", $json->error);
 		
 	}
@@ -95,14 +121,14 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 
 	/** @test */
 	public function authenticateAbonneLaurentPasswordXXXShouldReturnWrongPassword() {
-		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx');
+		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1');
 		$this->assertEquals("PasswordIsWrong",$json->error);	
 	}
 
 	
 	/** @test */
 	public function rightAuthenticationShouldNotReturnError() {
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi');
+		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi/poste/1');
 		$this->assertFalse(property_exists($json,'error'));
 		return $json;
 	}
@@ -166,7 +192,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentGroupeShoudBeAdulteAndAbonne($json) {
-		$this->assertEquals(array('adulte','abonne','admin_bib'),$json->groupes);
+		$this->assertEquals(array('Devs agiles'), $json->groupes);
 	}
 	
 	
@@ -174,8 +200,8 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @test 
 	 */
 	public function baptisteGroupesShouldBeMineur(){
-		$json=$this->getJson('/abonne/authenticate/login/baptiste/password/afi');
-		$this->assertEquals(array('mineur','abonne_sigb'),$json->groupes);	
+		$json = $this->getJson('/abonne/authenticate/login/baptiste/password/afi/poste/1');
+		$this->assertEquals(array('Devs Oldschool'), $json->groupes);	
 	}
 	
 	
@@ -183,7 +209,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @test 
 	 */
 		public function mireilleAuthenticateShouldReturnSubscriptionExpired(){
-		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi');
+		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1');
 		$this->assertEquals('SubscriptionExpired',$json->error);	
 	}
 	
@@ -192,10 +218,15 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @test 
 	 */
 	public function arnaudGroupesShouldBeInvite(){
-		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache');
-		$this->assertEquals(array('invite'),$json->groupes);	
+		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache/poste/1');
+		$this->assertEquals(array('Invité'), $json->groupes);	
 	}
-	
+
+
+	protected function getJson($url) {
+		$this->dispatch($url);
+		return json_decode($this->_response->getBody());
+	}
 }
 
 ?>
