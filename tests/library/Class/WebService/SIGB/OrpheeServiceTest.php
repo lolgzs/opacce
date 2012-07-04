@@ -592,7 +592,15 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 			->setNotice(Class_Notice::getLoader()
 									->newInstanceWithId(5)
 									->setTitrePrincipal('Harry Potter')
-									->setAuteurPrincipal('Rowling'));									
+									->setAuteurPrincipal('Rowling'));
+
+
+		$ex_chemin = Class_Exemplaire::getLoader()
+			->newInstanceWithId(32)
+			->setCodeBarres('98374')
+			->setNotice(Class_Notice::getLoader()
+									->newInstanceWithId(974898302)
+									->setTitrePrincipal('Le Chemin'));
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
 			->whenCalled('findFirstBy')
@@ -600,7 +608,12 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 
 			->whenCalled('findFirstBy')
 			->with(array('code_barres' => '123456'))
-			->answers($ex_potter);
+			->answers($ex_potter)
+
+			->whenCalled('findFirstBy')
+			->with(array('code_barres' => '98374'))
+			->answers($ex_chemin);
+;
 
 
 		$this->_search_client
@@ -789,8 +802,17 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 	 * @test 
 	 * @depends firstReservationShouldNotBeEmpty
 	 */
-	public function firstReservationNoNoticeShouldBe974898302($reservation) {	
-		$this->assertEquals('974898302', $reservation->getExemplaire()->getNoNotice());
+	public function firstReservationExemplaireOpacShouldBeLeChemin($reservation) {	
+		$this->assertEquals('Le Chemin', $reservation->getExemplaire()->getExemplaireOPAC()->getTitrePrincipal());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
+	public function firstReservationNoNoticeShouldBefrOr0974898302($reservation) {	
+		$this->assertEquals('frOr0974898302', $reservation->getExemplaire()->getNoNotice());
 	}
 
 
@@ -827,6 +849,15 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 	 */
 	public function firstReservationAuteurShouldBeKyo($reservation) {	
 		$this->assertEquals('Kyo', $reservation->getAuteur());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
+	public function firstReservationEtatShouldBeEnAttente($reservation) {	
+		$this->assertEquals('en attente', $reservation->getEtat());
 	}
 
 

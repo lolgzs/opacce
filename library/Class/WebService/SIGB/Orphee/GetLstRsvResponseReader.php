@@ -59,7 +59,13 @@ class Class_WebService_SIGB_Orphee_GetLstRsvResponseReader extends Class_WebServ
 
 	public function endNo_Ntc($data) {
 		$this->_current_reservation->setId(trim($data));
-		$this->_current_reservation->getExemplaire()->setNoNotice(trim($data));
+		$this->_current_reservation->getExemplaire()->setNoNotice(sprintf('frOr%010d', trim($data)));
+	}
+
+
+	public function endCb($data) {
+		$exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy(array('code_barres' => trim($data)));
+		$this->_current_reservation->getExemplaire()->setExemplaireOPAC($exemplaire_opac);
 	}
 
 
@@ -75,6 +81,11 @@ class Class_WebService_SIGB_Orphee_GetLstRsvResponseReader extends Class_WebServ
 
 	public function endAuteur($data) {
 		$this->_current_reservation->getExemplaire()->setAuteur(trim($data));
+	}
+
+
+	public function endSit($data) {
+		$this->_current_reservation->setEtat(trim($data));
 	}
 
 

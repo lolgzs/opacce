@@ -342,7 +342,7 @@ renouvellement -->
   </infos> 
   <documents> 
     <document> 
-      <cb></cb>     <!-- Code barre du document si document affecté --> 
+      <cb>98374</cb>     <!-- Code barre du document si document affecté --> 
       <no_ntc><![CDATA[974898302]]></no_ntc>  <!-- Numéro de notice si document affecté --> 
       <no_dmt><![CDATA[123]]></no_dmt>   <!-- Numéro de document --> 
       <sup><![CDATA[Doc audio]]></sup>   <!-- Support --> 

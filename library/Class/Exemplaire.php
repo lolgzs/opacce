@@ -76,6 +76,11 @@ class Class_Exemplaire extends Storm_Model_Abstract {
 		$this->_sigb_exemplaire = $sigb_exemplaire;
 		return $this;
 	}
+
+
+	public function getTitrePrincipal() {
+		return $this->getNotice()->getTitrePrincipal();
+	}
 }
 
 ?>
