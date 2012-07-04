@@ -93,7 +93,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 						->newInstance()
 						->setUserGroup(Class_UserGroup::getLoader()
 							->newInstanceWithId(3)
-							->setLibelle('Invité'))));
+							->setLibelle('Patrons'))));
 	}
 
 
@@ -122,14 +122,14 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	/** @test */
 	public function authenticateAbonneLaurentPasswordXXXShouldReturnWrongPassword() {
 		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1');
-		$this->assertEquals("PasswordIsWrong",$json->error);	
+		$this->assertEquals("PasswordIsWrong", $json->error);	
 	}
 
 	
 	/** @test */
 	public function rightAuthenticationShouldNotReturnError() {
 		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi/poste/1');
-		$this->assertFalse(property_exists($json,'error'));
+		$this->assertFalse(property_exists($json, 'error'));
 		return $json;
 	}
 	
@@ -139,7 +139,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentIdShoudBe8($json) {
-		$this->assertEquals('8',$json->id);
+		$this->assertEquals('8', $json->id);
 	}
 	
 	
@@ -148,7 +148,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentLoginShoudBelaurent($json) {
-		$this->assertEquals('laurent',$json->login);
+		$this->assertEquals('laurent', $json->login);
 	}
 	
 	
@@ -165,7 +165,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentNomShoudBelaffont($json) {
-		$this->assertEquals('laffont',$json->nom);
+		$this->assertEquals('laffont', $json->nom);
 	}
 	
 	
@@ -174,7 +174,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentPrenomShoudBelaurent($json) {
-		$this->assertEquals('laurent',$json->prenom);
+		$this->assertEquals('laurent', $json->prenom);
 	}
 	
 	
@@ -183,7 +183,7 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
 	public function laurentDateNaissanceShoudBe1978_02_17($json) {
-		$this->assertEquals('1978/02/17',$json->date_naissance);
+		$this->assertEquals('1978/02/17', $json->date_naissance);
 	}
 	
 	
@@ -191,35 +191,29 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	 * @test 
 	 * @depends rightAuthenticationShouldNotReturnError
 	 */
-	public function laurentGroupeShoudBeAdulteAndAbonne($json) {
-		$this->assertEquals(array('Devs agiles'), $json->groupes);
+	public function laurentGroupeShoudBeAdulteAbonneAdminAndAgile($json) {
+		$this->assertEquals(array('adulte','abonne','admin_bib', 'Devs agiles'), $json->groupes);
 	}
 	
 	
-	/**
-	 * @test 
-	 */
-	public function baptisteGroupesShouldBeMineur(){
+	/** @test */
+	public function baptisteGroupesShouldBeMineurAbonneAndOldSchool(){
 		$json = $this->getJson('/abonne/authenticate/login/baptiste/password/afi/poste/1');
-		$this->assertEquals(array('Devs Oldschool'), $json->groupes);	
+		$this->assertEquals(array('mineur','abonne_sigb', 'Devs Oldschool'), $json->groupes);	
 	}
 	
 	
-	/**
-	 * @test 
-	 */
+	/** @test */
 		public function mireilleAuthenticateShouldReturnSubscriptionExpired(){
 		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1');
 		$this->assertEquals('SubscriptionExpired',$json->error);	
 	}
 	
 
-	/**
-	 * @test 
-	 */
-	public function arnaudGroupesShouldBeInvite(){
+	/** @test */
+	public function arnaudGroupesShouldBeInviteAndPatrons() {
 		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache/poste/1');
-		$this->assertEquals(array('Invité'), $json->groupes);	
+		$this->assertEquals(array('invite', 'Patrons'), $json->groupes);	
 	}
 
 

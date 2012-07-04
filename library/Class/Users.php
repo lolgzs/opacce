@@ -319,7 +319,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 */
 	public function getGroupes(){
 		$groupes=array();
-		if ($this->getAge()>= 18) 
+		if ($this->getAge()>= 18)
 			$groupes[]='adulte';
 		else if($this->hasNaissance()) 
 			$groupes[]='mineur';
@@ -335,7 +335,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getUserGroupsLabels() {
-		$labels = array();
+		$labels = $this->getGroupes();
 		foreach ($this->getUserGroups() as $group)
 			$labels[] = $group->getLibelle();
 		return $labels;
