@@ -85,7 +85,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 			$json_ressource->description = $ressource->getDescription();
 
 			$params = $thumbnail_params[$right_or_left];
-			$params['id'] = $ressource->getId();
+			$params['id'] = (int)$ressource->getId();
 
 			if ($ressource->isThumbnailExistsForParams($params))
 				$json_ressource->thumbnail = $ressource->getThumbnailUrlForParams($params);
