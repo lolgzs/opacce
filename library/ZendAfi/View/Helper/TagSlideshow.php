@@ -156,12 +156,20 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	 * @return string
 	 */
 	protected function _renderMedia($media) {
-		$content = $this->view->tagImg($this->view->url(array('controller' => 'bib-numerique',
-																													'action' => 'thumbnail',
-																													'width' => $media->getAlbum()->getThumbnailWidth(),
-																													'id' => $media->getId()),
-																										null,
-																										true), 
+		$params = array('width' => (int)$media->getAlbum()->getThumbnailWidth(),
+										'id' => (int)$media->getId());
+
+		if ($media->isThumbnailExistsForParams($params))
+			$url_media = $media->getThumbnailUrlForParams($params);
+		else
+			$url_media = $this->view->url(array('controller' => 'bib-numerique',
+																					'action' => 'thumbnail',
+																					'width' => $media->getAlbum()->getThumbnailWidth(),
+																					'id' => $media->getId()),
+																		null,
+																		true);
+
+		$content = $this->view->tagImg($url_media, 
 																	 array('style' => sprintf('width: %spx',  
 																														$this->_preferences['op_largeur_img']),
 																				 'title' => htmlspecialchars($media->getTitre()),
