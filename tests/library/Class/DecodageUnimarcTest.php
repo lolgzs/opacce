@@ -122,9 +122,16 @@ class DecodageUnimarcLivreCinemaDAnimationTest extends PHPUnit_Framework_TestCas
 												$this->livre_cinema->getAuteurPrincipal());
 	}
 
+
 	public function testTitrePrincipalIsCinemaAnimation() {
 		$this->assertEquals("Cinéma d'animation",
 												$this->livre_cinema->getTitrePrincipal());
+	}
+
+
+	public function testResume() {
+		$this->assertEquals('Présente un historique du cinéma d\'animation, un survol des différentes productions nationales à travers le monde (Etats-Unis, Japon, France, Canada), les techniques du volume animé, l\'image de synthèse, mais aussi l\'oeuvre de Disney et le film d\'auteur.', 
+												$this->livre_cinema->getResume());
 	}
 }
 
@@ -191,6 +198,8 @@ class UnimarcLindaLemayBlesseTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('  ahttp://www.gamannecy.com/images/pochettes/201007/0825646794607_thumb.jpg'),
 												$this->blessee->getUnimarcZone('335'));
 	}
+
+
 }
 
 
