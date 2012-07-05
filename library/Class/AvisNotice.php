@@ -102,6 +102,8 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 	protected $_table_primary = 'ID';
 	protected $_belongs_to = array('user' => array('model' => 'Class_Users',
 																								  'referenced_in' => 'id_user'));
+	protected $_default_attribute_values = array('statut' => 0);
+
 	protected $_notices;
 
 	public static function getLoader() {
