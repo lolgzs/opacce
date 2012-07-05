@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_Multimedia_Location extends Storm_Model_Abstract {
-	protected $_loader_class = 'Multimedia_LocationLoader';
 	protected $_table_name = 'multimedia_location';
 	protected $_has_many = array(
 			'groups' => array(
