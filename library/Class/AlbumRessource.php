@@ -222,7 +222,7 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 				$this->_image = new Imagick($this->getOriginalPath());
 			} catch (Exception $e) {
 				$this->_image = new Imagick();
-				$this->_image->newPseudoImage(50, 50, "canvas:black");
+				$this->_image->newPseudoImage(50, 50, "gradient:black-black");
 				$this->_image->setImageFormat('jpg');
 			}
 		}
