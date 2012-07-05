@@ -315,6 +315,15 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 	public function setUp() {
 		parent::setUp();
 
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(0);
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS')
+			->setValeur(0);
+
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
 			->whenCalled('find')
 			->with(224)
@@ -487,6 +496,39 @@ class CmsControllerArticleViewAsAdminTest extends CmsControllerWithFeteDeLaFrite
 	public function avisArgShouldHaveLinkForDeletion() {
 		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Argg")]//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
 	}
+}
+
+
+
+
+class CmsControllerArticleViewWithModoTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(1);
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS')
+			->setValeur(1);
+		
+		$this->dispatch('/cms/articleview/id/224', true);
+	}
+
+
+	/** @test */
+	public function avisNotShouldContainsEnteteArgg() {
+		$this->assertNotXPathContentContains('//table[@class="avis"]//td', 'Argg');
+	}
+
+
+
+	/** @test */
+	public function avisNotShouldContainsEnteteHmmm() {
+		$this->assertNotXPathContentContains('//table[@class="avis"]//td', 'Hmmm');
+	}
+
 }
 
 
