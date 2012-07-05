@@ -25,33 +25,10 @@ class Push_MultimediaController extends Zend_Controller_Action {
 			return;
 
 		foreach ($groups as $group) {
-			if (!$location = Class_Multimedia_Location::getLoader()->findFirstBy(array('id_origine' => (int)$group->site->id)))
-				$location = Class_Multimedia_Location::getLoader()->newInstance()
-					->setIdOrigine((int)$group->site->id);
-						
-			$location->setLibelle($group->site->libelle)
-					->save();
-			
-			if (!$deviceGroup = Class_Multimedia_DeviceGroup::getLoader()->findFirstBy(array('id_origine' => (int)$group->id)))
-				$deviceGroup = Class_Multimedia_DeviceGroup::getLoader()->newInstance()
-					->setIdOrigine((int)$group->id);
-
-			$deviceGroup
-					->setLibelle($group->libelle)
-					->setLocation($location)
-					->save();
-
-			foreach ($group->postes as $poste) {
-				if (!$device = Class_Multimedia_Device::getLoader()->findFirstBy(array('id_origine' => (int)$poste->id)))
-					$device = Class_Multimedia_Device::getLoader()->newInstance()
-						->setIdOrigine((int)$poste->id);
-
-				$device
-						->setLibelle($poste->libelle)
-						->setOs($poste->os)
-						->setDeviceGroup($deviceGroup)
-						->save();
-			}
+			$location = Class_Multimedia_Location::getLoader()->fromJsonModel($group->site);
+			$deviceGroup = Class_Multimedia_DeviceGroup::getLoader()->fromJsonModelWithLocation($group, $location);
+			foreach ($group->postes as $poste)
+				Class_Multimedia_Device::getLoader()->fromJsonModelWithGroup($poste, $deviceGroup);
 		}
 	}
 }

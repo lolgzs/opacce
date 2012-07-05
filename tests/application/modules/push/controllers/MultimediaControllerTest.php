@@ -91,6 +91,12 @@ class Push_MultimediaControllerConfigTest extends AbstractControllerTestCase {
 
 
 	/** @test */
+	public function firstDeviceGroupShouldBeGroupe1() {
+		$this->assertEquals($this->_group, $this->_devices[0]->getGroup());
+	}
+
+
+	/** @test */
 	public function secondDeviceLibelleShouldBePoste2() {
 		$this->assertEquals('Poste 2', $this->_devices[1]->getLibelle());
 	}

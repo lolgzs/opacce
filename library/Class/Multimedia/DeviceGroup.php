@@ -18,7 +18,27 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+
+class Multimedia_DeviceGroupLoader extends Storm_Model_Loader {
+	/**
+	 * @param $json_model stdClass
+	 * @param $location Class_Multimedia_Location
+	 * @return Class_Multimedia_DeviceGroup
+	 */
+	public function fromJsonModelWithLocation($json_model, $location) {
+		if (!$model = $this->findFirstBy(array('id_origine' => (int)$json_model->id)))
+			$model = $this->newInstance()->setIdOrigine((int)$json_model->id);
+		$model
+				->setLibelle($json_model->libelle)
+				->setLocation($location)
+				->save();
+		return $model;
+	}
+}
+
+
 class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
+	protected $_loader_class = 'Multimedia_DeviceGroupLoader';
 	protected $_table_name = 'multimedia_devicegroup';
 	protected $_belongs_to = array(
 		'location' => array(
