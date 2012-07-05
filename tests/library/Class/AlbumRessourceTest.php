@@ -117,6 +117,15 @@ class AlbumRessourceInitializationTest extends AlbumRessourceFileUploadTestCase 
 												->initializeWith(null)
 		);
 	}
+
+
+	/** @test */
+	public function getImageWithInexistingPathShouldCreateBlackImage() {
+		$black_image = new Imagick();
+		$black_image->newPseudoImage(50, 50, "canvas:black");
+		$black_image->setImageFormat('jpg');
+		$this->assertEquals($black_image->getImageBlob(), $this->_resource->getImage());
+	}
 }
 
 
