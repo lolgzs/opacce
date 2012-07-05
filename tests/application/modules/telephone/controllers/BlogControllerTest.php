@@ -26,6 +26,10 @@ abstract class Telephone_BlogControllerAvisActionTestCase extends TelephoneAbstr
 	public function setUp() {
 		parent::setUp();
 
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(0);
+
 		$patouche = Class_Users::getLoader()
 			->newInstanceWithId(2)
 			->setPseudo('Patouche la mouche');
@@ -65,7 +69,28 @@ class Telephone_BlogControllerAvisActionTest extends Telephone_BlogControllerAvi
 
 
 
-class Telephone_BlogControllerViewAuteurActionTest extends Telephone_BlogControllerAvisActionTestCase {
+class Telephone_BlogControllerViewAuteurWithModoActionTest extends Telephone_BlogControllerAvisActionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(1);
+
+		$this->dispatch('/telephone/blog/viewauteur/id/2', true);
+	}
+
+
+	/** @test */
+	public function pageShouldNotDisplayEnteteAvisBien() {
+		$this->assertNotXPathContentContains('//a', 'bien');
+	}
+}
+
+
+
+
+class Telephone_BlogControllerViewAuteurWithoutModoActionTest extends Telephone_BlogControllerAvisActionTestCase {
 	public function setUp() {
 		parent::setUp();
 
