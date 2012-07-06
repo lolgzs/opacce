@@ -21,7 +21,7 @@
 
 require_once 'AbstractControllerTestCase.php';
 
-class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
+class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestCase{
 	public function setUp() {
 		parent::setUp();
 		Zend_Auth::getInstance()->clearIdentity();
@@ -223,4 +223,29 @@ class AbonneControllerMultimediaTest extends AbstractControllerTestCase{
 	}
 }
 
-?>
+
+class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
+				->whenCalled('findAllBy')
+				->answers(array(
+						Class_Multimedia_Location::getLoader()->newInstanceWithId(1)
+						->setLibelle('Salle 1'),
+						Class_Multimedia_Location::getLoader()->newInstanceWithId(2)
+						->setLibelle('Salle 2')));
+		$this->dispatch('/abonne/multimedia-hold-location', true);
+	}
+
+
+	/** @test */
+	public function locationSalle1ShouldBePresent() {
+		$this->assertXPathContentContains('//a[contains(@href, "/day/location/1")]', 'Salle 1');
+	}
+
+
+	/** @test */
+	public function locationSalle2ShouldBePresent() {
+		$this->assertXPathContentContains('//a[contains(@href, "/day/location/2")]', 'Salle 2');
+	}
+}

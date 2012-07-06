@@ -534,4 +534,10 @@ class AbonneController extends Zend_Controller_Action
 
 		$this->_response->setBody(json_encode($response));
 	}
+
+
+	public function multimediaHoldLocationAction() {
+		$this->view->locations = Class_Multimedia_Location::getLoader()->findAllBy(array('order' => 'libelle'));
+
+	}
 }

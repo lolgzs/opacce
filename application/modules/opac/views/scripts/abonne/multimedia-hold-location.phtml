@@ -1,0 +1,5 @@
+<?php foreach ($this->locations as $location) { ?>
+  <?php echo $this->tagAnchor(array('action' => 'day',
+		                                'location' => $location->getId()),
+		                          $this->escape($location->getLibelle()));?>
+<?php } ?>
