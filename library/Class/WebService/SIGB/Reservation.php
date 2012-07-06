@@ -57,7 +57,14 @@ class Class_WebService_SIGB_Reservation extends Class_WebService_SIGB_Exemplaire
 	public function onParseAttributes() {
 		$this->setRang($this->getAttribute('Rang'));
 		$this->setEtat($this->getAttribute('Etat'));
+
+		if (!$code_annexe = $this->getAttribute('Lieu'))
+			return;
+
+		if ($annexe = Class_CodifAnnexe::getLoader()->findFirstBy(array('code' => $code_annexe)))
+				$this->setBibliotheque($annexe->getLibelle());
 	}
+	
 
 	/** @codeCoverageIgnore */
 	public function __toString(){
