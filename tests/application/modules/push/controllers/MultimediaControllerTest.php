@@ -20,7 +20,7 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class Push_MultimediaControllerConfigTest extends AbstractControllerTestCase {
+class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCase {
 	protected $_group;
 	protected $_device_wrapper;
 	protected $_devices = array();
@@ -42,7 +42,15 @@ class Push_MultimediaControllerConfigTest extends AbstractControllerTestCase {
 						return true;
 					});
 
-		$this->postDispatch('/push/multimedia/config', array('json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx"}]}]'));
+		Class_Multimedia::setInstance(Storm_Test_ObjectWrapper::mock()
+			->whenCalled('isValidHashForContent')
+			->answers(true));
+
+				$this->postDispatch(
+						'/push/multimedia/config',
+						array(
+							'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx"}]}]',
+							'sign' => 'auieau09676IUE96'));
 		$this->_group = $device_group_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
