@@ -126,17 +126,8 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 
 
 	public function getNotice($id) {
-		$xml = $this->httpGet(array('service' => 'GetRecords',
-																'id' => $id));
-
- 		$notice = Class_WebService_SIGB_Koha_GetRecordsResponseReader
-			::newInstance()
-			->getNoticeFromXML($xml);
-
-		if ($notice)
-			$this->cacheNotice($notice);
-
-		return $notice;
+		return $this->ilsdiGetRecords($id, 
+																	Class_WebService_SIGB_Koha_GetRecordsResponseReader::newInstance());
 	}
 }
 

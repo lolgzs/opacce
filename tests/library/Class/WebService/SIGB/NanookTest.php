@@ -299,7 +299,6 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 	public function thirdExemplaireCodeAnnexeShouldBeThree() {
 		$this->assertEquals(3, $this->_notice->exemplaireAt(2)->getCodeAnnexe());
 	}
-
 }
 
 

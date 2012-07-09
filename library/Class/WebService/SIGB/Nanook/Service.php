@@ -161,22 +161,11 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 */
 	public function getNotice($id) {
 		try {
-			$xml = $this->httpGet(array('service' => 'GetRecords',
-																	'id' => $id));
+			return $this->ilsdiGetRecords($id, 
+				Class_WebService_SIGB_Nanook_GetRecordsResponseReader::newInstance());
 		} catch (Exception $e) {
 			return;
 		}
-
-		if (0 === strpos($xml, '<html>'))
-			return;
-
-		$notice = Class_WebService_SIGB_Nanook_GetRecordsResponseReader
-								::newInstance()	->getNoticeFromXML($xml);
-
-		if ($notice)
-			$this->cacheNotice($notice);
-
-		return $notice;
 	}
 
 

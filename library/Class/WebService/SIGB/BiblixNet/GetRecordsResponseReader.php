@@ -19,41 +19,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_AbstractRESTService {
-	/**
-	 * @return Class_Webservice_SIGB_BiblixNet_Service
-	 */
+class Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader extends Class_WebService_SIGB_MarcXMLNoticeReader {
 	public static function newInstance() {
 		return new self();
 	}
 
 
-	/**
-	 * @param string $server_root
-	 * @return Class_Webservice_SIGB_BiblixNet_Service
-	 */
-	public static function getService($server_root) {
-		return self::newInstance()->setServerRoot($server_root);
+	public function startBibliographic($attributes) {
+		$this->_notice = new Class_WebService_SIGB_Notice($attributes['ID']);
 	}
-
-
-
-	public function getEmprunteur($user) {}
-
-
-	public function reserverExemplaire($user, $exemplaire, $code_annexe) {}
-
-
-	public function supprimerReservation($user, $reservation_id) {}
-
-
-	public function prolongerPret($user, $pret_id) {}
-
-	
-	public function getNotice($id) {
-		return $this->ilsdiGetRecords($id, 
-				Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader::newInstance());
-	}
-
 }
+
 ?>

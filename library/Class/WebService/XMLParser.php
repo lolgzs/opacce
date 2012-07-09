@@ -78,7 +78,10 @@ class Class_WebService_XMLParser {
 	 * @param array $attributes
 	 */
 	public function startElement($parser, $tag, $attributes) {
-		$this->_parents[] = strtolower($tag) ;
+		$parts = split(':', $tag);
+		$tag = end($parts);
+		$this->_parents[] = strtolower($tag); 
+
 		if ($this->isDataToBeResetOnTag($tag))
 			$this->_current_data = null ;
 

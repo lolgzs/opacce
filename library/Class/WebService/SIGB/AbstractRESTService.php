@@ -75,6 +75,7 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		return $this->getWebClient()->open_url($url);
 	}
 
+	
 	/**
 	 * @param string $xml
 	 * @param string $tag
@@ -89,6 +90,21 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		return '';
 	}
 
+
+	/**
+	 * @param int $id
+	 * @param Class_WeClass_WebService_SIGB*Reader $reader
+	 * @return string xml
+	 */
+	public function ilsdiGetRecords($id, $reader) {
+		$xml = $this->httpGet(array('service' => 'GetRecords',
+																'id' => $id));
+
+ 		if ($notice = $reader->getNoticeFromXML($xml))
+			$this->cacheNotice($notice);
+
+		return $notice;
+	}
 }
 
 ?>
