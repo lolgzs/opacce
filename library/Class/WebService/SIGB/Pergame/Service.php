@@ -47,7 +47,8 @@ class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_Abstra
 	public function getEmpruntsOf($emprunteur)
 	{
 		$params = Class_IntBib::getLoader()->find($this->_id_bib)->getCommParamsAsArray();
-		$renouvelable=$params['Autoriser_prolongations'];
+		$renouvelable = isset($params['Autoriser_prolongations']) ? $params['Autoriser_prolongations'] : false;
+		
 		$user = Class_Users::getLoader()->find($emprunteur->getId());
 		$prets = Class_Pret::getLoader()->findAllBy(array('IDABON' => $user->getIdabon(),
 																											'ORDREABON' => $user->getOrdreabon(),
