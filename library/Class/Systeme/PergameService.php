@@ -272,6 +272,48 @@ class Class_Systeme_PergameService
 		$this->ecrireTransaction(7,array($id_abon,$ordre_abon,$date,$id_origine,$id_site));
 	}
 
+	// Prolonger un prêt
+	function ProlongerPret($id_pret)
+	{
+		// lire enreg pret
+		$pret=fetchEnreg("select * from prets where id_pret=$id_pret");
+		$dateJour = date("Y-m-d");
+		$support=$pret["SUPPORT"];
+
+		// règles paramétrées
+		$regles=Class_IntBib::getLoader()->find($pret['ID_SITE'])->getCommParamsAsArray();
+
+		// Lire le nombre de prolongations
+		$nbProlong=(int)$pret["NB_PROLONGATIONS"];
+		$nbProlong+=1;
+		$dateRetour=$pret["DATE_RETOUR"];
+		if($nbProlong > $regles["Nombre_max_par_document"]) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a atteint le nombre de prolongations autorisé.");
+
+		// Controle si le doc est réservé
+		if($regles["Interdire_si_reservation"]==1)
+		{
+			$controle=fetchOne("Select Count(*) From reservations Where ID_NOTICE_ORIGINE=".$pret["ID_NOTICE_ORIGINE"]." and IDABON='".$pret["ID_ABON"]."'");
+			if($controle>0) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il est réservé.");
+		}
+		
+		// On prolonge
+		$newDate=ajouterJours($pret["DATE_RETOUR"],$regles['Duree_en_jours']);
+		while($newDate<=$dateJour) $newDate=ajouterJours($newDate,$regles['Duree_en_jours']);
+		$tempsProlong=(int)$regles['Duree_en_jours'];
+
+		// Ecrire le prêt
+		sqlExecute("Update prets Set DATE_RETOUR='$newDate', NB_PROLONGATIONS=$nbProlong Where ID_PRET=".$pret["ID_PRET"]);
+	
+		// Ecrire le mouvement
+		$enreg["ID_PRET"]=$pret["ID_PERGAME"];
+		$enreg["DATE_RETOUR"]=$newDate;
+		$enreg["NB_PROLONG"]=$nbProlong;
+		$enreg["TEMPS_PROLONG"]=$tempsProlong;
+
+		$this->ecrireTransaction(5,$enreg);
+		return array('statut'=>1);
+	}
+
 	//------------------------------------------------------------------------------------------------------
 	// Ecrire une transaction
 	//------------------------------------------------------------------------------------------------------

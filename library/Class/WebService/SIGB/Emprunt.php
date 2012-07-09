@@ -82,6 +82,15 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	 */
 	public function setEnRetard($enRetard) {
 		$this->enRetard = $enRetard;
+		return $this;
+	}
+	
+	/**
+	 * @param bool $renewable
+	 */
+	public function setRenewable($renewable) {
+		$this->renewable = $renewable;
+		return $this;
 	}
 
 

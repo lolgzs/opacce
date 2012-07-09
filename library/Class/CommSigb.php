@@ -242,8 +242,17 @@ class Class_CommSigb {
 
 		if (false == $sigb = $this->getSIGBComm($mode_comm))
 			return array('erreur' => $this->msg_erreur_comm);
-
-		return $sigb->prolongerPret($user, $id_pret);
+		
+		switch ($mode_comm["type"])
+			{
+				// Pergame
+				case self::COM_PERGAME:
+					$pergame = new Class_Systeme_PergameService($std_user);
+					$ret = $pergame->prolongerPret($id_pret);
+					return $ret;
+				default:
+					return $sigb->prolongerPret($user, $id_pret);
+			}
 	}
 
 

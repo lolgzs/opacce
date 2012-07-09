@@ -104,6 +104,30 @@ function formatDate($date,$format)
 		}
 	return $date;
 }
+// Ajoute ou soustrait des jours à une date et renvoie une date (format sql)
+function ajouterJours( $date, $jours)
+{
+	if(!$date) return false;
+	if(!$jours) return $date;
+	$date=RendTimeStamp($date);
+	$jours=$jours*3600*24;
+	$new = $date+$jours;
+	$dt=getdate($new);
+	if( $dt["mon"] < 10 ) $dt["mon"] ="0".$dt["mon"];
+	if( $dt["mday"] < 10 ) $dt["mday"] ="0".$dt["mday"];
+	$new = $dt["year"]."-".$dt["mon"]."-".$dt["mday"];
+	return $new;
+}
+
+// Rend un timestamp à partir d'une date (francais ou US)
+function rendTimeStamp( $date )
+{
+	if(! $date or substr($date,0,10) == "0000-00-00") return false;
+	$elem = explode( "-", $date );
+	if(strlen($elem[0]) == 4) $new = mkTime(0,0,0,$elem[1],$elem[2],$elem[0]);
+	else $new = mkTime(0,0,0,$elem[1], $elem[0], $elem[2]);
+	return $new;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //////////////////// TOUT LE RESTE C'EST A VERIFIER /////////////////////////////////
