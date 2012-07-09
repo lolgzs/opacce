@@ -20,6 +20,9 @@
  */
 
 class Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader extends Class_WebService_SIGB_MarcXMLNoticeReader {
+	protected $_current_exemplaire;
+
+
 	public static function newInstance() {
 		return new self();
 	}
@@ -27,6 +30,27 @@ class Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader extends Class_Web
 
 	public function startBibliographic($attributes) {
 		$this->_notice = new Class_WebService_SIGB_Notice($attributes['ID']);
+	}
+
+
+	public function startDatafield_995() {
+		$this->_current_exemplaire = new Class_WebService_SIGB_Exemplaire(null);
+		$this->_current_exemplaire->beReservable();
+	}
+
+
+	public function endSubfield_995_f($data) {
+		$this->_current_exemplaire->setCodeBarre($data)->setId($data);
+	}
+
+
+	public function endSubfield_995_O($data) {
+		$this->_current_exemplaire->setDisponibilite($data);
+	}
+
+
+	public function endDatafield_995() {
+		$this->_notice->addExemplaire($this->_current_exemplaire);
 	}
 }
 

@@ -75,6 +75,13 @@ class BiblixNetFixtures {
 						 <marcxml:subfield code="o">Disponible</marcxml:subfield>
 						 <marcxml:subfield code="u">Bon auteur</marcxml:subfield>
 					 </marcxml:datafield>
+					 <marcxml:datafield tag="995" ind1=" " ind2=" ">
+						 <marcxml:subfield code="b">Mediatheque</marcxml:subfield>
+						 <marcxml:subfield code="f">1000025966323</marcxml:subfield>
+						 <marcxml:subfield code="j">a</marcxml:subfield>
+						 <marcxml:subfield code="k">R ARM C</marcxml:subfield>
+						 <marcxml:subfield code="o">En reliure</marcxml:subfield>
+					 </marcxml:datafield>
 				 </marcxml:record>
 			 </dlf:bibliographic>
 		 </dlf:record>

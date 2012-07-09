@@ -90,6 +90,54 @@ class BiblixNetGetRecordsLaCenseAuxAlouettesTest extends BiblixNetTestCase {
 	public function noticeIdShouldBe3() {
 		$this->assertEquals(3, $this->_notice->getId());
 	}
+
+
+	/** @test */
+	public function getExemplairesShouldReturnAnArrayWithSizeTwo() {
+		$this->assertEquals(2, count($this->_notice->getExemplaires()));
+	}
+
+
+	/** @test */
+	public function firstExemplaireCodeBarreShouldBe1000025966311() {
+		$this->assertEquals('1000025966311', $this->_notice->getExemplaires()[0]->getCodeBarre());
+	}
+
+
+	/** @test */
+	public function firstExemplaireIdShouldBe1000025966311() {
+		$this->assertEquals('1000025966311', $this->_notice->getExemplaires()[0]->getId());
+	}
+
+
+	/** @test */
+	public function secondExemplaireCodeBarreShouldBe1000025966311() {
+		$this->assertEquals('1000025966323', $this->_notice->getExemplaires()[1]->getCodeBarre());
+	}
+
+
+	/** @test */
+	public function firstExemplaireShouldBeDisponible() {
+		$this->assertEquals('Disponible', $this->_notice->getExemplaires()[0]->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function secondExemplaireShouldBeEnReliure() {
+		$this->assertEquals('En reliure', $this->_notice->getExemplaires()[1]->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function firstExemplaireShouldBeReservable() {
+		$this->assertTrue($this->_notice->getExemplaires()[0]->isReservable());
+	}
+
+
+	/** @test */
+	public function secondExemplaireShouldBeReservable() {
+		$this->assertTrue($this->_notice->getExemplaires()[1]->isReservable());
+	}
 }
 
 
