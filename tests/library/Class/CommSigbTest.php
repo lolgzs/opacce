@@ -506,6 +506,39 @@ class CommSigbMicrobibTest extends CommSigbTestCase {
 
 
 
+
+class CommSigbBiblixNetTest extends CommSigbTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->bib_ifr = Class_IntBib::getLoader()
+			->newInstanceWithId(5)
+			->setCommParams(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi'))
+			->setCommSigb(10);
+
+		Class_WebService_SIGB_BiblixNet::setService($this->createMockForService('Microbib'));
+	}
+
+
+	/** @test */
+	public function getTypeCommShouldReturnCOM_BIBLIXNET() {
+		$this->assertEquals(Class_CommSigb::COM_BIBLIXNET,
+												$this->comm_sigb->getTypeComm(5));
+	}
+
+
+	/** @test */
+	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+		$this->assertEquals(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi',
+															"type" => 10,
+															'id_bib' => 5),
+												$this->comm_sigb->getModeComm(5));
+	}
+}
+
+
+
+
 class CommSigbWithNotAbonneTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->user = new stdClass();

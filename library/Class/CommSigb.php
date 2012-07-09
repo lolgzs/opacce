@@ -27,6 +27,7 @@ class Class_CommSigb {
 	const COM_NANOOK = 7;
 	const COM_ORPHEE = 8;
 	const COM_MICROBIB = 9;
+	const COM_BIBLIXNET = 10;
 
 	protected static $_instance;
 
@@ -37,7 +38,8 @@ class Class_CommSigb {
 															 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
 															 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
 															 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
-															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib');
+															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
+															 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet');
 
 	private $mode_comm;								// memo de modes de comm pour les bibs
 	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
@@ -149,6 +151,7 @@ class Class_CommSigb {
 			case self::COM_NANOOK:
 			case self::COM_ORPHEE:
 			case self::COM_MICROBIB:
+		  case self::COM_BIBLIXNET:
 				if (false == $sigb = $this->getSIGBComm($mode_comm))
 					return array("erreur" => $this->msg_erreur_comm);
 				
@@ -214,6 +217,7 @@ class Class_CommSigb {
 			case self::COM_NANOOK:
 			case self::COM_ORPHEE:
 			case self::COM_MICROBIB:
+		  case self::COM_BIBLIXNET:
 				$user = Class_Users::getLoader()->find($user->ID_USER);
 				$sigb = $this->getSIGBComm($mode_comm);
 				if ($sigb == false) {
