@@ -282,18 +282,27 @@ class Class_Systeme_PergameService
 
 		// règles paramétrées
 		$regles=Class_IntBib::getLoader()->find($pret['ID_SITE'])->getCommParamsAsArray();
+		$complement_msg ='<br>Veuillez vous adresser à un responsable de la bibliothèque.';
 
 		// Lire le nombre de prolongations
 		$nbProlong=(int)$pret["NB_PROLONGATIONS"];
 		$nbProlong+=1;
 		$dateRetour=$pret["DATE_RETOUR"];
-		if($nbProlong > $regles["Nombre_max_par_document"]) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a atteint le nombre de prolongations autorisé.");
+		if($nbProlong > $regles["Nombre_max_par_document"]) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a atteint le nombre de prolongations autorisé.".$complement_msg);
+
+		// Controle anterioritemax
+		$anteriorite_max=(int)$regles['Anteriorite_max_en_jours'];
+		if($anteriorite_max)
+		{
+			$ecart=ecartDates($dateJour, $dateRetour);
+			if($ecart>$anteriorite_max) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a un retard trop important.".$complement_msg);
+		}
 
 		// Controle si le doc est réservé
 		if($regles["Interdire_si_reservation"]==1)
 		{
 			$controle=fetchOne("Select Count(*) From reservations Where ID_NOTICE_ORIGINE=".$pret["ID_NOTICE_ORIGINE"]." and IDABON='".$pret["ID_ABON"]."'");
-			if($controle>0) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il est réservé.");
+			if($controle>0) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il est réservé.".$complement_msg);
 		}
 		
 		// On prolonge

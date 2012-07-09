@@ -119,6 +119,17 @@ function ajouterJours( $date, $jours)
 	return $new;
 }
 
+// Soustrait date1 par date2 et rend le nombre de jours
+function ecartDates( $date1, $date2 )
+{
+	$date1 = rendTimeStamp($date1);
+	$date2 = rendTimeStamp($date2);
+	$sec = $date1-$date2;
+	$heures = (int)($sec/3600);
+	$jours = (int)($heures/24);
+	return $jours;
+}
+
 // Rend un timestamp à partir d'une date (francais ou US)
 function rendTimeStamp( $date )
 {
