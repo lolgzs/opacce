@@ -57,15 +57,6 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 
 
 	/**
-	 * Retourne le nom du tag utilisé pour les messages d'erreurs dans les réponses XML / ILSDI
-	 * @return string
-	 */
-	public function ilsdiGetErrorTag() {
-		return 'code';
-	}
-
-
-	/**
 	 * @param Class_Users $user
 	 * @param Class_Exemplaire $exemplaire
 	 * @param string $code_annexe
@@ -108,16 +99,10 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function prolongerPret($user, $pret_id) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_renew = $this->httpGet(array('service' => 'RenewLoan',
-																			'patron_id' => $emprunteur_id,
-																			'item_id' => $pret_id));
-
-		if (!$this->_getTagData($xml_renew, 'message'))
-			return $this->_success();
-
-		return $this->_error('Prolongation impossible');
+		return $this->ilsdiRenewLoan(array(
+																			 'patron_id'	=> $this->_authenticate($user),
+																			 'item_id'		=> $pret_id),
+																 'message');
 	}
 
 
