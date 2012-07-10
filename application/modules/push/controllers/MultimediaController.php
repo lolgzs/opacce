@@ -25,12 +25,21 @@ class Push_MultimediaController extends Zend_Controller_Action {
 		
 		$this->_helper->getHelper('viewRenderer')->setNoRender();
 
-		if (!($groups = json_decode($this->_getParam('json')))
-			|| !($sign = $this->_getParam('sign'))) {
-			$log->err('Missing parameter');
+		if (null == ($json = $this->_getParam('json'))) {
+			$log->err('Missing json parameter');
 			return;
 		}
-				
+
+		if (null == ($sign = $this->_getParam('sign'))) {
+			$log->err('Missing sign parameter');
+			return;
+		}
+	 
+		if (!($groups = json_decode($json))) {
+			$log->err('Invalid json');
+			return;
+		}
+		
 		if (!Class_Multimedia::isValidHash($sign, $this->_getParam('json'))) {
 			$log->err('Sign check failure');
 			return;
