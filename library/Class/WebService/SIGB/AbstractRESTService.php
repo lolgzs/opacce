@@ -188,6 +188,26 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 	}
 
 
+	/**
+	 * @param array $params
+	 */
+	public function ilsdiRenewLoan($params) {
+		$params = array_merge(array('service' => 'RenewLoan'), $params);
+
+		try {
+			$xml = $this->httpGet($params);
+		} catch (Exception $e) {
+			return $this->_getNetworkError();
+		}
+
+		if (0 === strpos($xml, '<html>'))
+			return $this->_getNetworkError();
+
+		if ('' != $this->_getTagData($xml, 'error'))
+			return $this->_error('Prolongation impossible');
+
+		return $this->_success();
+	}
 	
 
 	/**

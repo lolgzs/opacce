@@ -93,21 +93,9 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @return array
 	 */
 	public function prolongerPret($user, $pret_id) {
-		try {
-			$xml = $this->httpGet(array('service'		=> 'RenewLoan',
-																	'patronId'	=> $user->getIdSigb(),
-																	'itemId'		=> $pret_id));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Prolongation impossible');
-
-		return $this->_success();
+		return $this->ilsdiRenewLoan(array(
+																			 'patronId'	=> $user->getIdSigb(),
+																			 'itemId'		=> $pret_id));
 	}
 
 

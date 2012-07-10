@@ -139,4 +139,11 @@ class BiblixNetFixtures {
 		return '<?xml version="1.0" encoding="UTF-8"?>
 						<CancelHold></CancelHold>';
 	}
+
+
+	/** @return string */
+	public static function xmlRenewLoanSuccess() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+						<RenewLoan></RenewLoan>';
+	}
 }

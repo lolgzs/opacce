@@ -267,6 +267,22 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 													'987'
 												));
 	}
+
+
+	/** @test */
+	public function prolongerPretWithoutErrorShouldReturnSuccess() {
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=RenewLoan&patronId=4&itemId=987')
+			->answers(BiblixNetFixtures::xmlRenewLoanSuccess())
+			->beStrict();
+
+		$this->assertEquals(array('statut' => true, 'erreur' => ''),
+												$this->_service->prolongerPret(
+													Class_Users::getLoader()->newInstance()->setIdSigb('4'),
+													'987'
+												));		
+	}
 	
 }
 

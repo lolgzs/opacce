@@ -80,7 +80,11 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	 * @param int $pret_id
 	 * @return array
 	 */
-	public function prolongerPret($user, $pret_id) {}
+	public function prolongerPret($user, $pret_id) {
+		return $this->ilsdiRenewLoan(array(
+																			 'patronId'	=> $user->getIdSigb(),
+																			 'itemId'		=> $pret_id));
+	}
 
 	
 	/**
