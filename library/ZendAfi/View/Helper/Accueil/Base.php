@@ -68,7 +68,7 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 		if (Class_Users::getLoader()->isCurrentUserAdmin())
 			return false;
 
-		return Class_AdminVar::get('CACHE_ACTIF') == '1';
+		return Class_AdminVar::isCacheEnabled();
 	}
 
 

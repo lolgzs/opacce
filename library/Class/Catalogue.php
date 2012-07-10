@@ -274,26 +274,38 @@ class Class_Catalogue extends Storm_Model_Abstract {
 		return $ret;
 	}
 
+
+	public function shouldCacheContent() {
+		if (Class_Users::getLoader()->isCurrentUserAdmin())
+			return false;
+
+		return Class_AdminVar::isCacheEnabled();
+	}
+
+
+	public function getNoticesFromCacheByPreferences($preferences, $cache_vignette) {
+		$cache_key = md5(serialize($preferences).$cache_vignette);
+		$cache = Zend_Registry::get('cache');
+
+		if ($this->shouldCacheContent() && $cache->test($cache_key))
+			return unserialize($cache->load($cache_key));
+
+		$notices = $this->_fetchAllNoticesByPreferences($preferences, $cache_vignette);			
+		$cache->save(serialize($notices), $cache_key);
+		return $notices;
+	}
+
 //------------------------------------------------------------------------------
 // Rend les notices selon les preferences (kiosques)
 //------------------------------------------------------------------------------
 	public function getNoticesByPreferences($preferences,$cache_vignette=false)	{
-		$cache_key = md5(serialize($preferences).$cache_vignette);
-		$cache = Zend_Registry::get('cache');
-		if (Class_AdminVar::isCacheEnabled() && $cache->test($cache_key)) {
-			$notices = unserialize($cache->load($cache_key));
-		} else {
-			$notices = $this->_fetchAllNoticesByPreferences($preferences, $cache_vignette);			
-			$cache->save(serialize($notices), $cache_key);
-		}
+		$notices = $this->getNoticesFromCacheByPreferences($preferences, $cache_vignette);
 
-		// Tirage aleatoire
-		if($preferences["aleatoire"]==1)
-		{
-			shuffle($notices);
-			$notices = array_slice ($notices, 0, $preferences["nb_notices"]);   
-		}
-		return $notices;
+		if ($preferences["aleatoire"] !== 1) 
+			return $notices;
+
+		shuffle($notices);
+		return array_slice ($notices, 0, $preferences["nb_notices"]);   
 	}
 
 

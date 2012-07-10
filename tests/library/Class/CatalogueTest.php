@@ -480,6 +480,28 @@ class CatalogueTestGetNoticesByPreferences extends ModelTestCase {
 
 		$this->assertEquals(array('test'), $notices);
 	}
+
+
+
+	/** @test */
+	public function getNoticesWithCachePresentButUserAdminShouldCallThem() {
+		$account = new stdClass();
+		$account->username     = 'AutoTest' . time();
+		$account->password     = md5( 'password' );		
+		$account->ID_USER      = 2;
+		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+		$account->confirmed    = true;
+		$account->enabled      = true;
+		Zend_Auth::getInstance()->getStorage()->write($account);
+		
+		Class_Users::getLoader()->newInstanceWithId($account->ID_USER)->setRoleLevel($account->ROLE_LEVEL);
+
+		$notices = $this->_catalogue->getNoticesByPreferences(array('id_catalogue' => 666,
+																																'aleatoire' => 1,
+																																'nb_analyse' => 25,
+																																'nb_notices' => 40));
+		$this->assertEquals(23, $notices[0]["id_notice"]);
+	}
 }
 
 ?>
