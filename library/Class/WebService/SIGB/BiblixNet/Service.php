@@ -68,7 +68,11 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	 * @param int $reservation_id
 	 * @return array
 	 */
-	public function supprimerReservation($user, $reservation_id) {}
+	public function supprimerReservation($user, $reservation_id) {
+		return $this->ilsdiCancelHold(array(
+																				'patronId'	=> $user->getIdSigb(),
+																				'itemId'		=> $reservation_id));
+	}
 
 
 	/**

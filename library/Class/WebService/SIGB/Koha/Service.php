@@ -57,6 +57,15 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 
 
 	/**
+	 * Retourne le nom du tag utilisé pour les messages d'erreurs dans les réponses XML / ILSDI
+	 * @return string
+	 */
+	public function ilsdiGetErrorTag() {
+		return 'code';
+	}
+
+
+	/**
 	 * @param Class_Users $user
 	 * @param Class_Exemplaire $exemplaire
 	 * @param string $code_annexe
@@ -77,6 +86,7 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function supprimerReservation($user, $reservation_id) {
+
 		$emprunteur_id = $this->_authenticate($user);
 
 		$xml_cancel = $this->httpGet(array('service' => 'CancelHold',

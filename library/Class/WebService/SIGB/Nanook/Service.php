@@ -81,21 +81,9 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @return array
 	 */
 	public function supprimerReservation($user, $reservation_id) {
-		try {
-			$xml = $this->httpGet(array('service'		=> 'CancelHold',
-																	'patronId'	=> $user->getIdSigb(),
-																	'itemId'		=> $reservation_id));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Annulation impossible');
-
-		Return $this->_success();
+		return $this->ilsdiCancelHold(array(
+																				'patronId'	=> $user->getIdSigb(),
+																				'itemId'		=> $reservation_id));
 	}
 
 

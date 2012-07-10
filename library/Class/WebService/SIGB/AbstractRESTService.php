@@ -108,6 +108,15 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 
 
 	/**
+	 * Retourne le nom du tag utilisé pour les messages d'erreurs dans les réponses XML / ILSDI
+	 * @return string
+	 */
+	public function ilsdiGetErrorTag() {
+		return 'error';
+	}
+
+
+	/**
 	 * @param array $params
 	 * @param Class_WebService_SIGB_AbstractILSDIPatronInfoReader $reader
 	 * @return Class_WebService_SIGB_Emprunteur
@@ -121,7 +130,7 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		if (0 === strpos($xml, '<html>'))
 			return $emprunteur;
 
-		if ($this->_getTagData($xml, 'error'))
+		if ($this->_getTagData($xml, $this->ilsdiGetErrorTag()))
 			return $emprunteur;
 
 		return $reader
@@ -147,11 +156,37 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		if (0 === strpos($xml, '<html>'))
 			return $this->_getNetworkError();
 
-		if ('' != $this->_getTagData($xml, $error_tag))
+		if ('' != $this->_getTagData($xml, $this->ilsdiGetErrorTag()))
 			return $this->_error('Réservation impossible');
 
 		return $this->_success();
 	}
+
+
+
+
+
+	/**
+	 * @param array $params
+	 */
+	public function ilsdiCancelHold($params) {
+		$params = array_merge(array('service' => 'CancelHold'), $params);
+
+		try {
+			$xml = $this->httpGet($params);
+		} catch (Exception $e) {
+			return $this->_getNetworkError();
+		}
+
+		if (0 === strpos($xml, '<html>'))
+			return $this->_getNetworkError();
+
+		if ('' != $this->_getTagData($xml, 'error'))
+			return $this->_error('Annulation impossible');
+
+		return $this->_success();
+	}
+
 
 	
 
