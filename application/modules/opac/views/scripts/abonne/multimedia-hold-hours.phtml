@@ -1,3 +1,5 @@
+<?php echo $this->timeline($this->timelineActions);?>
+
 <select id="hold-time">
 <?php foreach ($this->times as $k => $v) { ?>
 	<option value="<?php echo $k;?>"><?php echo $this->escape($v);?></option>

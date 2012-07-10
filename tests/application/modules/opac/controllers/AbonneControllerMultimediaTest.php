@@ -229,9 +229,13 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 		
 	public function setUp() {
 		parent::setUp();
-		$this->_session = new Zend_Session_Namespace(AbonneController::SESSION_NAMESPACE);
+		$this->_session = new Zend_Session_Namespace('abonneController');
 	}
 
+	/** @test */
+	public function timelineWithFiveStepsShouldBePresent() {
+		$this->assertXPathCount('//div[@class="timeline"]//li', 5);
+	}
 
 	protected function _prepareLocationInSession() {
 		$this->_session->location = 123;
@@ -240,10 +244,25 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 				->setSlotSize(30)
 				->setMaxSlots(4);
 	}
+
+	protected function _assertCurrentTimelineStep($step) {
+		$this->_assertTimeLineStepWithClass($step, 'selected');
+	}
+
+
+	protected function _assertPassedTimelineStep($step) {
+		$this->_assertTimeLineStepWithClass($step, 'passed');
+	}
+
+
+	protected function _assertTimeLineStepWithClass($step, $class) {
+		$this->assertXPathContentContains('//div[@class="timeline"]//li[@class="' . $class . '"]',
+			                                $step);
+	}
 }
 
 
-class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestCase {
+class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
@@ -258,6 +277,12 @@ class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestC
 
 
 	/** @test */
+	public function currentTimelineStepShouldBeLieu() {
+		$this->_assertCurrentTimelineStep('Lieu');
+	}
+		
+
+	/** @test */
 	public function locationSalle1ShouldBePresent() {
 		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-day/location/1")]', 'Salle 1');
 	}
@@ -270,10 +295,22 @@ class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestC
 }
 
 
-class AbonneControllerMultimediaHoldDayTest extends AbstractControllerTestCase {
+class AbonneControllerMultimediaHoldDayTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/abonne/multimedia-hold-day/location/1', true);
+	}
+
+
+	/** @test */
+	public function currentTimelineStepShouldBeJour() {
+		$this->_assertCurrentTimelineStep('Jour');
+	}
+
+
+	/** @test */
+	public function timelineStepShouldBePassed() {
+		$this->_assertPassedTimelineStep('Lieu');
 	}
 
 
@@ -291,6 +328,12 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 		$this->dispatch('/abonne/multimedia-hold-hours/day/2012-09-09', true);
 	}
 
+
+	/** @test */
+	public function currentTimelineStepShouldBeHoraires() {
+		$this->_assertCurrentTimelineStep('Horaires');
+	}
+		
 
 	/** @test */
 	public function listOfStartTimesShouldBePresent() {
@@ -340,6 +383,11 @@ class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimedi
 				
 		$this->dispatch('/abonne/multimedia-hold-device/time/' . urlencode('11:15')
 			                                                     . '/duration/45', true);
+	}
+
+	/** @test */
+	public function currentTimelineStepShouldBePoste() {
+		$this->_assertCurrentTimelineStep('Poste');
 	}
 
 

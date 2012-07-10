@@ -1,3 +1,5 @@
+<?php echo $this->timeline($this->timelineActions);?>
+
 <?php foreach ($this->devices as $device) { ?>
 		<a href="<?php echo $this->url(array('controller' => 'abonne',
 						                             'action' => 'multimedia-hold-confirm',

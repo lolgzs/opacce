@@ -539,11 +539,13 @@ class AbonneController extends Zend_Controller_Action {
 
 	public function multimediaHoldLocationAction() {
 		$this->view->locations = Class_Multimedia_Location::getLoader()->findAllBy(array('order' => 'libelle'));
+		$this->view->timelineActions = $this->_getTimelineActions('location');
 	}
 
 
 	public function multimediaHoldDayAction() {
 		$this->_getSessionNamespace()->location = $this->_getParam('location');
+		$this->view->timelineActions = $this->_getTimelineActions('day');
 	}
 
 
@@ -552,7 +554,7 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/multimedia-hold-location');
 			return;
 		}
-		
+		$this->view->timelineActions = $this->_getTimelineActions('hours');
 		$this->view->times = $location->getStartTimesForDate($this->_getParam('day'));
 		$this->view->durations = $location->getDurations();
 	}
@@ -564,7 +566,7 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/multimedia-hold-location');
 			return;
 		}
-				
+		$this->view->timelineActions = $this->_getTimelineActions('device');
 		$this->view->devices = $location->getHoldableDevicesForDateTimeAndDuration(
 				                               $namespace->date,
 																			 $this->_getParam('time'),
@@ -575,5 +577,38 @@ class AbonneController extends Zend_Controller_Action {
 	/** @return Zend_Session_Namespace */
 	protected function _getSessionNamespace() {
 		return new Zend_Session_Namespace(self::SESSION_NAMESPACE);
+	}
+
+
+	/**
+	 * @param $current string
+	 * @return array
+	 */
+	protected function _getTimelineActions($current) {
+		$knownActions = array(
+			'location' => 'Lieu',
+			'day' => 'Jour',
+			'hours' => 'Horaires',
+			'device' => 'Poste',
+			'confirm' => 'Confirmation'
+		);
+
+		$actions = array();
+		foreach ($knownActions as $knownAction => $label) {
+			$action = $this->_getTimelineActionWithNameAndAction($label, $knownAction);
+			if ($current == $knownAction)
+				$action[ZendAfi_View_Helper_Timeline::CURRENT] = true;
+			$actions[] = $action;
+		}
+		return $actions;
+	}
+
+
+	protected function _getTimelineActionWithNameAndAction($name, $action) {
+		return array(ZendAfi_View_Helper_Timeline::LABEL => $name,
+			           ZendAfi_View_Helper_Timeline::CURRENT => false,
+			           ZendAfi_View_Helper_Timeline::URL => $this->view->url(array('controller' => 'abonne',
+										                                                         'action' => 'multimedia-hold-' . $action),
+									                                                     null, true));
 	}
 }

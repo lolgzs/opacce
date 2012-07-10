@@ -1,3 +1,4 @@
+<?php echo $this->timeline($this->timelineActions);?>
 <?php foreach ($this->locations as $location) { ?>
   <?php echo $this->tagAnchor(array('action' => 'multimedia-hold-day',
 		                                'location' => $location->getId()),
