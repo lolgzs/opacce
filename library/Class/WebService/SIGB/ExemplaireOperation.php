@@ -166,6 +166,14 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 
 
 	/**
+	 * @return string
+	 */
+	public function getNoNotice() {
+		return $this->_exemplaire->getNoNotice();
+	}
+
+
+	/**
 	 * @param exemplaire Class_Exemplaire
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */

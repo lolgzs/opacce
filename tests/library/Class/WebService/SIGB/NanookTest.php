@@ -96,18 +96,6 @@ abstract class NanookTestCase extends Storm_Test_ModelTestCase {
 
 abstract class NanookServiceErrorTestCase extends NanookTestCase {
 	/** @test */
-	public function getEmprunteurShouldReturnEmptyEmprunteur() {
-		$emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
-																								 ->newInstance()
-																								 ->setIdSigb(1));
-		$this->assertNotNull($emprunteur);
-		$this->assertEmpty($emprunteur->getReservations());
-		$this->assertEmpty($emprunteur->getPretsEnRetard());
-		$this->assertEmpty($emprunteur->getEmprunts());
-	}
-
-
-	/** @test */
 	public function reserverExemplaireShouldReturnFailure() {
 		$this->assertEquals(
 				array('statut' => false, 'erreur' => 'Service indisponible'),
@@ -169,6 +157,17 @@ class NanookHtmlResponseTest extends NanookServiceErrorTestCase {
 			->expects($this->once())
 			->method('open_url')
 			->will($this->returnValue(NanookFixtures::htmlTomcatError()));
+	}
+
+	/** @test */
+	public function getEmprunteurShouldReturnEmptyEmprunteur() {
+		$emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
+																								 ->newInstance()
+																								 ->setIdSigb(1));
+		$this->assertNotNull($emprunteur);
+		$this->assertEmpty($emprunteur->getReservations());
+		$this->assertEmpty($emprunteur->getPretsEnRetard());
+		$this->assertEmpty($emprunteur->getEmprunts());
 	}
 }
 

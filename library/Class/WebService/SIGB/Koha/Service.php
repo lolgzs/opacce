@@ -48,19 +48,11 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
 	public function getEmprunteur($user) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_patron = $this->httpGet(array('service' => 'GetPatronInfo',
-																			 'patron_id' => $emprunteur_id,
-																			 'show_contact' => 0,
-																			 'show_loans' => 1,
-																			 'show_holds' => 1));
-
-		return Class_WebService_SIGB_Koha_PatronInfoReader
-			::newInstance()
-			->setEmprunteur(Class_WebService_SIGB_Emprunteur::newInstance()->setService($this))
-			->parseXML($xml_patron)
-			->getEmprunteur();
+		return $this->ilsdiGetPatronInfo(array('patron_id' => $this->_authenticate($user),
+																					 'show_contact' => 0,
+																					 'show_loans' => 1,
+																					 'show_holds' => 1),
+																		 Class_WebService_SIGB_Koha_PatronInfoReader::newInstance());
 	}
 
 

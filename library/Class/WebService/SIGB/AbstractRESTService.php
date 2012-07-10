@@ -94,7 +94,7 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 	/**
 	 * @param int $id
 	 * @param Class_WeClass_WebService_SIGB*Reader $reader
-	 * @return string xml
+	 * @return string Class_WebService_SIGB_Notice
 	 */
 	public function ilsdiGetRecords($id, $reader) {
 		$xml = $this->httpGet(array('service' => 'GetRecords',
@@ -104,6 +104,30 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 			$this->cacheNotice($notice);
 
 		return $notice;
+	}
+
+
+	/**
+	 * @param Class_Users $user
+	 * @param Class_WebService_SIGB_AbstractILSDIPatronInfoReader $reader
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function ilsdiGetPatronInfo($params, $reader) {
+		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()->setService($this);
+		$params = array_merge(array('service' => 'GetPatronInfo'), $params);
+
+		$xml = $this->httpGet($params);
+
+		if (0 === strpos($xml, '<html>'))
+			return $emprunteur;
+
+		if ($this->_getTagData($xml, 'error'))
+			return $emprunteur;
+
+		return $reader
+			->setEmprunteur($emprunteur)
+			->parseXML($xml)
+			->getEmprunteur();
 	}
 }
 

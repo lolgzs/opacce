@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_AbstractRESTService {
+class Class_WebService_SIGB_BiblixNet_PatronInfoReader extends Class_WebService_SIGB_AbstractILSDIPatronInfoReader{
 	/**
-	 * @return Class_Webservice_SIGB_BiblixNet_Service
+	 * @return Class_WebService_SIGB_BiblixNet_PatronInfoReader
 	 */
 	public static function newInstance() {
 		return new self();
@@ -29,36 +29,44 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 
 
 	/**
-	 * @param string $server_root
-	 * @return Class_Webservice_SIGB_BiblixNet_Service
+	 * @param string $data
 	 */
-	public static function getService($server_root) {
-		return self::newInstance()->setServerRoot($server_root);
+	public function endPatronId($data) {
+		$this->getEmprunteur()->setId($data);
 	}
 
 
-
-	public function getEmprunteur($user) {
-		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb(),
-																					 'show_loans' => 'true',
-																					 'show_holds' => 'true'),
-																		 Class_WebService_SIGB_BiblixNet_PatronInfoReader::newInstance());
+	/**
+	 * @param string $data
+	 */
+	public function endItemId($data) {
+		$this->_getCurrentOperation()->setId($data);
+		$this->_getCurrentOperation()->getExemplaire()->setId($data);
 	}
 
 
-	public function reserverExemplaire($user, $exemplaire, $code_annexe) {}
-
-
-	public function supprimerReservation($user, $reservation_id) {}
-
-
-	public function prolongerPret($user, $pret_id) {}
-
-	
-	public function getNotice($id) {
-		return $this->ilsdiGetRecords($id, 
-				Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader::newInstance());
+	/**
+	 * @param string $data
+	 */
+	public function endBibId($data) {
+		$this->_getCurrentOperation()->getExemplaire()->setNoNotice($data);
 	}
 
+
+	/**
+	 * @param string $data
+	 */
+	public function endDueDate($data) {
+		if ($this->_xml_parser->inParents('loan')) {
+			$date = implode('/', array_reverse(explode('-', $data)));
+			$this->_currentLoan->getExemplaire()->setDateRetour($date);
+		}
+	}
+
+
+	public function endState($data) {
+		$this->_currentHold->setEtat($data);
+	}
 }
+
 ?>

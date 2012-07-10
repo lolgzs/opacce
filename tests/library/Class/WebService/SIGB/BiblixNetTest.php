@@ -165,6 +165,70 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 		$this->assertInstanceOf('Class_WebService_SIGB_Emprunteur', $this->_emprunteur);
 	}
 
+
+	/** @test */
+	public function emprunteurIdShouldBeThirtyFour() {
+		$this->assertEquals(34, $this->_emprunteur->getId());
+	}
+
+
+	/** @test */
+	public function emprunterPrenomShouldBeJustin() {
+		$this->assertEquals('Justin', $this->_emprunteur->getPrenom());
+	}
+
+	/** @test */
+	public function emprunteurNomShouldBeTicou() {
+		$this->assertEquals('Justin', $this->_emprunteur->getPrenom());
+	}
+
+
+	/** @test */
+	public function firstLoanIdShouldBe196895() {
+		$this->assertEquals(196895, $this->_emprunteur->getEmprunts()[0]->getId());
+	}
+
+
+	/** @test */
+	public function firstLoanNoNoticeShouldBe117661() {
+		$this->assertEquals(117661, $this->_emprunteur->getEmprunts()[0]->getNoNotice());
+	}
+
+
+	/** @test */
+	public function firstLoanDateRetourShouldBe04_05_2011() {
+		$this->assertEquals('04/05/2011', $this->_emprunteur->getEmprunts()[0]->getDateRetour());
+	}
+
+
+	/** @test */
+	public function secondLoanIdShouldBe107177() {
+		$this->assertEquals(107177, $this->_emprunteur->getEmprunts()[1]->getId());
+	}
+
+
+	/** @test */
+	public function firstHoldNoNoticeShouldBe7307() {
+		$this->assertEquals(7307, $this->_emprunteur->getReservations()[0]->getNoNotice());
+	}
+
+
+	/** @test */
+	public function firstHoldIdShouldBe7105() {
+		$this->assertEquals(7105, $this->_emprunteur->getReservations()[0]->getId());
+	}
+
+
+	/** @test */
+	public function firstHoldEtatShouldBeEnAttente() {
+		$this->assertEquals('En attente', $this->_emprunteur->getReservations()[0]->getEtat());
+	}
+
+
+	/** @test */
+	public function secondHoldEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', $this->_emprunteur->getReservations()[1]->getEtat());
+	}
 }
 
 

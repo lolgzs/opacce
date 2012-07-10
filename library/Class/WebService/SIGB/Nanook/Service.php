@@ -52,28 +52,8 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
 	public function getEmprunteur($user) {
-		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()
-			->setService($this);
-
-		try {
-			$xml = $this->httpGet(array('service' => 'GetPatronInfo',
-																	'patronId' => $user->getIdSigb()));
-		} catch (Exception $e) {
-			return $emprunteur;
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $emprunteur;
-
-		if ($this->_getTagData($xml, 'error'))
-			return $emprunteur;
-
-
-		return Class_WebService_SIGB_Nanook_PatronInfoReader
-							::newInstance()
-							->setEmprunteur($emprunteur)
-							->parseXML($xml)
-							->getEmprunteur();
+		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb()),
+																		 Class_WebService_SIGB_Nanook_PatronInfoReader::newInstance());
 	}
 
 
