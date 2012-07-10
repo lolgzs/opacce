@@ -32,6 +32,7 @@ class Multimedia_DeviceLoader extends Storm_Model_Loader {
 				->setLibelle($json_model->libelle)
 				->setOs($json_model->os)
 				->setGroup($device_group)
+				->setDisabled($json_model->maintenance)
 				->save();
 		return $model;
 	}

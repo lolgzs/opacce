@@ -49,7 +49,7 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 				$this->postDispatch(
 						'/push/multimedia/config',
 						array(
-							'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx"}]}]',
+							'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
 							'sign' => 'auieau09676IUE96'));
 		$this->_group = $device_group_wrapper->getFirstAttributeForLastCallOn('save');
 	}
@@ -105,6 +105,12 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 
 	/** @test */
+	public function firstDeviceShouldBeDisabled() {
+		$this->assertTrue($this->_devices[0]->isDisabled());
+	}
+
+
+	/** @test */
 	public function secondDeviceLibelleShouldBePoste2() {
 		$this->assertEquals('Poste 2', $this->_devices[1]->getLibelle());
 	}
@@ -120,4 +126,11 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 	public function secondDeviceIdOrigineShouldBeTwo() {
 		$this->assertEquals(2, $this->_devices[1]->getIdOrigine());
 	}
+
+	
+	/** @test */
+	public function secondDeviceShouldNotBeDisabled() {
+		$this->assertFalse($this->_devices[1]->isDisabled());
+	}
+
 }
