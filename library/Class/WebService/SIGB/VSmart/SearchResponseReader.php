@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_WebService_SIGB_VSmart_SearchResponseReader extends Class_WebService_SIGB_MarcXMLNoticeReader {
+class Class_WebService_SIGB_VSmart_SearchResponseReader extends Class_WebService_SIGB_AbstractMarcXMLNoticeReader {
 	protected $_current_exemplaire;
 	protected $_STATUT_SYSTEME = array('0' => 'Disponible',
 																		 '4' => 'En prêt',

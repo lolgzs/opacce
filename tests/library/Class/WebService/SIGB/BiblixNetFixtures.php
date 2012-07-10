@@ -87,4 +87,42 @@ class BiblixNetFixtures {
 		 </dlf:record>
 	 </dlf:collection>';
 	}
+
+
+
+	/** @return string */
+	public static function xmlGetPatronJustinTicou() {
+		return '<?xml version="1.0" encoding="utf-8"?>
+<GetPatronInfo>
+  <patronId>34</patronId>
+  <lastName>TICOU</lastName>
+  <firstName>Justin</firstName>
+  <loans>
+    <loan>
+      <bibId>117661</bibId>
+      <itemId>196895</itemId>
+      <title>Béart en public</title>
+			<dueDate>2011-05-04</dueDate>
+    </loan>
+    <loan>
+      <bibId>83413</bibId>
+      <itemId>107177</itemId>
+      <title>Les Finances publiques et la réforme budgétaire</title>
+			<dueDate>2029-05-04</dueDate>
+    </loan>
+  </loans>
+  <holds>
+    <hold>
+      <bibId>7307</bibId>
+      <itemId>7105</itemId>
+			<state>En attente</state>
+    </hold>
+    <hold>
+      <bibId>12501</bibId>
+      <itemId>14586</itemId>
+			<state>Disponible</state>
+    </hold>
+  </holds>
+</GetPatronInfo>';
+	}
 }

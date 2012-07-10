@@ -38,7 +38,9 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 
 
 
-	public function getEmprunteur($user) {}
+	public function getEmprunteur($user) {
+		return new Class_WebService_SIGB_Emprunteur(0, 0);
+	}
 
 
 	public function reserverExemplaire($user, $exemplaire, $code_annexe) {}

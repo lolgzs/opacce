@@ -141,4 +141,31 @@ class BiblixNetGetRecordsLaCenseAuxAlouettesTest extends BiblixNetTestCase {
 }
 
 
+
+
+
+class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=GetPatronInfo&patronId=34&show_loans=true&show_holds=true')
+			->answers(BiblixNetFixtures::xmlGetPatronJustinTicou())
+			->beStrict();
+
+		$this->_emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
+																												->newInstance()
+																												->setIdSigb(34));
+	}
+
+
+	/** @test */
+	public function shouldAnswerAnEmprunteur() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Emprunteur', $this->_emprunteur);
+	}
+
+}
+
+
 ?>

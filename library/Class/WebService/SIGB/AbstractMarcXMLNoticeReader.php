@@ -20,7 +20,7 @@
  */
 
 
-abstract class Class_WebService_SIGB_MarcXMLNoticeReader {
+abstract class Class_WebService_SIGB_AbstractMarcXMLNoticeReader {
 	protected $_xml_parser;
 	protected $_notice;
 	protected $_current_datafield;
