@@ -125,4 +125,11 @@ class BiblixNetFixtures {
   </holds>
 </GetPatronInfo>';
 	}
+
+
+	/** @return string */
+	public static function xmlHoldTitleSuccess() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+						<HoldTitle></HoldTitle>';
+	}
 }

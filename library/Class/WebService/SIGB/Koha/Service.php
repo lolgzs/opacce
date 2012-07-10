@@ -63,17 +63,11 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_cancel = $this->httpGet(array('service' => 'HoldTitle',
-																			 'patron_id' => $emprunteur_id,
+		return $this->ilsdiHoldTitle(
+																 array('patron_id' => $this->_authenticate($user),
 																			 'bib_id' => $exemplaire->getIdOrigine(),
-																			 'request_location' => '127.0.0.1'));
-
-		if ($code = $this->_getTagData($xml_cancel, 'code'))
-			return $this->_error('Réservation impossible');
-
-		return $this->_success();
+																			 'request_location' => '127.0.0.1'),
+																 'code');
 	}
 
 

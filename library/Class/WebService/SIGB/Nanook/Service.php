@@ -68,22 +68,10 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 		if ($annexe = Class_CodifAnnexe::getLoader()->findFirstBy(array('id_bib' => $code_bib_or_annexe)))
 			$code_annexe = $annexe->getCode();
 
-		try {
-			$xml = $this->httpGet(array('service'					=> 'HoldTitle',
-																	'bibId'						=> $exemplaire->getIdOrigine(),
-																	'patronId'        => $user->getIdSigb(),
-																	'pickupLocation'	=> $code_annexe));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Réservation impossible');
-
-		return $this->_success();
+		return $this->ilsdiHoldTitle(
+																 array('bibId'					=> $exemplaire->getIdOrigine(),
+																			 'patronId'       => $user->getIdSigb(),
+																			 'pickupLocation'	=> $code_annexe));
 	}
 
 
@@ -163,12 +151,5 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 		return $this->getServerRoot() . implode('/', $parts);
 	}
 
-
-	/**
-	 * @return array
-	 */
-	protected function _getNetworkError() {
-		return $this->_error('Service indisponible');
-	}
 }
 ?>

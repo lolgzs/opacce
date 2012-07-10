@@ -37,7 +37,10 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	}
 
 
-
+	/**
+	 * @param Class_Users $user
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
 	public function getEmprunteur($user) {
 		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb(),
 																					 'show_loans' => 'true',
@@ -46,15 +49,40 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	}
 
 
-	public function reserverExemplaire($user, $exemplaire, $code_annexe) {}
+	/**
+	 * @param Class_Users $user
+	 * @param int $notice_id
+	 * @param string $code_annexe
+	 * @return array
+	 */
+	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
+		return $this->ilsdiHoldTitle(
+																 array('patronId'       => $user->getIdSigb(),
+																			 'bibId'					=> $exemplaire->getIdOrigine(),
+																			 'pickupLocation'	=> $code_annexe));
+	}
 
 
+	/**
+	 * @param Class_Users $user
+	 * @param int $reservation_id
+	 * @return array
+	 */
 	public function supprimerReservation($user, $reservation_id) {}
 
 
+	/**
+	 * @param Class_Users $user
+	 * @param int $pret_id
+	 * @return array
+	 */
 	public function prolongerPret($user, $pret_id) {}
 
 	
+	/**
+	 * @param string $id
+	 * @return Class_WebService_SIGB_Notice
+	 */
 	public function getNotice($id) {
 		return $this->ilsdiGetRecords($id, 
 				Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader::newInstance());

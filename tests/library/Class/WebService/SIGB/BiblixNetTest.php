@@ -232,4 +232,27 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 }
 
 
+
+
+class BiblixNetOperationsTest extends BiblixNetTestCase {
+	/** @test */
+	public function reserverExemplairesWithoutErrorShouldReturnSuccess() {
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=HoldTitle&patronId=34&bibId=1432&pickupLocation=Mediatheque')
+			->answers(BiblixNetFixtures::xmlGetPatronJustinTicou())
+			->beStrict();
+
+
+		$this->assertEquals(array('statut' => true, 'erreur' => ''),
+												$this->_service->reserverExemplaire(
+													Class_Users::getLoader()->newInstance()	->setIdSigb('34'),
+													Class_Exemplaire::getLoader()->newInstance()->setIdOrigine('1432'),
+													'Mediatheque'
+												));
+	}
+	
+}
+
+
 ?>

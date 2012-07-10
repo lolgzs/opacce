@@ -108,7 +108,7 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 
 
 	/**
-	 * @param Class_Users $user
+	 * @param array $params
 	 * @param Class_WebService_SIGB_AbstractILSDIPatronInfoReader $reader
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
@@ -128,6 +128,38 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 			->setEmprunteur($emprunteur)
 			->parseXML($xml)
 			->getEmprunteur();
+	}
+
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	public function ilsdiHoldTitle($params, $error_tag = 'error') {
+		$params = array_merge(array('service' => 'HoldTitle'), $params);
+
+		try {
+			$xml = $this->httpGet($params);
+		} catch (Exception $e) {
+			return $this->_getNetworkError();
+		}
+
+		if (0 === strpos($xml, '<html>'))
+			return $this->_getNetworkError();
+
+		if ('' != $this->_getTagData($xml, $error_tag))
+			return $this->_error('Réservation impossible');
+
+		return $this->_success();
+	}
+
+	
+
+	/**
+	 * @return array
+	 */
+	protected function _getNetworkError() {
+		return $this->_error('Service indisponible');
 	}
 }
 
