@@ -571,6 +571,7 @@ abstract class CmsControllerListTestCase extends AbstractControllerTestCase {
 					Class_Article::getLoader()
 						->newInstanceWithId(224)
 						->setTitre('La fête de la frite')
+					   ->setDescription('Ce soir ça frite !')
 						->setContenu('<div>Une fête appétissante</div>'),
 					Class_Article::getLoader()
 						->newInstanceWithId(225)
@@ -663,7 +664,7 @@ class CmsControllerArticleViewSelectionTest extends CmsControllerListTestCase {
 
 
 
-class CmsControllerArticleViewPreferencesTest extends CmsControllerListTestCase {
+class CmsControllerArticleViewPreferencesBySelectionTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
 		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection');
 	}
@@ -684,6 +685,60 @@ class CmsControllerArticleViewPreferencesTest extends CmsControllerListTestCase 
 	/** @test */
 	public function orderShouldBeDatePublicationDesc() {
 		$this->assertEquals('Selection', $this->preferences['display_order']);
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsUneFeteAppetissante() {
+		$this->assertXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsCeSoirCaFrite() {
+		$this->assertNotXPathContentContains('//div', 'Ce soir ça frite !');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewPreferencesSummaryTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection&display_mode=Summary&summary_content=Summary');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsUneFeteAppetissante() {
+		$this->assertNotXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsCeSoirCaFrite() {
+		$this->assertXPathContentContains('//div', 'Ce soir ça frite !');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewPreferencesSummaryWithoutDisplayModeTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection&summary_content=Summary');
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsUneFeteAppetissante() {
+		$this->assertXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsCeSoirCaFrite() {
+		$this->assertNotXPathContentContains('//div', 'Ce soir ça frite !');
 	}
 }
 

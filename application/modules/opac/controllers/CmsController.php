@@ -331,7 +331,7 @@ class CmsController extends Zend_Controller_Action {
 			$this->view->title = $preferences['titre'];
 		}
 
-		if (array_key_exists('summary_content', $preferences)) {
+		if (isset($preferences['summary_content']) && isset($preferences['display_mode']) && ($preferences['display_mode'] == 'Summary')) {
 			$this->view->show_content = $preferences['summary_content'];
 		} else {
 			$this->view->show_content = 'FullContent';
