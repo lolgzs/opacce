@@ -20,14 +20,21 @@
  */
 class Push_MultimediaController extends Zend_Controller_Action {
 	public function configAction() {
+		$log = new Zend_Log(new Zend_Log_Writer_Stream(PATH_TEMP . 'push.log'));
+		$log->info('Push multimedia start');
+		
 		$this->_helper->getHelper('viewRenderer')->setNoRender();
 
 		if (!($groups = json_decode($this->_getParam('json')))
-			|| !($sign = $this->_getParam('sign')))
+			|| !($sign = $this->_getParam('sign'))) {
+			$log->err('Missing parameter');
 			return;
-
-		if (!Class_Multimedia::isValidHash($sign, $this->_getParam('json')))
+		}
+				
+		if (!Class_Multimedia::isValidHash($sign, $this->_getParam('json'))) {
+			$log->err('Sign check failure');
 			return;
+		}
 
 		foreach ($groups as $group) {
 			$location = Class_Multimedia_Location::getLoader()->fromJsonModel($group->site);
