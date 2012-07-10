@@ -18,8 +18,9 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class AbonneController extends Zend_Controller_Action
-{
+class AbonneController extends Zend_Controller_Action {
+	const SESSION_NAMESPACE = 'abonneController';
+
 	protected $_user = null;								// Le user connecté
 
 	public function init()	{
@@ -538,6 +539,41 @@ class AbonneController extends Zend_Controller_Action
 
 	public function multimediaHoldLocationAction() {
 		$this->view->locations = Class_Multimedia_Location::getLoader()->findAllBy(array('order' => 'libelle'));
+	}
 
+
+	public function multimediaHoldDayAction() {
+		$this->_getSessionNamespace()->location = $this->_getParam('location');
+	}
+
+
+	public function multimediaHoldHoursAction() {
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$this->_getSessionNamespace()->location))) {
+			$this->_redirect('/abonne/multimedia-hold-location');
+			return;
+		}
+		
+		$this->view->times = $location->getStartTimesForDate($this->_getParam('day'));
+		$this->view->durations = $location->getDurations();
+	}
+
+
+	public function multimediaHoldDeviceAction() {
+		$namespace = $this->_getSessionNamespace();
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$namespace->location))) {
+			$this->_redirect('/abonne/multimedia-hold-location');
+			return;
+		}
+				
+		$this->view->devices = $location->getHoldableDevicesForDateTimeAndDuration(
+				                               $namespace->date,
+																			 $this->_getParam('time'),
+																			 $this->_getParam('duration'));
+	}
+	
+
+	/** @return Zend_Session_Namespace */
+	protected function _getSessionNamespace() {
+		return new Zend_Session_Namespace(self::SESSION_NAMESPACE);
 	}
 }

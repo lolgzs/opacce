@@ -44,4 +44,73 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
+
+
+	/**
+	 * @param $date string (YYYY-MM-DD)
+	 * @return array
+	 */
+	public function getStartTimesForDate($date) {
+		if (0 == $this->getSlotSize())
+			return array();
+
+		$steps = range(strtotime('today'),
+			             strtotime('tomorrow'),
+			             60 * $this->getSlotSize());
+
+		$start_times = array();
+		foreach ($steps as $step)
+			$start_times[date('H:i', $step)] = date('H\hi', $step);
+
+		return $start_times;
+	}
+
+
+	/** @return array */
+	public function getDurations() {
+		if (0 == $this->getSlotSize())
+			return array();
+
+		$durations = array();
+		$steps = range($this->getSlotSize(),
+			             $this->getMaxSlots() * $this->getSlotSize(),
+			             $this->getSlotSize());
+
+		$durations = array();
+		foreach ($steps as $step)
+			$durations[$step] = $this->_getDurationLabel($step);
+		return $durations;
+	}
+
+
+	/**
+	 * @param $date string
+	 * @param $time string
+	 * @param $duration string
+	 * @return array
+	 */
+	public function getHoldableDevicesForDateTimeAndDuration($date, $time, $duration) {
+		$holdables = array();
+		foreach ($this->getGroups() as $group)
+			$holdables += $group->getHoldableDevicesForDateTimeAndDuration($date, $time, $duration);
+				
+		shuffle($holdables);
+		if (3 < count($holdables))
+			return array_slice($holdables, 0, 3);
+		return $holdables;
+	}
+
+
+	/**
+   * @param $duration int in minutes
+	 * @return string
+	 */
+	protected function _getDurationLabel($duration) {
+		$label = '';
+		if (0 < ($hours = (int)($duration / 60)))
+			$label .= $hours . 'h';
+		if (0 < ($minutes = (int)($duration % 60)))
+			$label .= $minutes . 'mn';
+		return $label;
+	}
 }

@@ -45,8 +45,63 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 		'group' => array(
 			'model' => 'Class_Multimedia_DeviceGroup',
 			'referenced_in' => 'id_devicegroup'));
+
+	protected $_has_many = array(
+		'holds' => array(
+			'model' => 'Class_Multimedia_DeviceHold',
+			'role' => 'device'));
 	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	/**
+	 * @param $start int
+	 * @param $end int
+	 * @return boolean
+	 */
+	public function isHoldableBetweenTimes($start, $end) {
+		if ($this->isDisabled())
+			return false;
+		return !$this->hasHoldBetweenTimes($start, $end);
+	}
+
+
+	/**
+	 * @param $start int
+	 * @param $end int
+	 * @return boolean
+	 */
+	public function hasHoldBetweenTimes($start, $end) {
+		return 0 < $this->numberOfHoldBetweenTimes($start, $end);
+	}
+
+	/**
+	 * @param $start int
+	 * @param $end int
+	 * @return int
+	 */
+	public function numberOfHoldBetweenTimes($start, $end) {
+		return Class_Multimedia_DeviceHold::getLoader()->countBy(array(
+				'role' => 'device',
+				'model' => $this,
+				'where' => '(start < ' . $start . ' and end > ' . $end . ')
+										or (start > ' . $start . ' and end < ' . $end . ')
+										or (start < ' . $end . ' and end > ' . $end . ')
+										or (start < ' . $start . ' and end > ' . $start . ')'));
+	}
+
+
+	/** @return boolean */
+	public function isDisabled() {
+		return 1 == $this->getDisabled();
+	}
+
+
+	/** @return Class_Multimedia_Device */
+	public function beDisabled() {
+		$this->setDisabled(1);
+		return $this;
 	}
 }

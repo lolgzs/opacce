@@ -40,16 +40,42 @@ class Multimedia_DeviceGroupLoader extends Storm_Model_Loader {
 class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	protected $_loader_class = 'Multimedia_DeviceGroupLoader';
 	protected $_table_name = 'multimedia_devicegroup';
+
 	protected $_belongs_to = array(
 		'location' => array(
 			'model' => 'Class_Multimedia_Location',
 			'referenced_in' => 'id_location'));
+
 	protected $_has_many = array(
 		'devices' => array(
 			'model' => 'Class_Multimedia_Device',
 			'role' => 'group'));
-	
+
+
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	/**
+	 * @param $date string
+	 * @param $time string
+	 * @param $duration string
+	 * @return array
+	 */
+	public function getHoldableDevicesForDateTimeAndDuration($date, $time, $duration) {
+		$devices = $this->getDevices();
+		$holdables = array();
+		$start = strtotime($date . ' ' . $time . ':00');
+		$end = $start + (60 * $duration);
+
+		foreach ($devices as $device) {
+			if (!$device->isHoldableBetweenTimes($start, $end))
+				continue;
+			$holdables[] = $device;
+			if (3 == count($holdables))
+				return $holdables;
+		}
+		return $holdables;
 	}
 }

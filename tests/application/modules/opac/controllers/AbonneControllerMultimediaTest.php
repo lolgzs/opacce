@@ -224,6 +224,25 @@ class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestC
 }
 
 
+abstract class AbonneControllerMultimediaHoldTestCase extends AbstractControllerTestCase {
+	protected $_session;
+		
+	public function setUp() {
+		parent::setUp();
+		$this->_session = new Zend_Session_Namespace(AbonneController::SESSION_NAMESPACE);
+	}
+
+
+	protected function _prepareLocationInSession() {
+		$this->_session->location = 123;
+		Class_Multimedia_Location::getLoader()
+				->newInstanceWithId(123)
+				->setSlotSize(30)
+				->setMaxSlots(4);
+	}
+}
+
+
 class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -240,12 +259,94 @@ class AbonneControllerMultimediaHoldLocationTest extends AbstractControllerTestC
 
 	/** @test */
 	public function locationSalle1ShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/day/location/1")]', 'Salle 1');
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-day/location/1")]', 'Salle 1');
 	}
 
 
 	/** @test */
 	public function locationSalle2ShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/day/location/2")]', 'Salle 2');
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-day/location/2")]', 'Salle 2');
+	}
+}
+
+
+class AbonneControllerMultimediaHoldDayTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/abonne/multimedia-hold-day/location/1', true);
+	}
+
+
+	/** @test */
+	public function calendarShouldBePresent() {
+		$this->assertXPath('//div[@class="calendar"]');
+	}
+}
+
+
+class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		$this->dispatch('/abonne/multimedia-hold-hours/day/2012-09-09', true);
+	}
+
+
+	/** @test */
+	public function listOfStartTimesShouldBePresent() {
+		$this->assertXPathCount('//select[@id="hold-time"]/option', 48);
+	}
+
+
+	/** @test */
+	public function startingAt10ShouldBePossible() {
+		$this->assertXPathContentContains('//option[@value="10:00"]', '10h00');
+	}
+
+
+	/** @test */
+	public function oneHourDurationLinkShouldBePresent() {
+		$this->assertXPathContentContains('//a', '1h');
+	}
+
+
+	/** @test */
+	public function oneHourAndAHalfDurationLinkShouldBePresent() {
+		$this->assertXPathContentContains('//a', '1h30mn');
+	}
+}
+
+
+class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceGroup')
+				->whenCalled('findAllBy')
+				->answers(array(Class_Multimedia_DeviceGroup::getLoader()
+						->newInstanceWithId(3)));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
+				->whenCalled('findAllBy')
+				->answers(array(Class_Multimedia_Device::getLoader()
+						->newInstanceWithId(1)
+						->setLibelle('Poste 1')
+						->setOs('Ubuntu Lucid')
+						->setDisabled(0)));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('countBy')
+				->answers(0);
+				
+		$this->dispatch('/abonne/multimedia-hold-device/time/' . urlencode('11:15')
+			                                                     . '/duration/45', true);
+	}
+
+
+	/** @test */
+	public function posteUnShouldBeHoldable() {
+		$this->assertXPathContentContains(
+			'//a[contains(@href, "multimedia-hold-confirm/device/1")]',
+			'Poste 1');
 	}
 }

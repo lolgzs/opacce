@@ -1,0 +1,6 @@
+<?php foreach ($this->devices as $device) { ?>
+		<a href="<?php echo $this->url(array('controller' => 'abonne',
+						                             'action' => 'multimedia-hold-confirm',
+						                             'device' => $device->getId()),
+						 null, true);?>"><?php echo $this->escape($device->getLibelle() . ' (' . $device->getOs() . ')')?></a>
+<?php } ?>
