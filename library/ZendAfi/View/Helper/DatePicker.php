@@ -19,12 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_DatePicker extends ZendAfi_View_Helper_BaseHelper {
-	protected function _renderScripts() {
-		Class_ScriptLoader::getInstance()
-			->addAdminScripts(array('calendar', 'format'))
-			->addAdminStyleSheet('calendar');
-	}
-
 	/*
 	 * @param $name name of the INPUT
 	 * @param $varDate default date VALUE for the INPUT
@@ -33,79 +27,41 @@ class ZendAfi_View_Helper_DatePicker extends ZendAfi_View_Helper_BaseHelper {
 	 * @return html for the date picker
 	 */
 	public function datePicker($name, $varDate, $minYear, $maxYear)	{
-		$this->_renderScripts();
-
+		$options = array();
 		$locale = Zend_Registry::get('locale');
+		$options = array(
+										 'dateFormat' => ($locale == 'en_US') ? 'mm/dd/yy' : 'dd/mm/yy',
+										 'yearRange'	=> $minYear.':'.$maxYear,
+										 'showOn'			=> 'both',
+										 'buttonImage' => URL_ADMIN_IMG . 'calendar/images/calendrierIcon.gif',
+										 'buttonImageOnly' => false);
 
-		if ($locale == 'en_US'){
-			$dateFormat = 'MM/dd/yyyy';
-			$style = 0;
-		}else{
-			$dateFormat = 'dd/MM/yyyy';
-			$style = 1;
-		}
 
-		$lun = $this->traduire('lun.');
-		$mar = $this->traduire('mar.');
-		$mer = $this->traduire('mer.');
-		$jeu = $this->traduire('jeu.');
-		$ven = $this->traduire('ven.');
-		$sam = $this->traduire('sam.');
-		$dim = $this->traduire('dim.');
-		$nomWeek = array($lun, $mar, $mer, $jeu, $ven, $sam, $dim);
-		$jsonNomsWeek = Zend_Json::encode($nomWeek);
-		$htmlJsonNomsWeek= str_replace('"',"'", $jsonNomsWeek);
+		Class_ScriptLoader::getInstance()
+			->addJQueryReady('$("#date'.$name.'").datepicker('.json_encode($options).');');
 
-		$janvier = $this->traduire('janvier');
-		$fevrier = $this->traduire('février');
-		$mars = $this->traduire('mars');
-		$avril = $this->traduire('avril');
-		$mai = $this->traduire('mai');
-		$juin = $this->traduire('juin');
-		$juillet = $this->traduire('juillet');
-		$aout = $this->traduire('août');
-		$septembre = $this->traduire('septembre');
-		$octobre = $this->traduire('octobre');
-		$novembre = $this->traduire('novembre');
-		$decembre = $this->traduire('décembre');
-		$nomsMonth = array($janvier, $fevrier, $mars, $avril, $mai, $juin, $juillet, $aout, $septembre, $octobre, $novembre, $decembre);
-		$jsonNomsMonth = Zend_Json::encode($nomsMonth);
-		$htmlJsonNomsMonth= str_replace('"',"'", $jsonNomsMonth);
 
-		// format date if there is one
-		if ($varDate != '') {
-			try{
-				$date =  new Zend_Date($varDate, Zend_Date::ISO_8601, $locale);
-			}catch (Exception $e){
-				$date =  new Zend_Date($varDate, $dateFormat, $locale);
-			}
+		$value = $this->formatDate($varDate, $locale);
 
-			$value = $date->toString($dateFormat);
-		}else{
-			$value = '';
 
-		}
-
-		$html = $this->view->formText($name, $value, array(
+		return $this->view->formText($name, $value, array(
 			'id' => 'date' . $name,
-			'maxlength' => 10,
-			'onchange' => "forDateFormat(this,'null','null','" . $dateFormat . "');"
+			'maxlength' => 10
 		));
+	}
 
-		$html .= $this->view->tagImg(URL_ADMIN_IMG . 'calendar/images/calendrierIcon.gif', array(
-			'class' => 'calendarIcon',
-			'style' => 'height:13px;width:14px',
-			'onclick' => "showCalendar(document.getElementById('date" . $name . "'), '"
-																	. URL_ADMIN_IMG . "calendar', "
-																	. $htmlJsonNomsWeek . ", "
-																	. $htmlJsonNomsMonth . ", "
-																	. $style . ", "
-																	. $minYear . ", "
-																	. $maxYear . ", "
-																	. "'null')",
-		));
 
-		return $html;
+	public function formatDate($varDate, $locale) {
+		if (!$varDate)
+			return '';
 
+		$dateFormat = ($locale == 'en_US') ? 'MM/dd/yyyy' : 'dd/MM/yyyy';
+		try{
+			$date =  new Zend_Date($varDate, Zend_Date::ISO_8601, $locale);
+		}catch (Exception $e){
+			$date =  new Zend_Date($varDate, $dateFormat, $locale);
+		}
+
+		return $date->toString($dateFormat);
 	}
 }
