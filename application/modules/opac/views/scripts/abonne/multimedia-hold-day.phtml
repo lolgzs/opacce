@@ -1,2 +1,13 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
 <?php echo $this->timeline($this->timelineActions);?>
-<div class="calendar"></div>
+
+<h2><?php echo $this->_('Pour quel jour ?');?></h2>
+<?php
+Class_ScriptLoader::getInstance()
+	->addJQueryReady('$("#hold-day").datepicker(
+										  {onSelect: function (dateText, inst){location.href = location.href + "/day/" + dateText;},
+										   dateFormat: "yy-mm-dd"}
+										);');
+?>
+<div id="hold-day" class="calendar"></div>
+<?php $this->closeBoite();?>

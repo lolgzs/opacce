@@ -538,41 +538,149 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldLocationAction() {
+		$bean = $this->_getFreshDeviceHoldBean();
+
+		if (null != $this->_getParam('location')) {
+			$bean->location = $this->_getParam('location');
+			$this->_redirect('/abonne/multimedia-hold-day');
+		}
+
 		$this->view->locations = Class_Multimedia_Location::getLoader()->findAllBy(array('order' => 'libelle'));
 		$this->view->timelineActions = $this->_getTimelineActions('location');
 	}
 
 
 	public function multimediaHoldDayAction() {
-		$this->_getSessionNamespace()->location = $this->_getParam('location');
+		$bean = $this->_getDeviceHoldBean();
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
+			$this->_redirect('/abonne/multimedia-hold-location');
+			return;
+		}
+
+		if (null != $this->_getParam('day')) {
+			$bean->day = $this->_getParam('day');
+			$this->_redirect('/abonne/multimedia-hold-hours');
+			return;
+		}
+				
 		$this->view->timelineActions = $this->_getTimelineActions('day');
 	}
 
 
 	public function multimediaHoldHoursAction() {
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$this->_getSessionNamespace()->location))) {
+		$bean = $this->_getDeviceHoldBean();
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
 			$this->_redirect('/abonne/multimedia-hold-location');
 			return;
 		}
+
+		if ('' == $bean->day) {
+			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
+		}
+
+		if ($this->_getParam('time') && $this->_getParam('duration')) {
+			$bean->time = $this->_getParam('time');
+			$bean->duration = (int)$this->_getParam('duration');
+			$this->_redirect('/abonne/multimedia-hold-device');
+			return;
+		}
+		
 		$this->view->timelineActions = $this->_getTimelineActions('hours');
-		$this->view->times = $location->getStartTimesForDate($this->_getParam('day'));
+		$this->view->times = $location->getStartTimesForDate($bean->day);
 		$this->view->durations = $location->getDurations();
 	}
 
 
 	public function multimediaHoldDeviceAction() {
+		$bean = $this->_getDeviceHoldBean();
 		$namespace = $this->_getSessionNamespace();
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$namespace->location))) {
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
 			$this->_redirect('/abonne/multimedia-hold-location');
 			return;
 		}
+
+		if ('' == $bean->day) {
+			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
+		}
+
+		if ('' == $bean->time || 0 == $bean->duration) {
+			$this->_redirect('/abonne/multimedia-hold-hours');
+			return;
+		}
+
+		if ($this->_getParam('device')) {
+			$bean->device = $this->_getParam('device');
+			$this->_redirect('/abonne/multimedia-hold-confirm');
+			return;
+		}
+		
 		$this->view->timelineActions = $this->_getTimelineActions('device');
 		$this->view->devices = $location->getHoldableDevicesForDateTimeAndDuration(
-				                               $namespace->date,
-																			 $this->_getParam('time'),
-																			 $this->_getParam('duration'));
+				                               $bean->day,
+																			 $bean->time,
+																			 $bean->duration);
 	}
-	
+
+
+	public function multimediaHoldConfirmAction() {
+		$bean = $this->_getDeviceHoldBean();
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
+			$this->_redirect('/abonne/multimedia-hold-location');
+			return;
+		}
+
+		if ('' == $bean->day) {
+			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
+		}
+
+		if ('' == $bean->time || 0 == $bean->duration) {
+			$this->_redirect('/abonne/multimedia-hold-hours');
+			return;
+		}
+
+		if (null == ($device = Class_Multimedia_Device::getLoader()->find((int)$bean->device))) {
+			$this->_redirect('/abonne/multimedia-hold-device');
+			return;
+		}
+
+		if ($this->_getParam('validate')) {
+			$hold = Class_Multimedia_DeviceHold::getLoader()->newFromBean($bean);
+			$hold->save();
+			$this->_redirect('/abonne/multimedia-hold-view/id/' . $hold->getId());
+			return;
+		}
+
+		$this->view->timelineActions = $this->_getTimelineActions('confirm');
+		$this->view->location = $location->getLibelle();
+		$this->view->day = strftime('%d %B %Y', strtotime($bean->day));
+		$this->view->time = str_replace(':', 'h', $bean->time);
+		$this->view->duration = $bean->duration . 'mn';
+		$this->view->device = $device->getLibelle() . ' - ' . $device->getOs();
+	}
+
+
+	public function multimediaHoldViewAction() {
+		if (null == ($hold = Class_Multimedia_DeviceHold::getLoader()->find((int)$this->_getParam('id')))) {
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+
+		if ($this->_user != $hold->getUser()) {
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+			
+		$this->view->location = $hold->getDevice()->getGroup()->getLocation()->getLibelle();
+		$this->view->day = strftime('%d %B %Y', $hold->getStart());
+		$this->view->time = strftime('%Hh%M', $hold->getStart());
+		$this->view->duration = (($hold->getEnd() - $hold->getStart()) / 60)  . 'mn';
+		$this->view->device = $hold->getDevice()->getLibelle()
+				                  . ' - ' . $hold->getDevice()->getOs();
+	}
+		
 
 	/** @return Zend_Session_Namespace */
 	protected function _getSessionNamespace() {
@@ -604,11 +712,34 @@ class AbonneController extends Zend_Controller_Action {
 	}
 
 
+	/** @return array */
 	protected function _getTimelineActionWithNameAndAction($name, $action) {
 		return array(ZendAfi_View_Helper_Timeline::LABEL => $name,
 			           ZendAfi_View_Helper_Timeline::CURRENT => false,
 			           ZendAfi_View_Helper_Timeline::URL => $this->view->url(array('controller' => 'abonne',
 										                                                         'action' => 'multimedia-hold-' . $action),
 									                                                     null, true));
+	}
+
+
+	/** @return stdClass */
+	protected function _getDeviceHoldBean() {
+		if (null == ($bean = $this->_getSessionNamespace()->holdBean)) {
+			$bean = $this->_getFreshDeviceHoldBean();
+		}
+		return $bean;
+	}
+
+
+	/** @return stdClass */
+	protected function _getFreshDeviceHoldBean() {
+		$bean = new stdClass();
+		$bean->location = 0;
+		$bean->day = '';
+		$bean->time = '';
+		$bean->duration = 0;
+		$bean->device = 0;
+		$this->_getSessionNamespace()->holdBean = $bean;
+		return $bean;
 	}
 }

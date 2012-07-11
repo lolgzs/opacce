@@ -69,7 +69,16 @@ if (Class_AdminVar::isFormationEnabled() and $this->user->hasRightSuivreFormatio
 	echo '</div>';
 }
 
+
+if (Class_AdminVar::isMultimediaEnabled()) {
+	echo '<div class="abonneFiche">';
+	echo $this->tagAnchor($this->url(array('controller' => 'abonne',
+																				 'action' => 'multimedia-hold-location'), 
+																	 null, 
+																	 true),
+												$this->_("Réserver un poste multimédia"));
+	echo '</div>';
+}
+
 $this->closeBoite();
 ?>
-
-

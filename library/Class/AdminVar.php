@@ -198,6 +198,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return bool
+	 */
+	public static function isMultimediaEnabled() {
+		return ('' != self::get('MULTIMEDIA_KEY'));
+	}
+
+
+	/**
 	 * @return array
 	 */
 	public static function getKnownVars() {

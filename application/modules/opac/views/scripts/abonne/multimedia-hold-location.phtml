@@ -1,6 +1,11 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+
 <?php echo $this->timeline($this->timelineActions);?>
+
+<h2><?php echo $this->_('À quel endroit ?');?></h2>
 <?php foreach ($this->locations as $location) { ?>
-  <?php echo $this->tagAnchor(array('action' => 'multimedia-hold-day',
-		                                'location' => $location->getId()),
-		                          $this->escape($location->getLibelle()));?>
+  <?php echo $this->tagAnchor(array('location' => $location->getId()),
+		                          $this->escape($location->getLibelle()));?><br>
 <?php } ?>
+
+<?php $this->closeBoite();?>

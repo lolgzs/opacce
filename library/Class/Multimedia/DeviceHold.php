@@ -18,8 +18,28 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
+	/**
+	 * @param $bean stdClass
+	 * @return Class_Multimedia_DeviceHold
+	 */
+	public function newFromBean($bean) {
+		$device = Class_Multimedia_Device::getLoader()->find((int)$bean->device);
+		$user = Class_Users::getLoader()->getIdentity();
+		$start = strtotime($bean->day . ' ' . $bean->time . ':00');
+		$end = $start + ($bean->duration * 60);
+
+		return $this->newInstance()
+				->setDevice($device)
+				->setUser($user)
+				->setStart($start)
+				->setEnd($end);
+	}
+}
+
 
 class Class_Multimedia_DeviceHold extends Storm_Model_Abstract {
+	protected $_loader_class = 'Multimedia_DeviceHoldLoader';
 	protected $_table_name = 'multimedia_devicehold';
 	protected $_belongs_to = array(
 		'device' => array(

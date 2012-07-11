@@ -1,11 +1,18 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
 <?php echo $this->timeline($this->timelineActions);?>
 
-<select id="hold-time">
+<form method="get">
+<select id="time" name="time">
 <?php foreach ($this->times as $k => $v) { ?>
 	<option value="<?php echo $k;?>"><?php echo $this->escape($v);?></option>
 <?php } ?>
 </select>
 
+<select id="duration" name="duration">
 <?php foreach ($this->durations as $k => $v) { ?>
-	<a href=""><?php echo $this->escape($v);?></a>
+	<option value="<?php echo $k;?>"><?php echo $this->escape($v);?></option>
 <?php } ?>
+</select>
+	<input type="submit" value="Choisir" />
+</form>
+<?php $this->closeBoite();?>
