@@ -672,6 +672,12 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/fiche');
 			return;
 		}
+
+		if ($this->_getParam('delete')) {
+			$hold->delete();
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
 			
 		$this->view->location = $hold->getDevice()->getGroup()->getLocation()->getLibelle();
 		$this->view->day = strftime('%d %B %Y', $hold->getStart());

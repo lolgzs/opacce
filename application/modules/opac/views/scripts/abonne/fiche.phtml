@@ -77,6 +77,21 @@ if (Class_AdminVar::isMultimediaEnabled()) {
 																	 null, 
 																	 true),
 												$this->_("Réserver un poste multimédia"));
+	echo '<ul>';
+	foreach ($this->user->getFutureMultimediaHolds() as $hold) {
+		$device = $hold->getDevice();
+		$location = $device->getGroup()->getLocation();
+		echo sprintf('<li><a href="%s">%s, %s %s, %s</li>', 
+								 $this->url(array('controller' => 'abonne',
+																	'action' => 'multimedia-hold-view',
+										              'id' => $hold->getId()),
+														null,	true),
+			           $device->getLibelle() . ' - ' . $device->getOs(),
+			           strftime('Le %d %B %Y à %Hh%M', $hold->getStart()),
+			           sprintf('pour %smn', (($hold->getEnd() - $hold->getStart()) / 60)),
+ 			           $location->getLibelle());
+	}
+	echo '</ul>';
 	echo '</div>';
 }
 

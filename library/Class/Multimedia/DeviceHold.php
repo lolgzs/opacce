@@ -35,6 +35,18 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 				->setStart($start)
 				->setEnd($end);
 	}
+
+
+	/**
+	 * @param $user Class_Users
+	 * @return array
+	 */
+	public function getFutureHoldsOfUser($user) {
+		return $this->findAll($this->getTable()->select()
+			                       ->where('id_user = ' . $user->getId())
+			                       ->where('start > ' . time())
+			                       ->order('start asc'));
+	}
 }
 
 

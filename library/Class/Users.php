@@ -792,6 +792,11 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
+	public function getFutureMultimediaHolds() {
+		return Class_Multimedia_DeviceHold::getLoader()->getFutureHoldsOfUser($this);
+	}
+
+
 	/* Hook AbstractModel::save
 	 * Sauvegarde des données compte lecteur sur le SIGB
 	 */

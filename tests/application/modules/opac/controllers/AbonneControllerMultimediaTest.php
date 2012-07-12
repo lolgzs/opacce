@@ -638,6 +638,33 @@ class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaH
 }
 
 
+class AbonneControllerMultimediaHoldViewDeleteTest extends AbonneControllerMultimediaHoldTestCase {
+	protected $_wrapper;
+	
+	public function setUp() {
+		parent::setUp();
+		Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(455)
+				->setUser(Class_Users::getLoader()->getIdentity());
+		$this->_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('delete')
+				->answers(null);
+		$this->dispatch('/abonne/multimedia-hold-view/id/455/delete/1', true);
+	}
+
+
+	/** @test */
+	public function deleteShouldHaveBeenCalled() {
+		$this->assertTrue($this->_wrapper->methodHasBeenCalled('delete'));
+	}
+
+		
+	/** @test */
+	public function shouldRedirectToFicheAbonne() {
+		$this->assertRedirectTo('/abonne/fiche');
+	}
+}
+
+
 class AbonneControllerMultimediaHoldViewOfAnotherUserTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -650,5 +677,39 @@ class AbonneControllerMultimediaHoldViewOfAnotherUserTest extends AbonneControll
 	/** @test */
 	public function shouldRedirectToFicheAbonne() {
 		$this->assertRedirectTo('/abonne/fiche');
+	}
+}
+
+
+class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::getLoader()->newInstanceWithId('MULTIMEDIA_KEY')
+				->setValeur('aaaaaaaaaaaaaaabbaabba');
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('getFutureHoldsOfUser')
+				->with(Class_Users::getLoader()->getIdentity())
+				->answers(array(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(12)
+					->setStart(strtotime('2012-28-12 14:00:00'))
+					->setEnd(strtotime('2012-28-12 15:00:00'))
+					->setDevice(Class_Multimedia_Device::getLoader()->newInstanceWithId(34)
+						->setLibelle('Poste 1')
+						->setOs('Archlinux')
+						->setGroup(Class_Multimedia_DeviceGroup::getLoader()->newInstanceWithId(3)
+							->setLocation(Class_Multimedia_Location::getLoader()->newInstanceWithId(2)
+								->setLibelle('Antibes'))))));
+		$this->dispatch('/abonne/fiche', true);
+	}
+
+
+	/** @test */
+	public function addHoldLinkShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "multimedia-hold-location")]');
+	}
+
+
+	/** @test */
+	public function viewHoldLinkShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "multimedia-hold-view/id/12")]');
 	}
 }
