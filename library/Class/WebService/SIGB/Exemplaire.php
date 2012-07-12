@@ -88,11 +88,19 @@ class Class_WebService_SIGB_Exemplaire {
 	 * @return Class_Exemplaire
 	 */
 	public function getExemplaireOPAC() {
-		if (!isset($this->_exemplaire_opac) and $this->getNoNotice())
-			$this->_exemplaire_opac = Class_Exemplaire::getLoader()
-				->findFirstBy(array('id_origine' => $this->getNoNotice()));
+		if (isset($this->_exemplaire_opac))
+			return $this->_exemplaire_opac;
+		
+		if ($no_notice = $this->getNoNotice())
+			$params = array('id_origine' => $no_notice);
+		
+		if ($this->code_barre)
+			$params = array('code_barres' => $this->code_barre);
 
-		return $this->_exemplaire_opac;
+		if (!isset($params))
+			return null;
+		
+		return $this->_exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy($params);
 	}
 
 

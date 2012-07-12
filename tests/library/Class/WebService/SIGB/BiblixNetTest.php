@@ -157,13 +157,23 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 		
 		$this->_mock_web_client
 			->whenCalled('open_url')
-			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=GetPatronInfo&patronId=34&show_loans=true&show_holds=true')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=GetPatronInfo&patronId=34&showLoans=1&showHolds=1')
 			->answers(BiblixNetFixtures::xmlGetPatronJustinTicou())
 			->beStrict();
 
 		$this->_emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
 																												->newInstance()
 																												->setIdSigb(34));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+			->with(array('code_barres' => '1069005966314'))
+			->answers(
+				Class_Exemplaire::getLoader()
+				->newInstanceWithId(34)
+				->setNotice(
+					Class_Notice::getLoader()
+					->newInstanceWithId('117661')));
 	}
 
 
@@ -197,8 +207,14 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 
 
 	/** @test */
-	public function firstLoanNoNoticeShouldBe117661() {
-		$this->assertEquals(117661, $this->_emprunteur->getEmprunts()[0]->getNoNotice());
+	public function firstLoanCodeBarreShouldBe1069005966314() {
+		$this->assertEquals(1069005966314, $this->_emprunteur->getEmprunts()[0]->getCodeBarre());
+	}
+
+
+	/** @test */
+	public function firstLoanNoticeShouldBe117661() {
+		$this->assertEquals(117661, $this->_emprunteur->getEmprunts()[0]->getNoticeOPAC()->getId());
 	}
 
 
@@ -217,12 +233,6 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 	/** @test */
 	public function firstHoldNoNoticeShouldBe7307() {
 		$this->assertEquals(7307, $this->_emprunteur->getReservations()[0]->getNoNotice());
-	}
-
-
-	/** @test */
-	public function firstHoldIdShouldBe7105() {
-		$this->assertEquals(7105, $this->_emprunteur->getReservations()[0]->getId());
 	}
 
 

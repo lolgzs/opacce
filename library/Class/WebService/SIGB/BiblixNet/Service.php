@@ -43,8 +43,8 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	 */
 	public function getEmprunteur($user) {
 		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb(),
-																					 'show_loans' => 'true',
-																					 'show_holds' => 'true'),
+																					 'showLoans' => '1',
+																					 'showHolds' => '1'),
 																		 Class_WebService_SIGB_BiblixNet_PatronInfoReader::newInstance());
 	}
 

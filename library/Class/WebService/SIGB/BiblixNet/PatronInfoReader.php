@@ -56,6 +56,14 @@ class Class_WebService_SIGB_BiblixNet_PatronInfoReader extends Class_WebService_
 	/**
 	 * @param string $data
 	 */
+	public function endBarcode($data) {
+		$this->_getCurrentOperation()->getExemplaire()->setCodeBarre($data);
+	}
+
+
+	/**
+	 * @param string $data
+	 */
 	public function endDueDate($data) {
 		if ($this->_xml_parser->inParents('loan')) {
 			$date = implode('/', array_reverse(explode('-', $data)));

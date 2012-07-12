@@ -107,14 +107,14 @@ class BiblixNetFixtures {
   <firstName>Justin</firstName>
   <loans>
     <loan>
-      <bibId>117661</bibId>
       <itemId>196895</itemId>
+      <barcode>1069005966314</barcode>
       <title>Béart en public</title>
 			<dueDate>2011-05-04</dueDate>
     </loan>
     <loan>
-      <bibId>83413</bibId>
       <itemId>107177</itemId>
+      <barcode>1089005966245</barcode>
       <title>Les Finances publiques et la réforme budgétaire</title>
 			<dueDate>2029-05-04</dueDate>
     </loan>
@@ -122,12 +122,10 @@ class BiblixNetFixtures {
   <holds>
     <hold>
       <bibId>7307</bibId>
-      <itemId>7105</itemId>
 			<state>En attente</state>
     </hold>
     <hold>
-      <bibId>12501</bibId>
-      <itemId>14586</itemId>
+      <bibId>14586</bibId>
 			<state>Disponible</state>
     </hold>
   </holds>
