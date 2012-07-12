@@ -36,9 +36,10 @@ class ZendAfi_View_Helper_DatePicker extends ZendAfi_View_Helper_BaseHelper {
 										 'buttonImage' => URL_ADMIN_IMG . 'calendar/images/calendrierIcon.gif',
 										 'buttonImageOnly' => false);
 
-
 		Class_ScriptLoader::getInstance()
-			->addJQueryReady('$("#date'.$name.'").datepicker('.json_encode($options).');');
+			->addJQueryReady('$.datepicker.setDefaults($.datepicker.regional["' . (($locale == 'en_US') ? '' : 'fr' ). '"]);
+												$("#date'.$name.'").datepicker('.json_encode($options).');')
+			->addAdminScript('jquery_ui/jquery-ui-i18n.min');
 
 
 		$value = $this->formatDate($varDate, $locale);
