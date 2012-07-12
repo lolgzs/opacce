@@ -47,6 +47,23 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 			                       ->where('start > ' . time())
 			                       ->order('start asc'));
 	}
+
+
+	/**
+	 * @param $start int
+	 * @param $end int
+	 * @param $device Class_Multimedia_Device
+	 * @return int
+	 */
+	public function countBetweenTimesForDevice($start, $end, $device) {
+		return $this->countBy(array(
+				'role' => 'device',
+				'model' => $device,
+				'where' => '(start <= ' . $start . ' and end >= ' . $end . ')'
+									 . ' or (start > ' . $start . ' and end < ' . $end . ')'
+									 . ' or (start < ' . $end . ' and end > ' . $end . ')'
+									 . ' or (start < ' . $start . ' and end > ' . $start . ')'));
+	}
 }
 
 

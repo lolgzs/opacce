@@ -84,13 +84,8 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 * @return int
 	 */
 	public function numberOfHoldBetweenTimes($start, $end) {
-		return Class_Multimedia_DeviceHold::getLoader()->countBy(array(
-				'role' => 'device',
-				'model' => $this,
-				'where' => '(start < ' . $start . ' and end > ' . $end . ')'
-									 . ' or (start > ' . $start . ' and end < ' . $end . ')'
-									 . ' or (start < ' . $end . ' and end > ' . $end . ')'
-									 . ' or (start < ' . $start . ' and end > ' . $start . ')'));
+		return Class_Multimedia_DeviceHold::getLoader()
+				->countBetweenTimesForDevice($start, $end, $this);
 	}
 
 
