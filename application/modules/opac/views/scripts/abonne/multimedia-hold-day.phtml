@@ -4,9 +4,12 @@
 <h2><?php echo $this->_('Pour quel jour ?');?></h2>
 <?php
 Class_ScriptLoader::getInstance()
-	->addJQueryReady('$("#hold-day").datepicker(
+  ->addAdminScript('jquery_ui/jquery-ui-i18n.min')
+  ->addJQueryReady('$.datepicker.setDefaults($.datepicker.regional["' . ((Zend_Registry::get('locale') == 'en_US') ? '' : 'fr' ). '"]);
+										$("#hold-day").datepicker(
 										  {onSelect: function (dateText, inst){location.href = location.href + "/day/" + dateText;},
-										   dateFormat: "yy-mm-dd"}
+										   dateFormat: "yy-mm-dd",
+											 minDate: "' . date('Y-m-d') . '"}
 										);');
 ?>
 <div id="hold-day" class="calendar"></div>
