@@ -27,15 +27,24 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 	public function setUp() {
 		parent::setUp();
-		$device_group_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceGroup')
-				->whenCalled('save')
-				->answers(true);
-
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
+				->whenCalled('findFirstBy')
+				->answers(null)
+				
+				->whenCalled('save')
+				->willDo(function($model) {$model->setId(1);return true;});
+
+		$device_group_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceGroup')
+				->whenCalled('findFirstBy')
+				->answers(null)
+				
 				->whenCalled('save')
 				->answers(true);
 
 		$this->_device_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
+				->whenCalled('findFirstBy')
+				->answers(null)
+				
 				->whenCalled('save')
 				->willDo(function ($model) {
 						$this->_devices[] = $model;
@@ -46,11 +55,12 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 			->whenCalled('isValidHashForContent')
 			->answers(true));
 
-				$this->postDispatch(
-						'/push/multimedia/config',
-						array(
-							'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
-							'sign' => 'auieau09676IUE96'));
+		$this->postDispatch(
+				'/push/multimedia/config',
+				array(
+						'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
+						'sign' => 'auieau09676IUE96'));
+
 		$this->_group = $device_group_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
