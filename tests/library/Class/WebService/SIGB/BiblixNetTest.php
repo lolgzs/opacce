@@ -94,7 +94,7 @@ class BiblixNetGetRecordsLaCenseAuxAlouettesTest extends BiblixNetTestCase {
 
 	/** @test */
 	public function getExemplairesShouldReturnAnArrayWithSizeTwo() {
-		$this->assertEquals(2, count($this->_notice->getExemplaires()));
+		$this->assertEquals(3, count($this->_notice->getExemplaires()));
 	}
 
 
@@ -138,6 +138,13 @@ class BiblixNetGetRecordsLaCenseAuxAlouettesTest extends BiblixNetTestCase {
 	public function secondExemplaireShouldBeReservable() {
 		$this->assertTrue($this->_notice->getExemplaires()[1]->isReservable());
 	}
+
+
+	/** @test */
+	public function thirdExemplaireDateRetourShouldBe19_04_2012() {
+		$this->assertEquals('19/04/2012', $this->_notice->getExemplaires()[2]->getDateRetour());
+	}
+
 }
 
 

@@ -44,6 +44,11 @@ class Class_WebService_SIGB_BiblixNet_GetRecordsResponseReader extends Class_Web
 	}
 
 
+	public function endSubfield_995_n($data) {
+		$this->_current_exemplaire->setDateRetour(Class_Date::humanDate($data, 'dd/MM/yyyy'));
+	}
+
+
 	public function endSubfield_995_O($data) {
 		$this->_current_exemplaire->setDisponibilite($data);
 	}
