@@ -283,7 +283,7 @@ function createAccessibilityDialog() {
 
 		css_list.selectable({
 				selected: function(event, ui){
-						var css = $(event.target).attr('data-css');
+						var css = $(event.srcElement).attr('data-css');
 						$("link#accessibility_stylesheet").attr("href", css);
 						$.cookie("accessibility_css",css, {expires: 365, path: '/'});
 						return false;
