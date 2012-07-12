@@ -580,10 +580,18 @@ class AbonneController extends Zend_Controller_Action {
 		}
 
 		if ($this->_getParam('time') && $this->_getParam('duration')) {
-			$bean->time = $this->_getParam('time');
-			$bean->duration = (int)$this->_getParam('duration');
-			$this->_redirect('/abonne/multimedia-hold-device');
-			return;
+			$holdLoader = Class_Multimedia_DeviceHold::getLoader();
+			$start = $holdLoader->getTimeFromDayAndTime($bean->day, $this->_getParam('time'));
+			$end = $holdLoader->getTimeFromStartAndDuration($start, $this->_getParam('duration'));
+
+			if (0 == $holdLoader->countBetweenTimesForUser($start, $end, $this->_user)) {
+				$bean->time = $this->_getParam('time');
+				$bean->duration = (int)$this->_getParam('duration');
+				$this->_redirect('/abonne/multimedia-hold-device');
+				return;
+			}
+
+			$this->view->error = $this->view->_('Vous avez déjà une réservation dans ce créneau horaire');
 		}
 		
 		$this->view->timelineActions = $this->_getTimelineActions('hours');

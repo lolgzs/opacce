@@ -1,6 +1,12 @@
 <?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
 <?php echo $this->timeline($this->timelineActions);?>
 
+<?php if ($this->error) { ?>
+<div class="error">
+<?php echo $this->error;?>
+</div>
+<?php } ?>
+	
 <form method="get">
 <select id="time" name="time">
 <?php foreach ($this->times as $k => $v) { ?>

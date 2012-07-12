@@ -443,6 +443,25 @@ class AbonneControllerMultimediaHoldHoursChoiceTest extends AbonneControllerMult
 }
 
 
+class AbonneControllerMultimediaHoldHoursChooseAlreadyHeldTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		$this->_prepareDayInSession();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('countBetweenTimesForUser')
+				->answers(1);
+		$this->dispatch('/abonne/multimedia-hold-hours/time/' . urlencode('9:45') . '/duration/45', true);
+	}
+
+
+	/** @test */
+	public function errorMessageShouldBePresent() {
+		$this->assertXPathContentContains('//div[@class="error"]', 'Vous avez déjà une réservation dans ce créneau horaire');
+	}
+}
+
+
 class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -634,6 +653,12 @@ class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaH
 	/** @test */
 	public function deviceShouldBePoste34() {
 		$this->assertXPathContentContains('//li', 'Poste : Poste 34 - Archlinux');
+	}
+
+
+	/** @test */
+	public function cancelationLinkShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "multimedia-hold-view/id/455/delete/1")]');
 	}
 }
 

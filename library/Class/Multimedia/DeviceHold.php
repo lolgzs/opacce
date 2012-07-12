@@ -26,14 +26,34 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 	public function newFromBean($bean) {
 		$device = Class_Multimedia_Device::getLoader()->find((int)$bean->device);
 		$user = Class_Users::getLoader()->getIdentity();
-		$start = strtotime($bean->day . ' ' . $bean->time . ':00');
-		$end = $start + ($bean->duration * 60);
+		$start = $this->getTimeFromDayAndTime($bean->day, $bean->time);
+		$end = $this->getTimeFromStartAndDuration($start, $bean->duration);
 
 		return $this->newInstance()
 				->setDevice($device)
 				->setUser($user)
 				->setStart($start)
 				->setEnd($end);
+	}
+
+
+	/**
+	 * @param $day string
+	 * @param $time string
+	 * @return int
+	 */
+	public function getTimeFromDayAndTime($day, $time) {
+		return strtotime($day . ' ' . $time . ':00');
+	}
+
+
+	/**
+	 * @param $start int
+	 * @param $duration int minutes
+	 * @return int
+	 */
+	public function getTimeFromStartAndDuration($start, $duration) {
+		return $start + ($duration * 60);
 	}
 
 
@@ -56,13 +76,35 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 	 * @return int
 	 */
 	public function countBetweenTimesForDevice($start, $end, $device) {
-		return $this->countBy(array(
-				'role' => 'device',
-				'model' => $device,
+		return $this->_countBetweenTimesWithOptions($start, $end, array('role' => 'device',
+				                                                            'model' => $device));
+	}
+
+
+	/**
+	 * @param $start int
+	 * @param $end int
+	 * @param $user Class_Users
+	 * @return int
+	 */
+	public function countBetweenTimesForUser($start, $end, $user) {
+		return $this->_countBetweenTimesWithOptions($start, $end, array('role' => 'user',
+				                                                            'model' => $user));
+	}
+
+
+		/**
+	 * @param $start int
+	 * @param $end int
+	 * @param $options array
+	 * @return int
+	 */
+	protected function _countBetweenTimesWithOptions($start, $end, $options) {
+		return $this->countBy(array_merge($options, array(
 				'where' => '(start <= ' . $start . ' and end >= ' . $end . ')'
 									 . ' or (start > ' . $start . ' and end < ' . $end . ')'
 									 . ' or (start < ' . $end . ' and end > ' . $end . ')'
-									 . ' or (start < ' . $start . ' and end > ' . $start . ')'));
+				           . ' or (start < ' . $start . ' and end > ' . $start . ')')));
 	}
 }
 
