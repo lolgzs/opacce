@@ -63,7 +63,7 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 	/** @test */
 	public function deviceGroupIdOrigineShouldBeOne() {
-		$this->assertEquals(1, $this->_group->getIdOrigine());
+		$this->assertEquals('1-1', $this->_group->getIdOrigine());
 	}
 
 
@@ -94,7 +94,7 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 	/** @test */
 	public function firstDeviceIdOrigineShouldBeOne() {
-		$this->assertEquals(1, $this->_devices[0]->getIdOrigine());
+		$this->assertEquals('1-1', $this->_devices[0]->getIdOrigine());
 	}
 
 
@@ -124,7 +124,7 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 	/** @test */
 	public function secondDeviceIdOrigineShouldBeTwo() {
-		$this->assertEquals(2, $this->_devices[1]->getIdOrigine());
+		$this->assertEquals('1-2', $this->_devices[1]->getIdOrigine());
 	}
 
 	

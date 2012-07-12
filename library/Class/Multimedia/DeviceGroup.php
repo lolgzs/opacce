@@ -26,8 +26,9 @@ class Multimedia_DeviceGroupLoader extends Storm_Model_Loader {
 	 * @return Class_Multimedia_DeviceGroup
 	 */
 	public function fromJsonModelWithLocation($json_model, $location) {
-		if (!$model = $this->findFirstBy(array('id_origine' => (int)$json_model->id)))
-			$model = $this->newInstance()->setIdOrigine((int)$json_model->id);
+		$id_origine = $location->getId() . '-' . $json_model->id;
+		if (!$model = $this->findFirstBy(array('id_origine' => $id_origine)))
+			$model = $this->newInstance()->setIdOrigine($id_origine);
 		$model
 				->setLibelle($json_model->libelle)
 				->setLocation($location)
