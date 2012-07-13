@@ -102,10 +102,14 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_portail .= $this->addMenu("bibliotheques_16.png",		$this->translate()->_("Bibliothèques"),	"/admin/bib",		 $acl_admins);
 		$menu_portail .= $this->addMenu("utilisateurs_16.png",		$this->translate()->_("Utilisateurs"),	"/admin/users",	 $acl_admins);
 
-		if (Class_AdminVar::isFormationEnabled()) {
+		if (Class_AdminVar::isFormationEnabled() || Class_AdminVar::isMultimediaEnabled()) {
 			$menu_portail .= $this->addMenu("groupes_16.png",		$this->translate()->_("Groupes"),				"/admin/usergroup",	 $acl_admins);
-
 		}
+
+		if (Class_AdminVar::isMultimediaEnabled()) {
+			$menu_portail .= $this->addMenu('ecran.png', $this->view->_('Multimedia'), '/admin/multimedia', $acl_admins_portail);
+		}
+		
 		$menu_portail .= $this->closeBoite();
 
 

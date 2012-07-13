@@ -101,4 +101,10 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 		$this->setDisabled(1);
 		return $this;
 	}
+
+
+	/** @return string */
+	public function getGroupLibelle() {
+		return $this->getGroup()->getLibelle();
+	}
 }

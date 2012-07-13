@@ -97,8 +97,11 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 	public function addFormElements($form) {
 		$element_definitions = $this->getFormElementDefinitions();
-		foreach($element_definitions as $name => $definition)
+		foreach($element_definitions as $name => $definition) {
 			$form->addElement($definition['element'], $name, $definition['options']);
+			if ($label = $form->getElement($name)->getDecorator('label'))
+				$label->setOption('escape', false);
+		}
 		return $this;
 	}
 

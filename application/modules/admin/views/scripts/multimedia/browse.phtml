@@ -1,0 +1,13 @@
+<h2><?php echo $this->titre;?></h2>
+<?php if (0 == count($this->devices)) { ?>
+	<div class="infos"><?php echo $this->_('Aucun poste dans ce groupe');?></div>
+<?php } else { ?>
+<?php echo $this->tagModelTable(
+		$this->devices,
+		array($this->_('Libellé'), $this->_('Os')),
+		array('libelle', 'os'),
+		array(),
+		'multimedia_devices',
+		'group_libelle');?>
+	</table>
+<?php } ?>

@@ -55,6 +55,8 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 			$this->_helper->notify($this->_definitions->successfulSaveMessage($model));
 			$this->_redirectToEdit($model);
 		}
+		
+		$this->_postEditAction($model);
 	}
 
 
@@ -95,7 +97,7 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 
 	/**
 	 * Formulaire d'édition des catalogues
-	 * @param Class_OpdsCatalog $model
+	 * @param Storm_Model_Abstract $model
 	 * @return Zend_Form
 	 */
 	protected function _getForm($model) {
@@ -105,6 +107,15 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 			->addDisplayGroups($form);
 		
 		return $form->populate($model->toArray());
+	}
+
+
+	/**
+	 * Hook appelé en fin d'action d'édition
+	 * @param $model Storm_Model_Abstract
+	 */
+	protected function _postEditAction($model) {
+
 	}
 }
 

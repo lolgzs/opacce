@@ -1,0 +1,12 @@
+<?php
+echo $this->tagModelTable(
+	$this->sites, 
+	array($this->_('Libellé')),
+	array('libelle'),
+	array(
+		array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+		array('action' => 'browse', 'content' => $this->boutonIco('type=show'))),
+	'multimedia_location');
+
+echo $this->subview;
+?>

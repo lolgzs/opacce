@@ -19,10 +19,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
-	public function tagModelTable($models, $cols, $attribs, $actions, $id) {
+	/** @var boolean */
+	protected $_hasActions = false;
+	/** @var int */
+	protected $_cols_count = 0;
+
+	public function tagModelTable($models, $cols, $attribs, $actions, $id, $group_by = null) {
+		$this->_hasActions = 0 < count($actions);
+		$this->_cols_count = count($attribs) + ($this->_hasActions ? 1 : 0);
+		
 		return '<table id="'.$id.'" class="models">'
 			.$this->head($cols)
-			.$this->tbody($models, $attribs, $actions)
+			.$this->tbody($models, $attribs, $actions, $group_by)
 			.'</table>';
 	}
 
@@ -32,19 +40,44 @@ class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
 		foreach ($cols as $col) 
 			$cols_html .= '<th>'.$col.'</th>';
 
-		return '<thead><tr>'.$cols_html.'<th class="actions" style="width:50px;">'.$this->view->_('Actions').'</th></tr></thead>';
+		$html = '<thead><tr>'.$cols_html;
+		if (0 < $this->_hasActions)
+			$html .= '<th class="actions" style="width:50px;">' . $this->view->_('Actions') . '</th>';
+		$html .= '</tr></thead>';
+		return $html;
 	}
 
 
-	public function tbody($models, $attribs, $actions) {
+	public function tbody($models, $attribs, $actions, $group_by) {
 		$rows = '';
-		foreach($models as $model) {
-			$cols = '';
 
-			foreach ($attribs as $attrib)
-				$cols .= '<td>'.$this->view->escape($model->callGetterByAttributeName($attrib)).'</td>';
+		$groups = array();
+		if (null != $group_by) {
+			foreach ($models as $model) {
+				$group = $model->callGetterByAttributeName($group_by);
+				if (!array_key_exists($group, $groups))
+					$groups[$group] = array();
+				$groups[$group][] = $model;
+			}
+		} else {
+			$groups['no_group'] = $models;
+		}
 
-			$rows .= '<tr>'.$cols.'<td>'.$this->renderModelActions($model, $actions).'</td></tr>';
+		foreach ($groups as $name => $groupModels) {
+			if ('no_group' != $name && '' != $name)
+				$rows .= '<tr><td style="background-color:#888;color:white;font-size:120%;padding:2px 10px;font-weight:bold;" colspan="' . $this->_cols_count . '">' . $this->view->escape($name) . '</td></tr>';
+
+			foreach ($groupModels as $model) {
+				$cols = '';
+
+				foreach ($attribs as $attrib)
+						$cols .= '<td>'.$this->view->escape($model->callGetterByAttributeName($attrib)).'</td>';
+
+				$rows .= '<tr>'.$cols.'<td>';
+				if ($this->_hasActions)
+					$rows .= $this->renderModelActions($model, $actions).'</td>';
+				$rows .= '</tr>';
+			}
 		}
 
 		return '<tbody>'.$rows.'</tbody>';

@@ -39,7 +39,9 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	protected $_has_many = array(
 			'groups' => array(
 					'model' => 'Class_Multimedia_DeviceGroup',
-					'role' => 'location'));
+					'role' => 'location',
+					'order' => 'libelle'),
+			'devices' => array('through' => 'groups'));
 	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
