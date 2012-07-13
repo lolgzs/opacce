@@ -36,7 +36,7 @@ define("BASE_URL", "/" . $site) ;
 
 include_once "fonctions/fonctions.php";
 require_once "Zend/Loader.php";
-require_once "startup.php";
+require_once "library/startup.php";
 
 $frontController = setupOpac();
 
