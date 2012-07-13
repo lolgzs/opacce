@@ -284,6 +284,25 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 												));
 	}
 
+	
+	/** @test */
+	public function reserverExemplairesWithErrorShouldReturnErrorWithMessage() {
+			$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=HoldTitle&patronId=34&bibId=1432&pickupLocation=Mediatheque')
+			->answers(BiblixNetFixtures::xmlHoldTitleError())
+			->beStrict();
+
+
+		$this->assertEquals(array('statut' => false, 'erreur' => 'Réservation impossible'),
+												$this->_service->reserverExemplaire(
+													Class_Users::getLoader()->newInstance()->setIdSigb('34'),
+													Class_Exemplaire::getLoader()->newInstance()->setIdOrigine('1432'),
+													'Mediatheque'
+												));
+	}
+
+
 
 	/** @test */
 	public function supprimerReservationWithoutErrorShouldReturnSuccess() {
@@ -302,6 +321,22 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 
 
 	/** @test */
+	public function supprimerReservationWithErrorShouldReturnError() {
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=CancelHold&patronId=1&itemId=987')
+			->answers(BiblixNetFixtures::xmlCancelHoldError())
+			->beStrict();
+
+		$this->assertEquals(array('statut' => false, 'erreur' => 'Annulation impossible'),
+												$this->_service->supprimerReservation(
+													Class_Users::getLoader()->newInstance()->setIdSigb('1'),
+													'987'
+												));
+	}
+
+
+	/** @test */
 	public function prolongerPretWithoutErrorShouldReturnSuccess() {
 		$this->_mock_web_client
 			->whenCalled('open_url')
@@ -310,6 +345,22 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 			->beStrict();
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
+												$this->_service->prolongerPret(
+													Class_Users::getLoader()->newInstance()->setIdSigb('4'),
+													'987'
+												));		
+	}
+
+
+	/** @test */
+	public function prolongerPretWithErrorShouldReturnError() {
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=RenewLoan&patronId=4&itemId=987')
+			->answers(BiblixNetFixtures::xmlRenewLoanError())
+			->beStrict();
+
+		$this->assertEquals(array('statut' => false, 'erreur' => 'Prolongation impossible'),
 												$this->_service->prolongerPret(
 													Class_Users::getLoader()->newInstance()->setIdSigb('4'),
 													'987'

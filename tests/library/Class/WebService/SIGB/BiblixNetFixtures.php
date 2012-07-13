@@ -143,6 +143,13 @@ class BiblixNetFixtures {
 
 
 	/** @return string */
+	public static function xmlHoldTitleError() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+						<HoldTitle><code>Deja Reserve</code><code>NotHoldable</code></HoldTitle>';
+	}
+
+
+	/** @return string */
 	public static function xmlCancelHoldSuccess() {
 		return '<?xml version="1.0" encoding="UTF-8"?>
 						<CancelHold></CancelHold>';
@@ -150,8 +157,22 @@ class BiblixNetFixtures {
 
 
 	/** @return string */
+	public static function xmlCancelHoldError() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+						<CancelHold><code>RecordNotFound</code></CancelHold>';
+	}
+
+
+	/** @return string */
 	public static function xmlRenewLoanSuccess() {
 		return '<?xml version="1.0" encoding="UTF-8"?>
 						<RenewLoan></RenewLoan>';
+	}
+
+
+	/** @return string */
+	public static function xmlRenewLoanError() {
+		return '<?xml version="1.0" encoding="UTF-8"?>
+						<RenewLoan><code>NotAuthorized</code></RenewLoan>';
 	}
 }

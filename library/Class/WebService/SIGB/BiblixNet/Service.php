@@ -11,12 +11,12 @@
  *
  * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
  *
  * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
  * along with AFI-OPAC 2.0; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301	 USA 
  */
 
 class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_AbstractRESTService {
@@ -57,9 +57,10 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	 */
 	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
 		return $this->ilsdiHoldTitle(
-																 array('patronId'       => $user->getIdSigb(),
+																 array('patronId'				=> $user->getIdSigb(),
 																			 'bibId'					=> $exemplaire->getIdOrigine(),
-																			 'pickupLocation'	=> $code_annexe));
+																			 'pickupLocation'	=> $code_annexe),
+																 'code');
 	}
 
 
@@ -71,7 +72,8 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	public function supprimerReservation($user, $reservation_id) {
 		return $this->ilsdiCancelHold(array(
 																				'patronId'	=> $user->getIdSigb(),
-																				'itemId'		=> $reservation_id));
+																				'itemId'		=> $reservation_id),
+																	'code');
 	}
 
 
@@ -83,7 +85,8 @@ class Class_Webservice_SIGB_BiblixNet_Service extends Class_WebService_SIGB_Abst
 	public function prolongerPret($user, $pret_id) {
 		return $this->ilsdiRenewLoan(array(
 																			 'patronId'	=> $user->getIdSigb(),
-																			 'itemId'		=> $pret_id));
+																			 'itemId'		=> $pret_id),
+																 'code');
 	}
 
 	
