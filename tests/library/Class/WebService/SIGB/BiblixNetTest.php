@@ -308,7 +308,7 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 	public function supprimerReservationWithoutErrorShouldReturnSuccess() {
 		$this->_mock_web_client
 			->whenCalled('open_url')
-			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=CancelHold&patronId=1&itemId=987')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=CancelHold&patronId=1&itemId=00000000987')
 			->answers(BiblixNetFixtures::xmlCancelHoldSuccess())
 			->beStrict();
 
@@ -324,7 +324,7 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 	public function supprimerReservationWithErrorShouldReturnError() {
 		$this->_mock_web_client
 			->whenCalled('open_url')
-			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=CancelHold&patronId=1&itemId=987')
+			->with('http://mediathequewormhout.biblixnet.com/exporte_afi/?service=CancelHold&patronId=1&itemId=00000000987')
 			->answers(BiblixNetFixtures::xmlCancelHoldError())
 			->beStrict();
 
