@@ -123,10 +123,12 @@ class BiblixNetFixtures {
     <hold>
       <itemId>7307</itemId>
 			<state>En attente</state>
+			<priority>2</priority>
     </hold>
     <hold>
       <itemId>14586</itemId>
 			<state>Disponible</state>
+			<priority>3</priority>
     </hold>
   </holds>
 </GetPatronInfo>';

@@ -246,6 +246,12 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 
 
 	/** @test */
+	public function firstHoldRangShouldBeTwo() {
+		$this->assertEquals(2, $this->_emprunteur->getReservations()[0]->getRang());
+	}
+
+
+	/** @test */
 	public function firstHoldEtatShouldBeEnAttente() {
 		$this->assertEquals('En attente', $this->_emprunteur->getReservations()[0]->getEtat());
 	}
@@ -272,7 +278,7 @@ class BiblixNetOperationsTest extends BiblixNetTestCase {
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
 												$this->_service->reserverExemplaire(
-													Class_Users::getLoader()->newInstance()	->setIdSigb('34'),
+													Class_Users::getLoader()->newInstance()->setIdSigb('34'),
 													Class_Exemplaire::getLoader()->newInstance()->setIdOrigine('1432'),
 													'Mediatheque'
 												));
