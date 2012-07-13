@@ -173,7 +173,16 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 				->newInstanceWithId(34)
 				->setNotice(
 					Class_Notice::getLoader()
-					->newInstanceWithId('117661')));
+					->newInstanceWithId('117661')))
+
+			->whenCalled('findFirstBy')
+			->with(array('id_origine' => '00000007307'))
+			->answers(
+				Class_Exemplaire::getLoader()
+				->newInstanceWithId(36)
+				->setNotice(
+					Class_Notice::getLoader()
+					->newInstanceWithId('7307')));
 	}
 
 
@@ -231,8 +240,8 @@ class BiblixNetGetPatronInfoJustinTicou extends BiblixNetTestCase {
 
 
 	/** @test */
-	public function firstHoldNoNoticeShouldBe7307() {
-		$this->assertEquals(7307, $this->_emprunteur->getReservations()[0]->getNoNotice());
+	public function firstHoldExemplaireOPACShouldBeTheOneWithId36() {
+		$this->assertEquals(36, $this->_emprunteur->getReservations()[0]->getExemplaireOPAC()->getId());
 	}
 
 

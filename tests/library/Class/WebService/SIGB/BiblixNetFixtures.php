@@ -121,11 +121,11 @@ class BiblixNetFixtures {
   </loans>
   <holds>
     <hold>
-      <bibId>7307</bibId>
+      <itemId>7307</itemId>
 			<state>En attente</state>
     </hold>
     <hold>
-      <bibId>14586</bibId>
+      <itemId>14586</itemId>
 			<state>Disponible</state>
     </hold>
   </holds>

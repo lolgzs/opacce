@@ -174,6 +174,16 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 
 
 	/**
+	 * @param no_notice int
+	 * @return Class_WebService_SIGB_ExemplaireOperation
+	 */
+	public function setNoNotice($no_notice) {
+		$this->_exemplaire->setNoNotice($no_notice);
+		return $this;
+	}
+
+
+	/**
 	 * @param exemplaire Class_Exemplaire
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */

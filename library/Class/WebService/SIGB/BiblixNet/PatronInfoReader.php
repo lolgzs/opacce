@@ -42,6 +42,9 @@ class Class_WebService_SIGB_BiblixNet_PatronInfoReader extends Class_WebService_
 	public function endItemId($data) {
 		$this->_getCurrentOperation()->setId($data);
 		$this->_getCurrentOperation()->getExemplaire()->setId($data);
+
+		if ($this->_xml_parser->inParents('hold'))
+			$this->_getCurrentOperation()->setNoNotice(sprintf('%011d', $data));
 	}
 
 
