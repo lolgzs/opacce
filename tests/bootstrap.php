@@ -39,7 +39,7 @@ set_include_path( realpath(dirname(__FILE__)).'/../library'
 // Includes de base
 include_once( "fonctions/fonctions.php");
 require_once "Zend/Loader.php";
-require_once "startup.php";
+require_once "library/startup.php";
 
 $path = dirname(__FILE__);
 $parts = explode(DIRECTORY_SEPARATOR, $path);
