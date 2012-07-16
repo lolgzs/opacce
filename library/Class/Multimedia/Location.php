@@ -103,6 +103,22 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	}
 
 
+	/** @return string formatted date YYYY-MM-DD */
+	public function getMinDate() {
+		if (0 == ($delay = $this->getHoldDelayMin()))
+			return date('Y-m-d');
+		return date('Y-m-d', strtotime('+' . $delay . ' day'));
+	}
+
+		
+	/** @return string formatted date YYYY-MM-DD */
+	public function getMaxDate() {
+		if (0 == ($delay = $this->getHoldDelayMax()))
+			$delay = 365;
+		return date('Y-m-d', strtotime('+' . $delay . ' day'));
+	}
+
+
 	/**
    * @param $duration int in minutes
 	 * @return string

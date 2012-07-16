@@ -31,7 +31,8 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 									'slot_size' => array(
 											'element' => 'text',
 											'options' => array(
-													'label' => 'Réservation minimale (slot) * <br><span style="font-size:80%;font-weight:normal;">en minutes</span>',
+													'label' => 'Réservation minimale (slot) *',
+													'title'=> 'en minutes',
 													'size'	=> 4,
 													'required' => true,
 													'allowEmpty' => false,
@@ -39,11 +40,55 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 									'max_slots' => array(
 											'element' => 'text',
 											'options' => array(
-													'label' => 'Réservation maximale * <span style="font-size:80%;font-weight:normal;"><br>en nombre de slots</span>',
+													'label' => 'Réservation maximale *',
+													'title' => 'en nombre de "slots"',
 													'size' => 4,
 													'required' => true,
 													'allowEmpty' => false,
-													'validators' => array('digits')))
+													'validators' => array('digits'))),
+									'hold_delay_min' => array(
+											'element' => 'text',
+											'options' => array(
+													'label' => 'Délai minimum de réservation *',
+													'title' => 'en jours, 0 autorise les réservations le jour même',
+													'size' => 4,
+													'required' => true,
+													'allowEmpty' => false,
+													'validators' => array('digits'))),
+									'hold_delay_max' => array(
+											'element' => 'text',
+											'options' => array(
+													'label' => 'Délai maximum de réservation *',
+													'title' => 'en jours, doit être supérieur au délai minimum',
+													'size' => 4,
+													'required' => true,
+													'allowEmpty' => false,
+													'validators' => array('digits', new ZendAfi_Validate_FieldGreater('hold_delay_min', 'Délai minimum de réservation')))),
+									'auth_delay' => array(
+											'element' => 'text',
+											'options' => array(
+													'label' => 'Délai de connection *',
+													'title' => 'en minutes, passé ce délai la réservation est annulée',
+													'size' => 4,
+													'required' => true,
+													'allowEmpty' => false,
+													'validators' => array('digits'))),
+									'autohold' => array(
+											'element' => 'checkbox',
+											'options' => array(
+													'label' => 'Autoriser la réservation automatique *',
+													'title' => 'quand un abonné se connecte sur un poste non réservé, une réservation lui est attribuée',
+													'required' => true,
+													'allowEmpty' => false)),
+									'autohold_slots_max' => array(
+											'element' => 'text',
+											'options' => array(
+													'label' => 'Réservation automatique maximale *',
+													'title' => 'en nombre de "slots"',
+													'size' => 4,
+													'required' => true,
+													'allowEmpty' => false,
+													'validators' => array('digits'))),
 							)
 					))
 			);

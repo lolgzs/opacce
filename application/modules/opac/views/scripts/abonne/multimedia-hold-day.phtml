@@ -9,7 +9,8 @@ Class_ScriptLoader::getInstance()
 										$("#hold-day").datepicker(
 										  {onSelect: function (dateText, inst){location.href = location.href + "/day/" + dateText;},
 										   dateFormat: "yy-mm-dd",
-											 minDate: "' . date('Y-m-d') . '"}
+											 minDate: "' . $this->minDate . '",
+											 maxDate: "' . $this->maxDate . '"}
 										);');
 ?>
 <div id="hold-day" class="calendar"></div>

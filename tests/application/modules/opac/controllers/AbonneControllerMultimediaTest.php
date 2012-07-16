@@ -247,7 +247,9 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 				->newInstanceWithId(123)
 				->setLibelle('Antibes')
 				->setSlotSize(30)
-				->setMaxSlots(4);
+				->setMaxSlots(4)
+				->setHoldDelayMin(0)
+				->setHoldDelayMax(60);
 	}
 
 

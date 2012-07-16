@@ -562,7 +562,9 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/multimedia-hold-hours');
 			return;
 		}
-				
+
+		$this->view->minDate = $location->getMinDate();
+		$this->view->maxDate = $location->getMaxDate();
 		$this->view->timelineActions = $this->_getTimelineActions('day');
 	}
 

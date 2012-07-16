@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-13 16:41+0200\n"
+"POT-Creation-Date: 2012-07-16 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5439,6 +5439,7 @@ msgid "OAI spec"
 msgstr ""
 
 #: ../../application/modules/opac/controllers/AbonneController.php:594
+#: ../../application/modules/opac/controllers/AbonneController.php:596
 msgid "Vous avez déjà une réservation dans ce créneau horaire"
 msgstr ""
 
@@ -5900,3 +5901,9 @@ msgstr ""
 #: ../../application/modules/admin/views/scripts/multimedia/browse.phtml:7
 msgid "Os"
 msgstr ""
+
+msgid "'%value%' contains not only digit characters"
+msgstr "Vous devez saisi un nombre"
+
+msgid "Should be greater than '%fieldToCompare%'"
+msgstr "Doit être plus grand que '%fieldToCompare%'"

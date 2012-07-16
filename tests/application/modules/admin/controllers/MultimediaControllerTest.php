@@ -97,6 +97,36 @@ class Admin_MultimediaControllerEditTest extends Admin_AbstractControllerTestCas
 	public function maxSlotsInputShouldBePresent() {
 		$this->assertXPath('//input[@type="text"][@value="4"][@name="max_slots"]');
 	}
+
+
+	/** @test */
+	public function minHoldDelayInputShouldBePresent() {
+		$this->assertXPath('//input[@name="hold_delay_min"]');
+	}
+
+
+	/** @test */
+	public function maxHoldDelayInputShouldBePresent() {
+		$this->assertXPath('//input[@name="hold_delay_max"]');
+	}
+
+
+	/** @test */
+	public function authDelayInputShouldBePresent() {
+		$this->assertXPath('//input[@name="auth_delay"]');
+	}
+
+
+	/** @test */
+	public function autoHoldInputShouldBePresent() {
+		$this->assertXPath('//input[@name="autohold"]');
+	}
+
+
+	/** @test */
+	public function autoHoldMaxSlotsInputShouldBePresent() {
+		$this->assertXPath('//input[@name="autohold_slots_max"]');
+	}
 }
 
 

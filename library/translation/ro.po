@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-13 16:41+0200\n"
+"POT-Creation-Date: 2012-07-16 14:44+0200\n"
 "PO-Revision-Date: 2011-07-14 18:15+0200\n"
 "Last-Translator: Lupu Mariana <lupumariana@yahoo.com>\n"
 "Language-Team: Romanian\n"
@@ -246,6 +246,10 @@ msgstr ""
 
 msgid "'%value%' appears to be an IP address, but IP addresses are not allowed"
 msgstr "'%valoare%' pare a fi o adresă IP, dar adresele IP nu sunt permise"
+
+#, fuzzy
+msgid "'%value%' contains not only digit characters"
+msgstr " '%valoare%' este mai mică decât %max% caractere"
 
 msgid "'%value%' does not appear to be a valid local network name"
 msgstr "'%valoare%' nu pare un nume de reţea locală valid "
@@ -4300,6 +4304,9 @@ msgstr ""
 msgid "Service non disponible"
 msgstr "Serviciu indisponibil"
 
+msgid "Should be greater than '%fieldToCompare%'"
+msgstr "Doit être plus grand que '%fieldToCompare%'"
+
 #: ../../library/Class/Users.php:258 ../../library/Class/Users.php:272
 #: ../../library/Class/Users.php:347 ../../library/Class/Users.php:423
 #: ../../library/Class/Users.php:452 ../../library/Class/Users.php:598
@@ -5269,6 +5276,7 @@ msgid "Vous avez %d réservations en cours"
 msgstr "Aveţi %d  rezervări în curs"
 
 #: ../../application/modules/opac/controllers/AbonneController.php:594
+#: ../../application/modules/opac/controllers/AbonneController.php:596
 #, fuzzy
 msgid "Vous avez déjà une réservation dans ce créneau horaire"
 msgstr "Aveţi %d  rezervări în curs"
