@@ -565,6 +565,12 @@ class AbonneController extends Zend_Controller_Action {
 
 		$this->view->minDate = $location->getMinDate();
 		$this->view->maxDate = $location->getMaxDate();
+		$this->view->beforeShowDay = '
+		var result = [true, \'\'];
+		if (-1 == $.inArray(date.getDay(), [' . $location->getDays() . '])) {
+			result[0] = false;
+		}
+	  return result;';
 		$this->view->timelineActions = $this->_getTimelineActions('day');
 	}
 
@@ -586,14 +592,21 @@ class AbonneController extends Zend_Controller_Action {
 			$start = $holdLoader->getTimeFromDayAndTime($bean->day, $this->_getParam('time'));
 			$end = $holdLoader->getTimeFromStartAndDuration($start, $this->_getParam('duration'));
 
-			if (0 == $holdLoader->countBetweenTimesForUser($start, $end, $this->_user)) {
+			if (0 < $holdLoader->countBetweenTimesForUser($start, $end, $this->_user)) {
+				$this->view->error = $this->view->_('Vous avez déjà une réservation dans ce créneau horaire');
+			}
+
+			if ($start < $location->getMinTimeForDate($bean->day)
+				|| $end > $location->getMaxTimeForDate($bean->day)) {
+				$this->view->error = $this->view->_('Ce créneau n\'est pas dans les heures d\'ouverture.');
+			}
+
+			if (!$this->view->error) {
 				$bean->time = $this->_getParam('time');
 				$bean->duration = (int)$this->_getParam('duration');
 				$this->_redirect('/abonne/multimedia-hold-device');
 				return;
 			}
-
-			$this->view->error = $this->view->_('Vous avez déjà une réservation dans ce créneau horaire');
 		}
 		
 		$this->view->timelineActions = $this->_getTimelineActions('hours');

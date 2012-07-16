@@ -21,6 +21,44 @@
 
 class Multimedia_LocationLoader extends Storm_Model_Loader {
 	/**
+	 * @return array
+	 */
+	public function getPossibleDays() {
+		$days = array();
+		$day = strtotime('next monday');
+		for ($i = 0; $i < 7; ++$i) {
+			$days[strftime('%w', $day)] = strftime('%A', $day);
+			$day = strtotime('+1 day', $day);
+		}
+		return $days;
+	}
+
+
+	/**
+	 * @param $increment int
+	 * @return array
+	 */
+	public function getPossibleHours($increment, $from = null, $to = null) {
+		if (0 == $increment)
+			return array();
+
+		if (null == $from)
+			$from = strtotime('today');
+
+		if (null == $to)
+			$to = strtotime('tomorrow');
+
+		$steps = range($from, $to, 60 * $increment);
+
+		$hours = array();
+		foreach ($steps as $step)
+			$hours[date('H:i', $step)] = date('H\hi', $step);
+
+		return $hours;
+	}
+
+
+	/**
 	 * @param $json_model stdClass
 	 * @return Class_Multimedia_Location
 	 */
@@ -53,20 +91,29 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getStartTimesForDate($date) {
-		if (0 == $this->getSlotSize())
-			return array();
-
-		$steps = range(strtotime('today'),
-			             strtotime('tomorrow'),
-			             60 * $this->getSlotSize());
-
-		$start_times = array();
-		foreach ($steps as $step)
-			$start_times[date('H:i', $step)] = date('H\hi', $step);
-
-		return $start_times;
+		return $this->getLoader()->getPossibleHours($this->getSlotSize(),
+			                                          $this->getMinTimeForDate($date),
+			                                          $this->getMaxTimeForDate($date));
 	}
 
+
+	/**
+	 * @param $date string (YYYY-MM-DD)
+	 * @return int
+	 */
+	public function getMinTimeForDate($date) {
+		return strtotime($date . ' ' . $this->getOpenHour() . ':00');
+	}
+
+
+	/**
+	 * @param $date string (YYYY-MM-DD)
+	 * @return int
+	 */
+	public function getMaxTimeForDate($date) {
+		return strtotime($date . ' ' . $this->getCloseHour() . ':00');
+	}
+	
 
 	/** @return array */
 	public function getDurations() {
@@ -116,6 +163,20 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 		if (0 == ($delay = $this->getHoldDelayMax()))
 			$delay = 365;
 		return date('Y-m-d', strtotime('+' . $delay . ' day'));
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getDaysAsArray() {
+		return explode(',', $this->getDays());
+	}
+
+		
+	public function beforeSave() {
+		if (is_array($days = $this->getDays()))
+			$this->setDays(implode(',', $days));
 	}
 
 

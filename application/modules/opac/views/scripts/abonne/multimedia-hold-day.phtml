@@ -10,7 +10,8 @@ Class_ScriptLoader::getInstance()
 										  {onSelect: function (dateText, inst){location.href = location.href + "/day/" + dateText;},
 										   dateFormat: "yy-mm-dd",
 											 minDate: "' . $this->minDate . '",
-											 maxDate: "' . $this->maxDate . '"}
+											 maxDate: "' . $this->maxDate . '",
+											 beforeShowDay: function(date){' . $this->beforeShowDay . '}}
 										);');
 ?>
 <div id="hold-day" class="calendar"></div>

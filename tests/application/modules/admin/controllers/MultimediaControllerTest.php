@@ -75,7 +75,8 @@ class Admin_MultimediaControllerEditTest extends Admin_AbstractControllerTestCas
 		Class_Multimedia_Location::getLoader()->newInstanceWithId(33)
 				->setLibelle('Antibe')
 				->setSlotSize(15)
-				->setMaxSlots(4);
+				->setMaxSlots(4)
+				->setDays('3,4');
 				
 		$this->dispatch('/admin/multimedia/edit/id/33', true);
 	}
@@ -126,6 +127,18 @@ class Admin_MultimediaControllerEditTest extends Admin_AbstractControllerTestCas
 	/** @test */
 	public function autoHoldMaxSlotsInputShouldBePresent() {
 		$this->assertXPath('//input[@name="autohold_slots_max"]');
+	}
+
+
+	/** @test */
+	public function openHourShouldBePresent() {
+		$this->assertXPath('//select[@name="open_hour"]');
+	}
+
+
+	/** @test */
+	public function closeHourShouldBePresent() {
+		$this->assertXPath('//select[@name="close_hour"]');
 	}
 }
 

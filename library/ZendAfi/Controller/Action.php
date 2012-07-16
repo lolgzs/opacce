@@ -87,8 +87,9 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 		$this->view->form = $form;
 
 		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			$values = $form->getValues();
 			return $model
-				->updateAttributes($this->_request->getPost())
+				->updateAttributes($values)
 				->save();
 		}
 		return false;
@@ -114,10 +115,6 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	 * Hook appelé en fin d'action d'édition
 	 * @param $model Storm_Model_Abstract
 	 */
-	protected function _postEditAction($model) {
-
-	}
+	protected function _postEditAction($model) {}
 }
-
-
 ?>

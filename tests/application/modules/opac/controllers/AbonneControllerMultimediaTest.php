@@ -249,7 +249,10 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 				->setSlotSize(30)
 				->setMaxSlots(4)
 				->setHoldDelayMin(0)
-				->setHoldDelayMax(60);
+				->setHoldDelayMax(60)
+				->setDays('3,4')
+				->setOpenHour('08:30')
+				->setCloseHour('17:45');
 	}
 
 
@@ -399,7 +402,7 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 
 	/** @test */
 	public function listOfStartTimesShouldBePresent() {
-		$this->assertXPathCount('//select[@id="time"]/option', 48);
+		$this->assertXPathCount('//select[@id="time"]/option', 19);
 	}
 
 
