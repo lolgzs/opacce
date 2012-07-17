@@ -72,6 +72,9 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 
 
 class Class_Multimedia_Location extends Storm_Model_Abstract {
+	/** @var Class_TimeSource */
+	protected static $_time_source;
+	
 	protected $_loader_class = 'Multimedia_LocationLoader';
 	protected $_table_name = 'multimedia_location';
 	protected $_has_many = array(
@@ -93,9 +96,50 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getStartTimesForDate($date) {
-		return $this->getLoader()->getPossibleHours($this->getSlotSize(),
-			                                          $this->getMinTimeForDate($date),
-			                                          $this->getMaxTimeForDate($date));
+		$min_time = $this->getMinTimeForDate($date);
+		$start_times = $this->getLoader()->getPossibleHours($this->getSlotSize(),
+			                                                  $min_time,
+			                                                  $this->getMaxTimeForDate($date));
+
+		if ($min_time < ($current = $this->getCurrentTime())) {
+			$hour = (int) date('H', $current);
+			$minute = (int) date('i', $current);
+			$i = 0;
+ 
+			foreach (array_keys($start_times) as $time) {
+				$parts = explode(':', $time);
+				if ($hour <= (int)$parts[0] and $minute <= (int)$parts[1])
+					break;
+				++$i;
+			}
+
+			$start_times = array_slice($start_times, $i);
+		}
+
+		return $start_times;
+	}
+
+
+	/**
+	 * @category testing
+	 * @return int
+	 */
+	public function getCurrentTime() {
+		return self::getTimeSource()->time();
+	}
+
+
+	/** @return Class_TimeSource */
+	public static function getTimeSource() {
+		if (null == self::$_time_source)
+			self::$_time_source = new Class_TimeSource();
+		return self::$_time_source;
+	}
+
+
+	/** @param $time_source Class_TimeSource */
+	public static function setTimeSource($time_source) {
+		self::$_time_source = $time_source;
 	}
 
 

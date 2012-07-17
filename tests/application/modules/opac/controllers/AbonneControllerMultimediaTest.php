@@ -390,6 +390,11 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 		parent::setUp();
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
+
+		Class_Multimedia_Location::setTimeSource(Storm_Test_ObjectWrapper::mock()
+			->whenCalled('time')
+			->willDo(function() {return strtotime('2012-09-09 09:00:00');}));
+
 		$this->dispatch('/abonne/multimedia-hold-hours', true);
 	}
 
@@ -402,13 +407,19 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 
 	/** @test */
 	public function listOfStartTimesShouldBePresent() {
-		$this->assertXPathCount('//select[@id="time"]/option', 19);
+		$this->assertXPathCount('//select[@id="time"]/option', 18);
 	}
 
 
 	/** @test */
 	public function startingAt10ShouldBePossible() {
 		$this->assertXPathContentContains('//option[@value="10:00"]', '10h00');
+	}
+
+
+	/** @test */
+	public function startingAt8AndHalfShouldNotBePossible() {
+		$this->assertNotXpath('//option[@value="08:30"]');
 	}
 
 
