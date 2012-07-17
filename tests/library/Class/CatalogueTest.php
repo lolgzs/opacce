@@ -90,7 +90,7 @@ class CatalogueTestGetSelectionFacette extends ModelTestCase {
 
 	/** @test */
 	public function withTypeAndValuesShouldReturnThemConcatened() {
-		$this->assertEquals('+(A18 A78 A8 A3)', 
+		$this->assertEquals(' +(A18 A78 A8 A3)', 
 												$this->_catalogue->getSelectionFacette('A', '18;78;8;3'));
 	}
 
@@ -104,14 +104,14 @@ class CatalogueTestGetSelectionFacette extends ModelTestCase {
 
 	/** @test */
 	public function withDescendantShouldAddWildCard() {
-		$this->assertEquals('+(A18* A78* A8* A3*)', 
+		$this->assertEquals(' +(A18* A78* A8* A3*)', 
 												$this->_catalogue->getSelectionFacette('A', '18;78;8;3', true));
 	}
 
 
 	/** @test */
 	public function withMatersShouldConcatenateThem() {
-		$this->assertEquals('+(M18 M78 M8 M3)', 
+		$this->assertEquals(' +(M18 M78 M8 M3)', 
 												$this->_catalogue->getSelectionFacette('M', '18;78;8;3'));
 	}
 
@@ -126,7 +126,7 @@ class CatalogueTestGetSelectionFacette extends ModelTestCase {
 			->with(array('where' => 'libelle LIKE \'Parc animalier : %\''))
 			->answers(array(Class_Matiere::getLoader()->newInstanceWithId(78)));
 
-		$this->assertEquals('+(M18 M78)', 
+		$this->assertEquals(' +(M18 M78)', 
 												$this->_catalogue->getSelectionFacette('M', '18', true));
 	}
 }
@@ -307,7 +307,7 @@ class CatalogueTestGetPagedNotices extends ModelTestCase {
 
 
   protected function _facetsClauseWith($clauses) {
-    return sprintf('MATCH(facettes) AGAINST(\'+(%s)\' IN BOOLEAN MODE)', $clauses);
+    return sprintf('MATCH(facettes) AGAINST(\' +(%s)\' IN BOOLEAN MODE)', $clauses);
   }
 }
 
@@ -327,19 +327,19 @@ class CatalogueTestGetRequetesWithFacettesAndNoCatalogue extends ModelTestCase {
 
 	/** @test */
 	public function requeteListeShouldEqualsSelectStarWhereFacettesFromNotices() {
-		$this->assertEquals('select * from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE) order by alpha_titre  LIMIT 5000', $this->_requetes['req_liste']);
+		$this->assertEquals('select * from notices  where MATCH(facettes) AGAINST(\' +(T1, Y1)\' IN BOOLEAN MODE) order by alpha_titre  LIMIT 5000', $this->_requetes['req_liste']);
 	}
 
 
 	/** @test */
 	public function requeteComptageShouldBeSelectCount() {
-		$this->assertEquals('select count(*) from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE)', $this->_requetes['req_comptage']);
+		$this->assertEquals('select count(*) from notices  where MATCH(facettes) AGAINST(\' +(T1, Y1)\' IN BOOLEAN MODE)', $this->_requetes['req_comptage']);
 	}
 
 
 	/** @test */
 	public function requeteFacettesShouldBeSelectIdNoticeTypeDocFacet() {
-		$this->assertEquals('select notices.id_notice,type_doc,facettes from notices  where MATCH(facettes) AGAINST(\'+(T1, Y1)\' IN BOOLEAN MODE) LIMIT 5000', $this->_requetes['req_facettes']);
+		$this->assertEquals('select notices.id_notice,type_doc,facettes from notices  where MATCH(facettes) AGAINST(\' +(T1, Y1)\' IN BOOLEAN MODE) LIMIT 5000', $this->_requetes['req_facettes']);
 	}
 }
 
