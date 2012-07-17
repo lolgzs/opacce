@@ -70,6 +70,28 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 
 
 	/**
+	 * @param $user Class_Users
+	 * @param $device Class_Multimedia_Device
+	 * @return Class_Multimedia_DeviceHold
+	 */
+	public function getCurrentHoldOfUserOnDevice($user, $device) {
+		$min_start = $start = time();
+		$min_start -= 60 * $device->getAuthDelay();
+		$holds = $this->findAll($this->getTable()->select()
+			                       ->where('id_user = ' . $user->getId())
+			                       ->where('id_device = ' . $device->getId())
+			                       ->where('start >= ' . $min_start)
+			                       ->where('start <= ' . $start));
+
+		if (count($holds) == 0)
+			return null;
+
+		$this->cacheInstance($holds[0]);
+		return $holds[0];
+	}
+
+
+	/**
 	 * @param $start int
 	 * @param $end int
 	 * @param $device Class_Multimedia_Device

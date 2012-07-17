@@ -500,38 +500,27 @@ class AbonneController extends Zend_Controller_Action {
 		$response->auth = 0;
 		$response->until = '';
 
-		if (!($login = $this->_getParam('login'))
-				|| !($password = $this->_getParam('password'))
-				|| !($poste = $this->_getParam('poste'))) {
-			$response->error = 'MissingParameter';
-			$this->_response->setBody(json_encode($response));
-			return;
-		}
-		
-		if (!$user = Class_Users::getLoader()->findFirstBy(array('login' => $login))) {
-			$response->error = 'UserNotFound';
+		$request = Class_Multimedia_AuthenticateRequest::newWithRequest($this->_request);
+		if (!$request->isValid()) {
+			$response->error = $request->getError();
 			$this->_response->setBody(json_encode($response));
 			return;
 		}
 
-		if (($user->getPassword() !== $password)) {
-			$response->error = 'PasswordIsWrong';
-			$this->_response->setBody(json_encode($response));
-			return;
-	  }
-
-		if (!$user->isAbonnementValid()) {
-			$response->error='SubscriptionExpired';
-			$this->_response->setBody(json_encode($response));
-			return;
-    }
-		
-		foreach(array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
+		$user = $request->getUser();
+		foreach (array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
 			$response->$attribute = $user->$attribute;
 		}
 
 		$response->groupes = $user->getUserGroupsLabels();
 		$response->date_naissance = $user->getDateNaissanceIso8601();
+
+		if (null != ($device = $request->getDevice())
+			and null != ($hold = Class_Multimedia_DeviceHold::getLoader()->getCurrentHoldOfUserOnDevice($user, $device))
+		) {
+			$response->auth = 1;
+			$response->until = date('c', $hold->getEnd());
+		}
 
 		$this->_response->setBody(json_encode($response));
 	}

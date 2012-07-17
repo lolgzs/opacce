@@ -26,9 +26,8 @@ class Multimedia_DeviceLoader extends Storm_Model_Loader {
 	 * @return Class_Multimedia_DeviceGroup
 	 */
 	public function fromJsonModelWithGroup($json_model, $device_group) {
-		$id_origine = $device_group->getLocation()->getId() . '-' . $json_model->id;
-		if (!$model = $this->findFirstBy(array('id_origine' => $id_origine)))
-			$model = $this->newInstance()->setIdOrigine($id_origine);
+		if (!$model = $this->findByIdOrigineAndLocation($json_model->id, $device_group->getLocation()))
+			$model = $this->newInstance()->setIdOrigine($this->getIdOrigineWithLocation($json_model->id, $device_group->getLocation()));
 		$model
 				->setLibelle($json_model->libelle)
 				->setOs($json_model->os)
@@ -36,6 +35,26 @@ class Multimedia_DeviceLoader extends Storm_Model_Loader {
 				->setDisabled($json_model->maintenance)
 				->save();
 		return $model;
+	}
+
+
+	/**
+	 * @param $id int
+	 * @param $location Class_Multimedia_Location
+	 * @return Class_Multimedia_Device
+	 */
+	public function findByIdOrigineAndLocation($id, $location) {
+		return $this->findFirstBy(array('id_origine' => $this->getIdOrigineWithLocation($id, $location)));
+	}
+
+
+	/**
+	 * @param $id int
+	 * @param $location Class_Multimedia_Location
+	 * @return string
+	 */
+	public function getIdOrigineWithLocation($id, $location) {
+		return $location->getId() . '-' . (int)$id;
 	}
 }
 
@@ -106,5 +125,11 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	/** @return string */
 	public function getGroupLibelle() {
 		return $this->getGroup()->getLibelle();
+	}
+
+
+	/** @return int */
+	public function getAuthDelay() {
+		return $this->getGroup()->getAuthDelay();
 	}
 }

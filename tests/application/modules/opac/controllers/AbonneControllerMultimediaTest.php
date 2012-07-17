@@ -112,8 +112,15 @@ class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestC
 
 
 	/** @test */
+	public function withoutSiteShouldReturnErrorMissingParameter() {
+		$json = $this->getJson('/abonne/authenticate/login/laurent/password/poste/1');
+		$this->assertEquals('MissingParameter', $json->error);
+	}
+
+
+	/** @test */
 	public function getAbonneZorkShouldReturnErrorUserNotFound() {
-		$json= $this->getJson('/abonne/authenticate/login/zork/password/toto/poste/1');
+		$json= $this->getJson('/abonne/authenticate/login/zork/password/toto/poste/1/site/1');
 		$this->assertEquals("UserNotFound", $json->error);
 		
 	}
@@ -121,14 +128,26 @@ class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestC
 
 	/** @test */
 	public function authenticateAbonneLaurentPasswordXXXShouldReturnWrongPassword() {
-		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1');
+		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1/site/1');
 		$this->assertEquals("PasswordIsWrong", $json->error);	
 	}
 
 	
 	/** @test */
 	public function rightAuthenticationShouldNotReturnError() {
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi/poste/1');
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
+				->whenCalled('findByIdOrigine')
+				->answers(Class_Multimedia_Location::getLoader()->newInstanceWithId(1));
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
+				->whenCalled('findByIdOrigineAndLocation')
+				->answers(Class_Multimedia_Device::getLoader()->newInstanceWithId(1));
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('getCurrentHoldOfUserOnDevice')
+				->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(333)
+					->setEnd(strtotime('2012-09-09 16:40:00')));
+		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi/poste/1/site/1');
 		$this->assertFalse(property_exists($json, 'error'));
 		return $json;
 	}
@@ -194,25 +213,43 @@ class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestC
 	public function laurentGroupeShoudBeAdulteAbonneAdminAndAgile($json) {
 		$this->assertEquals(array('adulte','abonne','admin_bib', 'Devs agiles'), $json->groupes);
 	}
-	
-	
+
+
+	/**
+	 * @test 
+	 * @depends rightAuthenticationShouldNotReturnError
+	 */
+	public function laurentShouldHaveHold($json) {
+		$this->assertEquals(1, $json->auth);
+	}
+
+
+	/**
+	 * @test 
+	 * @depends rightAuthenticationShouldNotReturnError
+	 */
+	public function laurentHoldShouldLastUntil16h40($json) {
+		$this->assertEquals('2012-09-09T16:40:00+02:00', $json->until);
+	}
+
+		
 	/** @test */
 	public function baptisteGroupesShouldBeMineurAbonneAndOldSchool(){
-		$json = $this->getJson('/abonne/authenticate/login/baptiste/password/afi/poste/1');
+		$json = $this->getJson('/abonne/authenticate/login/baptiste/password/afi/poste/1/site/1');
 		$this->assertEquals(array('mineur','abonne_sigb', 'Devs Oldschool'), $json->groupes);	
 	}
 	
 	
 	/** @test */
 		public function mireilleAuthenticateShouldReturnSubscriptionExpired(){
-		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1');
+		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1/site/1');
 		$this->assertEquals('SubscriptionExpired',$json->error);	
 	}
 	
 
 	/** @test */
 	public function arnaudGroupesShouldBeInviteAndPatrons() {
-		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache/poste/1');
+		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache/poste/1/site/1');
 		$this->assertEquals(array('invite', 'Patrons'), $json->groupes);	
 	}
 

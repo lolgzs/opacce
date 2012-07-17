@@ -79,4 +79,10 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 		}
 		return $holdables;
 	}
+
+
+	/** @return int */
+	public function getAuthDelay() {
+		return $this->getLocation()->getAuthDelay();
+	}
 }

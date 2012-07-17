@@ -63,10 +63,19 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 	 * @return Class_Multimedia_Location
 	 */
 	public function fromJsonModel($json_model) {
-		if (!$model = $this->findFirstBy(array('id_origine' => (int)$json_model->id)))
+		if (!$model = $this->findByIdOrigine($json_model->id))
 			$model = $this->newInstance()->setIdOrigine((int)$json_model->id);
 		$model->setLibelle($json_model->libelle)->save();
 		return $model;
+	}
+
+
+	/**
+	 * @param int
+	 * $return Class_Multimedia_Location
+	 */
+	public function findByIdOrigine($id) {
+		return $this->findFirstBy(array('id_origine' => (int)$id));
 	}
 }
 
