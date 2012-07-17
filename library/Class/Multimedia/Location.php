@@ -80,6 +80,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 					'role' => 'location',
 					'order' => 'libelle'),
 			'devices' => array('through' => 'groups'));
+
+	protected $_default_attribute_values = array('days' => '');
 	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
