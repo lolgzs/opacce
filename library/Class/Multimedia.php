@@ -51,7 +51,16 @@ class Class_Multimedia {
 
 	/** @return string */
 	public function getHashForContent($content) {
-		return md5($content . self::SEPARATOR . $this->getKey() . self::SEPARATOR . $this->getDate());
+		return md5($this->getFullContent($content));
+	}
+
+
+	/**
+	 * @param $content string
+	 * @return string
+	 */
+	public function getFullContent($content) {
+		return $content . self::SEPARATOR . $this->getKey() . self::SEPARATOR . $this->getDate();
 	}
 
 
