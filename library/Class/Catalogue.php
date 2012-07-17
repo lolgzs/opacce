@@ -477,7 +477,7 @@ class Class_Catalogue extends Storm_Model_Abstract {
 		$cond = trim($cond);
 
 		if ($signe) 
-			return '+(' . $cond . ')';
+			return ' +(' . $cond . ')';
 
 		return ' ' . $cond;
 	}
