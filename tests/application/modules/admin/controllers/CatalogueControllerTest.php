@@ -166,7 +166,7 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 
 	/** @test */
 	public function pageShouldDisplayRequest() {
-		$this->assertContains("select * from notices  where MATCH(facettes) AGAINST(' +(B1)+( D78308*)' IN BOOLEAN MODE) and type_doc IN (1, 3, 4, 5) and annee >= '2012' and annee <= '2012' order by alpha_titre  LIMIT 0,20",
+		$this->assertContains("select * from notices  where MATCH(facettes) AGAINST(' +(B1) +( D78308*)' IN BOOLEAN MODE) and type_doc IN (1, 3, 4, 5) and annee >= '2012' and annee <= '2012' order by alpha_titre  LIMIT 0,20",
 													$this->_response->getBody());
 	}
 
@@ -174,7 +174,7 @@ class CatalogueControllerActionTesterTest extends AdminCatalogueControllerTestCa
 	/** @test */
 	public function findAllByRequestShouldHaveSameWhereAsGetRequetes() {
 		$params = Class_Notice::getLoader()->getFirstAttributeForLastCallOn('findAllBy');
-		$this->assertEquals('MATCH(facettes) AGAINST(\' +(B1)+( D78308*)\' IN BOOLEAN MODE) and type_doc IN (1, 3, 4, 5) and annee >= \'2012\' and annee <= \'2012\'',
+		$this->assertEquals('MATCH(facettes) AGAINST(\' +(B1) +( D78308*)\' IN BOOLEAN MODE) and type_doc IN (1, 3, 4, 5) and annee >= \'2012\' and annee <= \'2012\'',
 												$params['where']);
 	}
 

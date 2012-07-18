@@ -111,7 +111,7 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 
 		if ('' != $against_ou) 
-			$against .= '+(' . $against_ou . ")";
+			$against .= ' +(' . $against_ou . ")";
 
 		if ('' == $against)
 			return '';
