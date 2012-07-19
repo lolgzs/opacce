@@ -60,6 +60,9 @@ class Multimedia_DeviceLoader extends Storm_Model_Loader {
 
 
 class Class_Multimedia_Device extends Storm_Model_Abstract {
+	/** @var Class_TimeSource */
+	protected static $_time_source;
+		
 	protected $_loader_class = 'Multimedia_DeviceLoader';
 	protected $_table_name = 'multimedia_device';
 	protected $_belongs_to = array(
@@ -74,6 +77,29 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	/**
+	 * @category testing
+	 * @return int
+	 */
+	public function getCurrentTime() {
+		return self::getTimeSource()->time();
+	}
+
+
+	/** @return Class_TimeSource */
+	public static function getTimeSource() {
+		if (null == self::$_time_source)
+			self::$_time_source = new Class_TimeSource();
+		return self::$_time_source;
+	}
+
+
+	/** @param $time_source Class_TimeSource */
+	public static function setTimeSource($time_source) {
+		self::$_time_source = $time_source;
 	}
 
 
@@ -98,6 +124,7 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 		return 0 < $this->numberOfHoldBetweenTimes($start, $end);
 	}
 
+
 	/**
 	 * @param $start int
 	 * @param $end int
@@ -106,6 +133,70 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	public function numberOfHoldBetweenTimes($start, $end) {
 		return Class_Multimedia_DeviceHold::getLoader()
 				->countBetweenTimesForDevice($start, $end, $this);
+	}
+
+
+	/**
+	 * @param $user Class_Users
+	 * @return Class_Multimedia_DeviceHold
+	 */
+	public function getCurrentHoldForUser($user) {
+		if (null !== ($hold = $this->getCurrentHold())
+			and $user->getId() == $hold->getIdUser())
+			return $hold;
+
+		return $this->autoHoldByUser($user, $hold);
+	}
+
+
+	/**
+	 * @param $user Class_Users
+	 * @param $current_hold Class_Multimedia_DeviceHold
+	 * @return Class_Multimedia_DeviceHold
+	 */
+	public function autoHoldByUser($user, $current_hold) {
+		// pas de résa auto, on sort
+		if (!$this->isAutohold())
+			return null;
+
+		// une résa courante et on est dans le délai d'auth, on sort
+		if (null !== $current_hold
+			and $this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay())))
+			return null;
+
+		// si je n'ai pas de début de créneau, on sort
+		if (null == ($start = $this->getPreviousStartTime()))
+			return null;
+
+		// fin de créneau par défaut selon config
+		$end = $start + (60 * $this->getAutoholdSlotsMax() * $this->getSlotSize());
+				
+		// si on dépasse la fin de journée on se limite à la fin de journée
+		if ($end > ($next_closing = $this->getMaxTimeForToday()))
+			$end = $next_closing;
+				
+		// si on dépasse la prochaine résa on se limite au début de la prochaine résa
+		if (null != ($next_start = $this->getNextHoldStart())
+			and $end > $next_start)
+			$end = $next_start;
+
+		if ($end <= $start)
+			return null;
+
+		$hold = Class_Multimedia_DeviceHold::getLoader()
+				->newInstance()
+				->setDevice($this)
+				->setUser($user)
+				->setStart($start)
+				->setEnd($end);
+		return $hold;
+	}
+
+
+	/** @return Class_Multimedia_DeviceHold */
+	public function getCurrentHold() {
+		return Class_Multimedia_DeviceHold::getLoader()
+				->getHoldOnDeviceAtTime($this, $this->getCurrentTime());
 	}
 
 
@@ -131,5 +222,45 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	/** @return int */
 	public function getAuthDelay() {
 		return $this->getGroup()->getAuthDelay();
+	}
+
+
+	/** @return boolean */
+	public function isAutohold() {
+		return $this->getGroup()->isAutohold();
+	}
+
+
+	/** @return int */
+	public function getPreviousStartTime() {
+		return $this->getGroup()->getPreviousStartTime();
+	}
+
+
+	/** @return int */
+	public function getNextHoldStart() {
+		$from = $this->getCurrentTime();
+		$to = $this->getMaxTimeForToday();
+		if (null != ($hold = Class_Multimedia_DeviceHold::getLoader()
+				                   ->getFirstHoldOnDeviceBetweenTimes($this, $from, $to)))
+			return $hold->getStart();
+	}
+
+
+	/** @return int */
+	public function getMaxTimeForToday() {
+		return $this->getGroup()->getMaxTimeForToday();
+	}
+
+
+	/** @return int */
+	public function getAutoholdSlotsMax() {
+		return $this->getGroup()->getAutoholdSlotsMax();
+	}
+
+
+	/** @return int */
+	public function getSlotSize() {
+		return $this->getGroup()->getSlotSize();
 	}
 }

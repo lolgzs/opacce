@@ -21,242 +21,252 @@
 
 require_once 'AbstractControllerTestCase.php';
 
-class AbonneControllerMultimediaAuthenticateTest extends AbstractControllerTestCase{
+abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractControllerTestCase {
+	protected $_json;
+
 	public function setUp() {
 		parent::setUp();
 		Zend_Auth::getInstance()->clearIdentity();
-		$laurent= Class_Users::getLoader()->newInstanceWithId(8)
-									->setLogin("laurent")
-									->setPassword("afi")
-									->setNom('laffont')
-									->setPrenom('laurent')
-									->setRoleLevel(4)
-									->setIdabon('bca2')
-									->setNaissance('1978-02-17');
-		
-		$baptiste= Class_Users::getLoader()->newInstanceWithId(9)
-									->setLogin("baptiste")
-									->setPassword("afi")
-									->setRoleLevel(2)
-									->setNaissance('2005-02-17')
-									->setDateFin('3000-01-01');
-		
-		$mireille= Class_Users::getLoader()->newInstanceWithId(10)
-									->setLogin("mireille")
-									->setPassword("afi")
-									->setDateFin('1999-01-01');
-		
-		$arnaud= Class_Users::getLoader()->newInstanceWithId(11)
-									->setLogin("arnaud")
-									->setPassword("lelache");
-		
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
-						->whenCalled('findFirstBy')
-						->with(array('login'=> 'laurent'))
-						->answers($laurent)
-						
-						->whenCalled('findFirstBy')
-						->with(array('login'=> 'baptiste'))
-						->answers($baptiste)
-						
-						->whenCalled('findFirstBy')
-						->with(array('login'=> 'mireille'))
-						->answers($mireille)
-						
-						->whenCalled('findFirstBy')
-						->with(array('login'=> 'arnaud'))
-						->answers($arnaud)
-						
-						->whenCalled('findFirstBy')
-						->answers(null);
+	}
 
+
+	/**
+	 * @param $url string
+	 * @return stdClass
+	 */
+	protected function getJson($url) {
+		$this->dispatch($url, true);
+		return json_decode($this->_response->getBody());
+	}
+
+
+	/**
+	 * @param $user Class_Users
+	 */
+	protected function _expectUserToLoad($user) {
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('findFirstBy')
+			->with(array('login'=> $user->getLogin()))
+			->answers($user)
+				
+			->whenCalled('findFirstBy')
+			->answers(null);
+	}
+
+
+	/**
+	 * @param $user Class_Users
+	 * @param $group_label string
+	 */
+	protected function _expectGroupForUser($user, $group_label) {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroupMembership')
 				->whenCalled('findAllBy')
-				->with(array('role' => 'user', 'model' => $laurent))
+				->with(array('role' => 'user', 'model' => $user))
 				->answers(array(Class_UserGroupMembership::getLoader()
 						->newInstance()
 						->setUserGroup(Class_UserGroup::getLoader()
 							->newInstanceWithId(1)
-							->setLibelle('Devs agiles'))))
+							->setLibelle($group_label))));
+	}
+}
 
-				->whenCalled('findAllBy')
-				->with(array('role' => 'user', 'model' => $baptiste))
-				->answers(array(Class_UserGroupMembership::getLoader()
-						->newInstance()
-						->setUserGroup(Class_UserGroup::getLoader()
-							->newInstanceWithId(2)
-							->setLibelle('Devs Oldschool'))))
 
-				->whenCalled('findAllBy')
-				->with(array('role' => 'user', 'model' => $arnaud))
-				->answers(array(Class_UserGroupMembership::getLoader()
-						->newInstance()
-						->setUserGroup(Class_UserGroup::getLoader()
-							->newInstanceWithId(3)
-							->setLibelle('Patrons'))));
+class AbonneControllerMultimediaAuthenticateValidationTest extends AbonneControllerMultimediaAuthenticateTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_expectUserToLoad(AbonneControllerMultimediaUsersFixtures::getLaurent());
 	}
 
-
+		
 	/** @test */
 	public function responseShouldNotBeARedirect() {
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi');
+		$json = $this->getJson('/abonne/authenticate/login/any/password/any');
 		$this->assertNotRedirect();
 	}
 
 
 	/** @test */
 	public function withoutPosteShouldReturnErrorMissingParameter() {
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password');
+		$json = $this->getJson('/abonne/authenticate/login/any');
 		$this->assertEquals('MissingParameter', $json->error);
 	}
 
 
 	/** @test */
 	public function withoutSiteShouldReturnErrorMissingParameter() {
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password/poste/1');
+		$json = $this->getJson('/abonne/authenticate/login/any/password/any/poste/1');
 		$this->assertEquals('MissingParameter', $json->error);
 	}
 
 
 	/** @test */
 	public function getAbonneZorkShouldReturnErrorUserNotFound() {
-		$json= $this->getJson('/abonne/authenticate/login/zork/password/toto/poste/1/site/1');
+		$json = $this->getJson('/abonne/authenticate/login/any/password/toto/poste/1/site/1');
 		$this->assertEquals("UserNotFound", $json->error);
-		
 	}
-	
+
 
 	/** @test */
 	public function authenticateAbonneLaurentPasswordXXXShouldReturnWrongPassword() {
-		$json=$this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1/site/1');
+		$json = $this->getJson('/abonne/authenticate/login/laurent/password/xxx/poste/1/site/1');
 		$this->assertEquals("PasswordIsWrong", $json->error);	
+	}
+}
+
+
+class AbonneControllerMultimediaAuthenticateMireilleTest extends AbonneControllerMultimediaAuthenticateTestCase {
+	public function setUp() {
+		parent::setUp();
+		$user = AbonneControllerMultimediaUsersFixtures::getMireille();
+		$this->_expectUserToLoad($user);
+
+		$this->_json = $this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1/site/1');
+	}
+
+
+	/** @test */
+	public function shouldReturnSubscriptionExpired() {
+		$this->assertEquals('SubscriptionExpired', $this->_json->error);	
+	}
+}
+
+
+abstract class AbonneControllerMultimediaAuthenticateValidTestCase extends AbonneControllerMultimediaAuthenticateTestCase {
+	protected $_user;
+	protected $_group;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_initUser();
+		$this->_expectUserToLoad($this->_user);
+		$this->_expectGroupForUser($this->_user, $this->_group);
+		$this->_launch();
+	}
+
+
+	protected function _launch() {
+		$this->_json = $this->getJson(sprintf('/abonne/authenticate/login/%s/password/%s/poste/1/site/1',
+				                                  $this->_user->getLogin(),
+				                                  $this->_user->getPassword()));
+	}
+
+
+	protected function _initUser() {}
+}
+
+
+class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	protected function _initUser() {
+		$this->_user = AbonneControllerMultimediaUsersFixtures::getLaurent();
+		$this->_group= 'Devs agiles';
+	}
+
+		
+	protected function _launch() {
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
+			->whenCalled('findByIdOrigine')
+			->answers(Class_Multimedia_Location::getLoader()->newInstanceWithId(1));
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
+			->whenCalled('findByIdOrigineAndLocation')
+			->answers(Class_Multimedia_Device::getLoader()->newInstanceWithId(1));
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('getHoldOnDeviceAtTime')
+			->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(333)
+				->setIdUser($this->_user->getId())
+				->setEnd(strtotime('2012-09-09 16:40:00')));
+				
+		parent::_launch();
 	}
 
 	
 	/** @test */
-	public function rightAuthenticationShouldNotReturnError() {
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
-				->whenCalled('findByIdOrigine')
-				->answers(Class_Multimedia_Location::getLoader()->newInstanceWithId(1));
-				
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
-				->whenCalled('findByIdOrigineAndLocation')
-				->answers(Class_Multimedia_Device::getLoader()->newInstanceWithId(1));
-				
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getCurrentHoldOfUserOnDevice')
-				->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(333)
-					->setEnd(strtotime('2012-09-09 16:40:00')));
-		$json = $this->getJson('/abonne/authenticate/login/laurent/password/afi/poste/1/site/1');
-		$this->assertFalse(property_exists($json, 'error'));
-		return $json;
+	public function shouldNotReturnError() {
+		$this->assertFalse(property_exists($this->_json, 'error'));
 	}
 	
 	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentIdShoudBe8($json) {
-		$this->assertEquals('8', $json->id);
+	/** @test */
+	public function idShoudBe8() {
+		$this->assertEquals('8', $this->_json->id);
 	}
 	
 	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentLoginShoudBelaurent($json) {
-		$this->assertEquals('laurent', $json->login);
+	/** @test */
+	public function loginShoudBelaurent() {
+		$this->assertEquals('laurent', $this->_json->login);
 	}
 	
 	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentPasswordShoudBeAfi($json) {
-		$this->assertEquals('afi',$json->password);
-	}
-	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentNomShoudBelaffont($json) {
-		$this->assertEquals('laffont', $json->nom);
-	}
-	
-	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentPrenomShoudBelaurent($json) {
-		$this->assertEquals('laurent', $json->prenom);
-	}
-	
-	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentDateNaissanceShoudBe1978_02_17($json) {
-		$this->assertEquals('1978/02/17', $json->date_naissance);
-	}
-	
-	
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentGroupeShoudBeAdulteAbonneAdminAndAgile($json) {
-		$this->assertEquals(array('adulte','abonne','admin_bib', 'Devs agiles'), $json->groupes);
+	/** @test */
+	public function passwordShoudBeAfi() {
+		$this->assertEquals('afi', $this->_json->password);
 	}
 
 
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentShouldHaveHold($json) {
-		$this->assertEquals(1, $json->auth);
+	/** @test */
+	public function nomShoudBelaffont() {
+		$this->assertEquals('laffont', $this->_json->nom);
+	}
+	
+	
+	/** @test */
+	public function prenomShoudBelaurent() {
+		$this->assertEquals('laurent', $this->_json->prenom);
+	}
+	
+	
+	/** @test */
+	public function dateNaissanceShoudBe1978_02_17() {
+		$this->assertEquals('1978/02/17', $this->_json->date_naissance);
 	}
 
 
-	/**
-	 * @test 
-	 * @depends rightAuthenticationShouldNotReturnError
-	 */
-	public function laurentHoldShouldLastUntil16h40($json) {
-		$this->assertEquals('2012-09-09T16:40:00+02:00', $json->until);
+	/** @test */
+	public function groupShoudBeAdulteAbonneAdminAndAgile() {
+		$this->assertEquals(array('adulte','abonne','admin_bib', 'Devs agiles'),
+			                  $this->_json->groupes);
+	}
+
+
+	/** @test */
+	public function shouldHaveHold() {
+		$this->assertEquals(1, $this->_json->auth);
+	}
+
+
+	/** @test */
+	public function holdShouldLastUntil16h40() {
+		$this->assertEquals('2012-09-09T16:40:00+02:00', $this->_json->until);
+	}
+}
+
+
+class AbonneControllerMultimediaAuthenticateArnaudTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	protected function _initUser() {
+		$this->_user = AbonneControllerMultimediaUsersFixtures::getArnaud();
+		$this->_group= 'Patrons';
+	}
+
+	/** @test */
+	public function groupsShouldBeInviteAndPatrons() {
+		$this->assertEquals(array('invite', 'Patrons'), $this->_json->groupes);	
+	}
+}
+
+
+class AbonneControllerMultimediaAuthenticateBaptisteTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	protected function _initUser() {
+		$this->_user = AbonneControllerMultimediaUsersFixtures::getBaptiste();
+		$this->_group= 'Devs Oldschool';
 	}
 
 		
 	/** @test */
-	public function baptisteGroupesShouldBeMineurAbonneAndOldSchool(){
-		$json = $this->getJson('/abonne/authenticate/login/baptiste/password/afi/poste/1/site/1');
-		$this->assertEquals(array('mineur','abonne_sigb', 'Devs Oldschool'), $json->groupes);	
-	}
-	
-	
-	/** @test */
-		public function mireilleAuthenticateShouldReturnSubscriptionExpired(){
-		$json=$this->getJson('/abonne/authenticate/login/mireille/password/afi/poste/1/site/1');
-		$this->assertEquals('SubscriptionExpired',$json->error);	
-	}
-	
-
-	/** @test */
-	public function arnaudGroupesShouldBeInviteAndPatrons() {
-		$json=$this->getJson('/abonne/authenticate/login/arnaud/password/lelache/poste/1/site/1');
-		$this->assertEquals(array('invite', 'Patrons'), $json->groupes);	
-	}
-
-
-	protected function getJson($url) {
-		$this->dispatch($url);
-		return json_decode($this->_response->getBody());
+	public function groupsShouldBeMineurAbonneAndOldSchool() {
+		$this->assertEquals(array('mineur','abonne_sigb', 'Devs Oldschool'), $this->_json->groupes);	
 	}
 }
 
@@ -789,5 +799,44 @@ class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTe
 	/** @test */
 	public function viewHoldLinkShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "multimedia-hold-view/id/12")]');
+	}
+}
+
+
+class AbonneControllerMultimediaUsersFixtures {
+	public static function getLaurent() {
+		return Class_Users::getLoader()->newInstanceWithId(8)
+				->setLogin("laurent")
+				->setPassword("afi")
+				->setNom('laffont')
+				->setPrenom('laurent')
+				->setRoleLevel(4)
+				->setIdabon('bca2')
+				->setNaissance('1978-02-17');
+	}
+
+
+	public static function getBaptiste() {
+		return Class_Users::getLoader()->newInstanceWithId(9)
+				->setLogin("baptiste")
+				->setPassword("afi")
+				->setRoleLevel(2)
+				->setNaissance('2005-02-17')
+				->setDateFin('3000-01-01');
+	}
+
+
+	public static function getMireille() {
+		return Class_Users::getLoader()->newInstanceWithId(10)
+				->setLogin("mireille")
+				->setPassword("afi")
+				->setDateFin('1999-01-01');
+	}
+
+
+	public static function getArnaud() {
+		return Class_Users::getLoader()->newInstanceWithId(11)
+				->setLogin("arnaud")
+				->setPassword("lelache");
 	}
 }

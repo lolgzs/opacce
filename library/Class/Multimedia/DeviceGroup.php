@@ -85,4 +85,34 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	public function getAuthDelay() {
 		return $this->getLocation()->getAuthDelay();
 	}
+
+
+	/** @return boolean */
+	public function isAutohold() {
+		return $this->getLocation()->isAutohold();
+	}
+
+
+	/** @return int */
+	public function getPreviousStartTime() {
+		return $this->getLocation()->getPreviousStartTime();
+	}
+
+
+	/** @return int */
+	public function getMaxTimeForToday() {
+		return $this->getLocation()->getMaxTimeForToday();
+	}
+
+
+	/** @return int */
+	public function getAutoholdSlotsMax() {
+		return $this->getLocation()->getAutoholdSlotsMax();
+	}
+
+
+	/** @return int */
+	public function getSlotSize() {
+		return $this->getLocation()->getSlotSize();
+	}
 }

@@ -36,25 +36,41 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 
 	/**
 	 * @param $increment int
+	 * @param $from int
+	 * @param $to int
 	 * @return array
 	 */
 	public function getPossibleHours($increment, $from = null, $to = null) {
 		if (0 == $increment)
 			return array();
 
-		if (null == $from)
-			$from = strtotime('today');
-
-		if (null == $to)
-			$to = strtotime('tomorrow');
-
-		$steps = range($from, $to, 60 * $increment);
+		$steps = $this->getPossibleTimes($increment, $from, $to);
 
 		$hours = array();
 		foreach ($steps as $step)
 			$hours[date('H:i', $step)] = date('H\hi', $step);
 
 		return $hours;
+	}
+
+
+	/**
+	 * @param $increment int minutes
+	 * @param $from int timestamp
+	 * @param $to int timestamp
+	 * @return array
+	 */
+	public function getPossibleTimes($increment, $from = null, $to = null) {
+		if (null == $from)
+			$from = strtotime('today');
+
+		if (null == $to)
+			$to = strtotime('tomorrow');
+
+		if ($from > $to)
+			return array();
+				
+		return range($from, $to, 60 * $increment);
 	}
 
 
@@ -129,6 +145,25 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	}
 
 
+	/** @return int */
+	public function getPreviousStartTime() {
+		$current = $this->getCurrentTime();
+		$times = $this->getLoader()->getPossibleTimes($this->getSlotSize());
+
+		if (0 == count($times))
+			return null;
+
+		$previous = reset($times);
+		foreach ($times as $time) {
+			if ($time > $current)
+				return $previous;
+			$previous = $time;
+		}
+
+		return null;
+	}
+
+
 	/**
 	 * @category testing
 	 * @return int
@@ -167,6 +202,12 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 */
 	public function getMaxTimeForDate($date) {
 		return strtotime($date . ' ' . $this->getCloseHour() . ':00');
+	}
+
+
+	/** @return int */
+	public function getMaxTimeForToday() {
+		return $this->getMaxTimeForDate(date('Y-m-d', $this->getCurrentTime()));
 	}
 	
 
@@ -246,5 +287,11 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 		if (0 < ($minutes = (int)($duration % 60)))
 			$label .= $minutes . 'mn';
 		return $label;
+	}
+
+
+	/** @return boolean */
+	public function isAutohold() {
+		return 1 == $this->getAutohold();
 	}
 }

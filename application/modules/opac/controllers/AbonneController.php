@@ -516,7 +516,7 @@ class AbonneController extends Zend_Controller_Action {
 		$response->date_naissance = $user->getDateNaissanceIso8601();
 
 		if (null != ($device = $request->getDevice())
-			and null != ($hold = Class_Multimedia_DeviceHold::getLoader()->getCurrentHoldOfUserOnDevice($user, $device))
+			and null != ($hold = $device->getCurrentHoldForUser($user))
 		) {
 			$response->auth = 1;
 			$response->until = date('c', $hold->getEnd());
