@@ -554,12 +554,31 @@ class AbonneController extends Zend_Controller_Action {
 
 		$this->view->minDate = $location->getMinDate();
 		$this->view->maxDate = $location->getMaxDate();
-		$this->view->beforeShowDay = '
-		var result = [true, \'\'];
+		$holidayStamps = array_map(
+			function($item) {return $item * 1000;},
+			array_merge(
+				Class_Date_Holiday::getTimestampsForYear(),
+				Class_Date_Holiday::getTimestampsForYear(date('Y') + 1)
+			)
+		);
+		$beforeShowDay = 'var result = [true, \'\'];
+		var stamps = [' . implode(', ', $holidayStamps) . '];
+		$.each(stamps, function(i, stamp) {
+			var holiday = new Date();
+			holiday.setTime(stamp);
+			if (date.getDate() == holiday.getDate()
+				&& date.getMonth() == holiday.getMonth()
+				&& date.getFullYear() == holiday.getFullYear()) {
+			  result[0] = false;
+			  return result;
+			}
+		});
 		if (-1 == $.inArray(date.getDay(), [' . $location->getDays() . '])) {
 			result[0] = false;
 		}
 	  return result;';
+
+		$this->view->beforeShowDay = $beforeShowDay;
 		$this->view->timelineActions = $this->_getTimelineActions('day');
 	}
 
