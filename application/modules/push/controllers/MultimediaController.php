@@ -20,7 +20,7 @@
  */
 class Push_MultimediaController extends Zend_Controller_Action {
 	public function configAction() {
-		$log = new Zend_Log(new Zend_Log_Writer_Stream(PATH_TEMP . 'push.log'));
+		$log = Class_Multimedia::getLog();
 		$log->info('Push multimedia start');
 		
 		$this->_helper->getHelper('viewRenderer')->setNoRender();

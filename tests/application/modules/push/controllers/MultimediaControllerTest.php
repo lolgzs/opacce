@@ -20,6 +20,93 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
+abstract class Push_MultimediaControllerInvalidConfigTestCase extends AbstractControllerTestCase {
+	/** @var Storm_Test_ObjectWrapper */
+	protected $_log;
+
+	public function setUp() {
+		parent::setUp();
+				
+		$this->_log = Storm_Test_ObjectWrapper::mock()
+				->whenCalled('err')
+				->answers(null)
+				
+				->whenCalled('info')
+				->answers(null);
+
+		Class_Multimedia::setLog($this->_log);
+
+		$this->postDispatch('/push/multimedia/config', $this->_getInvalidParams());
+	}
+
+
+	/** @test */
+	public function startShouldBeLogged() {
+		$this->assertTrue($this->_log->methodHasBeenCalled('info'));
+	}
+
+
+	/** @return array */
+	protected function _getInvalidParams() {
+		return array();
+	}
+
+
+	/** @param $message string */
+	protected function _assertErrorLogWithMessage($message) {
+		$this->assertEquals($message, $this->_log->getFirstAttributeForLastCallOn('err'));
+	}
+}
+
+
+class Push_MultimediaControllerMissingJsonConfigTest extends Push_MultimediaControllerInvalidConfigTestCase {	
+	/** @test */
+	public function missingJsonErrorShouldBeLogged() {
+		$this->_assertErrorLogWithMessage('Missing json parameter');
+	}
+}
+
+
+class Push_MultimediaControllerMissingSignConfigTest extends Push_MultimediaControllerInvalidConfigTestCase {
+	/** @return array */
+	protected function _getInvalidParams() {
+		return array('json' => '{}');
+	}
+	
+	/** @test */
+	public function missingSignErrorShouldBeLogged() {
+		$this->_assertErrorLogWithMessage('Missing sign parameter');
+	}
+}
+
+
+class Push_MultimediaControllerInvalidJsonConfigTest extends Push_MultimediaControllerInvalidConfigTestCase {
+	/** @return array */
+	protected function _getInvalidParams() {
+		return array('json' => 'it is invalid', 'sign' => 'iu/-@+uieiucrc');
+	}
+	
+	/** @test */
+	public function invalidJsonErrorShouldBeLogged() {
+		$this->_assertErrorLogWithMessage('Invalid json');
+	}
+}
+
+
+class Push_MultimediaControllerInvalidSignConfigTest extends Push_MultimediaControllerInvalidConfigTestCase {
+	/** @return array */
+	protected function _getInvalidParams() {
+		return array('json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
+			                     'sign' => 'iu/-@+uieiucrc');
+	}
+	
+	/** @test */
+	public function signCheckFailureErrorShouldBeLogged() {
+		$this->_assertErrorLogWithMessage('Sign check failure');
+	}
+}
+
+
 class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCase {
 	protected $_group;
 	protected $_device_wrapper;

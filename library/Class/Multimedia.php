@@ -21,8 +21,31 @@
 
 class Class_Multimedia {
 	const SEPARATOR = '--@--';
+	const LOG_FILE = 'push.log';
+
+	/** @var Class_Multimedia */
 	protected static $_instance;
 
+	/** @var Zend_Log */
+	protected static $_log;
+
+
+	/** @return Zend_Log */
+	public static function getLog() {
+		if (null == self::$_log)
+			self::$_log = new Zend_Log(new Zend_Log_Writer_Stream(PATH_TEMP . self::LOG_FILE));
+		return self::$_log;
+	}
+
+
+	/**
+	 * @param $log Zend_Log
+	 */
+	public static function setLog($log) {
+		self::$_log = $log;
+	}
+
+		
 	/** @return boolean */
 	public static function isValidHash($hash, $content) {
 		return self::getInstance()->isValidHashForContent($hash, $content);
