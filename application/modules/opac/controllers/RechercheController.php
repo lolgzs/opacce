@@ -444,7 +444,7 @@ class RechercheController extends Zend_Controller_Action
 			if ($rech["rech_collection"]) 
 				$texte.= ", " . $operateur[$rech["operateur_collection"]] . "Collection" . $signe . $rech["rech_collection"];
 			if ($rech["type_doc"]) 
-				$texte .= BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+				$texte .= '  ' . BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
 
 			if ($rech["annexe"]) {
 				if ($texte) 
