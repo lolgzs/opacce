@@ -1,0 +1,7 @@
+* Skin timeline 
+	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
+	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
+	[[file:application/modules/opac/views/scripts/abonne/multimedia-hold-location.phtml::<?php%20foreach%20($this->locations%20as%20$location)%20{%20?][vue réservation]]
+
+* Oeil accessibilité
+	[[file:public/admin/js/global.js::function%20createAccessibilityDialog()%20{][JS création dialogue]]
