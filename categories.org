@@ -1,4 +1,11 @@
-* Skin timeline 
+#+TITLE: Carte OPAC
+
+* AFI Multimedia
+** Planning des ouvertures
+	 [[file:tests/application/modules/admin/controllers/OuverturesControllerTest.php::abstract%20class%20OuverturesControllerTestCase%20extends%20Admin_AbstractControllerTestCase%20{][Tests Controller Ouvertures]]
+	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20Zend_Controller_Action%20{][Controller Ouvertures]]
+	 [[file:application/modules/admin/views/scripts/ouvertures/edit.phtml::<?php%20?][Vue edit ouverture]]
+** Skin réservation timeline 
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
 	[[file:application/modules/opac/views/scripts/abonne/multimedia-hold-location.phtml::<?php%20foreach%20($this->locations%20as%20$location)%20{%20?][vue réservation]]
@@ -8,10 +15,23 @@
 
 * Bib numérique
 	[[file:public/opac/css/global.css::/**%20bib%20numerique%20*/][CSS Bib num]]
-
-
+	
 * WS SIGB Maze
 ** Info emprunteur
 	 [[file:library/Class/WebService/SIGB/Microbib/Service.php::public%20function%20getEmprunteur($user)%20{][Service::getEmprunteur]]
 	 [[file:library/Class/WebService/SIGB/Microbib/InfosExemplairesResponseReader.php::return%20$instance->getNoticeFromXML($xml)%3B][Parsing XML]]
 	 [[file:tests/library/Class/WebService/SIGB/MicrobibServiceTest.php::$this->emprunteur%20%3D%20$this->_microbib->getEmprunteur(Class_Users::getLoader()][Tests getEmprunteur]]
+
+
+
+* Scaffolding avec ZendAfi
+	[[file:application/modules/admin/controllers/OaiController.php::public%20function%20getRessourceDefinitions()%20{][Exemple de définition de ressources dans l'OAI controller]]
+	[[file:application/modules/admin/views/scripts/oai/index.phtml::echo%20$this->tagModelTable($this->entrepots,][Exemple TagModelTable pour rendre la liste des modèles]]
+	[[file:application/modules/admin/views/scripts/oai/edit.phtml::<?php%20echo%20$this->renderForm($this->form)%3B?][edit.phtml rend juste le form]]
+
+* ZendForm
+	[[file:application/modules/admin/controllers/FormationController.php::->addElement('datePicker',%20'date_debut',%20array(][Exemple complet (datePicker, select, CKEditor)]]
+
+
+* A refactorer [0/1]
+** TODO [#A] [[file:library/Class/Multimedia/Location.php::public%20function%20getPossibleHours($increment,%20$from%20%3D%20null,%20$to%20%3D%20null)%20{][::getPossibleHours à mettre dans une classe Date ou Time ...]]
