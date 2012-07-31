@@ -922,6 +922,66 @@ div.ui-sortable-placeholder {
 }
 
 
-.timeline {
-		
+.timeline  {
+		height: 40px;
+		width: 1000px;
 }
+
+.timeline li {
+		float: left;
+		text-align: center;
+		line-height: 39px;
+		width: 146px;
+		list-style: none;
+		background: url(../images/reservation_timeline.png) no-repeat;
+		margin-left: -18px;
+		font-weight: bold;
+}
+
+
+.timeline li.selected {
+		color: white;
+}
+
+
+.timeline li {
+		background-position: left -200px;
+}
+
+
+.timeline li.selected {
+		background-position: left -80px;
+}
+
+.timeline li.passed {
+		background-position: left -320px;
+}
+
+
+.timeline li:first-child {
+		background-position: left -120px;
+}
+
+
+.timeline li.selected:first-child {
+		background-position: left -0px;
+}
+
+.timeline li.passed:first-child {
+		background-position: left -240px;
+}
+
+
+.timeline li:last-child {
+		background-position: left -160px;
+}
+
+.timeline li.selected:last-child {
+		background-position: left -40px;
+}
+
+.timeline li.passed:last-child {
+		background-position: left -280px;
+}
+
+

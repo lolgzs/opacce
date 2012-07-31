@@ -6,7 +6,7 @@
 (php+-mode-setup)
 
 (require 'phpunit)
-(require 'geben)
+;;(require 'geben)
 
 
 (defvar opac3-phpunit-config "~/dev/afi/afi-opac3/tests/phpunit.xml" "phpunit.xml path")
