@@ -8,3 +8,10 @@
 
 * Bib numérique
 	[[file:public/opac/css/global.css::/**%20bib%20numerique%20*/][CSS Bib num]]
+
+
+* WS SIGB Maze
+** Info emprunteur
+	 [[file:library/Class/WebService/SIGB/Microbib/Service.php::public%20function%20getEmprunteur($user)%20{][Service::getEmprunteur]]
+	 [[file:library/Class/WebService/SIGB/Microbib/InfosExemplairesResponseReader.php::return%20$instance->getNoticeFromXML($xml)%3B][Parsing XML]]
+	 [[file:tests/library/Class/WebService/SIGB/MicrobibServiceTest.php::$this->emprunteur%20%3D%20$this->_microbib->getEmprunteur(Class_Users::getLoader()][Tests getEmprunteur]]
