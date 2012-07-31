@@ -88,8 +88,8 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 
 
 	/** @return boolean */
-	public function isAutohold() {
-		return $this->getLocation()->isAutohold();
+	public function isAutoholdEnabled() {
+		return $this->getLocation()->isAutoholdEnabled();
 	}
 
 

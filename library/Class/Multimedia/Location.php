@@ -291,7 +291,7 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 
 	/** @return boolean */
-	public function isAutohold() {
+	public function isAutoholdEnabled() {
 		return 1 == $this->getAutohold();
 	}
 }

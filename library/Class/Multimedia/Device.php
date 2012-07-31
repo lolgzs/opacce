@@ -156,7 +156,7 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 */
 	public function autoHoldByUser($user, $current_hold) {
 		// pas de résa auto, on sort
-		if (!$this->isAutohold())
+		if (!$this->isAutoholdEnabled())
 			return null;
 
 		// une résa courante et on est dans le délai d'auth, on sort
@@ -189,6 +189,7 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 				->setUser($user)
 				->setStart($start)
 				->setEnd($end);
+		$hold->save();
 		return $hold;
 	}
 
@@ -226,8 +227,8 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 
 
 	/** @return boolean */
-	public function isAutohold() {
-		return $this->getGroup()->isAutohold();
+	public function isAutoholdEnabled() {
+		return $this->getGroup()->isAutoholdEnabled();
 	}
 
 
