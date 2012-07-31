@@ -83,11 +83,6 @@ class Class_Profil extends Storm_Model_Abstract {
 	protected $_translator;
 
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
 	/**
 	 * @return Class_Profil
 	 */

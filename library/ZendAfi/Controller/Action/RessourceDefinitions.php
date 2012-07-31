@@ -38,7 +38,8 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 
 	public function findAll() {
-		return $this->getModelLoader()->findAllBy(array('order' => 'libelle'));
+		
+		return $this->getModelLoader()->findAllBy(array('order' => $this->getOrder()));
 	}
 
 
@@ -82,6 +83,13 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 	public function getModelClass() {
 		return $this->_definitions['model']['class'];
+	}
+
+	
+	public function getOrder() {
+		if (isset($this->_definitions['model']['order']))
+			return $this->_definitions['model']['order'];
+		return 'libelle';
 	}
 
 

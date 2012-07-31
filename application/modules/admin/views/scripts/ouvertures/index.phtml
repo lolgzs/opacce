@@ -1,0 +1,8 @@
+<?php
+ echo $this->tagModelTable($this->ouvertures, 
+													 array($this->_('Début matin')),
+													 array('debut_matin'),
+													 array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+																 array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+													 'ouvertures');
+?>

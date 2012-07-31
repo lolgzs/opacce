@@ -2,9 +2,10 @@
 
 * AFI Multimedia
 ** Planning des ouvertures
+	 [[file:library/Class/Ouverture.php::class%20Class_Ouverture%20extends%20Storm_Model_Abstract%20{][Modele Ouverture]]
 	 [[file:tests/application/modules/admin/controllers/OuverturesControllerTest.php::abstract%20class%20OuverturesControllerTestCase%20extends%20Admin_AbstractControllerTestCase%20{][Tests Controller Ouvertures]]
-	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20Zend_Controller_Action%20{][Controller Ouvertures]]
-	 [[file:application/modules/admin/views/scripts/ouvertures/edit.phtml::<?php%20?][Vue edit ouverture]]
+	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20ZendAfi_Controller_Action%20{][Controller Ouvertures]]	 
+	 [[file:application/modules/admin/views/scripts/ouvertures/edit.phtml::<?php%20echo%20$this->renderForm($this->form)%3B%20?][Vue edit ouverture]] - [[http://localhost/afi-opac3/admin/ouvertures/edit/site_id/1/id/2][Page édition d'une ouverture]]
 ** Skin réservation timeline 
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
