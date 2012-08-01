@@ -89,8 +89,9 @@ class OuverturesControllerIndexActionWithoutSiteTest extends OuverturesControlle
 
 
 	/** @test */
-	public function actionShouldBeIndex() {
-		$this->assertAction('index');
+	public function answerShouldRedirectToIndexBib() {
+		xdebug_break();
+		$this->assertRedirectTo('/admin/bib');
 	}
 }
 

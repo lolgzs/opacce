@@ -4,37 +4,62 @@ echo ('<center><div align="center"><br>'.$this->bouton('id=c_19','picto=add.gif'
 ?>
 <br /><table cellspacing="0" cellpadding="0">
     <tr class="soustitre">    
-        <td style="width:30%;">Ville</td>
-        <td style="width:55%">Libelle</td>
-        <td style="width:15%;padding-left:10px;" colspan="4"> Action</td>
+        <td>Ville</td>
+        <td>Libelle</td>
+        <td colspan="6"> Action</td>
     </tr>
      <tr>
-      	<td colspan="6"  class="separ"> </td>
+      	<td colspan="8"  class="separ"> </td>
       </tr>
     
 <?php 
 $ligne = 0;
-foreach ($this->bib_array as $bib)
-{
-    $class_zone = new Class_Zone();
-    $class_bib = new Class_bib();
-    $test = $class_bib->isBibDeletable($bib["ID_SITE"]);
-    if($test == true) $ico_del = '<a href="'.BASE_URL.'/admin/bib/delete/id/'.$bib["ID_SITE"].'">'.$this->boutonIco("type=del").'</a>';
-    else $ico_del ='<a href="#" onclick="alert(\'Cette bibliothèque possède encore du contenu\'); return false;"><img src="'.URL_ADMIN_IMG.'ico/del.gif" class="ico" alt="Supprimer" title="Supprimer"/></a>';
+foreach ($this->bib_array as $bib) {
+	$ico_del = $bib->isBibDeletable()
+		? '<a href="'.BASE_URL.'/admin/bib/delete/id/'.$bib->getId().'">'.$this->boutonIco("type=del").'</a>'
+	  : '<a href="#" onclick="alert(\'Cette bibliothèque possède encore du contenu\'); return false;"><img src="'.URL_ADMIN_IMG.'ico/del.gif" class="ico" alt="Supprimer" title="Supprimer"/></a>';
     
     
     $ligne ++ ; if ($ligne & 1) $class="first"; else $class="second";
-    $ville = ucfirst($bib["VILLE"]);
-    echo('<tr class="'.$class.'">
-		<td valign="top">'.$ville. '</td>
-		<td valign="top" align="left">'.$bib["LIBELLE"].'</td>
-		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/edit/id/'.$bib["ID_SITE"].'">'.$this->boutonIco("type=edit").'</a></td>
-    <td valign="top" align="center">'.$ico_del.'</td>
-			<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/planacces/id/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/map.gif" border="0" alt="Configurer le plan d\'accès" title="Configurer le plan d\'accès"/></a></td>
-		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/plans/id_bib/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/plan.gif" border="0" alt="Plans et de la bibliothèque" title="Plans de la bibliothèque"/></a></td>
-		<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/localisations/id_bib/'.$bib["ID_SITE"].'"><img src="'.URL_ADMIN_IMG.'picto/localisation.gif" border="0" alt="Localisations de la bibliothèque" title="Localisations de la bibliothèque"/></a></td>
-    </tr>');
+    $ville = ucfirst($bib->getVille());
+    echo '<tr class="'.$class.'">'.
+				 '<td valign="top">'.$ville. '</td>'.
+				 '<td valign="top" align="left">'.$bib->getLibelle().'</td>'.
+				 '<td valign="top" align="center"><a href="'.BASE_URL.'/admin/bib/edit/id/'.$bib->getId().'">'.$this->boutonIco("type=edit").'</a></td>'.
+				 '<td valign="top" align="center">'.$ico_del.'</td>';
+
+
+
+		$action = '<td valign="top" align="center"><a href="%s"><img src="'.URL_ADMIN_IMG.'picto/%s" border="0" alt="%3$s" title="%3$s"/></a></td>';
+		echo sprintf($action, 
+								 $this->url(array('action' => 'planacces',
+																	'id_bib' => $bib->getId())),
+								 'map.gif',
+								 $this->_('Configurer le plan d\'accès'));
+
+		echo sprintf($action, 
+								 $this->url(array('action' => 'plans',
+																	'id_bib' => $bib->getId())),
+								 'plan.gif',
+								 $this->_('Plans de la bibliothèque'));
+
+		echo sprintf($action, 
+								 $this->url(array('action' => 'localisations',
+																	'id_bib' => $bib->getId())),
+								 'localisation.gif',
+								 $this->_('Localisations de la bibliothèque'));
+
+		if (Class_AdminVar::isPlanningOuverturesEnabled())
+				echo sprintf($action, 
+										 $this->url(array('controller' => 'ouvertures',
+																			'action' => 'index',
+																			'id_site' => $bib->getId())),
+										 'calendar.gif',
+										 $this->_('Planification des ouvertures'));
+																		 
+    echo '</tr>';
 }
+
 echo ('</table>');
 echo '<span id="abonne_erreur" class="abonne">'.$this->errorMessage.'</span>'; ?>
 

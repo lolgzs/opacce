@@ -50,6 +50,14 @@ class BibLoader extends Storm_Model_Loader {
 	}
 
 
+	public function findAllByIdZone($id_zone=0) {
+		if (!$id_zone)
+			return $this->findAllBy(array('order' => 'ville'));
+		return $this->findAllBy(array('id_zone' => $id_zone,
+																	'order' => 'ville'));
+	}
+
+
 	public function getPortail() {
 		if (!isset($this->_portail))
 			$this->_portail = $this->newInstanceWithId(0)->setLibelle('Portail');
@@ -197,8 +205,8 @@ class Class_Bib extends Storm_Model_Abstract {
 	//----------------------------------------------------------------------------
 	// Controle de suppression d'une bibliothèque
 	//----------------------------------------------------------------------------
-	function isBibDeletable($id_bib)
-	{
+	function isBibDeletable()	{
+		$id_bib = $this->getId();
 		$cms=fetchOne("Select count(*) from cms_categorie where ID_SITE=$id_bib");
 		$rss=fetchOne("Select count(*) from rss_categorie where ID_SITE=$id_bib");
 		$sito=fetchOne("Select count(*) from sito_categorie where ID_SITE=$id_bib");

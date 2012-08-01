@@ -55,9 +55,7 @@ class Admin_BibController extends Zend_Controller_Action
 		if ($user->ROLE_LEVEL == ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB)
 			$this->_redirect(sprintf('admin/bib/edit/id/%d', $user->ID_SITE));
 
-		$bibClass = new Class_Bib();
-		$liste_bib = $bibClass->getAllBibByIdZone($this->id_zone);
-		$this->view->bib_array = $liste_bib;
+		$this->view->bib_array = Class_Bib::getLoader()->findAllByIdZone($this->id_zone);
 	}
 
 	//------------------------------------------------------------------------------------------------------

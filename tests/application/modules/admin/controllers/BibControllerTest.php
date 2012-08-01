@@ -24,8 +24,7 @@ abstract class BibControllerTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_annecy = Class_Bib::getLoader()
-			->newInstanceWithId(2)
+		$this->bib_annecy = Class_Bib::newInstanceWithId(2)
 			->setLibelle('Annecy')
 			->setResponsable('Ludivine')
 			->setAffZone('')
@@ -36,15 +35,76 @@ abstract class BibControllerTestCase extends AbstractControllerTestCase {
 			->setArticleCategories(array());
 
 
-		$this->bib_cran = Class_Bib::getLoader()
-			->newInstanceWithId(3)
+		$this->bib_cran = Class_Bib::newInstanceWithId(3)
 			->setLibelle('Cran-Gévrier');
+
+		$all_bibs = array($this->bib_annecy, $this->bib_cran);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Bib')
 			->whenCalled('findAll')
-			->answers(array($this->bib_annecy, $this->bib_cran));
+			->answers($all_bibs)
+
+			->whenCalled('findAllByIdZone')
+			->answers($all_bibs);
 	}
 }
+
+
+
+
+class BibControllerIndexWidthAdminPortailTest extends BibControllerTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+	}
+
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::newInstanceWithId('MULTIMEDIA_KEY')->setValeur('coin coin');
+		$this->dispatch('admin/bib/index', true);
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayBibAnnecy() {
+		$this->assertXPathContentContains('//tr[3]//td', 'Annecy');
+	}
+
+
+	/** @test */
+	public function bibAnnecyShouldHaveActionToEdit() {
+		$this->assertXPath('//tr[3]//a[contains(@href, "bib/edit/id/2")]');
+	}
+
+
+	/** @test */
+	public function bibAnnecyShouldHaveActionToOuverturesIndex() {
+		$this->assertXPath('//tr[3]//a[contains(@href, "ouvertures/index/id_site/2")]');
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayBibCran() {
+		$this->assertXPathContentContains('//tr[4]//td', 'Cran-Gévrier');
+	}
+
+
+	/** @test */
+	public function bibCranShouldHaveActionToEdit() {
+		$this->assertXPath('//tr[4]//a[contains(@href, "bib/edit/id/3")]');
+	}
+
+
+	/** @test */
+	public function whenMultimediaDisabledOuverturesShouldNotBeAvailable() {
+		Class_AdminVar::find('MULTIMEDIA_KEY')->setValeur('');
+		$this->bootstrap();
+		parent::setUp();
+		$this->dispatch('admin/bib/index', true);
+		$this->assertNotXPath('//a[contains(@href, "ouvertures")]');
+	}
+}
+
+
 
 
 class BibControllerWithModoPortailTest extends BibControllerTestCase {
@@ -90,13 +150,18 @@ class BibControllerWithModerateurBibTest extends BibControllerTestCase {
 
 
 
-class BibControllerWithAdminBibTest extends BibControllerTestCase {
+
+abstract class BibControllerWithAdminBibTestCase extends BibControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
 		$account->ID_SITE = 2;
 	}
+}
 
 
+
+
+class BibControllerWithAdminBibTest extends BibControllerWithAdminBibTestCase {
 	/** @test */
 	function responseToIndexShouldBeARedirectToEditSite2() {
 		$this->dispatch('admin/bib/index');
@@ -120,12 +185,8 @@ class BibControllerWithAdminBibTest extends BibControllerTestCase {
 
 
 
-class BibControllerWithAdminBibEditAnnecyTest extends BibControllerTestCase {
-	protected function _loginHook($account) {
-		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
-		$account->ID_SITE = 2;
-	}
 
+class BibControllerWithAdminBibEditAnnecyTest extends BibControllerWithAdminBibTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('admin/bib/edit/id/2');
@@ -144,17 +205,16 @@ class BibControllerWithAdminBibEditAnnecyTest extends BibControllerTestCase {
 
 
 
+
 class BibControllerGetArticlesJSONTest extends BibControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$vive_les_vacances = Class_Article::getLoader()
-			->newInstanceWithId(42)
+		$vive_les_vacances = Class_Article::newInstanceWithId(42)
 			->setIdCat(3)
 			->setTitre('Vive les vacances !');
 
-		$cat_cran_news = Class_ArticleCategorie::getLoader()
-			->newInstanceWithId(3)
+		$cat_cran_news = Class_ArticleCategorie::newInstanceWithId(3)
 			->setLibelle('News')
 			->setIdSite(3)
 			->setArticles(array($vive_les_vacances))
@@ -163,19 +223,16 @@ class BibControllerGetArticlesJSONTest extends BibControllerTestCase {
 		$this->bib_cran->setArticleCategories(array($cat_cran_news));
 
 
-		$reseau_en_route = Class_Article::getLoader()
-			->newInstanceWithId(123)
+		$reseau_en_route = Class_Article::newInstanceWithId(123)
 			->setIdCat(9)
 			->setTitre('Reseau en route');
 
-		$cat_portail_infos = Class_ArticleCategorie::getLoader()
-			->newInstanceWithId(9)
+		$cat_portail_infos = Class_ArticleCategorie::newInstanceWithId(9)
 			->setLibelle('Infos')
 			->setArticles(array($reseau_en_route))
 			->setSousCategories(array());
 
-		$portail = Class_Bib::getLoader()
-			->newInstanceWithId(0)
+		$portail = Class_Bib::newInstanceWithId(0)
 			->setLibelle('Portail')
 			->setArticleCategories(array($cat_portail_infos));
 

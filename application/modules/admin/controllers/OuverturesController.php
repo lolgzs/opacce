@@ -53,6 +53,18 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 								 );
 	}
 
+
+
+
+	public function indexAction() {
+		if (!$this->_getParam('id_site')) {
+			$this->_redirect('admin/bib');
+			return;
+		}
+
+		parent::indexAction();
+	}
+
 }
 
 ?>

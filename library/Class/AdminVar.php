@@ -188,6 +188,14 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	/**
 	 * @return bool
 	 */
+	public static function isPlanningOuverturesEnabled() {
+		return self::isMultimediaEnabled();
+	}
+
+
+	/**
+	 * @return bool
+	 */
 	public static function isArteVodEnabled() {
 		return (('' != self::get('ARTE_VOD_LOGIN')) && ('' != self::get('ARTE_VOD_KEY')));
 	}	
