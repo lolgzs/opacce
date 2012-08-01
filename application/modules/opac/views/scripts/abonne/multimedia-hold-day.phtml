@@ -2,6 +2,9 @@
 <?php echo $this->timeline($this->timelineActions);?>
 
 <h2><?php echo $this->_('Pour quel jour ?');?></h2>
+<?php if ($this->quotaError) { ?>
+<div class="error"><?php echo $this->quotaError;?></div>
+<?php } ?>
 <?php
 Class_ScriptLoader::getInstance()
   ->addAdminScript('jquery_ui/jquery-ui-i18n.min')

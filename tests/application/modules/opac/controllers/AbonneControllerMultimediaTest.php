@@ -285,6 +285,17 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 		$bean->duration = 0;
 		$bean->device = 0;
 		$this->_session->holdBean = $this->_bean = $bean;
+
+		Class_Users::getLoader()->getIdentity()->setUserGroups(array(
+				Class_UserGroup::getLoader()
+				->newInstanceWithId(12)
+				->setMaxDay(120)
+				->setMaxWeek(240)
+				->setMaxMonth(360)));
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('getDurationForUserBetweenTimes')
+			->answers(0);
 	}
 
 
@@ -428,6 +439,32 @@ class AbonneControllerMultimediaHoldDayChoiceTest extends AbonneControllerMultim
 	/** @test */
 	public function beanShouldHaveDaySet() {
 		$this->assertEquals('2012-09-09', $this->_session->holdBean->day);
+	}
+}
+
+
+class AbonneControllerMultimediaHoldDayChoiceWithOverQuotaTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('getDurationForUserBetweenTimes')
+			->answers(8000);
+				
+		$this->dispatch('/abonne/multimedia-hold-day/day/2012-09-09', true);
+	}
+
+
+	/** @test */
+	public function shouldNotRedirect() {
+		$this->assertNotRedirect();
+	}
+
+
+	/** @test */
+	public function quotaErrorShouldBePresent() {
+		$this->assertXPathContentContains('//div', 'Quota déjà atteint ce jour');
 	}
 }
 

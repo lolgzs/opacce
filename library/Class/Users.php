@@ -797,7 +797,8 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
-	/* Hook AbstractModel::save
+	/**
+	 * Hook AbstractModel::save
 	 * Sauvegarde des données compte lecteur sur le SIGB
 	 */
 	public function afterSave() {
@@ -814,5 +815,77 @@ class Class_Users extends Storm_Model_Abstract {
 			->setEMail($this->getMail())
 			->setPassword($this->getPassword())
 			->save();
+	}
+
+
+	/**
+	 * @param $day string YYYY-MM-DD formatted
+	 * @return string const error type @see Class_Multimedia_DeviceHold
+	 */
+	public function getMultimediaQuotaErrorForDay($day) {
+		// chargements des quotas les plus avantageux pour l'utilisateur selon ses groupes
+		$max_day = $max_week = $max_month = 0;
+		$quotaNames = array('day', 'week', 'month');
+		foreach ($this->getUserGroups() as $group) {
+			foreach ($quotaNames as $name) {
+				$quotaName = 'max_' . $name;
+				$methodName = 'getMax' . ucfirst($name);
+				$value = (int)$group->$methodName();
+				if (${$quotaName} < $value)
+					${$quotaName} = $value;
+			}
+		}
+
+		// si un seul des quotas est resté à 0, on n'a aucun droit
+		if (in_array(0, array($max_day, $max_week, $max_month)))
+			return Class_Multimedia_DeviceHold::QUOTA_NONE;
+
+		if ($max_day <= $this->getMultimediaHoldDurationForDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_DAY;
+
+		if ($max_week <= $this->getMultimediaHoldDurationForWeekOfDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_WEEK;
+
+		if ($max_month <= $this->getMultimediaHoldDurationForMonthOfDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_MONTH;
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForDay($day) {
+		$start = strtotime($day);
+		$end = strtotime('+1 day', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForWeekOfDay($day) {
+		$start = strtotime('previous monday', strtotime($day));
+		$end = strtotime('next monday', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForMonthOfDay($day) {
+		$start = strtotime('first day of this month', strtotime($day));
+		$end = strtotime('first day of next month', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
 	}
 }

@@ -70,6 +70,28 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 
 
 	/**
+	 * @param $user Class_Users
+	 * @param $start int timestamp
+	 * @param $end int timestamp
+	 * @return int minutes
+	 */
+	public function getDurationForUserBetweenTimes($user, $start, $end) {
+		$duration = 0;
+		$holds = $this->findAll($this->getTable()->select()
+			                       ->where('id_user = ' . $user->getId())
+			                       ->where('start >= ' . $start)
+			                       ->where('end <= ' . $end)
+			                       ->order('start asc'));
+		
+		foreach($holds as $hold)
+			$duration += ($hold->getEnd() - $hold->getStart()) / 60;
+
+		return $duration;
+	}
+
+
+		
+	/**
 	 * @param $device Class_Multimedia_Device
 	 * @param $time int
 	 * @return Class_Multimedia_DeviceHold
@@ -145,6 +167,11 @@ class Multimedia_DeviceHoldloader extends Storm_Model_Loader {
 
 
 class Class_Multimedia_DeviceHold extends Storm_Model_Abstract {
+	const QUOTA_DAY = 'day';
+	const QUOTA_MONTH = 'month';
+	const QUOTA_WEEK = 'week';
+	const QUOTA_NONE = 'none';
+
 	protected $_loader_class = 'Multimedia_DeviceHoldLoader';
 	protected $_table_name = 'multimedia_devicehold';
 	protected $_belongs_to = array(

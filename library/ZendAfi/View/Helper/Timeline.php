@@ -31,7 +31,6 @@ class ZendAfi_View_Helper_Timeline extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	public function timeline($actions) {
-		xdebug_break();
 		$this->_after_current = false;
 				
 		$html = '<div class="timeline"><ul>';

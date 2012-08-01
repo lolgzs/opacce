@@ -546,8 +546,28 @@ class AbonneController extends Zend_Controller_Action {
 			return;
 		}
 
-		if (null != $this->_getParam('day')) {
-			$bean->day = $this->_getParam('day');
+		$day = $this->_getParam('day');
+		$quotaErrorType = null;
+		if (null != $day) {
+			$quotaErrorType = $this->_user->getMultimediaQuotaErrorForDay($day);
+			switch ($quotaErrorType) {
+			  case Class_Multimedia_DeviceHold::QUOTA_NONE:
+					$this->view->quotaError = $this->view->_('Vous n\'avez pas les nécessaires pour effectuer une réservation');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_DAY:
+					$this->view->quotaError = $this->view->_('Quota déjà atteint ce jour, choisissez un autre jour.');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_WEEK:
+					$this->view->quotaError = $this->view->_('Quota déjà atteint cette semaine, choisissez une autre semaine.');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_MONTH:
+					$this->view->quotaError = $this->view->_('Quota déjà atteint ce mois, choisissez un autre mois.');
+					break;
+			}
+		}
+				
+		if (null != $day && null == $quotaErrorType) {
+			$bean->day = $day;
 			$this->_redirect('/abonne/multimedia-hold-hours');
 			return;
 		}
