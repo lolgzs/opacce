@@ -107,7 +107,9 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 			->addFormElements($form)
 			->addDisplayGroups($form);
 		
-		return $form->populate($model->toArray());
+		return $form
+			->populate($this->_request->getParams())
+			->populate($model->toArray());
 	}
 
 

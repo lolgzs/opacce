@@ -81,23 +81,6 @@ class OuverturesControllerIndexActionSiteCranTest extends OuverturesControllerTe
 
 
 
-class OuverturesControllerIndexActionWithoutSiteTest extends OuverturesControllerTestCase {
-	public function setUp() {
-		parent::setUp();
-		$this->dispatch('/admin/ouvertures/index', true);
-	}
-
-
-	/** @test */
-	public function answerShouldRedirectToIndexBib() {
-		xdebug_break();
-		$this->assertRedirectTo('/admin/bib');
-	}
-}
-
-
-
-
 class OuverturesControllerIndexActionSiteAnnecyTest extends OuverturesControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -117,6 +100,23 @@ class OuverturesControllerIndexActionSiteAnnecyTest extends OuverturesController
 	/** @disabledtest */
 	function pageShouldContainsButtonToCreateOuverture() {
 		$this->assertXPathContentContains('//div[contains(@onclick, "ouvertures/add/id_site/3")]//td', 'Ajouter une plage d\'ouverture');
+	}
+}
+
+
+
+
+class OuverturesControllerIndexActionWithoutSiteTest extends OuverturesControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/ouvertures/index', true);
+	}
+
+
+	/** @test */
+	public function answerShouldRedirectToIndexBib() {
+		xdebug_break();
+		$this->assertRedirectTo('/admin/bib');
 	}
 }
 
@@ -186,8 +186,35 @@ class OuverturesControllerAddOuvertureCranTest extends OuverturesControllerTestC
 	public function formShouldContainsSelectForDebutMatin() {
 		$this->assertXPath('//form//select');
 	}
+
+
+	/** @test */
+	public function hiddenFieldIdSiteShouldHaveValueOne() {
+		$this->assertXPath('//input[@name="id_site"][@type="hidden"][@value="1"]');
+	}
 }
 
+
+
+
+class OuverturesControllerPostAddOuvertureCranTest extends OuverturesControllerTestCase {
+	protected $_new_ouverture;
+
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/admin/ouvertures/add/id_site/3',
+												array('debut_matin' => '10:30',
+															'fin_matin' => '11:30',
+															'id_site' => 3));
+		$this->_new_ouverture = Class_Ouverture::getFirstAttributeForLastCallOn('save');
+	}
+
+
+	/** @test */
+	public function newOuvertureSiteIdShouldBeThree() {
+		$this->assertEquals(3, $this->_new_ouverture->getIdSite());
+	}
+}
 
 
 ?>

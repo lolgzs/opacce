@@ -32,6 +32,8 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 			$fields[$field] = array('element' => 'select',
 															'options' => array('label' => $label,
 																								 'multiOptions' => $hours_select));
+		$fields['id_site'] = array('element' => 'hidden');
+															 
 
 		return array(
 								 'model' => array('class' => 'Class_Ouverture',
