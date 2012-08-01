@@ -3,9 +3,10 @@
 * AFI Multimedia
 ** Planning des ouvertures
 	 [[file:library/Class/Ouverture.php::class%20Class_Ouverture%20extends%20Storm_Model_Abstract%20{][Modele Ouverture]]
+	 [[file:application/modules/admin/views/scripts/ouvertures/edit.phtml::<?php%20echo%20$this->renderForm($this->form)%3B%20?][Vue edit ouverture]] - [[http://localhost/afi-opac3/admin/ouvertures/edit/site_id/1/id/2][Page édition d'une ouverture]]
 	 [[file:tests/application/modules/admin/controllers/OuverturesControllerTest.php::abstract%20class%20OuverturesControllerTestCase%20extends%20Admin_AbstractControllerTestCase%20{][Tests Controller Ouvertures]]
 	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20ZendAfi_Controller_Action%20{][Controller Ouvertures]]	 
-	 [[file:application/modules/admin/views/scripts/ouvertures/edit.phtml::<?php%20echo%20$this->renderForm($this->form)%3B%20?][Vue edit ouverture]] - [[http://localhost/afi-opac3/admin/ouvertures/edit/site_id/1/id/2][Page édition d'une ouverture]]
+
 ** Skin réservation timeline 
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
@@ -36,3 +37,7 @@
 
 * A refactorer [0/1]
 ** TODO [#A] [[file:library/Class/Multimedia/Location.php::public%20function%20getPossibleHours($increment,%20$from%20%3D%20null,%20$to%20%3D%20null)%20{][::getPossibleHours à mettre dans une classe Date ou Time ...]]
+
+
+* doc
+** [[https://gist.github.com/3126866][Basic Meta Programming with PHP5.4]]

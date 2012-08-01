@@ -25,6 +25,31 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	public function getLibelle() {
 		return '';
 	}
+
+
+	public function getDebutMatin() {
+		return $this->getHourAttributeNamed('debut_matin');
+	}
+
+	
+	public function getFinMatin() {
+		return $this->getHourAttributeNamed('fin_matin');
+	}
+
+
+	public function getDebutApresMidi() {
+		return $this->getHourAttributeNamed('debut_apres_midi');
+	}
+
+	
+	public function getFinApresMidi() {
+		return $this->getHourAttributeNamed('fin_apres_midi');
+	}
+
+
+	public function getHourAttributeNamed($name) {
+		return substr($this->_get($name), 0, 5);
+	}
 }
 
 ?>

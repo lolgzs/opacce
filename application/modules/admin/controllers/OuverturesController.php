@@ -21,6 +21,18 @@
 
 class Admin_OuverturesController extends ZendAfi_Controller_Action {
 	public function getRessourceDefinitions() {
+		$hours_select = Class_Multimedia_Location::getLoader()->getPossibleHours(30);
+
+		$fields = array();
+		$field_labels = array('debut_matin' => $this->view->_('Début matinée'), 
+													'fin_matin' => $this->view->_('Fin matinée'), 
+													'debut_apres_midi' =>	$this->view->_('Début après-midi'), 
+													'fin_apres_midi' => $this->view->_('Fin après-midi'));
+		foreach ($field_labels as $field => $label)
+			$fields[$field] = array('element' => 'select',
+															'options' => array('label' => $label,
+																								 'multiOptions' => $hours_select));
+
 		return array(
 								 'model' => array('class' => 'Class_Ouverture',
 																	'name' => 'ouverture',
@@ -34,12 +46,7 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 																		'index' => array('title' => 'Plages d\'ouverture')),
 
 								 'display_groups' => array('plage_ouverture' => array('legend' => 'Plage d\'ouverture',
-																																			'elements' => array(
-																																													'debut_matin' => array('element' => 'select',
-																																																								 'options' => array('label' => 'Début matinée',
-																																																																		'multiOptions' => Class_Multimedia_Location::getLoader()->getPossibleHours(30))
-																																																								 )
-																																													)
+																																			'elements' => $fields
 																																)
 																					 )
 								 );

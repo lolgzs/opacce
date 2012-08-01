@@ -1,7 +1,18 @@
 <?php
+ echo $this->bouton('id=add_category',
+										'picto=add.gif',
+										'texte=' . $this->traduire('Ajouter une plage d\'ouverture'),
+										'url=' . $this->url(array('action' => 'add',
+																							'id' => null,
+																							'site_id' => 1))
+										);
+
  echo $this->tagModelTable($this->ouvertures, 
-													 array($this->_('Début matin')),
-													 array('debut_matin'),
+													 array($this->_('Matin'), 
+																 $this->_(''), 
+																 $this->_('Après-midi'), 
+																 $this->_('')),
+													 array('debut_matin', 'fin_matin', 'debut_apres_midi', 'fin_apres_midi'),
 													 array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
 																 array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
 													 'ouvertures');

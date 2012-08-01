@@ -21,28 +21,47 @@
 require_once 'AdminAbstractControllerTestCase.php';
 
 abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTestCase {
+	protected $_ouverture_mardi;
+
 	public function setUp() {
 		parent::setUp();
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Ouverture')
-			->whenCalled('findAll')
+			->whenCalled('save')
+			->answers(true)
+
+			->whenCalled('findAllBy')
 			->answers(array(
-											Class_Ouverture::getLoader()
+											$this->_ouverture_mardi = Class_Ouverture::getLoader()
 											->newInstanceWithId(2)
-											->setDebutMatin('08h00')));
+											->setDebutMatin('08:00:00')
+											->setFinMatin('12:00:00')
+											->setDebutApresMidi('13:30:00')
+											->setFinApresMidi('17:00:00')));
 	}
 }
+
 
 
 
 class OuverturesControllerIndexActionTest extends OuverturesControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/admin/ouvertures', true);
+		$this->dispatch('/admin/ouvertures/index/site_id/1', true);
 	}
+
 
 	/** @test */
 	public function ouvertureAtHeightShouldBeVisible() {
-		$this->assertXPath('//td', '08h00');
+		$this->assertXPathContentContains('//td', '08:00', $this->_response->getBody());
+		$this->assertXPathContentContains('//td', '12:00');
+		$this->assertXPathContentContains('//td', '13:30');
+		$this->assertXPathContentContains('//td', '17:00');
+	}
+
+
+	/** @test */
+	function pageShouldContainsButtonToCreateOuverture() {
+		$this->assertXPathContentContains('//div[contains(@onclick, "ouvertures/add/site_id/1")]//td', 'Ajouter une plage d\'ouverture');
 	}
 }
 
@@ -57,8 +76,44 @@ class OuverturesControllerEditOuvertureMardiTest extends OuverturesControllerTes
 
 	
 	/** @test */
-	public function formShouldContainsSelectForDebutMatin() {
-		$this->assertXPath('//form//select');
+	public function formShouldContainsSelectForDebutMatinWithHours() {
+		$this->assertXPath('//form//select[@name="debut_matin"]//option[@value="07:30"]');
+		$this->assertXPath('//form//select[@name="debut_matin"]//option[@value="08:00"][@selected="selected"]');
+		$this->assertXPath('//form//select[@name="debut_matin"]//option[@value="16:00"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsSelectForFinMatin() {
+		$this->assertXPath('//form//select[@name="fin_matin"]//option[@value="12:00"][@selected="selected"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsSelectForDebutApresMidi() {
+		$this->assertXPath('//form//select[@name="debut_apres_midi"]//option[@value="13:30"][@selected="selected"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsSelectForFinApresMidi() {
+		$this->assertXPath('//form//select[@name="fin_apres_midi"]//option[@value="17:00"][@selected="selected"]');
+	}
+}
+
+
+
+
+class OuverturesControllerPostEditOuvertureMardiTest extends OuverturesControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/admin/ouvertures/edit/site_id/1/id/2',
+												array('debut_matin' => '10:30'));
+	}
+
+	/** @test */
+	public function heureDebutMatinShouldBe_10_30() {
+		$this->assertEquals('10:30', $this->_ouverture_mardi->getDebutMatin());
 	}
 }
 
