@@ -21,6 +21,10 @@
 
 class Class_Ouverture extends Storm_Model_Abstract {
 	protected $_table_name = 'ouvertures';
+	protected $_default_attribute_values = array('debut_matin' => '10:00',
+																							 'fin_matin' => '12:00',
+																							 'debut_apres_midi' => '12:00',
+																							 'fin_apres_midi' => '18:00');
 
 	public function getLibelle() {
 		return '';

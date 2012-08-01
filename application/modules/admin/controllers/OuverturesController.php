@@ -36,7 +36,8 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 		return array(
 								 'model' => array('class' => 'Class_Ouverture',
 																	'name' => 'ouverture',
-																	'order' => 'debut_matin'),
+																	'order' => 'debut_matin',
+																	'scope' => 'id_site'),
 								 'messages' => array('successful_add' => 'Plage d\'ouverture %s ajoutée',
 																		 'successful_save' => 'Plage d\'ouverture %s sauvegardée',
 																		 'successful_delete' => 'Plage d\'ouverture %s supprimée'),

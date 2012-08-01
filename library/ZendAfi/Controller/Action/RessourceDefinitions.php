@@ -37,9 +37,12 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
-	public function findAll() {
-		
-		return $this->getModelLoader()->findAllBy(array('order' => $this->getOrder()));
+	public function findAll($request) {
+		$params = array('order' => $this->getOrder());
+		if (($scope_field = $this->getScope()) && 
+				($scope_value = $request->getParam($scope_field, false)))
+			$params[$scope_field] = $scope_value;
+		return $this->getModelLoader()->findAllBy($params);
 	}
 
 
@@ -90,6 +93,19 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 		if (isset($this->_definitions['model']['order']))
 			return $this->_definitions['model']['order'];
 		return 'libelle';
+	}
+
+
+	public function getScope() {
+		if (isset($this->_definitions['model']['scope']))
+			return $this->_definitions['model']['scope'];
+		return null;
+	}
+
+
+	public function hasScope() {
+		$scope = $this->getScope();
+		return !empty($scope);
 	}
 
 
