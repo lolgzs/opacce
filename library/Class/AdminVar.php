@@ -64,10 +64,6 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	);
 
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
 	/**
 	 * @param string $name
 	 * @return mixed

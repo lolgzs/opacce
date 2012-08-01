@@ -20,16 +20,6 @@
  */
 
 class ZendAfi_Validate_FieldGreater extends Zend_Validate_Abstract {
-	const NOT_GREATER = 'notGreater';
-	
-	protected $_messageVariables = array(
-		'fieldToCompare' => '_field_to_compare_label',
-	);
-
-	protected $_messageTemplates = array(
-		self::NOT_GREATER => "Should be greater than '%fieldToCompare%'",
-	);
-
 	/** @var string */
 	protected $_field_to_compare;
 	protected $_field_to_compare_label;
@@ -51,16 +41,8 @@ class ZendAfi_Validate_FieldGreater extends Zend_Validate_Abstract {
 	 * @return boolean
 	 */
 	public function isValid($value, array $fields_values = array()) {
-		$this->_setValue((string)$value);
-		if (!array_key_exists($this->_field_to_compare, $fields_values))
-			return true;
-
-		if ($value <= $fields_values[$this->_field_to_compare]) {
-			$this->_error(self::NOT_GREATER);
-			return false;
-		}
-
-		return true;
+		$validate = new ZendAfi_Validate_FieldsGreater(array($this->_field_to_compare => $this->_field_to_compare_label));
+		return $validate->isValid($value, $fields_values);
 	}
 }
 ?>

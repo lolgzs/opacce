@@ -106,19 +106,52 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 	protected function _groupForm($action, $group) {
 		$form = $this->view
 			->newForm(array('id' => 'usergroupform'))
-			->setAction($this->view->url(array('action' => $action)))
-			->addElement('text', 'libelle', array('label' => $this->view->_('Libellé *'),
-																						'required' => true,
-																						'allowEmpty' => false))
-			->addElement('multiCheckbox', 'rights', array('label' => 'Droits',
-																										'multiOptions' => Class_UserGroup::getRightDefinitionList()))
-			->addDisplayGroup(
-												array('libelle',
-															'rights'),
-												'usergroup',
-												array('legend' => 'Groupe'))
-			->populate($group->toArray());
+			->setAction($this->view->url(array('action' => $action)));
+
+		$form->addRequiredTextNamed('libelle')
+			->setLabel('Libellé *');
+
+		$elements = array('libelle');
+ 
+		if (Class_AdminVar::isFormationEnabled()) {
+			$form->addElement('multiCheckbox',
+				                'rights',
+				                 array('label' => 'Droits',
+													      'multiOptions' => Class_UserGroup::getRightDefinitionList()));
+			$elements[] = 'rights';
+		}
+
+		$form->addDisplayGroup($elements, 'usergroup', array('legend' => 'Groupe'));		
+
+		if (Class_AdminVar::isMultimediaEnabled()) {
+			$form->addRequiredTextNamed('max_day')
+				->setLabel('Par jour *')
+				->setValue(0)
+				->setValidators(array('Digits'));
+			
+			$form->addRequiredTextNamed('max_week')
+				->setLabel('Par semaine *')
+				->setValue(0)
+				->setValidators(array('Digits',
+						                  new ZendAfi_Validate_FieldsGreater(array('max_day' => 'Par jour'), true)));
+
+			$form->addRequiredTextNamed('max_month')
+				->setLabel('Par mois *')
+				->setValue(0)
+				->setValidators(array('Digits',
+						                  new ZendAfi_Validate_FieldsGreater(array(
+																	'max_day' => 'Par jour',
+																	'max_week' => 'Par semaine'),
+																true)));
+
+			$form->addDisplayGroup(
+				array('max_day', 'max_week', 'max_month'),
+				'multimedia',
+				array('legend' => 'Quota de réservation multimédia (mn)'));
+		}
 		
+		$form->populate($group->toArray());
+
 		return $form;
 	}
 }

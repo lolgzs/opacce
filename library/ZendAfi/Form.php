@@ -37,4 +37,14 @@ class ZendAfi_Form extends Zend_Form {
 		$this
 			->addElementPrefixPath('ZendAfi_Validate', 'ZendAfi/Validate', 'validate');
 	}
+
+
+	/**
+	 * @param $name string
+	 * @return Zend_Form_Element
+	 */
+	public function addRequiredTextNamed($name) {
+		$this->addElement('text', $name, array('required' => true, 'allowEmpty' => false));
+		return $this->getElement($name);
+	}
 }

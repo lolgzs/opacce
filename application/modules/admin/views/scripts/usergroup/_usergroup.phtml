@@ -4,19 +4,15 @@
 
   $url_edit_group = $this->url(array('action' => 'edit',
 																		 'id' => $this->group->getId()));
-
-  echo sprintf('<tr class="%s"><td>%s</td><td>%s</td><td>%s</td><td>%s %s %s</td></tr>', 
-							 $this->item_class,
-							 
-							 $this->tagAnchor($url_edit_group,
-																$this->group->getLibelle()),
-							 
-							 $this->tagAnchor($url_edit_members,
-																count($this->group->getUsers())),
-							 
-							 $this->tagAnchor($url_edit_group,
-																implode(', ', $this->group->getRightsLibelles())),
-
+?>
+<tr class="<?php echo $this->item_class;?>">
+	<td><?php echo $this->tagAnchor($url_edit_group, $this->group->getLibelle());?></td>
+	<td><?php echo $this->tagAnchor($url_edit_members, count($this->group->getUsers()));?></td>
+	<?php if (Class_AdminVar::isFormationEnabled()) { ?>
+	<td><?php echo $this->tagAnchor($url_edit_group, implode(', ', $this->group->getRightsLibelles()));?></td>
+  <?php } ?>
+	<td><?php
+  echo sprintf('%s %s %s', 
 							 $this->tagAnchor($url_edit_group,
 																$this->boutonIco("type=edit")),
 
@@ -26,4 +22,6 @@
 							 $this->tagAnchor($this->url(array('action' => 'delete',
 																								 'id' => $this->group->getId())),
 																$this->boutonIco("type=del")));
-?>
+  ?>
+	</td>
+</tr>

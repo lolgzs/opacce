@@ -28,7 +28,11 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
-			->setValeur('1'); //pour l'instant juste pour Camélia
+			->setValeur('1');
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur('');
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroup')
 			->whenCalled('save')->answers(true)
@@ -187,7 +191,7 @@ class Admin_UserGroupControllerAddPostTest extends Admin_UserGroupControllerTest
 	/** @test */
 	public function newGroupShouldBeCreatedWithLibelleIntervenants() {
 		$this->assertEquals('Intervenants', 
-												Class_UserGroup::getLoader()->getFirstAttributeForLastCallOn('save')->getLibelle());
+			Class_UserGroup::getLoader()->getFirstAttributeForLastCallOn('save')->getLibelle());
 	}
 
 
