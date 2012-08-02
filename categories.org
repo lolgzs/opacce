@@ -13,6 +13,9 @@
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
 	[[file:application/modules/opac/views/scripts/abonne/multimedia-hold-location.phtml::<?php%20foreach%20($this->locations%20as%20$location)%20{%20?][vue réservation]]
 	
+** Admin multimedia
+	 [[file:tests/application/modules/admin/controllers/MultimediaControllerTest.php::class%20Admin_MultimediaControllerIndexTest%20extends%20Admin_AbstractControllerTestCase%20{][Tests controller Multimedia]]
+	 [[file:application/modules/admin/controllers/MultimediaController.php::class%20Admin_MultimediaController%20extends%20ZendAfi_Controller_Action%20{][Controller Multimedia]]
 * Oeil accessibilité
 	[[file:public/admin/js/global.js::function%20createAccessibilityDialog()%20{][JS création dialogue]]
 
@@ -74,3 +77,6 @@ echo $container(
                 "This is the right sidebar")).$footer(
     ));
  #+END_SRC
+	 
+
+

@@ -102,14 +102,26 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	
 	protected $_loader_class = 'Multimedia_LocationLoader';
 	protected $_table_name = 'multimedia_location';
-	protected $_has_many = array(
-			'groups' => array(
-					'model' => 'Class_Multimedia_DeviceGroup',
-					'role' => 'location',
-					'order' => 'libelle'),
-			'devices' => array('through' => 'groups'));
+	protected $_has_many = ['groups' => ['model' => 'Class_Multimedia_DeviceGroup',
+																			 'role' => 'location',
+																			 'order' => 'libelle'],
 
-	protected $_default_attribute_values = array('days' => '');
+													'devices' => ['through' => 'groups']];
+
+	protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
+																			'referenced_in' => 'id_site']];
+
+	protected $_default_attribute_values = ['days' => ''];
+
+
+	/**
+	 * @return string
+	 */
+	public function getLibelleBib() {
+		if ($this->hasBib())
+			return $this->getBib()->getLibelle();
+		return '';
+	}
 	
 
 	/**

@@ -1,11 +1,14 @@
 <?php
 echo $this->tagModelTable(
 	$this->sites, 
-	array($this->_('Libellé')),
-	array('libelle'),
-	array(
-		array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
-		array('action' => 'browse', 'content' => $this->boutonIco('type=show'))),
+
+	[$this->_('Libellé'), $this->_('Bibliothèque')],
+
+	['libelle', 'libelle_bib'],
+
+	[['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+	 ['action' => 'browse', 'content' => $this->boutonIco('type=show')]],
+
 	'multimedia_location');
 
 echo $this->subview;

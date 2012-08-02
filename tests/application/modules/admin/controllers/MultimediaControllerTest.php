@@ -20,13 +20,30 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class Admin_MultimediaControllerIndexTest extends Admin_AbstractControllerTestCase {
+abstract class Admin_MultimetiaControllerTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Bib')
+			->whenCalled('findAllBy')
+			->answers([Class_Bib::newInstanceWithId(1)->setLibelle('Cran-Gévrier'),
+								 Class_Bib::newInstanceWithId(3)->setLibelle('Annecy')]);
+	}
+}
+
+
+
+
+class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
-				->whenCalled('findAllBy')
-				->answers(array(Class_Multimedia_Location::getLoader()->newInstanceWithId(33)
-						->setLibelle('Antibe')));
+			->whenCalled('findAllBy')
+			->answers([Class_Multimedia_Location::newInstanceWithId(33)
+								 ->setLibelle('Antibe')
+								 ->setIdSite(3)]);
 
 		$this->dispatch('/admin/multimedia', true);
 	}
@@ -57,6 +74,12 @@ class Admin_MultimediaControllerIndexTest extends Admin_AbstractControllerTestCa
 
 
 	/** @test */
+	public function antibeShouldBeBoundToBibAnnecy() {
+		$this->assertXPathContentContains('//table[@id="multimedia_location"]//td', 'Annecy');
+	}
+
+
+	/** @test */
 	public function antibeEditLinkShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "/multimedia/edit/id/33")]');
 	}
@@ -69,14 +92,18 @@ class Admin_MultimediaControllerIndexTest extends Admin_AbstractControllerTestCa
 }
 
 
-class Admin_MultimediaControllerEditTest extends Admin_AbstractControllerTestCase {
+
+
+class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_Multimedia_Location::getLoader()->newInstanceWithId(33)
-				->setLibelle('Antibe')
-				->setSlotSize(15)
-				->setMaxSlots(4)
-				->setDays('3,4');
+
+		Class_Multimedia_Location::newInstanceWithId(33)
+			->setIdSite(3)
+			->setLibelle('Antibe')
+			->setSlotSize(15)
+			->setMaxSlots(4)
+			->setDays('3,4');
 				
 		$this->dispatch('/admin/multimedia/edit/id/33', true);
 	}
@@ -140,10 +167,19 @@ class Admin_MultimediaControllerEditTest extends Admin_AbstractControllerTestCas
 	public function closeHourShouldBePresent() {
 		$this->assertXPath('//select[@name="close_hour"]');
 	}
+
+
+	/** @test */
+	public function selectForIdSiteShouldBePresent() {
+		$this->assertXPath('//select[@name="id_site"]//option[@value="3"][@label="Annecy"][@selected="selected"]');
+		$this->assertXPath('//select[@name="id_site"]//option[@value="1"][@label="Cran-Gévrier"]');
+	}
 }
 
 
-class Admin_MultimediaControllerBrowseTest extends Admin_AbstractControllerTestCase {
+
+
+class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -188,7 +224,7 @@ class Admin_MultimediaControllerBrowseTest extends Admin_AbstractControllerTestC
 }
 
 
-class Admin_MultimediaControllerAddTest extends Admin_AbstractControllerTestCase {
+class Admin_MultimediaControllerAddTest extends Admin_MultimetiaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/multimedia/add', true);
@@ -202,7 +238,7 @@ class Admin_MultimediaControllerAddTest extends Admin_AbstractControllerTestCase
 }
 
 
-class Admin_MultimediaControllerDeleteTest extends Admin_AbstractControllerTestCase {
+class Admin_MultimediaControllerDeleteTest extends Admin_MultimetiaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/multimedia/delete/id/255', true);
