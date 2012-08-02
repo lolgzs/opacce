@@ -21,8 +21,10 @@
 
 class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	protected $_definitions;
+	protected $_after_add_closure;
 
 	public function init() {
+		$this->_helper->redirector->setExit(false);
 		$this->_definitions = new ZendAfi_Controller_Action_RessourceDefinitions($this->getRessourceDefinitions());
 	}
 
@@ -54,6 +56,7 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 		if ($this->_setupFormAndSave($model)) {
 			$this->_helper->notify($this->_definitions->successfulSaveMessage($model));
 			$this->_redirectToEdit($model);
+			$this->_definitions->doAfterEdit();
 		}
 		
 		$this->_postEditAction($model);
@@ -67,12 +70,17 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 		if ($this->_setupFormAndSave($model)) {
 			$this->_helper->notify($this->_definitions->successfulAddMessage($model));
 			$this->_redirectToEdit($model);
+			$this->_definitions->doAfterAdd();
 		}
 	}
 
 
 	protected function _redirectToIndex() {
-		$this->_redirect('/admin/'.$this->_request->getControllerName().'/index');
+		$url = '/admin/'.$this->_request->getControllerName().'/index';
+		if (($scope_field = $this->_definitions->getScope()) 
+				&& ($scope_value = $this->_getParam($scope_field)))
+			$url .= '/'.$scope_field.'/'.$scope_value;
+		$this->_redirect($url);
 	}
 
 

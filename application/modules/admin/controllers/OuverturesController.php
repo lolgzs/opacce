@@ -35,24 +35,27 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 		$fields['id_site'] = array('element' => 'hidden');
 															 
 
-		return array(
-								 'model' => array('class' => 'Class_Ouverture',
-																	'name' => 'ouverture',
-																	'order' => 'debut_matin',
-																	'scope' => 'id_site'),
-								 'messages' => array('successful_add' => 'Plage d\'ouverture %s ajoutée',
-																		 'successful_save' => 'Plage d\'ouverture %s sauvegardée',
-																		 'successful_delete' => 'Plage d\'ouverture %s supprimée'),
+		return [
+						'model' => ['class' => 'Class_Ouverture',
+												'name' => 'ouverture',
+												'order' => 'debut_matin',
+												'scope' => 'id_site'],
+						'messages' => ['successful_add' => 'Plage d\'ouverture %s ajoutée',
+													 'successful_save' => 'Plage d\'ouverture %s sauvegardée',
+													 'successful_delete' => 'Plage d\'ouverture %s supprimée'],
 
-								 'actions' => array('edit' => array('title' => 'Modifier une plage d\'ouverture'),
-																		'add'  => array('title' => 'Ajouter une plage d\'ouverture'),
-																		'index' => array('title' => 'Plages d\'ouverture')),
+						'after_add' => function() {	$this->_redirectToIndex(); },
+						'after_edit' => function() {	$this->_redirectToIndex(); },
 
-								 'display_groups' => array('plage_ouverture' => array('legend' => 'Plage d\'ouverture',
-																																			'elements' => $fields
-																																)
-																					 )
-								 );
+						'actions' => ['edit' => ['title' => 'Modifier une plage d\'ouverture'],
+													'add'  => ['title' => 'Ajouter une plage d\'ouverture'],
+													'index' => ['title' => 'Plages d\'ouverture']],
+
+						'display_groups' => ['plage_ouverture' => ['legend' => 'Plage d\'ouverture',
+																											 'elements' => $fields
+																											 ]
+																 ]
+						];
 	}
 
 
@@ -66,7 +69,6 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 
 		parent::indexAction();
 	}
-
 }
 
 ?>

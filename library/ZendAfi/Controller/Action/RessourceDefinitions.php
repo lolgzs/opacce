@@ -50,6 +50,18 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 		return $this->getModelLoader()->newInstance();
 	}
 
+
+	public function doAfterAdd() {
+		if (isset($this->_definitions['after_add']))
+			$this->_definitions['after_add']();
+	}
+
+
+	public function doAfterEdit() {
+		if (isset($this->_definitions['after_edit']))
+			$this->_definitions['after_edit']();
+	}
+
 	
 	public function successfulDeleteMessage($model) {
 		return sprintf($this->_definitions['messages']['successful_delete'],

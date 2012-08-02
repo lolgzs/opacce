@@ -30,26 +30,22 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 			->whenCalled('save')
 			->answers(true)
 
-			->whenCalled('findAllBy')
-			->with(array('order' => 'debut_matin', 
-									 'id_site' => 1))
-			->answers(array(
-											$this->_ouverture_mardi_cran = Class_Ouverture::getLoader()
-											->newInstanceWithId(2)
-											->setDebutMatin('08:00:00')
-											->setFinMatin('12:00:00')
-											->setDebutApresMidi('13:30:00')
-											->setFinApresMidi('17:00:00')))
+			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 1])
+			->answers([
+								 $this->_ouverture_mardi_cran = Class_Ouverture::getLoader()
+								 ->newInstanceWithId(2)
+								 ->setDebutMatin('08:00:00')
+								 ->setFinMatin('12:00:00')
+								 ->setDebutApresMidi('13:30:00')
+								 ->setFinApresMidi('17:00:00')])
 
 
-			->whenCalled('findAllBy')
-			->with(array('order' => 'debut_matin', 
-									 'id_site' => 3))
-			->answers(array(
-											$this->_ouverture_jeudi_annecy = Class_Ouverture::getLoader()
-											->newInstanceWithId(45)
-											->setDebutMatin('08:30')
-											->setFinApresMidi('17:00:00')));
+			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 3])
+			->answers([
+								 $this->_ouverture_jeudi_annecy = Class_Ouverture::getLoader()
+								 ->newInstanceWithId(45)
+								 ->setDebutMatin('08:30')
+								 ->setFinApresMidi('17:00:00')]);
 	}
 }
 
@@ -162,13 +158,20 @@ class OuverturesControllerEditOuvertureMardiTest extends OuverturesControllerTes
 class OuverturesControllerPostEditOuvertureMardiCranTest extends OuverturesControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->postDispatch('/admin/ouvertures/edit/id_site/1/id/2',
-												array('debut_matin' => '10:30'));
+		$this->postDispatch('/admin/ouvertures/edit/id/2',
+												['debut_matin' => '10:30',
+												 'id_site' => 1]);
 	}
 
 	/** @test */
 	public function heureDebutMatinShouldBe_10_30() {
 		$this->assertEquals('10:30', $this->_ouverture_mardi_cran->getDebutMatin());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToOuverturesIndexSiteOne() {
+		$this->assertRedirectTo('/admin/ouvertures/index/id_site/1');
 	}
 }
 
@@ -202,10 +205,15 @@ class OuverturesControllerPostAddOuvertureCranTest extends OuverturesControllerT
 
 	public function setUp() {
 		parent::setUp();
-		$this->postDispatch('/admin/ouvertures/add/id_site/3',
-												array('debut_matin' => '10:30',
-															'fin_matin' => '11:30',
-															'id_site' => 3));
+
+		Class_Ouverture::whenCalled('save')->willDo(function($model) { 
+																									$model->setId(99); 
+																									return true;
+																								});
+
+		$this->postDispatch('/admin/ouvertures/add',	['debut_matin' => '10:30',
+																									 'fin_matin' => '11:30',
+																									 'id_site' => 3]);
 		$this->_new_ouverture = Class_Ouverture::getFirstAttributeForLastCallOn('save');
 	}
 
@@ -213,6 +221,12 @@ class OuverturesControllerPostAddOuvertureCranTest extends OuverturesControllerT
 	/** @test */
 	public function newOuvertureSiteIdShouldBeThree() {
 		$this->assertEquals(3, $this->_new_ouverture->getIdSite());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToOuverturesIndexSiteThree() {
+		$this->assertRedirectTo('/admin/ouvertures/index/id_site/3');
 	}
 }
 
