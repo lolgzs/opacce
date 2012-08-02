@@ -48,10 +48,6 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 						'after_add' => function() {	$this->_redirectToIndex(); },
 						'after_edit' => function() {	$this->_redirectToIndex(); },
 
-						'actions' => ['edit' => ['title' => 'Modifier une plage d\'ouverture'],
-													'add'  => ['title' => 'Ajouter une plage d\'ouverture'],
-													'index' => ['title' => 'Plages d\'ouverture']],
-
 						'display_groups' => ['plage_ouverture' => ['legend' => 'Plage d\'ouverture',
 																											 'elements' => $fields
 																											 ]
@@ -69,6 +65,25 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 		}
 
 		parent::indexAction();
+		$this->formatTitreWithLibelleBib('%s: plages d\'ouverture');
+	}
+
+
+	public function editAction() {
+		parent::editAction();
+		$this->formatTitreWithLibelleBib('%s: modifier une plage d\'ouverture');
+	}
+
+
+	public function addAction() {
+		parent::addAction();
+		$this->formatTitreWithLibelleBib('%s: ajouter une plage d\'ouverture');
+	}
+
+
+	public function formatTitreWithLibelleBib($template) {
+		$this->view->titre = $this->view->_($template, 
+																				Class_Bib::find($this->_getParam('id_site'))->getLibelle());
 	}
 }
 

@@ -82,17 +82,24 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 
 	public function indexActionTitle() {
-		return $this->_definitions['actions']['index']['title'];
+		return $this->titleForAction('index');
+	}
+
+
+	public function titleForAction($action) {
+		if (isset($this->_definitions['actions'][$action]['title']))
+			return $this->_definitions['actions'][$action]['title'];
+		return '';
 	}
 
 
 	public function editActionTitle() {
-		return $this->_definitions['actions']['edit']['title'];
+		return $this->titleForAction('edit');
 	}
 
 
 	public function addActionTitle() {
-		return $this->_definitions['actions']['add']['title'];
+		return $this->titleForAction('add');
 	}
 
 

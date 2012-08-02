@@ -26,6 +26,11 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 
 	public function setUp() {
 		parent::setUp();
+
+		Class_Bib::newInstanceWithId(1)->setLibelle('Cran-Gévrier');
+		Class_Bib::newInstanceWithId(3)->setLibelle('Annecy');
+		
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Ouverture')
 			->whenCalled('save')
 			->answers(true)
@@ -33,6 +38,7 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 1])
 			->answers([
 								 $this->_ouverture_mardi_cran = Class_Ouverture::newInstanceWithId(2)
+								 ->setIdSite(1)
 								 ->setJour('2012-07-23')
 								 ->setDebutMatin('08:00:00')
 								 ->setFinMatin('12:00:00')
@@ -43,6 +49,7 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 3])
 			->answers([
 								 $this->_ouverture_jeudi_annecy = Class_Ouverture::newInstanceWithId(45)
+								 ->setIdSite(3)
 								 ->setJour('2012-07-26')
 								 ->setDebutMatin('08:30')
 								 ->setFinApresMidi('17:00:00')]);
@@ -77,6 +84,12 @@ class OuverturesControllerIndexActionSiteCranTest extends OuverturesControllerTe
 	/** @test */
 	function pageShouldContainsButtonToCreateOuverture() {
 		$this->assertXPathContentContains('//div[contains(@onclick, "ouvertures/add/id_site/1")]//td', 'Ajouter une plage d\'ouverture');
+	}
+
+
+	/** @test */
+	public function titleShouldBePlagesDouvertureDeLaBibliothequeCranGevrier() {
+		$this->assertXPathContentContains('//h1', 'Cran-Gévrier: plages d\'ouverture');
 	}
 }
 
@@ -162,6 +175,12 @@ class OuverturesControllerEditOuvertureMardiTest extends OuverturesControllerTes
 	public function formShouldContainsSelectForFinApresMidi() {
 		$this->assertXPath('//form//select[@name="fin_apres_midi"]//option[@value="17:00"][@selected="selected"]');
 	}
+
+
+	/** @test */
+	public function titleShouldBeCranGevrierModifierUnePlageDouverture() {
+		$this->assertXPathContentContains('//h1', 'Cran-Gévrier: modifier une plage d\'ouverture');
+	}
 }
 
 
@@ -213,6 +232,12 @@ class OuverturesControllerAddOuvertureCranTest extends OuverturesControllerTestC
 	/** @test */
 	public function hiddenFieldIdSiteShouldHaveValueOne() {
 		$this->assertXPath('//input[@name="id_site"][@type="hidden"][@value="1"]');
+	}
+
+
+	/** @test */
+	public function titleShouldBeCranGevrierAjouteUnePlageDouverture() {
+		$this->assertXPathContentContains('//h1', 'Cran-Gévrier: ajouter une plage d\'ouverture');
 	}
 }
 
