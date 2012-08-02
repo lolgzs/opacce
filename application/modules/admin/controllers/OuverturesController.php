@@ -23,17 +23,18 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 	public function getRessourceDefinitions() {
 		$hours_select = Class_Multimedia_Location::getLoader()->getPossibleHours(30);
 
-		$fields = array();
-		$field_labels = array('debut_matin' => $this->view->_('Début matinée'), 
-													'fin_matin' => $this->view->_('Fin matinée'), 
-													'debut_apres_midi' =>	$this->view->_('Début après-midi'), 
-													'fin_apres_midi' => $this->view->_('Fin après-midi'));
+		$fields = ['id_site' => ['element' => 'hidden'],
+							 'jour' => ['element' => 'datePicker', 
+													'options' => ['label' => $this->view->_('Jour')]]];
+
+		$field_labels = ['debut_matin' => $this->view->_('Début matinée'), 
+										 'fin_matin' => $this->view->_('Fin matinée'), 
+										 'debut_apres_midi' =>	$this->view->_('Début après-midi'), 
+										 'fin_apres_midi' => $this->view->_('Fin après-midi')];
+
 		foreach ($field_labels as $field => $label)
-			$fields[$field] = array('element' => 'select',
-															'options' => array('label' => $label,
-																								 'multiOptions' => $hours_select));
-		$fields['id_site'] = array('element' => 'hidden');
-															 
+			$fields[$field] = ['element' => 'select', 'options' => ['label' => $label,
+																															'multiOptions' => $hours_select]];
 
 		return [
 						'model' => ['class' => 'Class_Ouverture',

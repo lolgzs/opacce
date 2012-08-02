@@ -32,8 +32,8 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 
 			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 1])
 			->answers([
-								 $this->_ouverture_mardi_cran = Class_Ouverture::getLoader()
-								 ->newInstanceWithId(2)
+								 $this->_ouverture_mardi_cran = Class_Ouverture::newInstanceWithId(2)
+								 ->setJour('2012-07-23')
 								 ->setDebutMatin('08:00:00')
 								 ->setFinMatin('12:00:00')
 								 ->setDebutApresMidi('13:30:00')
@@ -42,8 +42,8 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 
 			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 3])
 			->answers([
-								 $this->_ouverture_jeudi_annecy = Class_Ouverture::getLoader()
-								 ->newInstanceWithId(45)
+								 $this->_ouverture_jeudi_annecy = Class_Ouverture::newInstanceWithId(45)
+								 ->setJour('2012-07-26')
 								 ->setDebutMatin('08:30')
 								 ->setFinApresMidi('17:00:00')]);
 	}
@@ -60,11 +60,17 @@ class OuverturesControllerIndexActionSiteCranTest extends OuverturesControllerTe
 
 
 	/** @test */
-	public function ouvertureAtHeightShouldBeVisible() {
+	public function ouvertureHoursShouldBeVisible() {
 		$this->assertXPathContentContains('//td', '08:00');
 		$this->assertXPathContentContains('//td', '12:00');
 		$this->assertXPathContentContains('//td', '13:30');
 		$this->assertXPathContentContains('//td', '17:00');
+	}
+
+
+	/** @test */
+	public function jourShouldBeVisible() {
+		$this->assertXPathContentContains('//td', '23/07/2012');
 	}
 
 
@@ -86,10 +92,10 @@ class OuverturesControllerIndexActionSiteAnnecyTest extends OuverturesController
 
 	/** @test */
 	public function ouvertureAtHeightHalfShouldBeVisible() {
-		$this->assertXPathContentContains('//td[1]', '08:30');
-		$this->assertXPathContentContains('//td[2]', '12:00');
+		$this->assertXPathContentContains('//td[2]', '08:30');
 		$this->assertXPathContentContains('//td[3]', '12:00');
-		$this->assertXPathContentContains('//td[4]', '17:00');
+		$this->assertXPathContentContains('//td[4]', '12:00');
+		$this->assertXPathContentContains('//td[5]', '17:00');
 	}
 
 
@@ -125,7 +131,13 @@ class OuverturesControllerEditOuvertureMardiTest extends OuverturesControllerTes
 		$this->dispatch('/admin/ouvertures/edit/id_site/1/id/2', true);
 	}
 
+
+	/** @test */
+	public function formShouldContainsSelectForJour() {
+		$this->assertXPath('//form//input[@name="jour"][@value="23/07/2012"]');
+	}
 	
+
 	/** @test */
 	public function formShouldContainsSelectForDebutMatinWithHours() {
 		$this->assertXPath('//form//select[@name="debut_matin"]//option[@value="07:30"]');
@@ -160,7 +172,8 @@ class OuverturesControllerPostEditOuvertureMardiCranTest extends OuverturesContr
 		parent::setUp();
 		$this->postDispatch('/admin/ouvertures/edit/id/2',
 												['debut_matin' => '10:30',
-												 'id_site' => 1]);
+												 'id_site' => 1,
+												 'jour' => '23/07/2012']);
 	}
 
 	/** @test */
@@ -172,6 +185,12 @@ class OuverturesControllerPostEditOuvertureMardiCranTest extends OuverturesContr
 	/** @test */
 	public function responseShouldRedirectToOuverturesIndexSiteOne() {
 		$this->assertRedirectTo('/admin/ouvertures/index/id_site/1');
+	}
+
+
+	/** @test */
+	public function jourShouldBe2012_07_23() {
+		$this->assertEquals('2012-07-23', $this->_ouverture_mardi_cran->getJour());
 	}
 }
 

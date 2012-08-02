@@ -54,6 +54,16 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	public function getHourAttributeNamed($name) {
 		return substr($this->_get($name), 0, 5);
 	}
+
+
+	public function getFormattedJour() {
+		return Class_Date::humanDate($this->getJour(), 'dd/MM/yyyy');
+	}
+
+
+	public function setJour($jour) {
+		return $this->_set('jour', Class_Date::humanDate($jour, 'yyyy-MM-dd'));
+	}
 }
 
 ?>

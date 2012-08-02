@@ -8,12 +8,20 @@
 										);
 
  echo $this->tagModelTable($this->ouvertures, 
-													 array($this->_('Matin'), 
-																 $this->_(''), 
-																 $this->_('Après-midi'), 
-																 $this->_('')),
-													 array('debut_matin', 'fin_matin', 'debut_apres_midi', 'fin_apres_midi'),
-													 array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
-																 array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+
+														 [$this->_('Jour'), 
+															$this->_('Matin'), 
+															$this->_(''), 
+															$this->_('Après-midi'), 
+															$this->_('')],
+
+														 ['formatted_jour', 
+															'debut_matin', 
+															'fin_matin', 
+															'debut_apres_midi', 
+															'fin_apres_midi'],
+
+														 [ ['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+															 ['action' => 'delete', 'content' => $this->boutonIco('type=del')] ],
 													 'ouvertures');
 ?>

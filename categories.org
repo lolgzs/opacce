@@ -43,3 +43,34 @@
 
 * doc
 ** [[https://gist.github.com/3126866][Basic Meta Programming with PHP5.4]]
+** Histoire de faire un canvas:
+#+BEGIN_SRC php
+function html ($code , $id="", $class=""){
+    if ($id !== "") $id = " id = \"$id\"" ;
+    $class =  ($class !== "")? " class =\"$class\"":">";
+    $open = "<$code$id$class";
+    $close = "</$code>";
+    return function ($inner = "") use ($open, $close){
+        return "$open$inner$close";};
+
+}
+$layout = array('container','header','pmain','lsidebar','rsidebar','footer');
+
+foreach ($layout as $element)
+   $$element = html ("div", $element);
+
+$div = html("div", "test");
+
+$bold = html('strong');
+$italic = html('i');
+
+$msg= $div($bold($italic("hello from the left sidebar")));
+
+echo $container(
+    $header(
+        "This is the header").$pmain(
+            $lsidebar(
+                $msg).$rsidebar(
+                "This is the right sidebar")).$footer(
+    ));
+ #+END_SRC
