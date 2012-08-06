@@ -70,7 +70,11 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 		if ($from > $to)
 			return array();
 				
-		return range($from, $to, 60 * $increment);
+		$times = range($from, $to, 60 * $increment);
+		if (end($times) == $to)
+			array_pop($times);
+
+		return $times;
 	}
 
 
@@ -131,12 +135,25 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getStartTimesForDate($date) {
-		$min_time = $this->getMinTimeForDate($date);
-		$start_times = $this->getLoader()->getPossibleHours($this->getSlotSize(),
-			                                                  $min_time,
-			                                                  $this->getMaxTimeForDate($date));
+		if (!$ouverture = $this->getOuvertureForDate($date))
+			return array();
 
-		if ($min_time < ($current = $this->getCurrentTime())) {
+		$timestamp = function($hour) use ($date) {
+			return strtotime($date . ' ' . $hour .':00');
+		};
+
+		$slots_for_interval = function($start, $end) use ($timestamp) {
+			return $this->getLoader()->getPossibleHours($this->getSlotSize(), 
+																									$timestamp($start), 
+																									$timestamp($end));
+		};
+
+		$start_times = array_merge($slots_for_interval($ouverture->getDebutMatin(),
+																									 $ouverture->getFinMatin()),
+															 $slots_for_interval($ouverture->getDebutApresMidi(),
+																									 $ouverture->getFinApresMidi()));
+
+		if ($timestamp($ouverture->getDebutMatin()) < ($current = $this->getCurrentTime())) {
 			$hour = (int) date('H', $current);
 			$minute = (int) date('i', $current);
 			$i = 0;
@@ -197,12 +214,26 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	}
 
 
+
+	public function getOuvertureForDate($date) {
+		$dow = (int)date('w', strtotime($date));
+
+		foreach($this->getOuvertures() as $ouverture) {
+			if ($ouverture->getJourSemaine() == $dow)
+				return $ouverture;
+		}
+	}
+
+
 	/**
 	 * @param $date string (YYYY-MM-DD)
 	 * @return int
 	 */
 	public function getMinTimeForDate($date) {
-		return strtotime($date . ' ' . $this->getOpenHour() . ':00');
+		if ($ouverture = $this->getOuvertureForDate($date))
+			return strtotime($date . ' ' . $ouverture->getDebutMatin() . ':00');
+			
+		return strtotime($date . ' 00:00:00');
 	}
 
 
@@ -211,7 +242,9 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 * @return int
 	 */
 	public function getMaxTimeForDate($date) {
-		return strtotime($date . ' ' . $this->getCloseHour() . ':00');
+		if ($ouverture = $this->getOuvertureForDate($date))
+			return strtotime($date . ' ' . $ouverture->getFinApresMidi() . ':00');
+		return strtotime($date . ' 00:00:00');
 	}
 
 

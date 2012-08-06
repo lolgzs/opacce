@@ -78,7 +78,6 @@ class Class_Ouverture extends Storm_Model_Abstract {
 		return substr($this->_get($name), 0, 5);
 	}
 
-
 	public function getFormattedJour() {
 		return Class_Date::humanDate($this->getJour(), 'dd/MM/yyyy');
 	}
