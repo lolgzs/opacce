@@ -20,14 +20,37 @@
  */
 
 class Class_Ouverture extends Storm_Model_Abstract {
+	const LUNDI=1, MARDI=2, MERCREDI=3, JEUDI=4, VENDREDI=5, SAMEDI=6, DIMANCHE=7;
+
 	protected $_table_name = 'ouvertures';
-	protected $_default_attribute_values = array('debut_matin' => '10:00',
-																							 'fin_matin' => '12:00',
-																							 'debut_apres_midi' => '12:00',
-																							 'fin_apres_midi' => '18:00');
+	protected $_default_attribute_values = ['debut_matin' => '10:00',
+																					'fin_matin' => '12:00',
+																					'debut_apres_midi' => '12:00',
+																					'fin_apres_midi' => '18:00'];
+
+	protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
+																			'referenced_in' => 'id_site']];
+
+	public static function __callStatic($method, $args) {
+		if (!preg_match('/chaque(Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche)/', $method, $matches)) 
+			return parent::__callStatic($method, $args);
+
+		return static::getLoader()->newInstance()
+			->setJourSemaine(constant('Class_Ouverture::'.strtoupper($matches[1])))
+			->setDebutMatin($args[0])
+			->setFinMatin($args[1])
+			->setDebutApresMidi($args[2])
+			->setFinApresMidi($args[3]);
+	}
+
 
 	public function getLibelle() {
 		return '';
+	}
+
+
+	public function getLibelleBib() {
+		return $this->getBib()->getLibelle();
 	}
 
 

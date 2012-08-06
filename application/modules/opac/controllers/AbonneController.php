@@ -541,11 +541,13 @@ class AbonneController extends Zend_Controller_Action {
 
 	public function multimediaHoldDayAction() {
 		$bean = $this->_getDeviceHoldBean();
+		/* Si le site n'a pas encore été choisi, on retourne au choix du site */
 		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
 			$this->_redirect('/abonne/multimedia-hold-location');
 			return;
 		}
 
+		/* Vérification du quota sur le jour choisi */
 		$day = $this->_getParam('day');
 		$quotaErrorType = null;
 		if (null != $day) {
@@ -566,12 +568,14 @@ class AbonneController extends Zend_Controller_Action {
 			}
 		}
 				
+		/* Choix valide, passage à l'écran suivant */
 		if (null != $day && null == $quotaErrorType) {
 			$bean->day = $day;
 			$this->_redirect('/abonne/multimedia-hold-hours');
 			return;
 		}
 
+		/* Rendu du calendrier avec les jours sélectionnables */
 		$this->view->minDate = $location->getMinDate();
 		$this->view->maxDate = $location->getMaxDate();
 		$holidayStamps = array_map(

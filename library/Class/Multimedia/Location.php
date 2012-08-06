@@ -106,7 +106,9 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 																			 'role' => 'location',
 																			 'order' => 'libelle'],
 
-													'devices' => ['through' => 'groups']];
+													'devices' => ['through' => 'groups'],
+
+													'ouvertures' => ['through' => 'bib']];
 
 	protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
 																			'referenced_in' => 'id_site']];

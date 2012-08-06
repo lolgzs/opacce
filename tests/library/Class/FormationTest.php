@@ -223,7 +223,7 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	 * @test 
 	 * @depends patrickAddSessionFevrierShouldUpdateSessionFormationList
 	 */
-	public function patrickRemoveSessionFevrireShouldUpdateSessionFormatioListe($patrick) {
+	public function patrickRemoveSessionFevrireShouldUpdateSessionFormationListe($patrick) {
 		$patrick->removeSessionFormation($this->_session_fevrier);
 		$this->assertEquals(array($this->_session_janvier), $patrick->getSessionFormations());
 	}

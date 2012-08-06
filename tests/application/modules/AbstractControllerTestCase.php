@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase {
+	use Storm_Test_THelpers;
+
 	protected $_registry_sql;
 
 	//permet d'authentifier sur la partie admin avant test

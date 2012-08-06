@@ -8,6 +8,35 @@
 	 [[file:tests/application/modules/admin/controllers/OuverturesControllerTest.php::abstract%20class%20OuverturesControllerTestCase%20extends%20Admin_AbstractControllerTestCase%20{][Tests Controller Ouvertures]]
 	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20ZendAfi_Controller_Action%20{][Controller Ouvertures]]	 
 
+** Réservation automatique [0/3]
+cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%20!%3D%20($hold%20%3D%20$device->getCurrentHoldForUser($user))][Abonne authenticateAction]]
+[[file:library/Class/Multimedia/Device.php::public%20function%20autoHoldByUser($user,%20$current_hold)%20{][Device autoHoldByUser]]
+[[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaAuthenticateLaurentTest%20extends%20AbonneControllerMultimediaAuthenticateValidTestCase%20{][Tests autoHold]] - [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::protected%20function%20_prepareLocationInSession()%20{][TestCase de base]]
+*** TODO adapter getMaxTimeForToday avec les ouvertures dans [[file:library/Class/Multimedia/Device.php::if%20($end%20>%20($next_closing%20%3D%20$this->getMaxTimeForToday()))][Device autoHold]]
+*** TODO Ajouter la vérification du quota (factoriser avec [[file:application/modules/opac/controllers/AbonneController.php::/*%20V%C3%A9rification%20du%20quota%20sur%20le%20jour%20choisi%20*/][ce qui est fait dans AbonneController]] (en fait déjà dans [[file:library/Class/Users.php::public%20function%20getMultimediaQuotaErrorForDay($day)%20{][Users::getMultimediaQuotaErrorForDay]]
+*** TODO Rajouter les erreurs
+Erreurs renvoyées [[file:application/modules/opac/controllers/AbonneController.php::$response->error%20%3D%20$request->getError()%3B][dans authenticate]] avec le Multimedia_AuthenticateRequest
+Rajouter erreurs: 
+**** réservation prévue sur une durée < slot: peux pas réserver, réservation prévue dans xx mn  => Rajouter une durée minimale de réservation auto (par ex., si on réserve en plein milieu d'un slot et que le slot suivant déjà réservé, on peut ou pas utiliser le poste selon le temps restant avant ce prochain slot)
+**** réservation auto. pas activée et aucune réservation pour l'utilisateur
+**** c'est pas l'utilisateur qui a réservé (réservation en cours)
+**** poste/device non trouvé
+** Réservation d'un poste [0/3]
+	 [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::abstract%20class%20AbonneControllerMultimediaAuthenticateTestCase%20extends%20AbstractControllerTestCase%20{][Test controller Abonne]]
+*** [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldLocationTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][1er écran choix du lieu]]
+*** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldDayTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][2nd écran choix du jour]] - [[file:application/modules/opac/controllers/AbonneController.php::public%20function%20multimediaHoldDayAction()%20{][action controller]] [0/2]
+**** TODO Remplacer le getDays qui retourne la liste des coches par les ouvertures récurentes de la bib cf [[file:application/modules/opac/controllers/AbonneController.php::if%20(-1%20%3D%3D%20$.inArray(date.getDay(),%20%5B'%20.%20$location->getDays()%20.%20'%5D))%20{][$location->getDays()]]
+**** TODO Si le bidouilleux mets une date bidon dans l'url, l'écran suivant ne proposera pas d'heure de départ. Donc faire la vérification pour ne pas changer d'écran et afficher message erreur
+		 
+*** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldHoursTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][3ème écran choix de l'heure]] [0/1]
+**** TODO Brancher getMin/MaxTimeForDate aux ouvertures [[file:application/modules/opac/controllers/AbonneController.php::if%20($start%20<%20$location->getMinTimeForDate($bean->day)][vérification créneau ouverture]]
+
+
+*** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldDeviceTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][4ème écran choix du poste]] [0/1]
+**** TODO Rajouter un écran choix de groupe + schuffle des postes que pour un groupe donné [[file:library/Class/Multimedia/Location.php::public%20function%20getHoldableDevicesForDateTimeAndDuration($date,%20$time,%20$duration)%20{][Recherche des postes pour horaire donné]]
+
+*** [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldConfirmTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][5ème écran confirmation]]
+** TODO Fiche abonné: afficher conso + temps restant par jour / semaine / mois
 ** Skin réservation timeline 
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
