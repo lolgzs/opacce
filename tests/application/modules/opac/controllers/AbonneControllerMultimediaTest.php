@@ -71,6 +71,8 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 }
 
 
+
+
 class AbonneControllerMultimediaAuthenticateValidationTest extends AbonneControllerMultimediaAuthenticateTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -114,6 +116,8 @@ class AbonneControllerMultimediaAuthenticateValidationTest extends AbonneControl
 }
 
 
+
+
 class AbonneControllerMultimediaAuthenticateMireilleTest extends AbonneControllerMultimediaAuthenticateTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -129,6 +133,8 @@ class AbonneControllerMultimediaAuthenticateMireilleTest extends AbonneControlle
 		$this->assertEquals('SubscriptionExpired', $this->_json->error);	
 	}
 }
+
+
 
 
 abstract class AbonneControllerMultimediaAuthenticateValidTestCase extends AbonneControllerMultimediaAuthenticateTestCase {
@@ -156,6 +162,8 @@ abstract class AbonneControllerMultimediaAuthenticateValidTestCase extends Abonn
 }
 
 
+
+
 class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
 	protected function _initUser() {
 		$this->_user = AbonneControllerMultimediaUsersFixtures::getLaurent();
@@ -164,19 +172,19 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 
 		
 	protected function _launch() {
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
+		$this->onLoaderOfModel('Class_Multimedia_Location')
 			->whenCalled('findByIdOrigine')
-			->answers(Class_Multimedia_Location::getLoader()->newInstanceWithId(1));
+			->answers(Class_Multimedia_Location::newInstanceWithId(1));
 				
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
+		$this->onLoaderOfModel('Class_Multimedia_Device')
 			->whenCalled('findByIdOrigineAndLocation')
-			->answers(Class_Multimedia_Device::getLoader()->newInstanceWithId(1));
+			->answers(Class_Multimedia_Device::newInstanceWithId(1));
 				
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+		$this->onLoaderOfModel('Class_Multimedia_DeviceHold')
 			->whenCalled('getHoldOnDeviceAtTime')
-			->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(333)
+			->answers(Class_Multimedia_DeviceHold::newInstanceWithId(333)
 				->setIdUser($this->_user->getId())
-				->setEnd(strtotime('2012-09-09 16:40:00')));
+				->setEnd(strtotime('2012-09-12 16:40:00')));
 				
 		parent::_launch();
 	}
@@ -239,9 +247,11 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 
 	/** @test */
 	public function holdShouldLastUntil16h40() {
-		$this->assertEquals('2012-09-09T16:40:00+02:00', $this->_json->until);
+		$this->assertEquals('2012-09-12T16:40:00+02:00', $this->_json->until);
 	}
 }
+
+
 
 
 class AbonneControllerMultimediaAuthenticateArnaudTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
@@ -271,6 +281,8 @@ class AbonneControllerMultimediaAuthenticateBaptisteTest extends AbonneControlle
 }
 
 
+
+/* Début test du workflow de réservation */
 abstract class AbonneControllerMultimediaHoldTestCase extends AbstractControllerTestCase {
 	protected $_session;
 	protected $_bean;
@@ -286,14 +298,14 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 		$bean->device = 0;
 		$this->_session->holdBean = $this->_bean = $bean;
 
-		Class_Users::getLoader()->getIdentity()->setUserGroups(array(
-				Class_UserGroup::getLoader()
-				->newInstanceWithId(12)
-				->setMaxDay(120)
-				->setMaxWeek(240)
-				->setMaxMonth(360)));
+		Class_Users::getIdentity()
+			->setUserGroups([Class_UserGroup::newInstanceWithId(12)
+											 ->setMaxDay(120)
+											 ->setMaxWeek(240)
+											 ->setMaxMonth(360)]);
 				
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+		$this
+			->onLoaderOfModel('Class_Multimedia_DeviceHold')
 			->whenCalled('getDurationForUserBetweenTimes')
 			->answers(0);
 	}
@@ -301,21 +313,25 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 
 	protected function _prepareLocationInSession() {
 		$this->_bean->location = 123;
-		Class_Multimedia_Location::getLoader()
-				->newInstanceWithId(123)
-				->setLibelle('Antibes')
-				->setSlotSize(30)
-				->setMaxSlots(4)
-				->setHoldDelayMin(0)
-				->setHoldDelayMax(60)
-				->setDays('3,4')
-				->setOpenHour('08:30')
-				->setCloseHour('17:45');
+
+		Class_Bib::newInstanceWithId(3)
+			->setLibelle('Antibes');
+			
+		Class_Multimedia_Location::newInstanceWithId(123)
+			->setIdSite(3)
+			->setLibelle('Antibes')
+			->setSlotSize(30)
+			->setMaxSlots(4)
+			->setHoldDelayMin(0)
+			->setHoldDelayMax(60)
+			->setOuvertures([Class_Ouverture::chaqueLundi('08:30', '12:00', '12:00', '17:45')->setId(1)->cache(),
+											 Class_Ouverture::chaqueMercredi('08:30', '12:00', '12:00', '17:45')->setId(3)->cache(),
+											 Class_Ouverture::chaqueJeudi('08:30', '12:00', '12:00', '17:45')->setId(4)->cache()]);
 	}
 
 
 	protected function _prepareDayInSession() {
-		$this->_bean->day = '2012-09-09';
+		$this->_bean->day = '2012-09-12';
 	}
 
 
@@ -342,6 +358,9 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 }
 
 
+
+
+/* Premier écran de choix du lieu */
 class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -375,6 +394,9 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 }
 
 
+
+
+/* Validation du lieu, on est redirigé sur l'écran choix du jour */
 class AbonneControllerMultimediaHoldLocationChoiceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -395,6 +417,9 @@ class AbonneControllerMultimediaHoldLocationChoiceTest extends AbonneControllerM
 }
 
 
+
+
+/* Second écran choix du jour */
 class AbonneControllerMultimediaHoldDayTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -422,11 +447,14 @@ class AbonneControllerMultimediaHoldDayTest extends AbonneControllerMultimediaHo
 }
 
 
+
+
+/* Validation du second écran choix du jour, redirection vers le choix de l'heure */
 class AbonneControllerMultimediaHoldDayChoiceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_prepareLocationInSession();
-		$this->dispatch('/abonne/multimedia-hold-day/day/2012-09-09', true);
+		$this->dispatch('/abonne/multimedia-hold-day/day/2012-09-12', true);
 	}
 
 
@@ -438,11 +466,14 @@ class AbonneControllerMultimediaHoldDayChoiceTest extends AbonneControllerMultim
 
 	/** @test */
 	public function beanShouldHaveDaySet() {
-		$this->assertEquals('2012-09-09', $this->_session->holdBean->day);
+		$this->assertEquals('2012-09-12', $this->_session->holdBean->day);
 	}
 }
 
 
+
+
+/* Validation du second écran mais l'utilisateur a dépassé son quota de réservation */
 class AbonneControllerMultimediaHoldDayChoiceWithOverQuotaTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -452,7 +483,7 @@ class AbonneControllerMultimediaHoldDayChoiceWithOverQuotaTest extends AbonneCon
 			->whenCalled('getDurationForUserBetweenTimes')
 			->answers(8000);
 				
-		$this->dispatch('/abonne/multimedia-hold-day/day/2012-09-09', true);
+		$this->dispatch('/abonne/multimedia-hold-day/day/2012-09-12', true);
 	}
 
 
@@ -469,6 +500,10 @@ class AbonneControllerMultimediaHoldDayChoiceWithOverQuotaTest extends AbonneCon
 }
 
 
+
+
+
+/* Troisième écran choix de l'heure de début de réservation */
 class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -477,7 +512,7 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 
 		Class_Multimedia_Location::setTimeSource(Storm_Test_ObjectWrapper::mock()
 			->whenCalled('time')
-			->willDo(function() {return strtotime('2012-09-09 09:00:00');}));
+			->willDo(function() {return strtotime('2012-09-12 09:00:00');}));
 
 		$this->dispatch('/abonne/multimedia-hold-hours', true);
 	}
@@ -491,7 +526,7 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 
 	/** @test */
 	public function listOfStartTimesShouldBePresent() {
-		$this->assertXPathCount('//select[@id="time"]/option', 18);
+		$this->assertXPathCount('//select[@id="time"]/option', 18, $this->_response->getBody());
 	}
 
 
@@ -520,6 +555,9 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 }
 
 
+
+
+/* Troisième écran choix de l'heure, redirection sur le choix du poste */
 class AbonneControllerMultimediaHoldHoursChoiceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -543,6 +581,9 @@ class AbonneControllerMultimediaHoldHoursChoiceTest extends AbonneControllerMult
 }
 
 
+
+
+/* Troisième écran choix d'une heure déjà allouée */
 class AbonneControllerMultimediaHoldHoursChooseAlreadyHeldTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -562,6 +603,9 @@ class AbonneControllerMultimediaHoldHoursChooseAlreadyHeldTest extends AbonneCon
 }
 
 
+
+
+/* Quatrième écran choix du poste */
 class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -603,6 +647,9 @@ class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimedi
 }
 
 
+
+
+/* Quatrième écran validation du choix du poste, redirection vers la confirmation */
 class AbonneControllerMultimediaHoldDeviceChoiceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -626,6 +673,9 @@ class AbonneControllerMultimediaHoldDeviceChoiceTest extends AbonneControllerMul
 }
 
 
+
+
+/* Cinquième écran confirmation de la réservation */
 class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -653,8 +703,8 @@ class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimed
 
 
 	/** @test */
-	public function dayShouldBeSeptemberNine2012() {
-		$this->assertXPathContentContains('//li', 'Jour : 09 septembre 2012');
+	public function dayShouldBeSeptemberTwelve2012() {
+		$this->assertXPathContentContains('//li', 'Jour : 12 septembre 2012');
 	}
 
 
@@ -683,6 +733,9 @@ class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimed
 }
 
 
+
+
+/* Cinquième écran, réservation confirmée */
 class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -708,6 +761,9 @@ class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControlle
 }
 
 
+
+
+/* Sixième écran, visualisation de la réservation */
 class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -733,7 +789,7 @@ class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaH
 
 
 	/** @test */
-	public function dayShouldBeSeptemberNine2012() {
+	public function dayShouldBeSeptemberTwentyHeight2012() {
 		$this->assertXPathContentContains('//li', 'Jour : 28 décembre 2012');
 	}
 
@@ -763,6 +819,8 @@ class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaH
 }
 
 
+
+
 class AbonneControllerMultimediaHoldViewDeleteTest extends AbonneControllerMultimediaHoldTestCase {
 	protected $_wrapper;
 	
@@ -790,6 +848,8 @@ class AbonneControllerMultimediaHoldViewDeleteTest extends AbonneControllerMulti
 }
 
 
+
+
 class AbonneControllerMultimediaHoldViewOfAnotherUserTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -804,6 +864,8 @@ class AbonneControllerMultimediaHoldViewOfAnotherUserTest extends AbonneControll
 		$this->assertRedirectTo('/abonne/fiche');
 	}
 }
+
+
 
 
 class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTestCase {
@@ -838,6 +900,8 @@ class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTe
 		$this->assertXPath('//a[contains(@href, "multimedia-hold-view/id/12")]');
 	}
 }
+
+
 
 
 class AbonneControllerMultimediaUsersFixtures {

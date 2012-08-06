@@ -31,14 +31,22 @@ abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 	protected $_hold;
 	/** @var int */
 	protected $_time;
+	/** @var Class_Bib */
+	protected $_bib_antibes;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->_location = Class_Multimedia_Location::getLoader()->newInstanceWithId(2);
-		$this->_group = Class_Multimedia_DeviceGroup::getLoader()->newInstanceWithId(2)
+		$this->_bib_antibes = Class_Bib::newInstanceWithId(5)->setLibelle('Antibes');
+
+		$this->_location = Class_Multimedia_Location::newInstanceWithId(2)
+			->setBib($this->_bib_antibes)
+			->setOuvertures([]);
+
+		$this->_group = Class_Multimedia_DeviceGroup::newInstanceWithId(2)
 				->setLocation($this->_location);
-		$this->_device = Class_Multimedia_Device::getLoader()->newInstanceWithId(2)
+
+		$this->_device = Class_Multimedia_Device::newInstanceWithId(2)
 				->setGroup($this->_group);
 
 		$this->_time = strtotime('today');
@@ -161,11 +169,14 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterCloseHoursTe
 	public function setUp() {
 		parent::setUp();
 		$this->_location
-				->setAuthDelay(10)
-				->setAutohold(1)
-				->setSlotSize(15)
-				->setAutoholdSlotsMax(600)
-				->setCloseHour('10:00');
+			->setAuthDelay(10)
+			->setAutohold(1)
+			->setSlotSize(15)
+			->setAutoholdSlotsMax(600)
+			->addOuverture(Class_Ouverture::newInstanceWithId(5)
+										 ->setJourSemaine(date('w'))
+										 ->setBib($this->_bib_antibes)
+										 ->setHoraires(['08:00', '10:00', '10:00', '10:00']));
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 				->whenCalled('getHoldOnDeviceAtTime')
@@ -202,11 +213,14 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterNextHoldStar
 	public function setUp() {
 		parent::setUp();
 		$this->_location
-				->setAuthDelay(10)
-				->setAutohold(1)
-				->setSlotSize(15)
-				->setAutoholdSlotsMax(600)
-				->setCloseHour('23:00');
+			->setAuthDelay(10)
+			->setAutohold(1)
+			->setSlotSize(15)
+			->setAutoholdSlotsMax(600)
+			->addOuverture(Class_Ouverture::newInstanceWithId(5)
+										 ->setBib($this->_bib_antibes)
+										 ->setJourSemaine(date('w'))
+										 ->setHoraires(['08:00', '12:00', '14:00', '23:00']));
 
 		$this->_nextStartTime = $this->_time + (60 * 60);
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')

@@ -21,7 +21,7 @@
  */
 require_once 'ModelTestCase.php';
 
-class Multimedia_LocationTest extends Storm_Test_ModelTestCase {
+class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 	protected $_location;
 
 	public function setUp() {
@@ -101,10 +101,28 @@ class Multimedia_LocationTest extends Storm_Test_ModelTestCase {
 		$this->assertEquals(['10:00' => '10h00', '10:30' => '10h30', '11:00' => '11h00', '11:30' => '11h30', 
 												 '14:00' => '14h00', '14:30' => '14h30', '15:00' => '15h00', '15:30' => '15h30', 
 												 '16:00' => '16h00', '16:30' => '16h30', '17:00' => '17h00', '17:30' => '17h30',
-												 '18:00' => '18h00', '18:30' => '18h30', '19:00' => '19h00'], 
+												 '18:00' => '18h00', '18:30' => '18h30'], 
 												$this->_location->getStartTimesForDate('2012-08-09'));
 		
 	}
+}
+
+
+
+class Multimedia_LocationWithoutBibTest extends Storm_Test_ModelTestCase {
+	protected $_location;
+
+	public function setUp() {
+		$this->_location = Class_Multimedia_Location::newInstanceWithId(123)
+			->setOuvertures([Class_Ouverture::newInstanceWithId(3)]);
+	}
+
+
+	/** @test */
+	public function getOuverturesShouldAnswersEmptyArray() {
+		$this->assertEmpty($this->_location->getOuvertures());
+	}
+
 }
 
 ?>

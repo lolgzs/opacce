@@ -37,10 +37,16 @@ class Class_Ouverture extends Storm_Model_Abstract {
 
 		return static::getLoader()->newInstance()
 			->setJourSemaine(constant('Class_Ouverture::'.strtoupper($matches[1])))
-			->setDebutMatin($args[0])
-			->setFinMatin($args[1])
-			->setDebutApresMidi($args[2])
-			->setFinApresMidi($args[3]);
+			->setHoraires($args);
+	}
+
+
+	public function setHoraires($horaires) {
+		return $this
+			->setDebutMatin($horaires[0])
+			->setFinMatin($horaires[1])
+			->setDebutApresMidi($horaires[2])
+			->setFinApresMidi($horaires[3]);
 	}
 
 
