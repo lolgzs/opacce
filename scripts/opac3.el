@@ -133,6 +133,20 @@
 	)
 
 
+(defun opac3-strftime(start end) 
+	(interactive "r")
+	(let ((selected-text (buffer-substring start end)))
+		(geben-eval-expression (concat "strftime('%Y-%M-%d %H:%M:%S', " selected-text " )")))
+)
+
+
+(defun opac3-eval-region(start end) 
+	(interactive "r")
+	(let ((selected-text (buffer-substring start end)))
+		(geben-eval-expression selected-text))
+)
+
+
 (define-minor-mode opac3-mode
   "Toggle AFI-OPAC  mode."
   :lighter " opac3"
