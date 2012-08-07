@@ -219,7 +219,10 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 
 	public function getOuvertureForDate($date) {
-		$dow = (int)date('w', strtotime($date));
+		if (is_string($date))
+			$date = strtotime($date);
+
+		$dow = (int)date('w', $date);
 
 		foreach($this->getOuvertures() as $ouverture) {
 			if ($ouverture->getJourSemaine() == $dow)
@@ -253,7 +256,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 	/** @return int */
 	public function getMaxTimeForToday() {
-		return $this->getMaxTimeForDate(date('Y-m-d', $this->getCurrentTime()));
+		$ouverture = $this->getOuvertureForDate(self::getTimeSource()->date());
+		return $ouverture->getNextCloseFrom($this->getCurrentTime());
 	}
 	
 

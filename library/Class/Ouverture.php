@@ -84,13 +84,47 @@ class Class_Ouverture extends Storm_Model_Abstract {
 		return substr($this->_get($name), 0, 5);
 	}
 
+
+	/**
+	 * @return string
+	 */
 	public function getFormattedJour() {
 		return Class_Date::humanDate($this->getJour(), 'dd/MM/yyyy');
 	}
 
 
+	/**
+	 * @param string $jour
+	 */
 	public function setJour($jour) {
 		return $this->_set('jour', Class_Date::humanDate($jour, 'yyyy-MM-dd'));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isJourneeContinue() {
+		return $this->getFinMatin() == $this->getDebutApresMidi();
+	}
+
+
+	/**
+	 * Retourne la prochaine fermeture: soit fin de matinée, soit fin d'après-midi selon l'heure
+	 * et si journée continue ou non
+	 * @param int $timestamp
+	 * @return timestamp
+	 */
+	public function getNextCloseFrom($timestamp) {
+		$to_date = function($hour) use($timestamp) {
+			return strtotime(date('Y-m-d', $timestamp).' '.$hour);
+		};
+
+		if ($this->isJourneeContinue() 
+				|| $timestamp >= $to_date($this->getDebutApresMidi()))
+			return $to_date($this->getFinApresMidi());
+
+		return $to_date($this->getFinMatin());
 	}
 }
 

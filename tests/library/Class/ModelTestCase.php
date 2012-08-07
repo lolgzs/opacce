@@ -37,6 +37,8 @@ abstract class TestFixtures {
 
 
 abstract class ModelTestCase extends PHPUnit_Framework_TestCase {
+	use Storm_Test_THelpers;
+
 	protected function _buildTableMock($model, $methods) {
 		$table = $this->getMock('Storm_Model_Table'.$model,$methods);
 		$loader = call_user_func(array($model, 'getLoader'));

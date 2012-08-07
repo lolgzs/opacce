@@ -197,43 +197,55 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterCloseHoursTe
 	public function setUp() {
 		parent::setUp();
 
-		$this->_time_source->setTime(strtotime('2012-09-09 09:00:00'));
-
 		$this->_location
 			->setAuthDelay(10)
 			->setAutohold(1)
 			->setSlotSize(15)
 			->setAutoholdSlotsMax(600)
-			->addOuverture(Class_Ouverture::newInstanceWithId(5)
-										 ->setJourSemaine(date('w', $this->_time_source->time()))
-										 ->setBib($this->_bib_antibes)
-										 ->setHoraires(['08:00', '10:00', '10:00', '10:00']));
-		
+			->addOuverture(Class_Ouverture::chaqueLundi('08:00', '12:00', '14:00', '18:00'))
+			->addOuverture(Class_Ouverture::chaqueMardi('08:00', '12:00', '12:00', '16:00'));
+	}
+
+
+	public function hold() {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time_source->time())
-				->answers(null)
+			->whenCalled('getHoldOnDeviceAtTime')
+			->with($this->_device, $this->_time_source->time())
+			->answers(null)
 
-				->whenCalled('getFirstHoldOnDeviceBetweenTimes')
-				->answers(null)
+			->whenCalled('getFirstHoldOnDeviceBetweenTimes')
+			->answers(null)
 
-				->whenCalled('save')
-				->answers(true);
-		xdebug_break();
-		$this->_hold = $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
+			->whenCalled('save')
+			->answers(true);
+
+
+		return $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
 	}
 
 
 	/** @test */
-	public function shouldHaveHold() {
-		$this->assertNotNull($this->_hold);
+	public function withHoldLundiAt1500holdEndShouldBeFinApresMidi() {
+		$this->_time_source->setTime(strtotime('2012-09-10 15:00:00'));
+		$this->assertTimeStampEquals(strtotime('2012-09-10 18:00:00'), 
+												$this->hold()->getEnd());
 	}
 
 
 	/** @test */
-	public function holdEndShouldBeCloseHour() {
-		$this->assertEquals($this->_location->getMaxTimeForToday(), $this->_hold->getEnd());
-	}
+	public function withHoldLundiAt1000holdEndShouldBeFinMatin() {
+		$this->_time_source->setTime(strtotime('2012-09-10 10:00:00'));
+		$this->assertTimeStampEquals(strtotime('2012-09-10 12:00:00'), 
+																 $this->hold()->getEnd());
+	}	
+
+
+	/** @test */
+	public function withHoldMardiAt1000holdEndShouldBeFinApresMidi() {
+		$this->_time_source->setTime(strtotime('2012-09-11 10:00:00'));
+		$this->assertTimeStampEquals(strtotime('2012-09-11 16:00:00'), 
+																 $this->hold()->getEnd());
+	}	
 }
 
 
