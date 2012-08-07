@@ -20,6 +20,23 @@
  */
 require_once 'ModelTestCase.php';
 
+
+class TimesSourceForTest extends Class_TimeSource {
+	protected $_time;
+
+	public function setTime($time) {
+		$this->_time = $time;
+		return $this;
+	}
+
+	public function time() {
+		return $this->_time;
+	}
+}
+
+
+
+
 abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 	/** @var Class_Multimedia_Device */
 	protected $_device;
@@ -33,6 +50,8 @@ abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 	protected $_time;
 	/** @var Class_Bib */
 	protected $_bib_antibes;
+	/** @var Storm_Test_ObjectWrapper */
+	protected $_time_source;
 
 	public function setUp() {
 		parent::setUp();
@@ -49,13 +68,11 @@ abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 		$this->_device = Class_Multimedia_Device::newInstanceWithId(2)
 				->setGroup($this->_group);
 
-		$this->_time = strtotime('today');
-		$time_source = Storm_Test_ObjectWrapper::mock()
-				->whenCalled('time')
-				->answers($this->_time);
-				
-		Class_Multimedia_Device::setTimeSource($time_source);
-		Class_Multimedia_Location::setTimeSource($time_source);
+		$time = strtotime('today');
+		$this->_time_source = (new TimesSourceForTest())->setTime($time);
+
+		Class_Multimedia_Device::setTimeSource($this->_time_source);
+		Class_Multimedia_Location::setTimeSource($this->_time_source);
 	}
 
 
@@ -68,6 +85,8 @@ abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 }
 
 
+
+
 class Multimedia_DeviceCurrentHoldForUserHavingHoldTest extends Multimedia_DeviceCurrentHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -75,7 +94,7 @@ class Multimedia_DeviceCurrentHoldForUserHavingHoldTest extends Multimedia_Devic
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time)
+			  ->with($this->_device, $this->_time_source->time())
 				->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(123)
 					->setIdUser(7));
 
@@ -90,15 +109,17 @@ class Multimedia_DeviceCurrentHoldForUserHavingHoldTest extends Multimedia_Devic
 }
 
 
+
+
 class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndNoAutoholdTest extends Multimedia_DeviceCurrentHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_location->setAutohold(0);
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time)
-				->answers(null);
+			->whenCalled('getHoldOnDeviceAtTime')
+			->with($this->_device, $this->_time_source->time())
+			->answers(null);
 
 		$this->_hold = $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
 	}
@@ -111,20 +132,23 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndNoAutoholdTest extends Mu
 }
 
 
+
+
 class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndAnotherValidHoldTest extends Multimedia_DeviceCurrentHoldTestCase {
 	public function setUp() {
 		parent::setUp();
+
 		$this->_location
 				->setAuthDelay(10)
 				->setAutohold(1)
 				->setSlotSize(15);
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time)
-				->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(123)
-					->setIdUser(5)
-					->setStart($this->_time - 60));
+			->whenCalled('getHoldOnDeviceAtTime')
+			->with($this->_device, $this->_time_source->time())
+			->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(123)
+								->setIdUser(5)
+								->setStart($this->_time_source->time() - 60));
 
 		$this->_hold = $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
 	}
@@ -135,6 +159,8 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndAnotherValidHoldTest exte
 		$this->assertNull($this->_hold);
 	}
 }
+
+
 
 
 class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndNoStartTimeTest extends Multimedia_DeviceCurrentHoldTestCase {
@@ -146,9 +172,9 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndNoStartTimeTest extends M
 				->setSlotSize(15);
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time)
-				->answers(null);
+			->whenCalled('getHoldOnDeviceAtTime')
+			->with($this->_device, $this->_time_source->time())
+			->answers(null);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
 				->whenCalled('getPossibleTimes')
@@ -165,22 +191,27 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndNoStartTimeTest extends M
 }
 
 
+
+
 class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterCloseHoursTest extends Multimedia_DeviceCurrentHoldTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		$this->_time_source->setTime(strtotime('2012-09-09 09:00:00'));
+
 		$this->_location
 			->setAuthDelay(10)
 			->setAutohold(1)
 			->setSlotSize(15)
 			->setAutoholdSlotsMax(600)
 			->addOuverture(Class_Ouverture::newInstanceWithId(5)
-										 ->setJourSemaine(date('w'))
+										 ->setJourSemaine(date('w', $this->_time_source->time()))
 										 ->setBib($this->_bib_antibes)
 										 ->setHoraires(['08:00', '10:00', '10:00', '10:00']));
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 				->whenCalled('getHoldOnDeviceAtTime')
-				->with($this->_device, $this->_time)
+				->with($this->_device, $this->_time_source->time())
 				->answers(null)
 
 				->whenCalled('getFirstHoldOnDeviceBetweenTimes')
@@ -188,7 +219,7 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterCloseHoursTe
 
 				->whenCalled('save')
 				->answers(true);
-
+		xdebug_break();
 		$this->_hold = $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
 	}
 
@@ -204,6 +235,8 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterCloseHoursTe
 		$this->assertEquals($this->_location->getMaxTimeForToday(), $this->_hold->getEnd());
 	}
 }
+
+
 
 
 class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterNextHoldStartTest extends Multimedia_DeviceCurrentHoldTestCase {
@@ -222,7 +255,7 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterNextHoldStar
 										 ->setJourSemaine(date('w'))
 										 ->setHoraires(['08:00', '12:00', '14:00', '23:00']));
 
-		$this->_nextStartTime = $this->_time + (60 * 60);
+		$this->_nextStartTime = $this->_time_source->time() + (60 * 60);
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 				->whenCalled('getHoldOnDeviceAtTime')
 				->answers(null)

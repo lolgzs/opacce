@@ -174,8 +174,11 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 	/** @return int */
 	public function getPreviousStartTime() {
-		$current = $this->getCurrentTime();
-		$times = $this->getLoader()->getPossibleTimes($this->getSlotSize());
+		$time_source = self::getTimeSource();
+		$current = $time_source->time();
+		$times = $this->getLoader()->getPossibleTimes($this->getSlotSize(),
+																									$time_source->date(),
+																									$time_source->nextDate());
 
 		if (0 == count($times))
 			return null;

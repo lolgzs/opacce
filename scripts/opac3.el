@@ -35,12 +35,15 @@
 ;; (add-hook 'php-mode-hook 'my-php-mode) 
 
 (defvar opac3-phpunit-config "~/dev/afi/afi-opac3/tests/phpunit.xml" "phpunit.xml path")
+(setq opac3-phpunit-command "phpunit")
 
 
 (setq opac3-mode-hook '(opac3-php-mode))
 (defun opac3-php-mode()
 	(require 'geben)
 	(require 'phpunit)
+	(auto-complete-mode)
+	(imenu-add-menubar-index)
   (setq 
 	 tab-width 2
    indent-tabs-mode t
@@ -67,8 +70,7 @@
 	(save-buffer)
 	(let 
 			((command-filter (if params (concat " --filter " params) " "))
-			 (debug-mode (if debug "XDEBUG_CONFIG=1 " ""))
-			 phpunit-command)
+			 (debug-mode (if debug "XDEBUG_CONFIG=1 " "")))
 
 		(if debug (progn (geben 1) 
 										 (window-configuration-to-register 'g)
@@ -83,12 +85,20 @@
 										 )
 			)
 
-		(setq phpunit-command
+		(setq opac3-phpunit-command
 					(concat	debug-mode "phpunit -c " opac3-phpunit-config command-filter))
 
-		(compile phpunit-command)
+		(compile opac3-phpunit-command)
 		)
 	)
+
+
+(defun opac3-run-last-phpunit-command()
+	"Run last phpunit command"
+	(interactive)
+	(compile opac3-phpunit-command)
+)
+
 
 (defun opac3-cur-file ()
   "Return the filename (without directory) of the current buffer"
@@ -100,6 +110,13 @@
 	"Run phpunit on this file / class"
 	(interactive)
 	(opac3-compile-phpunit (car (split-string (file-name-sans-extension (opac3-cur-file)) "Test")))
+	)
+
+
+(defun opac3-run-phpunit-filtered-class()
+	"Run phpunit on this class"
+	(interactive)
+	(opac3-compile-phpunit (phpunit-class-ap))
 	)
 
 
@@ -136,7 +153,7 @@
 (defun opac3-strftime(start end) 
 	(interactive "r")
 	(let ((selected-text (buffer-substring start end)))
-		(geben-eval-expression (concat "strftime('%Y-%M-%d %H:%M:%S', " selected-text " )")))
+		(geben-eval-expression (concat "strftime('%Y-%m-%d %H:%M:%S', " selected-text " )")))
 )
 
 
@@ -152,9 +169,11 @@
   :lighter " opac3"
   :keymap
 	'(("\C-crf" . opac3-run-phpunit-filtered-function)
-		("\C-crc" . opac3-run-phpunit-filtered-file)
+		("\C-crc" . opac3-run-phpunit-filtered-class)
+		("\C-cra" . opac3-run-phpunit-filtered-file)
 		("\C-crm" . opac3-run-phpunit-filtered-custom)
-		("\C-cra" . opac3-run-phpunit)
+		("\C-crl" . opac3-run-last-phpunit-command)
+		("\C-crp" . opac3-run-phpunit)
 		("\C-crd" . opac3-debug-phpunit-function))
 	:after-hook 'opac3-mode-hook)
 

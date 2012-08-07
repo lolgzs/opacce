@@ -155,30 +155,14 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 * @return Class_Multimedia_DeviceHold
 	 */
 	public function autoHoldByUser($user, $current_hold) {
-		// pas de résa auto, on sort
-		if (!$this->isAutoholdEnabled())
-			return null;
-
-		// une résa courante et on est dans le délai d'auth, on sort
-		if (null !== $current_hold
-			and $this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay())))
+		if (!$this->canCreateHoldGivenCurrentHold($current_hold))
 			return null;
 
 		// si je n'ai pas de début de créneau, on sort
 		if (null == ($start = $this->getPreviousStartTime()))
 			return null;
 
-		// fin de créneau par défaut selon config
-		$end = $start + (60 * $this->getAutoholdSlotsMax() * $this->getSlotSize());
-				
-		// si on dépasse la fin de journée on se limite à la fin de journée
-		if ($end > ($next_closing = $this->getMaxTimeForToday()))
-			$end = $next_closing;
-				
-		// si on dépasse la prochaine résa on se limite au début de la prochaine résa
-		if (null != ($next_start = $this->getNextHoldStart())
-			and $end > $next_start)
-			$end = $next_start;
+		$end = $this->findHoldEndForTodayFrom($start);
 
 		if ($end <= $start)
 			return null;
@@ -191,6 +175,43 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 				->setEnd($end);
 		$hold->save();
 		return $hold;
+	}
+
+
+	/**
+	 * @param Class_Multimedia_DeviceHold $current_hold
+	 * @return boolean
+	 */
+	public function canCreateHoldGivenCurrentHold($current_hold) {
+		// pas de résa auto, on sort
+		if (!$this->isAutoholdEnabled())
+			return false;
+
+		// une résa courante et on est dans le délai d'auth, on sort
+		if (null !== $current_hold
+			and $this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay())))
+			return false;
+		return true;
+	}
+
+
+	/**
+	 * @param timestamp $starrt
+	 * @return timestamp
+	 */
+	public function findHoldEndForTodayFrom($start) {
+		// fin de créneau par défaut selon config
+		$end = $start + (60 * $this->getAutoholdSlotsMax() * $this->getSlotSize());
+				
+		// si on dépasse la fin de journée on se limite à la fin de journée
+		if ($end > ($next_closing = $this->getMaxTimeForToday()))
+			$end = $next_closing;
+				
+		// si on dépasse la prochaine résa on se limite au début de la prochaine résa
+		if (null != ($next_start = $this->getNextHoldStart())
+			and $end > $next_start)
+			$end = $next_start;
+		return $end;
 	}
 
 

@@ -175,6 +175,7 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 		$this->onLoaderOfModel('Class_Multimedia_Location')
 			->whenCalled('findByIdOrigine')
 			->answers(Class_Multimedia_Location::newInstanceWithId(1));
+
 				
 		$this->onLoaderOfModel('Class_Multimedia_Device')
 			->whenCalled('findByIdOrigineAndLocation')
@@ -316,7 +317,8 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 
 		Class_Bib::newInstanceWithId(3)
 			->setLibelle('Antibes');
-			
+
+		
 		Class_Multimedia_Location::newInstanceWithId(123)
 			->setIdSite(3)
 			->setLibelle('Antibes')

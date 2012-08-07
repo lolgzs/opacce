@@ -28,8 +28,9 @@ Rajouter erreurs:
 **** TODO Remplacer le getDays qui retourne la liste des coches par les ouvertures récurentes de la bib cf [[file:application/modules/opac/controllers/AbonneController.php::if%20(-1%20%3D%3D%20$.inArray(date.getDay(),%20%5B'%20.%20$location->getDays()%20.%20'%5D))%20{][$location->getDays()]]
 **** TODO Si le bidouilleux mets une date bidon dans l'url, l'écran suivant ne proposera pas d'heure de départ. Donc faire la vérification pour ne pas changer d'écran et afficher message erreur
 		 
-*** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldHoursTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][3ème écran choix de l'heure]] [0/1]
-**** TODO Brancher getMin/MaxTimeForDate aux ouvertures [[file:application/modules/opac/controllers/AbonneController.php::if%20($start%20<%20$location->getMinTimeForDate($bean->day)][vérification créneau ouverture]]
+*** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldHoursTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][3ème écran choix de l'heure]] [1/1]
+**** DONE Brancher getMin/MaxTimeForDate aux ouvertures [[file:application/modules/opac/controllers/AbonneController.php::if%20($start%20<%20$location->getMinTimeForDate($bean->day)][vérification créneau ouverture]]
+		 CLOSED: [2012-08-07 Tue 09:51]
 
 
 *** TODO [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldDeviceTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][4ème écran choix du poste]] [0/1]

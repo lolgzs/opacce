@@ -28,5 +28,17 @@ class Class_TimeSource {
 	public function time() {
 		return time();
 	}
+
+
+	public function date() {
+		$time = $this->time();
+		return mktime(0, 0, 0, date('n', $time), date('j', $time), date('Y', $time));
+	}
+
+
+	public function nextDate() {
+		$time = $this->time();
+		return mktime(0, 0, 0, date('n', $time), date('j', $time) + 1, date('Y', $time));
+	}
 }
 ?>
