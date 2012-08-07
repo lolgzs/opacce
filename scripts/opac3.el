@@ -43,6 +43,7 @@
 	(require 'geben)
 	(require 'phpunit)
 	(auto-complete-mode)
+	(setq ac-sources '(ac-source-words-in-same-mode-buffers))
 	(imenu-add-menubar-index)
   (setq 
 	 tab-width 2
@@ -93,38 +94,41 @@
 	)
 
 
+(defun opac3-run-phpunit(debug-mode)
+	"Run all phpunit tests"
+	(interactive "P" )
+	(opac3-compile-phpunit nil debug-mode)
+	)
+
+
+(defun opac3-run-phpunit-filtered-file(debug-mode)
+	"Run phpunit on this file / class"
+	(interactive "P")
+	(opac3-compile-phpunit 
+	 (car (split-string (file-name-sans-extension (opac3-cur-file)) "Test"))
+	 debug-mode)
+	)
+
+
+(defun opac3-run-phpunit-filtered-class(debug-mode)
+	"Run phpunit on this class"
+	(interactive "P")
+	(opac3-compile-phpunit (phpunit-class-ap) debug-mode)
+	)
+
+
+(defun opac3-run-phpunit-filtered-function(debug-mode)
+	"Run phpunit on this function"
+	(interactive "P")
+	(opac3-compile-phpunit (cdr (phpunit-function-ap)) debug-mode)
+	)
+
+
 (defun opac3-run-last-phpunit-command()
 	"Run last phpunit command"
 	(interactive)
 	(compile opac3-phpunit-command)
 )
-
-
-(defun opac3-cur-file ()
-  "Return the filename (without directory) of the current buffer"
-  (file-name-nondirectory (buffer-file-name (current-buffer)))
-  )
-
-
-(defun opac3-run-phpunit-filtered-file()
-	"Run phpunit on this file / class"
-	(interactive)
-	(opac3-compile-phpunit (car (split-string (file-name-sans-extension (opac3-cur-file)) "Test")))
-	)
-
-
-(defun opac3-run-phpunit-filtered-class()
-	"Run phpunit on this class"
-	(interactive)
-	(opac3-compile-phpunit (phpunit-class-ap))
-	)
-
-
-(defun opac3-run-phpunit-filtered-function()
-	"Run phpunit on this function"
-	(interactive)
-	(opac3-compile-phpunit (cdr (phpunit-function-ap)))
-	)
 
 
 (defun opac3-run-phpunit-filtered-custom(custom-filter debug)
@@ -135,22 +139,21 @@
 	)
 
 
+(defun opac3-cur-file ()
+  "Return the filename (without directory) of the current buffer"
+  (file-name-nondirectory (buffer-file-name (current-buffer)))
+  )
+
 
 (defun opac3-debug-phpunit-function()
 	"Run phpunit on this function with debugger activated"
 	(interactive)
-	(opac3-compile-phpunit (cdr (phpunit-function-ap)) t)
-	)
-
-
-(defun opac3-run-phpunit()
-	"Run all phpunit tests"
-	(interactive)
-	(opac3-compile-phpunit)
+	(opac3-run-phpunit-filtered-function t)
 	)
 
 
 (defun opac3-strftime(start end) 
+	"Interprets region as a timestamp and converts into human date"
 	(interactive "r")
 	(let ((selected-text (buffer-substring start end)))
 		(geben-eval-expression (concat "strftime('%Y-%m-%d %H:%M:%S', " selected-text " )")))
@@ -158,6 +161,7 @@
 
 
 (defun opac3-eval-region(start end) 
+	"Eval current region in geben"
 	(interactive "r")
 	(let ((selected-text (buffer-substring start end)))
 		(geben-eval-expression selected-text))
@@ -174,7 +178,9 @@
 		("\C-crm" . opac3-run-phpunit-filtered-custom)
 		("\C-crl" . opac3-run-last-phpunit-command)
 		("\C-crp" . opac3-run-phpunit)
-		("\C-crd" . opac3-debug-phpunit-function))
+		("\C-crd" . opac3-debug-phpunit-function)
+		("\C-ce" . opac3-eval-region)
+		("\C-cf" . opac3-strftime))
 	:after-hook 'opac3-mode-hook)
 
 (provide 'opac3)
