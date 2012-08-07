@@ -21,9 +21,22 @@
 
 class Admin_OuverturesController extends ZendAfi_Controller_Action {
 	public function getRessourceDefinitions() {
-		$hours_select = Class_Multimedia_Location::getLoader()->getPossibleHours(30);
+		$hours_select = Class_Multimedia_Location::getLoader()->getPossibleHours(30);		
 
 		$fields = ['id_site' => ['element' => 'hidden'],
+							 'jour_semaine' => ['element' => 'select',
+																	'options' => ['label' => $this->view->_('Répétition'),
+																								'multiOptions' => [0 => $this->view->_('Aucune'),
+																																	 1 => $this->view->_('Tous les lundis'),
+																																	 2 => $this->view->_('Tous les mardis'),
+																																	 3 => $this->view->_('Tous les mercredis'),
+																																	 4 => $this->view->_('Tous les jeudis'),
+																																	 5 => $this->view->_('Tous les vendredis'),
+																																	 6 => $this->view->_('Tous les samedis'),
+																																	 7 => $this->view->_('Tous les dimanches')]
+																								]
+																	],
+
 							 'jour' => ['element' => 'datePicker', 
 													'options' => ['label' => $this->view->_('Jour')]]];
 
@@ -71,12 +84,14 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 
 	public function editAction() {
 		parent::editAction();
+		$this->inputJourVisibleOnlyOnNoRepetition();
 		$this->formatTitreWithLibelleBib('%s: modifier une plage d\'ouverture');
 	}
 
 
 	public function addAction() {
 		parent::addAction();
+		$this->inputJourVisibleOnlyOnNoRepetition();
 		$this->formatTitreWithLibelleBib('%s: ajouter une plage d\'ouverture');
 	}
 
@@ -84,6 +99,12 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 	public function formatTitreWithLibelleBib($template) {
 		$this->view->titre = $this->view->_($template, 
 																				Class_Bib::find($this->_getParam('id_site'))->getLibelle());
+	}
+
+
+	public function inputJourVisibleOnlyOnNoRepetition() {
+		Class_ScriptLoader::getInstance()
+			->addInlineScript('formSelectToggleVisibilityForElement("#jour_semaine", "#ouverture tr:nth-child(3)", ["0"]);');
 	}
 }
 

@@ -130,7 +130,6 @@ class OuverturesControllerIndexActionWithoutSiteTest extends OuverturesControlle
 
 	/** @test */
 	public function answerShouldRedirectToIndexBib() {
-		xdebug_break();
 		$this->assertRedirectTo('/admin/bib');
 	}
 }
@@ -225,7 +224,7 @@ class OuverturesControllerAddOuvertureCranTest extends OuverturesControllerTestC
 	
 	/** @test */
 	public function formShouldContainsSelectForDebutMatin() {
-		$this->assertXPath('//form//select');
+		$this->assertXPath('//form//select[@name="debut_matin"]');
 	}
 
 
@@ -238,6 +237,14 @@ class OuverturesControllerAddOuvertureCranTest extends OuverturesControllerTestC
 	/** @test */
 	public function titleShouldBeCranGevrierAjouteUnePlageDouverture() {
 		$this->assertXPathContentContains('//h1', 'Cran-Gévrier: ajouter une plage d\'ouverture');
+	}
+
+
+	/** @test */
+	public function selectJourSemaineShouldContainsLundiToDimancheAndAucun() {
+		$this->assertXPath('//form//select[@name="jour_semaine"]//option[@value="0"][@label="Aucune"]');
+		$this->assertXPath('//form//select[@name="jour_semaine"]//option[@value="1"][@label="Tous les lundis"]');
+		$this->assertXPath('//form//select[@name="jour_semaine"]//option[@value="7"][@label="Tous les dimanches"]');
 	}
 }
 
