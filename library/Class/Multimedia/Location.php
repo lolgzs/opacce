@@ -222,7 +222,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 		if ($ouverture = Class_Ouverture::findFirstBy(['jour' => $date_sql]))
 			return $ouverture;
 
-		$dow = (int)date('w', $date);
+		if (0 == $dow = (int)date('w', $date))
+			$dow = 7;
 
 		foreach($this->getOuvertures() as $ouverture) {
 			if ($ouverture->getJourSemaine() == $dow)
@@ -317,6 +318,20 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 */
 	public function getDaysAsArray() {
 		return explode(',', $this->getDays());
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getOpenedDaysForNextMonths($number_of_months) {
+		$all_days = Class_Date::dateRange($this->getTimeSource()->time(),
+																			$this->getTimeSource()->nextMonths(2));
+
+		return array_values(array_filter($all_days, 
+																		 function ($day) {
+																			 return (null !== $this->getOuvertureForDate($day));
+																		 }));
 	}
 
 		

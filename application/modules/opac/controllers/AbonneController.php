@@ -554,7 +554,7 @@ class AbonneController extends Zend_Controller_Action {
 			$quotaErrorType = $this->_user->getMultimediaQuotaErrorForDay($day);
 			switch ($quotaErrorType) {
 			  case Class_Multimedia_DeviceHold::QUOTA_NONE:
-					$this->view->quotaError = $this->view->_('Vous n\'avez pas les nécessaires pour effectuer une réservation');
+					$this->view->quotaError = $this->view->_('Vous n\'êtes pas autorisé à effectuer une réservation');
 					break;
 			  case Class_Multimedia_DeviceHold::QUOTA_DAY:
 					$this->view->quotaError = $this->view->_('Quota déjà atteint ce jour, choisissez un autre jour.');
@@ -585,6 +585,12 @@ class AbonneController extends Zend_Controller_Action {
 				Class_Date_Holiday::getTimestampsForYear(date('Y') + 1)
 			)
 		);
+
+		$js_opened_days = implode(',', array_map(
+																						 function ($day) { return '"'.$day.'"'; }, 
+																						 $location->getOpenedDaysForNextMonths(2)));
+
+
 		$beforeShowDay = 'var result = [true, \'\'];
 		var stamps = [' . implode(', ', $holidayStamps) . '];
 		$.each(stamps, function(i, stamp) {
@@ -597,7 +603,8 @@ class AbonneController extends Zend_Controller_Action {
 			  return result;
 			}
 		});
-		if (-1 == $.inArray(date.getDay(), [' . $location->getDays() . '])) {
+		if (-1 == $.inArray($.datepicker.formatDate(\'yy-mm-dd\', date), 
+                        [' . $js_opened_days . '])) {
 			result[0] = false;
 		}
 	  return result;';

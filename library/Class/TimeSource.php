@@ -40,5 +40,11 @@ class Class_TimeSource {
 		$time = $this->time();
 		return mktime(0, 0, 0, date('n', $time), date('j', $time) + 1, date('Y', $time));
 	}
+
+
+	public function nextMonths($number_of_months=1) {
+		$time = $this->time();
+		return mktime(0, 0, 0, date('n', $time) + $number_of_months, date('j', $time), date('Y', $time));
+	}
 }
 ?>

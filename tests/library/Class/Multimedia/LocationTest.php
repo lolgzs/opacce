@@ -33,6 +33,11 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 			->setJour('2012-09-19')
 			->setHoraires(['09:00', '12:00', '12:00', '18:00']);
 
+		$_ouverture_dimanche_9_sept = Class_Ouverture::newInstanceWithId(15)
+			->setJour('2012-09-09')
+			->setHoraires(['09:00', '12:00', '12:00', '18:00']);
+
+
 		$this->_location = Class_Multimedia_Location::newInstanceWithId(123)
 			->setIdSite(3)
 			->setLibelle('Antibes')
@@ -42,7 +47,8 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 			->setHoldDelayMax(60)
 			->setOuvertures([Class_Ouverture::chaqueMercredi('08:30', '12:00', '12:00', '17:45')->setId(3)->cache(),
 											 Class_Ouverture::chaqueJeudi('10:00', '12:00', '14:00', '19:00')->setId(4)->cache(),
-											 $_ouverture_19_sept]);
+											 $_ouverture_19_sept,
+											 $_ouverture_dimanche_9_sept]);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Ouverture')
 			->whenCalled('findFirstBy')
@@ -50,7 +56,11 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 
 			->whenCalled('findFirstBy')
 			->with(['jour' => '2012-09-19'])
-			->answers($_ouverture_19_sept);
+			->answers($_ouverture_19_sept)
+
+			->whenCalled('findFirstBy')
+			->with(['jour' => '2012-09-09'])
+			->answers($_ouverture_dimanche_9_sept);
 
 		$this->_time_source = (new TimesSourceForTest())->setTime(strtotime('2012-01-01'));
 
@@ -154,7 +164,23 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 	public function getStartTimesForPastDateShouldReturnEmptyArray() {
 		$this->_time_source->setTime(strtotime('2012-08-08 15:45'));
 		$this->assertEquals([], $this->_location->getStartTimesForDate('2012-02-01'));
-		
+	}
+
+
+	/** @test */
+	public function getDatesOuvertureShouldAnswersAllMercrediJeudiForNextTwoMonthsWith9and19Sept() {
+		$this->_time_source->setTime(strtotime('2012-08-05'));
+		$this->assertEquals(['2012-08-08', '2012-08-09', 
+												 '2012-08-15', '2012-08-16',
+												 '2012-08-22', '2012-08-23',
+												 '2012-08-29', '2012-08-30',
+												 '2012-09-05', '2012-09-06',
+												 '2012-09-09',
+												 '2012-09-12', '2012-09-13',
+												 '2012-09-19', '2012-09-20',
+												 '2012-09-26', '2012-09-27',
+												 '2012-10-03', '2012-10-04'],
+												$this->_location->getOpenedDaysForNextMonths(2));
 	}
 }
 
