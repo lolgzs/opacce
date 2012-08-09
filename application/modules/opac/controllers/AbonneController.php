@@ -588,7 +588,7 @@ class AbonneController extends Zend_Controller_Action {
 
 		$js_opened_days = implode(',', array_map(
 																						 function ($day) { return '"'.$day.'"'; }, 
-																						 $location->getOpenedDaysForNextMonths(2)));
+																						 $location->getHoldableDays()));
 
 
 		$beforeShowDay = 'var result = [true, \'\'];

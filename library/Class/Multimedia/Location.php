@@ -299,17 +299,28 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 	/** @return string formatted date YYYY-MM-DD */
 	public function getMinDate() {
-		if (0 == ($delay = $this->getHoldDelayMin()))
-			return date('Y-m-d');
-		return date('Y-m-d', strtotime('+' . $delay . ' day'));
+		return date('Y-m-d', $this->getMinDateTimeStamp());
 	}
 
+
+	public function getMinDateTimeStamp() {
+		if (0 == ($delay = $this->getHoldDelayMin()))
+			return $this->getTimeSource()->time();
+
+		return strtotime('+' . $delay . ' day', $this->getTimeSource()->time());
+	}
+	
 		
 	/** @return string formatted date YYYY-MM-DD */
 	public function getMaxDate() {
+		return date('Y-m-d', $this->getMaxDateTimeStamp());
+	}
+
+
+	public function getMaxDateTimeStamp() {
 		if (0 == ($delay = $this->getHoldDelayMax()))
 			$delay = 365;
-		return date('Y-m-d', strtotime('+' . $delay . ' day'));
+		return strtotime('+' . $delay . ' day', $this->getTimeSource()->time());
 	}
 
 
@@ -324,9 +335,9 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	/**
 	 * @return array
 	 */
-	public function getOpenedDaysForNextMonths($number_of_months) {
-		$all_days = Class_Date::dateRange($this->getTimeSource()->time(),
-																			$this->getTimeSource()->nextMonths(2));
+	public function getHoldableDays() {
+		$all_days = Class_Date::dateRange($this->getMinDateTimeStamp(),
+																			$this->getMaxDateTimeStamp());
 
 		return array_values(array_filter($all_days, 
 																		 function ($day) {

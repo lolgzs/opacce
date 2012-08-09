@@ -170,6 +170,7 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	public function getDatesOuvertureShouldAnswersAllMercrediJeudiForNextTwoMonthsWith9and19Sept() {
 		$this->_time_source->setTime(strtotime('2012-08-05'));
+		$this->_location->setHoldDelayMax(60);
 		$this->assertEquals(['2012-08-08', '2012-08-09', 
 												 '2012-08-15', '2012-08-16',
 												 '2012-08-22', '2012-08-23',
@@ -180,7 +181,7 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 												 '2012-09-19', '2012-09-20',
 												 '2012-09-26', '2012-09-27',
 												 '2012-10-03', '2012-10-04'],
-												$this->_location->getOpenedDaysForNextMonths(2));
+												$this->_location->getHoldableDays());
 	}
 }
 
