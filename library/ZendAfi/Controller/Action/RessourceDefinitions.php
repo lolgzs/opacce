@@ -42,7 +42,7 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 		if (($scope_field = $this->getScope()) && 
 				($scope_value = $request->getParam($scope_field, false)))
 			$params[$scope_field] = $scope_value;
-		return $this->getModelLoader()->findAllBy($params);
+		return $this->sort($this->getModelLoader()->findAllBy($params));
 	}
 
 
@@ -167,6 +167,13 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 			$definitions = array_merge($definitions, $group['elements']);
 
 		return $definitions;
+	}
+
+
+	public function sort($instances) {
+		if (isset($this->_definitions['sort']))
+			usort($instances, $this->_definitions['sort']);
+		return $instances;
 	}
 }
 

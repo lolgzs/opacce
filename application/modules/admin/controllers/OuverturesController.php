@@ -52,8 +52,19 @@ class Admin_OuverturesController extends ZendAfi_Controller_Action {
 		return [
 						'model' => ['class' => 'Class_Ouverture',
 												'name' => 'ouverture',
-												'order' => 'debut_matin',
-												'scope' => 'id_site'],
+												'scope' => 'id_site',
+												'order' => ''],
+
+						'sort' => function($a, $b) {
+							if ($a->getJourSemaine() && $b->getJourSemaine() && $a->getJourSemaine() > $b->getJourSemaine())
+								return 1;
+							if ($a->getJourSemaine())
+								return -1;
+							if ($b->getJourSemaine())
+								return 1;
+							return $a->getJour() > $b->getJour() ? 1 : -1;
+						},
+
 						'messages' => ['successful_add' => 'Plage d\'ouverture %s ajoutée',
 													 'successful_save' => 'Plage d\'ouverture %s sauvegardée',
 													 'successful_delete' => 'Plage d\'ouverture %s supprimée'],

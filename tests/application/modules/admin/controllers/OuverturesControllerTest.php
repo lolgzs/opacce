@@ -23,6 +23,7 @@ require_once 'AdminAbstractControllerTestCase.php';
 abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTestCase {
 	protected $_ouverture_mardi_cran;
 	protected $_ouverture_jeudi_annecy;
+	protected $_ouverture_tous_mercredis_cran;
 
 	public function setUp() {
 		parent::setUp();
@@ -35,7 +36,7 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 			->whenCalled('save')
 			->answers(true)
 
-			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 1])
+			->whenCalled('findAllBy')->with(['order' => '', 'id_site' => 1])
 			->answers([
 								 $this->_ouverture_mardi_cran = Class_Ouverture::newInstanceWithId(2)
 								 ->setIdSite(1)
@@ -43,10 +44,19 @@ abstract class OuverturesControllerTestCase extends Admin_AbstractControllerTest
 								 ->setDebutMatin('08:00:00')
 								 ->setFinMatin('12:00:00')
 								 ->setDebutApresMidi('13:30:00')
+								 ->setFinApresMidi('17:00:00'),
+
+								$this->_ouverture_tous_mercredis_cran = Class_Ouverture::newInstanceWithId(4)
+								 ->setIdSite(1)
+								 ->setJourSemaine(Class_Ouverture::MERCREDI)
+								 ->setJour('0000-00-00')
+								 ->setDebutMatin('10:00:00')
+								 ->setFinMatin('12:00:00')
+								 ->setDebutApresMidi('12:00:00')
 								 ->setFinApresMidi('17:00:00')])
 
 
-			->whenCalled('findAllBy')->with(['order' => 'debut_matin', 'id_site' => 3])
+			->whenCalled('findAllBy')->with(['order' => '', 'id_site' => 3])
 			->answers([
 								 $this->_ouverture_jeudi_annecy = Class_Ouverture::newInstanceWithId(45)
 								 ->setIdSite(3)
@@ -76,8 +86,14 @@ class OuverturesControllerIndexActionSiteCranTest extends OuverturesControllerTe
 
 
 	/** @test */
-	public function jourShouldBeVisible() {
-		$this->assertXPathContentContains('//td', '23/07/2012');
+	public function jourShouldBeVisibleForOuvertureMardiOnSecondLine() {
+		$this->assertXPathContentContains('//tr[2]//td', '23/07/2012');
+	}
+
+
+	/** @test */
+	public function jourShouldBeMercrediVisibleForOuvertureMercrediOnFirstLine() {
+		$this->assertXPathContentContains('//tr[1]//td', 'Mercredi');
 	}
 
 
@@ -264,7 +280,9 @@ class OuverturesControllerPostAddOuvertureCranTest extends OuverturesControllerT
 
 		$this->postDispatch('/admin/ouvertures/add',	['debut_matin' => '10:30',
 																									 'fin_matin' => '11:30',
-																									 'id_site' => 3]);
+																									 'id_site' => 3,
+																									 'jour_semaine' => 2,
+																									 'jour' => '23/10/2012']);
 		$this->_new_ouverture = Class_Ouverture::getFirstAttributeForLastCallOn('save');
 	}
 
@@ -278,6 +296,22 @@ class OuverturesControllerPostAddOuvertureCranTest extends OuverturesControllerT
 	/** @test */
 	public function responseShouldRedirectToOuverturesIndexSiteThree() {
 		$this->assertRedirectTo('/admin/ouvertures/index/id_site/3');
+	}
+
+	/** @test */
+	public function jourShouldBeEmpty() {
+		$this->assertEquals(null, $this->_new_ouverture->getJour());
+	}
+
+
+	/** @test */
+	public function jourSemainShouldBeMardi() {
+		$this->assertEquals(Class_Ouverture::MARDI, $this->_new_ouverture->getJourSemaine());
+	}
+
+	/** @test */
+	public function formattedJourShouldBeMardi() {
+		$this->assertEquals('Mardi', $this->_new_ouverture->getFormattedJour());
 	}
 }
 

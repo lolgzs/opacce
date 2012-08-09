@@ -23,7 +23,9 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	const LUNDI=1, MARDI=2, MERCREDI=3, JEUDI=4, VENDREDI=5, SAMEDI=6, DIMANCHE=7;
 
 	protected $_table_name = 'ouvertures';
-	protected $_default_attribute_values = ['debut_matin' => '10:00',
+	protected $_default_attribute_values = ['jour_semaine' => null,
+																					'jour' => null,
+																					'debut_matin' => '10:00',
 																					'fin_matin' => '12:00',
 																					'debut_apres_midi' => '12:00',
 																					'fin_apres_midi' => '18:00'];
@@ -89,7 +91,17 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	 * @return string
 	 */
 	public function getFormattedJour() {
-		return Class_Date::humanDate($this->getJour(), 'dd/MM/yyyy');
+		if (!$this->hasJourSemaine())
+			return Class_Date::humanDate($this->getJour(), 'dd/MM/yyyy');
+		$days = ['Aucun', 
+						 'Lundi', 
+						 'Mardi', 
+						 'Mercredi', 
+						 'Jeudi', 
+						 'Vendredi', 
+						 'Samedi', 
+						 'Dimanche'];
+		return $days[(int)$this->getJourSemaine()];
 	}
 
 
@@ -97,7 +109,12 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	 * @param string $jour
 	 */
 	public function setJour($jour) {
-		return $this->_set('jour', Class_Date::humanDate($jour, 'yyyy-MM-dd'));
+		try {
+			if ($jour)
+				return $this->_set('jour', Class_Date::humanDate($jour, 'yyyy-MM-dd'));
+		} catch (Zend_Date_Exception $e) {}
+
+		return $this->_set('jour', null);
 	}
 
 
@@ -125,6 +142,12 @@ class Class_Ouverture extends Storm_Model_Abstract {
 			return $to_date($this->getFinApresMidi());
 
 		return $to_date($this->getFinMatin());
+	}
+
+	
+	public function beforeSave() {
+		if ($this->getJourSemaine() > 0)
+			$this->setJour(null);
 	}
 }
 
