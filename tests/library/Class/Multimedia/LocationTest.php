@@ -23,10 +23,15 @@ require_once 'ModelTestCase.php';
 
 class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 	protected $_location;
+	protected $_time_source;
 
 	public function setUp() {
 		Class_Bib::newInstanceWithId(3)
 			->setLibelle('Bibliothèque Antibes');
+
+		$_ouverture_19_sept = Class_Ouverture::newInstanceWithId(5)
+			->setJour('2012-09-19')
+			->setHoraires(['09:00', '12:00', '12:00', '18:00']);
 
 		$this->_location = Class_Multimedia_Location::newInstanceWithId(123)
 			->setIdSite(3)
@@ -36,7 +41,28 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 			->setHoldDelayMin(0)
 			->setHoldDelayMax(60)
 			->setOuvertures([Class_Ouverture::chaqueMercredi('08:30', '12:00', '12:00', '17:45')->setId(3)->cache(),
-											 Class_Ouverture::chaqueJeudi('10:00', '12:00', '14:00', '19:00')->setId(4)->cache()]);
+											 Class_Ouverture::chaqueJeudi('10:00', '12:00', '14:00', '19:00')->setId(4)->cache(),
+											 $_ouverture_19_sept]);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Ouverture')
+			->whenCalled('findFirstBy')
+			->answers(null)
+
+			->whenCalled('findFirstBy')
+			->with(['jour' => '2012-09-19'])
+			->answers($_ouverture_19_sept);
+
+		$this->_time_source = (new TimesSourceForTest())->setTime(strtotime('2012-01-01'));
+
+		Class_Multimedia_Device::setTimeSource($this->_time_source);
+		Class_Multimedia_Location::setTimeSource($this->_time_source);
+	}
+
+
+	public function tearDown() {
+		Class_Multimedia_Device::setTimeSource(null);
+		Class_Multimedia_Location::setTimeSource(null);
+		parent::tearDown();
 	}
 
 
@@ -86,11 +112,28 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
+	public function getMinTimeFor19Sept2012ShouldReturn0900() {
+		$this->assertTimeStampEquals('2012-09-19 09:00:00', 
+																 $this->_location->getMinTimeForDate('2012-09-19'));
+	}
+
+
+	/** @test */
 	public function getStartTimesFor8AugShouldReturnAllHalfHoursFrom_0830_to_1730() {
 		$this->assertEquals(['08:30' => '08h30', '09:00' => '09h00', '09:30' => '09h30', '10:00' => '10h00', '10:30' => '10h30', 
 												 '11:00' => '11h00', '11:30' => '11h30', '12:00' => '12h00', '12:30' => '12h30', '13:00' => '13h00', 
 												 '13:30' => '13h30', '14:00' => '14h00', '14:30' => '14h30', '15:00' => '15h00', '15:30' => '15h30', 
 												 '16:00' => '16h00', '16:30' => '16h30', '17:00' => '17h00', '17:30' => '17h30'], 
+												$this->_location->getStartTimesForDate('2012-08-08'));
+		
+	}
+
+
+
+	/** @test */
+	public function getStartTimesFor8AugAt8Aug1543ShouldReturnAllHalfHoursFrom_1600_to_1730() {
+		$this->_time_source->setTime(strtotime('2012-08-08 15:45'));
+		$this->assertEquals(['16:00' => '16h00', '16:30' => '16h30', '17:00' => '17h00', '17:30' => '17h30'], 
 												$this->_location->getStartTimesForDate('2012-08-08'));
 		
 	}
@@ -103,6 +146,14 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 												 '16:00' => '16h00', '16:30' => '16h30', '17:00' => '17h00', '17:30' => '17h30',
 												 '18:00' => '18h00', '18:30' => '18h30'], 
 												$this->_location->getStartTimesForDate('2012-08-09'));
+		
+	}
+
+
+	/** @test */
+	public function getStartTimesForPastDateShouldReturnEmptyArray() {
+		$this->_time_source->setTime(strtotime('2012-08-08 15:45'));
+		$this->assertEquals([], $this->_location->getStartTimesForDate('2012-02-01'));
 		
 	}
 }

@@ -528,7 +528,7 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 
 	/** @test */
 	public function listOfStartTimesShouldBePresent() {
-		$this->assertXPathCount('//select[@id="time"]/option', 18, $this->_response->getBody());
+		$this->assertXPathCount('//select[@id="time"]/option', 17, $this->_response->getBody());
 	}
 
 

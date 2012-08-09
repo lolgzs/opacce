@@ -43,6 +43,17 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	}
 
 
+	public static function compare($a, $b) {
+		if ($a->getJourSemaine() && $b->getJourSemaine() && $a->getJourSemaine() > $b->getJourSemaine())
+			return 1;
+		if ($a->getJourSemaine())
+			return -1;
+		if ($b->getJourSemaine())
+			return 1;
+		return $a->getJour() > $b->getJour() ? 1 : -1;
+	}
+
+
 	public function setHoraires($horaires) {
 		return $this
 			->setDebutMatin($horaires[0])

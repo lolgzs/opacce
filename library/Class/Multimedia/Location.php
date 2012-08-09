@@ -135,8 +135,10 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getStartTimesForDate($date) {
-		if (!$ouverture = $this->getOuvertureForDate($date))
-			return array();
+		$now = $this->getCurrentTime();
+		if (date('Y-m-d', $now) > $date)	return [];
+
+		if (!$ouverture = $this->getOuvertureForDate($date)) return [];
 
 		$timestamp = function($hour) use ($date) {
 			return strtotime($date . ' ' . $hour .':00');
@@ -152,23 +154,17 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 																									 $ouverture->getFinMatin()),
 															 $slots_for_interval($ouverture->getDebutApresMidi(),
 																									 $ouverture->getFinApresMidi()));
+		if (date('Y-m-d', $now) !== $date) 
+			return $start_times;
 
-		if ($timestamp($ouverture->getDebutMatin()) < ($current = $this->getCurrentTime())) {
-			$hour = (int) date('H', $current);
-			$minute = (int) date('i', $current);
-			$i = 0;
- 
-			foreach (array_keys($start_times) as $time) {
-				$parts = explode(':', $time);
-				if ($hour <= (int)$parts[0] and $minute <= (int)$parts[1])
-					break;
-				++$i;
-			}
-
-			$start_times = array_slice($start_times, $i);
-		}
-
-		return $start_times;
+		$hour = (int) date('H', $now);
+		$minute = (int) date('i', $now);
+		return array_filter($start_times, 
+												function ($time) use ($hour, $minute) {
+													$parts = explode('h', $time);
+													return ($hour < (int)$parts[0])
+														|| (($hour == (int)$parts[0])  && ($minute < (int)$parts[1]));
+												});
 	}
 
 
@@ -221,6 +217,10 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	public function getOuvertureForDate($date) {
 		if (is_string($date))
 			$date = strtotime($date);
+
+		$date_sql = date('Y-m-d', $date);
+		if ($ouverture = Class_Ouverture::findFirstBy(['jour' => $date_sql]))
+			return $ouverture;
 
 		$dow = (int)date('w', $date);
 
