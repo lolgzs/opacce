@@ -227,7 +227,9 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	protected function _menuBIBNUMBuilder($menuitem) {
 		$content = '';
 
-		$album = Class_Album::getLoader()->find($menuitem["preferences"]['album_id']);
+		if (!$album = Class_Album::getLoader()->find($menuitem["preferences"]['album_id']))
+			return '';
+
 		$url_booklet = $this->view->url(array('controller' => 'bib-numerique',
 																					'action' => 'booklet',
 																					'id' => $album->getId()));
