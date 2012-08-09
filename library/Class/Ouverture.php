@@ -114,7 +114,7 @@ class Class_Ouverture extends Storm_Model_Abstract {
 				return $this->_set('jour', Class_Date::humanDate($jour, 'yyyy-MM-dd'));
 		} catch (Zend_Date_Exception $e) {}
 
-		return $this->_set('jour', null);
+		return $this->_set('jour', 0);
 	}
 
 
@@ -147,7 +147,7 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	
 	public function beforeSave() {
 		if ($this->getJourSemaine() > 0)
-			$this->setJour(null);
+			$this->setJour(0);
 	}
 }
 
