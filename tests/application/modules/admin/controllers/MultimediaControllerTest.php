@@ -158,18 +158,6 @@ class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestC
 
 
 	/** @test */
-	public function openHourShouldBePresent() {
-		$this->assertXPath('//select[@name="open_hour"]');
-	}
-
-
-	/** @test */
-	public function closeHourShouldBePresent() {
-		$this->assertXPath('//select[@name="close_hour"]');
-	}
-
-
-	/** @test */
 	public function selectForIdSiteShouldBePresent() {
 		$this->assertXPath('//select[@name="id_site"]//option[@value="3"][@label="Annecy"][@selected="selected"]');
 		$this->assertXPath('//select[@name="id_site"]//option[@value="1"][@label="Cran-Gévrier"]');

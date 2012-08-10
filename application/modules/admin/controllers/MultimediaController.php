@@ -34,10 +34,9 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																								'elements' => $this->getLocalisationFields()],
 
 														 'config' => ['legend' => 'Réservation',
-																					'elements' => $this->getConfigFields()],
-
-														 'planning' => ['legend' => 'Planning',
-																						'elements' => $this->getPlanningFields()]]];
+																					'elements' => $this->getConfigFields()]
+														 ]
+						];
 	}
 
 
@@ -53,7 +52,7 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 
 	public function getConfigFields() {
 		return ['slot_size' => ['element' => 'text',
-														'options' => ['label' => 'Réservation minimale (slot) *',
+														'options' => ['label' => 'Durée d\'une unité de temps (en minutes)',
 																					'title'=> 'en minutes',
 																					'size'	=> 4,
 																					'required' => true,
@@ -61,7 +60,7 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																					'validators' => ['digits']]],
 
 						'max_slots' => ['element' => 'text',
-														'options' => ['label' => 'Réservation maximale *',
+														'options' => ['label' => 'Nombre maximum d\'unités de temps réservables simultanément',
 																					'title' => 'en nombre de "slots"',
 																					'size' => 4,
 																					'required' => true,
@@ -69,7 +68,8 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																					'validators' => ['digits']]],
 
 						'hold_delay_min' => ['element' => 'text',
-																 'options' => ['label' => 'Délai minimum de réservation *',
+																 'options' => ['label' => 'Nombre de jours au plus tard avant une réservation<br/> (0 pour résa le
+jour même)',
 																							 'title' => 'en jours, 0 autorise les réservations le jour même',
 																							 'size' => 4,
 																							 'required' => true,
@@ -78,7 +78,8 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 
 						'hold_delay_max' => ['element' => 'text',
 																 'options' => [
-																							 'label' => 'Délai maximum de réservation *',
+																							 'label' => 'Nombre de jours au plus tôt avant une réservation<br/>(1 pour autoriser
+les réservation pour le lendemain)',
 																							 'title' => 'en jours, doit être supérieur au délai minimum',
 																							 'size' => 4,
 																							 'required' => true,
@@ -86,7 +87,7 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																							 'validators' => ['digits', new ZendAfi_Validate_FieldGreater('hold_delay_min', 'Délai minimum de réservation')]]],
 
 						'auth_delay' => ['element' => 'text',
-														 'options' => ['label' => 'Délai de connection *',
+														 'options' => ['label' => 'Délai de connexion avant d\'annuler une réservation (en minutes)',
 																					 'title' => 'en minutes, passé ce délai la réservation est annulée',
 																					 'size' => 4,
 																					 'required' => true,
@@ -94,42 +95,19 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																					 'validators' => ['digits']]],
 
 						'autohold' => ['element' => 'checkbox',
-													 'options' => ['label' => 'Autoriser la réservation automatique *',
+													 'options' => ['label' => 'Générer automatiquement une réservation à la connection à un poste
+disponible',
 																				 'title' => 'quand un abonné se connecte sur un poste non réservé, une réservation lui est attribuée',
 																				 'required' => true,
 																				 'allowEmpty' => false]],
 
 						'autohold_slots_max' => ['element' => 'text',
-																		 'options' => ['label' => 'Réservation automatique maximale *',
+																		 'options' => ['label' => 'Durée de la réservation automatique (en unités de temps)',
 																									 'title' => 'en nombre de "slots"',
 																									 'size' => 4,
 																									 'required' => true,
 																									 'allowEmpty' => false,
 																									 'validators' => ['digits']]]];
-	}
-
-	
-	public function getPlanningFields() {
-		return ['days' => ['element' => 'multiCheckbox',
-											 'options' => ['label' => 'Jours d\'ouverture *',
-																		 'multioptions' => Class_Multimedia_Location::getPossibleDays(),
-																		 'separator' => '']],
-
-						'open_hour' => ['element' => 'select',
-														'options' => ['label' => 'Heure d\'ouverture *',
-																					'multioptions' => Class_Multimedia_Location::getPossibleHours(15),
-																					'required' => true,
-																					'allowEmpty' => false,
-																					'validators' => [new Zend_Validate_Regex('/[0-9]{2}:[0-9]{2}/')]]],
-						'close_hour' => ['element' => 'select',
-														 'options' => [
-																					 'label' => 'Heure de fermeture *',
-																					 'title' => 'Doit être après l\'heure d\'ouverture',
-																					 'multioptions' => Class_Multimedia_Location::getPossibleHours(15),
-																					 'required' => true,
-																					 'allowEmpty' => false,
-																					 'validators' => [new Zend_Validate_Regex('/[0-9]{2}:[0-9]{2}/')]]]
-						];
 	}
 
 
@@ -149,7 +127,6 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 
 	protected function _postEditAction($model) {
 		$this->view->titre = 'Modification du site multimédia "' . $this->view->escape($model->getLibelle()) . '"';
-		$this->view->form->getElement('days')->setValue($model->getDaysAsArray());
 	}
 		
 
