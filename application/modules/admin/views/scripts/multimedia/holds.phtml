@@ -1,0 +1,11 @@
+<h2><?php echo $this->titre;?></h2>
+<?php 
+echo $this->tagModelTable(
+													$this->device->getHolds(),
+													[$this->_('Utilisateur'), $this->_('Début'), $this->_('Fin')],
+													['username', 'startHHMM', 'endHHMM'],
+													[], 
+													'multimedia_holds',
+													'jour');
+
+?>
