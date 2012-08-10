@@ -55,7 +55,7 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 
 	public function getConfigFields() {
 		return ['slot_size' => ['element' => 'text',
-														'options' => ['label' => 'Durée d\'une unité de temps (en minutes)',
+														'options' => ['label' => 'Durée d\'un créneau (en minutes)',
 																					'title'=> 'en minutes',
 																					'size'	=> 4,
 																					'required' => true,
@@ -63,7 +63,7 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																					'validators' => ['digits']]],
 
 						'max_slots' => ['element' => 'text',
-														'options' => ['label' => 'Nombre maximum d\'unités de temps réservables simultanément',
+														'options' => ['label' => 'Nombre maximum de créneaux réservables simultanément',
 																					'title' => 'en nombre de "slots"',
 																					'size' => 4,
 																					'required' => true,
@@ -117,7 +117,7 @@ disponible',
 																									'validators' => ['digits']]],
 
 						'autohold_slots_max' => ['element' => 'text',
-																		 'options' => ['label' => 'Durée de la réservation automatique (en unités de temps)',
+																		 'options' => ['label' => 'Durée de la réservation automatique (en nombre de créneaux)',
 																									 'title' => 'en nombre de "slots"',
 																									 'size' => 4,
 																									 'required' => true,
