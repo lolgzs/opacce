@@ -112,7 +112,7 @@ class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestC
 			->setLibelle('Antibe')
 			->setSlotSize(15)
 			->setMaxSlots(4)
-			->setDays('3,4');
+			->setAutoholdMinTime(5);
 				
 		$this->dispatch('/admin/multimedia/edit/id/33', true);
 	}
@@ -139,6 +139,12 @@ class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestC
 	/** @test */
 	public function minHoldDelayInputShouldBePresent() {
 		$this->assertXPath('//input[@name="hold_delay_min"]');
+	}
+
+
+	/** @test */
+	public function autoHoldMinTimeShouldBePresent() {
+		$this->assertXPath('//input[@name="autohold_min_time"][@value="5"]');
 	}
 
 
