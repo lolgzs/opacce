@@ -183,22 +183,35 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 * @return boolean
 	 */
 	public function canCreateHoldGivenCurrentHoldAndUser($current_hold, $user) {
-		// pas de résa auto, on sort
 		if (!$this->isAutoholdEnabled())
 			return false;
 
-		// si une résa est en cours et n'est pas encore dans le délai d'annulation
-		if ((null !== $current_hold) 
-				&& ($this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay()))))
+		if ((null !== $current_hold) && !$this->isHoldCancelableNow($current_hold))
 			return false;
 
-		 if (null == $next_hold = $this->getNextHold())
-			 return true;
+		if (null == $next_hold = $this->getNextHold())
+			return true;
 
-		 if ($user->getId() == $next_hold->getIdUser())
-			 return true;
+		if ($next_hold->belongsToUser($user))
+			return true;
 
-		 return ($this->getCurrentTime() < ($next_hold->getStart() - (60 * $this->getAutoholdMinTime())));
+		return $this->isThereEnoughTimeLeftBefore($next_hold->getStart());
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isThereEnoughTimeLeftBefore($timestamp) {
+		return $this->getCurrentTime() < ($timestamp - (60 * $this->getAutoholdMinTime()));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isHoldCancelableNow($hold) {
+		return $this->getCurrentTime() > ($hold->getStart() + (60 * $this->getAuthDelay()));
 	}
 
 

@@ -185,5 +185,10 @@ class Class_Multimedia_DeviceHold extends Storm_Model_Abstract {
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
+
+
+	public function belongsToUser($user) {
+		return $user == $this->getUser();
+	}
 }
 ?>
