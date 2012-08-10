@@ -107,7 +107,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		}
 
 		if (Class_AdminVar::isMultimediaEnabled()) {
-			$menu_portail .= $this->addMenu('ecran.png', $this->view->_('Multimedia'), '/admin/multimedia', $acl_admins_portail);
+			$menu_portail .= $this->addMenu('postes_16.png', $this->view->_('Multimedia'), '/admin/multimedia', $acl_admins_portail);
 		}
 		
 		$menu_portail .= $this->closeBoite();
