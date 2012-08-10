@@ -1,4 +1,11 @@
 <?php
+
+if ($url_multi = Class_AdminVar::get('URL_ADMIN_MULTIMEDIA'))
+	echo sprintf('<h3 style="text-align:right"><a href="%s"><img style="margin:5px;vertical-align:middle" src="%s" alt="%3$s">%s</a></h3>',
+							 $url_multi,
+							 URL_ADMIN_IMG.'picto/groupe_postes_16.png',
+							 $this->_('Administrer le serveur AFI-Multimédia'));
+
 echo $this->tagModelTable(
 	$this->sites, 
 

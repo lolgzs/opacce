@@ -61,6 +61,7 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'ARTE_VOD_KEY',
 		'BABELTHEQUE_JS',
 		'MULTIMEDIA_KEY',
+		'URL_ADMIN_MULTIMEDIA'
 	);
 
 
