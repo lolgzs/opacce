@@ -267,15 +267,60 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 
 
 
-class AbonneControllerMultimediaAuthenticateLaurentDeviceNotFoundTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+class AbonneControllerMultimediaAuthenticateLaurentDeviceNotHeldByUserTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
 	use TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles;
 
 	protected function _launch() {
 		$this->onLoaderOfModel('Class_Multimedia_Location')
 			->whenCalled('findByIdOrigine')
+			->answers($location = Class_Multimedia_Location::newInstanceWithId(1)								
+								->setAuthDelay(1)
+								->setAutohold(1));
+
+		$this->onLoaderOfModel('Class_Multimedia_Device')
+			->whenCalled('findByIdOrigineAndLocation')
+			->answers(Class_Multimedia_Device::newInstanceWithId(1)
+								->setGroup(Class_Multimedia_DeviceGroup::newInstanceWithId(34)->setLocation($location)));
+
+		$this->onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('getHoldOnDeviceAtTime')
+			->answers(Class_Multimedia_DeviceHold::newInstanceWithId(333)
+								->setIdUser(9878)
+								->setStart(strtotime('2012-09-12 08:30:00'))
+								->setEnd(strtotime('2012-09-12 16:40:00')));
+				
+		parent::_launch();
+	}
+
+
+	/** @test */
+	public function jsonShouldContainsErrorDeviceNotHeldByUser() {
+		$this->assertEquals('DeviceNotHeldByUser', $this->_json->error);
+	}
+
+
+	/** @test */
+	public function loginShoudBelaurent() {
+		$this->assertEquals('laurent', $this->_json->login);
+	}
+
+
+	/** @test */
+	public function authShouldBeZero() {
+		$this->assertEquals('0', $this->_json->auth);
+	}
+
+}
+
+
+
+class AbonneControllerMultimediaAuthenticateLaurentDeviceNotFoundTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	use TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles;
+	protected function _launch() {
+		$this->onLoaderOfModel('Class_Multimedia_Location')
+			->whenCalled('findByIdOrigine')
 			->answers(Class_Multimedia_Location::newInstanceWithId(1));
 
-				
 		$this->onLoaderOfModel('Class_Multimedia_Device')
 			->whenCalled('findByIdOrigineAndLocation')
 			->answers(null);
@@ -288,8 +333,13 @@ class AbonneControllerMultimediaAuthenticateLaurentDeviceNotFoundTest extends Ab
 	public function jsonShouldContainsErrorDeviceNotFound() {
 		$this->assertEquals('DeviceNotFound', $this->_json->error);
 	}
-}
 
+
+	/** @test */
+	public function loginShoudBelaurent() {
+		$this->assertEquals('laurent', $this->_json->login);
+	}
+}
 
 
 

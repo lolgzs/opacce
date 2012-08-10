@@ -24,7 +24,7 @@ Rajouter erreurs:
 **** TODO réservation prévue sur une durée < slot: peux pas réserver, réservation prévue dans xx mn  => Rajouter une durée minimale de réservation auto (par ex., si on réserve en plein milieu d'un slot et que le slot suivant déjà réservé, on peut ou pas utiliser le poste selon le temps restant avant ce prochain slot)
 **** TODO réservation auto. pas activée et aucune réservation pour l'utilisateur
 **** TODO c'est pas l'utilisateur qui a réservé (réservation en cours)
-**** DONE poste/device non trouvé
+**** DONE poste/device non trouvé (DeviceNotFound)
 		 CLOSED: [2012-08-10 Fri 11:28]
 ** Réservation d'un poste [1/3]
 	 [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::abstract%20class%20AbonneControllerMultimediaAuthenticateTestCase%20extends%20AbstractControllerTestCase%20{][Test controller Abonne]]

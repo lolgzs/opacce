@@ -71,7 +71,28 @@ class Class_Multimedia_AuthenticateRequest {
 		if (!$this->_device)
 			return $this->_error('DeviceNotFound');
 
+		if (!$this->getCurrentHold())
+			return $this->_error('DeviceNotHeldByUser');
+
 		return $this->beValid();
+	}
+
+
+	/**
+	 * @return Class_Multimedia_DeviceHold
+	 */
+	public function getCurrentHold() {
+		if (!isset($this->_current_hold) && isset($this->_device) && isset($this->_user))
+			$this->_current_hold = $this->_device->getCurrentHoldForUser($this->_user);
+		return $this->_current_hold;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentHoldEnd() {
+		return $this->getCurrentHold()->getEnd();
 	}
 	
 

@@ -501,26 +501,22 @@ class AbonneController extends Zend_Controller_Action {
 		$response->until = '';
 
 		$request = Class_Multimedia_AuthenticateRequest::newWithRequest($this->_request);
-		if (!$request->isValid()) {
-			$response->error = $request->getError();
-			$this->_response->setBody(json_encode($response));
-			return;
+
+		if ($user = $request->getUser()) {
+			foreach (array('id', 'login', 'password', 'nom', 'prenom') as $attribute)
+				$response->$attribute = $user->$attribute;
+
+			$response->groupes = $user->getUserGroupsLabels();
+			$response->date_naissance = $user->getDateNaissanceIso8601();
 		}
 
-		$user = $request->getUser();
-		foreach (array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
-			$response->$attribute = $user->$attribute;
-		}
-
-		$response->groupes = $user->getUserGroupsLabels();
-		$response->date_naissance = $user->getDateNaissanceIso8601();
-
-		if (null != ($device = $request->getDevice())
-			and null != ($hold = $device->getCurrentHoldForUser($user))
-		) {
+		if ($request->isValid()) {
 			$response->auth = 1;
-			$response->until = date('c', $hold->getEnd());
-		}
+			$response->until = date('c', $request->getCurrentHoldEnd());
+		} else {
+			$response->error = $request->getError();
+		} 
+
 
 		$this->_response->setBody(json_encode($response));
 	}
