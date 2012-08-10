@@ -173,8 +173,7 @@ class Admin_IndexController extends Zend_Controller_Action {
 			'ARTE_VOD_LOGIN'            => 'Login ARTE VOD',
 			'ARTE_VOD_KEY'              => 'Clé ARTE VOD',
 			'BABELTHEQUE_JS'            => 'URL du javascript Babelthèque à insérer dans l\'OPAC',
-			'MULTIMEDIA_KEY'            => 'Clé AFI-multimédia',
-			'URL_ADMIN_MULTIMEDIA'      => 'URL pour l\'administration du serveur multimédia',
+			'MULTIMEDIA_KEY'            => 'Clé AFI-multimédia'
 		);
 
 		if (!array_key_exists($name, $help)) {

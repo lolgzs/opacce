@@ -39,9 +39,6 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 	public function setUp() {
 		parent::setUp();
 
-		Class_AdminVar::newInstanceWithId('URL_ADMIN_MULTIMEDIA')
-			->setValeur('http://site/multi.net');
-
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
 			->whenCalled('findAllBy')
 			->answers([Class_Multimedia_Location::newInstanceWithId(33)
@@ -91,12 +88,6 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 	/** @test */
 	public function antibeBrowseLinkShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "/multimedia/browse/id/33")]');
-	}
-
-
-	/** @test */
-	public function pageShouldDisplayLinkToSiteMultimedia() {
-		$this->assertXPathContentContains('//a[@href="http://site/multi.net"]', 'Administrer le serveur AFI-Multimédia');
 	}
 }
 
