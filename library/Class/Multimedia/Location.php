@@ -86,6 +86,9 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 		if (!$model = $this->findByIdOrigine($json_model->id))
 			$model = $this->newInstance()->setIdOrigine((int)$json_model->id);
 		$model->setLibelle($json_model->libelle)->save();
+
+		if (property_exists($json_model, 'admin_url'))
+			$model->setAdminUrl($json_model->admin_url);
 		return $model;
 	}
 
@@ -108,7 +111,7 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	protected $_table_name = 'multimedia_location';
 	protected $_has_many = ['groups' => ['model' => 'Class_Multimedia_DeviceGroup',
 																			 'role' => 'location',
-																			 'order' => 'libelle'],
+																			 'order' => 'libelle',],
 
 													'devices' => ['through' => 'groups'],
 
@@ -118,7 +121,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 																			'referenced_in' => 'id_site']];
 
 	protected $_default_attribute_values = ['days' => '', 
-																					'autohold_min_time' => 0];
+																					'autohold_min_time' => 0,
+																					'admin_url' => ''];
 
 
 	/**

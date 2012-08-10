@@ -43,7 +43,12 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 			->whenCalled('findAllBy')
 			->answers([Class_Multimedia_Location::newInstanceWithId(33)
 								 ->setLibelle('Antibe')
-								 ->setIdSite(3)]);
+								 ->setIdSite(3),
+
+								 Class_Multimedia_Location::newInstanceWithId(33)
+								 ->setLibelle('Valbonne')
+								 ->setIdSite(4)
+								 ->setAdminUrl('http://valbonne.net/multimedia')]);
 
 		$this->dispatch('/admin/multimedia', true);
 	}
@@ -69,13 +74,13 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 
 	/** @test */
 	public function antibeShouldBePresent() {
-		$this->assertXPathContentContains('//table[@id="multimedia_location"]//td', 'Antibe');
+		$this->assertXPathContentContains('//table[@id="multimedia_location"]//tr[1]//td', 'Antibe');
 	}
 
 
 	/** @test */
 	public function antibeShouldBeBoundToBibAnnecy() {
-		$this->assertXPathContentContains('//table[@id="multimedia_location"]//td', 'Annecy');
+		$this->assertXPathContentContains('//table[@id="multimedia_location"]//tr[1]//td', 'Annecy');
 	}
 
 
@@ -89,6 +94,19 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 	public function antibeBrowseLinkShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "/multimedia/browse/id/33")]');
 	}
+
+
+	/** @test */
+	public function valbonneShouldBePresent() {
+		$this->assertXPathContentContains('//table[@id="multimedia_location"]//tr[2]//td', 'Valbonne');
+	}
+
+
+	/** @test */
+	public function valbonneMultimedaLinkShouldBePresent() {
+		$this->assertXPath('//table[@id="multimedia_location"]//tr[2]//a[@href="http://valbonne.net/multimedia"]',
+											 $this->_response->getBody());
+	}	
 }
 
 

@@ -145,7 +145,7 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 		$this->postDispatch(
 				'/push/multimedia/config',
 				array(
-						'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
+						'json' => '[{"libelle":"Groupe 1", "id":1, "site":{"id":1,"libelle":"Site 1","admin_url":"http://admin/site"}, "postes":[{"id":1, "libelle":"Poste 1", "os":"Windows XP", "maintenance":"1"}, {"id":2, "libelle":"Poste 2", "os":"Ubuntu Lucid Lynx", "maintenance":"0"}]}]',
 						'sign' => 'auieau09676IUE96'));
 
 		$this->_group = $device_group_wrapper->getFirstAttributeForLastCallOn('save');
@@ -168,6 +168,12 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 	public function deviceGroupSiteShouldBeSiteOne() {
 		$this->assertEquals('Site 1', $this->_group->getLocation()->getLibelle());
 		$this->assertEquals(1, $this->_group->getLocation()->getIdOrigine());
+	}
+
+
+  /** @test */
+	public function deviceGroupSiteUrlAdminShouldBeAdminSite() {
+		$this->assertEquals("http://admin/site", $this->_group->getLocation()->getAdminUrl());
 	}
 
 

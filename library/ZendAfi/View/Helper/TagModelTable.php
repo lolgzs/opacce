@@ -87,19 +87,32 @@ class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
 
 	/*
 	 * @param Storm_Model_Abstract $model
-	 * @param array of string / Closure $actions
+	 * @param array of arrays of string / Closure $actions
 	 * @return string
 	 */
 	public function renderModelActions($model, $actions) {
 		$html = '';
-		foreach ($actions as $action) {
-			$content = $action['content'];
-			$html .= $this->view->tagAnchor(array('action' => $action['action'],
-																						'id' => $model->getId()),
-																			is_a($content, 'Closure') ? $content($model) : $content);
-		}
+		foreach ($actions as $action)
+			$html .= $this->renderModelAction($model, $action);
 
 		return $html;
+	}
+
+
+	/*
+	 * @param Storm_Model_Abstract $model
+	 * @param array of strings/closure or closure
+	 * @return string
+	 */
+	public function renderModelAction($model, $action) {
+		if (is_a($action, 'Closure'))
+			return $action($model);
+
+			
+		$content = $action['content'];
+		return  $this->view->tagAnchor(array('action' => $action['action'],
+																				 'id' => $model->getId()),
+																	 is_a($content, 'Closure') ? $content($model) : $content);
 	}
 }
 
