@@ -115,4 +115,12 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	public function getSlotSize() {
 		return $this->getLocation()->getSlotSize();
 	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getAutoholdMinTime() {
+		return $this->getLocation()->getAutoholdMinTime();
+	}
 }

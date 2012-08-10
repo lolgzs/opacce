@@ -117,7 +117,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
 																			'referenced_in' => 'id_site']];
 
-	protected $_default_attribute_values = ['days' => ''];
+	protected $_default_attribute_values = ['days' => '', 
+																					'autohold_min_time' => 0];
 
 
 	/**
@@ -257,7 +258,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 
 	/** @return int */
 	public function getMaxTimeForToday() {
-		$ouverture = $this->getOuvertureForDate(self::getTimeSource()->date());
+		if (!$ouverture = $this->getOuvertureForDate(self::getTimeSource()->date()))
+			return 0;
 		return $ouverture->getNextCloseFrom($this->getCurrentTime());
 	}
 	

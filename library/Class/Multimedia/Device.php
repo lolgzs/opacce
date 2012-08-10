@@ -187,11 +187,23 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 		if (!$this->isAutoholdEnabled())
 			return false;
 
-		// une résa courante et on est dans le délai d'auth, on sort
-		if (null !== $current_hold
-			and $this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay())))
+		// si une résa est en cours et n'est pas encore dans le délai d'annulation
+		if ((null !== $current_hold) 
+				&& ($this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay()))))
 			return false;
-		return true;
+
+		 if (null == $next_start = $this->getNextHoldStart())
+			 return true;
+
+		 return ($this->getCurrentTime() < ($next_start - (60 * $this->getAutoholdMinTime())));
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getAutoholdMinTime() {
+		return $this->getGroup()->getAutoholdMinTime();
 	}
 
 

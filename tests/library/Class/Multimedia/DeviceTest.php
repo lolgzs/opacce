@@ -294,3 +294,45 @@ class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterNextHoldStar
 		$this->assertEquals($this->_nextStartTime, $this->_hold->getEnd());
 	}
 }
+
+
+
+
+class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsBeforeNextHoldStartButAfterMinAutoHoldTimeTest extends Multimedia_DeviceCurrentHoldTestCase {
+	/** @var int */
+	protected $_nextStartTime;
+	
+	public function setUp() {
+		parent::setUp();
+		$this->_location
+			->setAuthDelay(10)
+			->setAutohold(1)
+			->setSlotSize(15)
+			->setAutoholdSlotsMax(600)
+			->setAutoholdMinTime(5)
+			->addOuverture(Class_Ouverture::newInstanceWithId(5)
+										 ->setBib($this->_bib_antibes)
+										 ->setJourSemaine(date('w'))
+										 ->setHoraires(['08:00', '12:00', '14:00', '23:00']));
+
+		$this->_nextStartTime = $this->_time_source->time() + (2 * 60);
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+				->whenCalled('getHoldOnDeviceAtTime')
+				->answers(null)
+
+				->whenCalled('getFirstHoldOnDeviceBetweenTimes')
+				->answers(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(333)
+					->setStart($this->_nextStartTime))
+
+				->whenCalled('save')
+				->answers(true);
+
+		$this->_hold = $this->_device->getCurrentHoldForUser(Class_Users::getLoader()->newInstanceWithId(7));
+	}
+
+
+	/** @test */
+	public function shouldNotHaveHold() {
+		$this->assertNull($this->_hold);
+	}
+}
