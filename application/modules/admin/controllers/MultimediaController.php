@@ -155,6 +155,22 @@ disponible',
 	public function addAction() {
 		$this->_redirect('/admin/multimedia');
 	}
+
+
+	/** Affiche les réservations d'un device*/
+	public function holdsAction() {
+		if (!$device = Class_Multimedia_Device::find($this->_getParam('id'))) {
+			$this->_redirect('/admin/multimedia/index');
+			return;
+		}
+
+		$this->view->subview = $this->view->partial('multimedia/holds.phtml',
+			                                          ['titre' => sprintf('%s (%s): réservations',
+																																		$device->getLibelle(),
+																																		$device->getOs()),
+																								 'device' => $device]);
+		$this->_forward('index');
+	}
 }
 
 ?>

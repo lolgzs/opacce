@@ -189,6 +189,13 @@ class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTes
 		Class_Multimedia_Location::getLoader()->newInstanceWithId(33)
 				->setLibelle('Antibe')
 				->setGroups(array($group));
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('countBy')
+			->with(['role' => 'device', 'model' => $device])
+			->answers(7);
+
 				
 		$this->dispatch('/admin/multimedia/browse/id/33', true);
 	}
@@ -211,11 +218,20 @@ class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTes
 		$this->assertXPathContentContains('//td', 'Archlinux');
 	}
 
+
 	/** @test */
 	public function groupDocumentationShouldBePresent() {
 		$this->assertXPathContentContains('//td', 'Documentation');
 	}
+
+
+	/** @test */
+	public function nombreReservationsShouldBeSevenAndLinkToHoldsDeviceId1() {
+		$this->assertXPathContentContains('//td//a[contains(@href, "multimedia/holds/id/1")]', '7');
+	}
 }
+
+
 
 
 class Admin_MultimediaControllerAddTest extends Admin_MultimetiaControllerTestCase {
@@ -232,6 +248,8 @@ class Admin_MultimediaControllerAddTest extends Admin_MultimetiaControllerTestCa
 }
 
 
+
+
 class Admin_MultimediaControllerDeleteTest extends Admin_MultimetiaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -244,3 +262,86 @@ class Admin_MultimediaControllerDeleteTest extends Admin_MultimetiaControllerTes
 		$this->assertRedirectTo('/admin/multimedia');
 	}
 }
+
+
+
+
+
+class Admin_MultimediaControllerHoldsTest extends Admin_MultimetiaControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$device = Class_Multimedia_Device::getLoader()->newInstanceWithId(1)
+			->setLibelle('Poste 1')
+			->setOs('Archlinux')
+			->setHolds([
+									Class_Multimedia_DeviceHold::newInstanceWithId(3)
+									->setStart(strtotime('2012-09-12 15:00'))
+									->setEnd(strtotime('2012-09-12 16:00'))
+									->setUser(Class_Users::newInstanceWithId(3)->setPrenom('Laurent')),
+
+									Class_Multimedia_DeviceHold::newInstanceWithId(4)
+									->setStart(strtotime('2012-09-13 12:00'))
+									->setEnd(strtotime('2012-09-13 13:00'))
+									->setUser(Class_Users::newInstanceWithId(4)->setPrenom('Estelle'))]);
+
+
+		$this->dispatch('/admin/multimedia/holds/id/1', true);
+	}
+
+	/** @test */
+	public function firstRowShouldContainsGroup2012_09_12() {
+		$this->assertXPathContentContains('//tr[1]//td', '2012-09-12');
+	}
+	
+
+	/** @test */
+	public function secondRowShouldContainsResaLaurent() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Laurent');
+		$this->assertXPathContentContains('//tr[2]//td', '15:00');
+		$this->assertXPathContentContains('//tr[2]//td', '16:00');
+	}
+
+
+	/** @test */
+	public function firstRowShouldContainsGroup2012_09_13() {
+		$this->assertXPathContentContains('//tr[3]//td', '2012-09-13');
+	}
+
+
+	/** @test */
+	public function fourthRowShouldContainsResaEstelle() {
+		$this->assertXPathContentContains('//tr[4]//td', 'Estelle');
+		$this->assertXPathContentContains('//tr[4]//td', '12:00');
+		$this->assertXPathContentContains('//tr[4]//td', '13:00');
+	}
+
+
+	/** @test */
+	public function navigationPanelShouldBePresent() {
+		$this->assertXPath('//table[@id="multimedia_location"]');
+	}
+
+
+	/** @test */
+	public function titreShouldBeReservationsDuPostePoste1_ArchLinux_() {
+		$this->assertXPathContentContains('//h2', 'Poste 1 (Archlinux): réservations');
+	}
+}
+
+
+
+class Admin_MultimediaControllerHoldsOnUnknownDeviceTest extends Admin_MultimetiaControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/multimedia/holds/id/9999999999', true);
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToIndex() {
+		$this->assertRedirectTo('/admin/multimedia/index');
+	}
+}
+
+?>

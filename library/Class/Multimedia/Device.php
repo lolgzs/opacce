@@ -73,7 +73,8 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	protected $_has_many = array(
 		'holds' => array(
 			'model' => 'Class_Multimedia_DeviceHold',
-			'role' => 'device'));
+			'role' => 'device',
+			'order' => 'start'));
 	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);

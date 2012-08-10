@@ -3,11 +3,15 @@
 	<div class="infos"><?php echo $this->_('Aucun poste dans ce groupe');?></div>
 <?php } else { ?>
 <?php echo $this->tagModelTable(
-		$this->devices,
-		array($this->_('Libellé'), $this->_('Os')),
-		array('libelle', 'os'),
-		array(),
-		'multimedia_devices',
-		'group_libelle');?>
+																$this->devices,
+																[$this->_('Libellé'), $this->_('Os')],
+																['libelle', 'os'],
+																[ ['action' => 'holds', 
+																	 'content' => function($model) {
+																			return $this->boutonIco('type=show').$model->numberOfHolds().' rés.';
+																		}] 
+																	],
+																'multimedia_devices',
+																'group_libelle');?>"
 	</table>
 <?php } ?>

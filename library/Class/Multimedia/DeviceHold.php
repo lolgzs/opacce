@@ -182,13 +182,45 @@ class Class_Multimedia_DeviceHold extends Storm_Model_Abstract {
 			'model' => 'Class_Users',
 			'referenced_in' => 'id_user'));
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
 
-
+	/**
+	 * @return bool
+	 */
 	public function belongsToUser($user) {
 		return $user == $this->getUser();
 	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getJour() {
+		return date('Y-m-d', $this->getStart());
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getUsername() {
+		return $this->getUser()->getNomComplet();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getStartHHMM() {
+		return date('H:i', $this->getStart());
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getEndHHMM() {
+		return date('H:i', $this->getEnd());
+	}
+
 }
 ?>

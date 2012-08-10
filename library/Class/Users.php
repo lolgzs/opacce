@@ -692,6 +692,14 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return string
+	 */
+	public function getNomComplet() {
+		return $this->getNomAff(null, true);
+	}
+
+
+	/**
 	 * Return the list of Class_WebService_SIGB_Emprunt for this user
 	 * @return array
 	 */
