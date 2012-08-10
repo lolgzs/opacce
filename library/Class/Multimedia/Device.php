@@ -155,7 +155,7 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 * @return Class_Multimedia_DeviceHold
 	 */
 	public function autoHoldByUser($user, $current_hold) {
-		if (!$this->canCreateHoldGivenCurrentHold($current_hold))
+		if (!$this->canCreateHoldGivenCurrentHoldAndUser($current_hold, $user))
 			return null;
 
 		// si je n'ai pas de début de créneau, on sort
@@ -182,7 +182,7 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	 * @param Class_Multimedia_DeviceHold $current_hold
 	 * @return boolean
 	 */
-	public function canCreateHoldGivenCurrentHold($current_hold) {
+	public function canCreateHoldGivenCurrentHoldAndUser($current_hold, $user) {
 		// pas de résa auto, on sort
 		if (!$this->isAutoholdEnabled())
 			return false;
@@ -192,10 +192,13 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 				&& ($this->getCurrentTime() <= ($current_hold->getStart() + (60 * $this->getAuthDelay()))))
 			return false;
 
-		 if (null == $next_start = $this->getNextHoldStart())
+		 if (null == $next_hold = $this->getNextHold())
 			 return true;
 
-		 return ($this->getCurrentTime() < ($next_start - (60 * $this->getAutoholdMinTime())));
+		 if ($user->getId() == $next_hold->getIdUser())
+			 return true;
+
+		 return ($this->getCurrentTime() < ($next_hold->getStart() - (60 * $this->getAutoholdMinTime())));
 	}
 
 
@@ -273,11 +276,17 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 
 	/** @return int */
 	public function getNextHoldStart() {
+		if ($hold = $this->getNextHold())
+			return $hold->getStart();
+		return null;
+	}
+
+
+	/** @return Class_Multimedia_DeviceHold */
+	public function getNextHold() {
 		$from = $this->getCurrentTime();
 		$to = $this->getMaxTimeForToday();
-		if (null != ($hold = Class_Multimedia_DeviceHold::getLoader()
-				                   ->getFirstHoldOnDeviceBetweenTimes($this, $from, $to)))
-			return $hold->getStart();
+		return Class_Multimedia_DeviceHold::getLoader()->getFirstHoldOnDeviceBetweenTimes($this, $from, $to);
 	}
 
 
