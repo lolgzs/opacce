@@ -34,7 +34,10 @@ class Admin_MultimediaController extends ZendAfi_Controller_Action {
 																								'elements' => $this->getLocalisationFields()],
 
 														 'config' => ['legend' => 'Réservation',
-																					'elements' => $this->getConfigFields()]
+																					'elements' => $this->getConfigFields()],
+
+														 'config_auto' => ['legend' => 'Réservation automatique',
+																							 'elements' => $this->getConfigAutoFields()]
 														 ]
 						];
 	}
@@ -92,8 +95,12 @@ les réservation pour le lendemain)',
 																					 'size' => 4,
 																					 'required' => true,
 																					 'allowEmpty' => false,
-																					 'validators' => ['digits']]],
+																					 'validators' => ['digits']]]];
+	}
 
+
+	public function getConfigAutoFields() {
+		return [
 						'autohold' => ['element' => 'checkbox',
 													 'options' => ['label' => 'Générer automatiquement une réservation à la connection à un poste
 disponible',
