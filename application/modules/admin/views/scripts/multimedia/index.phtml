@@ -13,7 +13,8 @@ echo $this->tagModelTable(
 	 function ($model) {
 			if ($model->hasAdminUrl())
 				return $this->tagAnchor($model->getAdminUrl(),
-																URL_ADMIN_IMG.'picto/groupe_postes_16.png');
+																$this->tagImg(URL_ADMIN_IMG.'picto/groupe_postes_16.png',
+																							['title' => $this->_('Administrer le serveur AFI-Multimedia')]));
 
 		}],
 

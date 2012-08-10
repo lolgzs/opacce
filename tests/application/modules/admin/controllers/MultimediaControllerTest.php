@@ -104,7 +104,7 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 
 	/** @test */
 	public function valbonneMultimedaLinkShouldBePresent() {
-		$this->assertXPath('//table[@id="multimedia_location"]//tr[2]//a[@href="http://valbonne.net/multimedia"]',
+		$this->assertXPath('//table[@id="multimedia_location"]//tr[2]//a[@href="http://valbonne.net/multimedia"]//img',
 											 $this->_response->getBody());
 	}	
 }
