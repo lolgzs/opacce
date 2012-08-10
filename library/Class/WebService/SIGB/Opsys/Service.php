@@ -335,14 +335,14 @@ class RspRecupererParamTable {
 class OuvrirSession {
 	public $Param; // EntOuvrirSession
 
-	function __construct($NomServeur=''){
+	function __construct($NomServeur='INTERNET'){
 		$this->Param = new EntOuvrirSession($NomServeur);
 	}
 
 }
 
 class EntOuvrirSession extends Entree {
-	public $NomMachine; // string
+	public $NomMachine = 'INTERNET'; // string
 	public $ListeServeurs; // ArrayOfServeurSession
 
 	function __construct($NomServeur){
