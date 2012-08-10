@@ -21,6 +21,40 @@
 
 require_once 'AbstractControllerTestCase.php';
 
+trait TAbonneControllerMultimediaFixtureHoldSuccessOnSept12 {
+	protected function _launch() {
+		$this->onLoaderOfModel('Class_Multimedia_Location')
+			->whenCalled('findByIdOrigine')
+			->answers(Class_Multimedia_Location::newInstanceWithId(1));
+
+				
+		$this->onLoaderOfModel('Class_Multimedia_Device')
+			->whenCalled('findByIdOrigineAndLocation')
+			->answers(Class_Multimedia_Device::newInstanceWithId(1));
+				
+		$this->onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('getHoldOnDeviceAtTime')
+			->answers(Class_Multimedia_DeviceHold::newInstanceWithId(333)
+				->setIdUser($this->_user->getId())
+				->setEnd(strtotime('2012-09-12 16:40:00')));
+				
+		parent::_launch();
+	}
+}
+
+
+
+
+trait TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles {
+	protected function _initUser() {
+		$this->_user = AbonneControllerMultimediaUsersFixtures::getLaurent();
+		$this->_group= 'Devs agiles';
+	}
+}
+
+
+
+
 abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractControllerTestCase {
 	protected $_json;
 
@@ -77,9 +111,9 @@ class AbonneControllerMultimediaAuthenticateValidationTest extends AbonneControl
 	public function setUp() {
 		parent::setUp();
 		$this->_expectUserToLoad(AbonneControllerMultimediaUsersFixtures::getLaurent());
-	}
+	}		
 
-		
+
 	/** @test */
 	public function responseShouldNotBeARedirect() {
 		$json = $this->getJson('/abonne/authenticate/login/any/password/any');
@@ -165,31 +199,9 @@ abstract class AbonneControllerMultimediaAuthenticateValidTestCase extends Abonn
 
 
 class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
-	protected function _initUser() {
-		$this->_user = AbonneControllerMultimediaUsersFixtures::getLaurent();
-		$this->_group= 'Devs agiles';
-	}
-
-		
-	protected function _launch() {
-		$this->onLoaderOfModel('Class_Multimedia_Location')
-			->whenCalled('findByIdOrigine')
-			->answers(Class_Multimedia_Location::newInstanceWithId(1));
-
-				
-		$this->onLoaderOfModel('Class_Multimedia_Device')
-			->whenCalled('findByIdOrigineAndLocation')
-			->answers(Class_Multimedia_Device::newInstanceWithId(1));
-				
-		$this->onLoaderOfModel('Class_Multimedia_DeviceHold')
-			->whenCalled('getHoldOnDeviceAtTime')
-			->answers(Class_Multimedia_DeviceHold::newInstanceWithId(333)
-				->setIdUser($this->_user->getId())
-				->setEnd(strtotime('2012-09-12 16:40:00')));
-				
-		parent::_launch();
-	}
-
+	use 
+		TAbonneControllerMultimediaFixtureHoldSuccessOnSept12,
+		TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles;
 	
 	/** @test */
 	public function shouldNotReturnError() {
@@ -255,20 +267,59 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 
 
 
+class AbonneControllerMultimediaAuthenticateLaurentDeviceNotFoundTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	use TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles;
+
+	protected function _launch() {
+		$this->onLoaderOfModel('Class_Multimedia_Location')
+			->whenCalled('findByIdOrigine')
+			->answers(Class_Multimedia_Location::newInstanceWithId(1));
+
+				
+		$this->onLoaderOfModel('Class_Multimedia_Device')
+			->whenCalled('findByIdOrigineAndLocation')
+			->answers(null);
+				
+		parent::_launch();
+	}
+
+
+	/** @test */
+	public function jsonShouldContainsErrorDeviceNotFound() {
+		$this->assertEquals('DeviceNotFound', $this->_json->error);
+	}
+}
+
+
+
+
 class AbonneControllerMultimediaAuthenticateArnaudTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	use TAbonneControllerMultimediaFixtureHoldSuccessOnSept12;
+
 	protected function _initUser() {
 		$this->_user = AbonneControllerMultimediaUsersFixtures::getArnaud();
 		$this->_group= 'Patrons';
 	}
 
+
 	/** @test */
 	public function groupsShouldBeInviteAndPatrons() {
 		$this->assertEquals(array('invite', 'Patrons'), $this->_json->groupes);	
 	}
+
+
+	/** @test */
+	public function shouldNotReturnError() {
+		$this->assertFalse(property_exists($this->_json, 'error'));
+	}
 }
 
 
+
+
 class AbonneControllerMultimediaAuthenticateBaptisteTest extends AbonneControllerMultimediaAuthenticateValidTestCase {
+	use TAbonneControllerMultimediaFixtureHoldSuccessOnSept12;
+
 	protected function _initUser() {
 		$this->_user = AbonneControllerMultimediaUsersFixtures::getBaptiste();
 		$this->_group= 'Devs Oldschool';

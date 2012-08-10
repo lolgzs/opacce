@@ -51,31 +51,25 @@ class Class_Multimedia_AuthenticateRequest {
 		if (!($login = $request->getParam('login'))
 			|| !($password = $request->getParam('password'))
 			|| !($poste = $request->getParam('poste'))
-			|| !($site = $request->getParam('site'))) {
-			$this->_error = 'MissingParameter';
-			return $this;
-		}
+			|| !($site = $request->getParam('site')))
+			return $this->_error('MissingParameter');
+		
+		if (!$user = Class_Users::getLoader()->findFirstBy(array('login' => $login)))
+			return $this->_error('UserNotFound');
 
-		if (!$user = Class_Users::getLoader()->findFirstBy(array('login' => $login))) {
-			$this->_error = 'UserNotFound';
-			return $this;
-		}
+		if (($user->getPassword() !== $password))
+			return $this->_error('PasswordIsWrong');
 
-		if (($user->getPassword() !== $password)) {
-			$this->_error = 'PasswordIsWrong';
-			return $this;
-	  }
-
-		if (!$user->isAbonnementValid()) {
-			$this->_error = 'SubscriptionExpired';
-			return $this;
-    }
+		if (!$user->isAbonnementValid())
+			return $this->_error('SubscriptionExpired');
 
 		$this->_user = $user;
-		
+
 		if ($location = Class_Multimedia_Location::getLoader()->findByIdOrigine($site))
-			$this->_device = Class_Multimedia_Device::getLoader()
-				->findByIdOrigineAndLocation($poste, $location);
+			$this->_device = Class_Multimedia_Device::getLoader()->findByIdOrigineAndLocation($poste, $location);
+		
+		if (!$this->_device)
+			return $this->_error('DeviceNotFound');
 
 		return $this->beValid();
 	}
@@ -109,6 +103,16 @@ class Class_Multimedia_AuthenticateRequest {
 	/** @return Class_Multimedia_Device */
 	public function getDevice() {
 		return $this->_device;
+	}
+
+
+	/** 
+	 * @param string $code
+	 * @return Class_Multimedia_Device 
+	 */
+	protected  function _error($code) {
+		$this->_error = $code;
+		return $this;
 	}
 }
 ?>
