@@ -96,10 +96,11 @@ class CatalogueController extends Zend_Controller_Action
 
 		// Variables viewer
 		$_SESSION["recherche"]["retour_liste"]=$this->view->url_retour;
+		$page = $this->_getParam('page', 1);
 		$this->view->titre=$_REQUEST["titre"];
-		$this->view->liste=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"]);
+		$this->view->liste=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"], $page);
 		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=array_isset("page", $_REQUEST) ? $_REQUEST["page"] : 1;
+		$this->view->resultat["page_cours"]=$page;
 		$this->view->url_facette=$this->view->url_retour;
 		$this->view->texte_selection=$this->getTexteSelection();
 	}
