@@ -29,8 +29,7 @@ class ZendAfi_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Acti
 //-------------------------------------------------------------------------------
 // Constructeur
 //-------------------------------------------------------------------------------
-	public function __construct()
-	{
+	public function __construct()	{
 		$options['viewSuffix'] = 'phtml';
 		$view=new ZendAfi_Controller_Action_Helper_View();
 		parent::__construct($view, $options);
@@ -70,6 +69,12 @@ class ZendAfi_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Acti
 			}
 			$this->view->addScriptPath("..".URL_HTML);
 		}
+
+
+		$request = $this->getRequest();
+		$this->view->setModuleControllerActionNames($request->getModuleName(),
+																								$request->getControllerName(),
+																								$request->getActionName());
 
 		// user connecté
 		$user = Zend_Auth::getInstance()->getIdentity();

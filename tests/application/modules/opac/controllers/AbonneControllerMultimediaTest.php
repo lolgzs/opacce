@@ -479,6 +479,12 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 
 
 	/** @test */
+	public function bodyShouldContainsClass_abonne_multimedia_hold_location() {
+		$this->assertXPath('//body[contains(@class, "abonne_multimedia-hold-location")]');
+	}
+
+
+	/** @test */
 	public function currentTimelineStepShouldBeLieu() {
 		$this->_assertCurrentTimelineStep('Lieu');
 	}
@@ -528,6 +534,12 @@ class AbonneControllerMultimediaHoldDayTest extends AbonneControllerMultimediaHo
 		parent::setUp();
 		$this->_prepareLocationInSession();
 		$this->dispatch('/abonne/multimedia-hold-day', true);
+	}
+
+
+	/** @test */
+	public function bodyShouldContainsClass_abonne_multimedia_hold_location() {
+		$this->assertXPath('//body[contains(@class, "abonne_multimedia-hold-day")]');
 	}
 
 

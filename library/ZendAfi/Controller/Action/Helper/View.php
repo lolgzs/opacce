@@ -22,8 +22,7 @@
 // OPAC3 : Surcharge de la class Zend_View
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class ZendAfi_Controller_Action_Helper_View extends Zend_View
-{
+class ZendAfi_Controller_Action_Helper_View extends Zend_View {
 	private $ouverture_boite;					// Html du haut de la boite
 	private $fermeture_boite;					// Html du bas de la boite
 
@@ -40,7 +39,12 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 
 		// Traducteur et user connecté
 		$this->translate = Zend_Registry::get('translate');
+	}
 
+
+	public function setModuleControllerActionNames($module, $controller, $action) {
+		$this->bodyParam = sprintf('class="%s_%s"',
+															 $controller, $action);
 	}
 
 	/**
