@@ -489,7 +489,7 @@ class Class_NoticeHtml
 		foreach($notices as $notice)
 		{
 			$num++;
-			$url_notice="document.location.replace('".$base_url."/recherche/viewnotice/id/".$notice["id_notice"]."/type_doc/".$notice["type_doc"]."')";
+			$url_notice="document.location.replace('".$base_url."/recherche/viewnotice/clef/".$notice["clef_alpha"]."/type_doc/".$notice["type_doc"]."')";
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			
 			$read_speaker_tag = $read_speaker_helper->readSpeaker('recherche', 
