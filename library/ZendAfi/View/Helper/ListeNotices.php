@@ -147,7 +147,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 		return $this->view->url(array('controller' => 'recherche', 
 																	 'action' => 'viewnotice', 
 																	 'clef' => $notice['clef_alpha'], 
-																	 'type_doc' => $notice['type_doc']));
+																	 'type_doc' => $notice[$type_doc]));
 	}
 
 
@@ -290,7 +290,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$notice["titre_principal"]=$notice["T"];
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"],true);
-			$url = $this->urlNotice($notice); 
+			$url = $this->urlNotice($notice["id_notice"], $notice["type_doc"]); 
 			//$url='javascript:document.getElementById(\'Nnotice\').style.display=\'block\';getNoticeAjax(\'N'.$notice["id_notice"].'\',\'Nnotice\')';
 			if($images) $images.=",";
 			$images.='"'.$img["vignette"].'","'.$url.'"';
