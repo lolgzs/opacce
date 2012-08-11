@@ -31,10 +31,11 @@ class ZendAfi_View_Helper_ReseauxSociaux extends ZendAfi_View_Helper_BaseHelper
 	function reseauxSociaux($type,$id_notice,$type_doc=0)
 	{
 		// Url en fonction du type
-		switch($type)
-		{
-			case "notice" : $url_portail="/recherche/viewnotice/id/".$id_notice."?id_profil=".$_SESSION["id_profil"]."?type_doc=".$type_doc; break;
-			case "article" : $url_portail="/cms/articleview/id/".$id_notice."?id_profil=".$_SESSION["id_profil"]; break;
+		$notice = Class_Notice::find($id_notice);
+		$id_profil = Class_Profil::getCurrentProfil()->getId();
+		switch($type)	{
+		case "notice" : $url_portail="/recherche/viewnotice/clef/".$notice->getClefAlpha()."?id_profil=".$id_profil."&amp;type_doc=".$notice->getTypeDoc(); break;
+		case "article" : $url_portail="/cms/articleview/id/".$notice->getId()."?id_profil=".$id_profil; break;
 		}
 
 
