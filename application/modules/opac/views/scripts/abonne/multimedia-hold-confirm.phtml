@@ -11,6 +11,9 @@
 			<li><?php echo sprintf('%s : %s', $this->_('Poste'), $this->escape($this->device));?></li>
 		</ul>
 
-		<button><?php echo $this->tagAnchor(array('validate' => 1), $this->_('Confirmer')); ?></button>
+    <?php $confirm_url = $this->url(array('validate' => 1)); ?>
+		<button onclick="window.location='<?php echo $confirm_url?>';">
+	    <?php echo $this->tagAnchor($confirm_url, $this->_('Confirmer')); ?>
+	  </button>
 </div>
 <?php $this->closeBoite();?>
