@@ -146,7 +146,7 @@ class RechercheController extends Zend_Controller_Action
 			$this->liste=new Class_ListeNotices($this->preferences["liste_nb_par_page"],
 																					$this->preferences["liste_codes"]);
 
-		return $this->liste->getListe($req, $this->_getParam('page', 1));
+		return $this->liste->getListe($req);
 	}
 
 //------------------------------------------------------------------------------------------------------

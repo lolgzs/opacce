@@ -42,15 +42,20 @@ class Class_ListeNotices
 //------------------------------------------------------------------------------------------------------
 // Execute une requete notices et rend 1 page avec les champs paramétrés dans les préférences
 //------------------------------------------------------------------------------------------------------
-	function getListe($req, $page=1)	{
+	function getListe($req)	{
 		if (!$req)
-			return ['statut' => 'erreur',
-							'erreur' => 'Aucune notice trouvée',
-							'nb_mots' => 1];
-
-		if (!$page) $page=1;
-
+			return array('statut' => 'erreur',
+									  'erreur' => 'Aucune notice trouvée',
+									  'nb_mots' => 1);
 		$ret =  array();
+		$page = 1;
+
+		// Calcul de la limite
+		if (array_isset("page", $_REQUEST))
+			$page=intval($_REQUEST["page"]);
+
+		if(!$page) 
+			$page=1;
 
 		$fin_limit = 0;
 		if(strpos($req," LIMIT ") === false)
@@ -69,11 +74,11 @@ class Class_ListeNotices
 		if (!$ids=fetchAll($req))
 			$ids = array();
 
-		if($fin_limit) $ids=array_slice($ids, $debut_limit, $fin_limit);
-
+		if($fin_limit) $ids=array_slice ($ids, $debut_limit, $fin_limit);
 		foreach($ids as $lig)
+		{ 
 			$ret[]=$this->notice->getNotice($lig["id_notice"],$this->champs);
-
+		}
 		return $ret;
 	}
 

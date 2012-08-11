@@ -130,7 +130,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 				if($champ=="T") 
 					$html.= sprintf('<td class="%s"><a href="%s">%s</a></td>',
 													$style_css,
-													$this->urlNotice($notice),
+													$this->urlNotice($notice["id_notice"], $notice["type_doc"]),
 													$notice["T"]);
 
 				else $html.='<td class="'. $style_css .'" '.$align.'>'.$notice[$champ].'</td>';
@@ -143,11 +143,11 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 	}
 
 
-	public function urlNotice($notice) {
+	public function urlNotice($id, $type_doc) {
 		return $this->view->url(array('controller' => 'recherche', 
 																	 'action' => 'viewnotice', 
-																	 'clef' => $notice['clef_alpha'], 
-																	 'type_doc' => $notice[$type_doc]));
+																	 'id' => $id, 
+																	 'type_doc' => $type_doc));
 	}
 
 
@@ -228,7 +228,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 				}
 			}
 			else 
-				$url_notice = $this->urlNotice($notice); 
+				$url_notice = $this->urlNotice($notice["id_notice"], $notice["type_doc"]); 
 
 			// style selon parité des lignes
 			if($lig % 2) $style_css="listeImpaire"; else $style_css="listePaire";
