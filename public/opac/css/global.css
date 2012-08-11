@@ -924,7 +924,8 @@ div.ui-sortable-placeholder {
 
 .timeline  {
 		height: 40px;
-		width: 1000px;
+		width: 700px;
+		margin: 0 auto;
 }
 
 .timeline li {
@@ -985,3 +986,52 @@ div.ui-sortable-placeholder {
 }
 
 
+
+body[class^="abonne_multimedia"] .workflow_step h2 {
+		font-size: 1.3em;
+		text-align: center;
+}
+
+body[class^="abonne_multimedia"] .workflow_step {
+		margin: 20px auto;
+		width: 200px;
+		font-size: 1.2em;
+}
+
+body.abonne_multimedia-hold-day .workflow_step,
+body.abonne_multimedia-hold-hours .workflow_step {
+		width: 400px;
+}
+
+body.abonne_multimedia-hold-device .workflow_step,
+body.abonne_multimedia-hold-confirm .workflow_step,
+body.abonne_multimedia-hold-view .workflow_step {
+		width: 300px;
+}
+
+
+body.abonne_multimedia-hold-confirm button {
+		margin: 5px auto;
+		display: block;
+		padding: 5px 50px;
+}
+
+
+body.abonne_multimedia-hold-day #hold-day.calendar {
+		margin: 0 auto;
+		width: 280px;
+}
+
+
+body.abonne_multimedia-hold-hours input[type="submit"] {
+		border: 2px outset buttonface;
+		width: 200px;
+		margin: 5px auto;
+		display: block;
+}
+
+
+
+body.abonne_multimedia-hold-view .actions a {
+		margin: 0 20px;
+}

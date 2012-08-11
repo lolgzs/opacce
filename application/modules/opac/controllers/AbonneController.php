@@ -645,8 +645,19 @@ class AbonneController extends Zend_Controller_Action {
 		}
 		
 		$this->view->timelineActions = $this->_getTimelineActions('hours');
-		$this->view->times = $location->getStartTimesForDate($bean->day);
-		$this->view->durations = $location->getDurations();
+		$this->view->form = $this->multimediaHoldHoursForm($bean, $location);
+	}
+
+	public function multimediaHoldHoursForm($bean, $location) {
+		return $this->view
+			->newForm(['id' => 'hold-hours'])
+			->setMethod('get')
+			->addElement('select', 'time', ['label' => $this->view->_('À partir de quelle heure ?'),
+																			'multiOptions' => $location->getStartTimesForDate($bean->day)])
+			->addElement('select', 'duration', ['label' => $this->view->_('Pour quelle durée ?'),
+																					'multiOptions' => $location->getDurations()])
+			->addDisplayGroup(['time', 'duration'], 'choix', ['legend' => ''])
+			->addElement('submit', 'submit', ['label' => $this->view->_('Choisir')]);
 	}
 
 

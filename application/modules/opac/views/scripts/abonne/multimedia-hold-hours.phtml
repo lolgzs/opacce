@@ -1,24 +1,15 @@
 <?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
 <?php echo $this->timeline($this->timelineActions);?>
 
-<?php if ($this->error) { ?>
-<div class="error">
-<?php echo $this->error;?>
-</div>
-<?php } ?>
-	
-<form method="get">
-<select id="time" name="time">
-<?php foreach ($this->times as $k => $v) { ?>
-	<option value="<?php echo $k;?>"><?php echo $this->escape($v);?></option>
-<?php } ?>
-</select>
+<div class="workflow_step">
+	<h2><?php echo $this->_('Quand ?') ?></h2>
+	<?php if ($this->error) { ?>
+	<div class="error">
+	<?php echo $this->error;?>
+	</div>
+	<?php } ?>
 
-<select id="duration" name="duration">
-<?php foreach ($this->durations as $k => $v) { ?>
-	<option value="<?php echo $k;?>"><?php echo $this->escape($v);?></option>
-<?php } ?>
-</select>
-	<input type="submit" value="Choisir" />
-</form>
+  <?php echo $this->renderForm($this->form) ?>
+</div>
+
 <?php $this->closeBoite();?>

@@ -99,7 +99,7 @@ Rajouter erreurs:
 * ZendForm
 	[[file:application/modules/admin/controllers/FormationController.php::->addElement('datePicker',%20'date_debut',%20array(][Exemple complet (datePicker, select, CKEditor)]]
 	[[file:library/ZendAfi/View/Helper/RenderForm.php::class%20ZendAfi_View_Helper_RenderForm%20extends%20ZendAfi_View_Helper_BaseHelper%20{][Helper_RenderForm]]
-
+	
 
 * A refactorer [0/1]
 ** TODO [#A] [[file:library/Class/Multimedia/Location.php::public%20function%20getPossibleHours($increment,%20$from%20%3D%20null,%20$to%20%3D%20null)%20{][::getPossibleHours à mettre dans une classe Date ou Time ...]]

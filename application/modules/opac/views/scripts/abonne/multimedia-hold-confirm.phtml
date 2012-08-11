@@ -1,8 +1,8 @@
 <?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
 <?php echo $this->timeline($this->timelineActions);?>
 
-<div class="multimedia_reservation">
-		<h2><?php echo $this->_('Ma réservation');?></h2>
+<div class="multimedia_reservation workflow_step">
+		<h2><?php echo $this->_('Cette réservation convient-elle ?');?></h2>
 		<ul>
 			<li><?php echo sprintf('%s : %s', $this->_('Lieu'), $this->escape($this->location));?></li>
 			<li><?php echo sprintf('%s : %s', $this->_('Jour'), $this->escape($this->day));?></li>
@@ -11,6 +11,6 @@
 			<li><?php echo sprintf('%s : %s', $this->_('Poste'), $this->escape($this->device));?></li>
 		</ul>
 
-		<?php echo $this->tagAnchor(array('validate' => 1), $this->_('Confirmer'));?>
+		<button><?php echo $this->tagAnchor(array('validate' => 1), $this->_('Confirmer')); ?></button>
 </div>
 <?php $this->closeBoite();?>
