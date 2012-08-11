@@ -82,7 +82,7 @@ jour même)',
 						'hold_delay_max' => ['element' => 'text',
 																 'options' => [
 																							 'label' => 'Nombre de jours au plus tôt avant une réservation<br/>(1 pour autoriser
-les réservation pour le lendemain)',
+les réservations pour le lendemain)',
 																							 'title' => 'en jours, doit être supérieur au délai minimum',
 																							 'size' => 4,
 																							 'required' => true,
@@ -102,7 +102,7 @@ les réservation pour le lendemain)',
 	public function getConfigAutoFields() {
 		return [
 						'autohold' => ['element' => 'checkbox',
-													 'options' => ['label' => 'Générer automatiquement une réservation à la connection à un poste
+													 'options' => ['label' => 'Générer automatiquement une réservation à la connexion à un poste
 disponible',
 																				 'title' => 'quand un abonné se connecte sur un poste non réservé, une réservation lui est attribuée',
 																				 'required' => true,

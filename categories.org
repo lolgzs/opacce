@@ -9,15 +9,16 @@
 	 [[file:tests/application/modules/admin/controllers/OuverturesControllerTest.php::abstract%20class%20OuverturesControllerTestCase%20extends%20Admin_AbstractControllerTestCase%20{][Tests Controller Ouvertures]]
 	 [[file:application/modules/admin/controllers/OuverturesController.php::class%20Admin_OuverturesController%20extends%20ZendAfi_Controller_Action%20{][Controller Ouvertures]]	 
 
-** TODO prendre en compte admin_url dans le push
+** DONE prendre en compte admin_url dans le push
+	 CLOSED: [2012-08-10 Fri 18:15]
 ** DONE textes : créneau
 	 CLOSED: [2012-08-10 Fri 15:14]
 ** Réunion 
-*** Admin liste des postes
-admin
-1. liste résa jour / poste
-2. formulaire
-3. intéraction
+*** TODO Admin liste des postes
+**** DONE liste résa jour / poste
+		 CLOSED: [2012-08-10 Fri 18:16]
+**** formulaire
+**** intéraction
 
 *** Workflow résa
 faut pas pouvoir cliquer ailleurs
