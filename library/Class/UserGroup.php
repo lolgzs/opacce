@@ -55,7 +55,8 @@ class Class_UserGroup extends Storm_Model_Abstract {
 	public function getUsers() {
 		if ($this->isManual())
 			return parent::_get('users');
-		return Class_Users::findAllBy(['role_level' => $this->getRoleLevel()]);
+		return Class_Users::findAllBy(['role_level' => $this->getRoleLevel(),
+																	 'limit' => 50]);
 	}
 
 	

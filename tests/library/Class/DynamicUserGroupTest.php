@@ -58,7 +58,7 @@ class DynamicUserGroupAbonneSIGBTest extends Storm_Test_ModelTestCase {
 		$this->assertTrue($this->_abonnnes_sigb->isDynamic());
 	}
 
-
+	
 	/** @test */
 	public function usersShouldContainsBaptisteAndXavier() {
 		$this->assertEquals(['Baptiste', 'Xavier'],

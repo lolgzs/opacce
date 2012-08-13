@@ -72,9 +72,11 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 
 		$this->view->getHelper('SubscribeUsers')
 			->setUsers($group->getUsers())
-			->setSearch($this->_getParam('search'));
+			->setSearch($this->_getParam('search'))
+			->setReadOnly($group->isDynamic());
 
 		$this->view->titre = "Membres du groupe: ".$group->getLibelle();
+		$this->view->group = $group;
 	}
 
 
@@ -108,20 +110,39 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 			->newForm(array('id' => 'usergroupform'))
 			->setAction($this->view->url(array('action' => $action)));
 
-		$form->addRequiredTextNamed('libelle')
+		$form
+			->addRequiredTextNamed('libelle')
 			->setLabel('Libellé *');
 
-		$elements = array('libelle');
+		$form
+			->addElement('radio',
+									 'group_type',
+									 ['label' => $this->view->_('Mode de sélection des utilisateurs'),
+										'multiOptions' => [Class_UserGroup::TYPE_MANUAL =>  $this->view->_('Manuel'),
+																			 Class_UserGroup::TYPE_DYNAMIC => $this->view->_('Dynamique')] ] )
+			->addElement('select',
+									 'role_level',
+									 ['label' => $this->view->_('Rôle'),
+										'multiOptions' => ZendAfi_Acl_AdminControllerRoles::getListeRolesWithoutSuperAdmin()] )
+
+			->addDisplayGroup(['libelle', 'group_type'], 
+												'usergroup', 
+												['legend' => $this->view->_('Groupe')])
+
+			->addDisplayGroup(['role_level'], 
+												'dynamic_filter', 
+												['legend' => $this->view->_('Filtre')]);		
  
 		if (Class_AdminVar::isFormationEnabled()) {
-			$form->addElement('multiCheckbox',
+			$form
+				->addElement('multiCheckbox',
 				                'rights',
-				                 array('label' => 'Droits',
-													      'multiOptions' => Class_UserGroup::getRightDefinitionList()));
-			$elements[] = 'rights';
+				                 ['label' => '',
+													'multiOptions' => Class_UserGroup::getRightDefinitionList()])
+				->addDisplayGroup(['rights'], 'rights_group', ['legend' => $this->view->_('Droits')]);
 		}
 
-		$form->addDisplayGroup($elements, 'usergroup', array('legend' => 'Groupe'));		
+
 
 		if (Class_AdminVar::isMultimediaEnabled()) {
 			$form->addRequiredTextNamed('max_day')

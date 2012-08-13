@@ -60,7 +60,24 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 											->newInstanceWithId(5)
 											->setLibelle('Chercheurs')
 											->setUsers(array())
+											->setRights(array()),
+
+											Class_UserGroup::getLoader()
+											->newInstanceWithId(6)
+											->beDynamic()
+											->setLibelle('Modérateurs bib')
+											->setUsers(array())
 											->setRights(array())
+											->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::MODO_BIB),
+
+
+											Class_UserGroup::getLoader()
+											->newInstanceWithId(7)
+											->beDynamic()
+											->setLibelle('Abonnés SIGB')
+											->setUsers(array())
+											->setRights(array())
+											->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
 											));
 	}
 }
@@ -71,7 +88,7 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('admin/usergroup');
+		$this->dispatch('admin/usergroup', true);
 	}
 
 
@@ -227,7 +244,7 @@ class Admin_UserGroupControllerAddPostInvalidDataTest extends Admin_UserGroupCon
 class Admin_UserGroupControllerEditGroupStagiairesTest extends Admin_UserGroupControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('admin/usergroup/edit/id/3');
+		$this->dispatch('admin/usergroup/edit/id/3', true);
 	}
 
 
@@ -253,7 +270,61 @@ class Admin_UserGroupControllerEditGroupStagiairesTest extends Admin_UserGroupCo
 	public function rightSuivreFormationShouldBeChecked() {
 		$this->assertXPath('//input[@name="rights[]"][@value="1"][@checked="checked"]');
 	}
+
+
+	/** @test */
+	public function radioButtonGroupTypeManualShouldBeSelected() {
+		$this->assertXPath('//label[text()="Manuel"]/input[@name="group_type"][@value="0"][@checked="checked"]');
+		$this->assertXPath('//label[text()="Dynamique"]/input[@name="group_type"][@value="1"][not(@checked)]');
+	}
 }
+
+
+
+
+class Admin_UserGroupControllerEditMembersGroupAbonnesSIGB extends Admin_UserGroupControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('admin/usergroup/editmembers/id/7', true);
+	}
+
+
+	/** @test */
+	public function searchFormShouldNotBeVisible() {
+		$this->assertNotXPath('//label[@for="search"]');
+	}
+}
+
+
+
+
+class Admin_UserGroupControllerEditGroupModerateursBibTest extends Admin_UserGroupControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('admin/usergroup/edit/id/6', true);
+	}
+
+
+	/** @test */
+	public function radioButtonGroupTypeDynamiqueShouldBeSelected() {
+		$this->assertXPath('//label[text()="Manuel"]/input[@name="group_type"][@value="0"][not(@checked)]');
+		$this->assertXPath('//label[text()="Dynamique"]/input[@name="group_type"][@value="1"][@checked="checked"]');
+	}
+
+	
+	/** @test */
+	public function roleLevelSelectShouldHaveRoleModoBibSelected() {
+		$this->assertXPath('//select[@name="role_level"]/option[@value="0"][@label="invité"][not(@selected)]');
+		$this->assertXPath('//select[@name="role_level"]/option[@value="1"][@label="abonné"][not(@selected)]');
+
+		$this->assertXPath('//select[@name="role_level"]/option[@value="3"][@label="rédacteur bibliothèque"][@selected="selected"]');
+
+		$this->assertXPath('//select[@name="role_level"]/option[@value="6"][@label="administrateur portail"][not(@selected)]');
+		
+		$this->assertNotXPath('//select[@name="role_level"]/option[@value="7"]');
+	}
+}
+
 
 
 

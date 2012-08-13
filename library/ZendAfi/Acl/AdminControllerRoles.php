@@ -118,6 +118,13 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		return $roles;
 	}
 
+
+	public static function getListeRolesWithoutSuperAdmin() {
+		$roles = static::getListeRoles();
+		unset($roles[static::SUPER_ADMIN]);
+		return $roles;
+	}
+
  //----------------------------------------------------------------------------------
  // Rend le libelle d'un role
  //----------------------------------------------------------------------------------
