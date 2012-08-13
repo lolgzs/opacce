@@ -42,8 +42,9 @@
 (defun opac3-php-mode()
 	(require 'geben)
 	(require 'phpunit)
-	(auto-complete-mode)
-	(setq ac-sources '(ac-source-words-in-same-mode-buffers))
+	(require 'auto-complete)
+	(auto-complete-mode t)
+	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(imenu-add-menubar-index)
   (setq 
 	 tab-width 2
