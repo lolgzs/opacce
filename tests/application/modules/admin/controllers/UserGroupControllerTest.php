@@ -62,7 +62,7 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 											->setUsers(array())
 											->setRights(array()),
 
-											Class_UserGroup::getLoader()
+											$moderateurs_bib = Class_UserGroup::getLoader()
 											->newInstanceWithId(6)
 											->beDynamic()
 											->setLibelle('Modérateurs bib')
@@ -79,6 +79,13 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 											->setRights(array())
 											->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
 											));
+
+
+		
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('countBy')
+			->with(['role_level' => ZendAfi_Acl_AdminControllerRoles::MODO_BIB ])
+			->answers(24000);
 	}
 }
 
@@ -152,6 +159,13 @@ class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCa
 	public function titleShouldBeGestionDesGroupes() {
 		$this->assertXPathContentContains('//h1', "Gestion des groupes d'utilisateurs");
 	}
+
+	/** @test */
+	public function thirdTRShouldHaveALinkToEditMembersGroupModerateursBib24000Members() {
+		$this->assertXPathContentContains('//tr[3]//td//a[contains(@href, "admin/usergroup/editmembers/id/6")]',
+																			'24000');
+	}
+
 }
 
 
@@ -292,6 +306,12 @@ class Admin_UserGroupControllerEditMembersGroupAbonnesSIGB extends Admin_UserGro
 	/** @test */
 	public function searchFormShouldNotBeVisible() {
 		$this->assertNotXPath('//label[@for="search"]');
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsAnyLinkToDeleteAction() {
+		$this->assertNotXPath('//a[contains(@href, "delete")]');
 	}
 }
 

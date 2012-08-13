@@ -52,11 +52,24 @@ class Class_UserGroup extends Storm_Model_Abstract {
 	}
 
 
+	/**
+	 * @return array
+	 */
 	public function getUsers() {
 		if ($this->isManual())
 			return parent::_get('users');
 		return Class_Users::findAllBy(['role_level' => $this->getRoleLevel(),
 																	 'limit' => 50]);
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function numberOfUsers() {
+		if ($this->isManual())
+			return parent::_numberOf('users');
+		return Class_Users::countBy(['role_level' => $this->getRoleLevel()]);
 	}
 
 	

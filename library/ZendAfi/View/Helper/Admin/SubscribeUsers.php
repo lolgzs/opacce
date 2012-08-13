@@ -110,8 +110,8 @@ class ZendAfi_View_Helper_Admin_SubscribeUsers extends ZendAfi_View_Helper_BaseH
 									 $user->getNom(),
 									 $user->getPrenom(),
 									 $user->getLogin(),
-									 $this->view->tagAnchor($delete_url,
-																					$this->view->boutonIco("type=del")));
+									 $this->isReadOnly() ? '': $this->view->tagAnchor($delete_url,
+																																		$this->view->boutonIco("type=del")));
 	}
 
 
