@@ -21,20 +21,26 @@
 
 class Class_UserGroup extends Storm_Model_Abstract {
 	protected $_table_name = 'user_groups';
-	protected $_has_many = array( 'user_group_memberships' => array('model' => 'Class_UserGroupMembership',
-																																	'role' => 'user_group',
-																																	'dependent' => 'delete'),
-																'users' => array('through' => 'user_group_memberships',
-																								 'unique' => true));
+	protected $_has_many = [ 'user_group_memberships' => [ 'model' => 'Class_UserGroupMembership',
+																												 'role' => 'user_group',
+																												 'dependent' => 'delete' ],
+													 'users' => [ 'through' => 'user_group_memberships',
+																				'unique' => true ] ];
 
 	// Les droits doivent être une puissance de 2 (ce sont des masques)
 	const RIGHT_SUIVRE_FORMATION = 1;
 	const RIGHT_DIRIGER_FORMATION = 2;
-	protected static $_rights_definition = array(self::RIGHT_SUIVRE_FORMATION => 'Suivre une formation',
-																							 self::RIGHT_DIRIGER_FORMATION => 'Diriger une formation');
+
+	// Type de groupe
+	const TYPE_MANUAL = 0;
+	const TYPE_DYNAMIC = 1;
+
+	protected static $_rights_definition = [ self::RIGHT_SUIVRE_FORMATION => 'Suivre une formation',
+																					 self::RIGHT_DIRIGER_FORMATION => 'Diriger une formation' ];
 
 
-	protected $_default_attribute_values = array('rights_token' => 0);
+	protected $_default_attribute_values = ['rights_token' => 0, 
+																					'group_type' => 0];
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
@@ -43,6 +49,13 @@ class Class_UserGroup extends Storm_Model_Abstract {
 
 	public static function getRightDefinitionList() {
 		return self::$_rights_definition;
+	}
+
+
+	public function getUsers() {
+		if ($this->isManual())
+			return parent::_get('users');
+		return Class_Users::findAllBy(['role_level' => $this->getRoleLevel()]);
 	}
 
 	
@@ -140,6 +153,30 @@ class Class_UserGroup extends Storm_Model_Abstract {
 		foreach($rights as $right)
 			$libelles []= self::$_rights_definition[$right];
 		return $libelles;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isManual() {
+		return $this->getGroupType() == self::TYPE_MANUAL;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isDynamic() {
+		return $this->getGroupType() == self::TYPE_DYNAMIC;
+	}
+
+
+	/**
+	 * @return Class_UserGroup
+	 */
+	public function beDynamic() {
+		return $this->setGroupType(self::TYPE_DYNAMIC);
 	}
 }
 

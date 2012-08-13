@@ -341,6 +341,16 @@ class Class_Users extends Storm_Model_Abstract {
 		return $labels;
 	}
 
+
+	/**
+	 * @return array
+	 */
+	public function getUserGroups() {
+		return array_merge(parent::_get('user_groups'), 
+											 Class_UserGroup::findAllBy(['role_level' => $this->getRoleLevel(),
+																									 'group_type' => Class_UserGroup::TYPE_DYNAMIC]));
+	}
+
 	
 	/**
 	 * @return string
@@ -895,5 +905,14 @@ class Class_Users extends Storm_Model_Abstract {
 
 		return (int) Class_Multimedia_DeviceHold::getLoader()
 				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beAbonneSIGB() {
+		return $this->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB);
 	}
 }
