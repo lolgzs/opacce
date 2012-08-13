@@ -132,6 +132,8 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 			->addDisplayGroup(['role_level'], 
 												'dynamic_filter', 
 												['legend' => $this->view->_('Filtre')]);		
+
+		$this->displayGroupFiltreVisibleOnlyOnDynamicGroup();
  
 		if (Class_AdminVar::isFormationEnabled()) {
 			$form
@@ -172,8 +174,15 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 		}
 		
 		$form->populate($group->toArray());
-
+		
 		return $form;
 	}
+
+
+	public function displayGroupFiltreVisibleOnlyOnDynamicGroup() {
+		Class_ScriptLoader::getInstance()
+			->addInlineScript('formSelectToggleVisibilityForElement("input[name=\'group_type\']", "#fieldset-dynamic_filter", ["1"]);');
+	}
+
 }
 ?>
