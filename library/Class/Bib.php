@@ -90,7 +90,8 @@ class Class_Bib extends Storm_Model_Abstract {
 
 													'ouvertures' => ['model' => 'Class_Ouverture',
 																					 'role' => 'bib',
-																					 'order' => ['jour', 'debut_matin']]];
+																					 'order' => ['jour', 'debut_matin'],
+																					 'dependents' => 'delete']];
 
 	protected $_belongs_to = ['zone' => ['model' => 'Class_Zone',
 																			 'role' => 'bib',
