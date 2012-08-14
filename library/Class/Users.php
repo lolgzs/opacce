@@ -45,7 +45,8 @@ class UsersLoader extends Storm_Model_Loader {
 		if (!$by_right || count($all_users) >= 500)
 			return $all_users;
 
-		$groups = Class_UserGroup::findAllBy(['where' => sprintf('rights_token & %1$d = %1$d', $by_right)]);
+		$groups = Class_UserGroup::findAllBy(['where' => sprintf('rights_token & %1$d = %1$d', $by_right),
+																					'group_type' => Class_UserGroup::TYPE_DYNAMIC]);
 
 		foreach($groups as $group) {
 			$limit = 500 - count($all_users);

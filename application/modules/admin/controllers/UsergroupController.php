@@ -91,8 +91,10 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 	protected function _setupGroupFormAndSave($action, $group) {
 		$form = $this->_groupForm($action, $group);
 		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			$post = array_merge(['rights' => []], 
+													$this->_request->getPost());
 			$group
-				->updateAttributes($this->_request->getPost())
+				->updateAttributes($post)
 				->save();
 
 			$this->_redirect('admin/usergroup');

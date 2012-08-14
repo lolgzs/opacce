@@ -490,6 +490,26 @@ class Admin_UserGroupControllerEditStagiairesPostDataTest extends Admin_UserGrou
 
 
 
+class Admin_UserGroupControllerEditStagiairesWithNotDataRightsInPostTest extends Admin_UserGroupControllerTestCase {
+	protected $_group;
+	public function setUp() {
+		parent::setUp();
+		/* Test non-régression: Avec les multicheckbox de zend, si aucune case n'est cochée, le data n'est pas posté */
+		$this->postDispatch('admin/usergroup/edit/id/3',
+												array('libelle' => 'étudiants'));
+		$this->_group = Class_UserGroup::getLoader()->find(3);
+	}
+
+
+	/** @test */
+	public function groupRightsShouldBeEmpty() {
+		$this->assertEquals([], $this->_group->getRights());
+	}
+}
+
+
+
+
 class Admin_UserGroupControllerDeleteStagiairesTest extends Admin_UserGroupControllerTestCase {
 	public function setUp() {
 		parent::setUp();
