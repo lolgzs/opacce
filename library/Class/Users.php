@@ -23,7 +23,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class UsersLoader extends Storm_Model_Loader {
-	public function findAllLike($search, $by_right = 0) {
+	public function findAllLike($search, $by_right = 0, $limit = 500) {
 		$sql_template = 'select bib_admin_users.* from bib_admin_users ';
 
 		if ($by_right)
@@ -36,25 +36,25 @@ class UsersLoader extends Storm_Model_Loader {
 
 		$sql_template .=
 				'(nom like \'%2$s\' or prenom like \'%2$s\' or login like \'%2$s\') '.
-				'order by nom, prenom, login limit 500';
+				'order by nom, prenom, login limit '.$limit;
 
 		$like = '%'.strtolower($search).'%';
 
-		$all_users = Class_Users::getLoader()->findAll(sprintf($sql_template, $by_right, $like));
+		$all_users = Class_Users::findAll(sprintf($sql_template, $by_right, $like));
 
-		if (!$by_right || count($all_users) >= 500)
+		if (!$by_right || count($all_users) >= $limit)
 			return $all_users;
 
 		$groups = Class_UserGroup::findAllBy(['where' => sprintf('rights_token & %1$d = %1$d', $by_right),
 																					'group_type' => Class_UserGroup::TYPE_DYNAMIC]);
 
 		foreach($groups as $group) {
-			$limit = 500 - count($all_users);
-			if ($limit <= 0)
+			$nb_users_to_fetch = $limit - count($all_users);
+			if ($nb_users_to_fetch <= 0)
 				break;
 
 			$params = ['role_level' => $group->getRoleLevel(), 
-								 'limit' => $limit,
+								 'limit' => $nb_users_to_fetch,
 								 'where' => sprintf('(nom like \'%1$s\' or prenom like \'%1$s\' or login like \'%1$s\')', $like),
 								 'order' => ['nom','prenom', 'login']];
 			$all_users = array_merge($all_users,
