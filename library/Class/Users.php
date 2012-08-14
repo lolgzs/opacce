@@ -40,7 +40,27 @@ class UsersLoader extends Storm_Model_Loader {
 
 		$like = '%'.strtolower($search).'%';
 
-		return Class_Users::getLoader()->findAll(sprintf($sql_template, $by_right, $like));
+		$all_users = Class_Users::getLoader()->findAll(sprintf($sql_template, $by_right, $like));
+
+		if (!$by_right || count($all_users) >= 500)
+			return $all_users;
+
+		$groups = Class_UserGroup::findAllBy(['where' => sprintf('rights_token & %1$d = %1$d', $by_right)]);
+
+		foreach($groups as $group) {
+			$limit = 500 - count($all_users);
+			if ($limit <= 0)
+				break;
+
+			$params = ['role_level' => $group->getRoleLevel(), 
+								 'limit' => $limit,
+								 'where' => sprintf('(nom like \'%1$s\' or prenom like \'%1$s\' or login like \'%1$s\')', $like),
+								 'order' => ['nom','prenom', 'login']];
+			$all_users = array_merge($all_users,
+															 Class_Users::findAllBy($params));
+		}
+
+		return $all_users;
 	}
 
 
