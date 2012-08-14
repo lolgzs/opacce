@@ -44,6 +44,16 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		if (!$this->profil = Class_Profil::getLoader()->find($this->id_profil))
 			$this->profil = Class_Profil::getCurrentProfil();
 
+		$user = Class_Users::getIdentity();
+
+		if (($user->getRoleLevel() < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
+				|| ($user->isAdminBib() && ($user->getIdSite() !== $this->profil->getIdSite()))) {
+			 $this->_redirect('admin/index');
+			 return;
+		}
+
+
+
 		if ($this->config == "admin")
 			$this->preferences = $this->_extractProperties();
 

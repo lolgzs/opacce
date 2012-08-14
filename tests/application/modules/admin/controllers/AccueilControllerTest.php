@@ -203,6 +203,7 @@ class AccueilControllerLangueConfigurationTest extends Admin_AbstractControllerT
 
 
 
+
 class AccueilControllerBibliothequeNumeriqueTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -499,19 +500,28 @@ class AccueilControllerConfigBoiteLoginTest extends Admin_AbstractControllerTest
 
 
 
-class AccueilControllerConfigBoiteKiosqueTest extends Admin_AbstractControllerTestCase  {
+abstract class AccueilControllerConfigBoiteKiosqueProfilLognesTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Bib::newInstanceWithId(3)
+			->setLibelle('Lognes');
+
 		Class_Profil::getCurrentProfil()
 			->updateModuleConfigAccueil(25,
 																	array('type_module' => 'KIOSQUE',
 																				'division' => 4,
 																				'id_module' => 32,
-																				'preferences' => array()));		
+																				'preferences' => array()))
+			->setIdSite(3);
 		$this->dispatch('/admin/accueil/kiosque?config=accueil&type_module=KIOSQUE&id_module=32', true);
 	}
+}
 
 
+
+
+class AccueilControllerConfigBoiteKiosqueProfilLognesAsAdminPortailTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase {
 	/** @test */
 	public function selectStyleListeShouldContainsOptGroupObjetsJS() {
 		$this->assertXPath('//select[@name="style_liste"]//optgroup[@label="Objets javascript"]');
@@ -524,3 +534,35 @@ class AccueilControllerConfigBoiteKiosqueTest extends Admin_AbstractControllerTe
 	}
 	
 }
+
+
+
+class AccueilControllerConfigBoiteKiosqueAsAdminBibLognesTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase  {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ID_SITE = 3;
+	}
+
+
+	/** @test */
+	public function pageShouldBeVisible() {
+		$this->assertXPath('//select[@name="style_liste"]');
+	}
+}
+
+
+
+class AccueilControllerConfigBoiteKiosqueAsAdminBibOtherSiteTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase  {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ID_SITE = 5;
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToPageAccueil() {
+		$this->assertRedirect();
+	}
+}
+
+?>

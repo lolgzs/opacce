@@ -260,6 +260,14 @@ class Class_Users extends Storm_Model_Abstract {
 	/**
 	 * @return bool
 	 */
+	public function isAdminBib() {
+		return $this->getRoleLevel() == ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+	}
+
+
+	/**
+	 * @return bool
+	 */
 	public function canEditArticle($article) {
 		if ($this->getRoleLevel() < ZendAfi_Acl_AdminControllerRoles::MODO_BIB)
 			return false;

@@ -64,6 +64,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->add(new Zend_Acl_Resource('sito'));
 		$this->add(new Zend_Acl_Resource('menus'));
 		$this->add(new Zend_Acl_Resource('catalogue'));
+		$this->add(new Zend_Acl_Resource('accueil'));
 		
 		// Ressources reprise en OPAC 3
 		$this->add(new Zend_Acl_Resource('index'));
@@ -96,6 +97,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->allow('modo_bib','agenda');
 		$this->allow('modo_bib','index');
 		$this->allow('modo_bib','stat');
+		$this->allow('modo_bib','accueil');
 
 		$this->allow('admin_bib','users');
 		$this->allow('admin_bib','profil');
