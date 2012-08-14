@@ -95,12 +95,18 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 	protected function _expectGroupForUser($user, $group_label) {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroupMembership')
 				->whenCalled('findAllBy')
-				->with(array('role' => 'user', 'model' => $user))
+				->with(['role' => 'user', 'model' => $user])
 				->answers(array(Class_UserGroupMembership::getLoader()
 						->newInstance()
 						->setUserGroup(Class_UserGroup::getLoader()
 							->newInstanceWithId(1)
 							->setLibelle($group_label))));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroup')
+			->whenCalled('findAllBy')
+			->with(['role_level' => $user->getRoleLevel(), 
+							'group_type' => Class_UserGroup::TYPE_DYNAMIC])
+			->answers([]);
 	}
 }
 
@@ -381,6 +387,7 @@ class AbonneControllerMultimediaAuthenticateBaptisteTest extends AbonneControlle
 		$this->assertEquals(array('mineur','abonne_sigb', 'Devs Oldschool'), $this->_json->groupes);	
 	}
 }
+
 
 
 

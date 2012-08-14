@@ -27,7 +27,8 @@ class DynamicUserGroupAbonneSIGBTest extends Storm_Test_ModelTestCase {
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('findAllBy')
-			->with(['role_level' => 2])
+			->with(['role_level' => 2,
+							'limit' => 50])
 			->answers([$this->_baptiste = Class_Users::newInstanceWithId(3)
 								 ->setPrenom('Baptiste')
 								 ->setUserGroups([])
