@@ -27,7 +27,7 @@ class ZendAfi_View_Helper_Abonne_AccesFiche extends Zend_View_Helper_HtmlElement
 		if (array_key_exists("fiche", $fiche_sigb)) {
 			try {
 				if ($popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($user)) 
-					return $this->divAbonneTitre(sprintf('<a onclick="openIFrameDialog(\'%s\');">%s %s</a>',
+					return $this->divAbonneTitre(sprintf('<a onclick="openIFrameDialog(\'%s\');">%s</a>',
 																							 $popup_url,
 																							 $html_modifier_ma_fiche),
 																			 $user);
