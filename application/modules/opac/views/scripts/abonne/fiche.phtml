@@ -1,14 +1,14 @@
 <?php
 $this->openBoite($this->_("Votre fiche"));
 
-echo $this->abonne_accesfiche($this->user);
-echo $this->abonne_abonnement($this->user);
-echo $this->abonne_prets($this->user);
-echo $this->abonne_reservations($this->user);
-echo $this->abonne_paniers($this->user);
-echo $this->abonne_newsletters($this->user);
-echo $this->abonne_formations($this->user);
-echo $this->abonne_multimedia($this->user);
+echo $this->abonne_Accesfiche($this->user);
+echo $this->abonne_Abonnement($this->user);
+echo $this->abonne_Prets($this->user);
+echo $this->abonne_Reservations($this->user);
+echo $this->abonne_Paniers($this->user);
+echo $this->abonne_Newsletters($this->user);
+echo $this->abonne_Formations($this->user);
+echo $this->abonne_Multimedia($this->user);
 
 if ($this->error) 
 	echo sprintf('<div class="error">%s</div>', $this->error);
