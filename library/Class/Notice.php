@@ -327,7 +327,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		if (!$id_notice) return null;
 
 		// Lire la notice
-		$req = "select type_doc,facettes,isbn,ean,annee,tome_alpha,unimarc from notices where id_notice=$id_notice";
+		$req = "select type_doc,facettes,isbn,ean,annee,tome_alpha,clef_alpha,unimarc from notices where id_notice=$id_notice";
 		$data = fetchEnreg($req);
 		if (!$data["unimarc"]) return false;
 		$this->_unimarc->setNotice($data["unimarc"], 0);
@@ -340,6 +340,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		$notice["type_doc"] = $data["type_doc"];
 		$notice["tome_alpha"] = $data["tome_alpha"];
 		$notice["N"] = $data["annee"];
+		$notice["clef_alpha"] = $data["clef_alpha"];
 
 		// Id service (isbn ou ean)
 		if ($data["isbn"]) $notice["id_service"] = str_replace("-", "", $data["isbn"]);
