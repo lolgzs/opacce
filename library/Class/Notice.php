@@ -573,6 +573,7 @@ class Class_Notice extends Storm_Model_Abstract {
 			$items[$i]["auteur_principal"] = $notice["A"];
 			$items[$i]["annee"] = $notice["N"];
 			$items[$i]["type_doc"] = $notice["type_doc"];
+			$items[$i]["clef_alpha"] = $notice["clef_alpha"];
 			$notices[] = $items[$i];
 		}
 		return $notices;
