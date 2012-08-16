@@ -86,10 +86,13 @@ abstract class AbonneVSmartTestCase extends AbstractControllerTestCase {
 	}
 }
 
+
+
+
 class AbonneVSmartTest extends AbonneVSmartTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/abonne/fiche/id/34');
+		$this->dispatch('/opac/abonne/fiche/id/34', true);
 	}
 
 
@@ -132,6 +135,8 @@ class AbonneVSmartTest extends AbonneVSmartTestCase {
 																			$this->_response->getBody());
 	}
 }
+
+
 
 
 class AbonneWithExpiredSubscriptionVSmartTest extends AbonneVSmartTestCase {

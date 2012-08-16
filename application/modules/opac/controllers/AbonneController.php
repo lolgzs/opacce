@@ -270,74 +270,10 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function ficheAction() {
-		$abonnement = '';
-		$nb_prets = '';
-		$nb_resas = '';
-		$nb_retards = '';
-		$nb_paniers = '';
-		$user_info_popup_url = null;
-		$error = '';
-
-		// Dates d'abonnement
-		if ($this->_user->isAbonne()) {
-			$date_fin=formatDate($this->_user->getDateFin(),"1");
-			if($this->_user->isAbonnementValid())
-				$abonnement = $this->view->_("Votre abonnement est valide jusqu'au %s.", $date_fin);
-			else
-				$abonnement = $this->view->_("Votre abonnement est terminé depuis le %s.", $date_fin);
-
-		}
-		// Fiche abonné sigb
 		$fiche_sigb = $this->_user->getFicheSigb();
-		if(array_key_exists("fiche", $fiche_sigb)) {
-			$nb_retards = $fiche_sigb["fiche"]->getNbPretsEnRetard();
-			$str_retards = $nb_retards ? $this->view->_('(%d en retard)', $nb_retards) : '';
 
-			$nb_prets = $fiche_sigb["fiche"]->getNbEmprunts();
-			$nb_prets = $this->view->_plural($nb_prets,
-																			 "Vous n'avez aucun prêt en cours.",
-																			 "Vous avez %d prêt en cours",
-																			 "Vous avez %d prêts en cours",
-																			 $nb_prets);
-			$nb_prets = sprintf("<a href='%s/abonne/prets'>%s %s</a>", BASE_URL, $nb_prets, $str_retards);
-
-			$nb_resas = $fiche_sigb["fiche"]->getNbReservations();
-			$nb_resas = $this->view->_plural($nb_resas,
-																			 "Vous n'avez aucune réservation en cours.",
-																			 "Vous avez %d réservation en cours",
-																			 "Vous avez %d réservations en cours",
-																			 $nb_resas);
-			$nb_resas = sprintf("<a href='%s/abonne/reservations'>%s</a>", BASE_URL, $nb_resas);
-
-			try {
-				$user_info_popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($this->_user);
-			} catch (Exception $e) {
-				$error = sprintf('Erreur VSmart: %s', $e->getMessage());
-			}
-		}
-
-		if(array_key_exists("erreur", $fiche_sigb))
-			$error = $fiche_sigb["erreur"];
-			
-
-		// Paniers
-		$nb_paniers=count($this->_user->getPaniers());
-		$nb_paniers = $this->view->_plural($nb_paniers,
-																			 "Vous n'avez aucun panier de notices.",
-																			 "Vous avez %d panier de notices",
-																			 "Vous avez %d paniers de notices",
-																			 $nb_paniers);
-		$nb_paniers = sprintf("<a href='%s/panier'>%s</a>", BASE_URL, $nb_paniers);
-
-		// Variables de vue
+		$this->view->error = isset($fiche_sigb['erreur']) ? $fiche_sigb["erreur"] : '';
 		$this->view->user = $this->_user;
-		$this->view->fiche = $fiche_sigb;
-		$this->view->abonnement = $abonnement;
-		$this->view->nb_prets = $nb_prets;
-		$this->view->nb_resas = $nb_resas;
-		$this->view->nb_paniers = $nb_paniers;
-		$this->view->user_info_popup_url = $user_info_popup_url;
-		$this->view->error = $error;
 	}
 
 

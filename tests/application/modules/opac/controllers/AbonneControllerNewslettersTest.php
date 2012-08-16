@@ -121,7 +121,7 @@ class AbonneControllerFicheActionWithNoExistingNewsletterTest extends AbstractAb
 class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/abonne');
+		$this->dispatch('/opac/abonne', true);
 	}
 
 	public function testForwardedToFiche() {
