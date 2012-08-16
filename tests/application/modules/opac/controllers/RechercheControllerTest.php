@@ -51,6 +51,8 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 }
 
 
+
+
 abstract class RechercheControllerViewNoticeTestCase extends RechercheControllerNoticeTestCase {
 	/** @test */
 	public function titleShouldBeDisplayed() {
@@ -73,6 +75,8 @@ abstract class RechercheControllerViewNoticeTestCase extends RechercheController
 }
 
 
+
+
 class RechercheControllerViewNoticeTest extends RechercheControllerViewNoticeTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -81,18 +85,56 @@ class RechercheControllerViewNoticeTest extends RechercheControllerViewNoticeTes
 }
 
 
+
+
 class RechercheControllerViewNoticeClefAlphaTest extends RechercheControllerViewNoticeTestCase {
 	public function setUp() {
 		parent::setUp();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
-			->whenCalled('getNoticeByClefAlpha')
-			->with('TESTINGALPHAKEY---101')
-			->answers($this->notice);
+			->whenCalled('findAllBy')
+			->with(['clef_alpha' => 'TESTINGALPHAKEY---101'])
+			->answers([$this->notice]);
 
-		$this->dispatch('recherche/viewnotice/clef/TESTINGALPHAKEY---101');
+		$this->dispatch('recherche/viewnotice/clef/TESTINGALPHAKEY---101', true);
 	}
 }
+
+
+
+
+class RechercheControllerViewNoticeClefAlphaWithDoublonsTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('findAllBy')
+			->with(['clef_alpha' => 'TWILIGHT--SLADED-3-M6VIDEO-2010-4'])
+			->answers([Class_Notice::newInstanceWithId($this->notice->getId())
+								 ->setTitrePrincipal('Twilight 1')
+								 ->setClefAlpha('TWILIGHT--SLADED-3-M6VIDEO-2010-4'),
+								 
+								 Class_Notice::newInstanceWithId(1)
+								 ->setTitrePrincipal('Twilight 2')
+								 ->setClefAlpha('TWILIGHT--SLADED-3-M6VIDEO-2010-4')
+								 ]);
+	}
+
+	
+	/** @test */
+	public function withOnlyClefResponseShouldRedirectToRechercheTWILIGHT_SLADED() {
+		$this->dispatch('recherche/viewnotice/clef/'.urlencode('TWILIGHT--SLADED-3-M6VIDEO-2010-4'), true);
+		$this->assertRedirectTo('/opac/recherche?q=TWILIGHT+SLADED');
+	}
+
+
+	/** @test */
+	public function withClefAndIdResponseShouldNotRedirectTo() {
+		$this->dispatch('recherche/viewnotice/clef/'.urlencode('TWILIGHT--SLADED-3-M6VIDEO-2010-4').'/id/'.$this->notice->getId(), true);
+		$this->assertNotRedirect();
+	}
+}
+
 
 
 

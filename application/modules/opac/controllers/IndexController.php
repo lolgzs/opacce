@@ -24,6 +24,10 @@ class IndexController extends Zend_Controller_Action {
 		// Mettre le layout
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('portail.phtml');
+
+		if (array_keys($this->getRequest()->getParams()) == ['controller', 'action', 'module', 'current_module', 'q']) {
+			$this->_redirect('recherche?'.http_build_query(['q' => $this->_getParam('q')]));
+		}
 	}
 
 

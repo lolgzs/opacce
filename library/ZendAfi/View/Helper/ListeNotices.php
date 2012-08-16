@@ -130,7 +130,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 				if($champ=="T") 
 					$html.= sprintf('<td class="%s"><a href="%s">%s</a></td>',
 													$style_css,
-													$this->urlNotice($notice),
+													$this->view->urlNotice($notice),
 													$notice["T"]);
 
 				else $html.='<td class="'. $style_css .'" '.$align.'>'.$notice[$champ].'</td>';
@@ -140,14 +140,6 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 		}
 		$html.='</table>';
 		return $html;
-	}
-
-
-	public function urlNotice($notice) {
-		return $this->view->url(array('controller' => 'recherche', 
-																	 'action' => 'viewnotice', 
-																	 'clef' => $notice['clef_alpha'], 
-																	 'type_doc' => $notice['type_doc']));
 	}
 
 
@@ -228,7 +220,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 				}
 			}
 			else 
-				$url_notice = $this->urlNotice($notice); 
+				$url_notice = $this->view->urlNotice($notice); 
 
 			// style selon parité des lignes
 			if($lig % 2) $style_css="listeImpaire"; else $style_css="listePaire";
@@ -290,7 +282,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$notice["titre_principal"]=$notice["T"];
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"],true);
-			$url = $this->urlNotice($notice); 
+			$url = $this->view->urlNotice($notice); 
 			//$url='javascript:document.getElementById(\'Nnotice\').style.display=\'block\';getNoticeAjax(\'N'.$notice["id_notice"].'\',\'Nnotice\')';
 			if($images) $images.=",";
 			$images.='"'.$img["vignette"].'","'.$url.'"';

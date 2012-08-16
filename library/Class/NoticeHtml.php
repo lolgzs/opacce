@@ -22,8 +22,7 @@
 // OPAC3 - Constitution notice html
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_NoticeHtml
-{
+class Class_NoticeHtml {
 	public $notice;								// Structure complete de la notice
 	public $haut_onglet;					// Html ligne du haut avec image fermer pour les onglets
 	private $java_script_auto;		// JavaScript pour ouverture automatique onglets et blocs
@@ -484,12 +483,11 @@ class Class_NoticeHtml
 			$nb = $this->_translate->_("%s livre", $nb);
 
 		$read_speaker_helper = new ZendAfi_View_Helper_ReadSpeaker();
-
 		$num=0;
-		foreach($notices as $notice)
-		{
+
+		foreach($notices as $notice)	{
 			$num++;
-			$url_notice="document.location.replace('".$base_url."/recherche/viewnotice/clef/".$notice["clef_alpha"]."/type_doc/".$notice["type_doc"]."')";
+			$url_notice="document.location.replace('".$view->urlNotice($notice)."')";
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			
 			$read_speaker_tag = $read_speaker_helper->readSpeaker('recherche', 

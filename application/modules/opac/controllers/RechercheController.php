@@ -152,9 +152,31 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // INDEX
 //------------------------------------------------------------------------------------------------------
-	function indexAction()
-	{
-		$this->_redirect('opac/recherche/simple?statut=reset');
+	function indexAction()	{
+		if (!$expression = $this->_getParam('q')) {
+			$this->_redirect('opac/recherche/simple?statut=reset');
+			return;
+		}
+
+		$ret = $this->moteur->lancerRechercheSimple(['expressionRecherche' => $expression]);
+
+		if ($ret["statut"]=="erreur") {
+			$ret['nombre'] = 0;
+			$ret['page_cours'] = 0;
+			$this->view->liste = $ret;
+			$this->view->resultat = $ret;
+			$this->_redirect('opac/recherche/simple?statut=reset');
+			return;
+		}
+
+		$facettes = $this->moteur->getFacettes($ret["req_facettes"], $this->preferences);
+		$this->view->liste = $this->_getListNotices($ret["req_liste"]);
+		$this->view->resultat = array_merge($facettes, $ret, ['page_cours' => 1]);
+		$this->view->url_tri = BASE_URL."/recherche/simple";
+		$this->view->texte_selection = $expression;
+		$this->view->current_module['preferences'] = array_merge($this->view->current_module['preferences'],
+																														 ['liste_format' => 3, 'liste_nb_par_page' => 10]);
+		$this->renderScript('recherche/resultatRecherche.phtml');
 	}
 
 
@@ -200,6 +222,7 @@ class RechercheController extends Zend_Controller_Action
 		$this->view->is_pertinence = $_SESSION["recherche"]["selection"]["pertinence"];
 		$this->view->tri = $_SESSION["recherche"]["selection"]["tri"];
 	}
+
 
 //------------------------------------------------------------------------------------------------------
 // RECHERCHE AVANCEE
@@ -286,11 +309,19 @@ class RechercheController extends Zend_Controller_Action
 		unset($_SESSION["recherche"]["rebond"]);
 		$_SESSION["recherche"]["retour_notice"] = $this->_request->REQUEST_URI;
 
-		if ($this->_getParam('clef')
-				&& ($notice = Class_Notice::getLoader()->getNoticeByClefAlpha($this->_getParam('clef'))))
-			$this->_request->setParam('id', $notice->getId());
-
 		$id_notice = (int)$this->_getParam('id');
+		$clef_alpha = $this->_getParam('clef');
+
+		if ($clef_alpha && ($notices = Class_Notice::getLoader()->getAllNoticesByClefAlpha($clef_alpha))) {
+			if (!$id_notice && (count($notices) > 1)) {
+				$query = implode(' ', array_filter(array_slice(explode('-', $clef_alpha), 0, 3)));
+				$this->_redirect('/opac/recherche?'.http_build_query(['q' => $query]));
+				return;
+			}
+			$id_notice = $notices[0]->getId();
+		}
+
+
 		$oNotice = new Class_Notice();
 		$this->view->notice = $oNotice->getNoticeDetail($id_notice,$this->preferences);
 		if (!$this->view->notice) {

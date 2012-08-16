@@ -44,12 +44,12 @@ class NoticeLoader extends Storm_Model_Loader
 
 
 	public function getNoticeByClefAlpha($clef) {
-		$result = $this->findAllBy(array('clef_alpha' => $clef,
-																		 'limit' => 1));
-		if (0 == count($result))
-			return null;
-		
-		return $result[0];
+		return Class_Notice::findFirstBy(['clef_alpha' => $clef]);
+	}
+
+
+	public function getAllNoticesByClefAlpha($clef) {
+		return Class_Notice::findAllBy(['clef_alpha' => $clef]);
 	}
 
 

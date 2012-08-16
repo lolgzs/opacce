@@ -46,6 +46,7 @@
 	(auto-complete-mode t)
 	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(imenu-add-menubar-index)
+
   (setq 
 	 tab-width 2
    indent-tabs-mode t
@@ -54,8 +55,44 @@
 																			("^.* \\(/.*\\):\\([0-9]+\\)" 1 2)
 																			("PHP\s+[0-9]+\. [^/]* \\([^:]+\\):\\([0-9]+\\)" 1 2)
 																			("in \\(/.*\\) on line \\([0-9]+\\)" 1 2) ) 
-	 geben-pause-at-entry-line nil)
+	 geben-pause-at-entry-line nil)	
+
+;;	(opac3-setup-outline-mode)
 	)
+
+
+(defun opac3-setup-outline-mode()
+	(setq outline-regexp 
+				(concat "^<\\?\\|"
+								"^\\?>\\|"
+								"^[abstract ]*class\\|"
+								"^inteface\\|"
+								"^  [abstract|public|protected|private|static]*\s?[public|protected|private|static]*\s?function\\|"
+								"^  [abstract|public|protected|private|static]*\s?[public|protected|private|static]*\s?function\\|"
+								"^/\\*\\*\\|"
+								"^  /\\*\\*\\|"
+								"^    /\\*\\*"))
+
+
+	(setq outline-level
+				(function (lambda ()
+										(save-excursion
+											(let ((str nil))
+												(looking-at outline-regexp)
+												(setq str (buffer-substring-no-properties
+																	 (match-beginning 0) (match-end 0)))
+												(cond
+												 ((string-match "^/\\*\\*" str) 1)
+												 ((string-match "^<\\?" str) 1)
+												 ((string-match "^\\?>" str) 1)
+												 ((string-match "^class" str) 1)
+												 ((string-match "^  /\\*\\*" str) 2)
+												 ((string-match "^    /\\*\\*" str) 2)
+												 ((string-match "^  function" str) 3)
+												 ((string-match "^    function" str) 3)
+												 ))))))
+	(outline-minor-mode t)
+	(hide-body))
 
 
 (defun opac3-stop-geben (buffer msg)
