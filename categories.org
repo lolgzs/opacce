@@ -52,7 +52,8 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 
 *** [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldConfirmTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][5ème écran confirmation]]
 ** TODO Fiche abonné: afficher conso + temps restant par jour / semaine / mois
-** Skin réservation timeline 
+** DONE Skin réservation timeline 
+	 CLOSED: [2012-08-11 Sat 14:14]
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
 	[[file:application/modules/opac/views/scripts/abonne/multimedia-hold-location.phtml::<?php%20foreach%20($this->locations%20as%20$location)%20{%20?][vue réservation]]
