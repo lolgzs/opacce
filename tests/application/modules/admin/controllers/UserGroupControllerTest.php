@@ -106,6 +106,12 @@ class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCa
 
 
 	/** @test */
+	public function firstRowShouldContainsIconGroupeManual() {
+		$this->assertXPath('//tr[1][@class="first"]//img[contains(@src, "/groupe.png")]');
+	}
+
+
+	/** @test */
 	public function firstTRShouldHaveALinkToEditGroupStagiaires() {
 		$this->assertXPath('//tr[1][@class="first"]//td//a[contains(@href, "admin/usergroup/edit/id/3")]');
 	}
@@ -166,6 +172,11 @@ class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCa
 																			'24000');
 	}
 
+
+	/** @test */
+	public function thirdRowShouldContainsIconGroupeDynamique() {
+		$this->assertXPath('//tr[3]//img[contains(@src, "/groupe_dynamique.png")]');
+	}
 }
 
 

@@ -6,7 +6,14 @@
 																		 'id' => $this->group->getId()));
 ?>
 <tr class="<?php echo $this->item_class;?>">
-	<td><?php echo $this->tagAnchor($url_edit_group, $this->group->getLibelle());?></td>
+
+	<td><?php echo $this->tagAnchor($url_edit_group, 
+																	$this->tagImg(URL_ADMIN_IMG.'/ico/'.($this->group->isManual() ? 'groupe.png' : 'groupe_dynamique.png'), 
+																								['alt' => $this->_('Mode de sélection '.($this->group->isManual()? 'manuel':'dynamique')),
+																								 'style' => 'margin-right: 2px; vertical-align: middle']).
+																	$this->group->getLibelle()); ?>
+  </td>
+
 	<td><?php echo $this->tagAnchor($url_edit_members, $this->group->numberOfUsers());?></td>
 	<?php if (Class_AdminVar::isFormationEnabled()) { ?>
 	<td><?php echo $this->tagAnchor($url_edit_group, implode(', ', $this->group->getRightsLibelles()));?></td>
