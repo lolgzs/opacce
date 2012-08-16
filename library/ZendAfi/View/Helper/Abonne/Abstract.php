@@ -19,8 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 abstract class ZendAfi_View_Helper_Abonne_Abstract extends Zend_View_Helper_HtmlElement {
-	public function tagFicheAbonne($html) {
-		return '<div class="abonneFiche">'.$html.'</div>';
+	public function tagFicheAbonne($html, $icone='') {
+		if ($icone)
+			$html = $this->view->tagImg(URL_SHARED_IMG.'/abonnes/'.$icone.'.png', ['alt' => $icone]) . $html;
+		return '<div class="abonneFiche">'.$html.'<div class="clear"></div></div>';
 	}
 }
 

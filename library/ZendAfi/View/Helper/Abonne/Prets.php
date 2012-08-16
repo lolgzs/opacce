@@ -39,7 +39,8 @@ class ZendAfi_View_Helper_Abonne_Prets extends ZendAfi_View_Helper_Abonne_Abstra
 																				 $this->view->url(['controller' => 'abonne',
 																													 'action' => 'prets']), 
 																				 $str_prets, 
-																				 $str_retards));
+																				 $str_retards),
+																 'prets');
 	}
 }
 

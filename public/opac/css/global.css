@@ -1035,3 +1035,36 @@ body.abonne_multimedia-hold-hours input[type="submit"] {
 body.abonne_multimedia-hold-view .actions a {
 		margin: 0 20px;
 }
+
+
+
+
+.abonne_fiche .abonneFiche {
+		clear: both;
+		padding-top: 10px;
+		margin: 10px 10px 0px 10px;
+		border-radius: 10px;
+}
+
+.abonneTitre a img {
+		vertical-align: top;
+}
+
+.abonneFiche img:first-child {
+		float: left;
+		margin-top: -10px;
+}
+
+.abonne_fiche .abonneFiche {
+		text-align: left;
+}
+
+
+.abonne_fiche .abonneFiche ul {
+		margin-left: 150px;
+}
+
+
+.abonne_fiche .abonneFiche:hover {
+		background-color: rgba(0,0,0,0.1);
+}

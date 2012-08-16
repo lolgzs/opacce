@@ -34,7 +34,8 @@ class ZendAfi_View_Helper_Abonne_Reservations extends ZendAfi_View_Helper_Abonne
 		return $this->tagFicheAbonne(sprintf("<a href='%s'>%s</a>", 
 																				 $this->view->url(['controller' => 'abonne',
 																													 'action' => 'reservations']),
-																				 $str_resas));
+																				 $str_resas),
+																 'reservations');
 	}
 }
 

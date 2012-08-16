@@ -20,13 +20,16 @@
  */
 class ZendAfi_View_Helper_Abonne_AccesFiche extends Zend_View_Helper_HtmlElement {
 	public function abonne_accesfiche($user) {
+		$html_modifier_ma_fiche = $this->view->tagImg(URL_SHARED_IMG.'abonnes/modifiermafiche16.png')
+			                        .$this->view->_(' Modifier ma fiche');
+
 		$fiche_sigb = $user->getFicheSigb();
 		if (array_key_exists("fiche", $fiche_sigb)) {
 			try {
 				if ($popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($user)) 
-					return $this->divAbonneTitre(sprintf('<a onclick="openIFrameDialog(\'%s\');">%s</a>',
+					return $this->divAbonneTitre(sprintf('<a onclick="openIFrameDialog(\'%s\');">%s %s</a>',
 																							 $popup_url,
-																							 $this->view->boutonIco("type=edit").$this->view->_(' Modifier ma fiche')),
+																							 $html_modifier_ma_fiche),
 																			 $user);
 
 			} catch (Exception $e) {
@@ -37,7 +40,7 @@ class ZendAfi_View_Helper_Abonne_AccesFiche extends Zend_View_Helper_HtmlElement
 
 
 		return $this->divAbonneTitre($this->view->tagAnchor(['controller' => 'abonne', 'action' => 'edit'],
-																												$this->view->boutonIco("type=edit").$this->view->_(' Modifier ma fiche')),
+																												$html_modifier_ma_fiche),
 																 $user);
 	}
 

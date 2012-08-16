@@ -140,6 +140,12 @@ class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControlle
 																			"Vous êtes abonné à la lettre d'information: Concerts");
 	}
 
+
+	public function testIconeNewsletterDisplayed () {
+		$this->assertXPath('//div[@class="abonneFiche"]//img[contains(@src, "abonnes/newsletter.png")]');
+	}
+
+
 	public function testLinkToEditInformationsInfoAbonnements() {
 		$this->assertXPathContentContains("//div[@class='abonneFiche']//a[@href='/abonne/edit']",
 																			'Modifier mes abonnements');

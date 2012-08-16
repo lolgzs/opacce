@@ -31,7 +31,8 @@ class ZendAfi_View_Helper_Abonne_Paniers extends ZendAfi_View_Helper_Abonne_Abst
 		return $this->tagFicheAbonne(sprintf('<a href=\'%s\'>%s</a>', 
 																				 $this->view->url(['controller' => 'panier',
 																													 'action' => 'index']), 
-																				 $str_paniers));
+																				 $str_paniers),
+																 'panier');
 	}
 }
 

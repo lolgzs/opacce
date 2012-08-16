@@ -45,7 +45,7 @@ class ZendAfi_View_Helper_Abonne_Multimedia extends ZendAfi_View_Helper_Abonne_A
 
 		$html .= '</ul>';
 
-		return $this->tagFicheAbonne($html);
+		return $this->tagFicheAbonne($html, 'multimedia');
 	}
 }
 
