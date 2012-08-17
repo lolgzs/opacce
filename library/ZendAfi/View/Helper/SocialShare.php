@@ -55,11 +55,9 @@ class ZendAfi_View_Helper_SocialShare extends Zend_View_Helper_HtmlElement {
 	}
 
 
-	public function networkImgUrl() {
+	public function networkImgUrl($network) {
 		$file = $network.'.png';
-		$file_in_skin = URL_IMG.'/site/'.$file;
-
-		return file_exists(PATH_SKIN.'/images/site/'.$file) ? URL_IMG.'/site/'.$file : URL_SHARED_IMG.'/site/'.$file;
+		return file_exists(PATH_SKIN.'/images/reseaux/'.$file) ? URL_IMG.'reseaux/'.$file : URL_SHARED_IMG.'reseaux/'.$file;
 	}
 }
 

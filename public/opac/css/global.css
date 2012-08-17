@@ -2,6 +2,11 @@
 
 body {height:100%;}
 
+div#header {
+		position: relative;
+}
+
+
 a {
 		-moz-transition: all 0.3s ease-out;
 		-webkit-transition: all 0.3s ease-out;
@@ -1067,4 +1072,15 @@ body.abonne_multimedia-hold-view .actions a {
 
 .abonne_fiche .abonneFiche:hover {
 		background-color: rgba(0,0,0,0.1);
+}
+
+
+
+#header .share {
+		position: absolute;
+		float: right;
+		right: 0px;
+		top: 0px;
+		cursor: pointer;
+		z-index: 101;
 }
