@@ -34,13 +34,14 @@ class ZendAfi_View_Helper_Abonne_Prets extends ZendAfi_View_Helper_Abonne_Abstra
 		$nb_retards = $fiche_sigb["fiche"]->getNbPretsEnRetard();
 		$str_retards = $nb_retards ? $this->view->_('(%d en retard)', $nb_retards) : '';
 
-
+		$action_url = $this->view->url(['controller' => 'abonne',
+																		'action' => 'prets']);
 		return $this->tagFicheAbonne(sprintf('<a href=\'%s\'>%s %s</a>', 
-																				 $this->view->url(['controller' => 'abonne',
-																													 'action' => 'prets']), 
+																				 $action_url, 
 																				 $str_prets, 
 																				 $str_retards),
-																 'prets');
+																 'prets',
+																 $action_url);
 	}
 }
 

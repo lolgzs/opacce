@@ -33,11 +33,13 @@ class ZendAfi_View_Helper_Abonne_Newsletters extends ZendAfi_View_Helper_Abonne_
 			$newsletter_info .= implode(', ', $titres);
 		}
 
+		$action_url = $this->view->url(['controller' => 'abonne', 'action' => 'edit']);
 		return $this->tagFicheAbonne(
 																 '<p>'.$newsletter_info.'</p>'.
-																 $this->view->tagAnchor(['controller' => 'abonne', 'action' => 'edit'],
+																 $this->view->tagAnchor($action_url,
 																												$this->view->_('Modifier mes abonnements')),
-																 'newsletter');
+																 'newsletter',
+																 $action_url);
 	}
 }
 

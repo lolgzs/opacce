@@ -23,10 +23,11 @@ class ZendAfi_View_Helper_Abonne_Multimedia extends ZendAfi_View_Helper_Abonne_A
 		if (!Class_AdminVar::isMultimediaEnabled()) 
 			return '';
 
-		$html =  $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																											'action' => 'multimedia-hold-location'], 
-																										 null, 
-																										 true),
+		$action_url = $this->view->url(['controller' => 'abonne',
+																		'action' => 'multimedia-hold-location'], 
+																	 null, true);
+
+		$html =  $this->view->tagAnchor($action_url,
 																		$this->view->_("Réserver un poste multimédia"));
 		$html .= '<ul>';
 		foreach ($user->getFutureMultimediaHolds() as $hold) {
@@ -45,7 +46,7 @@ class ZendAfi_View_Helper_Abonne_Multimedia extends ZendAfi_View_Helper_Abonne_A
 
 		$html .= '</ul>';
 
-		return $this->tagFicheAbonne($html, 'multimedia');
+		return $this->tagFicheAbonne($html, 'multimedia', $action_url);
 	}
 }
 

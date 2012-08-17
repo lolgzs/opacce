@@ -31,11 +31,13 @@ class ZendAfi_View_Helper_Abonne_Reservations extends ZendAfi_View_Helper_Abonne
 																		 "Vous avez %d réservations en cours",
 																		 $nb_resas);
 		
+		$action_url = $this->view->url(['controller' => 'abonne',
+																		'action' => 'reservations']);
 		return $this->tagFicheAbonne(sprintf("<a href='%s'>%s</a>", 
-																				 $this->view->url(['controller' => 'abonne',
-																													 'action' => 'reservations']),
+																				 $action_url,
 																				 $str_resas),
-																 'reservations');
+																 'reservations',
+																 $action_url);
 	}
 }
 

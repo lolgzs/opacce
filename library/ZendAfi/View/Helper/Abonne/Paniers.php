@@ -28,11 +28,12 @@ class ZendAfi_View_Helper_Abonne_Paniers extends ZendAfi_View_Helper_Abonne_Abst
 																			 "Vous avez %d paniers de notices",
 																			 $nb_paniers);
 
+		$action_url = $this->view->url(['controller' => 'panier', 'action' => 'index']);
 		return $this->tagFicheAbonne(sprintf('<a href=\'%s\'>%s</a>', 
-																				 $this->view->url(['controller' => 'panier',
-																													 'action' => 'index']), 
+																				 $action_url, 
 																				 $str_paniers),
-																 'panier');
+																 'panier',
+																 $action_url);
 	}
 }
 

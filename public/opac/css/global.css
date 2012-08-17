@@ -1045,10 +1045,12 @@ body.abonne_multimedia-hold-view .actions a {
 
 
 .abonne_fiche .abonneFiche {
-		clear: both;
 		padding-top: 10px;
 		margin: 10px 10px 0px 10px;
 		border-radius: 10px;
+		text-align: left;
+		float: left;
+		width: 45%;
 }
 
 .abonneTitre a img {
@@ -1066,7 +1068,11 @@ body.abonne_multimedia-hold-view .actions a {
 
 
 .abonne_fiche .abonneFiche ul {
-		margin-left: 150px;
+		margin-left: 95px;
+}
+
+.abonne_fiche .abonneFiche ul li {
+		list-style-type: disc; 
 }
 
 

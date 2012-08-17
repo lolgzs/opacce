@@ -142,7 +142,7 @@ class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControlle
 
 
 	public function testIconeNewsletterDisplayed () {
-		$this->assertXPath('//div[@class="abonneFiche"]//img[contains(@src, "abonnes/newsletter.png")]');
+		$this->assertXPath('//div[@class="abonneFiche"]//a[contains(@href, "/abonne/edit")]//img[contains(@src, "abonnes/newsletter.png")]');
 	}
 
 

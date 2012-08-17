@@ -23,14 +23,18 @@ class ZendAfi_View_Helper_Abonne_Formations extends ZendAfi_View_Helper_Abonne_A
 		if (!Class_AdminVar::isFormationEnabled() || !$user->hasRightSuivreFormation())
 			return '';
 
-		$html = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																										 'action' => 'formations'], 
-																										null, 
-																										true),
+		$action_url = $this->view->url(['controller' => 'abonne',
+																		'action' => 'formations'], 
+																	 null, 
+																	 true);
+
+		$html = $this->view->tagAnchor($action_url,
 																	 $this->view->_("S'inscrire à une formation"));
 
 		$html .= '<ul>';
 	
+
+
 		foreach ($user->getSessionFormations() as $session) {
 			$html .= sprintf('<li><a href="%s">%s, %s</li>', 
 											 $this->view->url(['controller' => 'abonne',
@@ -45,7 +49,7 @@ class ZendAfi_View_Helper_Abonne_Formations extends ZendAfi_View_Helper_Abonne_A
 
 		$html .= '</ul>';
 
-		return $this->tagFicheAbonne($html, 'formations');
+		return $this->tagFicheAbonne($html, 'formations', $action_url);
 	}
 }
 
