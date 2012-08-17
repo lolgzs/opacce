@@ -92,6 +92,13 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 		$this->assertContains('javascript:alert(\\\'Votre abonnement est terminé\\\')', $menu_url['url']);
 		$this->assertEquals('1', $menu_url['target']);
 	}
+
+
+	/** @test */
+	public function reserverPosteUrlShouldBeAbonneReservations() {
+		$this->assertEquals(['url' => BASE_URL.'/abonne/multimedia-hold-location', 'target' => ''],
+												$this->module_menu->getUrl('RESERVER_POSTE', []));
+	}
 }
 
 

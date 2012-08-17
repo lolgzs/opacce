@@ -36,63 +36,57 @@ abstract class ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase extends
 			->getWrapper()
 
 			->whenCalled('filterByLocaleAndWorkflow')
-			->with(array($picsou))
-			->answers(array($picsou));
+			->with([$picsou])
+			->answers([$picsou]);
 
-		$this->mon_menu_jeunesse = array(
-														"libelle" => "Mon menu",
-														"picto" => "home.png",
-														"menus" => array(array('type_menu' => 'MENU',
-																									 'libelle' => 'Pratique',
-																									 'picto' => 'bookmark.png',
-																									 'preferences' => array()),
+		$this->mon_menu_jeunesse = ["libelle" => "Mon menu",
+																"picto" => "home.png",
+																"menus" => [['type_menu' => 'MENU',
+																						 'libelle' => 'Pratique',
+																						 'picto' => 'bookmark.png',
+																						 'preferences' => []],
 
-																						 array('type_menu' => 'URL',
-																									 'libelle' => 'Google',
-																									 'picto' => 'vide.gif',
-																									 'preferences' => array('url' => 'http://www.google.com',
-																																					'target' => 0)),
-																						 array('type_menu' => 'NEWS',
-																									 'libelle' => 'Actu',
-																									 'picto' => 'vide.gif',
-																									 'preferences' => array('nb_aff' => '2',
-																																					'display_mode' => 'Submenu'))));
+																						['type_menu' => 'URL',
+																						 'libelle' => 'Google',
+																						 'picto' => 'vide.gif',
+																						 'preferences' => ['url' => 'http://www.google.com',
+																															 'target' => 0]],
+																						['type_menu' => 'NEWS',
+																						 'libelle' => 'Actu',
+																						 'picto' => 'vide.gif',
+																						 'preferences' => ['nb_aff' => '2',
+																															 'display_mode' => 'Submenu']]]];
 
-		$cfg_menus_jeunesse = array('H' => array(
-																						 "libelle" => "Menu horizontal",
-																						 "picto" => "vide.gif",
-																						 "menus" => array()),
-																'V' => array(
-																						 "libelle" => "Menu vertical",
-																						 "picto" => "vide.gif",
-																						 "menus" => array()),
+		$cfg_menus_jeunesse = ['H' => ["libelle" => "Menu horizontal",
+																	 "picto" => "vide.gif",
+																	 "menus" => []],
+													 'V' => ["libelle" => "Menu vertical",
+																	 "picto" => "vide.gif",
+																	 "menus" => []],
 
-																'4' => $this->mon_menu_jeunesse);
+													 '4' => $this->mon_menu_jeunesse];
 
 		$this->profil_jeunesse->setCfgMenus($cfg_menus_jeunesse);
 
 		$this
 			->page_musique
-			->setCfgAccueil(array('modules' => array(
-																							 '6' => array('division' => 2,
-																														'type_module' => 'CRITIQUES',
-																														'preferences' => array()),
-																							 '8' => array('division' => 1,
-																														'type_module' => 'MENU_VERTICAL',
-																														'preferences' => array('afficher_titre' => '1',
-																																									 'menu' => 4)))));
+			->setCfgAccueil(['modules' => ['6' => ['division' => 2,
+																						 'type_module' => 'CRITIQUES',
+																						 'preferences' => []],
+																		 '8' => ['division' => 1,
+																						 'type_module' => 'MENU_VERTICAL',
+																						 'preferences' => ['afficher_titre' => '1',
+																															 'menu' => 4]]]]);
 
 
 
-		$cfg_menus_adulte = array('H' => array(
-																					 "libelle" => "Menu horizontal",
-																					 "picto" => "vide.gif",
-																						 "menus" => array()),
+		$cfg_menus_adulte = ['H' => ["libelle" => "Menu horizontal",
+																 "picto" => "vide.gif",
+																 "menus" => []],
 
-															'4' => array(
-																					 "libelle" => "Menu adulte",
-																					 "picto" => "vide.gif",
-																					 "menus" => array()));
+												 '4' => ["libelle" => "Menu adulte",
+																 "picto" => "vide.gif",
+																 "menus" => []]];
 
 
 		$this->profil_adulte = Class_Profil::getLoader()
@@ -104,6 +98,8 @@ abstract class ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase extends
 			->setCfgMenus($cfg_menus_adulte);
 	}
 }
+
+
 
 
 class ProfilControllerProfilJeunesseAndAdultesWithMenusTestAccessors extends ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase {
@@ -172,6 +168,8 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestAccessors extends Pro
 }
 
 
+
+
 class ProfilControllerProfilJeunesseAndAdultesWithMenusTestRender extends ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -223,6 +221,8 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestRender extends Profil
 }
 
 
+
+
 class ProfilControllerProfilJeunesseAndAdultesWithMenusTestSwitchPageMusiqueToProfilAdulte extends ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -261,6 +261,7 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestSwitchPageMusiqueToPr
 		$this->assertXPathContentContains("//ul[@class='menuGauche']//li", 'Google');
 	}
 }
+
 
 
 class ProfilControllerProfilJeunesseAndAdultesWithMenusTestMovePageMusiqueToProfilAdulte extends ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase {

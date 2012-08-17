@@ -19,56 +19,54 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   OPAC3 : Gestion des menus de navigation
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	const PREFERENCES_KEY	= 'preferences';
 	const MENUS_KEY				= 'menus';
 	const SUBMENUS_KEY		= 'sous_menus';
 
-	protected $_groupes = array(
+	protected $_groupes = [
 		"NAV" => "Navigation",
 		"INFO" => "Informations",
 		"RECH" => "Recherches",
 		"CATALOG" => "Catalogues",
 		"ABON" => "Abonnés"
-	);
+	];
 
-	private $fonctions = array(
-		"ACCUEIL" => array("libelle" => "Retour à l'accueil", "groupe" => "NAV", "phone" => true),
-		"CONNECT" => array("libelle" => "Se connecter", "groupe" => "NAV", "phone" => false),
-		"DISCONNECT" => array("libelle" => "Se déconnecter", "groupe" => "NAV", "phone" => true),
-		"GOOGLEMAP" => array("libelle" => "Plan d'accès google", "groupe" => "NAV", "action" => "googlemap", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"AVIS" => array("libelle" => "Dernières critiques", "groupe" => "INFO", "action" => "avis", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"LAST_NEWS" => array("libelle" => "Derniers articles", "groupe" => "INFO", "action" => "lastnews", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"NEWS" => array("libelle" => "Articles cms", "groupe" => "INFO", "action" => "news", "popup_width" => 800, "popup_height" => 600, "phone" => false),
-		"SITO" => array("libelle" => "Sitothèque", "groupe" => "INFO", "action" => "sitotheque", "popup_width" => 800, "popup_height" => 550, "phone" => false),
-		"RSS" => array("libelle" => "Fils Rss", "groupe" => "INFO", "action" => "rss", "popup_width" => 800, "popup_height" => 550, "phone" => false),
-		"URL" => array("libelle" => "Lien vers un site", "groupe" => "INFO", "action" => "liensite", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"PROFIL" => array("libelle" => "Lien vers un profil du portail", "groupe" => "INFO", "action" => "lienprofil", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"BIBNUM" => array("libelle" => "Lien vers un album", "groupe" => "INFO", "action" => "album", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"RECH_SIMPLE" => array("libelle" => "Recherche simple", "groupe" => "RECH", "phone" => true),
-		"RECH_AVANCEE" => array("libelle" => "Recherche avancée", "groupe" => "RECH", "phone" => false),
-		"RECH_GUIDEE" => array("libelle" => "Recherche guidée", "groupe" => "RECH", "phone" => false),
-		"RECH_GEO" => array("libelle" => "Recherche géographique", "groupe" => "RECH", "phone" => false),
-		"RECH_OAI" => array("libelle" => "Recherche OAI", "groupe" => "RECH", "phone" => false),
-		"CATALOGUE" => array("libelle" => "Catalogue", "groupe" => "CATALOG", "action" => "catalogue", "popup_width" => 550, "popup_height" => 470, "phone" => false),
-		"ETAGERE" => array("libelle" => "Etagères", "groupe" => "CATALOG", "action" => "etagere", "popup_width" => 550, "popup_height" => 200, "phone" => false),
-		"TAGS" => array("libelle" => "Nuage de tags", "groupe" => "CATALOG", "phone" => false),
-		"PANIER" => array("libelle" => "Paniers de notices", "groupe" => "ABON", "phone" => false),
-		"ABON_AVIS" => array("libelle" => "Derniers avis", "groupe" => "ABON", "phone" => false),
-		"ABON_FICHE" => array("libelle" => "Fiche abonné", "groupe" => "ABON", "phone" => false),
-		"ABON_MODIF_FICHE" => array("libelle" => "Modifier données abonné", "groupe" => "ABON", "phone" => false),
-		"ABON_PRETS" => array("libelle" => "Prêts en cours", "groupe" => "ABON", "phone" => false),
-		"ABON_RESAS" => array("libelle" => "Réservations en cours", "groupe" => "ABON", "phone" => false),
-		"ABON_FORMATIONS" => array("libelle" => "Formations", "groupe" => "ABON", "phone" => false),
-		"FORM_CONTACT" => array("libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false), 
-		"VODECLIC" => array("libelle" => "Lien vers Vodeclic", "groupe" => "ABON", "phone" => false)
-	);
+	private $fonctions = [
+		"ACCUEIL" => ["libelle" => "Retour à l'accueil", "groupe" => "NAV", "phone" => true],
+		"CONNECT" => ["libelle" => "Se connecter", "groupe" => "NAV", "phone" => false],
+		"DISCONNECT" => ["libelle" => "Se déconnecter", "groupe" => "NAV", "phone" => true],
+		"GOOGLEMAP" => ["libelle" => "Plan d'accès google", "groupe" => "NAV", "action" => "googlemap", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"AVIS" => ["libelle" => "Dernières critiques", "groupe" => "INFO", "action" => "avis", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"LAST_NEWS" => ["libelle" => "Derniers articles", "groupe" => "INFO", "action" => "lastnews", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"NEWS" => ["libelle" => "Articles cms", "groupe" => "INFO", "action" => "news", "popup_width" => 800, "popup_height" => 600, "phone" => false],
+		"SITO" => ["libelle" => "Sitothèque", "groupe" => "INFO", "action" => "sitotheque", "popup_width" => 800, "popup_height" => 550, "phone" => false],
+		"RSS" => ["libelle" => "Fils Rss", "groupe" => "INFO", "action" => "rss", "popup_width" => 800, "popup_height" => 550, "phone" => false],
+		"URL" => ["libelle" => "Lien vers un site", "groupe" => "INFO", "action" => "liensite", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"PROFIL" => ["libelle" => "Lien vers un profil du portail", "groupe" => "INFO", "action" => "lienprofil", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"BIBNUM" => ["libelle" => "Lien vers un album", "groupe" => "INFO", "action" => "album", "popup_width" => 550, "popup_height" => 290, "phone" => false],
+		"RECH_SIMPLE" => ["libelle" => "Recherche simple", "groupe" => "RECH", "phone" => true],
+		"RECH_AVANCEE" => ["libelle" => "Recherche avancée", "groupe" => "RECH", "phone" => false],
+		"RECH_GUIDEE" => ["libelle" => "Recherche guidée", "groupe" => "RECH", "phone" => false],
+		"RECH_GEO" => ["libelle" => "Recherche géographique", "groupe" => "RECH", "phone" => false],
+		"RECH_OAI" => ["libelle" => "Recherche OAI", "groupe" => "RECH", "phone" => false],
+		"CATALOGUE" => ["libelle" => "Catalogue", "groupe" => "CATALOG", "action" => "catalogue", "popup_width" => 550, "popup_height" => 470, "phone" => false],
+		"ETAGERE" => ["libelle" => "Etagères", "groupe" => "CATALOG", "action" => "etagere", "popup_width" => 550, "popup_height" => 200, "phone" => false],
+		"TAGS" => ["libelle" => "Nuage de tags", "groupe" => "CATALOG", "phone" => false],
+		"PANIER" => ["libelle" => "Paniers de notices", "groupe" => "ABON", "phone" => false],
+		"ABON_AVIS" => ["libelle" => "Derniers avis", "groupe" => "ABON", "phone" => false],
+		"ABON_FICHE" => ["libelle" => "Fiche abonné", "groupe" => "ABON", "phone" => false],
+		"ABON_MODIF_FICHE" => ["libelle" => "Modifier données abonné", "groupe" => "ABON", "phone" => false],
+		"ABON_PRETS" => ["libelle" => "Prêts en cours", "groupe" => "ABON", "phone" => false],
+		"ABON_RESAS" => ["libelle" => "Réservations en cours", "groupe" => "ABON", "phone" => false],
+		"ABON_FORMATIONS" => ["libelle" => "Formations", "groupe" => "ABON", "phone" => false],
+		"FORM_CONTACT" => ["libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false], 
+		"VODECLIC" => ["libelle" => "Lien vers Vodeclic", "groupe" => "ABON", "phone" => false],
+		"RESERVER_POSTE" => ["libelle" => "Réserver un poste multimédia", "groupe" => "ABON", "phone" => false]
+	 ];
 
-	private $fonction_vide = array("action" => "index", "popup_width" => 550, "popup_height" => 215, "phone" => true);
+	private $fonction_vide = ["action" => "index", "popup_width" => 550, "popup_height" => 215, "phone" => true];
 
 
 	public function __construct() {
@@ -80,6 +78,9 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 
 		if (!Class_AdminVar::isVodeclicEnabled())
 			unset($this->fonctions['VODECLIC']);
+
+		if (!Class_AdminVar::isMultimediaEnabled())
+			unset($this->fonctions['RESERVER_POSTE']);
 	}
 
 
@@ -212,6 +213,9 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 					$url = $this->getVodeclicUrlForUser($user);
 					$target = 1;
 				}
+				break;
+			case "RESERVER_POSTE": 
+				$url = BASE_URL . '/abonne/multimedia-hold-location';
 				break;
 			default: $url = BASE_URL;
 				break;

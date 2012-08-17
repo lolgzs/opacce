@@ -314,7 +314,7 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 
 
 	/** @test */
-	public function withModuleFormationDisabledComboMenuShouldContainsFormations() {
+	public function withModuleFormationDisabledComboMenuShouldNotContainsFormations() {
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('0');
@@ -334,7 +334,7 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 
 
 	/** @test */
-	public function withBibNumberiqueDisabledComboMenuShouldContainsLienVersUnAlbum() {
+	public function withBibNumberiqueDisabledComboMenuShouldNotContainsLienVersUnAlbum() {
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('BIBNUM')
 			->setValeur('0');
@@ -342,6 +342,25 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 		$this->assertNotXPathContentContains('//option', 'Lien vers un album');
 	}
 
+
+	/** @test */
+	public function withMultimediaEnabledComboMenuShouldContainsReserverPosteMultimedia() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur('I love multimedia');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->assertXPathContentContains('//option', 'Réserver un poste multimédia');
+	}
+
+
+	/** @test */
+	public function withMultimediaDisabledComboMenuShouldNotContainsReserverPosteMultimedia() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur(null);
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->assertNotXPathContentContains('//option', 'Réserver un poste multimédia');
+	}
 }
 
 
