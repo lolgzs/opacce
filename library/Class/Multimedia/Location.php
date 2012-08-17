@@ -139,7 +139,7 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	public function setAdminUrl($url) {
 		if (false === strpos($url, 'http'))
 			$url = 'http://'.$url;
-		parent::_set('admin_url', $url);
+		return parent::_set('admin_url', $url);
 	}
 	
 
