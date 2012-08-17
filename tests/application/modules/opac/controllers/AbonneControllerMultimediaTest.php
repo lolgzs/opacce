@@ -476,11 +476,22 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 		parent::setUp();
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Location')
 				->whenCalled('findAllBy')
-				->answers(array(
-						Class_Multimedia_Location::getLoader()->newInstanceWithId(1)
-						->setLibelle('Salle 1'),
-						Class_Multimedia_Location::getLoader()->newInstanceWithId(2)
-						->setLibelle('Salle 2')));
+				->answers([
+									 Class_Multimedia_Location::newInstanceWithId(1)
+									 ->setLibelle('Salle 1')
+									 ->setBib(Class_Bib::newInstanceWithId(1))
+									 ->setOuvertures([Class_Ouverture::chaqueLundi('8:00', '12:00', '13:00', '18:00')->cache()]),
+
+									 Class_Multimedia_Location::newInstanceWithId(2)
+									 ->setLibelle('Salle 2')
+									 ->setBib(Class_Bib::newInstanceWithId(2))
+									 ->setOuvertures([Class_Ouverture::chaqueMercredi('8:00', '12:00', '13:00', '18:00')->cache()]),
+
+									 Class_Multimedia_Location::newInstanceWithId(3)
+									 ->setLibelle('Salle 3')
+									 ->setBib(Class_Bib::newInstanceWithId(3))
+									 ->setOuvertures([])
+									 ]);
 		$this->dispatch('/abonne/multimedia-hold-location', true);
 	}
 
@@ -506,6 +517,12 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 	/** @test */
 	public function locationSalle2ShouldBePresent() {
 		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-location/location/2")]', 'Salle 2');
+	}
+
+
+	/** @test */
+	public function locationSalle3WithoutAnyOuvertureShouldNotBePresent() {
+		$this->assertNotXPath('//a[contains(@href, "/multimedia-hold-location/location/3")]');
 	}
 }
 

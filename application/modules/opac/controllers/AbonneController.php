@@ -466,7 +466,8 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/multimedia-hold-day');
 		}
 
-		$this->view->locations = Class_Multimedia_Location::getLoader()->findAllBy(array('order' => 'libelle'));
+		$this->view->locations = array_filter(Class_Multimedia_Location::findAllBy(['order' => 'libelle']),
+																					function($location) {return $location->numberOfOuvertures() > 0;});
 		$this->view->timelineActions = $this->_getTimelineActions('location');
 	}
 
