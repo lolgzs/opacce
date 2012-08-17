@@ -38,9 +38,7 @@ if($this->fiche["erreur"]) echo '<p class="error">' . $this->fiche["erreur"] . '
 	?>
 </table>
 
-<?php $this->closeBoite();?>
-<div style="margin-top:5px">
-<a href="<?php echo BASE_URL ?>/abonne/fiche"><?php echo $this->_('Retour') ?></a>
-</div>
+<?php $this->closeBoite(); ?>
+<?php echo $this->abonne_RetourFiche(); ?>
 <br/>
 <br/>
