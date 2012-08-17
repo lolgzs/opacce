@@ -48,7 +48,7 @@ if (typeof jQuery != "undefined") $(document).ready(resize_func);
 //Les liens qui référencent des sites externes doivent être ouverts dans un nouvel onglet
 var setupAnchorsTarget = function() {
 	var internalLink = new RegExp('/' + window.location.host + '/');
-	$('a[href^="http://"]').each(function() {
+	$('a[href^="http"]').each(function() {
 		if (!internalLink.test($(this).attr('href')) && (undefined == this.onclick)  && (undefined == $(this).data('events') || undefined == $(this).data('events').click)) {
 			if ($.browser.msie) { //Sinon IE n'envoie pas le HTTP REFERRER
 				this.target = '_blank';
