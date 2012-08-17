@@ -137,7 +137,8 @@ class Class_Profil extends Storm_Model_Abstract {
 																		'logo_gauche_img',
 																		'logo_gauche_link',
 																		'logo_droite_img',
-																		'logo_droite_link');
+																		'logo_droite_link',
+																		'header_social_network');
 	  return self::$CFG_SITE_KEYS;
 
 	}
@@ -211,7 +212,8 @@ class Class_Profil extends Storm_Model_Abstract {
 							'logo_gauche_img' => '',
 							'logo_gauche_link' => '',
 							'logo_droite_img' => '',
-							'logo_droite_link' => '');
+							'logo_droite_link' => '',
+							'header_social_network' => false);
 	  return self::$DEFAULT_VALUES;
   }
 

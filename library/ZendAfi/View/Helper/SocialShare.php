@@ -40,7 +40,7 @@ class ZendAfi_View_Helper_SocialShare extends Zend_View_Helper_HtmlElement {
 
 		return  sprintf('<img class="%s" src="%s"  onclick="%s; return false" alt="%s"/>',
 										$network,
-										URL_IMG.'/site/'.$network.'.png',										
+										$this->networkImgUrl($network),										
 										$onclick_attr[$network],
 										'partager sur '.$network);
 	}
@@ -52,6 +52,14 @@ class ZendAfi_View_Helper_SocialShare extends Zend_View_Helper_HtmlElement {
 																."jQuery.getScript('%s/index/share/on/' + network + '/titre/' + $(\"title\").text());"
 																."}",
 																BASE_URL));
+	}
+
+
+	public function networkImgUrl() {
+		$file = $network.'.png';
+		$file_in_skin = URL_IMG.'/site/'.$file;
+
+		return file_exists(PATH_SKIN.'/images/site/'.$file) ? URL_IMG.'/site/'.$file : URL_SHARED_IMG.'/site/'.$file;
 	}
 }
 

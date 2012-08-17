@@ -35,7 +35,8 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 											'logo_gauche_img' => '/userfiles/mabib.png',
 											'logo_gauche_link' => 'http://mabib.fr',
 											'logo_droite_img' => '/userfiles/macommune.png',
-											'logo_droite_link' => 'http://macommune.fr');
+											'logo_droite_link' => 'http://macommune.fr',
+											'header_social_network' => true);
 
 		$cfg_notice = array('exemplaires' => array('grouper' => 1,
 																							 'section' => 1,
@@ -167,6 +168,10 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 		$this->assertXPath("//input[@type='checkbox'][@name='liens_sortants_off'][@checked='checked']");
 	}
 
+	/** @test */
+	public function checkBoxHeaderSocialNetworkBeChecked() {
+		$this->assertXPath("//input[@type='checkbox'][@name='header_social_network'][@checked='checked']");
+	}
 
 	/** @test */
 	public function skinListShouldContainOriginal() {

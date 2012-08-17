@@ -66,7 +66,8 @@ abstract class ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase extends
 
 													 '4' => $this->mon_menu_jeunesse];
 
-		$this->profil_jeunesse->setCfgMenus($cfg_menus_jeunesse);
+		$this->profil_jeunesse
+			->setCfgMenus($cfg_menus_jeunesse);
 
 		$this
 			->page_musique
@@ -217,6 +218,29 @@ class ProfilControllerProfilJeunesseAndAdultesWithMenusTestRender extends Profil
 	/** @test */
 	public function articlesShouldHaveBeenFilterByLocaleAndWorkflow() {
 		$this->assertTrue(Class_Article::getLoader()->methodHasBeenCalled('filterByLocaleAndWorkflow'));
+	}
+
+
+	/** @test */
+	public function socialToolsInBanniereShouldNotBePresent() {
+		$this->assertNotXPath('//div[@id="header"]//div[@class="share"]');
+	}
+}
+
+
+
+
+class ProfilControllerProfilJeunesseWithSocialNetworkEnabled extends ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil_jeunesse->setHeaderSocialNetwork(true);
+		$this->dispatch('/opac?id_profil='.$this->page_musique->getId());
+	}
+
+
+	/** @test */
+	public function socialToolsInBanniereShouldBePresent() {
+		$this->assertXPath('//div[@id="header"]//div[@class="share"]');
 	}
 }
 

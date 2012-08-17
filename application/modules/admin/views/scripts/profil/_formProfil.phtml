@@ -179,6 +179,17 @@ Class_ScriptLoader::getInstance()
 						?>
 					</td>
 				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Réseaux sociaux et contact'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox(  'header_social_network', 
+							                           null,
+																				 array('checked' => $this->profil->getHeaderSocialNetwork()));
+						?>
+					</td>
+				</tr>
 			</table>
 		</fieldset>
 
