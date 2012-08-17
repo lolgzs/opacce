@@ -1,7 +1,7 @@
 <div id="header">
 	<?php 
 	 echo $this->tagBanniere(); 
-   if ($this->profil->hasHeaderSocialNetwork())
+   if ($this->profil->getHeaderSocialNetwork())
 		 echo $this->socialShare($this->profil, array('facebook', 'twitter', 'mail')); 
    echo $this->boitesBanniere($this->profil); 
   ?>

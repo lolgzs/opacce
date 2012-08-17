@@ -67,7 +67,8 @@ abstract class ProfilControllerProfilJeunesseAndAdultesWithMenusTestCase extends
 													 '4' => $this->mon_menu_jeunesse];
 
 		$this->profil_jeunesse
-			->setCfgMenus($cfg_menus_jeunesse);
+			->setCfgMenus($cfg_menus_jeunesse)
+			->setHeaderSocialNetwork(false);
 
 		$this
 			->page_musique

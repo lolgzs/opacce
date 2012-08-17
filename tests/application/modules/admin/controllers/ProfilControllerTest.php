@@ -766,7 +766,6 @@ abstract class Admin_ProfilControllerProfilJeunesseWithPagesTestCase extends Adm
 			->setParentId($this->profil_jeunesse->getId())
 			->setLibelle('Musique');
 
-
 		$this->profil_jeunesse->setSubProfils(array($this->page_jeux,
 																								$this->page_musique));
 
