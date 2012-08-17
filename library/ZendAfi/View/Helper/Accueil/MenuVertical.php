@@ -38,6 +38,13 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	private $path_ico;						
 
 
+	/** Désactivé car pose problèmes avec les liens vodeclic qui doivent être contextuels */
+	public function shouldCacheContent() {
+		return false;
+	}
+
+
+
 	/**
 	 * @return array
 	 */
