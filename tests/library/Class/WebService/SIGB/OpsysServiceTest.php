@@ -728,7 +728,9 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 																->setPassword('pass'),
 															'pret_12'
 														);
-		$this->assertEquals(array('statut' => 0, 'erreur' => 'Aucune prolongation effectuée !'), $result);
+		$this->assertEquals(array('statut' => 0, 
+															'erreur' => 'La prolongation de ce document est impossible'), 
+												$result);
 	}
 
 
