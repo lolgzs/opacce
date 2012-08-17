@@ -30,20 +30,20 @@ class Push_MultimediaController extends Zend_Controller_Action {
 			return;
 		}
 
-		if (null == ($sign = $this->_getParam('sign'))) {
-			$log->err('Missing sign parameter');
-			return;
-		}
+		// if (null == ($sign = $this->_getParam('sign'))) {
+		// 	$log->err('Missing sign parameter');
+		// 	return;
+		// }
 	 
 		if (!($groups = json_decode($json))) {
 			$log->err('Invalid json');
 			return;
 		}
 		
-		if (!Class_Multimedia::isValidHash($sign, $this->_getParam('json'))) {
-			$log->err('Sign check failure');
-			return;
-		}
+		// if (!Class_Multimedia::isValidHash($sign, $this->_getParam('json'))) {
+		// 	$log->err('Sign check failure');
+		// 	return;
+		// }
 
 		foreach ($groups as $group) {
 			$location = Class_Multimedia_Location::getLoader()->fromJsonModel($group->site);

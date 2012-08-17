@@ -62,6 +62,10 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 	 [[file:tests/application/modules/admin/controllers/MultimediaControllerTest.php::class%20Admin_MultimediaControllerIndexTest%20extends%20Admin_AbstractControllerTestCase%20{][Tests controller Multimedia]]
 	 [[file:application/modules/admin/controllers/MultimediaController.php::class%20Admin_MultimediaController%20extends%20ZendAfi_Controller_Action%20{][Controller Multimedia]]
 
+** Test controller push
+#+BEGIN_SRC lisp
+	(async-shell-command "curl -d \"json=[{\\\"libelle\\\":\\\"default\\\",\\\"id\\\":\\\"1\\\",\\\"site\\\":{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"lognes\\\",\\\"admin_url\\\":\\\"192.168.1.82\\\"},\\\"postes\\\":[{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"ANACTU10\\\",\\\"os\\\":\\\"Windows 7\\\",\\\"maintenance\\\":\\\"0\\\"},{\\\"id\\\":\\\"2\\\",\\\"libelle\\\":\\\"ANACTU12\\\",\\\"os\\\":\\\"Windows XP\\\",\\\"maintenance\\\":\\\"0\\\"}]}]\" http://localhost/afi-opac3/push/multimedia/config?XDEBUG_SESSION_START=1" )
+#+END_SRC
 * Bib numérique
 	[[file:public/opac/css/global.css::/**%20bib%20numerique%20*/][CSS Bib num]]
 	
@@ -159,7 +163,7 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 +		return $all_users;
  	}
  #+END_SRC
-
+	 
 * doc
 ** [[https://gist.github.com/3126866][Basic Meta Programming with PHP5.4]]
 ** Histoire de faire un canvas:

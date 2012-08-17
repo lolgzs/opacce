@@ -85,10 +85,11 @@ class Multimedia_LocationLoader extends Storm_Model_Loader {
 	public function fromJsonModel($json_model) {
 		if (!$model = $this->findByIdOrigine($json_model->id))
 			$model = $this->newInstance()->setIdOrigine((int)$json_model->id);
-		$model->setLibelle($json_model->libelle)->save();
 
 		if (property_exists($json_model, 'admin_url'))
 			$model->setAdminUrl($json_model->admin_url);
+
+		$model->setLibelle($json_model->libelle)->save();
 		return $model;
 	}
 
@@ -132,6 +133,13 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 		if ($this->hasBib())
 			return $this->getBib()->getLibelle();
 		return '';
+	}
+
+
+	public function setAdminUrl($url) {
+		if (false === strpos($url, 'http'))
+			$url = 'http://'.$url;
+		parent::_set('admin_url', $url);
 	}
 	
 
