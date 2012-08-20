@@ -929,7 +929,7 @@ div.ui-sortable-placeholder {
 
 .timeline  {
 		height: 40px;
-		width: 700px;
+		width: 810px;
 		margin: 0 auto;
 }
 
@@ -937,7 +937,7 @@ div.ui-sortable-placeholder {
 		float: left;
 		text-align: center;
 		line-height: 39px;
-		width: 146px;
+		width: 130px;
 		list-style: none;
 		background: url(../images/reservation_timeline.png) no-repeat;
 		margin-left: -18px;

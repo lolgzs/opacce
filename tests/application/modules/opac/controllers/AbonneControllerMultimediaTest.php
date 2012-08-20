@@ -55,6 +55,7 @@ trait TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles {
 
 
 
+
 abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractControllerTestCase {
 	protected $_json;
 
@@ -405,6 +406,7 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 		$bean->time = '';
 		$bean->duration = 0;
 		$bean->device = 0;
+		$bean->group  = 0;
 		$this->_session->holdBean = $this->_bean = $bean;
 
 		Class_Users::getIdentity()
@@ -436,7 +438,36 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 			->setHoldDelayMax(60)
 			->setOuvertures([Class_Ouverture::chaqueLundi('08:30', '12:00', '12:00', '17:45')->setId(1)->cache(),
 											 Class_Ouverture::chaqueMercredi('08:30', '12:00', '12:00', '17:45')->setId(3)->cache(),
-											 Class_Ouverture::chaqueJeudi('08:30', '12:00', '12:00', '17:45')->setId(4)->cache()]);
+											 Class_Ouverture::chaqueJeudi('08:30', '12:00', '12:00', '17:45')->setId(4)->cache()])
+			->setGroups([Class_Multimedia_DeviceGroup::newInstanceWithId(3)
+									 ->setLibelle('Musique')
+									 ->setDevices([Class_Multimedia_Device::getLoader()
+																 ->newInstanceWithId(1)
+																 ->setLibelle('Poste 1')
+																 ->setOs('Ubuntu Lucid')
+																 ->setDisabled(0),
+
+																 Class_Multimedia_Device::getLoader()
+																 ->newInstanceWithId(3)
+																 ->setLibelle('Poste 3')
+																 ->setOs('OSX')
+																 ->setDisabled(0)]),
+
+									 Class_Multimedia_DeviceGroup::newInstanceWithId(5)
+									 ->setLibelle('Jeunesse')
+									 ->setDevices([
+																 Class_Multimedia_Device::getLoader()
+																 ->newInstanceWithId(2)
+																 ->setLibelle('Poste 2')
+																 ->setOs('Windows XP')
+																 ->setDisabled(0),
+
+																 Class_Multimedia_Device::getLoader()
+																 ->newInstanceWithId(4)
+																 ->setLibelle('Poste 4')
+																 ->setOs('Amiga OS')
+																 ->setDisabled(0)])
+									 ]);
 	}
 
 
@@ -448,6 +479,11 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 	protected function _prepareTimeAndDurationInSession() {
 		$this->_bean->time = '9:45';
 		$this->_bean->duration = 45;
+	}
+
+
+	protected function _prepareGroupInSession() {
+		$this->_bean->group = 5;
 	}
 
 	
@@ -708,7 +744,7 @@ class AbonneControllerMultimediaHoldHoursChoiceTest extends AbonneControllerMult
 
 	/** @test */
 	public function shouldRedirectToNextStep() {
-		$this->assertRedirectTo('/abonne/multimedia-hold-device');
+		$this->assertRedirectTo('/abonne/multimedia-hold-group');
 	}
 
 
@@ -744,25 +780,73 @@ class AbonneControllerMultimediaHoldHoursChooseAlreadyHeldTest extends AbonneCon
 
 
 
-/* Quatrième écran choix du poste */
+/* Quatrième écran choix du groupe de postes */
+class AbonneControllerMultimediaHoldGroupTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		$this->_prepareDayInSession();
+		$this->_prepareTimeAndDurationInSession();
+
+		$this->dispatch('/abonne/multimedia-hold-group', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToGroupMusique() {
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-group/group/3")]', 'Musique');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToGroupJeunesse() {
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-group/group/5")]', 'Jeunesse');
+	}
+
+
+	/** @test */
+	public function currentTimelineShouldBeSection() {
+		$this->_assertCurrentTimelineStep('Section');
+	}
+}
+
+
+
+
+/* Quatrième écran validation du choix du groupe de postes, redirection vers le choix du poste */
+class AbonneControllerMultimediaHoldGroupChoiceTest extends AbonneControllerMultimediaHoldTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		$this->_prepareDayInSession();
+		$this->_prepareTimeAndDurationInSession();
+		$this->dispatch('/abonne/multimedia-hold-group/group/5', true);
+	}
+
+
+	/** @test */
+	public function shouldRedirectToStepHoldDevice() {
+		$this->assertRedirectTo('/abonne/multimedia-hold-device');
+	}
+
+
+	/** @test */
+	public function beanShouldHaveGroupSetToFive() {
+		$this->assertEquals(5, $this->_session->holdBean->group);
+	}
+}
+
+
+
+
+/* Cinquième écran choix du poste */
 class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
 		$this->_prepareTimeAndDurationInSession();
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceGroup')
-				->whenCalled('findAllBy')
-				->answers(array(Class_Multimedia_DeviceGroup::getLoader()
-						->newInstanceWithId(3)));
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
-				->whenCalled('findAllBy')
-				->answers(array(Class_Multimedia_Device::getLoader()
-						->newInstanceWithId(1)
-						->setLibelle('Poste 1')
-						->setOs('Ubuntu Lucid')
-						->setDisabled(0)));
+		$this->_prepareGroupInSession();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 				->whenCalled('countBy')
@@ -778,23 +862,28 @@ class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimedi
 
 
 	/** @test */
-	public function posteUnShouldBeHoldable() {
-		$this->assertXPathContentContains(
-			'//a[contains(@href, "multimedia-hold-device/device/1")]',
-			'Poste 1', $this->_response->getBody());
+	public function posteUnShouldNotBeHoldable() {
+		$this->assertNotXPathContentContains('//a','Poste 1');
+	}
+
+
+	/** @test */
+	public function posteDeuxShouldBeHoldable() {
+		$this->assertXPathContentContains('//a[contains(@href, "multimedia-hold-device/device/2")]','Poste 2');
 	}
 }
 
 
 
 
-/* Quatrième écran validation du choix du poste, redirection vers la confirmation */
+/* Cinquième écran validation du choix du poste, redirection vers la confirmation */
 class AbonneControllerMultimediaHoldDeviceChoiceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
 		$this->_prepareTimeAndDurationInSession();
+		$this->_prepareGroupInSession();
 		$this->dispatch('/abonne/multimedia-hold-device/device/1', true);
 	}
 
@@ -814,7 +903,7 @@ class AbonneControllerMultimediaHoldDeviceChoiceTest extends AbonneControllerMul
 
 
 
-/* Cinquième écran confirmation de la réservation */
+/* Sixième écran confirmation de la réservation */
 class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -874,7 +963,7 @@ class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimed
 
 
 
-/* Cinquième écran, réservation confirmée */
+/* Sixième écran, réservation confirmée */
 class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -902,7 +991,7 @@ class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControlle
 
 
 
-/* Sixième écran, visualisation de la réservation */
+/* Septième écran, visualisation de la réservation */
 class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();

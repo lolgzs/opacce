@@ -576,7 +576,7 @@ class AbonneController extends Zend_Controller_Action {
 			if (!$this->view->error) {
 				$bean->time = $this->_getParam('time');
 				$bean->duration = (int)$this->_getParam('duration');
-				$this->_redirect('/abonne/multimedia-hold-device');
+				$this->_redirect('/abonne/multimedia-hold-group');
 				return;
 			}
 		}
@@ -584,6 +584,7 @@ class AbonneController extends Zend_Controller_Action {
 		$this->view->timelineActions = $this->_getTimelineActions('hours');
 		$this->view->form = $this->multimediaHoldHoursForm($bean, $location);
 	}
+
 
 	public function multimediaHoldHoursForm($bean, $location) {
 		return $this->view
@@ -598,11 +599,29 @@ class AbonneController extends Zend_Controller_Action {
 	}
 
 
+	public function multimediaHoldGroupAction() {
+		$bean = $this->_getDeviceHoldBean();
+		$namespace = $this->_getSessionNamespace();
+		$location = Class_Multimedia_Location::find((int)$bean->location);
+
+		if ($this->_getParam('group')) {
+			$bean->group = $this->_getParam('group');
+			$this->_redirect('/abonne/multimedia-hold-device');
+			return;
+		}
+
+
+		$this->view->groups = $location->getGroups();
+		$this->view->timelineActions = $this->_getTimelineActions('group');
+	}
+
+
 	public function multimediaHoldDeviceAction() {
 		$bean = $this->_getDeviceHoldBean();
 		$namespace = $this->_getSessionNamespace();
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
-			$this->_redirect('/abonne/multimedia-hold-location');
+
+		if (null == ($group = Class_Multimedia_DeviceGroup::getLoader()->find((int)$bean->group))) {
+			$this->_redirect('/abonne/multimedia-hold-group');
 			return;
 		}
 
@@ -623,10 +642,10 @@ class AbonneController extends Zend_Controller_Action {
 		}
 		
 		$this->view->timelineActions = $this->_getTimelineActions('device');
-		$this->view->devices = $location->getHoldableDevicesForDateTimeAndDuration(
-				                               $bean->day,
-																			 $bean->time,
-																			 $bean->duration);
+		$this->view->devices = $group->getHoldableDevicesForDateTimeAndDuration(
+																																						$bean->day,
+																																						$bean->time,
+																																						$bean->duration);
 	}
 
 
@@ -705,13 +724,12 @@ class AbonneController extends Zend_Controller_Action {
 	 * @return array
 	 */
 	protected function _getTimelineActions($current) {
-		$knownActions = array(
-			'location' => 'Lieu',
-			'day' => 'Jour',
-			'hours' => 'Horaires',
-			'device' => 'Poste',
-			'confirm' => 'Confirmation'
-		);
+		$knownActions = ['location' => $this->view->_('Lieu'),
+										 'day' => $this->view->_('Jour'),
+										 'hours' => $this->view->_('Horaires'),
+										 'group' => $this->view->_('Section'),
+										 'device' => $this->view->_('Poste'),
+										 'confirm' => $this->view->_('Confirmation')];
 
 		$actions = array();
 		foreach ($knownActions as $knownAction => $label) {
@@ -750,6 +768,7 @@ class AbonneController extends Zend_Controller_Action {
 		$bean->day = '';
 		$bean->time = '';
 		$bean->duration = 0;
+		$bean->group = 0;
 		$bean->device = 0;
 		$this->_getSessionNamespace()->holdBean = $bean;
 		return $bean;

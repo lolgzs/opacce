@@ -50,12 +50,8 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	protected $_has_many = array(
 		'devices' => array(
 			'model' => 'Class_Multimedia_Device',
-			'role' => 'group'));
-
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
+			'role' => 'group',
+			'order' => 'libelle'));
 
 
 	/**
@@ -74,8 +70,6 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 			if (!$device->isHoldableBetweenTimes($start, $end))
 				continue;
 			$holdables[] = $device;
-			if (3 == count($holdables))
-				return $holdables;
 		}
 		return $holdables;
 	}
