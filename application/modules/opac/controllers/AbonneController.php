@@ -457,7 +457,7 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldLocationAction() {
-		$bean = MultimediaReservationBean::newInSession();
+		$bean = Class_Multimedia_ReservationBean::newInSession();
 
 		if (null != $this->_getParam('location')) {
 			$bean->location = $this->_getParam('location');
@@ -471,12 +471,7 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldDayAction() {
-		$bean = $this->_getDeviceHoldBean();
-		/* Si le site n'a pas encore été choisi, on retourne au choix du site */
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
-			$this->_redirect('/abonne/multimedia-hold-location');
-			return;
-		}
+		$bean = Class_Multimedia_ReservationBean::current();
 
 		/* Vérification du quota sur le jour choisi */
 		$day = $this->_getParam('day');
@@ -505,8 +500,15 @@ class AbonneController extends Zend_Controller_Action {
 			$this->_redirect('/abonne/multimedia-hold-hours');
 			return;
 		}
+		
+		$this->getRequest()->setParam('day', 0);
+		if (!$bean->isCurrentStateValidForRequest($this->getRequest())) {
+			$this->_redirect('/abonne/'.$bean->currentState());
+			return;
+		}
 
 		/* Rendu du calendrier avec les jours sélectionnables */
+		$location = $bean->getLocation();
 		$this->view->minDate = $location->getMinDate();
 		$this->view->maxDate = $location->getMaxDate();
 		$holidayStamps = array_map(
@@ -546,17 +548,10 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldHoursAction() {
-		$bean = $this->_getDeviceHoldBean();
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
-			$this->_redirect('/abonne/multimedia-hold-location');
+		if (!$bean = $this->_getDeviceHoldBean())
 			return;
-		}
 
-		if ('' == $bean->day) {
-			$this->_redirect('/abonne/multimedia-hold-day');
-			return;
-		}
-
+		$location = $bean->getLocation();
 		if ($this->_getParam('time') && $this->_getParam('duration')) {
 			$holdLoader = Class_Multimedia_DeviceHold::getLoader();
 			$start = $holdLoader->getTimeFromDayAndTime($bean->day, $this->_getParam('time'));
@@ -598,87 +593,28 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldGroupAction() {
-		$bean = $this->_getDeviceHoldBean();
-
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
-			$this->_redirect('/abonne/multimedia-hold-location');
+		if (!$bean = $this->_getDeviceHoldBean())
 			return;
-		}
 
-		if ('' == $bean->day) {
-			$this->_redirect('/abonne/multimedia-hold-day');
-			return;
-		}
-
-		if ('' == $bean->time || 0 == $bean->duration) {
-			$this->_redirect('/abonne/multimedia-hold-hours');
-			return;
-		}
-
-		if ($this->_getParam('group')) {
-			$bean->group = $this->_getParam('group');
-			$this->_redirect('/abonne/multimedia-hold-device');
-			return;
-		}
-
-		$this->view->groups = $location->getGroups();
+		$this->view->groups = $bean->getGroups();
 		$this->view->timelineActions = $this->_getTimelineActions('group');
 	}
 
 
 	public function multimediaHoldDeviceAction() {
-		$bean = $this->_getDeviceHoldBean();
-
-		if (null == ($group = Class_Multimedia_DeviceGroup::getLoader()->find((int)$bean->group))) {
-			$this->_redirect('/abonne/multimedia-hold-group');
+		if (!$bean = $this->_getDeviceHoldBean())
 			return;
-		}
 
-		if ('' == $bean->day) {
-			$this->_redirect('/abonne/multimedia-hold-day');
-			return;
-		}
-
-		if ('' == $bean->time || 0 == $bean->duration) {
-			$this->_redirect('/abonne/multimedia-hold-hours');
-			return;
-		}
-
-		if ($this->_getParam('device')) {
-			$bean->device = $this->_getParam('device');
-			$this->_redirect('/abonne/multimedia-hold-confirm');
-			return;
-		}
-		
 		$this->view->timelineActions = $this->_getTimelineActions('device');
-		$this->view->devices = $group->getHoldableDevicesForDateTimeAndDuration(
-																																						$bean->day,
-																																						$bean->time,
-																																						$bean->duration);
+		$this->view->devices = $bean->getGroup()->getHoldableDevicesForDateTimeAndDuration($bean->day,
+																																											 $bean->time,
+																																											 $bean->duration);
 	}
 
 
 	public function multimediaHoldConfirmAction() {
-		$bean = $this->_getDeviceHoldBean();
-		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
-			$this->_redirect('/abonne/multimedia-hold-location');
+		if (!$bean = $this->_getDeviceHoldBean())
 			return;
-		}
-
-		if ('' == $bean->day) {
-			$this->_redirect('/abonne/multimedia-hold-day');
-			return;
-		}
-
-		if ('' == $bean->time || 0 == $bean->duration) {
-			$this->_redirect('/abonne/multimedia-hold-hours');
-			return;
-		}
-
-		if (null == ($device = Class_Multimedia_Device::getLoader()->find((int)$bean->device))) {
-			$this->_redirect('/abonne/multimedia-hold-device');
-			return;
-		}
 
 		if ($this->_getParam('validate')) {
 			$hold = Class_Multimedia_DeviceHold::getLoader()->newFromBean($bean);
@@ -688,10 +624,12 @@ class AbonneController extends Zend_Controller_Action {
 		}
 
 		$this->view->timelineActions = $this->_getTimelineActions('confirm');
-		$this->view->location = $location->getLibelle();
+		$this->view->location = $bean->getLocation()->getLibelle();
 		$this->view->day = strftime('%d %B %Y', strtotime($bean->day));
 		$this->view->time = str_replace(':', 'h', $bean->time);
 		$this->view->duration = $bean->duration . 'mn';
+
+		$device = $bean->getDevice();
 		$this->view->device = $device->getLibelle() . ' - ' . $device->getOs();
 	}
 
@@ -757,39 +695,12 @@ class AbonneController extends Zend_Controller_Action {
 
 	/** @return stdClass */
 	protected function _getDeviceHoldBean() {
-		return MultimediaReservationBean::current();
-	}
-}
+		$bean = Class_Multimedia_ReservationBean::current();
+		if (!$bean->isCurrentStateValidForRequest($this->getRequest())) {
+			$this->_redirect('/abonne/'.$bean->currentState());
+			return null;
+		}
 
-
-
-
-class MultimediaReservationBean extends StdClass {
-	public static function sessionNameSpace()  {
-		return new Zend_Session_Namespace('abonneController');
-	}
-
-	public static function newInSession() {
-		$session_ns = 
-		$bean = new self();
-		self::sessionNameSpace()->holdBean = $bean;
 		return $bean;
-	}
-
-
-	public static function current() {
-		if (null == ($bean = self::sessionNameSpace()->holdBean))
-			return self::newInSession();
-		return $bean;
-	}
-
-
-	public function __construct() {
-		$this->location = 0;
-		$this->day = '';
-		$this->time = '';
-		$this->duration = 0;
-		$this->group = 0;
-		$this->device = 0;
 	}
 }

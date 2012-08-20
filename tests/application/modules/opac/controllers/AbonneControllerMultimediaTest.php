@@ -20,6 +20,7 @@
  */
 
 require_once 'AbstractControllerTestCase.php';
+require_once 'application/modules/opac/controllers/AbonneController.php';
 
 trait TAbonneControllerMultimediaFixtureHoldSuccessOnSept12 {
 	protected function _launch() {
@@ -400,14 +401,7 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 	public function setUp() {
 		parent::setUp();
 		$this->_session = new Zend_Session_Namespace('abonneController');
-		$bean = new stdClass();
-		$bean->location = 0;
-		$bean->day = '';
-		$bean->time = '';
-		$bean->duration = 0;
-		$bean->device = 0;
-		$bean->group  = 0;
-		$this->_session->holdBean = $this->_bean = $bean;
+		$this->_session->holdBean = $this->_bean = new Class_Multimedia_ReservationBean();
 
 		Class_Users::getIdentity()
 			->setUserGroups([Class_UserGroup::newInstanceWithId(12)
@@ -968,6 +962,7 @@ class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimed
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
 		$this->_prepareTimeAndDurationInSession();
+		$this->_prepareGroupInSession();
 		$this->_bean->device = 23;
 		Class_Multimedia_Device::getLoader()->newInstanceWithId(23)
 				->setLibelle('Poste 1')
@@ -1028,6 +1023,7 @@ class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControlle
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
 		$this->_prepareTimeAndDurationInSession();
+		$this->_prepareGroupInSession();
 		$this->_bean->device = 23;
 		Class_Multimedia_Device::getLoader()->newInstanceWithId(23)
 				->setLibelle('Poste 1')
