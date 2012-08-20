@@ -48,7 +48,8 @@ class Class_WebService_ReseauxSociaux {
 	//------------------------------------------------------------------------------------------------------
 	public function getUrl($id_reseau,$url_afi, $message = '')	{
 		// Short url
-		$url_afi="http://".$_SERVER["HTTP_HOST"].BASE_URL.$url_afi;
+		if (false === strpos($url_afi, 'http'))
+			$url_afi = "http://".$_SERVER["HTTP_HOST"].BASE_URL.$url_afi;
 
 		// Url réseau
 		return sprintf($this->reseaux[$id_reseau]["url"], 

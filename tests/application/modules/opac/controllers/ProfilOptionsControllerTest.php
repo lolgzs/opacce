@@ -80,7 +80,7 @@ class ProfilOptionsControllerTwitterLinkWithProfilAdulteTest extends ProfilOptio
 		$this->_mock_web_client
 			->whenCalled('open_url')
 			->with(sprintf('http://is.gd/api.php?longurl=%s', 
-										 urlencode('http://localhost' . BASE_URL . '/index/index/id_profil/2')))
+										 urlencode('http://localhost' . BASE_URL . '/index/index?id_profil=2')))
 			->answers('http://is.gd/PkdNgD')
 			->beStrict();
 	}
@@ -94,7 +94,7 @@ class ProfilOptionsControllerTwitterLinkWithProfilAdulteTest extends ProfilOptio
 
 	/** @test */
 	public function twitterLinkShouldReturnJavascriptForTweet() {
-		$this->dispatch('/opac/index/share/on/twitter/titre/Profil+Adulte');
+		$this->dispatch('/opac/index/share/on/twitter/titre/Profil+Adulte?url='.urlencode('http://localhost'.BASE_URL.'/index/index'));
 		$this->assertContains(sprintf("window.open('http://twitter.com/home?status=%s','_blank','location=yes, width=800, height=410')",
 																	urlencode('Profil Adulte http://is.gd/PkdNgD')),
 													$this->_response->getBody());
@@ -103,7 +103,7 @@ class ProfilOptionsControllerTwitterLinkWithProfilAdulteTest extends ProfilOptio
 
 	/** @test */
 	public function facebookLinkShouldReturnJavascriptForTweet() {
-		$this->dispatch('/opac/index/share/on/facebook/titre/Profil+Adulte');
+		$this->dispatch('/opac/index/share/on/facebook/titre/Profil+Adulte?url='.urlencode('/index/index'), true);
 		$this->assertContains(sprintf("window.open('http://www.facebook.com/share.php?u=%s','_blank','location=yes, width=800, height=410')",
 																	urlencode('Profil Adulte http://is.gd/PkdNgD')),
 													$this->_response->getBody());

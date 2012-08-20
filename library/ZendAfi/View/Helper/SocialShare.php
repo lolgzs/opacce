@@ -49,7 +49,7 @@ class ZendAfi_View_Helper_SocialShare extends Zend_View_Helper_HtmlElement {
 	public function addHeadScript() {
 		Class_ScriptLoader::getInstance()
 			->addInlineScript(sprintf("function socialShare(network) {"
-																."jQuery.getScript('%s/index/share/on/' + network + '/titre/' + $(\"title\").text());"
+																."jQuery.getScript('%s/index/share/on/' + network + '/titre/' + $(\"title\").text() + '?url=' + encodeURIComponent(window.location));"
 																."}",
 																BASE_URL));
 	}

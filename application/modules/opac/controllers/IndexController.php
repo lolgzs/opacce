@@ -50,15 +50,16 @@ class IndexController extends Zend_Controller_Action {
 
 
 	public function shareAction() {
-		$this->_helper->getHelper('viewRenderer')
-			->setNoRender();
+		$this->_helper->getHelper('viewRenderer')->setNoRender();
 
-		$profil = Class_Profil::getCurrentProfil();
+		$url = urldecode($this->_getParam('url'));
+		$url .= (false === strpos($url, '?')) ? '?' : '&amp;';
+		$url .= 'id_profil='. Class_Profil::getCurrentProfil()->getId();
 
 		$rs = new Class_WebService_ReseauxSociaux();
 		$body = sprintf("window.open('%s','_blank','location=yes, width=800, height=410')",
 										$rs->getUrl($this->_getParam('on'), 
-																$this->view->url(array('id_profil' => $profil->getId()), null, true),
+																$url,
 																urldecode($this->_getParam('titre'))));
 
 		$this->getResponse()->setHeader('Content-Type', 'application/javascript; charset=utf-8');
