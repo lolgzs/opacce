@@ -43,9 +43,13 @@ class ZendAfi_View_Helper_Timeline extends Zend_View_Helper_Abstract {
 
 
 	protected function _renderAction($action) {
-		$html = sprintf('<li%s>%s</li>',
-			$this->_getClassForAction($action),
-			$this->view->_($action['label']));
+		$class = $this->_getClassForAction($action);
+		$content = $this->view->_($action['label']);
+		if ($class == 'passed')
+			$content = '<a href="'.$action[self::URL].'">'.$content.'</a>';
+
+		$html = sprintf('<li class="%s">%s</li>', $class, $content);
+
  		if ($action[self::CURRENT])
 			$this->_after_current = true;
 
@@ -55,9 +59,9 @@ class ZendAfi_View_Helper_Timeline extends Zend_View_Helper_Abstract {
 
 	protected function _getClassForAction($action) {
 		if ($action[self::CURRENT])
-			return ' class="selected"';
+			return 'selected';
 		if (!$this->_after_current)
-			return ' class="passed"';
+			return 'passed';
 		return '';
 	}
 }
