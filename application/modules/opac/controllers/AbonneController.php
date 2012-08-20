@@ -19,8 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class AbonneController extends Zend_Controller_Action {
-	const SESSION_NAMESPACE = 'abonneController';
-
 	protected $_user = null;								// Le user connecté
 
 	public function init()	{
@@ -459,7 +457,7 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldLocationAction() {
-		$bean = $this->_getFreshDeviceHoldBean();
+		$bean = MultimediaReservationBean::newInSession();
 
 		if (null != $this->_getParam('location')) {
 			$bean->location = $this->_getParam('location');
@@ -601,7 +599,6 @@ class AbonneController extends Zend_Controller_Action {
 
 	public function multimediaHoldGroupAction() {
 		$bean = $this->_getDeviceHoldBean();
-		$namespace = $this->_getSessionNamespace();
 
 		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
 			$this->_redirect('/abonne/multimedia-hold-location');
@@ -631,7 +628,6 @@ class AbonneController extends Zend_Controller_Action {
 
 	public function multimediaHoldDeviceAction() {
 		$bean = $this->_getDeviceHoldBean();
-		$namespace = $this->_getSessionNamespace();
 
 		if (null == ($group = Class_Multimedia_DeviceGroup::getLoader()->find((int)$bean->group))) {
 			$this->_redirect('/abonne/multimedia-hold-group');
@@ -726,12 +722,6 @@ class AbonneController extends Zend_Controller_Action {
 	}
 		
 
-	/** @return Zend_Session_Namespace */
-	protected function _getSessionNamespace() {
-		return new Zend_Session_Namespace(self::SESSION_NAMESPACE);
-	}
-
-
 	/**
 	 * @param $current string
 	 * @return array
@@ -767,23 +757,39 @@ class AbonneController extends Zend_Controller_Action {
 
 	/** @return stdClass */
 	protected function _getDeviceHoldBean() {
-		if (null == ($bean = $this->_getSessionNamespace()->holdBean)) {
-			$bean = $this->_getFreshDeviceHoldBean();
-		}
+		return MultimediaReservationBean::current();
+	}
+}
+
+
+
+
+class MultimediaReservationBean extends StdClass {
+	public static function sessionNameSpace()  {
+		return new Zend_Session_Namespace('abonneController');
+	}
+
+	public static function newInSession() {
+		$session_ns = 
+		$bean = new self();
+		self::sessionNameSpace()->holdBean = $bean;
 		return $bean;
 	}
 
 
-	/** @return stdClass */
-	protected function _getFreshDeviceHoldBean() {
-		$bean = new stdClass();
-		$bean->location = 0;
-		$bean->day = '';
-		$bean->time = '';
-		$bean->duration = 0;
-		$bean->group = 0;
-		$bean->device = 0;
-		$this->_getSessionNamespace()->holdBean = $bean;
+	public static function current() {
+		if (null == ($bean = self::sessionNameSpace()->holdBean))
+			return self::newInSession();
 		return $bean;
+	}
+
+
+	public function __construct() {
+		$this->location = 0;
+		$this->day = '';
+		$this->time = '';
+		$this->duration = 0;
+		$this->group = 0;
+		$this->device = 0;
 	}
 }
