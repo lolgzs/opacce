@@ -602,14 +602,27 @@ class AbonneController extends Zend_Controller_Action {
 	public function multimediaHoldGroupAction() {
 		$bean = $this->_getDeviceHoldBean();
 		$namespace = $this->_getSessionNamespace();
-		$location = Class_Multimedia_Location::find((int)$bean->location);
+
+		if (null == ($location = Class_Multimedia_Location::getLoader()->find((int)$bean->location))) {
+			$this->_redirect('/abonne/multimedia-hold-location');
+			return;
+		}
+
+		if ('' == $bean->day) {
+			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
+		}
+
+		if ('' == $bean->time || 0 == $bean->duration) {
+			$this->_redirect('/abonne/multimedia-hold-hours');
+			return;
+		}
 
 		if ($this->_getParam('group')) {
 			$bean->group = $this->_getParam('group');
 			$this->_redirect('/abonne/multimedia-hold-device');
 			return;
 		}
-
 
 		$this->view->groups = $location->getGroups();
 		$this->view->timelineActions = $this->_getTimelineActions('group');

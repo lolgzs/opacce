@@ -850,6 +850,38 @@ class AbonneControllerMultimediaHoldGroupChoiceTest extends AbonneControllerMult
 
 
 
+/* Quatrième écran validation du choix du groupe de postes, redirection vers le choix du poste */
+class AbonneControllerMultimediaHoldGroupChoiceErrorTest extends AbonneControllerMultimediaHoldTestCase {
+	/** @test */
+	public function withoutHoursShouldRedirectToHoldHours() {
+		$this->_prepareLocationInSession();
+		$this->_prepareDayInSession();
+		$this->dispatch('/abonne/multimedia-hold-group/group/5', true);
+		$this->assertRedirectTo('/abonne/multimedia-hold-hours');
+	}
+
+
+	/** @test */
+	public function withoutDayShouldRedirectToHoldDay() {
+		$this->_prepareLocationInSession();
+		$this->_prepareTimeAndDurationInSession();
+		$this->dispatch('/abonne/multimedia-hold-group/group/5', true);
+		$this->assertRedirectTo('/abonne/multimedia-hold-day');
+	}
+
+
+	/** @test */
+	public function withoutLocationShouldRedirectToHoldLocation() {
+		$this->_prepareDayInSession();
+		$this->_prepareTimeAndDurationInSession();
+		$this->dispatch('/abonne/multimedia-hold-group/group/5', true);
+		$this->assertRedirectTo('/abonne/multimedia-hold-location');
+	}
+}
+
+
+
+
 /* Cinquième écran choix du poste */
 class AbonneControllerMultimediaHoldDeviceTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
@@ -908,6 +940,21 @@ class AbonneControllerMultimediaHoldDeviceChoiceTest extends AbonneControllerMul
 	/** @test */
 	public function beanShouldHaveDeviceSet() {
 		$this->assertEquals(1, $this->_session->holdBean->device);
+	}
+}
+
+
+
+
+class AbonneControllerMultimediaHoldDeviceChoiceErrorTest extends AbonneControllerMultimediaHoldTestCase {
+	/** @test */
+	public function withoutGroupShouldRedirectToHoldGroup() {
+		parent::setUp();
+		$this->_prepareLocationInSession();
+		$this->_prepareDayInSession();
+		$this->_prepareTimeAndDurationInSession();
+		$this->dispatch('/abonne/multimedia-hold-device/device/1', true);
+		$this->assertRedirectTo('/abonne/multimedia-hold-group');
 	}
 }
 
