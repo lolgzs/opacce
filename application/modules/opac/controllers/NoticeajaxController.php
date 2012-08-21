@@ -395,7 +395,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$html .= sprintf('<input type="hidden" id="BW_id_isbn" value="%s"\>', 
 										 $this->notice->getIsbn());
 		
-		$blocs = array('notes', 'critiques', 'critiques_pro', 'citations', 'videos');
+		$blocs = array('notes', 'critiques', 'critiques_pro', 'citations', 'videos', 'etiquettes', 'suggestions');
 		foreach($blocs as $bloc)
 			$html .= sprintf('<div id="BW_%s"></div>', $bloc);
 
