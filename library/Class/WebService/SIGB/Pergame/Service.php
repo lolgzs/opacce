@@ -31,6 +31,10 @@ class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_Abstra
 		return self::newInstance()->setIdBib($id_bib);
 	}
 
+	public function isPergame() {
+		return true;
+	}
+
 	public function setIdBib($id_bib) {
 		$this->_id_bib = $id_bib;
 		return $this;

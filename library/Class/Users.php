@@ -178,8 +178,10 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	protected $_belongs_to = array('bib' => array('model' => 'Class_Bib',
-																								 'referenced_in' => 'id_site'),
-																  'zone' => array('through' => 'bib'));
+																								'referenced_in' => 'id_site'),
+																 'int_bib' => array('model' => 'Class_IntBib',
+																										'referenced_in' => 'id_site'),
+																 'zone' => array('through' => 'bib'));
 
 	protected $_default_attribute_values = array('id_site' => 0,
 																							 'role_level' => 0,
@@ -824,6 +826,13 @@ class Class_Users extends Storm_Model_Abstract {
 
 		$this->_fiche_sigb = $ret;
 		return $ret;
+	}
+
+
+	public function getSIGBComm() {
+		if (null == $int_bib = $this->getIntBib())
+			return null;
+		return $int_bib->getSIGBComm();
 	}
 
 

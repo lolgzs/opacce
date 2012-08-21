@@ -29,7 +29,7 @@ class Class_CommSigb {
 	const COM_MICROBIB = 9;
 	const COM_BIBLIXNET = 10;
 
-	protected static $_instance;
+
 
 	private $COM_CLASSES = array(self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
 															 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
@@ -40,6 +40,8 @@ class Class_CommSigb {
 															 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
 															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
 															 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet');
+
+	protected static $_instance;
 
 	private $mode_comm;								// memo de modes de comm pour les bibs
 	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
@@ -197,37 +199,14 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function supprimerReservation($std_user, $id_reservation) {
-		$user = Class_Users::getLoader()->find($std_user->ID_USER);
-		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
+		$supprimer = function ($user, $sigb) use ($id_reservation) {
+			              if ($sigb->isPergame())
+											return (new Class_Systeme_PergameService($user))->supprimerReservation($id_reservation);
 
-		$mode_comm = $this->getModeComm($user->getIdSite());
-		$ret = array();
-		switch ($mode_comm["type"]) {
-			// Pergame
-			case self::COM_PERGAME:
-				$pergame = new Class_Systeme_PergameService($user);
-				$ret = $pergame->supprimerReservation($id_reservation);
-				break;
+										return $sigb->supprimerReservation($user, $id_reservation);			
+		};
 
-			// Autres
-		  case self::COM_OPSYS:
-		  case self::COM_VSMART:
-  		case self::COM_KOHA:
-	    case self::COM_CARTHAME:
-			case self::COM_NANOOK:
-			case self::COM_ORPHEE:
-			case self::COM_MICROBIB:
-		  case self::COM_BIBLIXNET:
-				$user = Class_Users::getLoader()->find($user->ID_USER);
-				$sigb = $this->getSIGBComm($mode_comm);
-				if ($sigb == false) {
-					$ret['erreur'] = $this->msg_erreur_comm;
-				} else {
-					$ret = $sigb->supprimerReservation($user, $id_reservation);
-				}
-				break;
-		}
-		return $ret;
+		return $this->withUserAndSIGBDo($std_user, $supprimer);
 	}
 
 
@@ -237,26 +216,28 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function prolongerPret($std_user, $id_pret) {
+		$prolonger = function($user, $sigb) use ($std_user, $id_pret) {
+			              if ($sigb->isPergame())
+											return (new Class_Systeme_PergameService($std_user))->prolongerPret($id_pret);
+	
+										return $sigb->prolongerPret($user, $id_pret);
+		};
+
+		return $this->withUserAndSIGBDo($std_user, $prolonger);
+	}
+
+
+	public function withUserAndSIGBDo($std_user, $closure) {
 		$user = Class_Users::getLoader()->find($std_user->ID_USER);
 		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
 
-		$mode_comm = $this->getModeComm($user->getIdSite());
-		if (!$mode_comm['type'])
-			return array();
-
-		if (false == $sigb = $this->getSIGBComm($mode_comm))
-			return array('erreur' => $this->msg_erreur_comm);
+		if (null == $sigb = $user->getSIGBComm())
+			return [];
 		
-		switch ($mode_comm["type"])
-			{
-				// Pergame
-				case self::COM_PERGAME:
-					$pergame = new Class_Systeme_PergameService($std_user);
-					$ret = $pergame->prolongerPret($id_pret);
-					return $ret;
-				default:
-					return $sigb->prolongerPret($user, $id_pret);
-			}
+		if (!$sigb->isConnected())
+			return array('erreur' => $this->msg_erreur_comm);
+
+		return $closure($user, $sigb);
 	}
 
 
@@ -279,16 +260,8 @@ class Class_CommSigb {
 	 * @return Class_WebService_SIGB_AbstractService
 	 */
 	private function getSIGBComm($mode_comm) {
-		if (!array_key_exists($mode_comm['type'], $this->COM_CLASSES))
-			return null;
-
-		$service_class = $this->COM_CLASSES[$mode_comm['type']];
-		$sigb_com = call_user_func(array($service_class, 'getService'),
-															 $mode_comm);
-
-		if(!$sigb_com->isConnected())
-			return false;
-
-		return $sigb_com;
+		if ($bib = Class_IntBib::find($mode_comm['id_bib']))
+			return $bib->getSIGBComm();
+		return false;
 	}
 }

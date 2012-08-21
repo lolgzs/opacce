@@ -87,6 +87,10 @@ abstract class Class_WebService_SIGB_AbstractService {
 		return array('statut' => false,
 								  'erreur' => $message);
 	}
+
+	public function isPergame() {
+		return false;
+	}
 }
 
 ?>
