@@ -593,13 +593,16 @@ class CommSigbWithNotAbonneTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function getDispoExemplairesShouldReturnNonReservable() {
-		$this->assertEquals(array(array('id' => 2,
-																		'id_bib' => 0,
-																		'dispo' => 'non connue',
-																		'reservable' => false)),
-												$this->comm_sigb->getDispoExemplaires(
-																															array(array('id' => 2,
-																																					'id_bib' => 0))));
+		$this->assertEquals([['id' => 2,
+													'id_bib' => 0,
+													'id_origine' => 0,
+													'code_barres' => 0,
+													'dispo' => 'non connue',
+													'reservable' => false]],
+												$this->comm_sigb->getDispoExemplaires([['id' => 2,
+																																'id_origine' => 0,
+																																'code_barres' => 0,
+																																'id_bib' => 0]]));
 	}
 }
 

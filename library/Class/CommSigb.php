@@ -92,33 +92,45 @@ class Class_CommSigb {
 		$exemplaires = array();
 
 		foreach ($exemplaires_to_check as $exemplaire)	{
-			$exemplaire["dispo"] = "non connue";
-			$exemplaire["reservable"]=false;
-
-			$mode_comm=$this->getModeComm($exemplaire['id_bib']);
-			if ($sigb = $this->getSIGBComm($mode_comm)) {
-				$sigb_exemplaire = $sigb->getExemplaire($exemplaire["id_origine"],
-																								$exemplaire["code_barres"]);
-
-				if ($sigb_exemplaire->isPilonne() || !$sigb_exemplaire->isVisibleOPAC()) continue;
-
-				if ($sigb_exemplaire->isValid()) {
-					$exemplaire["dispo"]=$sigb_exemplaire->getDisponibilite();
-					$exemplaire["date_retour"]=$sigb_exemplaire->getDateRetour();
-					$exemplaire["reservable"]=$sigb_exemplaire->isReservable();
-					$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
-					//Cas Nanook pour la localisation de l'exemplaire en temps reel
-					if ($code_annexe = $sigb_exemplaire->getCodeAnnexe()) {
-						if (is_numeric($code_annexe))
-							$exemplaire["id_bib"] = $code_annexe;
-						$exemplaire["annexe"] = $code_annexe;
-					}
-				}
-			}
-			
-			$exemplaires []= $exemplaire;
+			if ($dispo = $this->getDispoExemplaire($exemplaire["id_bib"], 
+																						 $exemplaire["id_origine"], 
+																						 $exemplaire["code_barres"]))
+				$exemplaires []= array_merge($exemplaire, $dispo);
 		}
 		return $exemplaires;
+	}
+
+
+	public function getDispoExemplaire($id_bib, $id_origine, $code_barre) {
+		$exemplaire = ["dispo" => "non connue",
+									 "reservable" => false];
+
+		$int_bib = Class_IntBib::find($id_bib);
+		if (! ($int_bib && ($sigb = $int_bib->getSIGBComm())))
+			return $exemplaire;
+
+		$sigb_exemplaire = $sigb->getExemplaire($id_origine, $code_barre);
+
+		if ($sigb_exemplaire->isPilonne() || !$sigb_exemplaire->isVisibleOPAC()) 
+			return null;
+
+		if (!$sigb_exemplaire->isValid())
+			return $exemplaire;
+
+		$exemplaire["dispo"]=$sigb_exemplaire->getDisponibilite();
+		$exemplaire["date_retour"]=$sigb_exemplaire->getDateRetour();
+		$exemplaire["reservable"]=$sigb_exemplaire->isReservable();
+		$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
+
+		if (!$code_annexe = $sigb_exemplaire->getCodeAnnexe())
+			return $exemplaire;
+
+		//pour la localisation de l'exemplaire en temps reel
+		$exemplaire["annexe"] = $code_annexe;
+		if (is_numeric($code_annexe))
+			$exemplaire["id_bib"] = $code_annexe;
+
+		return $exemplaire;
 	}
 
 
