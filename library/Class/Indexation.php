@@ -35,7 +35,7 @@ class Class_Indexation
 	{
 		// Lire formes rejetées
 		$this->articles=array("L'","LE ","LA ","LES ","UN ","UNE ");
-		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO","DO","RE","MI","FA","SI","AC","DC","H","K","M","Z","L","YU","UT","LI","OC","PI","ZU","WU","TO","OZ","ZZ");
+		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO","DO","RE","MI","FA","SI","AC","DC","B","C","D","E","F","G","H","I","J","K","M","N","P","Q","R","S","T","V","W","X","Y","Z","L","YU","UT","LI","OC","PI","ZU","WU","TO","OZ","ZZ");
 		$this->exclu = array("LES","DES","MES","TES","ENTRE","CHEZ","SES","LEUR","MON","ENTRE","POUR","ELLE","ILS","COMME","DANS","EUX","CEUX","MAIS","MEME","SANS",
 		"TOME","VERS","VOUS","CECI","CES","ETC","PARCE","QUE","QUEL","QUELLE","QUELS","QUELLES","PAS","QUI","QUOI","VOS","AFIN","CECI","CELA","LUI","PAR","PUIS","SOI");
 		
@@ -175,7 +175,7 @@ class Class_Indexation
 			if( strLen($mot[$i]) < 3 And intVal($mot[$i])==false)
 			{
 				if( in_array( $mot[$i], $this->inclu) == false) continue;
-				if(strlen($mot[$i])==1) $mot[$i].=$mot[$i]; // mots d'1 lettre : on double la lettre
+				if(strlen($mot[$i])==1) $mot[$i].="00"; // mots d'1 lettre : on rajoute 00
 			}
 			// Retirer mots vides
 			if( in_array($mot[$i], $this->exclu ) == true ) continue;
