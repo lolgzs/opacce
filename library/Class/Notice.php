@@ -786,6 +786,7 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 	public function getAuteurs($auteurPrincipal=false, $getFonction=false)
 	{
+		$indexation=new Class_Indexation();
 		$auteur = array();
 		$zones = array("700", "710", "720", "730", "701", "702", "711", "712", "721", "722");
 		foreach ($zones as $zone)
@@ -807,7 +808,7 @@ class Class_Notice extends Storm_Model_Abstract {
 				}
 				$nm = $nom . "|" . $prenom;
 				if ($getFonction == true) $nm.="|" . $fonction . "|" . $fonction_pergame;
-				if (strlen($nm) > 2 and striPos($nm, "ANONYME") === false) // On elimine les auteurs avec 1 seule lettre et les anonymes
+				if((strlen($nm) > 2 or $indexation->isMotInclu($nom))and striPos($nm,"ANONYME") === false) // On elimine les auteurs avec 1 seule lettre
 				{
 					$auteur[] = $nm;
 					if ($auteurPrincipal == true) return array(trim($prenom . " " . $nom));
