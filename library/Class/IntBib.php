@@ -27,10 +27,9 @@ class Class_IntBib extends Storm_Model_Abstract {
 	protected $_table_name = 'int_bib';
 	protected $_table_primary = 'id_bib';
 
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
+	protected $_belongs_to = ['bib' => ['model' => 'Class_IntBib',
+																			'role' => 'int_bib',
+																			'referenced_in' => 'id_bib']];
 
 
 	public function setCommParams($string_or_array) {
@@ -45,6 +44,14 @@ class Class_IntBib extends Storm_Model_Abstract {
 	public function getCommParamsAsArray() {
 		return ZendAfi_Filters_Serialize::unserialize($this->getCommParams());
 	}
+
+
+	public function getModeComm() {
+		return array_merge($this->getCommParamsAsArray(),
+											 ['id_bib' => $this->getId(),
+												'type' => $this->getCommSigb()]);
+	}
+
 }
 
 ?>

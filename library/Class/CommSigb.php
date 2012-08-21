@@ -265,19 +265,11 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function getModeComm($id_bib){
-		if (isset($this->mode_comm[$id_bib]))
-			return $this->mode_comm[$id_bib];
+		$ret = ['type' => 0, 'id_bib' => 0];
+		if ($bib = Class_IntBib::find($id_bib))
+			$ret = $bib->getModeComm();
 
-		$int_bib = Class_IntBib::getLoader()->find($id_bib);
-		if ($int_bib) {
-			$ret = $int_bib->getCommParamsAsArray();
-			$ret['type'] = $int_bib->getCommSigb();
-		}	else
-			$ret = array("type" => 0);
-
-		$ret['id_bib'] = $id_bib;
 		$this->mode_comm[$id_bib] = $ret;
-
 		return $ret;
 	}
 

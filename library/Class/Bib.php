@@ -95,7 +95,11 @@ class Class_Bib extends Storm_Model_Abstract {
 
 	protected $_belongs_to = ['zone' => ['model' => 'Class_Zone',
 																			 'role' => 'bib',
-																			 'referenced_in' => 'id_zone']];
+																			 'referenced_in' => 'id_zone'],
+
+														'int_bib' => ['model' => 'Class_IntBib',
+																					'role' => 'bib',
+																					'referenced_in' => 'id_site']];
 
 	protected $_default_attribute_values = ['visibilite' => 0,
 																					'libelle' => '',
@@ -110,11 +114,6 @@ class Class_Bib extends Storm_Model_Abstract {
 		$this->statut_bib = array($this->_translate->_('Invisible'),
 															$this->_translate->_('N\'envoie pas de données'),
 															$this->_translate->_('Envoie des données'));
-	}
-
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
 	}
 
 
