@@ -64,7 +64,10 @@ class Class_IntBib extends Storm_Model_Abstract {
 
 
 	public function getCommParamsAsArray() {
-		return ZendAfi_Filters_Serialize::unserialize($this->getCommParams());
+		$a = ZendAfi_Filters_Serialize::unserialize($this->getCommParams());
+		if (!is_array($a))
+			return [];
+		return $a;
 	}
 
 

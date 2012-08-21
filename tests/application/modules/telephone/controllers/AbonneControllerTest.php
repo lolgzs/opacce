@@ -170,7 +170,10 @@ class AbonneControllerTelephoneConfirmedCancelHoldTest extends AbonneControllerT
 			->answers(true)
 
 			->whenCalled('isConnected')
-			->answers(true);
+			->answers(true)
+
+			->whenCalled('isPergame')
+			->answers(false);
 
 		Class_WebService_SIGB_VSmart::setService($this->_service);
 
@@ -201,7 +204,10 @@ class AbonneControllerTelephoneRenewSuccessTest extends AbonneControllerTelephon
 			->answers(true)
 
 			->whenCalled('isConnected')
-			->answers(true);
+			->answers(true)
+
+			->whenCalled('isPergame')
+			->answers(false);
 
 		Class_WebService_SIGB_VSmart::setService($this->_service);
 
