@@ -123,73 +123,53 @@ class Class_CommSigb {
 
 
 	/**
+	 * @param Class_Users $user
+	 * @return array
+	 */
+	public function ficheAbonne($std_user) {
+		$user = Class_Users::getLoader()->find($std_user->ID_USER);
+		$cache = Class_WebService_SIGB_EmprunteurCache::newInstance();
+		if ($cache->isCached($user))
+			return ['fiche' => $cache->load($user)];
+
+		$ficheAbonneClosure = function ($user, $sigb) use ($cache) {
+			try {
+				return ['fiche' =>  $cache->loadFromCacheOrSIGB($user, $sigb)];
+			} catch (Exception $e) {
+				return ['erreur' =>  $e->getMessage()];
+			}
+		};
+
+
+    return $this->withUserAndSIGBDo($std_user, $ficheAbonneClosure);
+	}
+
+
+	/**
 	 * @param int $id_bib
 	 * @param int $id_origine
 	 * @param string $code_annexe
 	 * @return array
 	 */
 	public function reserverExemplaire($id_bib, $exemplaire_id, $code_annexe) {
-		$mode_comm = $this->getModeComm($id_bib);
-		if (!$user = Class_Users::getLoader()->getIdentity())
-			return array('erreur' => $this->_translate->_('Vous devez vous connecter pour réserver un document.'));
-		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
+		if (!$user = Class_Users::getIdentity())
+			return ['statut' => 2,
+							'erreur' => $this->_translate->_('Vous devez vous connecter pour réserver un document.')];
+		
+		if (!$user->getIdabon())
+			return ['statut' => 2,
+							"erreur" => $this->_translate->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.')];
 
-		$exemplaire = Class_Exemplaire::getLoader()->find($exemplaire_id);
-		$ret = array('statut' => 2,
-								 'erreur' => '');
+		$exemplaire = Class_Exemplaire::find($exemplaire_id);
 
-		switch ($mode_comm['type']) {
-			// Pergame
-			case self::COM_PERGAME:
-				$pergame = new Class_Systeme_PergameService($user);
-				$ret = $pergame->ReserverExemplaire($id_bib, $exemplaire->getIdOrigine(), $code_annexe);
-				break;
+		$reserver = function ($user, $sigb) use ($exemplaire, $code_annexe) {
+			if ($sigb->isPergame())
+				return (new Class_Systeme_PergameService($user))->reserverExemplaire($id_bib, $exemplaire->getIdOrigine(), $code_annexe);
+			
+			return $sigb->reserverExemplaire($user, $exemplaire, $code_annexe);
+		};
 
-			// Autres
-		  case self::COM_OPSYS:
-		  case self::COM_VSMART:
-  		case self::COM_KOHA:
-		  case self::COM_CARTHAME:
-			case self::COM_NANOOK:
-			case self::COM_ORPHEE:
-			case self::COM_MICROBIB:
-		  case self::COM_BIBLIXNET:
-				if (false == $sigb = $this->getSIGBComm($mode_comm))
-					return array("erreur" => $this->msg_erreur_comm);
-				
-				if (!$user->IDABON)
-					return array("erreur" => $this->_translate->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.'));
-					
-				$ret = $sigb->reserverExemplaire($user, $exemplaire, $code_annexe);
-				break;
-		}
-
-		return $ret;
-	}
-
-
-	/**
-	 * @param Class_Users $user
-	 * @return array
-	 */
-	public function ficheAbonne($user) {
-		$mode_comm = $this->getModeComm($user->ID_SITE);
-		if (!$mode_comm['type'])
-			return array();
-
-		$user = Class_Users::getLoader()->find($user->ID_USER);
-		$cache = Class_WebService_SIGB_EmprunteurCache::newInstance();
-		if ($cache->isCached($user))
-			return array('fiche' => $cache->load($user));
-
-		if (false == $sigb = $this->getSIGBComm($mode_comm))
-			return array('erreur' => $this->msg_erreur_comm);
-
-		try {
-			return array('fiche' =>  $cache->loadFromCacheOrSIGB($user, $sigb));
-		} catch (Exception $e) {
-			return array('erreur' =>  $e->getMessage());
-		}
+		return $this->withUserAndSIGBDo($user, $reserver);
 	}
 
 
@@ -228,11 +208,11 @@ class Class_CommSigb {
 
 
 	public function withUserAndSIGBDo($std_user, $closure) {
-		$user = Class_Users::getLoader()->find($std_user->ID_USER);
+		$user = is_a($std_user, 'Class_Users') ? $std_user : Class_Users::find($std_user->ID_USER);
 		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
 
 		if (null == $sigb = $user->getSIGBComm())
-			return [];
+			return ['erreur' => $this->_translate->_('Communication SIGB indisponible')];
 		
 		if (!$sigb->isConnected())
 			return array('erreur' => $this->msg_erreur_comm);

@@ -539,15 +539,20 @@ class CommSigbBiblixNetTest extends CommSigbTestCase {
 
 
 
-class CommSigbWithNotAbonneTest extends PHPUnit_Framework_TestCase {
+class CommSigbWithNotAbonneTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
+		parent::setUp();
+
 		$this->user = new stdClass();
 		$this->user->ID_SITE = 0;
 		$this->user->ID_USER = 66;
+		$this->user->IDABON = 6;
+		Zend_Auth::getInstance()->getStorage()->write($this->user);
 		$this->comm_sigb = new Class_CommSigb();
 		Class_Users::getLoader()
 			->newInstanceWithId(66)
-			->setIdSite(0);
+			->setIdSite(0)
+			->setIdabon(3);
 	}
 
 
@@ -560,25 +565,29 @@ class CommSigbWithNotAbonneTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
-	public function prolongerPretShouldReturnEmptyArray() {
-		$this->assertEquals(array(), $this->comm_sigb->prolongerPret($this->user, 0));
+	public function prolongerPretShouldReturnError() {
+		$this->assertEquals(['erreur' => 'Communication SIGB indisponible'], 
+												$this->comm_sigb->prolongerPret($this->user, 0));
 	}
 
 
 	/** @test */
-	public function supprimerReservationShouldReturnEmptyArray() {
-		$this->assertEquals(array(), $this->comm_sigb->supprimerReservation($this->user, 0));
+	public function supprimerReservationShouldReturnError() {
+		$this->assertEquals(['erreur' => 'Communication SIGB indisponible'], 
+												$this->comm_sigb->supprimerReservation($this->user, 0));
 	}
 
 	/** @test */
-	public function ficheAbonneShouldReturnEmptyArray() {
-		$this->assertEquals(array(), $this->comm_sigb->ficheAbonne($this->user));
+	public function ficheAbonneShouldReturnError() {
+		$this->assertEquals(['erreur' => 'Communication SIGB indisponible'], 
+												$this->comm_sigb->ficheAbonne($this->user));
 	}
 
 
 	/** @test */
 	public function reserverExemplaireShouldReturnError() {
-		$this->assertEquals(array('statut' => 2, 'erreur' => ''), $this->comm_sigb->reserverExemplaire(0, 0, 0));
+		$this->assertEquals(['erreur' => 'Communication SIGB indisponible'], 
+												$this->comm_sigb->reserverExemplaire(0, 0, 0));
 	}
 
 
