@@ -60,14 +60,6 @@ class Class_CommSigb {
 	}
 
 
-	public function exemplaireFor($exemplaire) {
-		$mode_comm = $this->getModeComm($exemplaire->getBib()->getId());
-		if ($sigb = $this->getSIGBComm($mode_comm))
-			return $sigb->getExemplaire($exemplaire->getIdOrigine(),
-																	$exemplaire->getCodeBarres());
-	}
-
-
 	public function  __construct() {
 		$this->_translate = Zend_Registry::get('translate');
 		$this->msg_erreur_comm = $this->_translate->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.");

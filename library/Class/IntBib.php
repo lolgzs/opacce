@@ -87,6 +87,11 @@ class Class_IntBib extends Storm_Model_Abstract {
 													$this->getModeComm());
 
 	}
+
+
+	public function getSigbExemplaire($id_origine, $code_barres) {
+		return $this->getSIGBComm()->getExemplaire($id_origine, $code_barres);
+	}
 }
 
 ?>

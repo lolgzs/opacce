@@ -314,18 +314,26 @@ class Telephone_RechercheControllerHarryPotterGrandeImageTest extends Telephone_
 class Telephone_RechercheControllerHarryPotterExemplaireReservableTest extends Telephone_RechercheControllerHarryPotterTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_Notice::getLoader()->find(4)
-			->setExemplaires(array(Class_Exemplaire::getLoader()
+		Class_Notice::find(4)
+			->setExemplaires([Class_Exemplaire::getLoader()
 														 ->newInstanceWithId(33)
 														 ->setCote('JRROW')
 														 ->setBib(Class_Bib::getLoader()
 																			->newInstanceWithId(1)
 																			->setLibelle('Bibliotheque du florilege')
 																			->setInterdireResa(0))
-														 ->setSigbExemplaire(Class_WebService_SIGB_Exemplaire::newInstance()
-																								 ->setDisponibiliteIndisponible()
-																								 ->setCodeAnnexe('MOUL')
-																								 ->beReservable())));
+												]);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
+			->whenCalled('find')
+			->with(1)
+			->answers(Storm_Test_ObjectWrapper::mock()
+								->whenCalled('getSigbExemplaire')
+								->answers(Class_WebService_SIGB_Exemplaire::newInstance()
+													->setDisponibiliteIndisponible()
+													->setCodeAnnexe('MOUL')
+													->beReservable()));
+
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('PACK_MOBILE')
 			->setValeur(1);

@@ -533,5 +533,10 @@ class Class_Bib extends Storm_Model_Abstract {
 			'"categories": ['.implode(",", $json_categories).'],'.
 			'"items": []}';
 	}
+
+
+	public function getSigbExemplaire($id_origine, $code_barres) {
+		return Class_IntBib::find($this->getId())->getSigbExemplaire($id_origine, $code_barres);
+	}
 }
 ?>
