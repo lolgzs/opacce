@@ -52,12 +52,12 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 
 		$this->_user = Class_Users::getLoader()->getIdentity()
 			->setIdabon(23)
-			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART,
+			->setFicheSIGB(array('type_comm' => Class_IntBib::COM_VSMART,
 													 'fiche' => $emprunteur));
 
 		Class_IntBib::getLoader()->newInstanceWithId($this->_user->getIdSite())
 			->setCommParams(array())
-			->setCommSigb(Class_CommSigb::COM_VSMART);
+			->setCommSigb(Class_IntBib::COM_VSMART);
 	}
 }
 

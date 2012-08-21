@@ -316,7 +316,7 @@ class IndexControllerTelephoneWithModulesAndUserLoggedTest extends AbstractIndex
 			->setNom('Bros')
 			->setPrenom('Mario')
 			->setIdabon(23)
-			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_NANOOK,
+			->setFicheSIGB(array('type_comm' => Class_IntBib::COM_NANOOK,
 													 'fiche' => $emprunteur));
 		
 		parent::setUp();

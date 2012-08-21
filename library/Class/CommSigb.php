@@ -19,31 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_CommSigb {
-	const COM_PERGAME = 1;
-	const COM_OPSYS = 2;
-	const COM_VSMART = 4;
-	const COM_KOHA = 5;
-	const COM_CARTHAME = 6;
-	const COM_NANOOK = 7;
-	const COM_ORPHEE = 8;
-	const COM_MICROBIB = 9;
-	const COM_BIBLIXNET = 10;
-
-
-
-	private $COM_CLASSES = array(self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
-															 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
-															 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
-															 self::COM_KOHA => 'Class_WebService_SIGB_Koha',
-															 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
-															 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
-															 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
-															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
-															 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet');
-
 	protected static $_instance;
 
-	private $mode_comm;								// memo de modes de comm pour les bibs
 	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
 	private $_translate;
 
@@ -63,16 +40,6 @@ class Class_CommSigb {
 	public function  __construct() {
 		$this->_translate = Zend_Registry::get('translate');
 		$this->msg_erreur_comm = $this->_translate->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.");
-	}
-
-
-	/**
-	 * @param int $id_bib
-	 * @return int
-	 */
-	public function getTypeComm($id_bib) {
-		$comm = $this->getModeComm($id_bib);
-		return $comm['type'];
 	}
 
 
@@ -222,30 +189,5 @@ class Class_CommSigb {
 			return array('erreur' => $this->msg_erreur_comm);
 
 		return $closure($user, $sigb);
-	}
-
-
-	/**
-	 * @param int $id_bib
-	 * @return array
-	 */
-	public function getModeComm($id_bib){
-		$ret = ['type' => 0, 'id_bib' => 0];
-		if ($bib = Class_IntBib::find($id_bib))
-			$ret = $bib->getModeComm();
-
-		$this->mode_comm[$id_bib] = $ret;
-		return $ret;
-	}
-
-
-	/**
-	 * @param array $mode_comm
-	 * @return Class_WebService_SIGB_AbstractService
-	 */
-	private function getSIGBComm($mode_comm) {
-		if ($bib = Class_IntBib::find($mode_comm['id_bib']))
-			return $bib->getSIGBComm();
-		return false;
 	}
 }

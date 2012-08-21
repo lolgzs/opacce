@@ -353,7 +353,7 @@ class AbonneControllerNewsletterOpsysCommunicationTest extends AbonneControllerW
 		$this->emprunteur = new Class_WebService_SIGB_Emprunteur('00123', 'Marcus');
 		$this->emprunteur->setService($this->opsys_service);
 
-		$this->marcus->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_OPSYS,
+		$this->marcus->setFicheSIGB(array('type_comm' => Class_IntBib::COM_OPSYS,
 																			'fiche' => $this->emprunteur,
 																			'nom_aff' => 'Marcus'));
 

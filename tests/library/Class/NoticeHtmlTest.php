@@ -160,7 +160,7 @@ abstract class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase ex
 
 		Class_IntBib::getLoader()
 			->newInstanceWithId(1)
-			->setCommSigb(Class_CommSigb::COM_MICROBIB)
+			->setCommSigb(Class_IntBib::COM_MICROBIB)
 			->setCommParams('');
 
 

@@ -297,18 +297,11 @@ class CommSigbAstrolabeOpsysTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_OPSYS() {
-		$this->assertEquals(Class_CommSigb::COM_OPSYS,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://astrolabe.com/opsys.wsdl',
-															"type" => 2,
+															"type" => Class_IntBib::COM_OPSYS,
 															"id_bib" => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_astro->getModeComm(5));
 	}
 }
 
@@ -319,7 +312,7 @@ class CommSigbMoulinsVSmartTest extends CommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_astro = Class_IntBib::getLoader()
+		$this->bib_moulins = Class_IntBib::getLoader()
 			->newInstanceWithId(5)
 			->setCommParams(array("url_serveur" => 'http://vpn.agglo-moulins.fr/production/'))
 			->setCommSigb(4);
@@ -329,18 +322,11 @@ class CommSigbMoulinsVSmartTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_VSMART() {
-		$this->assertEquals(Class_CommSigb::COM_VSMART,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://vpn.agglo-moulins.fr/production/',
-															"type" => 4,
+															"type" => Class_IntBib::COM_VSMART,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_moulins->getModeComm(5));
 	}
 }
 
@@ -362,18 +348,11 @@ class CommSigbMeuseKohaTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_KOHA() {
-		$this->assertEquals(Class_CommSigb::COM_KOHA,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://cat-aficg55.biblibre.com/cgi-bin/koha/ilsdi.pl',
-															"type" => 5,
+															"type" => Class_IntBib::COM_KOHA,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_koha->getModeComm(5));
 	}
 }
 
@@ -383,10 +362,10 @@ class CommSigbLocalNanookTest extends CommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_koha = Class_IntBib::getLoader()
+		$this->bib_pontault = Class_IntBib::getLoader()
 			->newInstanceWithId(5)
 			->setCommParams(array("url_serveur" => 'http://192.168.2.3:9080/afi_Nanook-0.7.5/ilsdi/'))
-			->setCommSigb(Class_CommSigb::COM_NANOOK);
+			->setCommSigb(7);
 
 
 		Class_WebService_SIGB_Nanook::setService($this->createMockForService('Nanook'));
@@ -394,18 +373,11 @@ class CommSigbLocalNanookTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_NANOOK() {
-		$this->assertEquals(Class_CommSigb::COM_NANOOK,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://192.168.2.3:9080/afi_Nanook-0.7.5/ilsdi/',
-															"type" => Class_CommSigb::COM_NANOOK,
+															"type" => Class_IntBib::COM_NANOOK,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_pontault->getModeComm(5));
 	}
 }
 
@@ -426,18 +398,11 @@ class CommSigbCarthameTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_CARTHAME() {
-		$this->assertEquals(Class_CommSigb::COM_CARTHAME,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://ifr.ro/webservices/index.php',
-															"type" => 6,
+															"type" => Class_IntBib::COM_CARTHAME,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_ifr->getModeComm(5));
 	}
 }
 
@@ -447,7 +412,7 @@ class CommSigbOrpheeTest extends CommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_ifr = Class_IntBib::getLoader()
+		$this->bib_stomer = Class_IntBib::getLoader()
 			->newInstanceWithId(5)
 			->setCommParams(array("url_serveur" => 'http://213.144.218.252:8080/wsOrphee/service.asmx?WSDL'))
 			->setCommSigb(8);
@@ -457,18 +422,11 @@ class CommSigbOrpheeTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_ORPHEE() {
-		$this->assertEquals(Class_CommSigb::COM_ORPHEE,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://213.144.218.252:8080/wsOrphee/service.asmx?WSDL',
-															"type" => 8,
+															"type" => Class_IntBib::COM_ORPHEE,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_stomer->getModeComm(5));
 	}
 }
 
@@ -478,7 +436,7 @@ class CommSigbMicrobibTest extends CommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_ifr = Class_IntBib::getLoader()
+		$this->bib_maze = Class_IntBib::getLoader()
 			->newInstanceWithId(5)
 			->setCommParams(array("url_serveur" => 'http://80.11.188.93/webservices/ws_maze.wsdl'))
 			->setCommSigb(9);
@@ -488,18 +446,11 @@ class CommSigbMicrobibTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_MICROBIB() {
-		$this->assertEquals(Class_CommSigb::COM_MICROBIB,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://80.11.188.93/webservices/ws_maze.wsdl',
-															"type" => 9,
+															"type" => Class_IntBib::COM_MICROBIB,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_maze->getModeComm(5));
 	}
 }
 
@@ -511,7 +462,7 @@ class CommSigbBiblixNetTest extends CommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->bib_ifr = Class_IntBib::getLoader()
+		$this->bib_wormhout = Class_IntBib::getLoader()
 			->newInstanceWithId(5)
 			->setCommParams(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi'))
 			->setCommSigb(10);
@@ -521,18 +472,11 @@ class CommSigbBiblixNetTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getTypeCommShouldReturnCOM_BIBLIXNET() {
-		$this->assertEquals(Class_CommSigb::COM_BIBLIXNET,
-												$this->comm_sigb->getTypeComm(5));
-	}
-
-
-	/** @test */
 	public function getModeCommShouldReturnAnArrrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi',
-															"type" => 10,
+															"type" => Class_IntBib::COM_BIBLIXNET,
 															'id_bib' => 5),
-												$this->comm_sigb->getModeComm(5));
+												$this->bib_wormhout->getModeComm(5));
 	}
 }
 
@@ -553,15 +497,6 @@ class CommSigbWithNotAbonneTest extends Storm_Test_ModelTestCase {
 			->newInstanceWithId(66)
 			->setIdSite(0)
 			->setIdabon(3);
-	}
-
-
-	/** @test */
-	public function shouldReturnEmptyModeComm() {
-		$mode_comm = $this->comm_sigb->getModeComm(0);
-		$this->assertEquals(array('type' => 0,
-															'id_bib' => 0), 
-												$mode_comm);
 	}
 
 	/** @test */

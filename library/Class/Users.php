@@ -807,22 +807,15 @@ class Class_Users extends Storm_Model_Abstract {
 		if (isset($this->_fiche_sigb))
 			return $this->_fiche_sigb;
 
-		$cls_comm = new Class_CommSigb();
-		$type_comm = $cls_comm->getTypeComm($user->ID_SITE);
-
-		if ($type_comm) {
-			if ($user->IDABON) {
-				$ret=$cls_comm->ficheAbonne($user);
-			} else {
-				$ret["message"] = $this->_translate->_("Vous devez vous connecter en tant qu'abonné de la bibliothèque pour obtenir plus d'informations.");
-			}
-		}
+		if (!$user->getIdabon())
+			$ret = ["message" => $this->_translate->_("Vous devez vous connecter en tant qu'abonné de la bibliothèque pour obtenir plus d'informations.")];
+		else
+			$ret = (new Class_CommSigb())->ficheAbonne($user);
 
 		if (!isset($ret['fiche']))
 			$ret['fiche'] = Class_WebService_SIGB_Emprunteur::nullInstance();
 
 		$ret["nom_aff"] = $this->getNomAff($user->ID_USER, true);
-		$ret["type_comm"] = $type_comm;
 
 		$this->_fiche_sigb = $ret;
 		return $ret;
@@ -861,7 +854,7 @@ class Class_Users extends Storm_Model_Abstract {
 		if (!isset($this->_fiche_sigb)) return;
 
 		$fiche = $this->_fiche_sigb;
-		if ($fiche['type_comm'] != Class_CommSigb::COM_OPSYS)
+		if ($fiche['type_comm'] != Class_IntBib::COM_OPSYS)
 			return;
 
 		$emprunteur = $fiche['fiche'];

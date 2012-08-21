@@ -898,13 +898,11 @@ class NoticeReservationRenderer {
 	const HOLD_IMG = 'resa.gif';
 
 	protected $_bib;
-	protected $_commClass;
 	protected $_holdLabel;
 	
 	public static function newWith($bib, $commClass, $holdLabel) {
 		$instance = new NoticeReservationRenderer();
 		$instance->_bib = $bib;
-		$instance->_commClass = $commClass;
 		$instance->_holdLabel = $holdLabel;
 		return $instance;
 	}
@@ -921,8 +919,7 @@ class NoticeReservationRenderer {
 		if (1 == $this->_bib['INTERDIRE_RESA'])
 			return $html .= '&nbsp;</td>';
 
-		$type_comm = (null != $this->_commClass) ? $this->_commClass->getTypeComm($ex['id_bib']) : '';
-		
+		$type_comm = ($int_bib = Class_IntBib::find($ex['id_bib'])) ? $int_bib->getCommSigb() : 0;
 		if (!$type_comm)
 			return $this->_renderStandardOn($ex, $html);
 

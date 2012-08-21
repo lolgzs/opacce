@@ -67,7 +67,7 @@ abstract class AbonneVSmartTestCase extends AbstractControllerTestCase {
 			->setPseudo('manoune')
 			->setDateDebut(null)
 			->setPassword('gaga')
-			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART, 
+			->setFicheSIGB(array('type_comm' => Class_IntBib::COM_VSMART, 
 													 'nom_aff' => 'Marcus',
 													 'fiche' => $emprunteur))
 			->setRole('abonne_sigb')

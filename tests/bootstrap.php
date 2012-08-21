@@ -54,8 +54,11 @@ setupOpac();
 Zend_Registry::get('cache')->setOption('caching', true);
 $cfg = new Zend_Config(Zend_Registry::get('cfg')->toArray(), true);
 $cfg->amber = new Zend_Config(array('deploy' => false));
+
 Zend_Registry::set('cfg', $cfg);
+Zend_Registry::get('translate')->setLocale('fr');
 
 $_SERVER['SERVER_NAME'] = 'localhost';
+
 
 ?>
