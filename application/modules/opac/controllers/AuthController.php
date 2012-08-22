@@ -68,7 +68,7 @@ class AuthController extends Zend_Controller_Action
 			$error = $this->_authenticate();
 			if (!$error) {
 				$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-				if($_SESSION["abonne_redirect"])
+				if (isset($_SESSION["abonne_redirect"]))
 					$this->getResponse()->setBody("<script>window.location.replace('" .$_SESSION["abonne_redirect"] . "');</script>");
 				else
 					$this->_redirect('opac');

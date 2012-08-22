@@ -416,75 +416,47 @@ class AuthControllerPostTest extends AuthControllerNobodyLoggedTestCase {
 
 
 
-class AuthControllerWithUserInSIGBOnlyPostTest extends AuthControllerNobodyLoggedTestCase {
+class AuthControllerPostSimpleTest extends AuthControllerNobodyLoggedTestCase {
+	protected $_auth;
+
 	public function setUp() {
 		parent::setUp();
-
-		$this
-			->setUpAuth()
-			->setUpUserZorkInSIGB();
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
-			->whenCalled('save')
-			->answers(true);
-
-		$this->postDispatch('/opac/auth/boitelogin?id_module=4',
-												array('username' => 'zork_sigb',
-															'password' => 'secret'));
-	}
-
-
-	public function setUpAuth() {
-		$invalid_result = Storm_Test_ObjectWrapper::mock()
-			->whenCalled('isValid')
-			->answers(false);
-
-		$valid_result = Storm_Test_ObjectWrapper::mock()
-			->whenCalled('isValid')
-			->answers(true);
-
-		return $this;
-	}
-
-
-	public function setUpUserZorkInSIGB() {
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
-			->whenCalled('findAllBy')
-			->with(['comm_sigb' => Class_IntBib::allCommSigbCodes()])
-			->answers([Class_IntBib::newInstanceWithId(1)
-								 ->setCommSigb(Class_IntBib::COM_NANOOK),
-
-								 Class_IntBib::newInstanceWithId(95)
-								 ->setCommSigb(Class_IntBib::COM_ORPHEE),
-
-								 Class_IntBib::newInstanceWithId(74)
-								 ->setCommSigb(Class_IntBib::COM_OPSYS)]);
-
-		Class_WebService_SIGB_Nanook::setService($this->nanook = Storm_Test_ObjectWrapper::mock());
-		Class_WebService_SIGB_Orphee::setService($this->orphee = Storm_Test_ObjectWrapper::mock());
-		Class_WebService_SIGB_Opsys::setService($this->opsys = Storm_Test_ObjectWrapper::mock());
-
-		$this->nanook
-			->whenCalled('getEmprunteur')
+		$this->_auth = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('authenticateLoginPassword')
+			->answers(false)
+			->whenCalled('hasIdentity')
+			->answers(false)
+			->whenCalled('getIdentity')
 			->answers(null);
-
-		$this->orphee
-			->whenCalled('getEmprunteur')
-			->answers(Class_WebService_SIGB_Emprunteur::nullInstance());
-
-		$this->opsys
-			->whenCalled('getEmprunteur')
-			->answers(Class_WebService_SIGB_Emprunteur::newInstance('001234')
-								->setNom('Zork')
-								->setPrenom('Zinn')
-								->beValid());
-		return $this;
+		
+		ZendAfi_Auth::setInstance($this->_auth);
 	}
-	
 
 	/** @test */
-	public function responseShouldBeARedirect() {
+	public function withSuccessfulAuthenticationResponseShouldBeARedirect() {
+		$this->_auth
+			->whenCalled('authenticateLoginPassword')
+			->with('foo', 'bar')
+			->answers(true);
+
+		$this->postDispatch('/opac/auth/login',
+												['username' => 'foo', 'password' => 'bar']);
+
 		$this->assertRedirect();
+	}
+
+
+	/** @test */
+	public function withAuthenticationFailureResponseShouldNotBeARedirect() {
+		$this->postDispatch('/opac/auth/login',
+												['username' => 'foo', 'password' => 'bar']);
+
+		$this->assertNotRedirect();
+	}
+
+	public function tearDown() {
+		ZendAfi_Auth::setInstance(null);
+		parent::tearDown();
 	}
 }
 
