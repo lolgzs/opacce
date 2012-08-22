@@ -20,7 +20,7 @@
  */
 
 
-class AuthAdapterCommSigbTest extends Storm_Test_ModelTestCase {
+class AuthAdapterCommSigbSuccessfullAuthenticationTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -28,7 +28,9 @@ class AuthAdapterCommSigbTest extends Storm_Test_ModelTestCase {
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('save')
-			->answers(true);
+			->willDo(function($user) {
+					$user->setId(23); 
+					return true; });
 
 		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
 			->setIdentity('zork_sigb')
@@ -66,6 +68,7 @@ class AuthAdapterCommSigbTest extends Storm_Test_ModelTestCase {
 			->answers(Class_WebService_SIGB_Emprunteur::newInstance('001234')
 								->setNom('Zork')
 								->setPrenom('Zinn')
+								->setEMail('zork@gmail.com')
 								->beValid());
 		return $this;
 	}
@@ -74,6 +77,19 @@ class AuthAdapterCommSigbTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	public function authenticateZorkShouldReturnValidResult() {
 		$this->assertTrue($this->_adapter->authenticate()->isValid());
+	}
+
+	
+	/** @test */
+	public function resultObjectShouldBeSetUp() {
+		$this->_adapter->authenticate();
+		$result = $this->_adapter->getResultObject();
+		$this->assertEquals(23, $result->ID_USER);
+		$this->assertEquals('001234', $result->IDABON);
+		$this->assertEquals(74, $result->ID_SITE);
+		$this->assertEquals('Zork', $result->NOM);
+		$this->assertEquals('Zinn', $result->PRENOM);
+		$this->assertEquals('zork@gmail.com', $result->MAIL);
 	}
 }
 ?>
