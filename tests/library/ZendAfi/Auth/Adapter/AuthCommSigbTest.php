@@ -20,6 +20,23 @@
  */
 
 
+class AuthAdapterCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
+			->whenCalled('findAllBy')
+			->answers([]);
+	}
+
+	/** @test */
+	public function authenticateResultShouldNotBeValid() {
+		$this->assertFalse($this->_adapter->authenticate()->isValid());		
+	}
+}
+
+
+
+
 class AuthAdapterCommSigbSuccessfullAuthenticationTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
