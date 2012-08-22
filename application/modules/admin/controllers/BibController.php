@@ -47,7 +47,7 @@ class Admin_BibController extends Zend_Controller_Action
 	{
 		$this->view->titre = $this->view->_('Gestion des bibliothèques');
 		// Retour accueil ou liste en fonction du role
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		if ($user->ROLE_LEVEL < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
 			 $this->_redirect('admin/index');
@@ -170,7 +170,7 @@ class Admin_BibController extends Zend_Controller_Action
 	// Modif bib
 	//------------------------------------------------------------------------------------------------------
 	function editAction() {
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		if ($user->ROLE_LEVEL < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
 			$this->_redirect('admin/index');
@@ -239,7 +239,7 @@ class Admin_BibController extends Zend_Controller_Action
 				
 				// Redirection en fonction du role
 				$redirect="admin";
-				$user = Zend_Auth::getInstance()->getIdentity();
+				$user = ZendAfi_Auth::getInstance()->getIdentity();
 				if ($user->ROLE_LEVEL > ZendAfi_Acl_AdminControllerRoles::MODO_PORTAIL) $redirect.="/bib?z=".$this->id_zone;
 				
 				if ($errorMessage == '') 

@@ -37,7 +37,7 @@ class Admin_UsersController extends Zend_Controller_Action
 	function init()
 	{
 		// User connecté
-		$this->user = Zend_Auth::getInstance()->getIdentity();
+		$this->user = ZendAfi_Auth::getInstance()->getIdentity();
 		
 		// Zone et bib du filtre (initialisé dans le plugin DefineUrls)
 		$this->id_zone=$_SESSION["admin"]["filtre_localisation"]["id_zone"];

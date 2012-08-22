@@ -35,7 +35,7 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 		$florence->ID_SITE			= 5;
 		$florence->confirmed		= true;
 		$florence->enabled			= true;
-		Zend_Auth::getInstance()->getStorage()->write($florence);
+		ZendAfi_Auth::getInstance()->getStorage()->write($florence);
 		$this->florence = $florence;
 
 		$this->userModel = Class_Users::getLoader()->newInstanceWithId(1)
@@ -491,7 +491,7 @@ class CommSigbWithNotAbonneTest extends Storm_Test_ModelTestCase {
 		$this->user->ID_SITE = 0;
 		$this->user->ID_USER = 66;
 		$this->user->IDABON = 6;
-		Zend_Auth::getInstance()->getStorage()->write($this->user);
+		ZendAfi_Auth::getInstance()->getStorage()->write($this->user);
 		$this->comm_sigb = new Class_CommSigb();
 		Class_Users::getLoader()
 			->newInstanceWithId(66)

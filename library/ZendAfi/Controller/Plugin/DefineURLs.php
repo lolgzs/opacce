@@ -87,10 +87,10 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		/**
 		 * Si l'ouverture du profil nécessite un niveau d'accès et que
 		 * le niveau requis est trop faible, on redirige sur la page de login
-		 */
+		 */		
 		if (!$profil->isPublic()) {
-			if (!Zend_Auth::getInstance()->hasIdentity() or
-					Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL < $profil->getAccessLevel()) {
+			$auth = ZendAfi_Auth::getInstance();
+			if (!$auth->hasIdentity() or	$auth->getIdentity()->ROLE_LEVEL < $profil->getAccessLevel()) {
 				$request->setControllerName('auth');
 				$request->setActionName('login');
 				$module = 'admin';

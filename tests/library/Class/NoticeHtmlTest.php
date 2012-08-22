@@ -57,11 +57,11 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 		$account->ROLE_LEVEL   = 4;
 		$account->confirmed    = true;
 		$account->enabled      = true;
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 
 	public function testVisibleWithAdminAndAvisReaderAllowed() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
 		$this->avis_bib_seulement->setValeur('0');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -70,7 +70,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testVisibleWithReaderAndAvisReaderAllowed() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
 		$this->avis_bib_seulement->setValeur('0');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -79,7 +79,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testVisibleWithAdminAndAvisReaderForbidden() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
 		$this->avis_bib_seulement->setValeur('1');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -88,7 +88,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testInvisibleWithReaderAndAvisReaderForbidden() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
 		$this->avis_bib_seulement->setValeur('1');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);

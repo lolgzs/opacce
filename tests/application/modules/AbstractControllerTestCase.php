@@ -93,7 +93,7 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 
 		$user->setRoleLevel($account->ROLE_LEVEL);
 		$user->setIdSite($account->ID_SITE);
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 
 

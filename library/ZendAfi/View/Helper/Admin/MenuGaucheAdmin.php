@@ -37,8 +37,8 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$this->addTitleIconJS();
 
 		// User connecté
-		$auth = Zend_Auth::getInstance();
-		if ($auth->hasIdentity()) $this->user = Zend_Auth::getInstance()->getIdentity();
+		$auth = ZendAfi_Auth::getInstance();
+		if ($auth->hasIdentity()) $this->user = $auth->getIdentity();
 
 		$moderer = new Class_Moderer();
 		$modstats = $moderer->getModerationStats();

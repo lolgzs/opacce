@@ -55,6 +55,11 @@ class ZendAfi_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable {
 
 		return $dbSelect;
 	}
+
+
+	public function getResultObject() {
+		return $this->getResultRowObject(null,'password');
+	}
 }
 
 ?>

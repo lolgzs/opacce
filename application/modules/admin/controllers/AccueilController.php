@@ -171,7 +171,7 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		if ($this->_request->isPost()) 	{
 			$enreg = $this->_request->getPost();
 			if ($enreg["id_panier"]) {
-				$user = Zend_Auth::getInstance()->getIdentity();
+				$user = ZendAfi_Auth::getInstance()->getIdentity();
 				$enreg["id_catalogue"] = 0;
 				$enreg["id_user"] = $user->ID_USER;
 
@@ -239,7 +239,7 @@ class Admin_AccueilController extends Zend_Controller_Action {
 					$enreg["nb_analyse"] = $enreg["nb_notices"] + 10;
 
 				if ($enreg["id_panier"]) {
-					$user = Zend_Auth::getInstance()->getIdentity();
+					$user = ZendAfi_Auth::getInstance()->getIdentity();
 					$enreg["id_catalogue"] = 0;
 					$enreg["id_user"] = $user->ID_USER;
 

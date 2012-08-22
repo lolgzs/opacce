@@ -66,7 +66,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->view->url_img=Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
 		
 		// Url panier
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 		$this->view->url_panier="fonction_abonne('".$user->ID_USER."','/opac/abonne/panier?id=".$this->id_notice."')";
 		
 		// View

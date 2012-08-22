@@ -493,7 +493,7 @@ class CatalogueTestGetNoticesByPreferences extends ModelTestCase {
 		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
 		$account->confirmed    = true;
 		$account->enabled      = true;
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 		
 		Class_Users::getLoader()->newInstanceWithId($account->ID_USER)->setRoleLevel($account->ROLE_LEVEL);
 

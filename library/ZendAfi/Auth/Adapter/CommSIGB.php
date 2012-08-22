@@ -1,3 +1,4 @@
+<?php
 /**
  * Zend Framework
  *
@@ -19,9 +20,10 @@
  * @version    $Id: DbTable.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-class Zend_Auth_Adapter_CommSIGB implements Zend_Auth_Adapter_Interface {
+class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 	protected $_identity = null;
 	protected $_credential = null;
+	protected $_authenticated_user = null;
 
 	public function setIdentity($identity) {
 		$this->_identity = $identity;
@@ -33,6 +35,7 @@ class Zend_Auth_Adapter_CommSIGB implements Zend_Auth_Adapter_Interface {
 
 
 	public function authenticate(){
+		$this->_authenticated_user = null;
 		return $this->tryFetchUserFromSIGB($this->_identity, $this->_credential);
 	}
 	
@@ -56,9 +59,17 @@ class Zend_Auth_Adapter_CommSIGB implements Zend_Auth_Adapter_Interface {
 			$user
 				->beAbonneSIGB()
 				->save();
+			$this->_authenticated_user = $user;
 			return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $login);
 		}
 
 		return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND, $login);
 	}
+
+
+	public function getResultObject() {
+		return new StdClass();
+	}
 }
+
+?>

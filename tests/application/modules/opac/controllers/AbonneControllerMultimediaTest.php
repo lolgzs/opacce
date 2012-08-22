@@ -62,7 +62,7 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 
 	public function setUp() {
 		parent::setUp();
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 	}
 
 

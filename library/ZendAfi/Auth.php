@@ -55,7 +55,7 @@ class ZendAfi_Auth extends Zend_Auth {
 
 
 	public function newAuthSIGB() {
-		return new Zend_Auth_Adapter_CommSIGB();
+		return new ZendAfi_Auth_Adapter_CommSigb();
 	}
 }
 

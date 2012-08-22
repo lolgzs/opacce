@@ -55,8 +55,7 @@ class AuthController extends Zend_Controller_Action
 
 		foreach ($auth->getOrderedAdaptersForLoginPassword($username, $password) as $authAdapter) {
 			if (!$auth->authenticate($authAdapter)->isValid()) continue;
-			$data = $authAdapter->getResultRowObject(null,'password');
-			$auth->getStorage()->write($data);
+			$auth->getStorage()->write($authAdapter->getResultObject());
 			return null;
 		}
 
@@ -99,7 +98,7 @@ class AuthController extends Zend_Controller_Action
 			$error = $this->_authenticate();
 
 			if (!$error) {
-				$data = Zend_Auth::getInstance()->getIdentity();
+				$data = ZendAfi_Auth::getInstance()->getIdentity();
 				$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 				$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.abonne_ok(".$data->ID_USER.",'". $data->LOGIN ."', '')</script>");
 			}
@@ -151,7 +150,7 @@ class AuthController extends Zend_Controller_Action
 // Logout
 //------------------------------------------------------------------------------------------------------
 	function logoutAction()	{
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 		$this->_redirect('/');
 	}
 

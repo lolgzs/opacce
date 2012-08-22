@@ -31,9 +31,9 @@ class BlogController extends Zend_Controller_Action
 	function init()
 	{
 		//Verify that the user has successfully authenticated.  If not, we redirect to the login.
-		$user = Zend_Auth::getInstance();
+		$user = ZendAfi_Auth::getInstance();
 		if (!$user->hasIdentity())$this->_user=null;
-		else $this->_user = Zend_Auth::getInstance()->getIdentity();
+		else $this->_user = ZendAfi_Auth::getInstance()->getIdentity();
 		$this->modo_blog = getVar('MODO_BLOG');
 		$class_date = new Class_Date();
 		$this->_today = $class_date->DateTimeDuJour();

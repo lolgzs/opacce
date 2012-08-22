@@ -77,7 +77,7 @@ class ZendAfi_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Acti
 																								$request->getActionName());
 
 		// user connecté
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 		if ($user) {
 			$this->view->authUser = $user;
 		}

@@ -85,7 +85,7 @@ class UsersLoader extends Storm_Model_Loader {
 	 * @return Class_Users
 	 */
 	public function getIdentity() {
-		if (!$user = Zend_Auth::getInstance()->getIdentity())
+		if (!$user = ZendAfi_Auth::getInstance()->getIdentity())
 			return null;
 
 		return $this->find($user->ID_USER);

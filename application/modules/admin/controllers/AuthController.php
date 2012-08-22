@@ -68,7 +68,7 @@ class Admin_AuthController extends Zend_Controller_Action
 				$authAdapter->setCredential($password);
 
 				// do the authentication
-				$auth = Zend_Auth::getInstance();
+				$auth = ZendAfi_Auth::getInstance();
 				try
 				{
 					$result = $auth->authenticate($authAdapter);
@@ -95,7 +95,7 @@ class Admin_AuthController extends Zend_Controller_Action
 	//----------------------------------------------------------------------------------
 	function logoutAction()
 	{
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 		$this->_redirect('admin/');
 	}
 

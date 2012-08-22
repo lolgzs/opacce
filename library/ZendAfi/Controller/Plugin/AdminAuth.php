@@ -32,16 +32,18 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$controller = $this->_request->getControllerName();
 		$action = $this->_request->getActionName();
 		$session = Zend_Registry::get('session');
+
+		$auth = Zend_Auth::getInstance();
 		
 		if (isset($session->baseUrl))
 		{
 			if($session->baseUrl != BASE_URL)
 			{
 				$session->baseUrl = BASE_URL;
-				Zend_Auth::getInstance()->clearIdentity();
+				$auth->clearIdentity();
 			}
 		}
-		$auth = Zend_Auth::getInstance();
+
 		
 		// Entree dans fonctions admin
 		if ($module == 'admin' and $controller != 'error')

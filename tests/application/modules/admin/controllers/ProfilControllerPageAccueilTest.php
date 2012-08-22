@@ -69,7 +69,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_ProfilControll
 			->getWrapper();
 
 
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
 		$this->dispatch('/admin/profil/accueil/id_profil/7', true);
 	}
 

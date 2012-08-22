@@ -70,7 +70,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 
 	public function indexAction()	{
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		$profils = Class_Profil::getLoader()->findAllByZoneAndBib($this->id_zone,
 																															$this->id_bib);

@@ -68,7 +68,7 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 			::onLoaderOfModel('Class_Profil')
 			->whenCalled('save')->answers(true)->getWrapper();
 
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
 	}
 }
 

@@ -37,7 +37,7 @@ class ZendAfi_View_Helper_Admin_ProfileSelect extends ZendAfi_View_Helper_BaseHe
 	{
 		$titre=$this->translate()->_("Localisation");
 		if($id_profil) $titre.=$this->translate()->_(" et profil");
-		$this->user = Zend_Auth::getInstance()->getIdentity();
+		$this->user = ZendAfi_Auth::getInstance()->getIdentity();
 		$html = '<div class="form" style="font-size:10pt">'.$titre.'<br/><table cellpadding="3" cellspacing="1" border="0">';
 	
 		// Combo des zones

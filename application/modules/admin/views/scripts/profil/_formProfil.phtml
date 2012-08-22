@@ -348,7 +348,7 @@ Class_ScriptLoader::getInstance()
 						<?php
 						$class_bib = new Class_Bib();
 						$combo_bib = $class_bib->getComboBib($this->profil->getIdSite(), $this->id_zone, true, 'id_site');
-						$user_login = Zend_Auth::getInstance()->getIdentity();
+            $user_login = Class_Users::getIdentity();
 						if ($user_login->ROLE_LEVEL <=4)
 						{
 							$bib = $class_bib->getBib($this->profil->getIdSite());
