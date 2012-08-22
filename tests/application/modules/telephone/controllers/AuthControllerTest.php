@@ -21,7 +21,19 @@
 require_once 'TelephoneAbstractControllerTestCase.php';
 
 
-class AuthControllerTelephoneBoiteLoginTest extends TelephoneAbstractControllerTestCase {
+abstract class AuthControllerTelephoneWithoutCommSIGBTestCase extends TelephoneAbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		// Pour éviter de faire l'authentification via les SIGB
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
+			->whenCalled('findAllBy')
+			->answers([]);
+	}
+}
+
+
+class AuthControllerTelephoneBoiteLoginTest extends AuthControllerTelephoneWithoutCommSIGBTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "";
 		$account->ROLE_LEVEL = 0;
@@ -49,7 +61,7 @@ class AuthControllerTelephoneBoiteLoginTest extends TelephoneAbstractControllerT
 
 
 
-class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCase {
+class AuthControllerTelephoneLoginTest extends AuthControllerTelephoneWithoutCommSIGBTestCase {
 	public function setUp() {
 		parent::setUp();
 		Class_Profil::getCurrentProfil()
@@ -77,7 +89,7 @@ class AuthControllerTelephoneLoginTest extends TelephoneAbstractControllerTestCa
 
 
 
-class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractControllerTestCase {
+class AuthControllerTelephoneLoginReservationTest extends AuthControllerTelephoneWithoutCommSIGBTestCase {
 	public function setUp() {
 		parent::setUp();
 		Class_Profil::getCurrentProfil()
@@ -105,7 +117,7 @@ class AuthControllerTelephoneLoginReservationTest extends TelephoneAbstractContr
 
 
 
-class AuthControllerTelephoneLoginReservationInvalidPostTest extends TelephoneAbstractControllerTestCase {
+class AuthControllerTelephoneLoginReservationInvalidPostTest extends AuthControllerTelephoneWithoutCommSIGBTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -132,7 +144,7 @@ class AuthControllerTelephoneLoginReservationInvalidPostTest extends TelephoneAb
 
 
 
-class AuthControllerTelephoneLoginReservationValidPostTest extends TelephoneAbstractControllerTestCase {
+class AuthControllerTelephoneLoginReservationValidPostTest extends AuthControllerTelephoneWithoutCommSIGBTestCase {
 	public function setUp() {
 		parent::setUp();
 

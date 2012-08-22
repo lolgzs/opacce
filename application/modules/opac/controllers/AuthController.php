@@ -50,29 +50,17 @@ class AuthController extends Zend_Controller_Action
 		if (empty($password))
 			return $this->view->_('Entrez votre mot de passe S.V.P.');
 
-		// setup Zend_/Auth adapter for a database table
-		$authAdapter = new ZendAfi_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
-		$authAdapter->setTableName('bib_admin_users');
-		$authAdapter->setIdentityColumn('LOGIN');
-		$authAdapter->setCredentialColumn('PASSWORD');
-
-		// Set the input credential values to authenticate against
-		$authAdapter->setIdentity($username);
-		$authAdapter->setCredential($password);
-
 		// do the authentication
-		$auth = Zend_Auth::getInstance();
+		$auth = ZendAfi_Auth::getInstance();
 
-		$result = $auth->authenticate($authAdapter);
-		if (!$result->isValid())
-			return $this->view->_('Identifiant ou mot de passe incorrect.');
+		foreach ($auth->getOrderedAdaptersForLoginPassword($username, $password) as $authAdapter) {
+			if (!$auth->authenticate($authAdapter)->isValid()) continue;
+			$data = $authAdapter->getResultRowObject(null,'password');
+			$auth->getStorage()->write($data);
+			return null;
+		}
 
-		// success: store database row to auth's storage
-		$data = $authAdapter->getResultRowObject(null,'password');
-		$auth->getStorage()->write($data);
-
-		return null;
-
+		return $this->view->_('Identifiant ou mot de passe incorrect.');
 	}
 
 //------------------------------------------------------------------------------------------------------

@@ -105,11 +105,12 @@
 	(save-buffer)
 	)
 
-(defun opac3-compile-phpunit (&optional params &optional debug)
+(defun opac3-compile-phpunit (&optional params &optional debug &optional testdox)
 	(save-buffer)
 	(let 
 			((command-filter (if params (concat " --filter " params) " "))
-			 (debug-mode (if debug "XDEBUG_CONFIG=1 " "")))
+			 (debug-mode (if debug "XDEBUG_CONFIG=1 " ""))
+			 (testdox-option (if testdox " --testdox " "")))
 
 		(if debug (progn (geben 1) 
 										 (window-configuration-to-register 'g)
@@ -125,7 +126,7 @@
 			)
 
 		(setq opac3-phpunit-command
-					(concat	debug-mode "phpunit -c " opac3-phpunit-config command-filter))
+					(concat	debug-mode "phpunit -c " opac3-phpunit-config command-filter testdox-option))
 
 		(compile opac3-phpunit-command)
 		)
@@ -169,11 +170,12 @@
 )
 
 
-(defun opac3-run-phpunit-filtered-custom(custom-filter debug)
+(defun opac3-run-phpunit-filtered-custom(custom-filter debug testdox)
 	"Prompt for a filter and run phpunit with it"
 	(interactive (list (read-string "Enter PHPUnit fiter: ")
-										 (y-or-n-p "Debug ?: ")))
-	(opac3-compile-phpunit custom-filter debug)
+										 (y-or-n-p "Debug ?: ")
+										 (y-or-n-p "Testdox format ?: ")))
+	(opac3-compile-phpunit custom-filter debug testdox)
 	)
 
 

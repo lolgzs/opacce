@@ -944,6 +944,8 @@ class Class_Users extends Storm_Model_Abstract {
 	 * return Class_Users
 	 */
 	public function beAbonneSIGB() {
-		return $this->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB);
+		return $this
+			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
+			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB));
 	}
 }

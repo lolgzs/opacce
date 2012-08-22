@@ -36,15 +36,15 @@ class Class_IntBib extends Storm_Model_Abstract {
 
 
 
-	private $COM_CLASSES = array(self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
-															 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
-															 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
-															 self::COM_KOHA => 'Class_WebService_SIGB_Koha',
-															 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
-															 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
-															 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
-															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
-															 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet');
+	protected static $COM_CLASSES = [self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
+																	 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
+																	 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
+																	 self::COM_KOHA => 'Class_WebService_SIGB_Koha',
+																	 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
+																	 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
+																	 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
+																	 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
+																	 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet'];
 
 	protected $_table_name = 'int_bib';
 	protected $_table_primary = 'id_bib';
@@ -52,6 +52,18 @@ class Class_IntBib extends Storm_Model_Abstract {
 	protected $_belongs_to = ['bib' => ['model' => 'Class_IntBib',
 																			'role' => 'int_bib',
 																			'referenced_in' => 'id_bib']];
+
+	protected $_default_attribute_values = ['comm_params' => ''];
+
+
+	public static function allCommSigbCodes() {
+		return array_keys(self::$COM_CLASSES);
+	}
+
+
+	public static function findAllWithWebServices() {
+		return Class_IntBib::findAllBy(['comm_sigb' => Class_IntBib::allCommSigbCodes()]);
+	}
 
 
 	public function setCommParams($string_or_array) {
@@ -80,10 +92,10 @@ class Class_IntBib extends Storm_Model_Abstract {
 
 	public function getSIGBComm() {
 		$type_comm = $this->getCommSigb();
-		if (!isset($this->COM_CLASSES[$type_comm]))
+		if (!isset(self::$COM_CLASSES[$type_comm]))
 			return null;
 
-		return call_user_func([$this->COM_CLASSES[$type_comm], 'getService'], 
+		return call_user_func([self::$COM_CLASSES[$type_comm], 'getService'], 
 													$this->getModeComm());
 
 	}

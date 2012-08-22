@@ -32,6 +32,7 @@ class Class_WebService_SIGB_Emprunteur {
 	protected $_nb_emprunts = null;
 	protected $_nb_retards = null;
 	protected $_service = null;
+	protected $_valid = false;
 
 
 	public function __sleep() {
@@ -352,8 +353,8 @@ class Class_WebService_SIGB_Emprunteur {
 		return $this->_password;
 	}
 
+
 	/**
-	 *
 	 * @param Class_WebService_SIGB_AbstractService $service
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
@@ -382,6 +383,22 @@ class Class_WebService_SIGB_Emprunteur {
 		return $this->_service->getPopupUrlForUserInformations($user);
 	}
 
+
+	/**
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function beValid() {
+		$this->_valid = true;
+		return $this;
+	}
+
+	
+	/**
+	 * @return boolean
+	 */
+	public function isValid() {
+		return $this->_valid;
+	}
 
 	/**
 	 * @codeCoverageIgnore
