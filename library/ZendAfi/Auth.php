@@ -35,13 +35,7 @@ class ZendAfi_Auth extends Zend_Auth {
 
 
 	public function getOrderedAdaptersForLoginPassword($login, $password) {
-		$adapters = [ $this->newAuthDb(), 
-									$this->newAuthSIGB() ];
-		foreach ($adapters as $adapter) {
-			$adapter->setIdentity($login);
-			$adapter->setCredential($password);
-		}
-		return $adapters;
+		return  [ $this->newAuthDb(), $this->newAuthSIGB() ];
 	}
 
 	
@@ -56,6 +50,22 @@ class ZendAfi_Auth extends Zend_Auth {
 
 	public function newAuthSIGB() {
 		return new ZendAfi_Auth_Adapter_CommSigb();
+	}
+
+
+	public function authenticateLoginPassword($login, $password, $adapters = null) {
+		if (!$adapters)
+			$adapters = $this->getOrderedAdaptersForLoginPassword($login, $password);
+
+		foreach ($adapters as $authAdapter) {
+			$authAdapter->setIdentity($login);
+			$authAdapter->setCredential($password);
+	
+			if (!$this->authenticate($authAdapter)->isValid()) continue;
+			$this->getStorage()->write($authAdapter->getResultObject());
+			return true;
+		}
+		return false;
 	}
 }
 

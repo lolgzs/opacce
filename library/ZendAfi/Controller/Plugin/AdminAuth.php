@@ -33,7 +33,7 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$action = $this->_request->getActionName();
 		$session = Zend_Registry::get('session');
 
-		$auth = Zend_Auth::getInstance();
+		$auth = ZendAfi_Auth::getInstance();
 		
 		if (isset($session->baseUrl))
 		{

@@ -50,7 +50,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function vodeclicUrlWithoutUserShouldBeLoginPage() {
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 		$this->assertEquals(array('url' => BASE_URL.'/auth/login', 'target' => '0'), 
 												$this->module_menu->getUrl('VODECLIC', array()));
 	}
@@ -62,7 +62,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 		$account->password     = 'password';
 		$account->ID_USER      = 34;
 		
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 
 		return Class_Users::getLoader()
 			->newInstanceWithId(34)

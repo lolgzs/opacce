@@ -123,7 +123,7 @@ abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
 
 
 	public function logout() {
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 	}
 
 	public function login($role) {
@@ -144,7 +144,7 @@ abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
 			->newInstanceWithId(1)
 			->setLibelle('Tombouctou');
 
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 }
 ?>

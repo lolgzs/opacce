@@ -51,15 +51,8 @@ class AuthController extends Zend_Controller_Action
 			return $this->view->_('Entrez votre mot de passe S.V.P.');
 
 		// do the authentication
-		$auth = ZendAfi_Auth::getInstance();
-
-		foreach ($auth->getOrderedAdaptersForLoginPassword($username, $password) as $authAdapter) {
-			if (!$auth->authenticate($authAdapter)->isValid()) continue;
-			$auth->getStorage()->write($authAdapter->getResultObject());
-			return null;
-		}
-
-		return $this->view->_('Identifiant ou mot de passe incorrect.');
+		if (!ZendAfi_Auth::getInstance()->authenticateLoginPassword($username, $password))
+			return $this->view->_('Identifiant ou mot de passe incorrect.');
 	}
 
 //------------------------------------------------------------------------------------------------------
