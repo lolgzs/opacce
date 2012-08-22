@@ -1,23 +1,22 @@
 <?php
 /**
- * Zend Framework
+ * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
- * LICENSE
+ * AFI-OPAC 2.0 is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
+ * the Free Software Foundation.
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
+ * There are special exceptions to the terms and conditions of the AGPL as it
+ * is applied to this software (see README file).
  *
- * @category   Zend
- * @package    Zend_Auth
- * @subpackage Zend_Auth_Adapter
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DbTable.php 8862 2008-03-16 15:36:00Z thomas $
+ * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * along with AFI-OPAC 2.0; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
 class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
@@ -27,10 +26,12 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 
 	public function setIdentity($identity) {
 		$this->_identity = $identity;
+		return $this;
 	}
 
 	public function setCredential($credential) {
 		$this->_credential = $credential;
+		return $this;
 	}
 
 
