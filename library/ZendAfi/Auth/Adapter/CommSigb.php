@@ -24,31 +24,52 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 	protected $_credential = null;
 	protected $_authenticated_user = null;
 
+	/**
+	 * @param string $identity
+	 * @return Zend_Auth_Adapter_CommSigb
+	 */
 	public function setIdentity($identity) {
 		$this->_identity = $identity;
 		return $this;
 	}
 
+	/**
+	 * @param string $credential
+	 * @return Zend_Auth_Adapter_CommSigb
+	 */
 	public function setCredential($credential) {
 		$this->_credential = $credential;
 		return $this;
 	}
 
 
-	public function authenticate(){
+	/**
+	 * @return Zend_Auth_Result
+	 */
+	public function authenticate() {
 		$this->_authenticated_user = null;
-		return $this->tryFetchUserFromSIGB($this->_identity, $this->_credential);
+
+		$user = Class_Users::newInstance()
+			->setLogin($this->_identity)
+			->setPassword($this->_credential)
+			->beAbonneSIGB();
+
+		$result = $this->authenticateUserFromSIGB($user);
+		if (!$result->isValid())
+			return $result;
+
+		$user->save();
+		$this->_authenticated_user = $user;
+
+		return $result;
 	}
 	
 
 	/**
-	 * @return Class_Users
+	 * @param $user Class_Users 
+	 * @return Zend_Auth_Result
 	 */
-	public function tryFetchUserFromSIGB($login, $password) {
-		$user = Class_Users::newInstance()
-			->setLogin($login)
-			->setPassword($password);
-
+	public function authenticateUserFromSIGB($user) {
 		$bibs = Class_IntBib::findAllWithWebServices();
 		foreach($bibs as $bib) {
 			if (!$emprunteur = $bib->getSIGBComm()->getEmprunteur($user))
@@ -58,21 +79,21 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 				continue;
 
 			$user
-				->beAbonneSIGB()
 				->setIdabon($emprunteur->getId())
 				->setIdSite($bib->getId())
 				->setNom($emprunteur->getNom())
 				->setPrenom($emprunteur->getPrenom())
-				->setMail($emprunteur->getEmail())
-				->save();
-			$this->_authenticated_user = $user;
-			return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $login);
+				->setMail($emprunteur->getEmail());
+			return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $user->getLogin());
 		}
 
-		return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND, $login);
+		return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND, $user->getLogin());
 	}
 
 
+	/**
+	 * @return Std_Class
+	 */
 	public function getResultObject() {
 		$result = new StdClass();
 

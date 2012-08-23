@@ -20,34 +20,17 @@
  */
 
 
-class AuthAdapterCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelTestCase {
+class AuthCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
-			->whenCalled('findAllBy')
-			->answers([]);
-	}
-
-	/** @test */
-	public function authenticateResultShouldNotBeValid() {
-		$this->assertFalse($this->_adapter->authenticate()->isValid());		
-	}
-}
-
-
-
-
-class AuthAdapterCommSigbSuccessfullAuthenticationTest extends Storm_Test_ModelTestCase {
-	public function setUp() {
-		parent::setUp();
-
-		$this->setUpUserZorkInSIGB();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('save')
-			->willDo(function($user) {
-					$user->setId(23); 
-					return true; });
+			->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
+			->whenCalled('findAllBy')
+			->answers([]);
 
 		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
 			->setIdentity('zork_sigb')
@@ -55,7 +38,24 @@ class AuthAdapterCommSigbSuccessfullAuthenticationTest extends Storm_Test_ModelT
 	}
 
 
-	public function setUpUserZorkInSIGB() {
+	/** @test */
+	public function authenticateResultShouldNotBeValid() {
+		$this->assertFalse($this->_adapter->authenticate()->isValid());
+	}
+
+	/** @test */
+	public function noUserShouldHaveBeenSaved() {
+		$this->assertFalse(Class_Users::methodHasBeenCalled('save'));
+	}
+}
+
+
+
+
+abstract class AuthCommSigbWithWebServicesAndAbonneZorkTestCase extends Storm_Test_ModelTestCase {
+	public function setUp() {
+		parent::setUp();
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
 			->whenCalled('findAllBy')
 			->with(['comm_sigb' => Class_IntBib::allCommSigbCodes()])
@@ -89,17 +89,42 @@ class AuthAdapterCommSigbSuccessfullAuthenticationTest extends Storm_Test_ModelT
 								->beValid());
 		return $this;
 	}
+}
+
+
+
+class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServicesAndAbonneZorkTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('save')
+			->willDo(function($user) {
+					$user->setId(23); 
+					return true; });
+
+		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
+			->setIdentity('zork_sigb')
+			->setCredential('secret');
+
+		$this->_authenticate_result = $this->_adapter->authenticate();
+	}
 	
 
 	/** @test */
 	public function authenticateZorkShouldReturnValidResult() {
-		$this->assertTrue($this->_adapter->authenticate()->isValid());
+		$this->assertTrue($this->_authenticate_result->isValid());
 	}
 
-	
+
+	/** @test */
+	public function userShouldHaveBeenSaved() {
+		$this->assertTrue(Class_Users::methodHasBeenCalled('save'));
+	}
+
+ 
 	/** @test */
 	public function resultObjectShouldBeSetUp() {
-		$this->_adapter->authenticate();
 		$result = $this->_adapter->getResultObject();
 		$this->assertEquals(23, $result->ID_USER);
 		$this->assertEquals('001234', $result->IDABON);
