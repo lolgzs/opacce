@@ -368,38 +368,18 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 
 
 
-abstract class OpsysServiceWithSessionTestCase extends PHPUnit_Framework_TestCase {
+abstract class OpsysServiceWithSessionTestCase extends Storm_Test_ModelTestCase {
 	protected $opsys;
 
 	public function setUp(){
-		$this->ouvre_session_res = $this->getMock(
-																							'OuvreSessionResponseMock',
-																							array('getGUID'));
+		$this->ouvre_session_res = $this->mock();
+		$this->search_client = $this->mock();
+		$this->catalog_client = $this->mock();
 
-		$this->search_client = $this->getMock(
-																	 'MappedSoapClientMock',
-																	 array('OuvrirSession', 'FermerSession', 'RecupererNotice',
-																				 'EmprAuthentifier', 'EmprSupprResa', 'EmprProlong',
-																				 'EmprListerEntite', 'EmprReserver'));
-
-		$this->catalog_client = $this->getMock(
-																					 'MappedSoapClientMock',
-																					 array('EcrireNotice'));
-
-		$this->search_client
-			->expects($this->any())
-			->method('OuvrirSession')
-			->will($this->returnValue($this->ouvre_session_res));
 
 		$this->ouvre_session_res
-			->expects($this->any())
-			->method('getGUID')
-			->will($this->returnValue('guid_12345'));
-
-		$this->search_client
-			->expects($this->any())
-			->method('FermerSession');
-
+			->whenCalled('getGUID')
+			->answers('guid_12345');
 
 		$auth_response = new EmprAuthentifierResponse();
 		$auth_response->EmprAuthentifierResult = new RspEmprAuthentifier();
@@ -411,9 +391,9 @@ abstract class OpsysServiceWithSessionTestCase extends PHPUnit_Framework_TestCas
 		$auth_response->EmprAuthentifierResult->NombreRetards = 2;
 
 		$this->search_client
-			->expects($this->any())
-			->method('EmprAuthentifier')
-			->will($this->returnValue($auth_response));
+			->whenCalled('OuvrirSession')->answers($this->ouvre_session_res)
+			->whenCalled('FermerSession')->answers(null)
+			->whenCalled('EmprAuthentifier')->answers($auth_response);
 
 		$this->opsys = new Class_WebService_SIGB_Opsys_Service($this->search_client, $this->catalog_client);
 	}
@@ -439,6 +419,11 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 	}
 
 
+	public function testEmprunteurIsValid() {
+		$this->assertTrue($this->emprunteur->isValid());
+	}
+
+
 	public function testGetNbReservationsReturnsThree() {
 		$this->assertEquals(3, $this->emprunteur->getNbReservations());
 	}
@@ -459,7 +444,6 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 																	->setLogin('tintin')
 																	->setPassword('1234')));
 	}
-
 
 	public function testGetEmpruntsOfTintin() {
 		$liste_prets = new EmprListerEntiteResponse();
@@ -515,9 +499,8 @@ class OpsysServiceGetExemplaireFromCacheTestDisponibilite extends OpsysServiceWi
 			->will($this->returnValue($notice_potter));
 
 		$this->search_client
-			->expects($this->any())
-			->method('RecupererNotice')
-			->will($this->returnValue($recuperer_notice_res));
+			->whenCalled('RecupererNotice')
+			->answers($recuperer_notice_res);
 	}
 
 
@@ -556,10 +539,14 @@ class OpsysServiceTestSupprimerReservation extends OpsysServiceWithSessionTestCa
 		$this->resa_response->EmprReserverResult = new RspEmprAction();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprSupprResa')
-			->with($this->equalTo(new EmprSupprResa('guid_12345', 'res_2345')))
-			->will($this->returnValue($this->resa_response));
+			->whenCalled('EmprSupprResa')
+			->willDo(function($param) {
+					$this->assertEquals($param,	new EmprSupprResa('guid_12345', 'res_2345'));
+					$this->search_client
+						->whenCalled('EmprSupprResa')
+						->willDo(function() {$this->fait('EmprSupprResa ne devrait être appelé qu\'une fois');});
+					return $this->resa_response;
+				});
 	}
 
 
@@ -653,10 +640,9 @@ class OpsysServiceTestUpdateInfoEmprunteur extends OpsysServiceWithSessionTestCa
 		$this->ecrire_notice_response->EcrireNoticeResult = new MaNotice();
 
 		$this->catalog_client
-			->expects($this->once())
-			->method('EcrireNotice')
-			->with($this->equalTo($expected_ecrire_notice))
-			->will($this->returnValue($this->ecrire_notice_response));
+			->whenCalled('EcrireNotice')
+			->with($expected_ecrire_notice)
+			->answers($this->ecrire_notice_response);
 	}
 
 	public function testSaveWihtNoErrorsDoNotRaiseErrors() {
@@ -695,10 +681,9 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 		$this->empr_response->EmprProlongResult = new RspEmprAction();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprProlong')
-			->with($this->equalTo(new EmprProlong('guid_12345', 'pret_12')))
-			->will($this->returnValue($this->empr_response));
+			->whenCalled('EmprProlong')
+			->with(new EmprProlong('guid_12345', 'pret_12'))
+			->answers($this->empr_response);
 	}
 
 
@@ -1124,10 +1109,9 @@ class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase
 		$reserverResponse->EmprReserverResult->Reussite = "true";
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprReserver')
-			->with($this->equalTo(new EmprReserver('guid_12345', 'cb344', 'melun')))
-			->will($this->returnValue($reserverResponse));
+			->whenCalled('EmprReserver')
+			->with(new EmprReserver('guid_12345', 'cb344', 'melun'))
+			->answers($reserverResponse);
 	}
 
 

@@ -937,7 +937,8 @@ class EmprAuthentifierResponse {
 			->setEmail($this->EmprAuthentifierResult->EmailEmpr)
 			->setNbReservations($this->EmprAuthentifierResult->NombreReservations)
 			->setNbEmprunts($this->EmprAuthentifierResult->NombrePrets)
-			->setNbPretsEnRetard($this->EmprAuthentifierResult->NombreRetards);
+			->setNbPretsEnRetard($this->EmprAuthentifierResult->NombreRetards)
+			->beValid();
 	}
 }
 
