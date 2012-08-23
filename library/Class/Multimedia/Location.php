@@ -122,8 +122,10 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 																			'referenced_in' => 'id_site']];
 
 	protected $_default_attribute_values = ['days' => '', 
-																					'autohold_min_time' => 0,
-																					'admin_url' => ''];
+																					'autohold_min_time' => 10,
+																					'admin_url' => '',
+																					'slot_size' => 15,
+																					'autohold_slots_max' => 2];
 
 
 	/**

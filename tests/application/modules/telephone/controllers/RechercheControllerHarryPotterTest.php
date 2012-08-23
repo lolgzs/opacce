@@ -398,7 +398,10 @@ class Telephone_RechercheControllerHarryPotterExemplaireReservablePackMobileInac
 	}
 
 
-	/** @test */
+	/**
+	 * @group integration
+	 * @test 
+	 */
 	public function pageShouldNotContainsHoldFunction() {
 		$this->assertNotXPath('//div[@class="fonction"]//a[contains(@href, "/recherche/reservation")]');
 	}

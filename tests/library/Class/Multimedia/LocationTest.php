@@ -62,7 +62,7 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 			->with(['jour' => '2012-09-09'])
 			->answers($_ouverture_dimanche_9_sept);
 
-		$this->_time_source = (new TimesSourceForTest())->setTime(strtotime('2012-01-01'));
+		$this->_time_source = (new TimeSourceForTest())->setTime(strtotime('2012-01-01'));
 
 		Class_Multimedia_Device::setTimeSource($this->_time_source);
 		Class_Multimedia_Location::setTimeSource($this->_time_source);

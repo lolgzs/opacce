@@ -679,9 +679,7 @@ class AbonneControllerMultimediaHoldHoursTest extends AbonneControllerMultimedia
 		$this->_prepareLocationInSession();
 		$this->_prepareDayInSession();
 
-		Class_Multimedia_Location::setTimeSource(Storm_Test_ObjectWrapper::mock()
-			->whenCalled('time')
-			->willDo(function() {return strtotime('2012-09-12 09:00:00');}));
+		Class_Multimedia_Location::setTimeSource((new TimeSourceForTest())->setTime(strtotime('2012-09-12 09:00:00')));
 
 		$this->dispatch('/abonne/multimedia-hold-hours', true);
 	}

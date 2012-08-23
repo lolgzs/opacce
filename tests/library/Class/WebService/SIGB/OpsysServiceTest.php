@@ -258,7 +258,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 }
 
 
-class NoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
+class OpsysServiceNoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
 	public function testPopDisponibiliteOnEmptyNoticeReturnsFalse(){
 		$notice = new Class_WebService_SIGB_Notice('123');
 		$this->assertFalse($notice->popDisponibilite());
@@ -278,7 +278,7 @@ class NoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
 }
 
 
-class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
+class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 	private $notices;
 	private $cache;
 
@@ -401,7 +401,7 @@ abstract class OpsysServiceWithSessionTestCase extends Storm_Test_ModelTestCase 
 
 
 
-class EmprAuthentifierErreurTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
+class OpsysServiceEmprAuthentifierErreurTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -429,7 +429,7 @@ class EmprAuthentifierErreurTestCreateEmprunteur extends OpsysServiceWithSession
 
 
 
-class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
+class OpsysServiceEmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->emprunteur = $this->opsys->getEmprunteur(
@@ -480,14 +480,15 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 		$liste_retards = $liste_prets;
 
 		$this->search_client
-			->expects($this->at(0))
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_prets));
+			->whenCalled('EmprListerEntite')
+			->willDo(function() use ($liste_prets, $liste_retards) { 
+					$this->search_client
+						->whenCalled('EmprListerEntite')
+						->answers($liste_retards);
 
-		$this->search_client
-			->expects($this->at(1))
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_retards));
+					return $liste_retards;
+				});
+
 
 		$this->assertEquals(0, count($this->opsys->getEmpruntsOf($this->emprunteur)));;
 	}
@@ -498,9 +499,8 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 		$liste_reservations->EmprListerEntiteResult = new RspEmprListerEntite();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_reservations));
+			->whenCalled('EmprListerEntite')
+			->answers($liste_reservations);
 
 		$this->assertEquals(0, count($this->opsys->getReservationsOf($this->emprunteur)));;
 	}
@@ -762,7 +762,7 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 
 
 
-class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase {
+class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$dispo_reserve = new DonneeFille();
 		$dispo_reserve->NomDonnee = "Disponibilité";
@@ -844,7 +844,7 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 }
 
 
-class EmprReserverResponseTest extends PHPUnit_Framework_TestCase {
+class OpsysServiceEmprReserverResponseTest extends PHPUnit_Framework_TestCase {
 	private $default_rsp;
 
 	public function setUp(){
@@ -870,7 +870,7 @@ class EmprReserverResponseTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
+class OpsysServiceEmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->opsys_service = $this->getMock('Mock_OpsysService',
 																					array('getEmpruntsOf',
@@ -945,7 +945,7 @@ class EmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class ReservationAttributesTest extends PHPUnit_Framework_TestCase {
+class OpsysServiceReservationAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->reservation = new Class_WebService_SIGB_Reservation('23', new Class_WebService_SIGB_Exemplaire('potter'));
 		$this->reservation->parseExtraAttributes(array(
@@ -1007,7 +1007,9 @@ class EmpruntFixtures {
 }
 
 
-class EmpruntAttributesTest extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->emprunt = EmpruntFixtures::potter();
 	}
@@ -1041,7 +1043,9 @@ class EmpruntAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->emprunt = EmpruntFixtures::potter();
 		$this->emprunt->setEnRetard(true);
@@ -1072,7 +1076,9 @@ class EmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmpruntTestSort extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntTestSort extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->opsys_service = $this->getMock('Mock_OpsysService',
 																					array('getEmpruntsOf', 'getReservationsOf'));
@@ -1106,7 +1112,9 @@ class EmpruntTestSort extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase {
 	/** @var Class_WebService_SIGB_Emprunteur */
 	protected $emprunteur;
 
