@@ -65,8 +65,12 @@ function infos_onglet(sIdOngletCourant,sIsbn,sType,sCherche,nNiveau,nPage)
 	onglet
 		.css('display','block')
 		.css('max-width', onglet.parent().width()+'px')
-		.load(sUrl);
+		.load(sUrl, function() { blocNoticeAfterLoad(sType, sIsbn, onglet); } );
 
+}
+
+function blocNoticeAfterLoad(info, isbn, target) {
+	console.log(info + ' ' + isbn + ' ' + target);
 }
 
 function infos_bloc(sIdBloc,sIsbn,sType,sCherche,nNiveau,nPage)
@@ -91,7 +95,7 @@ function infos_bloc(sIdBloc,sIsbn,sType,sCherche,nNiveau,nPage)
 	var bloc = $('#'+sIdBloc + '_contenu');
 	bloc
 		.css('max-width', bloc.parent().width()+'px')
-		.load(sUrl);
+		.load(sUrl, function() { blocNoticeAfterLoad(sType, sIsbn, bloc); });
 }
 	
 function fermer_infos_notice(sId)
