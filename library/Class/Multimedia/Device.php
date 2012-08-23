@@ -320,4 +320,20 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	public function getSlotSize() {
 		return $this->getGroup()->getSlotSize();
 	}
+
+	/** @return int */
+	public function numberOfNextHolds() {
+		return Class_Multimedia_DeviceHold::countBy(['role' => 'device', 
+																								 'model' => $this, 
+																								 'where' => 'start>='.$this->getTimeSource()->date(),
+																								 'order' => 'start']);
+	}
+
+	/** @return array of DeviceHold */ 
+	public function getNextHolds() {
+		return Class_Multimedia_DeviceHold::findAllBy(['role' => 'device', 
+																									 'model' => $this, 
+																									 'where' => 'start>='.$this->getTimeSource()->date(),
+																									 'order' => 'start']);
+	}
 }

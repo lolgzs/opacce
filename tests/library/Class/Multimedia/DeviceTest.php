@@ -19,22 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 require_once 'ModelTestCase.php';
-
-
-class TimesSourceForTest extends Class_TimeSource {
-	protected $_time;
-
-	public function setTime($time) {
-		$this->_time = $time;
-		return $this;
-	}
-
-	public function time() {
-		return $this->_time;
-	}
-}
-
-
+require_once 'TimeSourceForTest.php';
 
 
 abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
@@ -69,7 +54,7 @@ abstract class Multimedia_DeviceCurrentHoldTestCase extends ModelTestCase {
 				->setGroup($this->_group);
 
 		$time = strtotime('today');
-		$this->_time_source = (new TimesSourceForTest())->setTime($time);
+		$this->_time_source = (new TimeSourceForTest())->setTime($time);
 
 		Class_Multimedia_Device::setTimeSource($this->_time_source);
 		Class_Multimedia_Location::setTimeSource($this->_time_source);

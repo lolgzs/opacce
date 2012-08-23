@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 require_once 'AdminAbstractControllerTestCase.php';
+require_once 'TimeSourceForTest.php';
 
 abstract class Admin_MultimetiaControllerTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
@@ -209,9 +210,15 @@ class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTes
 				->setGroups(array($group));
 
 
+		$time_source = (new TimeSourceForTest())->setTime(strtotime('today'));
+		Class_Multimedia_Device::setTimeSource($time_source);
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
 			->whenCalled('countBy')
-			->with(['role' => 'device', 'model' => $device])
+			->with(['role' => 'device', 
+							'model' => $device, 
+							'where' => 'start>='.$time_source->date(),
+							'order' => 'start'])
 			->answers(7);
 
 				
@@ -291,17 +298,30 @@ class Admin_MultimediaControllerHoldsTest extends Admin_MultimetiaControllerTest
 
 		$device = Class_Multimedia_Device::getLoader()->newInstanceWithId(1)
 			->setLibelle('Poste 1')
-			->setOs('Archlinux')
-			->setHolds([
-									Class_Multimedia_DeviceHold::newInstanceWithId(3)
-									->setStart(strtotime('2012-09-12 15:00'))
-									->setEnd(strtotime('2012-09-12 16:00'))
-									->setUser(Class_Users::newInstanceWithId(3)->setPrenom('Laurent')),
+			->setOs('Archlinux');
 
-									Class_Multimedia_DeviceHold::newInstanceWithId(4)
-									->setStart(strtotime('2012-09-13 12:00'))
-									->setEnd(strtotime('2012-09-13 13:00'))
-									->setUser(Class_Users::newInstanceWithId(4)->setPrenom('Estelle'))]);
+
+		$time_source = (new TimeSourceForTest())->setTime(mktime(10, 10, 10, 
+																														 9, 12, 2012));
+		Class_Multimedia_Device::setTimeSource($time_source);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('findAllBy')
+			->with(['role' => 'device', 
+							'model' => $device, 
+							'where' => 'start>='.$time_source->date(),
+							'order' => 'start'])
+			->answers([
+								 Class_Multimedia_DeviceHold::newInstanceWithId(3)
+								 ->setStart(strtotime('2012-09-12 15:00'))
+								 ->setEnd(strtotime('2012-09-12 16:00'))
+								 ->setUser(Class_Users::newInstanceWithId(3)->setPrenom('Laurent')),
+
+								 Class_Multimedia_DeviceHold::newInstanceWithId(4)
+								 ->setStart(strtotime('2012-09-13 12:00'))
+								 ->setEnd(strtotime('2012-09-13 13:00'))
+								 ->setUser(Class_Users::newInstanceWithId(4)->setPrenom('Estelle'))
+								 ]);
 
 
 		$this->dispatch('/admin/multimedia/holds/id/1', true);
