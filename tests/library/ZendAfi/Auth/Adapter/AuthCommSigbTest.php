@@ -19,8 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-
-class AuthCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelTestCase {
+abstract class AuthCommSigbTestCase extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -31,6 +30,15 @@ class AuthCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelT
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
 			->whenCalled('findAllBy')
 			->answers([]);
+	}
+}
+
+
+
+
+class AuthCommSigbAuthenticationWithoutWebServicesTest extends AuthCommSigbTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
 			->setIdentity('zork_sigb')
@@ -52,12 +60,11 @@ class AuthCommSigbAuthenticationWithoutWebServicesTest extends Storm_Test_ModelT
 
 
 
-abstract class AuthCommSigbWithWebServicesAndAbonneZorkTestCase extends Storm_Test_ModelTestCase {
+abstract class AuthCommSigbWithWebServicesAndAbonneZorkTestCase extends AuthCommSigbTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
-			->whenCalled('findAllBy')
+		Class_IntBib::whenCalled('findAllBy')
 			->with(['comm_sigb' => Class_IntBib::allCommSigbCodes()])
 			->answers([Class_IntBib::newInstanceWithId(1)
 								 ->setCommSigb(Class_IntBib::COM_NANOOK),
@@ -97,11 +104,11 @@ class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServi
 	public function setUp() {
 		parent::setUp();
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
-			->whenCalled('save')
-			->willDo(function($user) {
-					$user->setId(23); 
-					return true; });
+		Class_Users::whenCalled('save')->willDo(
+																						function($user) {
+																							$user->setId(23); 
+																							return true; 
+																						});
 
 		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
 			->setIdentity('zork_sigb')
@@ -134,4 +141,38 @@ class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServi
 		$this->assertEquals('zork@gmail.com', $result->MAIL);
 	}
 }
+
+
+
+class AuthCommSigbAuthenticationSetupInvalidUserTest extends AuthCommSigbWithWebServicesAndAbonneZorkTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Users::whenCalled('save')->answers(true);
+
+		$this->opsys
+			->whenCalled('getEmprunteur')
+			->answers(Class_WebService_SIGB_Emprunteur::newInstance(null)
+								->beValid());
+
+		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
+			->setIdentity('zork_sigb')
+			->setCredential('secret');
+
+		$this->_authenticate_result = $this->_adapter->authenticate();
+	}
+
+
+	/** @test */
+	public function authenticateZorkShouldNotBeValid() {
+		$this->assertFalse($this->_authenticate_result->isValid());
+	}
+
+
+	/** @test */
+	public function noUserShouldHaveBeenSaved() {
+		$this->assertFalse(Class_Users::methodHasBeenCalled('save'));
+	}
+}
+
 ?>

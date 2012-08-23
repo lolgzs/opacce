@@ -55,11 +55,8 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 			->beAbonneSIGB();
 
 		$result = $this->authenticateUserFromSIGB($user);
-		if (!$result->isValid())
-			return $result;
-
-		$user->save();
-		$this->_authenticated_user = $user;
+		if ($result->isValid())
+			$this->_authenticated_user = $user;
 
 		return $result;
 	}
@@ -84,6 +81,10 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 				->setNom($emprunteur->getNom())
 				->setPrenom($emprunteur->getPrenom())
 				->setMail($emprunteur->getEmail());
+
+			if (!$user->save())
+				continue;
+
 			return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $user->getLogin());
 		}
 
