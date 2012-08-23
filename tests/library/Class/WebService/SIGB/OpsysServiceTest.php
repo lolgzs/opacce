@@ -400,6 +400,35 @@ abstract class OpsysServiceWithSessionTestCase extends Storm_Test_ModelTestCase 
 }
 
 
+
+class EmprAuthentifierErreurTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+
+		$auth_response_error = new EmprAuthentifierResponse();
+		$auth_response_error->EmprAuthentifierResult = new RspEmprAuthentifier();
+		$auth_response_error->ErreurService = new WebSrvErreur();
+		$auth_response_error->ErreurService->CodeErreur = '1';
+
+		$this->search_client			
+			->whenCalled('EmprAuthentifier')->answers($auth_response_error);
+
+		$this->emprunteur = $this->opsys->getEmprunteur(
+													Class_Users::getLoader()->newInstance()
+														->setLogin('tintin')
+														->setPassword('1234'));
+	}
+
+
+	public function testEmprunteurIsNotValid() {
+		$this->assertFalse($this->emprunteur->isValid());
+	}
+}
+
+
+
+
 class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();

@@ -933,12 +933,16 @@ class EmprAuthentifierResponse {
 		$emprunteur = new Class_WebService_SIGB_Emprunteur(
 																 $this->EmprAuthentifierResult->IDEmprunteur,
 																 $this->EmprAuthentifierResult->IdentiteEmpr);
-		return $emprunteur
+		$emprunteur
 			->setEmail($this->EmprAuthentifierResult->EmailEmpr)
 			->setNbReservations($this->EmprAuthentifierResult->NombreReservations)
 			->setNbEmprunts($this->EmprAuthentifierResult->NombrePrets)
-			->setNbPretsEnRetard($this->EmprAuthentifierResult->NombreRetards)
-			->beValid();
+			->setNbPretsEnRetard($this->EmprAuthentifierResult->NombreRetards);
+
+		if ($this->EmprAuthentifierResult->IDEmprunteur)
+			$emprunteur->beValid();
+
+		return $emprunteur;
 	}
 }
 
