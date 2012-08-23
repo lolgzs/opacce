@@ -63,26 +63,47 @@ class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
 			$groups['no_group'] = $models;
 		}
 
+
+		$rows = $this->renderGroupsAsTableRows($groups, $attribs, $actions);
+		return '<tbody>'.$rows.'</tbody>';
+	}
+
+
+	public function renderGroupsAsTableRows($groups, $attribs, $actions) {
+		$rows = '';
+
 		foreach ($groups as $name => $groupModels) {
 			if ('no_group' != $name && '' != $name)
 				$rows .= '<tr><td style="background-color:#888;color:white;font-size:120%;padding:2px 10px;font-weight:bold;" colspan="' . $this->_cols_count . '">' . $this->view->escape($name) . '</td></tr>';
 
-			foreach ($groupModels as $model) {
-				$cols = '';
-
-				foreach ($attribs as $attrib)
-						$cols .= '<td>'.$this->view->escape($model->callGetterByAttributeName($attrib)).'</td>';
-
-				$rows .= '<tr>'.$cols.'<td>';
-				if ($this->_hasActions)
-					$rows .= $this->renderModelActions($model, $actions).'</td>';
-				$rows .= '</tr>';
-			}
+			$rows .= $this->renderModelsAsTableRows($groupModels, $attribs, $actions);
 		}
 
-		return '<tbody>'.$rows.'</tbody>';
+		return $rows;
 	}
 
+
+	public function renderModelsAsTableRows($groupModels, $attribs, $actions) {
+		$rows = '';
+		foreach ($groupModels as $model)
+			$rows .= $this->renderModelAsTableRow($model, $attribs, $actions);
+		return $rows;
+	}
+	
+
+	public function renderModelAsTableRow($model, $attribs, $actions) {
+		$cols = '';
+
+		foreach ($attribs as $attrib)
+			$cols .= '<td>'.$this->view->escape($model->callGetterByAttributeName($attrib)).'</td>';
+
+		$row = '<tr>'.$cols.'<td>';
+		if ($this->_hasActions)
+			$row .= $this->renderModelActions($model, $actions).'</td>';
+		$row .= '</tr>';
+
+		return $row;
+	}
 
 
 	/*
