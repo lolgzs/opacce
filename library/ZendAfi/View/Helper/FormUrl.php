@@ -19,31 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_Form extends Zend_Form {
-	public static function newWithOptions($options = null) {
-		return new self($options);
-	}
-
-
-	public function init() {
-		parent::init();
-		$this
-			->getPluginLoader(Zend_Form::ELEMENT)
-			->addPrefixPath('ZendAfi_Form_Element', 'ZendAfi/Form/Element');
-		$this
-			->getPluginLoader(Zend_Form::DECORATOR)
-			->addPrefixPath('ZendAfi_Form_Decorator', 'ZendAfi/Form/Decorator');
-		$this
-			->addElementPrefixPath('ZendAfi_Validate', 'ZendAfi/Validate', 'validate');
-	}
-
-
-	/**
-	 * @param $name string
-	 * @return Zend_Form_Element
-	 */
-	public function addRequiredTextNamed($name) {
-		$this->addElement('text', $name, array('required' => true, 'allowEmpty' => false));
-		return $this->getElement($name);
+class ZendAfi_View_Helper_FormUrl extends Zend_View_Helper_FormText {
+	public function formUrl($name, $value = null, $attribs = null)	 {
+		return str_replace('type="text"', 
+											 'type="url"',
+											 $this->formText($name, $value, $attribs));
 	}
 }
+
+?>

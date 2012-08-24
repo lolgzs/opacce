@@ -23,6 +23,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 class ZendAfi_Controller_Action_Helper_View extends Zend_View {
+	use Trait_Translator;
+
 	private $ouverture_boite;					// Html du haut de la boite
 	private $fermeture_boite;					// Html du bas de la boite
 
@@ -36,50 +38,12 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View {
 		$this->setEscape('htmlentities');
 
 		$this->doctype('XHTML1_TRANSITIONAL');
-
-		// Traducteur et user connecté
-		$this->translate = Zend_Registry::get('translate');
 	}
 
 
 	public function setModuleControllerActionNames($module, $controller, $action) {
 		$this->bodyParam = sprintf('class="%s_%s"',
 															 $controller, $action);
-	}
-
-	/**
-	 * @param string $libelle
-	 * @return string
-	 */
-	public function traduire($libelle)	{
-		return $this->_($libelle);
-	}
-
-	/**
-	 * @return Zend_Translate
-	 */
-	public function _translate() {
-		if (!$this->translate)
-			$this->translate = Zend_Registry::get('translate');
-		return $this->translate;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function _()	{
-		$args = func_get_args();
-		if ('' == $args[0]) 
-			return '';
-		return call_user_func_array(array($this->_translate(), '_'), $args);
-  }
-
-	/**
-	 * @return string
-	 */
-	public function _plural()	{
-		$args = func_get_args();
-		return call_user_func_array(array($this->_translate(), 'plural'), $args);
 	}
 
 

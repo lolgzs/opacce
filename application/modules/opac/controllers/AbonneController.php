@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class AbonneController extends Zend_Controller_Action {
+	use Trait_Translator;
+
 	protected $_user = null;								// Le user connecté
 
 	public function init()	{
@@ -133,9 +135,9 @@ class AbonneController extends Zend_Controller_Action {
 			else
 			{
 				if(strlen($avisTexte)< $longueur_min or strlen($avisTexte) > $longueur_max)
-					$this->view->message = $this->view->_("L'avis doit avoir une longueur comprise entre %d et %d caractères", $longueur_min, $longueur_max);
+					$this->view->message = $this->_("L'avis doit avoir une longueur comprise entre %d et %d caractères", $longueur_min, $longueur_max);
 				else
-					$this->view->message = $this->view->_('Il faut compléter tous les champs.');
+					$this->view->message = $this->_('Il faut compléter tous les champs.');
 				$this->view->avisSignature = $avisSignature;
 				$this->view->avisEntete = $avisEntete;
 				$this->view->avisTexte = $avisTexte;
@@ -290,7 +292,7 @@ class AbonneController extends Zend_Controller_Action {
 		$this->view->fiche = $this->_user->getFicheSigb();
 
 		if ($result['statut'] == 1) {
-			$this->view->fiche['message'] = $this->view->_('Prêt prolongé');
+			$this->view->fiche['message'] = $this->_('Prêt prolongé');
 		} else {
 			$this->view->fiche['erreur'] = $result['erreur'];
 		}
@@ -321,10 +323,10 @@ class AbonneController extends Zend_Controller_Action {
 			->setAttrib('id', 'user')
 			->setAttrib('autocomplete', 'off');
 
-		$textfields = array('nom' => $this->view->_('Nom'),
-												'prenom' => $this->view->_('Prénom'),
-												'pseudo' => $this->view->_('Pseudo'),
-												'mail' => $this->view->_('E-Mail'));
+		$textfields = array('nom' => $this->_('Nom'),
+												'prenom' => $this->_('Prénom'),
+												'pseudo' => $this->_('Pseudo'),
+												'mail' => $this->_('E-Mail'));
 
 		foreach($textfields	as $field => $label) {
 			$element = $form
@@ -340,22 +342,22 @@ class AbonneController extends Zend_Controller_Action {
 
 		$new_password = new Zend_Form_Element_Password('password');
 		$new_password
-			->setLabel($this->view->_('Nouveau mot de passe'))
+			->setLabel($this->_('Nouveau mot de passe'))
 			->addValidator('Identical',
 										 false,
 										 array('token' => $this->_request->getParam('confirm_password'),
-													 'messages' => array('missingToken' => $this->view->_('Vous devez confirmer le mot de passe'),
-																							 'notSame' => $this->view->_('Les mots de passe ne correspondent pas'))))
+													 'messages' => array('missingToken' => $this->_('Vous devez confirmer le mot de passe'),
+																							 'notSame' => $this->_('Les mots de passe ne correspondent pas'))))
 			->addValidator('StringLength', false, array(4,24));
 
 		$confirm_password = new Zend_Form_Element_Password('confirm_password');
 		$confirm_password
-			->setLabel($this->view->_('Confirmez le mot de passe'))
+			->setLabel($this->_('Confirmez le mot de passe'))
 			->addValidator('Identical',
 										 false,
 										 array('token' => $this->_request->getParam('password'),
-													 'messages' => array('missingToken' => $this->view->_('Vous devez saisir un mot de passe'),
-																							 'notSame' => $this->view->_('Les mots de passe ne correspondent pas'))))
+													 'messages' => array('missingToken' => $this->_('Vous devez saisir un mot de passe'),
+																							 'notSame' => $this->_('Les mots de passe ne correspondent pas'))))
 			->setValue($user->getPassword());
 
 
@@ -365,7 +367,7 @@ class AbonneController extends Zend_Controller_Action {
 
 		/* Abonnements aux newsletters*/
 		$subscriptions = new Zend_Form_Element_MultiCheckbox('subscriptions');
-		$subscriptions->setLabel($this->view->_("Abonnement aux lettres d'information"));
+		$subscriptions->setLabel($this->_("Abonnement aux lettres d'information"));
 
 
 		$newsletters = Class_Newsletter::getLoader()->findAll();
@@ -383,7 +385,7 @@ class AbonneController extends Zend_Controller_Action {
 
 
 		$form
-			->addElement('submit', 'submit', array('label' => $this->view->_('Enregistrer')))
+			->addElement('submit', 'submit', array('label' => $this->_('Enregistrer')))
 			->populate($user->toArray());
 
 		return $form;
@@ -480,16 +482,16 @@ class AbonneController extends Zend_Controller_Action {
 			$quotaErrorType = $this->_user->getMultimediaQuotaErrorForDay($day);
 			switch ($quotaErrorType) {
 			  case Class_Multimedia_DeviceHold::QUOTA_NONE:
-					$this->view->quotaError = $this->view->_('Vous n\'êtes pas autorisé à effectuer une réservation');
+					$this->view->quotaError = $this->_('Vous n\'êtes pas autorisé à effectuer une réservation');
 					break;
 			  case Class_Multimedia_DeviceHold::QUOTA_DAY:
-					$this->view->quotaError = $this->view->_('Quota déjà atteint ce jour, choisissez un autre jour.');
+					$this->view->quotaError = $this->_('Quota déjà atteint ce jour, choisissez un autre jour.');
 					break;
 			  case Class_Multimedia_DeviceHold::QUOTA_WEEK:
-					$this->view->quotaError = $this->view->_('Quota déjà atteint cette semaine, choisissez une autre semaine.');
+					$this->view->quotaError = $this->_('Quota déjà atteint cette semaine, choisissez une autre semaine.');
 					break;
 			  case Class_Multimedia_DeviceHold::QUOTA_MONTH:
-					$this->view->quotaError = $this->view->_('Quota déjà atteint ce mois, choisissez un autre mois.');
+					$this->view->quotaError = $this->_('Quota déjà atteint ce mois, choisissez un autre mois.');
 					break;
 			}
 		}
@@ -558,12 +560,12 @@ class AbonneController extends Zend_Controller_Action {
 			$end = $holdLoader->getTimeFromStartAndDuration($start, $this->_getParam('duration'));
 
 			if (0 < $holdLoader->countBetweenTimesForUser($start, $end, $this->_user)) {
-				$this->view->error = $this->view->_('Vous avez déjà une réservation dans ce créneau horaire');
+				$this->view->error = $this->_('Vous avez déjà une réservation dans ce créneau horaire');
 			}
 
 			if ($start < $location->getMinTimeForDate($bean->day)
 				|| $end > $location->getMaxTimeForDate($bean->day)) {
-				$this->view->error = $this->view->_('Ce créneau n\'est pas dans les heures d\'ouverture.');
+				$this->view->error = $this->_('Ce créneau n\'est pas dans les heures d\'ouverture.');
 			}
 
 			if (!$this->view->error) {
@@ -583,12 +585,12 @@ class AbonneController extends Zend_Controller_Action {
 		return $this->view
 			->newForm(['id' => 'hold-hours'])
 			->setMethod('get')
-			->addElement('select', 'time', ['label' => $this->view->_('À partir de quelle heure ?'),
+			->addElement('select', 'time', ['label' => $this->_('À partir de quelle heure ?'),
 																			'multiOptions' => $location->getStartTimesForDate($bean->day)])
-			->addElement('select', 'duration', ['label' => $this->view->_('Pour quelle durée ?'),
+			->addElement('select', 'duration', ['label' => $this->_('Pour quelle durée ?'),
 																					'multiOptions' => $location->getDurations()])
 			->addDisplayGroup(['time', 'duration'], 'choix', ['legend' => ''])
-			->addElement('submit', 'submit', ['label' => $this->view->_('Choisir')]);
+			->addElement('submit', 'submit', ['label' => $this->_('Choisir')]);
 	}
 
 
@@ -665,12 +667,12 @@ class AbonneController extends Zend_Controller_Action {
 	 * @return array
 	 */
 	protected function _getTimelineActions($current) {
-		$knownActions = ['location' => $this->view->_('Lieu'),
-										 'day' => $this->view->_('Jour'),
-										 'hours' => $this->view->_('Horaires'),
-										 'group' => $this->view->_('Section'),
-										 'device' => $this->view->_('Poste'),
-										 'confirm' => $this->view->_('Confirmation')];
+		$knownActions = ['location' => $this->_('Lieu'),
+										 'day' => $this->_('Jour'),
+										 'hours' => $this->_('Horaires'),
+										 'group' => $this->_('Section'),
+										 'device' => $this->_('Poste'),
+										 'confirm' => $this->_('Confirmation')];
 
 		$actions = array();
 		foreach ($knownActions as $knownAction => $label) {
@@ -702,5 +704,31 @@ class AbonneController extends Zend_Controller_Action {
 		}
 
 		return $bean;
+	}
+
+
+	public function suggestionAchatAction() {
+		$this->view->form = $this->suggestionAchatForm();
+	}
+
+
+	public function suggestionAchatForm() {
+		return (new ZendAfi_Form())
+			->setAttrib('class', 'zend_form')
+			->addElement('text', 'titre', ['label' => $this->_('Titre').' *',
+																		 'placeholder' => $this->_('Harry Potter à l\'école des sorciers'),
+																		 'size' => 80])
+
+			->addElement('text', 'auteur', ['label' => $this->_('Auteur').' *',
+																			'placeholder' => 'Joanne Kathleen Rowling',
+																			'size' => 80])
+
+			->addElement('url', 'description_url', ['label' => $this->_('Lien internet vers une description'),
+																							'placeholder' => 'http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers',
+																							'size' => 80,
+																							'type' => 'url'])
+			->addDisplayGroup(['titre', 'auteur', 'description_url'],
+												'suggestion',
+												['legend' => $this->_('Informations sur le document')]);
 	}
 }
