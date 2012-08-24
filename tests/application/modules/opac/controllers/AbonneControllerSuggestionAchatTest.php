@@ -74,4 +74,107 @@ class AbonneControllerSuggestionAchatFormTest extends AbstractControllerTestCase
 	}
 }
 
+
+
+
+class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControllerTestCase {
+	protected $_suggestion;
+
+	protected function _loginHook($account) {
+		$account->username     = 'Arnaud';
+		$account->ID_USER      = 666;
+	}
+
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+			->whenCalled('save')
+			->willDo(
+							 function($suggestion){
+								 $this->_suggestion = $suggestion->setId(66);
+							 });
+
+
+		$this->postDispatch('/opac/abonne/suggestion-achat', 
+												['titre' => 'Harry Potter',
+												 'auteur' => 'J.K.Rowling',
+												 'description_url' => 'http://harrypotter.fr',
+												 'isbn' => '2-07-0541 27_4',
+												 'commentaire' => 'Je veux le lire',
+												 'submit' => 'Envoyer']);	
+	}
+
+
+	/** @test */
+	public function newSuggestionShouldHaveTitreHarryPotter() {
+		$this->assertEquals('Harry Potter', $this->_suggestion->getTitre());
+	}
+
+
+	/** @test */
+	public function newSuggestionShouldHaveAuteurJKRowling() {
+		$this->assertEquals('J.K.Rowling', $this->_suggestion->getAuteur());
+	}
+
+
+	/** @test */
+	public function newSuggetionShouldHaveDescriptionUrlHarryPotterDotFr() {
+		$this->assertEquals('http://harrypotter.fr', $this->_suggestion->getDescriptionUrl());
+	}
+
+
+	/** @test */
+	public function newSuggestionsShouldHaveIsbn2070541274() {
+		$this->assertEquals('2070541274', $this->_suggestion->getIsbn());
+	}
+
+
+	/** @test */
+	public function shouldNotHaveSubmitAttribute() {
+		$this->assertNotContains('submit', array_keys($this->_suggestion->toArray()));
+	}
+
+	
+	/** @test */
+	public function newSuggestionShouldHaveCommentaireJeVeuxLeLire() {
+		$this->assertEquals('Je veux le lire', $this->_suggestion->getCommentaire());
+	}
+
+
+	/** @test */
+	public function newSuggestionShouldBelongsToArnaud() {
+		$this->assertEquals('Arnaud', $this->_suggestion->getUser()->getLogin());
+	}
+
+	
+	/** @test */
+	public function newSuggetionShouldDateCreationShouldBeToday() {
+		$this->assertEquals(date('Y-m-d'), $this->_suggestion->getDateCreation());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToSuggestionAchatId66() {
+		$this->assertRedirectTo('/opac/abonne/suggestion-achat/id/66');
+	}
+}
+
+
+
+
+class AbonneControllerSuggestionAchatWithIdTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+    Class_SuggestionAchat::newInstanceWithId(66);
+		$this->dispatch('/opac/abonne/suggestion-achat/id/66', true);
+	}
+
+
+  /** @test */
+	public function pageShouldDisplaySuggestionPriseEnCompte() {
+		$this->assertXPathContentContains('//p', 'Votre suggestion d\'achat');
+	}
+}
+
 ?>

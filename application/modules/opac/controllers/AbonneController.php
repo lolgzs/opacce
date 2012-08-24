@@ -708,8 +708,27 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function suggestionAchatAction() {
+		if (Class_SuggestionAchat::find($this->_getParam('id'))) {
+			$this->_forward('suggestion-achat-ok');
+			return;
+		}
+			
+
+		if ($this->_request->isPost()) {
+			$post = $this->_request->getPost();
+			unset($post['submit']);
+			$suggestion = (new Class_SuggestionAchat())
+				->updateAttributes($post)
+				->setUserId(Class_Users::currentUserId());
+			$suggestion->save();
+			$this->_redirect('/opac/abonne/suggestion-achat/id/'.$suggestion->getId());
+		}
+
 		$this->view->form = $this->suggestionAchatForm();
 	}
+
+
+	public function suggestionAchatOkAction() {	}
 
 
 	public function suggestionAchatForm() {
@@ -729,7 +748,7 @@ class AbonneController extends Zend_Controller_Action {
 
 			->addElement('text', 'isbn', ['label' => $this->_('Code-barres / ISBN'),
 																		'placeholder' => '2-07-054127-4',
-																		'size' => 13])
+																		'size' => 17])
 
 			->addElement('textarea', 'commentaire', ['label' => '',
 																							 'cols' => 100,
@@ -743,6 +762,6 @@ class AbonneController extends Zend_Controller_Action {
 												'commentaires',
 												['legend' => $this->_('Pourquoi suggérez-vous ce document ?')])
 
-			->addElement('submit', $this->_('Envoyer'));
+			->addElement('submit', 'submit', ['label' => $this->_('Envoyer')]);
 	}
 }

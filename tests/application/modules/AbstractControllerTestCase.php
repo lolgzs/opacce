@@ -78,6 +78,12 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		$account->confirmed    = true;
 		$account->enabled      = true;
 
+		Class_Bib::getLoader()
+			->newInstanceWithId(1)
+			->setLibelle('Tombouctou');
+
+		$this->_loginHook($account);
+
 		$user = Class_Users::getLoader()
 			->newInstanceWithId(666)
 			->setLogin($account->username)
@@ -85,14 +91,6 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 			->setRole($account->ROLE)
 			->setIdSite($account->ID_SITE);
 
-		Class_Bib::getLoader()
-			->newInstanceWithId(1)
-			->setLibelle('Tombouctou');
-
-		$this->_loginHook($account);
-
-		$user->setRoleLevel($account->ROLE_LEVEL);
-		$user->setIdSite($account->ID_SITE);
 		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 
