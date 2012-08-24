@@ -725,10 +725,24 @@ class AbonneController extends Zend_Controller_Action {
 
 			->addElement('url', 'description_url', ['label' => $this->_('Lien internet vers une description'),
 																							'placeholder' => 'http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers',
-																							'size' => 80,
-																							'type' => 'url'])
-			->addDisplayGroup(['titre', 'auteur', 'description_url'],
+																							'size' => 80])
+
+			->addElement('text', 'isbn', ['label' => $this->_('Code-barres / ISBN'),
+																		'placeholder' => '2-07-054127-4',
+																		'size' => 13])
+
+			->addElement('textarea', 'commentaire', ['label' => '',
+																							 'cols' => 100,
+																							 'rows' => 10])
+
+			->addDisplayGroup(['titre', 'auteur', 'description_url', 'isbn'],
 												'suggestion',
-												['legend' => $this->_('Informations sur le document')]);
+												['legend' => $this->_('Informations sur le document')])
+
+			->addDisplayGroup(['commentaire'],
+												'commentaires',
+												['legend' => $this->_('Pourquoi suggérez-vous ce document ?')])
+
+			->addElement('submit', $this->_('Envoyer'));
 	}
 }

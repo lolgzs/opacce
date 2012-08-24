@@ -99,10 +99,10 @@ class ZendAfi_View_Helper_Bouton extends ZendAfi_View_Helper_BaseHelper
 		$html[]=			'<td>';
 		$html[]=				'<img name="' . $rootName . '_gauche" src="' .  URL_ADMIN_IMG . '/bouton/bouton_gauche.gif" border="0" alt="" />';
 		$html[]=			'</td>';
-		$html[]=			'<td id="' . $rootName . '_milieu" style="background-image:url('.URL_ADMIN_IMG .'/bouton/bouton_milieu.gif); text-align:center" >';
+		$html[]=			'<td id="' . $rootName . '_milieu" style="background:url('.URL_ADMIN_IMG .'/bouton/bouton_milieu.gif) repeat-x; text-align:center" >';
 		$html[]=				'<img src="' . $picto . '" border="0" alt="valider" />';
 		$html[]=			'</td>';
-		$html[]=				'<td width="100%" align="center" id="' . $rootName . '_texte" style="background-image:url('.URL_ADMIN_IMG .'/bouton/bouton_milieu.gif); text-align:center;">';
+		$html[]=				'<td width="100%" align="center" id="' . $rootName . '_texte" style="background:url('.URL_ADMIN_IMG .'/bouton/bouton_milieu.gif) repeat-x; text-align:center;">';
 		$html[]=					$texte;
 		$html[]=				'</td>';
 		$html[]=			'<td>';

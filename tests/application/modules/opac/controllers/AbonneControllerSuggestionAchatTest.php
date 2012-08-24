@@ -54,6 +54,24 @@ class AbonneControllerSuggestionAchatFormTest extends AbstractControllerTestCase
 	public function formShouldContainsInputForDescriptionUrl() {
 		$this->assertXPath('//form//input[@type="url"][@name="description_url"][@placeholder="http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers"]');
 	}
+
+
+	/** @test */
+	public function formShouldContainsInputForISBN() {
+		$this->assertXPath('//form//input[@name="isbn"][@placeholder="2-07-054127-4"]');	
+	}
+
+	
+	/** @test */
+	public function formShouldContainsTextAreaForCommentaire() {
+		$this->assertXPath('//form//textarea[@name="commentaire"]');
+	}
+
+
+	/** @test */
+	public function formShouldContainsSubmitButtonEnvoyer() {
+		$this->assertXPath('//form//input[@type="submit"][@value="Envoyer"]');
+	}
 }
 
 ?>

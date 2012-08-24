@@ -464,7 +464,8 @@ input {
 }
 
 input[type='password'],
-input[type='text'] {border:1px solid #C8C8C8;}
+input[type='text'],
+input[type='url'] {border:1px solid #C8C8C8;}
 
 input.bouton{	font-size: 8pt;	color:#5f5f5f;  background-color:#f0f0f0;  border:1px solid #afafaf; cursor:pointer; padding:1px;}
 
@@ -1028,7 +1029,7 @@ body.abonne_multimedia-hold-day #hold-day.calendar {
 }
 
 
-body.abonne_multimedia-hold-hours input[type="submit"] {
+input[type="submit"] {
 		border: 2px outset buttonface;
 		width: 200px;
 		margin: 5px auto;
