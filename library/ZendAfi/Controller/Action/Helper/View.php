@@ -183,6 +183,8 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View {
 			$titre = $this->_($titre);
 		$html=str_replace("[=TITRE=]", $titre, $this->ouverture_boite);
 		print($html);
+
+		$this->titreAdd(strip_tags($titre));
 	}
 
 //------------------------------------------------------------------------------------------------------
