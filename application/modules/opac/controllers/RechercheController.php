@@ -352,6 +352,8 @@ class RechercheController extends Zend_Controller_Action
 		// Stats visualisation
 		$stat=new  Class_StatsNotices();
 		$stat->addStatVisu($id_notice);
+
+		Class_ScriptLoader::getInstance()->loadBabeltheque();
 	}
 
 

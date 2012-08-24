@@ -497,6 +497,17 @@ class Class_ScriptLoader {
 
 
 	/**
+	 * @return ScriptLoader
+	 */
+	public function loadBabeltheque() {
+		if (!$id = Class_AdminVar::getBabelthequeId())
+			return $this;
+
+		return $this->addOPACScript('babeltheque.js?bwid='.$id);
+	}
+
+
+	/**
 	 * @return String
 	 */
 	public function html() {

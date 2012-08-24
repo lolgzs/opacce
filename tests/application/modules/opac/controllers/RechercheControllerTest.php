@@ -53,6 +53,26 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 
 
 
+class RechercheControllerViewNoticeBabelthequeTest extends RechercheControllerNoticeTestCase {
+	/** @test */
+	public function withoutBabelthequeJSShouldNotBeLoaded() {
+		Class_AdminVar::newInstanceWithId('BABELTHEQUE_JS')->setValeur('');
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertNotXpath('//script[contains(@src, "babeltheque.js")]');
+	}
+
+
+	/** @test */
+	public function withBabelthequeJSShouldBeLoadedWithRightId() {
+		Class_AdminVar::newInstanceWithId('BABELTHEQUE_JS')->setValeur('http://www.babeltheque.com/bw_666.js');
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertXpath('//script[contains(@src, "babeltheque.js?bwid=666")]');
+	}
+}
+
+
+
+
 abstract class RechercheControllerViewNoticeTestCase extends RechercheControllerNoticeTestCase {
 	/** @test */
 	public function titleShouldBeDisplayed() {
@@ -77,7 +97,7 @@ abstract class RechercheControllerViewNoticeTestCase extends RechercheController
 
 
 
-class RechercheControllerViewNoticeTest extends RechercheControllerViewNoticeTestCase {
+abstract class RechercheControllerViewNoticeTest extends RechercheControllerViewNoticeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()));

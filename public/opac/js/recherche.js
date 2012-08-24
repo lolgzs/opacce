@@ -69,9 +69,10 @@ function infos_onglet(sIdOngletCourant,sIsbn,sType,sCherche,nNiveau,nPage)
 
 }
 
-function blocNoticeAfterLoad(info, isbn, target) {
-	console.log(info + ' ' + isbn + ' ' + target);
-}
+
+if (undefined == window.blocNoticeAfterLoad) 
+	window.blocNoticeAfterLoad = function (info, isbn, target) {};
+
 
 function infos_bloc(sIdBloc,sIsbn,sType,sCherche,nNiveau,nPage)
 {

@@ -234,4 +234,11 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	public function getValeur() {
 		return stripslashes($this->_get('valeur'));
 	}
+
+
+	public static function getBabelthequeId() {
+		$mathes = [];
+		if (preg_match('/bw_([^\.]+)\.js/', (string)self::get('BABELTHEQUE_JS'), $matches))
+			return (int)$matches[1];
+	}
 }
