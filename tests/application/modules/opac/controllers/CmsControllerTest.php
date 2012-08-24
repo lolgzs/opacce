@@ -409,6 +409,12 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 
 
 	/** @test */
+	public function pageTitleShouldContainsLaFeteDeLaFrite() {
+		$this->assertXpathContentContains('//title', 'La fête de la frite');
+	}
+
+
+	/** @test */
 	public function calendarDateShouldBeDu3SeptembreAu5Octobre() {
 		$this->assertXpathContentContains('//span[@class="calendar_event_date"]', 'Du 03 septembre au 05 octobre');
 	}

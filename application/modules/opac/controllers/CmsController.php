@@ -113,7 +113,7 @@ class CmsController extends Zend_Controller_Action {
 		$article = $article->getTraductionLangue($langue);
 
 		$this->view->article = $article;
-		$this->view->title = $article->getTitre();
+		$this->view->titreAdd($article->getTitre());
 	}
 
 
