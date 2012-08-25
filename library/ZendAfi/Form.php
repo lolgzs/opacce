@@ -46,4 +46,35 @@ class ZendAfi_Form extends Zend_Form {
 		$this->addElement('text', $name, array('required' => true, 'allowEmpty' => false));
 		return $this->getElement($name);
 	}
+
+
+	/**
+	 * Validate the form
+	 * 
+	 * @param  mixed $data 
+	 * @return boolean
+	 */
+	public function isValid($array_or_model) {
+		if (is_array($array_or_model))
+			return parent::isValid($array_or_model);
+
+		$valid = parent::isValid($array_or_model->toArray()) & $array_or_model->isValid();
+		$this->addModelErrors($array_or_model);		
+
+		$this->_errorsExist = !$valid;
+		return $valid;
+	}
+
+
+	/**
+	 * @param  Storm_Model_Abstrict $model 
+	 */
+	public function addModelErrors($model) {
+		$model->validate();
+		foreach($model->getErrors() as $attribute => $message) {
+			if ($element = $this->getElement($attribute))
+				$element->addError($message);
+		}
+	}
+
 }

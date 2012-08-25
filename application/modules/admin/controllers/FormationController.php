@@ -356,20 +356,14 @@ class Admin_FormationController extends Zend_Controller_Action {
 				->setDateDebut($this->_readPostDate($this->_request->getPost('date_debut')))
 				->setDateFin($this->_readPostDate($this->_request->getPost('date_fin')))
 				->setDateLimiteInscription($this->_readPostDate($this->_request->getPost('date_limite_inscription')))
-				->setIntervenants($intervenants)
-				->validate();
+				->setIntervenants($intervenants);
 			
-			if ($form->isValid($this->_request->getPost()) && $session->isValid()) {
+			if ($form->isValid($session)) {
 				$session->save();
 				$this->_helper->notify(sprintf('Session du %s sauvegardée', 
 																			 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY')));
 				$this->_redirect('admin/formation/session_edit/id/'.$session->getId());
 				return true;
-			}
-
-			foreach($session->getErrors() as $attribute => $message) {
-				if ($element = $form->getElement($attribute))
-					$element->addError($message);
 			}
 		}
 
