@@ -27,7 +27,7 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 	protected $_default_attribute_values = array('date_creation' => '');
 
 	public function setIsbn($isbn) {
-		return parent::_set('isbn', preg_replace('/[^(0-9)]/', '', $isbn));
+		return parent::_set('isbn', preg_replace('/[\s\.\-\_]/', '', (string)$isbn));
 	}
 
 

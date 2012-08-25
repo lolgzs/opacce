@@ -24,16 +24,41 @@ class ZendAfi_Validate_Isbn extends Zend_Validate_Abstract {
 	protected $_messageTemplates = array(self::INVALID_ISBN   => "'%value%' n'est pas un ISBN valide");
 	
 	public function isValid($value)	{
-		if ('' === $valueString = (string) $value)
+		if ('' === $valueString = preg_replace('/[\s\.\-\_]/', '', (string)$value))
 			return true;
 
 		$this->_setValue($valueString);
 		
-		if (strlen($valueString) !== 10) {
-			$this->_error(self::INVALID_ISBN);
+		if ($this->isISBN10Valid($valueString) || $this->isISBN13Valid($valueString)) 
+			return true;
+
+		$this->_error(self::INVALID_ISBN);
+		return false;
+	}
+
+
+	/** cf http://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-13_check_digit_calculation */
+	public function isISBN13Valid($n) {
+    $check = 0;
+    for ($i = 0; $i < 13; $i+=2) $check += substr($n, $i, 1);
+    for ($i = 1; $i < 12; $i+=2) $check += 3 * substr($n, $i, 1);
+    return $check % 10 == 0;
+	}
+
+
+	/** cf http://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation */
+	public function isISBN10Valid($ISBN10){
+		if(strlen($ISBN10) != 10)
 			return false;
+ 
+		$a = 0;
+		for($i = 0; $i < 10; $i++){
+			if ($ISBN10[$i] == "X"){
+				$a += 10*intval(10-$i);
+			} else { $a += intval($ISBN10[$i]) * intval(10-$i); }
 		}
-		return true;
+		return ($a % 11 == 0);
 	}
 }
 ?>
+
