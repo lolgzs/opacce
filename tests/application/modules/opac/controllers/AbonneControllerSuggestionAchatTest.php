@@ -208,6 +208,33 @@ class AbonneControllerSuggestionAchatPostWrongDataTest extends AbstractControlle
 
 
 
+class AbonneControllerSuggestionAchatDataWithEmptyFieldsNotRequiredTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+			->whenCalled('save')
+			->answers(true);
+
+		$this->postDispatch('/opac/abonne/suggestion-achat', 
+												['titre' => 'Millenium',
+												 'auteur' => 'Stieg Larsson',
+												 'description_url' => '',
+												 'isbn' => '',
+												 'commentaire' => ''],
+												true);	
+	}
+
+
+	/** @test */
+	public function responseShouldBeARedirect() {
+		$this->assertRedirect();
+	}
+}
+
+
+
+
 class AbonneControllerSuggestionAchatWithIdTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
