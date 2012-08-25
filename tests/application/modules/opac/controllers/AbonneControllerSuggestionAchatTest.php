@@ -163,6 +163,51 @@ class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControlle
 
 
 
+class AbonneControllerSuggestionAchatPostWrongDataTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+			->whenCalled('save')
+			->answers(true);
+
+
+		$this->postDispatch('/opac/abonne/suggestion-achat', 
+												['titre' => '',
+												 'auteur' => '',
+												 'description_url' => 'h p',
+												 'isbn' => '207',
+												 'commentaire' => '']);	
+	}
+
+
+	/** @test */
+	public function errorForTitreShouldBeUnTitreEstRequis() {
+		$this->assertXPathContentContains('//li', 'Un titre est requis');
+	}
+
+
+	/** @test */
+	public function errorForAuteurShouldBeUnAuteurEstRequis() {
+		$this->assertXPathContentContains('//li', 'Un auteur est requis');
+	}
+
+
+	/** @test */
+	public function errorForDescriptionUrlShouldBeURLInvalide() {
+		$this->assertXPathContentContains('//li', '\'h p\' n\'est pas une URL valide');
+	}
+
+
+	/** @test */
+	public function errorForIsbnShouldBeFormatIncorrect() {
+		$this->assertXPathContentContains('//li', '\'207\' n\'est pas un ISBN valide');
+	}
+}
+
+
+
+
 class AbonneControllerSuggestionAchatWithIdTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();

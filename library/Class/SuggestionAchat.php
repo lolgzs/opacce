@@ -35,6 +35,28 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 		if (!$this->hasDateCreation())
 			$this->setDateCreation(date('Y-m-d'));
 	}
+
+
+	public function validate() {
+		$this
+			->validateAttribute('titre', 'Zend_Validate_NotEmpty', 'Un titre est requis')
+			->validateAttribute('auteur','Zend_Validate_NotEmpty', 'Un auteur est requis')
+			->validateAttribute('description_url', 'ZendAfi_Validate_Url')
+			->validateAttribute('isbn', 'ZendAfi_Validate_Isbn');
+	}
+
+
+	public function validateAttribute($name, $validator_class, $message=null) {
+		$validator = new $validator_class();
+		$valid = $validator->isValid($this->_get($name));
+		if ($message)
+			return $this->checkAttribute($name, $valid, $message);
+
+		foreach($validator->getMessages() as $message) 
+			$this->checkAttribute($name, $valid, $message);
+
+		return $this;
+	}
 }
 
 ?>

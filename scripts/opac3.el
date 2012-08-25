@@ -44,7 +44,8 @@
 	(require 'phpunit)
 	(require 'auto-complete)
 	(auto-complete-mode t)
-	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
+;;	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
+	(setq ac-sources '(ac-source-etags))
 	(imenu-add-menubar-index)
 
   (setq 
@@ -56,43 +57,7 @@
 																			("PHP\s+[0-9]+\. [^/]* \\([^:]+\\):\\([0-9]+\\)" 1 2)
 																			("in \\(/.*\\) on line \\([0-9]+\\)" 1 2) ) 
 	 geben-pause-at-entry-line nil)	
-
-;;	(opac3-setup-outline-mode)
 	)
-
-
-(defun opac3-setup-outline-mode()
-	(setq outline-regexp 
-				(concat "^<\\?\\|"
-								"^\\?>\\|"
-								"^[abstract ]*class\\|"
-								"^inteface\\|"
-								"^  [abstract|public|protected|private|static]*\s?[public|protected|private|static]*\s?function\\|"
-								"^  [abstract|public|protected|private|static]*\s?[public|protected|private|static]*\s?function\\|"
-								"^/\\*\\*\\|"
-								"^  /\\*\\*\\|"
-								"^    /\\*\\*"))
-
-
-	(setq outline-level
-				(function (lambda ()
-										(save-excursion
-											(let ((str nil))
-												(looking-at outline-regexp)
-												(setq str (buffer-substring-no-properties
-																	 (match-beginning 0) (match-end 0)))
-												(cond
-												 ((string-match "^/\\*\\*" str) 1)
-												 ((string-match "^<\\?" str) 1)
-												 ((string-match "^\\?>" str) 1)
-												 ((string-match "^class" str) 1)
-												 ((string-match "^  /\\*\\*" str) 2)
-												 ((string-match "^    /\\*\\*" str) 2)
-												 ((string-match "^  function" str) 3)
-												 ((string-match "^    function" str) 3)
-												 ))))))
-	(outline-minor-mode t)
-	(hide-body))
 
 
 (defun opac3-stop-geben (buffer msg)
@@ -104,6 +69,7 @@
 	;; (kill-line)
 	(save-buffer)
 	)
+
 
 (defun opac3-compile-phpunit (&optional params &optional debug &optional testdox)
 	(save-buffer)

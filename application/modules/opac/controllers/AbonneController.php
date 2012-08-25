@@ -713,6 +713,7 @@ class AbonneController extends Zend_Controller_Action {
 			return;
 		}
 			
+		$form = $this->suggestionAchatForm();
 
 		if ($this->_request->isPost()) {
 			$post = $this->_request->getPost();
@@ -720,11 +721,14 @@ class AbonneController extends Zend_Controller_Action {
 			$suggestion = (new Class_SuggestionAchat())
 				->updateAttributes($post)
 				->setUserId(Class_Users::currentUserId());
-			$suggestion->save();
-			$this->_redirect('/opac/abonne/suggestion-achat/id/'.$suggestion->getId());
+
+			if ($form->isValid($suggestion)) {
+				$suggestion->save();
+				$this->_redirect('/opac/abonne/suggestion-achat/id/'.$suggestion->getId());
+			}
 		}
 
-		$this->view->form = $this->suggestionAchatForm();
+		$this->view->form = $form;
 	}
 
 

@@ -18,10 +18,10 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ZendAfi_Validate_Url extends Zend_Validate_Abstract {
-	const INVALID_URL = 'invalidUrl';
+class ZendAfi_Validate_Isbn extends Zend_Validate_Abstract {
+	const INVALID_ISBN = 'invalidIsbn';
 	
-	protected $_messageTemplates = array(self::INVALID_URL   => "'%value%' n'est pas une URL valide");
+	protected $_messageTemplates = array(self::INVALID_ISBN   => "'%value%' n'est pas un ISBN valide");
 	
 	public function isValid($value)	{
 		if ('' === $valueString = (string) $value)
@@ -29,8 +29,8 @@ class ZendAfi_Validate_Url extends Zend_Validate_Abstract {
 
 		$this->_setValue($valueString);
 		
-		if (!Zend_Uri::check($value)) {
-			$this->_error(self::INVALID_URL);
+		if (strlen($valueString) !== 10) {
+			$this->_error(self::INVALID_ISBN);
 			return false;
 		}
 		return true;
