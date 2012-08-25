@@ -713,7 +713,7 @@ class AbonneController extends Zend_Controller_Action {
 			return;
 		}
 			
-		$form = $this->suggestionAchatForm();
+		$form = new ZendAfi_Form_SuggestionAchat();
 
 		if ($this->_request->isPost()) {
 			$post = $this->_request->getPost();
@@ -733,39 +733,4 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function suggestionAchatOkAction() {	}
-
-
-	public function suggestionAchatForm() {
-		return (new ZendAfi_Form())
-			->setAttrib('class', 'zend_form')
-			->addElement('text', 'titre', ['label' => $this->_('Titre').' *',
-																		 'placeholder' => $this->_('Harry Potter à l\'école des sorciers'),
-																		 'size' => 80])
-
-			->addElement('text', 'auteur', ['label' => $this->_('Auteur').' *',
-																			'placeholder' => 'Joanne Kathleen Rowling',
-																			'size' => 80])
-
-			->addElement('url', 'description_url', ['label' => $this->_('Lien internet vers une description'),
-																							'placeholder' => 'http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers',
-																							'size' => 80])
-
-			->addElement('text', 'isbn', ['label' => $this->_('Code-barres / ISBN'),
-																		'placeholder' => '2-07-054127-4',
-																		'size' => 17])
-
-			->addElement('textarea', 'commentaire', ['label' => '',
-																							 'cols' => 100,
-																							 'rows' => 10])
-
-			->addDisplayGroup(['titre', 'auteur', 'description_url', 'isbn'],
-												'suggestion',
-												['legend' => $this->_('Informations sur le document')])
-
-			->addDisplayGroup(['commentaire'],
-												'commentaires',
-												['legend' => $this->_('Pourquoi suggérez-vous ce document ?')])
-
-			->addElement('submit', 'submit', ['label' => $this->_('Envoyer')]);
-	}
 }
