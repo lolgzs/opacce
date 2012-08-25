@@ -25,6 +25,7 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 	public function init() {
 		parent::init();
 		$this
+			->setAttrib('id', 'suggestion')
 			->setAttrib('class', 'zend_form')
 			->addElement('text', 'titre', ['label' => $this->_('Titre').' *',
 																		 'placeholder' => $this->_('Harry Potter à l\'école des sorciers'),
@@ -55,6 +56,12 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 												['legend' => $this->_('Pourquoi suggérez-vous ce document ?')])
 
 			->addElement('submit', 'submit', ['label' => $this->_('Envoyer')]);
+	}
+
+
+	public function removeSubmitButton() {
+		$this->removeElement('submit');
+		return $this;
 	}
 }
 

@@ -97,4 +97,58 @@ class Admin_SuggestionAchatControllerIndexTest extends Admin_SuggestionAchatCont
 
 
 
+
+class Admin_SuggestionAchatControllerEditHarryPotterTest extends Admin_SuggestionAchatControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/suggestion-achat/edit/id/2', true);
+	}
+
+
+	/** @test */
+	public function formShouldContainsInputForTitre() {
+		$this->assertXPath('//form[@id="suggestion"]//input[@name="titre"]');
+	}
+
+
+	/** @test */
+	public function formShouldNotHaveSubmitButton() {
+		$this->assertNotXPath('//form//input[@type="submit"]');
+	}
+}
+
+
+
+
+class Admin_SuggestionAchatControllerEditHarryPotterPostTest extends Admin_SuggestionAchatControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+			->whenCalled('save')
+			->answers(true);
+	}
+
+
+	/** @test */
+	public function errorForEmptyTitreShouldBeUnTitreEstRequis() {
+		$this->postDispatch('/admin/suggestion-achat/edit/id/2', 
+												['titre' => ''],
+												true);	
+
+		$this->assertXPathContentContains('//ul[@class="errors"]//li', 'Un titre est requis');
+	}
+
+
+	/** @test */
+	public function withValidDataShouldHaveNoError() {
+		$this->postDispatch('/admin/suggestion-achat/edit/id/2', 
+												['titre' => 'Star Wars', 'auteur' => 'G.Lucas', 'isbn' => ''],
+												true);
+		$this->assertRedirect();
+	}
+}
+
+
+
 ?>

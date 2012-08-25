@@ -33,7 +33,7 @@ class Admin_SuggestionAchatController extends ZendAfi_Controller_Action {
 						'actions' => ['edit' => ['title' => 'Modifier une suggestion d\'achat'],
 													'index' => ['title' => 'Suggestions d\'achat']],
 
-						'form' => (new ZendAfi_Form_SuggestionAchat()) ];
+						'form' => (new ZendAfi_Form_SuggestionAchat())->removeSubmitButton() ];
 	}
 }
 

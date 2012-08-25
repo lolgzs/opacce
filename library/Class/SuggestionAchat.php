@@ -37,6 +37,11 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 	}
 
 
+	public function getLibelle() {
+		return '';
+	}
+
+
 	public function validate() {
 		$this
 			->validateAttribute('titre', 'Zend_Validate_NotEmpty', 'Un titre est requis')

@@ -170,6 +170,13 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
+	public function getForm() {
+		if (isset($this->_definitions['form']))
+			return $this->_definitions['form'];
+		return null;
+	}
+
+
 	public function sort($instances) {
 		if (isset($this->_definitions['sort']))
 			usort($instances, $this->_definitions['sort']);

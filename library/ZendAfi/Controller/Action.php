@@ -94,11 +94,10 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 		
 		$this->view->form = $form;
 
-		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-			$values = $form->getValues();
-			return $model
-				->updateAttributes($values)
-				->save();
+		if ($this->_request->isPost()) {
+			$model->updateAttributes($this->_request->getPost());
+			if ($form->isValid($model))
+				return $model->save();
 		}
 		return false;
   }
@@ -110,11 +109,13 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	protected function _getForm($model) {
-		$form = $this->view->newForm(array('id' => $this->_definitions->getModelName()));
-		$this->_definitions
-			->addFormElements($form)
-			->addDisplayGroups($form);
-		
+		if (!$form = $this->_definitions->getForm()) {
+			$form = $this->view->newForm(array('id' => $this->_definitions->getModelName()));
+			$this->_definitions
+				->addFormElements($form)
+				->addDisplayGroups($form);
+		}
+
 		return $form
 			->populate($this->_request->getParams())
 			->populate($model->toArray());
