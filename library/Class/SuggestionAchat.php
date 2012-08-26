@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_SuggestionAchat extends Storm_Model_Abstract {
+	use Trait_Translator;
+
 	protected $_table_name = 'suggestion_achat';
 
 	protected $_belongs_to = array('user' => array('model' => 'Class_Users',
@@ -61,6 +63,35 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 			$this->checkAttribute($name, $valid, $message);
 
 		return $this;
+	}
+
+
+	public function sendMail($from) {
+		$body_text = '';
+
+		$infos = [$this->_('Titre') => $this->getTitre(), 
+							$this->_('Auteur') => $this->getAuteur(),
+							$this->_('ISBN') => $this->getISBN(),
+							$this->_('Lien') => $this->getDescriptionUrl(),
+							$this->_('Demandeur') => $this->getUser()->getNomComplet(),
+							$this->_('N° carte abonné') => $this->getUser()->getIdabon(),
+							$this->_('Commentaire') => $this->getCommentaire()];
+		foreach($infos as $label => $value)
+			$body_text .= sprintf("%s: %s\n", $label, $value);
+
+		$mail = new Zend_Mail('utf8');
+		$mail
+			->setFrom($from)
+			->setSubject($this->_('Suggestion d\'achat: ').$this->getTitre())
+			->setBodyText($body_text);
+
+		if ($mail_user = $this->getUser()->getMail())
+			$mail->addTo($mail_user);
+
+		if ($mail_profil = Class_Profil::getCurrentProfil()->getMailSiteOrPortail())
+			$mail->addTo($mail_profil);
+
+		$mail->send();
 	}
 }
 

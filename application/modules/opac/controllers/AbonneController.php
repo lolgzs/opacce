@@ -724,6 +724,7 @@ class AbonneController extends Zend_Controller_Action {
 
 			if ($form->isValid($suggestion)) {
 				$suggestion->save();
+				$suggestion->sendMail('noreply@'.$this->_request->getHttpHost());
 				$this->_redirect('/opac/abonne/suggestion-achat/id/'.$suggestion->getId());
 			}
 		}

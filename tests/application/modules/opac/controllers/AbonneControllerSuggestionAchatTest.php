@@ -79,11 +79,13 @@ class AbonneControllerSuggestionAchatFormTest extends AbstractControllerTestCase
 
 class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControllerTestCase {
 	protected $_suggestion;
+	protected $_mail;
 
 	protected function _loginHook($account) {
 		$account->username     = 'Arnaud';
 		$account->ID_USER      = 666;
 	}
+
 
 	public function setUp() {
 		parent::setUp();
@@ -95,6 +97,8 @@ class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControlle
 								 $this->_suggestion = $suggestion->setId(66);
 							 });
 
+		$mock_transport = new MockMailTransport();
+		Zend_Mail::setDefaultTransport($mock_transport);
 
 		$this->postDispatch('/opac/abonne/suggestion-achat', 
 												['titre' => 'Harry Potter',
@@ -103,6 +107,8 @@ class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControlle
 												 'isbn' => '2-07-0541 27_4',
 												 'commentaire' => 'Je veux le lire',
 												 'submit' => 'Envoyer']);	
+
+		$this->_mail = $mock_transport->sent_mail;
 	}
 
 
@@ -157,6 +163,18 @@ class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControlle
 	/** @test */
 	public function responseShouldRedirectToSuggestionAchatId66() {
 		$this->assertRedirectTo('/opac/abonne/suggestion-achat/id/66');
+	}
+
+
+	/** @test */
+	public function sentMailSubjectShouldBeSuggestionAchatHarryPotter() {
+		$this->assertEquals('Suggestion d\'achat: Harry Potter', $this->_mail->getSubject());
+	}
+
+
+	/** @test */
+	public function fromShouldBeNoReplyAtLocalhost() {
+		$this->assertEquals('noreply@localhost', $this->_mail->getFrom());
 	}
 }
 
