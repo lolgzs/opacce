@@ -18,6 +18,7 @@
 		<whitelist>
 			<directory suffix=".php">../application</directory>
 			<directory suffix=".php">../library/Class</directory>
+			<directory suffix=".php">../library/Trait</directory>
 			<directory suffix=".php">../library/Storm</directory>
 			<directory suffix=".php">../library/ZendAfi</directory>
 			<directory suffix=".php">../library/fonctions</directory>
