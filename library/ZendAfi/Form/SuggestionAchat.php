@@ -44,7 +44,7 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 																		'size' => 17])
 
 			->addElement('textarea', 'commentaire', ['label' => '',
-																							 'cols' => 100,
+																							 'cols' => 80,
 																							 'rows' => 10])
 
 			->addDisplayGroup(['titre', 'auteur', 'description_url', 'isbn'],
