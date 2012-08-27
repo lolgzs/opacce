@@ -1029,7 +1029,7 @@ body.abonne_multimedia-hold-day #hold-day.calendar {
 }
 
 
-input[type="submit"] {
+.form input[type="submit"] {
 		border: 2px outset buttonface;
 		width: 200px;
 		margin: 5px auto;
