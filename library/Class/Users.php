@@ -728,6 +728,7 @@ class Class_Users extends Storm_Model_Abstract {
 		if ($user->PRENOM) 
 			return $user->PRENOM;
 
+
 		return $user->LOGIN;
 	}
 
@@ -843,6 +844,20 @@ class Class_Users extends Storm_Model_Abstract {
 
 	public function getFutureMultimediaHolds() {
 		return Class_Multimedia_DeviceHold::getLoader()->getFutureHoldsOfUser($this);
+	}
+
+
+	public function setNom($nom) {
+		if (null === $nom)
+			$nom = '';
+		return parent::_set('nom', $nom);
+	}
+
+
+	public function setPrenom($prenom) {
+		if (null === $prenom)
+			$prenom = '';
+		return parent::_set('prenom', $prenom);
 	}
 
 
