@@ -37,6 +37,11 @@ class Class_Codification
 //------------------------------------------------------------------------------------------------------
 	static function getComboTypesDocs($valeur,$events="",$tous=false)
 	{
+		/*
+		 * Attention: utilisé dans la sélection type doc recherche simple et certains suppriment des types de
+		 * docs dans cosmogramme pour ne pas les avoir dans la liste des types de doc
+		 *
+		 */
 		$data=fetchOne("select liste from variables where clef='types_docs'");
 		if($events > "") $events=" ".$events;
 		$combo='<select name="type_doc" '.$events.'>';

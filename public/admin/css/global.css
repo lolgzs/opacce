@@ -919,3 +919,10 @@ table.lieux td:first-child {
 table.lieux td:last-child {
 		width: 48px;
 }
+
+
+
+
+div[id^="liste_picto_genre_"]  {
+		margin-top: -4px;
+}

@@ -94,5 +94,4 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 		$mail->send();
 	}
 }
-
 ?>
