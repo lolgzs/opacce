@@ -63,7 +63,8 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		"ABON_FORMATIONS" => ["libelle" => "Formations", "groupe" => "ABON", "phone" => false],
 		"FORM_CONTACT" => ["libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false], 
 		"VODECLIC" => ["libelle" => "Lien vers Vodeclic", "groupe" => "ABON", "phone" => false],
-		"RESERVER_POSTE" => ["libelle" => "Réserver un poste multimédia", "groupe" => "ABON", "phone" => false]
+		"RESERVER_POSTE" => ["libelle" => "Réserver un poste multimédia", "groupe" => "ABON", "phone" => false],
+		'SUGGESTION_ACHAT' => ['libelle' => 'Suggestion d\'achat', 'groupe' => 'ABON', 'phone' => false]
 	 ];
 
 	private $fonction_vide = ["action" => "index", "popup_width" => 550, "popup_height" => 215, "phone" => true];
@@ -216,6 +217,9 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 				break;
 			case "RESERVER_POSTE": 
 				$url = BASE_URL . '/abonne/multimedia-hold-location';
+				break;
+		  case 'SUGGESTION_ACHAT':
+			  $url = BASE_URL . '/abonne/suggestion-achat';
 				break;
 			default: $url = BASE_URL;
 				break;

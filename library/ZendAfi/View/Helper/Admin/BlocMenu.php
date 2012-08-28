@@ -49,7 +49,7 @@ class ZendAfi_View_Helper_Admin_BlocMenu extends ZendAfi_View_Helper_BaseHelper 
 		$html.= '<td width="20px" align="center"><img src="'.URL_ADMIN_IMG.'ico/down.gif" onclick="descendreMenu(this)" style="cursor:pointer" title="Descendre" alt="Descendre" /></td>';
 		$html.= '</tr></table>';
 	
-		$this->_writeChildrenOfMenuOnHtml($menu, $html);
+		$html .= $this->_childrenOfMenu($path_ico, $menu, $browser);
 
 		$html .= '</div>';
 		
@@ -57,22 +57,20 @@ class ZendAfi_View_Helper_Admin_BlocMenu extends ZendAfi_View_Helper_BaseHelper 
 	}
 
 
-	protected function _writeChildrenOfMenuOnHtml($menu, $html) {
+	protected function _childrenOfMenu($path_ico, $menu, $browser) {
 		// Ajout bloc des sous-menus 
 		$display = ($menu['type_menu'] == 'MENU') ? 'block' : 'none';
 
-		$html .= '<div id="sous_menu" class="formTable" style="margin-left:50px;border:1px solid #C8C8C8;padding:5px;margin-bottom:5px;margin-right:0px;border-right:none;display:' . $display . '">';
+		$html = '<div id="sous_menu" class="formTable" style="margin-left:50px;border:1px solid #C8C8C8;padding:5px;margin-bottom:5px;margin-right:0px;border-right:none;display:' . $display . '">';
 		$html .= '<div class="fonction_menu" onclick="addSousMenu(this);">&raquo;&nbsp;Ajouter un sous-menu</div>';
 
-		if (!array_isset('sous_menus', $menu)) {
-			$html .= '</div>';
-			return;
-		}
+		if (!array_isset('sous_menus', $menu))
+			return $html . '</div>';
 
-		foreach ($menu['sous_menus'] as $sous_menu )
+		foreach ($menu['sous_menus'] as $sous_menu)
 			$html .= $this->blocMenu($path_ico, 'module', $sous_menu, true, $browser);
 
-		$html .= '</div>';
+		return $html . '</div>';
 	}
 }
 ?>
