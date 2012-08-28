@@ -65,8 +65,10 @@ class Class_Exemplaire extends Storm_Model_Abstract {
 
 
 	public function getSigbExemplaire() {
-		return $this->getBib()->getSigbExemplaire($this->getIdOrigine(), 
-																							$this->getCodeBarres());
+		if (!isset($this->_sigb_exemplaire))
+			$this->_sigb_exemplaire = $this->getBib()->getSigbExemplaire($this->getIdOrigine(), 
+				                                                           $this->getCodeBarres());
+		return $this->_sigb_exemplaire;
 	}
 
 

@@ -30,7 +30,13 @@ abstract class SuggestionAchatTestCase extends Storm_Test_ModelTestCase {
 		$this->_mock_transport = new MockMailTransport();
 		Zend_Mail::setDefaultTransport($this->_mock_transport);
 
-		Class_Profil::getCurrentProfil()->setMailSite('laurent@afi-sa.fr');
+		$profil = new Class_Profil();
+		$profil
+			->setId(1)
+			->setLibelle('PHP Unit')
+			->setTitreSite('PHP Unit')
+			->setMailSite('laurent@afi-sa.fr');
+		Class_Profil::setCurrentProfil($profil);
 
 		$this->_suggestion = Class_SuggestionAchat::newInstanceWithId(2)
 			->setDateCreation('2012-03-01')

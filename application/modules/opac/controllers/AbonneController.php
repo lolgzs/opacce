@@ -464,6 +464,7 @@ class AbonneController extends Zend_Controller_Action {
 		if (null != $this->_getParam('location')) {
 			$bean->location = $this->_getParam('location');
 			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
 		}
 
 		$this->view->locations = array_filter(Class_Multimedia_Location::findAllBy(['order' => 'libelle']),
