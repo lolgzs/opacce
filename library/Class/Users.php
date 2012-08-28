@@ -402,6 +402,22 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return int
+	 */
+	public function getRole() {
+		return ZendAfi_Acl_AdminControllerRoles::getNomRole($this->getRoleLevel());
+	}
+
+
+	public function fixRole() {
+		if ($this->getRole() === $this->_get('role'))
+			return $this;
+		$this->setRole($this->getRole())->save();
+		return $this;
+	}
+
+
+	/**
 	 * @return array
 	 */
 	public function getTitresNewsletters() {

@@ -54,14 +54,18 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 
 			$acl = new ZendAfi_Acl_AdminControllerRoles();
 	    // Un user est connecté
-	    if($auth->hasIdentity())
-			{
+	    if ($user = Class_Users::getIdentity())	{
+				$this->fixRoleInSessionIdentity($user, $role);
+
 				$resource = $controller;
-				$role = $auth->getIdentity()->ROLE;		
-				
+				$role = $user->getRole();
+
+
+
 				// si la resource n'existe pas dans ZendAfi_Acl_AdminControllerRoles
 				if (!$acl->has($resource)) $resource = null;
 				
+
 				// Test du role et redirection vers opac si pas autorisé
 				if (!$acl->isAllowed($role, $resource))
 				{
@@ -94,6 +98,16 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$request->setModuleName($module);
 		$request->setControllerName($controller);
 		$request->setActionName($action);
+	}
+
+
+	public function fixRoleInSessionIdentity($user, $role) {
+		// Fixe problème de sécurité vu à la connexion d'un compte avec "role" vide
+		$auth = Zend_Auth::getInstance();
+		$identity = $auth->getIdentity();
+		$identity->ROLE = $role;
+		$auth->getStorage()->write($identity);
+		$user->fixRole();
 	}
 }
 
