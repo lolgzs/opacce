@@ -114,8 +114,9 @@ class Class_Systeme_ModulesAppli extends Class_Systeme_ModulesAbstract {
 				$action = '*';
 			}
 
+			if (!isset($this->modules[$type_module][$action]))
+				return [];
 			return $this->modules[$type_module][$action];
-
 		}
 
 		return $this->modules;

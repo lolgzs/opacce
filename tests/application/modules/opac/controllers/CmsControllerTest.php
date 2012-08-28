@@ -396,6 +396,12 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 
 
 class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB;
+		$account->PSEUDO = "admin";
+	}
+
+	
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/cms/articleview/id/224', true);

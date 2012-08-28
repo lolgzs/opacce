@@ -46,8 +46,7 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 
 		
 		// Entree dans fonctions admin
-		if ($module == 'admin' and $controller != 'error')
-		{
+		if ($module == 'admin' and $controller != 'error')	{
 			Zend_Controller_Front::getInstance()
 				->getPlugin('Zend_Controller_Plugin_ErrorHandler')
 				->setErrorHandlerModule('admin');
@@ -55,8 +54,6 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 			$acl = new ZendAfi_Acl_AdminControllerRoles();
 	    // Un user est connecté
 	    if ($user = Class_Users::getIdentity())	{
-				$this->fixRoleInSessionIdentity($user, $role);
-
 				$resource = $controller;
 				$role = $user->getRole();
 
@@ -98,16 +95,6 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$request->setModuleName($module);
 		$request->setControllerName($controller);
 		$request->setActionName($action);
-	}
-
-
-	public function fixRoleInSessionIdentity($user, $role) {
-		// Fixe problème de sécurité vu à la connexion d'un compte avec "role" vide
-		$auth = Zend_Auth::getInstance();
-		$identity = $auth->getIdentity();
-		$identity->ROLE = $role;
-		$auth->getStorage()->write($identity);
-		$user->fixRole();
 	}
 }
 

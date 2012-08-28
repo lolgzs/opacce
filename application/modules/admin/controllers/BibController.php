@@ -29,8 +29,7 @@ class Admin_BibController extends Zend_Controller_Action
 	//------------------------------------------------------------------------------------------------------
 	// Initialisation du controller
 	//------------------------------------------------------------------------------------------------------
-	function init()
-	{
+	function init()	{
 		// Zone et bib du filtre (initialisé dans le plugin DefineUrls)
 		$this->id_zone=$_SESSION["admin"]["filtre_localisation"]["id_zone"];
 		$this->id_bib=$_SESSION["admin"]["filtre_localisation"]["id_bib"];

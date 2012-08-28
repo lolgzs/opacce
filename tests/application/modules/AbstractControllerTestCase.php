@@ -72,7 +72,7 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		$account->username     = 'AutoTest' . time();
 		$account->password     = md5( 'password' );
 		$account->ID_USER      = 666;
-		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
 		$account->ROLE         = "admin_portail";
 		$account->ID_SITE      = 1;
 		$account->confirmed    = true;
@@ -88,7 +88,6 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 			->newInstanceWithId(666)
 			->setLogin($account->username)
 			->setRoleLevel($account->ROLE_LEVEL)
-			->setRole($account->ROLE)
 			->setIdSite($account->ID_SITE);
 
 		ZendAfi_Auth::getInstance()->getStorage()->write($account);

@@ -75,6 +75,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->add(new Zend_Acl_Resource('formation'));
 		$this->add(new Zend_Acl_Resource('profil'));
 		$this->add(new Zend_Acl_Resource('stat'));
+		$this->add(new Zend_Acl_Resource('lieu'));
 
 		//Roles
 		$this->addRole(new Zend_Acl_Role('invite'));
@@ -98,14 +99,13 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->allow('modo_bib','index');
 		$this->allow('modo_bib','stat');
 		$this->allow('modo_bib','accueil');
+		$this->allow('modo_bib','bib');
 
 		$this->allow('admin_bib','users');
 		$this->allow('admin_bib','profil');
-		$this->allow('admin_bib','bib');
 		$this->allow('admin_bib','modo');
 		$this->allow('admin_bib','menus');
 		$this->allow('admin_bib','catalogue');
-
 
 		$this->allow('modo_portail');
 		$this->allow('admin_portail');

@@ -242,7 +242,6 @@ class ZoneControllerAddActionTest extends ZoneControllerTestCase {
 		$new_zone = $this->loader_wrapper->getFirstAttributeForLastCallOn('save');
 		$this->assertEquals('Cran', $new_zone->getLibelle());
 	}
-
 }
 
 ?>

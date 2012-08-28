@@ -184,6 +184,7 @@ class Class_Users extends Storm_Model_Abstract {
 																 'zone' => array('through' => 'bib'));
 
 	protected $_default_attribute_values = array('id_site' => 0,
+																							 'role' => 'invite',
 																							 'role_level' => 0,
 																							 'idabon' => '',
 																							 'date_fin' => '',
@@ -406,14 +407,6 @@ class Class_Users extends Storm_Model_Abstract {
 	 */
 	public function getRole() {
 		return ZendAfi_Acl_AdminControllerRoles::getNomRole($this->getRoleLevel());
-	}
-
-
-	public function fixRole() {
-		if ($this->getRole() === $this->_get('role'))
-			return $this;
-		$this->setRole($this->getRole())->save();
-		return $this;
 	}
 
 
