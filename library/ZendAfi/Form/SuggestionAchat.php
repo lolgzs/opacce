@@ -28,19 +28,19 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 			->setAttrib('id', 'suggestion')
 			->setAttrib('class', 'zend_form')
 			->addElement('text', 'titre', ['label' => $this->_('Titre').' *',
-																		 'placeholder' => $this->_('Harry Potter à l\'école des sorciers'),
+																		 'placeholder' => $this->_('ex: Harry Potter à l\'école des sorciers'),
 																		 'size' => 80])
 
 			->addElement('text', 'auteur', ['label' => $this->_('Auteur').' *',
-																			'placeholder' => 'Joanne Kathleen Rowling',
+																			'placeholder' => 'ex: Joanne Kathleen Rowling',
 																			'size' => 80])
 
 			->addElement('url', 'description_url', ['label' => $this->_('Lien internet vers une description'),
-																							'placeholder' => 'http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers',
+																							'placeholder' => 'ex: http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers',
 																							'size' => 80])
 
 			->addElement('text', 'isbn', ['label' => $this->_('Code-barres / ISBN'),
-																		'placeholder' => '2-07-054127-4',
+																		'placeholder' => 'ex: 2-07-054127-4',
 																		'size' => 17])
 
 			->addElement('textarea', 'commentaire', ['label' => '',

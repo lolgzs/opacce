@@ -40,25 +40,25 @@ class AbonneControllerSuggestionAchatFormTest extends AbstractControllerTestCase
 
 	/** @test */
 	public function formShouldContainsInputForTitre() {
-		$this->assertXPath('//form//input[@name="titre"][@placeholder="Harry Potter à l\'école des sorciers"]');
+		$this->assertXPath('//form//input[@name="titre"][@placeholder="ex: Harry Potter à l\'école des sorciers"]');
 	}
 
 
 	/** @test */
 	public function formShouldContainsInputForAuteur() {
-		$this->assertXPath('//form//input[@name="auteur"][@placeholder="Joanne Kathleen Rowling"]');
+		$this->assertXPath('//form//input[@name="auteur"][@placeholder="ex: Joanne Kathleen Rowling"]');
 	}
 
 
 	/** @test */
 	public function formShouldContainsInputForDescriptionUrl() {
-		$this->assertXPath('//form//input[@type="url"][@name="description_url"][@placeholder="http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers"]');
+		$this->assertXPath('//form//input[@type="url"][@name="description_url"][@placeholder="ex: http://fr.wikipedia.org/wiki/Harry_Potter_à_l\'école_des_sorciers"]');
 	}
 
 
 	/** @test */
 	public function formShouldContainsInputForISBN() {
-		$this->assertXPath('//form//input[@name="isbn"][@placeholder="2-07-054127-4"]');	
+		$this->assertXPath('//form//input[@name="isbn"][@placeholder="ex: 2-07-054127-4"]');	
 	}
 
 	
