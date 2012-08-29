@@ -19,30 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-set_include_path('.' . PATH_SEPARATOR . './library'
-								 . PATH_SEPARATOR . '../ZendFramework-1.6.2/library'
-								 . PATH_SEPARATOR . get_include_path());
-
-// Includes de base
-include_once "local.php";
-$site= substr($_SERVER['SCRIPT_NAME'], 1, strpos($_SERVER['SCRIPT_NAME'], "index.php") -2);
-$parts=explode('/', $site);
-if(!file_exists("../" . end($parts))) {
-	echo "Erreur de vhost !" ;
-	exit ;
-}
-
-define("BASE_URL", "/" . $site) ;
-
-include_once "fonctions/fonctions.php";
-require_once "Zend/Loader.php";
-require_once "library/startup.php";
-
-$frontController = setupOpac();
+require('includes.php');
 
 try { 
-	$frontController->dispatch();
+	setupOpac()->dispatch();
 } catch(Exception $e) {
 	echo $e->getMessage();
 }
+
 ?>
