@@ -44,7 +44,7 @@
 
 $.fn.babelthequeTag=function(info) {
 	return this.each(function() {
-		$(this).prepend('<div id="BW_'+info+'"></div>');
+		$(this).append('<div id="BW_'+info+'"></div>');
 	});
 }
 
@@ -70,18 +70,9 @@ var tagsNoticeAfterLoad = function(target) {
 }
 
 
-var similairesNoticeAfterLoad = function(target) {
-	target.babelthequeTag('suggestions');
-}
-
-
 var avisNoticeAfterLoad = function(target) {
-	$('<tr><td><ul class="notice_info"><li><div id="BW_notes"></div></li></ul></td></tr>')
+	$('<tr><td><ul class="notice_info"><li><span id="BW_notes"></span>Babelthèque (<span id="BW_critiques"></span> évaluations)<span id="BW_critiques_pro"></span></li></ul></td></tr>')
 	.insertAfter(target.find('table tr:nth-child(2)'));
-
-	$('<tr><td><div id="BW_critiques"></div></td></tr>').appendTo(target.find('table'));
-
-	$('<tr><td><div id="BW_critiques_pro"></div></td></tr>').appendTo(target.find('table'));
 }
 
 
@@ -92,4 +83,9 @@ var videosNoticeAfterLoad = function(target) {
 
 var resumeNoticeAfterLoad = function(target) {
 	target.babelthequeTag('citations');
+}
+
+
+var babelthequeNoticeAfterLoad = function(target) {
+	target.empty().babelthequeTag('suggestions');
 }
