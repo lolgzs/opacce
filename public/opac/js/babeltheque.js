@@ -56,6 +56,9 @@ var insertBabelthequeISBNTag = function() {
 
 
 var blocNoticeAfterLoad = function (info, isbn, target) {
+	if ("" == isbn)
+		return;
+
 	var callback = $(window).attr(info + 'NoticeAfterLoad');
 	if (undefined == callback)
 		return;
@@ -66,7 +69,7 @@ var blocNoticeAfterLoad = function (info, isbn, target) {
 
 
 var tagsNoticeAfterLoad = function(target) {
-	target.babelthequeTag('etiquettes');
+	target.prepend('<div id="BW_etiquettes"></div>');
 }
 
 
@@ -87,5 +90,5 @@ var resumeNoticeAfterLoad = function(target) {
 
 
 var babelthequeNoticeAfterLoad = function(target) {
-	target.empty().babelthequeTag('suggestions');
+//	target.empty().babelthequeTag('suggestions');
 }
