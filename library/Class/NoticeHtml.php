@@ -169,7 +169,7 @@ class Class_NoticeHtml {
 //------------------------------------------------------------------------------------------------------
 	private function getOnclick($rubrique,$isbn,$id_onglet)
 	{
-		$action = sprintf("(this.id,'','%s',0,'',0)", $rubrique);
+		$action = sprintf("(this.id,'%s','%s',0,'',0)", $isbn, $rubrique);
 		switch($rubrique) {
 			case "avis" : $action="(this.id,'".$isbn."','avis',0,'',1)"; break;
 			case "exemplaires" : $action="(this.id,'".$isbn."','exemplaires',0,'',1)"; break;
