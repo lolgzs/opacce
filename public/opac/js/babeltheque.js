@@ -90,5 +90,5 @@ var resumeNoticeAfterLoad = function(target) {
 
 
 var babelthequeNoticeAfterLoad = function(target) {
-//	target.empty().babelthequeTag('suggestions');
+	target.empty().babelthequeTag('suggestions');
 }
