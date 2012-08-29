@@ -131,12 +131,12 @@ class Admin_SuggestionAchatControllerEditHarryPotterPostTest extends Admin_Sugge
 
 
 	/** @test */
-	public function errorForEmptyTitreShouldBeUnTitreEstRequis() {
+	public function errorForEmptyTitreAndCommentaireShouldBeTitreOuCommentaireRequis() {
 		$this->postDispatch('/admin/suggestion-achat/edit/id/2', 
-												['titre' => ''],
+			                  ['titre' => '', 'commentaire' => ''],
 												true);	
 
-		$this->assertXPathContentContains('//ul[@class="errors"]//li', 'Un titre est requis');
+		$this->assertXPathContentContains('//ul[@class="errors"]//li', 'Titre ou commentaire requis');
 	}
 
 

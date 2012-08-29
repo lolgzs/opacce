@@ -46,10 +46,23 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 
 	public function validate() {
 		$this
-			->validateAttribute('titre', 'Zend_Validate_NotEmpty', 'Un titre est requis')
-			->validateAttribute('auteur','Zend_Validate_NotEmpty', 'Un auteur est requis')
+			->validateTitleOrComment()
 			->validateAttribute('description_url', 'ZendAfi_Validate_Url')
 			->validateAttribute('isbn', 'ZendAfi_Validate_Isbn');
+	}
+
+
+	public function validateTitleOrComment() {
+		$message = $this->_('Titre ou commentaire requis');
+		$validator = new Zend_Validate_NotEmpty();
+
+		if ((!$validator->isValid($this->getTitre()))
+			&& (!$validator->isValid($this->getCommentaire()))) {
+			$this->checkAttribute('titre', false, $message);
+			$this->checkAttribute('commentaire', false, $message);
+		}
+
+		return $this;
 	}
 
 

@@ -31,7 +31,7 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 																		 'placeholder' => $this->_('ex: Harry Potter à l\'école des sorciers'),
 																		 'size' => 80])
 
-			->addElement('text', 'auteur', ['label' => $this->_('Auteur').' *',
+			->addElement('text', 'auteur', ['label' => $this->_('Auteur'),
 																			'placeholder' => 'ex: Joanne Kathleen Rowling',
 																			'size' => 80])
 
@@ -53,7 +53,7 @@ class ZendAfi_Form_SuggestionAchat extends ZendAfi_Form {
 
 			->addDisplayGroup(['commentaire'],
 												'commentaires',
-												['legend' => $this->_('Pourquoi suggérez-vous ce document ?')])
+												['legend' => $this->_('Pourquoi suggérez-vous ce document ?') . ' *'])
 
 			->addElement('submit', 'submit', ['label' => $this->_('Envoyer')]);
 	}

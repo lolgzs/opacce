@@ -200,14 +200,8 @@ class AbonneControllerSuggestionAchatPostWrongDataTest extends AbstractControlle
 
 
 	/** @test */
-	public function errorForTitreShouldBeUnTitreEstRequis() {
-		$this->assertXPathContentContains('//li', 'Un titre est requis');
-	}
-
-
-	/** @test */
-	public function errorForAuteurShouldBeUnAuteurEstRequis() {
-		$this->assertXPathContentContains('//li', 'Un auteur est requis');
+	public function errorForTitreAndCommentaireShouldBeTitreOuCommentaireRequis() {
+		$this->assertXPathContentContains('//li', 'Titre ou commentaire requis');
 	}
 
 
