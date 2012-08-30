@@ -110,6 +110,7 @@ class Push_MultimediaControllerInvalidSignConfigTest extends Push_MultimediaCont
 class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCase {
 	protected $_group;
 	protected $_device_wrapper;
+	protected $_device_to_delete;
 	protected $_devices = array();
 
 	public function setUp() {
@@ -131,12 +132,19 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 		$this->_device_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_Device')
 				->whenCalled('findFirstBy')
 				->answers(null)
+
+				->whenCalled('delete')
+				->answers(null)
 				
 				->whenCalled('save')
 				->willDo(function ($model) {
 						$this->_devices[] = $model;
 						return true;
-					});
+					})
+
+			->whenCalled('findAllBy')
+  		->with(['where' => 'id_origine not in(\'1-1\',\'1-2\') and id_origine like \'1-%\''])		 
+			->answers([$this->_device_to_delete = Class_Multimedia_Device::newInstanceWithId(34)->setIdOrigine('1-34')]);
 
 		Class_Multimedia::setInstance(Storm_Test_ObjectWrapper::mock()
 			->whenCalled('isValidHashForContent')
@@ -234,6 +242,13 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 	/** @test */
 	public function secondDeviceShouldNotBeDisabled() {
 		$this->assertFalse($this->_devices[1]->isDisabled());
+	}
+
+
+
+	/** @test */
+	public function deviceNotInPushShouldHaveBeenDeleted() {
+		$this->assertEquals($this->_device_to_delete, Class_Multimedia_Device::getFirstAttributeForLastCallOn('delete'));
 	}
 
 }

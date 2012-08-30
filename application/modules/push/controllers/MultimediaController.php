@@ -45,12 +45,34 @@ class Push_MultimediaController extends Zend_Controller_Action {
 			return;
 		}
 
+		$id_origine_postes = $this->createAllDevicesFromGroups($groups);
+		$this->deleteAllPostesFromSiteWithoutIdOrigine($groups[0]->site->id, $id_origine_postes);
+	}
+
+
+	public function createAllDevicesFromGroups($groups) {
+		$id_origine_postes = [];
+
 		foreach ($groups as $group) {
 			$location = Class_Multimedia_Location::getLoader()->fromJsonModel($group->site);
 			$deviceGroup = Class_Multimedia_DeviceGroup::getLoader()->fromJsonModelWithLocation($group, $location);
-			foreach ($group->postes as $poste)
-				Class_Multimedia_Device::getLoader()->fromJsonModelWithGroup($poste, $deviceGroup);
+			foreach ($group->postes as $poste) {
+				$poste = Class_Multimedia_Device::getLoader()->fromJsonModelWithGroup($poste, $deviceGroup);
+				$id_origine_postes[] = $poste->getIdOrigine();
+			}
 		}
+
+		return $id_origine_postes;
+	}
+
+
+	public function deleteAllPostesFromSiteWithoutIdOrigine($id_site, $id_origine_postes) {
+		$postes_to_delete = Class_Multimedia_Device::findAllBy(['where' => sprintf('id_origine not in(%s) and id_origine like \'%s-%%\'',
+																																							 implode(',', array_map(function($id){return '\''.$id.'\'';},
+																																																			$id_origine_postes)),
+																																							 $id_site)]);
+		foreach($postes_to_delete as $poste)
+			$poste->delete();
 	}
 }
 ?>
