@@ -159,6 +159,27 @@ class ModoControllerSuggestionAchatEditHarryPotterTest extends ModoControllerSug
 }
 
 
+
+class ModoControllerSuggestionAchatEditUnknownTest extends ModoControllerSuggestionAchatTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+				->whenCalled('find')
+				->with(99)
+				->answers(null);
+		
+		$this->dispatch('/admin/modo/suggestion-achat-edit/id/99', true);
+	}
+
+
+	/** @test */
+	public function shouldRedirect() {
+		$this->assertRedirect();
+	}
+}
+
+
+
 class ModoControllerSuggestionAchatEditHarryPotterPostTest extends ModoControllerSuggestionAchatTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -205,6 +226,26 @@ class ModoControllerSuggestionAchatDeleteHarryPotterTest extends ModoControllerS
 	/** @test */
 	public function shouldCallDelete() {
 		$this->assertTrue(Class_SuggestionAchat::getLoader()->methodHasBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function shouldRedirect() {
+		$this->assertRedirect();
+	}
+}
+
+
+
+class ModoControllerSuggestionAchatDeleteUnknownTest extends ModoControllerSuggestionAchatTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+				->whenCalled('find')
+				->with(99)
+				->answers(null);
+
+		$this->dispatch('admin/modo/suggestion-achat-delete/id/99', true);
 	}
 
 
