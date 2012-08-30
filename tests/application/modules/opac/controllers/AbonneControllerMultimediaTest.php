@@ -509,17 +509,17 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 				->answers([
 									 Class_Multimedia_Location::newInstanceWithId(1)
 									 ->setLibelle('Salle 1')
-									 ->setBib(Class_Bib::newInstanceWithId(1))
+									 ->setBib(Class_Bib::newInstanceWithId(1)->setLibelle('Médiathèque Antibes'))
 									 ->setOuvertures([Class_Ouverture::chaqueLundi('8:00', '12:00', '13:00', '18:00')->cache()]),
 
 									 Class_Multimedia_Location::newInstanceWithId(2)
 									 ->setLibelle('Salle 2')
-									 ->setBib(Class_Bib::newInstanceWithId(2))
+									 ->setBib(Class_Bib::newInstanceWithId(2)->setLibelle('Médiathèque Roquefort'))
 									 ->setOuvertures([Class_Ouverture::chaqueMercredi('8:00', '12:00', '13:00', '18:00')->cache()]),
 
 									 Class_Multimedia_Location::newInstanceWithId(3)
 									 ->setLibelle('Salle 3')
-									 ->setBib(Class_Bib::newInstanceWithId(3))
+									 ->setBib(Class_Bib::newInstanceWithId(3)->setLibelle('Médiathèque Valbonne'))
 									 ->setOuvertures([])
 									 ]);
 		$this->dispatch('/abonne/multimedia-hold-location', true);
@@ -540,13 +540,13 @@ class AbonneControllerMultimediaHoldLocationTest extends AbonneControllerMultime
 
 	/** @test */
 	public function locationSalle1ShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-location/location/1")]', 'Salle 1');
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-location/location/1")]', 'Médiathèque Antibes');
 	}
 
 
 	/** @test */
 	public function locationSalle2ShouldBePresent() {
-		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-location/location/2")]', 'Salle 2');
+		$this->assertXPathContentContains('//a[contains(@href, "/multimedia-hold-location/location/2")]', 'Médiathèque Roquefort');
 	}
 
 

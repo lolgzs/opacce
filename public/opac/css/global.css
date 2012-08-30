@@ -1000,14 +1000,10 @@ body[class^="abonne_multimedia"] .workflow_step h2 {
 
 body[class^="abonne_multimedia"] .workflow_step {
 		margin: 20px auto;
-		width: 200px;
+		width: 400px;
 		font-size: 1.2em;
 }
 
-body.abonne_multimedia-hold-day .workflow_step,
-body.abonne_multimedia-hold-hours .workflow_step {
-		width: 400px;
-}
 
 body.abonne_multimedia-hold-device .workflow_step,
 body.abonne_multimedia-hold-confirm .workflow_step,
