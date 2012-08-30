@@ -18,21 +18,15 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//-----------------------------------------------------------------------
-// OPAC3 - Modération avis - tags - suggestion
-//-----------------------------------------------------------------------
-class Admin_ModoController extends Zend_Controller_Action
-{
+class Admin_ModoController extends Zend_Controller_Action {
 	private $_count = 10;
 
-	function indexAction()	{
-		$this->view->titre = 'Modération';
+	public function indexAction()	{
+		$this->view->titre = $this->view->_('Modération');
 	}
 
-//-----------------------------------------------------------------------
-// Avis sur les notices (liste)
-//-----------------------------------------------------------------------
-	function avisnoticeAction()	{
+
+	public function avisnoticeAction() {
 		$this->view->subview = $this->view->partial('modo/avisnotice.phtml',
 																								array('list_avis' => Class_AvisNotice::getLoader()->findAllBy(array('statut' => 0,'limit'=>100)),
 																											'title' => 'Avis'));
@@ -40,17 +34,16 @@ class Admin_ModoController extends Zend_Controller_Action
 	}
 
 
-	function delavisnoticeAction() {
+	public function delavisnoticeAction() {
 		$id = $this->_request->getParam('id');
-		Class_AvisNotice::getLoader()->find($id)->delete();
+		Class_AvisNotice::find($id)->delete();
 		$this->_redirect('admin/modo/avisnotice');
 	}
 
 
-	function validateavisnoticeAction() {
+	public function validateavisnoticeAction() {
 		$id = $this->_request->getParam('id');
-		Class_AvisNotice::getLoader()
-			->find($id)
+		Class_AvisNotice::find($id)
 			->setModerationOK()
 			->save();
 		$this->_redirect('admin/modo/avisnotice');
@@ -58,7 +51,7 @@ class Admin_ModoController extends Zend_Controller_Action
 
 
 	public function deleteCmsAvisAction() {
-		$avis = Class_Avis::getLoader()->find($this->_getParam('id'));
+		$avis = Class_Avis::find($this->_getParam('id'));
 		$avis->delete();
 		$avis->maj_note_cms($avis->getIdCms(), $avis->getAbonOuBib());
 		$this->_redirect('opac/cms/articleview/id/'.$avis->getIdCms());
@@ -66,38 +59,42 @@ class Admin_ModoController extends Zend_Controller_Action
 		$this->_helper->notify($this->view->_('Avis %s supprimé', $avis->getEntete()));
 	}
 
-//-----------------------------------------------------------------------
-// Avis sur les notices (validation)
-//-----------------------------------------------------------------------
-	function updateavisnoticeAction()	{
+
+	public function updateavisnoticeAction() {
 		$class_modo = new Class_Moderer();
-		foreach($_POST["avis"]as $item)	{
-			$elems=explode("_",$item);
-			$class_modo->modererAvis($elems[0],$elems[1],$elems[2]);
+		$avis = $this->_getParam('avis', []);
+		if (0 == count($avis)) {
+			$this->_redirect('admin/modo/avisnotice');
+			return;
 		}
+				
+		foreach ($avis as $item) {
+			$elems = explode('_', $item);
+			$class_modo->modererAvis($elems[0], $elems[1], $elems[2]);
+		}
+
 		$this->_redirect('admin/modo/avisnotice');
 	}
 
-//-----------------------------------------------------------------------
-// Tags sur les notices (liste)
-//-----------------------------------------------------------------------
-	function tagnoticeAction()
-	{
+
+	public function tagnoticeAction() {
 		$view_liste_tags=array();
 		$class_modo = new Class_Moderer();
 		$liste_tags = $class_modo->getAllTagsAModerer();
 
 		// Completer les infos
-		$cls_notice=new Class_Notice();
-		for($i=0; $i< count($liste_tags); $i++)
-		{
-			$notice=$cls_notice->getNotice($liste_tags[$i]["id_notice"],"TA");
-			if(!$notice) continue;
-			$liste_tags[$i]["NOTICE"]='<a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'?type_doc='.$notice["type_doc"].'" target="_blank">';
-			$liste_tags[$i]["NOTICE"].='<img src="'.URL_ADMIN_IMG.'supports/support_'.$notice["type_doc"].'.gif" border="0" style="float:left">&nbsp;<b>'.trim($notice["T"]);
-			if($notice["A"] > "") $liste_tags[$i]["NOTICE"].= " / ".$notice["A"];
-			$liste_tags[$i]["NOTICE"].='</b></a>';
-			$view_liste_tags[]=$liste_tags[$i];
+		$cls_notice = new Class_Notice();
+		for ($i = 0; $i < count($liste_tags); $i++) {
+			$notice = $cls_notice->getNotice($liste_tags[$i]['id_notice'], 'TA');
+			if (!$notice)
+				continue;
+			
+			$liste_tags[$i]["NOTICE"] = '<a href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'?type_doc='.$notice["type_doc"].'" target="_blank">';
+			$liste_tags[$i]["NOTICE"] .= '<img src="'.URL_ADMIN_IMG.'supports/support_'.$notice["type_doc"].'.gif" border="0" style="float:left">&nbsp;<b>'.trim($notice["T"]);
+			if ($notice["A"] > '')
+				$liste_tags[$i]["NOTICE"] .= " / ".$notice["A"];
+			$liste_tags[$i]["NOTICE"] .= '</b></a>';
+			$view_liste_tags[] = $liste_tags[$i];
 		}
 
 		$this->view->subview = $this->view->partial('modo/tagnotice.phtml',
@@ -106,26 +103,25 @@ class Admin_ModoController extends Zend_Controller_Action
 		$this->_forward('index');
 	}
 	
-//-----------------------------------------------------------------------
-// Tags sur les notices (validation)
-//-----------------------------------------------------------------------
-	function updatetagnoticeAction()
-	{
+
+	public function updatetagnoticeAction() {
 		$class_modo = new Class_Moderer();
-		foreach($_POST["tag"]as $item)
-		{
-			$elems=explode("_",$item);
-			$class_modo->modererTag($elems[0],$elems[1],$elems[2]);
+		$items = $this->_getParam('tag', []);
+		if (0 == count($items)) {
+			$this->_redirect('admin/modo/tagnotice');
+			return;
 		}
+		
+		foreach ($items as $item) {
+			$elems = explode('_', $item);
+			$class_modo->modererTag($elems[0], $elems[1], $elems[2]);
+		}
+		
 		$this->_redirect('admin/modo/tagnotice');
 	}
 	
 
-//-----------------------------------------------------------------------
-// Avis sur les notices (validation)
-//-----------------------------------------------------------------------
-	function aviscmsAction()
-	{
+	public function aviscmsAction() {
 		$class_modo = new Class_Moderer();
 		$this->view->subview = $this->view->partial('modo/aviscms.phtml',
 																								array('liste_avis_abo' => $class_modo->getAllAvisCmsAModerer(0),
@@ -133,25 +129,24 @@ class Admin_ModoController extends Zend_Controller_Action
 		$this->_forward('index');
 	}
 
-//-----------------------------------------------------------------------
-// Avis sur les cms (validation)
-//-----------------------------------------------------------------------
-	function updateaviscmsAction()
-	{
+
+	public function updateaviscmsAction() {
 		$class_modo = new Class_Moderer();
-		foreach($_POST["avis"] as $item)
-		{
-			$elems=explode("_",$item);
-			$class_modo->modererAvisCms($elems[0],$elems[1],$elems[2]);
+		$items = $this->_getParam('avis', []);
+		if (0 == count($items)) {
+			$this->_redirect('admin/modo/aviscms');
+			return;
+		}
+		
+		foreach ($items as $item) {
+			$elems = explode('_', $item);
+			$class_modo->modererAvisCms($elems[0], $elems[1], $elems[2]);
 		}
 		$this->_redirect('admin/modo/aviscms');
 	}
 	
-//-----------------------------------------------------------------------
-// Membre non valid
-//-----------------------------------------------------------------------
-	function membreviewAction()
-	{
+
+	public function membreviewAction() {
 		$class_user = new Class_Users();
 		$liste_user = $class_user->getUsersNonValid();
 
@@ -159,29 +154,87 @@ class Admin_ModoController extends Zend_Controller_Action
 		$this->view->titre = "Demandes d'inscription";
 	}
 
-function updatemembreAction()
-{
-	$class_modo = new Class_Moderer();
-	foreach($_POST["user"] as $item)
-	{
-		$elems=explode("_",$item);
-		$class_modo->modererUserNonValid($elems[0],$elems[1]);
-	}
-	$this->_redirect('admin/modo/membreview');
-}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                      CLAK MAN
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function avisindexAction()
-	{
+	public function updatemembreAction() {
+		$class_modo = new Class_Moderer();
+		$items = $this->_getParam('user', []);
+		if (0 == count($items)) {
+			$this->_redirect('admin/modo/tagnotice');
+			return;
+		}
+		
+		foreach ($items as $item) {
+			$elems = explode('_', $item);
+			$class_modo->modererUserNonValid($elems[0], $elems[1]);
+		}
+		
+		$this->_redirect('admin/modo/membreview');
+	}
+
+
+	public function suggestionAchatAction() {
+		$this->view->subview = $this->view->partial('modo/suggestion-achat.phtml',
+			                                          ['suggestions' => Class_SuggestionAchat::findAllBy(['order' => 'date_creation'])]);
+		$this->_forward('index');
+	}
+
+
+	public function suggestionAchatEditAction() {
+		if (!$model = Class_SuggestionAchat::find((int)$this->_getParam('id'))) {
+			$this->_redirect('/admin/modo/suggestion-achat');
+			return;
+		}
+		
+		$form = (new ZendAfi_Form_SuggestionAchat())->removeSubmitButton()
+				->populate($this->_request->getParams())
+				->populate($model->toArray())
+				->setAttrib('data-backurl', $this->view->url(['action' => 'suggestion-achat']));
+
+		if ($this->_request->isPost()) {
+			$model->updateAttributes($this->_request->getPost());
+			if ($form->isValid($model) && $model->save()) {
+				$this->_helper->notify($this->view->_('Suggestion d\'achat sauvegardée'));
+				$this->_redirect('/admin/modo/suggestion-achat');
+				return;
+			}
+		}
+				
+		$this->view->subview = $this->view->partial('modo/suggestion-achat-edit.phtml',
+			                                          ['form' => $form]);
+		$this->_forward('index');
+	}
+
+
+	public function suggestionAchatDeleteAction() {
+		if (!$model = Class_SuggestionAchat::find((int)$this->_getParam('id'))) {
+			$this->_redirect('/admin/modo/suggestion-achat');
+			return;
+		}
+
+		$model->delete();
+		$this->_helper->notify($this->view->_('Suggestion d\'achat supprimée'));
+		$this->_redirect('/admin/modo/suggestion-achat');
+	}
+
+
+	/**
+	 *
+	 * "Hell isn't bad place,
+	 * Hell is from here to eternity"
+	 * (Bruce Dickinson)
+	 *
+	 *
+	 *
+	 */
+	
+	public function avisindexAction() {
 		$moderer = new Class_Moderer();
 
 		$this->view->title = "Avis";
 
 		$count = $this->_count; //number of rows to return at a time
 		$totalUnModRows = $moderer->countBibAbonAvisStatut0();
-		if ( is_string($totalUnModRows) ){
+		if (is_string($totalUnModRows) ){
 			$this->_redirect('admin/error/database');
 		}
 
@@ -234,8 +287,7 @@ function updatemembreAction()
 		$this->view->total = $totalUnModRows;
 	}
 
-	function modifieravisAction()
-	{
+	public function modifieravisAction() {
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('subModal.phtml');
 
@@ -328,15 +380,14 @@ function updatemembreAction()
 	}
 
 
-	function cmsavisindexAction()
-	{
+	public function cmsavisindexAction() {
 		$moderer = new Class_Moderer();
 
 		$this->view->title = "CMS Avis";
 
 		$count = $this->_count; //number of rows to return at a time
 		$totalUnModRows = $moderer->countBibCmsAvisStatut0();
-		if ( is_string($totalUnModRows) ){
+		if (is_string($totalUnModRows)){
 			$this->_redirect('admin/error/database');
 		}
 
@@ -389,8 +440,7 @@ function updatemembreAction()
 		$this->view->total = $totalUnModRows;
 	}
 
-	function modifiercmsavisAction()
-	{
+	public function modifiercmsavisAction() {
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('subModal.phtml');
 
@@ -481,11 +531,8 @@ function updatemembreAction()
 
 	}
 
-	/*
-	 * Action used to validate an unread Bib_Cms_Avis
-	 */
-	function updatecmsavisAction()
-	{
+
+	public function updatecmsavisAction() {
 		$id_abonArray = $this->_request->getParam('id_abon', 0);
 		$ordre_abonArray = $this->_request->getParam('ordre_abon', 0);
 		$id_cms_articleArray = $this->_request->getParam('id_cms_article', 0);
@@ -523,9 +570,7 @@ function updatemembreAction()
 	}
 
 
-
-	function tagsindexAction()
-	{
+	public function tagsindexAction() {
 		$moderer = new Class_Moderer();
 
 		$this->view->title = "Tags";
@@ -585,9 +630,8 @@ function updatemembreAction()
 		$this->view->total = $totalUnModRows;
 	}
 
-	function updatetagAction()
-	{
-
+	
+	public function updatetagAction() {
 		$idArray = $this->_request->getParam('id', 0);
 		$validateArray = $this->_request->getParam('validate', 0);
 
@@ -619,8 +663,8 @@ function updatemembreAction()
 
 	}
 
-	function rechercheabonAction()
-	{
+
+	public function rechercheabonAction()	{
 		$this->view->title = "Rechercher Abonnés";
 
 		if ($this->_request->isPost()) {
@@ -659,8 +703,8 @@ function updatemembreAction()
 
 	}
 
-	function showallabonmessageAction()
-	{
+
+	public function showallabonmessageAction() {
 		$this->view->title = "Abonnés avec un message";
 
 		$count = $this->_count;
@@ -708,8 +752,8 @@ function updatemembreAction()
 
 	}
 
-	function addabonmessageAction()
-	{
+		
+	public function addabonmessageAction() {
 		$this->view->title = "Ajouter Abonné Message";
 		$moderer = new Class_Moderer();
 		$this->view->moderer = $moderer;
@@ -770,8 +814,8 @@ function updatemembreAction()
 
 	}
 
-	function deleteabonmessageAction()
-	{
+
+	public function deleteabonmessageAction() {
 		$page = (int)$this->_request->getParam('page', 1);
 		$id_abon = (int)$this->_request->getParam('id_abon', 0);
 		$ordre_abon = (int)$this->_request->getParam('ordre_abon', 0);
@@ -783,11 +827,10 @@ function updatemembreAction()
 		}else{
 			$this->_redirect('admin/moderer/showallabonmessage?page=' . $page);
 		}
-
 	}
 
-	function suggestionindexAction()
-	{
+
+	public function suggestionindexAction() {
 		$this->view->title = 'Analyse des suggestions de commandes';
 
 		$moderer = new Class_Moderer();
@@ -840,8 +883,8 @@ function updatemembreAction()
 
 	}
 
-	function updatesuggestionAction()
-	{
+
+	public function updatesuggestionAction() {
 		if ($this->_request->isPost()) {
 			$filter = new Zend_Filter_StripTags();
 			$reponseArray = $this->_request->getPost('reponse');
@@ -887,26 +930,25 @@ function updatemembreAction()
 
 		$this->_redirect('admin/moderer/suggestionindex');
 	}
-    
-    function alertAction()
-    {
-        $class_blog = new Class_Blog();
-				$this->view->subview = $this->view->partial('modo/alert.phtml',
-																										array('liste_alert' => $class_blog->getAllAlertes()));
-				$this->_forward('index');
-    }
-    
-    function updatealerteAction()
-    {
-        $class_blog = new Class_Blog();
+
+
+	public function alertAction() {
+		$class_blog = new Class_Blog();
+		$this->view->subview = $this->view->partial('modo/alert.phtml',
+																								array('liste_alert' => $class_blog->getAllAlertes()));
+		$this->_forward('index');
+	}
+
+
+	public function updatealerteAction() {
+		$class_blog = new Class_Blog();
 		$i = 1;
-        foreach($_POST["avis"] as $item)
-		{
+		foreach($_POST["avis"] as $item) {
 			$elems=explode("_",$item);
-            $contenu = $_POST["cmt"][$i];
+			$contenu = $_POST["cmt"][$i];
 			$class_blog->modererAlertCommentaire($elems[0],$elems[1],$elems[2],$elems[3],$contenu);
-            $i++;
+			$i++;
 		}
 		$this->_redirect('admin/modo/alert');
-    }
+  }
 }

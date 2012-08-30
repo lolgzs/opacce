@@ -50,7 +50,7 @@ class ZendAfi_View_Helper_Admin_MenuHorizontalAdmin extends ZendAfi_View_Helper_
 
 			$class_selected = '';
 			if (array_key_exists('REQUEST_URI', $_SERVER)
-					and $_SERVER['REQUEST_URI'] == $target_url) {
+				  and (0 === strpos($_SERVER['REQUEST_URI'], $target_url))) {
 				$class_selected = 'class="selected"';
 			}
 

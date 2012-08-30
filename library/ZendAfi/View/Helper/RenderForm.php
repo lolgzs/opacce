@@ -45,7 +45,7 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 			->addAdminScript('controle_maj')
 			->addJQueryReady('$("form input").change(function(){setFlagMaj(true)})');
 
-		return $form->render().$this->_buttonsFor($form->getAttrib('id'));
+		return $form->render() . $this->_buttonsFor($form);
 	}
 
 
@@ -111,7 +111,12 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 	}
 
 
-	protected function _buttonsFor($id) {
+	/**
+	 * @param $form Zend_Form
+	 * @return string
+	 */
+	protected function _buttonsFor($form) {
+		$id = $form->getAttrib('id');
 		return "
 		<table>
 	    <tr>
@@ -119,9 +124,20 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
         <td align='left'>".$this->view->bouton('id=29',
 																							 'picto=del.gif',
 																							 sprintf('texte=%s', $this->translate()->_('Annuler')),
-																							 'url='.$this->view->url(array('action' => 'index')),
+					                                     'url='. $this->_getBackUrl($form),
 																							 'largeur=120px')."</td>
     	</tr>
     </table>";
+	}
+
+
+	/**
+	 * @param $form Zend_Form
+	 * @return string
+	 */
+	protected function _getBackUrl($form) {
+		return ($form->getAttrib('data-backurl')) ?
+				$form->getAttrib('data-backurl') :
+				$this->view->url(['action' => 'index']);
 	}
 }
