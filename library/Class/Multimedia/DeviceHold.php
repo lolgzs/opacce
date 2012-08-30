@@ -222,5 +222,23 @@ class Class_Multimedia_DeviceHold extends Storm_Model_Abstract {
 		return date('H:i', $this->getEnd());
 	}
 
+
+	/** @return string */
+	public function getLibelleBib() {
+		return $this->getDevice()->getLibelleBib();
+	}
+
+
+	/** @return string */
+	public function getOS() {
+		return $this->getDevice()->getOs();
+	}
+
+
+	/** @return string */
+	public function getLibelleDevice() {
+		return $this->getDevice()->getLibelle();
+	}
+
 }
 ?>

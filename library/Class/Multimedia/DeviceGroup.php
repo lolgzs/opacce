@@ -117,4 +117,10 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	public function getAutoholdMinTime() {
 		return $this->getLocation()->getAutoholdMinTime();
 	}
+
+
+	/** @return string */
+	public function getLibelleBib() {
+		return $this->getLocation()->getLibelleBib();
+	}
 }

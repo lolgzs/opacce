@@ -627,7 +627,7 @@ class AbonneController extends Zend_Controller_Action {
 		}
 
 		$this->view->timelineActions = $this->_getTimelineActions('confirm');
-		$this->view->location = $bean->getLocation()->getLibelle();
+		$this->view->location = $bean->getLocation()->getLibelleBib();
 		$this->view->day = strftime('%d %B %Y', strtotime($bean->day));
 		$this->view->time = str_replace(':', 'h', $bean->time);
 		$this->view->duration = $bean->duration . 'mn';
@@ -638,7 +638,7 @@ class AbonneController extends Zend_Controller_Action {
 
 
 	public function multimediaHoldViewAction() {
-		if (null == ($hold = Class_Multimedia_DeviceHold::getLoader()->find((int)$this->_getParam('id')))) {
+		if (null == ($hold = Class_Multimedia_DeviceHold::find((int)$this->_getParam('id')))) {
 			$this->_redirect('/abonne/fiche');
 			return;
 		}
@@ -654,12 +654,11 @@ class AbonneController extends Zend_Controller_Action {
 			return;
 		}
 			
-		$this->view->location = $hold->getDevice()->getGroup()->getLocation()->getLibelle();
+		$this->view->location = $hold->getLibelleBib();
 		$this->view->day = strftime('%d %B %Y', $hold->getStart());
 		$this->view->time = strftime('%Hh%M', $hold->getStart());
 		$this->view->duration = (($hold->getEnd() - $hold->getStart()) / 60)  . 'mn';
-		$this->view->device = $hold->getDevice()->getLibelle()
-				                  . ' - ' . $hold->getDevice()->getOs();
+		$this->view->device = $hold->getLibelleDevice() . ' - ' . $hold->getOs();
 	}
 		
 

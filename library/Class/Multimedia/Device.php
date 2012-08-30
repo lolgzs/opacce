@@ -270,6 +270,12 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 	}
 
 
+	/** @return string */
+	public function getLibelleBib() {
+		return $this->getGroup()->getLibelleBib();
+	}
+
+
 	/** @return int */
 	public function getAuthDelay() {
 		return $this->getGroup()->getAuthDelay();

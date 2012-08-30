@@ -39,9 +39,9 @@ class ZendAfi_View_Helper_Abonne_Multimedia extends ZendAfi_View_Helper_Abonne_A
 																				 'id' => $hold->getId()],
 																				null,	true),
 											 $device->getLibelle() . ' - ' . $device->getOs(),
-											 strftime('Le %d %B %Y à %Hh%M', $hold->getStart()),
+											 strftime('le %d %B %Y à %Hh%M', $hold->getStart()),
 											 sprintf('pour %smn', (($hold->getEnd() - $hold->getStart()) / 60)),
-											 $location->getLibelle());
+											 $location->getLibelleBib());
 		}
 
 		$html .= '</ul>';

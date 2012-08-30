@@ -420,7 +420,7 @@ abstract class AbonneControllerMultimediaHoldTestCase extends AbstractController
 		$this->_bean->location = 123;
 
 		Class_Bib::newInstanceWithId(3)
-			->setLibelle('Antibes');
+			->setLibelle('Médiathèque d\'Antibes');
 
 		
 		Class_Multimedia_Location::newInstanceWithId(123)
@@ -977,7 +977,7 @@ class AbonneControllerMultimediaHoldConfirmTest extends AbonneControllerMultimed
 		
 	/** @test */
 	public function locationShouldBeAntibes() {
-		$this->assertXPathContentContains('//li', 'Lieu : Antibes');
+		$this->assertXPathContentContains('//li', 'Lieu : Médiathèque d\'Antibes');
 	}
 
 
@@ -1047,24 +1047,26 @@ class AbonneControllerMultimediaHoldConfirmValidatedTest extends AbonneControlle
 class AbonneControllerMultimediaHoldViewTest extends AbonneControllerMultimediaHoldTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(455)
-				->setUser(Class_Users::getLoader()->getIdentity())
-				->setDevice(Class_Multimedia_Device::getLoader()->newInstanceWithId(34)
-					->setLibelle('Poste 34')
-					->setOs('Archlinux')
-					->setGroup(Class_Multimedia_DeviceGroup::getLoader()->newInstanceWithId(1)
-						->setLibelle('Groupe 1')
-						->setLocation(Class_Multimedia_Location::getLoader()->newInstanceWithId(1)
-							->setLibelle('Antibes'))))
-				->setStart(strtotime('2012-12-28 14:30:00'))
-				->setEnd(strtotime('2012-12-28 16:00:00'));
+		Class_Multimedia_DeviceHold::newInstanceWithId(455)
+			->setUser(Class_Users::getIdentity())
+			->setDevice(Class_Multimedia_Device::newInstanceWithId(34)
+									->setLibelle('Poste 34')
+									->setOs('Archlinux')
+									->setGroup(Class_Multimedia_DeviceGroup::newInstanceWithId(1)
+														 ->setLibelle('Groupe 1')
+														 ->setLocation(Class_Multimedia_Location::newInstanceWithId(1)
+																					 ->setLibelle('Antibes')
+																					 ->setBib(Class_Bib::newInstanceWithId(5)
+																										->setLibelle('Médiathèque d\'Antibes')))))
+			->setStart(strtotime('2012-12-28 14:30:00'))
+			->setEnd(strtotime('2012-12-28 16:00:00'));
 		$this->dispatch('/abonne/multimedia-hold-view/id/455', true);
 	}
 
 
 	/** @test */
 	public function locationShouldBeAntibes() {
-		$this->assertXPathContentContains('//li', 'Lieu : Antibes');
+		$this->assertXPathContentContains('//li', 'Lieu : Médiathèque d\'Antibes');
 	}
 
 
@@ -1151,20 +1153,23 @@ class AbonneControllerMultimediaHoldViewOfAnotherUserTest extends AbonneControll
 class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_AdminVar::getLoader()->newInstanceWithId('MULTIMEDIA_KEY')
-				->setValeur('aaaaaaaaaaaaaaabbaabba');
+		Class_AdminVar::newInstanceWithId('MULTIMEDIA_KEY')->setValeur('aaaaaaaaaaaaaaabbaabba');
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
-				->whenCalled('getFutureHoldsOfUser')
-				->with(Class_Users::getLoader()->getIdentity())
-				->answers(array(Class_Multimedia_DeviceHold::getLoader()->newInstanceWithId(12)
-					->setStart(strtotime('2012-28-12 14:00:00'))
-					->setEnd(strtotime('2012-28-12 15:00:00'))
-					->setDevice(Class_Multimedia_Device::getLoader()->newInstanceWithId(34)
-						->setLibelle('Poste 1')
-						->setOs('Archlinux')
-						->setGroup(Class_Multimedia_DeviceGroup::getLoader()->newInstanceWithId(3)
-							->setLocation(Class_Multimedia_Location::getLoader()->newInstanceWithId(2)
-								->setLibelle('Antibes'))))));
+			->whenCalled('getFutureHoldsOfUser')
+			->with(Class_Users::getIdentity())
+			->answers([Class_Multimedia_DeviceHold::newInstanceWithId(12)
+								 ->setStart(strtotime('2012-12-28 14:00:00'))
+								 ->setEnd(strtotime('2012-12-28 15:00:00'))
+								 ->setDevice(Class_Multimedia_Device::newInstanceWithId(34)
+														 ->setLibelle('Poste 1')
+														 ->setOs('Archlinux')
+														 ->setGroup(Class_Multimedia_DeviceGroup::newInstanceWithId(3)
+																				->setLocation(Class_Multimedia_Location::newInstanceWithId(2)
+																											->setLibelle('Antibes')
+																											->setBib(Class_Bib::newInstanceWithId(5)
+																															 ->setLibelle('Médiathèque d\'Antibes')))))
+								 ]);
 		$this->dispatch('/abonne/fiche', true);
 	}
 
@@ -1178,6 +1183,13 @@ class AbonneControllerMultimediaHoldFicheAbonneTest extends AbstractControllerTe
 	/** @test */
 	public function viewHoldLinkShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "multimedia-hold-view/id/12")]');
+	}
+
+
+	/** @test */
+	public function viewHoldLinkShouldBeDisplayLibelleBibOsAndTime() {
+		$this->assertXPathContentContains('//a[contains(@href, "multimedia-hold-view/id/12")]',
+																			'Poste 1 - Archlinux, le 28 décembre 2012 à 14h00 pour 60mn, Médiathèque d\'Antibes');
 	}
 }
 
