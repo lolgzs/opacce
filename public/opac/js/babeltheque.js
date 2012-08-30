@@ -80,6 +80,7 @@ var avisNoticeAfterLoad = function(target) {
 
 
 var videosNoticeAfterLoad = function(target) {
+	target.find('td:contains("Aucune vidéo")').remove();
 	target.babelthequeTag('videos');
 }
 
