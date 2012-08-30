@@ -797,8 +797,8 @@ class AbonneControllerMultimediaHoldGroupTest extends AbonneControllerMultimedia
 
 
 	/** @test */
-	public function currentTimelineShouldBeSection() {
-		$this->_assertCurrentTimelineStep('Section');
+	public function currentTimelineShouldBeSecteur() {
+		$this->_assertCurrentTimelineStep('Secteur');
 	}
 
 
@@ -807,7 +807,7 @@ class AbonneControllerMultimediaHoldGroupTest extends AbonneControllerMultimedia
 		$this->assertXPathContentContains('//div[@class="timeline"]//li//a[contains(@href, abonne/multimedia-hold-location)]', 'Lieu');
 		$this->assertXPathContentContains('//div[@class="timeline"]//li//a[contains(@href, abonne/multimedia-hold-day)]', 'Jour');
 		$this->assertXPathContentContains('//div[@class="timeline"]//li//a[contains(@href, abonne/multimedia-hold-hours)]', 'Horaires');
-		$this->assertNotXPathContentContains('//div[@class="timeline"]//li//a', 'Section');
+		$this->assertNotXPathContentContains('//div[@class="timeline"]//li//a', 'Secteur');
 		$this->assertNotXPathContentContains('//div[@class="timeline"]//li//a', 'Poste');
 		$this->assertNotXPathContentContains('//div[@class="timeline"]//li//a', 'Confirmation');
 	}

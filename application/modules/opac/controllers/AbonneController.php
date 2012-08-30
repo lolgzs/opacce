@@ -670,7 +670,7 @@ class AbonneController extends Zend_Controller_Action {
 		$knownActions = ['location' => $this->_('Lieu'),
 										 'day' => $this->_('Jour'),
 										 'hours' => $this->_('Horaires'),
-										 'group' => $this->_('Section'),
+										 'group' => $this->_('Secteur'),
 										 'device' => $this->_('Poste'),
 										 'confirm' => $this->_('Confirmation')];
 
