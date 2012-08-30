@@ -1193,7 +1193,7 @@ class EmprProlongResponse {
 
 		// cf test OpsysServiceTestProlongerPret::testEmprProlongNotDone
 		$message = $this->EmprProlongResult->MessageRetour;
-		if (strpos($message, 'Aucune') !== false) {
+		if (('' === $message) || strpos($message, 'Aucune') !== false) {
 			$result['erreur'] = 'La prolongation de ce document est impossible';
 			$result['statut'] = 0;
 		}

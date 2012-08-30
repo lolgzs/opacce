@@ -748,6 +748,23 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 	}
 
 
+	public function testEmprProlongEmptyMessage() {
+		// Aloes ne retourne parfois pas de message lorsque la prolongation a échoué
+		$this->empr_response->EmprProlongResult->Reussite = "true";
+		$this->empr_response->EmprProlongResult->MessageRetour = '';
+
+		$result = $this->opsys->prolongerPret(
+															Class_Users::getLoader()->newInstance()
+																->setLogin('tintin')
+																->setPassword('pass'),
+															'pret_12'
+														);
+		$this->assertEquals(array('statut' => 0, 
+															'erreur' => 'La prolongation de ce document est impossible'), 
+												$result);
+	}
+
+
 	public function testEmprProlongDataError() {
 		$this->empr_response->EmprProlongResult->Reussite = "false";
 		$this->empr_response->EmprProlongResult->ErreurService = new WebSrvErreur();
