@@ -65,22 +65,14 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 		
 	protected $_loader_class = 'Multimedia_DeviceLoader';
 	protected $_table_name = 'multimedia_device';
-	protected $_belongs_to = array(
-		'group' => array(
-			'model' => 'Class_Multimedia_DeviceGroup',
-			'referenced_in' => 'id_devicegroup'));
+	protected $_belongs_to = ['group' => ['model' => 'Class_Multimedia_DeviceGroup',
+																				'referenced_in' => 'id_devicegroup']];
 
-	protected $_has_many = array(
-		'holds' => array(
-			'model' => 'Class_Multimedia_DeviceHold',
-			'role' => 'device',
-			'order' => 'start'));
+	protected $_has_many = ['holds' => ['model' => 'Class_Multimedia_DeviceHold',
+																			'role' => 'device',
+																			'order' => 'start',
+																			'dependents' => 'delete']];
 	
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
 	/**
 	 * @category testing
 	 * @return int

@@ -42,16 +42,13 @@ class Class_Multimedia_DeviceGroup extends Storm_Model_Abstract {
 	protected $_loader_class = 'Multimedia_DeviceGroupLoader';
 	protected $_table_name = 'multimedia_devicegroup';
 
-	protected $_belongs_to = array(
-		'location' => array(
-			'model' => 'Class_Multimedia_Location',
-			'referenced_in' => 'id_location'));
+	protected $_belongs_to = ['location' => ['model' => 'Class_Multimedia_Location',
+																					 'referenced_in' => 'id_location']];
 
-	protected $_has_many = array(
-		'devices' => array(
-			'model' => 'Class_Multimedia_Device',
-			'role' => 'group',
-			'order' => 'libelle'));
+	protected $_has_many = ['devices' => ['model' => 'Class_Multimedia_Device',
+																				'role' => 'group',
+																				'order' => 'libelle',
+																				'dependents' => 'delete']];
 
 
 	/**

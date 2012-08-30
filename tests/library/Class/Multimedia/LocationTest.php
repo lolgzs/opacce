@@ -21,7 +21,7 @@
  */
 require_once 'ModelTestCase.php';
 
-class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
+abstract class Multimedia_LocationWithBibTestCase extends Storm_Test_ModelTestCase {
 	protected $_location;
 	protected $_time_source;
 
@@ -74,8 +74,12 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 		Class_Multimedia_Location::setTimeSource(null);
 		parent::tearDown();
 	}
+}
 
 
+
+
+class Multimedia_LocationWithBibTest extends Multimedia_LocationWithBibTestCase {
 	/** @test */
 	public function bibShouldHaveOuvertureForMercredi() {
 		Class_Bib::find(3)->getOuvertures();
@@ -187,6 +191,7 @@ class Multimedia_LocationWithBibTest extends Storm_Test_ModelTestCase {
 
 
 
+
 class Multimedia_LocationWithoutBibTest extends Storm_Test_ModelTestCase {
 	protected $_location;
 
@@ -201,6 +206,53 @@ class Multimedia_LocationWithoutBibTest extends Storm_Test_ModelTestCase {
 		$this->assertEmpty($this->_location->getOuvertures());
 	}
 
+}
+
+
+
+
+class Multimedia_LocationCascadeDeleteTest extends Multimedia_LocationWithBibTestCase {
+	protected $_group, $device, $_hold;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_location
+			->setGroups([$this->_group = Class_Multimedia_DeviceGroup::newInstanceWithId(34)
+									 ->setDevices([$this->_device = Class_Multimedia_Device::newInstanceWithId(98)
+																 ->setHolds([$this->_hold = Class_Multimedia_DeviceHold::newInstanceWithId(14)])
+																 ])
+									 ]);
+
+		foreach(['Location', 'DeviceGroup', 'Device', 'DeviceHold'] as $class_name)
+			Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_'.$class_name)
+			->whenCalled('delete')->answers(null);
+
+		$this->_location->delete();
+	}
+
+
+	/** @test */
+	public function locationShouldHaveBeenDeleted() {
+		$this->assertEquals($this->_location, Class_Multimedia_Location::getFirstAttributeForLastCallOn('delete'));
+	}
+
+
+	/** @test */
+	public function groupShouldHaveBeenDeleted() {
+		$this->assertEquals($this->_group, Class_Multimedia_DeviceGroup::getFirstAttributeForLastCallOn('delete'));
+	}
+
+
+	/** @test */
+	public function deviceShouldHaveBeenDeleted() {
+		$this->assertEquals($this->_device, Class_Multimedia_Device::getFirstAttributeForLastCallOn('delete'));
+	}
+
+
+	/** @test */
+	public function holdShouldHaveBeenDeleted() {
+		$this->assertEquals($this->_hold, Class_Multimedia_DeviceHold::getFirstAttributeForLastCallOn('delete'));
+	}
 }
 
 ?>

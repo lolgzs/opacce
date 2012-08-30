@@ -112,7 +112,8 @@ class Class_Multimedia_Location extends Storm_Model_Abstract {
 	protected $_table_name = 'multimedia_location';
 	protected $_has_many = ['groups' => ['model' => 'Class_Multimedia_DeviceGroup',
 																			 'role' => 'location',
-																			 'order' => 'libelle',],
+																			 'order' => 'libelle',
+																			 'dependents' => 'delete'],
 
 													'devices' => ['through' => 'groups'],
 

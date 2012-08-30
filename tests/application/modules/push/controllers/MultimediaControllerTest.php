@@ -144,7 +144,8 @@ class Push_MultimediaControllerValidConfigTest extends AbstractControllerTestCas
 
 			->whenCalled('findAllBy')
   		->with(['where' => 'id_origine not in(\'1-1\',\'1-2\') and id_origine like \'1-%\''])		 
-			->answers([$this->_device_to_delete = Class_Multimedia_Device::newInstanceWithId(34)->setIdOrigine('1-34')]);
+			->answers([$this->_device_to_delete = Class_Multimedia_Device::newInstanceWithId(34)
+								 ->setIdOrigine('1-34')]);
 
 		Class_Multimedia::setInstance(Storm_Test_ObjectWrapper::mock()
 			->whenCalled('isValidHashForContent')
