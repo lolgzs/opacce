@@ -1,0 +1,18 @@
+<h1><?php echo $this->_('Modération des suggestions d\'achat');?></h1>
+<br>
+<?php if (0 == count($this->suggestions)) { ?>
+	<h4><?php echo $this->_('Aucune suggestion à modérer');?></h4>
+	
+<?php
+} else {
+echo $this->tagModelTable($this->suggestions, 
+													
+													[$this->_('Date'), $this->_('Titre'), $this->_('Auteur')],
+
+													['date_creation', 'titre', 'auteur'],
+
+													[ ['action' => 'suggestion-achat-edit', 'content' => $this->boutonIco('type=edit')],
+														['action' => 'suggestion-achat-delete', 'content' => $this->boutonIco('type=del')] ],
+
+													'suggestions');
+ } ?>
