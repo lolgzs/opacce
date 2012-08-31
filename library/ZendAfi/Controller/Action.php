@@ -104,7 +104,6 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 
 
 	/**
-	 * Formulaire d'édition des catalogues
 	 * @param Storm_Model_Abstract $model
 	 * @return Zend_Form
 	 */
