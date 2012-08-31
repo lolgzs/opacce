@@ -134,9 +134,6 @@ class Class_CommSigb {
 		$exemplaire = Class_Exemplaire::find($exemplaire_id);
 
 		$reserver = function ($user, $sigb) use ($exemplaire, $code_annexe) {
-			if ($sigb->isPergame())
-				return (new Class_Systeme_PergameService($user))->reserverExemplaire($id_bib, $exemplaire->getIdOrigine(), $code_annexe);
-			
 			return $sigb->reserverExemplaire($user, $exemplaire, $code_annexe);
 		};
 
@@ -151,10 +148,7 @@ class Class_CommSigb {
 	 */
 	public function supprimerReservation($std_user, $id_reservation) {
 		$supprimer = function ($user, $sigb) use ($id_reservation) {
-			              if ($sigb->isPergame())
-											return (new Class_Systeme_PergameService($user))->supprimerReservation($id_reservation);
-
-										return $sigb->supprimerReservation($user, $id_reservation);			
+					return $sigb->supprimerReservation($user, $id_reservation);			
 		};
 
 		return $this->withUserAndSIGBDo($std_user, $supprimer);
@@ -168,10 +162,7 @@ class Class_CommSigb {
 	 */
 	public function prolongerPret($std_user, $id_pret) {
 		$prolonger = function($user, $sigb) use ($std_user, $id_pret) {
-			              if ($sigb->isPergame())
-											return (new Class_Systeme_PergameService($std_user))->prolongerPret($id_pret);
-	
-										return $sigb->prolongerPret($user, $id_pret);
+				return $sigb->prolongerPret($user, $id_pret);
 		};
 
 		return $this->withUserAndSIGBDo($std_user, $prolonger);

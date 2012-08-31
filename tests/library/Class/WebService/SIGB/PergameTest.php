@@ -128,7 +128,7 @@ class PergameServiceGetEmprunteurTest extends PergameServiceTestCase {
 									 'where' => sprintf('DATE_RESA<"%s"', '2011-12-25')))
 			->answers(2);
 
-		$jc = Class_Users::getLoader()->newInstanceWithId(23)
+		$jc = Class_Users::newInstanceWithId(23)
 			->setLogin('jc')
 			->setIdabon(23)
 			->setOrdreabon(2);
@@ -359,6 +359,67 @@ class PergameServiceGetExemplairePotterTest extends PergameServiceTestCase {
 	public function getUnknowmExemplaireOfExistingNoticeShouldNotBeValid() {
 		$exemplaire = $this->_service_cran->getExemplaire('1HP', 'XX');
 		$this->assertFalse($exemplaire->isValid());
+	}
+}
+
+
+
+
+class PergameServiceDelegateLegacyTest extends PergameServiceTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_legacy_service = Storm_Test_ObjectWrapper::on($this->_service_cran->getLegacyService());
+		$this->_service_cran->setLegacyService($this->_legacy_service);
+	}
+
+
+	/** @test */
+	public function legacyServiceUserShouldBeCurrentUser() {
+		$this->assertEquals(Class_Users::getIdentity(),
+												$this->_service_cran->getLegacyService()->getUser());
+	}
+
+
+	/** @test */
+	public function reserverShouldDelegateToLegacyPergameService() {
+		$this->_legacy_service
+			->whenCalled('reserverExemplaire')
+			->with($this->potter_cran_prete->getIdBib(),
+						 '1HP',
+						 'CRAN')
+			->answers(['statut' => 0, 'erreur' => ''])
+			->beStrict();
+
+		$result = $this->_service_cran->reserverExemplaire(Class_Users::getIdentity(), 
+																											 $this->potter_cran_prete, 
+																											 'CRAN');
+		$this->assertEquals(['statut' => 0, 'erreur' => ''], $result);
+	}
+
+
+	/** @test */
+	public function supprimerReservationShouldDelegateToLegacyPergameService() {
+		$this->_legacy_service
+			->whenCalled('supprimerReservation')
+			->with('1234')
+			->answers(['statut' => 0, 'erreur' => ''])
+			->beStrict();
+
+		$result = $this->_service_cran->supprimerReservation(Class_Users::getIdentity(), '1234');
+		$this->assertEquals(['statut' => 0, 'erreur' => ''], $result);
+	}
+
+
+	/** @test */
+	public function prolongerPretShouldDelegateToLegacyPergameService() {
+		$this->_legacy_service
+			->whenCalled('prolongerPret')
+			->with('1234')
+			->answers(['statut' => 0, 'erreur' => ''])
+			->beStrict();
+
+		$result = $this->_service_cran->prolongerPret(Class_Users::getIdentity(), '1234');
+		$this->assertEquals(['statut' => 0, 'erreur' => ''], $result);
 	}
 }
 
