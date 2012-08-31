@@ -53,12 +53,14 @@ class Class_Multimedia_AuthenticateRequest {
 			|| !($poste = $request->getParam('poste'))
 			|| !($site = $request->getParam('site')))
 			return $this->_error('MissingParameter');
-		
-		if (!$user = Class_Users::getLoader()->findFirstBy(array('login' => $login)))
-			return $this->_error('UserNotFound');
 
-		if (($user->getPassword() !== $password))
-			return $this->_error('PasswordIsWrong');
+		if (!ZendAfi_Auth::getInstance()->authenticateLoginPassword($login, $password)) {
+			if (Class_Users::findFirstBy(['login' => $login]))
+					return $this->_error('PasswordIsWrong');
+			return 	$this->_error('UserNotFound');
+		}
+
+		$user = Class_Users::getIdentity();
 
 		if (!$user->isAbonnementValid())
 			return $this->_error('SubscriptionExpired');
@@ -121,15 +123,9 @@ class Class_Multimedia_AuthenticateRequest {
 	}
 
 
-	/** @return Class_Multimedia_Device */
-	public function getDevice() {
-		return $this->_device;
-	}
-
-
 	/** 
 	 * @param string $code
-	 * @return Class_Multimedia_Device 
+	 * @return Class_Multimedia_AuthenticateRequest
 	 */
 	protected  function _error($code) {
 		$this->_error = $code;

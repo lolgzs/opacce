@@ -58,13 +58,26 @@ trait TAbonneControllerMultimediaFixtureWithUserLaurentInDevsAgiles {
 
 
 abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractControllerTestCase {
-	protected $_json;
+	protected $_json, $_auth;
 
 	public function setUp() {
 		parent::setUp();
-		ZendAfi_Auth::getInstance()->clearIdentity();
+		$this->_auth = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('authenticateLoginPassword')
+			->answers(false)
+			->whenCalled('hasIdentity')
+			->answers(false)
+			->whenCalled('getIdentity')
+			->answers(null);
+		
+		ZendAfi_Auth::setInstance($this->_auth);
 	}
 
+
+	public function tearDown() {
+		ZendAfi_Auth::setInstance(null);
+		parent::tearDown();
+	}
 
 	/**
 	 * @param $url string
@@ -80,6 +93,13 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 	 * @param $user Class_Users
 	 */
 	protected function _expectUserToLoad($user) {
+		$this->_auth
+			->whenCalled('authenticateLoginPassword')
+			->with($user->getLogin(), $user->getPassword())
+			->answers(true)
+			->whenCalled('getIdentity')
+			->answers($user);
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('findFirstBy')
 			->with(array('login'=> $user->getLogin()))
