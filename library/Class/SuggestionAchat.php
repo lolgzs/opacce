@@ -66,19 +66,6 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 	}
 
 
-	public function validateAttribute($name, $validator_class, $message=null) {
-		$validator = new $validator_class();
-		$valid = $validator->isValid($this->_get($name));
-		if ($message)
-			return $this->checkAttribute($name, $valid, $message);
-
-		foreach($validator->getMessages() as $message) 
-			$this->checkAttribute($name, $valid, $message);
-
-		return $this;
-	}
-
-
 	public function sendMail($from) {
 		$body_text = '';
 
