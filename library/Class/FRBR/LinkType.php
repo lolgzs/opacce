@@ -19,11 +19,37 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+class Class_FRBR_LinkTypeLoader extends Storm_Model_Loader {
+	/**
+	 * @return array
+	 */
+	public function getComboList() {
+		$list = [];
+		foreach ($this->findAllBy(['order' => 'libelle']) as $model)
+			$list[$model->getId()] = $model->getLibelle();
+		
+		return $list;
+	}
+}
+
+
 class Class_FRBR_LinkType extends Storm_Model_Abstract {
 	use Trait_Translator;
 	
 	protected $_table_name = 'frbr_linktype';
+	protected $_loader_class = 'Class_FRBR_LinkTypeLoader';
+	protected $_has_many = ['links' => ['model' => 'Class_FRBR_Link',
+			                                'role' => 'type']];
 
+
+	/**
+	 * @return string
+	 */
+	public function getCompleteLabel() {
+		return '    ' . $this->getFromSource() . ' -&gt;<br>&lt;- ' . $this->getFromTarget();
+	}
+
+	
 	public function validate() {
 		$this
 			->validateAttribute('libelle', 'Zend_Validate_NotEmpty', $this->_('Un libellé est requis'))

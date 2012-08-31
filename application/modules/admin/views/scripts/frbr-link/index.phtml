@@ -1,0 +1,32 @@
+<?php
+echo $this->bouton('id=add_category',
+									 'picto=add.gif',
+									 'texte=' . $this->_('Ajouter une relation'),
+									 'url=' . $this->url(['action' => 'add', 'id' => null])
+									 );
+
+$truncate = function ($value) {
+		if (40 < mb_strlen($value))
+			$value = mb_substr($value, 0, 40) . '...';
+		return $value;
+};
+
+echo $this->tagModelTable($this->relations, 
+													
+													[$this->_('Objet A'), $this->_('Relation'), $this->_('Objet B')],
+
+													['source', 'link_complete_label', 'target'],
+
+													[ ['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+														['action' => 'delete', 'content' => $this->boutonIco('type=del')] ],
+
+	                        'relations',
+
+	                        null,
+	
+	                        ['source' => $truncate,
+													 'target' => $truncate,
+													 'link_complete_label' => function($value) {
+															 return '<pre>' . $value . '</pre>';
+													 },]);
+?>
