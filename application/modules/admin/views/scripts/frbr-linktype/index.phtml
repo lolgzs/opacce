@@ -1,0 +1,18 @@
+<?php
+echo $this->bouton('id=add_category',
+									 'picto=add.gif',
+									 'texte=' . $this->_('Ajouter un type de relation'),
+									 'url=' . $this->url(['action' => 'add', 'id' => null])
+									 );
+
+echo $this->tagModelTable($this->relations, 
+													
+													[$this->_('Libellé'), $this->_('De A à B'), $this->_('De B à A')],
+
+													['libelle', 'from_source', 'from_target'],
+
+													[ ['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+														['action' => 'delete', 'content' => $this->boutonIco('type=del')] ],
+
+													'relations');
+?>
