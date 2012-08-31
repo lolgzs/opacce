@@ -74,8 +74,8 @@ var tagsNoticeAfterLoad = function(target) {
 
 
 var avisNoticeAfterLoad = function(target) {
-	$('<tr><td><ul class="notice_info"><li><span id="BW_notes"></span>Babelthèque (<span id="BW_critiques"></span> évaluations)<span id="BW_critiques_pro"></span></li></ul></td></tr>')
-	.insertAfter(target.find('table tr:nth-child(2)'));
+	$('<li class="notes_avis_babeltheque"><span id="BW_notes"></span>Babelthèque (<span id="BW_critiques"></span> évaluations)<span id="BW_critiques_pro"></span></li>')
+	.insertAfter(target.find('table tr:nth-child(2) ul li:last-child'));
 }
 
 
