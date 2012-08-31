@@ -19,11 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_CommSigb {
+	use Trait_Translator;
 	protected static $_instance;
-
-	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
-	private $_translate;
-
 
 	public static function getInstance() {
 		if (null != self::$_instance)
@@ -31,17 +28,9 @@ class Class_CommSigb {
 		return new self();
 	}
 
-
 	public static function setInstance($instance) {
 		self::$_instance = $instance;
 	}
-
-
-	public function  __construct() {
-		$this->_translate = Zend_Registry::get('translate');
-		$this->msg_erreur_comm = $this->_translate->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.");
-	}
-
 
 	/**
 	 * @param array $exemplaires_to_check
@@ -125,11 +114,11 @@ class Class_CommSigb {
 	public function reserverExemplaire($id_bib, $exemplaire_id, $code_annexe) {
 		if (!$user = Class_Users::getIdentity())
 			return ['statut' => 2,
-							'erreur' => $this->_translate->_('Vous devez vous connecter pour réserver un document.')];
+							'erreur' => $this->_('Vous devez vous connecter pour réserver un document.')];
 		
 		if (!$user->getIdabon())
 			return ['statut' => 2,
-							"erreur" => $this->_translate->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.')];
+							"erreur" => $this->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.')];
 
 		$exemplaire = Class_Exemplaire::find($exemplaire_id);
 
@@ -174,10 +163,10 @@ class Class_CommSigb {
 		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
 
 		if (null == $sigb = $user->getSIGBComm())
-			return ['erreur' => $this->_translate->_('Communication SIGB indisponible')];
+			return ['erreur' => $this->_('Communication SIGB indisponible')];
 		
 		if (!$sigb->isConnected())
-			return array('erreur' => $this->msg_erreur_comm);
+			return ['erreur' => $this->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.")];
 
 		return $closure($user, $sigb);
 	}
