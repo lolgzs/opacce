@@ -183,4 +183,9 @@ class Admin_IndexController extends Zend_Controller_Action {
 		return $help[$name];
 	}
 
+
+	public function heartbeatAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+	}
+
 }
