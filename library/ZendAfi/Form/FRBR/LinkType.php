@@ -31,7 +31,7 @@ class ZendAfi_Form_FRBR_LinkType extends ZendAfi_Form {
 			->addElement('text', 'libelle', ['label' => $this->_('Nom').' *', 'size' => 80])
 			->addElement('text', 'from_source', ['label' => $this->_('Libellé de l\'objet A vers l\'objet B') . ' *',
 					                                 'size' => 80])
-			->addElement('text', 'from_target', ['label' => $this->_('Libellé de l\'objet A vers l\'objet B') . ' *',
+			->addElement('text', 'from_target', ['label' => $this->_('Libellé de l\'objet B vers l\'objet A') . ' *',
 					                                 'size' => 80])
 
 			->addDisplayGroup(['libelle', 'from_source', 'from_target'], 'linktype', ['legend' => '']);

@@ -124,6 +124,13 @@ class Admin_FrbrLinktypeControllerEditSuiteTest extends Admin_FrbrLinktypeContro
 	public function formShouldContainsInputForFromBToA() {
 		$this->assertXPath('//input[@name="from_target"]');
 	}
+
+
+	/** @test */
+	public function labelForFromBToAInputShouldBeFromBToA() {
+		$this->assertXPathContentContains('//label[@for="from_target"]', 'de l\'objet B vers l\'objet A');
+	}
+		
 }
 
 
