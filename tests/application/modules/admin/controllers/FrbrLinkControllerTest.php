@@ -133,8 +133,7 @@ class Admin_FrbrLinkControllerEditSuiteTest extends Admin_FrbrLinkControllerTest
 }
 
 
-
-class Admin_FrbrLinkControllerEditSuiteValidPostTest extends Admin_FrbrLinkControllerTestCase {
+abstract class Admin_FrbrLinkControllerEditSuiteValidPostTestCase extends Admin_FrbrLinkControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -145,10 +144,6 @@ class Admin_FrbrLinkControllerEditSuiteValidPostTest extends Admin_FrbrLinkContr
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_FRBR_LinkType')
 				->whenCalled('getComboList')
 				->answers([3 => 'Suite']);
-		
-		$this->postDispatch('/admin/frbr-link/edit/id/2',
-			                  ['type_id' => 3, 'source' => 'TOTOALAPLAGE', 'target' => 'TOTOFAITDUTUBA'],
-			                  true);
 	}
 
 
@@ -161,5 +156,39 @@ class Admin_FrbrLinkControllerEditSuiteValidPostTest extends Admin_FrbrLinkContr
 	/** @test */
 	public function shouldRedirect() {
 		$this->assertRedirect();
+	}
+}
+
+
+
+class Admin_FrbrLinkControllerEditSuiteValidPostTest extends Admin_FrbrLinkControllerEditSuiteValidPostTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->postDispatch('/admin/frbr-link/edit/id/2',
+			                  ['type_id' => 3, 'source' => 'TOTOALAPLAGE', 'target' => 'TOTOFAITDUTUBA'],
+			                  true);
+	}
+}
+
+
+
+class Admin_FrbrLinkControllerEditSuiteValidWithFullURLPostTest extends Admin_FrbrLinkControllerEditSuiteValidPostTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->postDispatch('/admin/frbr-link/edit/id/2',
+			                  ['type_id' => 3,
+												 'source' => 'http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LES1000MOTSDELINFO-POURMIEUXCOMPRENDREE-COMBRESE--GALLIMARDJEUNESSE-2003-1/type_doc/1/id/44275',
+												 'target' => 'TOTOFAITDUTUBA'],
+			                  true);
+	}
+
+	
+	/** @test */
+	public function sourceShouldContainOnlyKey() {
+		$model = Class_FRBR_Link::find(2);
+		$this->assertEquals('LES1000MOTSDELINFO-POURMIEUXCOMPRENDREE-COMBRESE--GALLIMARDJEUNESSE-2003-1',
+			                  $model->getSource());
 	}
 }

@@ -49,6 +49,16 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 			->validateAttribute('source', 'Zend_Validate_NotEmpty', $this->_('Un libellé objet A est requis'))
 			->validateAttribute('target', 'Zend_Validate_NotEmpty', $this->_('Un libellé objet B est requis'));
 	}
+
+
+	public function beforeSave() {
+		parent::beforeSave();
+		if (false === strpos($this->getSource(), '/clef/'))
+			return;
+
+		$parts = explode('/', $this->getSource());
+		$this->setSource($parts[array_search('clef', $parts) + 1]);
+	}
 }
 
 ?>
