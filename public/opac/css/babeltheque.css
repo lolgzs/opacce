@@ -72,3 +72,19 @@
   background-color: #DFE7EF;
   font-size: 13px;
 }
+
+
+/* Vidéos */
+#BW_videos h2 { 
+  display: none; 
+}
+
+.BW_vignette_vid {
+  width: 500px;
+  margin: 15px auto 5px auto;
+  display: block;
+}
+
+#BW_videos br {
+  display: none;
+}
