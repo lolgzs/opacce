@@ -446,6 +446,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 			->addDisplayGroup(['titre', 
 												 'sous_titre',
 												 'cat_id',
+												 'visible',
 												 'fichier',
 												 'pdf'], 
 												'album', 
