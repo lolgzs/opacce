@@ -285,6 +285,13 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
+	public function deepcopyAction() {
+		$copy = $this->_profil->deepCopy();
+		$copy->save();
+		$this->_redirect('admin/profil/edit/id_profil/'.$copy->getId());
+	}
+
+
 	public function accueilAction()	{
 		// Instanciations et initialisations
 		$this->view->titre = "Configuration de la page: ".$this->_profil->getLibelle();

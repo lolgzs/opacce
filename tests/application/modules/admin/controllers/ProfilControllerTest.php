@@ -782,6 +782,7 @@ abstract class Admin_ProfilControllerProfilPanelTest extends Admin_ProfilControl
 	/** @test	 */
 	public function profilsPanelShouldIncludeProfilJeunesse() {
 		$this->assertXPathContentContains("//div[contains(@class, 'profils')]//div", "Jeunesse");
+		$this->assertXPath("//div[contains(@class, 'profils')]//div[preceding-sibling::div[contains(text(), 'Jeunesse')]]//a[contains(@href, 'profil/deep_copy/id_profil/5')]");
 	}
 
 
@@ -1032,10 +1033,31 @@ class Admin_ProfilControllerCopyProfilJeunesseTest extends Admin_ProfilControlle
 	public function libelleShouldBeAccueilCopie() {
 		$this->assertEquals('Accueil - copie', $this->new_page->getLibelle());
 	}
+}
 
-	/** @nontest */
-	public function libelleShouldBeProfilJeunesse() {
-		$this->assertEquals('Profil Jeunesse', $this->new_page->getLibelle());
+
+
+
+class Admin_ProfilControllerDeepCopyProfilJeunesseTest extends Admin_ProfilControllerProfilJeunesseWithPagesTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$id = 500;
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('findAllBy')
+			->answers([])
+			->whenCalled('save')
+			->willDo(function ($model) use (&$id) {
+					$model->setId($id++);
+				} );
+
+		$this->dispatch('/admin/profil/deep_copy/id_profil/5', true);
+	}
+
+
+	/** @test */
+	public function assertRedirectToEditProfilId100() {
+		$this->assertRedirect('admin/profil/edit/id_profil/500');
 	}
 }
 

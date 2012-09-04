@@ -37,10 +37,11 @@ if ($this->profil->isTelephone()) {
 
  	<div class="actions">
 		<?php 
-			$actions = array(array('action' => 'edit', 'icon' => 'ico/edit.gif', 'help' => 'Modifier'),
-											 array('action' => 'menusindex', 'icon' => 'picto/menus.png', 'help' => 'Configuration des menus'),
-											 array('action' => 'proprietes', 'icon' => 'picto/module.gif', 'help' => 'Propriétés des modules'),
-											 array('action' => 'newpage', 'icon' => 'ico/page_add.png', 'help' => 'Ajouter une page'));
+	$actions = [['action' => 'edit', 'icon' => 'ico/edit.gif', 'help' => 'Modifier'],
+							['action' => 'menusindex', 'icon' => 'picto/menus.png', 'help' => 'Configuration des menus'],
+							['action' => 'proprietes', 'icon' => 'picto/module.gif', 'help' => 'Propriétés des modules'],
+							['action' => 'deep_copy', 'icon' => 'ico/page_copy.png', 'help' => 'Dupliquer le profil'],
+							['action' => 'newpage', 'icon' => 'ico/page_add.png', 'help' => 'Ajouter une page']];
 
 			foreach ($actions as $action)
 				echo $this->tagAnchor($this->url(array('action' => $action['action'], 
