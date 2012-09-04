@@ -59,14 +59,15 @@ class Class_Profil extends Storm_Model_Abstract {
   protected $_table_name = 'bib_admin_profil';
   protected $_table_primary = 'ID_PROFIL';
 
-  protected $_belongs_to = array('bib' => array('model' => 'Class_Bib',
-                                                'referenced_in' => 'id_site'),
-                                  'parent_profil' => array('model' => 'Class_Profil',
-                                                           'referenced_in' => 'parent_id'));
+  protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
+																			'referenced_in' => 'id_site'],
 
-  protected $_has_many  = array('sub_profils' => array('model' => 'Class_Profil',
-																											  'role' => 'parent',
-																											  'dependents' => 'delete'));
+														'parent_profil' => ['model' => 'Class_Profil',
+																								'referenced_in' => 'parent_id']];
+
+  protected $_has_many  = ['sub_profils' => ['model' => 'Class_Profil',
+																						 'role' => 'parent_profil',
+																						 'dependents' => 'delete']];
 
   protected static $_current_profil;
   protected static $DEFAULT_VALUES, $CFG_SITE_KEYS, $FORWARDED_ATTRIBUTES;
@@ -1122,16 +1123,32 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	/**
+	 * Créé une copie profil (non récursif)
 	 * @return Class_Profil
 	 */
 	public function copy() {
-		$clone = new Class_Profil();
+		$copy = new Class_Profil();
 		$attributes = $this->_attributes;
 		unset($attributes['id']);
 		unset($attributes['id_profil']);
-		return $clone
+		
+		return $copy
 			->updateAttributes($attributes)
 			->setLibelle('** Nouveau Profil **');
+	}
+
+
+	/**
+	 * Créé une copie du profil et de ses sous-pages
+	 * @return Class_Profil
+	 */
+	public function deepCopy() {
+		$clone = $this->copy()->setSubProfils([]);
+		$pages = $this->getSubProfils();
+		foreach($pages as $page)
+			$clone->addSubProfil($page->copy()->setLibelle($page->getLibelle()));
+			
+		return $clone;
 	}
 
 
@@ -1184,9 +1201,18 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getSubProfils() {
-		$sub_profils = array();
-		foreach(parent::_get('sub_profils') as $profil)
-			$sub_profils[$profil->getLibelle()] = $profil;
+		$sub_profils = [];
+		foreach(parent::_get('sub_profils') as $profil) {
+			$libelle = $profil->getLibelle();
+
+			if (isset($sub_profils[$libelle])) {
+				$i = 1;
+				while (isset($sub_profils[$libelle.' ('.$i.')']))	$i++;
+				$libelle = $libelle.' ('.$i.')';
+			}
+
+			$sub_profils[$libelle] = $profil;
+		}
 
 		ksort($sub_profils);
 		return $sub_profils;

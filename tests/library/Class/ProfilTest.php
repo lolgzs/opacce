@@ -272,7 +272,7 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 	 */
 	public function profilLoaderShouldHaveFindAllByCalledWithParentIdOfAstrolabe($loader) {
 		$param = $loader->getFirstAttributeForLastCallOn('findAllBy');
-		$this->assertEquals('parent', $param['role']);
+		$this->assertEquals('parent_profil', $param['role']);
 
 		$this->assertEquals($this->profil_astro->toArray(),
 												$param['model']->toArray());
@@ -901,3 +901,97 @@ class ProfilPortailTest extends ModelTestCase {
 		$this->assertEmpty($this->_profil->copy()->id_profil);
 	}
 }
+
+
+
+
+class ProfilWithPagesCopyTest extends Storm_Test_ModelTestCase {
+	protected $_clone;
+
+	public function setUp() {
+		parent::setUp();
+
+		$id = 100;
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('findAllBy')
+			->answers([])
+			->whenCalled('save')
+			->willDo(function ($model) use (&$id) {
+					$model->setId($id++);
+				} );
+
+
+		$profil = Class_Profil::newInstanceWithId(3)
+			->setSubProfils([ Class_Profil::newInstanceWithId(31),
+												Class_Profil::newInstanceWithId(32),
+												Class_Profil::newInstanceWithId(33)->setLibelle('CD'),
+												Class_Profil::newInstanceWithId(34)
+												]);
+
+		$this->_clone = $profil->deepCopy();
+		$this->_clone->save();
+	}
+
+
+	/** @test */
+	public function cloneShouldHaveFourPages() {
+		$this->assertEquals(4, $this->_clone->numberOfSubProfils());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageLibelleShouldBeIndexedAtNouveauProfil() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil **']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneSecondPageLibelleShouldBeIndexedAtNouveauProfil1() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil ** (1)']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneThirdPageLibelleShouldBeIndexedAtCD() {
+		$this->assertEquals('CD', $this->_clone->getSubProfils()['CD']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneFourthPageLibelleShouldBeIndexedAtNouveauProfil2() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil ** (2)']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneIdShouldBe100() {
+		$this->assertEquals(100, $this->_clone->getId());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageIdShouldBe101() {
+		$this->assertEquals(101, array_values($this->_clone->getSubProfils())[0]->getId());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageParentIdShouldBe100() {
+		$this->assertEquals(100, array_values($this->_clone->getSubProfils())[0]->getParentId());
+	}
+
+
+	/** @test */
+	public function cloneLastPageIdShouldBe104() {
+		$this->assertEquals(104, array_values($this->_clone->getSubProfils())[3]->getId());
+	}
+
+	/** @test */
+	public function cloneLastPageParentIdShouldBe100() {
+		$this->assertEquals(100, array_values($this->_clone->getSubProfils())[3]->getParentId());
+	}
+
+}
+
+
+?>

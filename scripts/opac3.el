@@ -39,10 +39,12 @@
 
 
 (setq opac3-mode-hook '(opac3-php-mode))
+
 (defun opac3-php-mode()
 	(require 'geben)
 	(require 'phpunit)
 	(require 'auto-complete)
+	(require 'auto-complete-etags)
 	(auto-complete-mode t)
 ;;	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(setq ac-sources '(ac-source-etags ac-source-words-in-buffer))
