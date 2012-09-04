@@ -84,6 +84,25 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 												$this->_album->getPermalink());
 	}
 
+
+	/** @test */
+	public function albumShouldBeVisible() {
+		$this->assertTrue($this->_album->isVisible());
+	}
+
+
+	/** @test */
+	public function getVisibleShouldReturnTrue() {
+		$this->assertTrue($this->_album->getVisible());
+	}
+
+
+	/** @test */
+	public function withVisibleFalseShouldNotBeVisible() {
+		$this->_album->setVisible(false);
+		$this->assertFalse($this->_album->isVisible());
+	}
+
 	
 	/** @test */
 	public function withIdOrigine_05DC03_PermalinkShouldBeBibNumNoticeIDO_05DC03() {
@@ -132,7 +151,8 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 															'matiere' => '',
 															'provenance' => '',
 															'cote' => '',
-															'editeur' => ''), 
+															'editeur' => '',
+															'visible' => true), 
 												$this->_album->toArray());
 	}
 

@@ -109,7 +109,8 @@ class Class_Album extends Storm_Model_Abstract {
 																							 'cfg_thumbnails' => '',
 																							 'provenance' => '',
 																							 'cote' => '',
-																							 'notes' => '');
+																							 'notes' => '',
+																							 'visible' => true);
 	/** @var Class_Upload */
 	protected $_uploadHandler;
 
@@ -1047,6 +1048,14 @@ class Class_Album extends Storm_Model_Abstract {
 			$values []= $unimarc_value['data']['a'];
 		}
 		return $values;
+	}
+
+
+	/** 
+	 * @return boolean
+	 */
+	public function isVisible() {
+		return (bool)$this->getVisible();
 	}
 }
 
