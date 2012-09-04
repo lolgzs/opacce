@@ -190,6 +190,9 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 
 			$action['url'] = sprintf($action['url'], $model->getId());
 
+			if (isset($action['icon']) && is_a($action['icon'], 'Closure'))
+				$action['icon'] = $action['icon']($model);
+
 			$html .= $this->_renderAction($action);
 		}
 

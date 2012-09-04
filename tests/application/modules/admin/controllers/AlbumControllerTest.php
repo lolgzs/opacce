@@ -44,62 +44,59 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 		$this->_album_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album');
 
 		Class_AlbumCategorie::getLoader()
-				->newInstanceWithId(2)
-				->setParentId(0)
-				->setLibelle('Favoris')
-				->setSousCategories(array())
-				->setAlbums(array());
+			->newInstanceWithId(2)
+			->setParentId(0)
+			->setLibelle('Favoris')
+			->setSousCategories(array())
+			->setAlbums(array());
 
 		Class_AlbumCategorie::getLoader()
-				->newInstanceWithId(6)
-				->setLibelle('Adulte')
-				->setParentId(2)
-				->setSousCategories(array())
-				->setAlbums(array());
+			->newInstanceWithId(6)
+			->setLibelle('Adulte')
+			->setParentId(2)
+			->setSousCategories(array())
+			->setAlbums(array());
 				
 		Class_AlbumCategorie::getLoader()
-				->newInstanceWithId(38)
-				->setParentId(0)
-				->setSousCategories(array())
-				->setAlbums(array())
-				->setLibelle('Patrimoine');
+			->newInstanceWithId(38)
+			->setParentId(0)
+			->setSousCategories(array())
+			->setAlbums(array())
+			->setLibelle('Patrimoine');
 
 		Class_Album::getLoader()
-				->newInstanceWithId(43)
-				->setTitre('Mes BD')
-				->setAuteur('Laurent')
-				->setTags('bd;dessin')
-				->setDateMaj('2011-10-05 17:12:00')
-				->setDescription('Les préférées')
-				->setAnnee(1978)
-				->beDiaporama()
-				->setIdOrigine('DC023')
-				->setMatiere('1;3;5')
-				->setDewey('10;12')
-				->setGenre('65;66;67')
-				->setPdf('souvigny.pdf')
-				->setProvenance('Prieuré, Souvigny')
-				->setCote('MS001');
+			->newInstanceWithId(43)
+			->setTitre('Mes BD')
+			->setAuteur('Laurent')
+			->setTags('bd;dessin')
+			->setDateMaj('2011-10-05 17:12:00')
+			->setDescription('Les préférées')
+			->setAnnee(1978)
+			->beDiaporama()
+			->setIdOrigine('DC023')
+			->setMatiere('1;3;5')
+			->setDewey('10;12')
+			->setGenre('65;66;67')
+			->setPdf('souvigny.pdf')
+			->setProvenance('Prieuré, Souvigny')
+			->setCote('MS001')
+			->setVisible(false);
 
 		Class_Album::getLoader()
-				->newInstanceWithId(44)
-				->setTitre('Bible Souvigny')
-				->beLivreNumerique()
-				->setThumbnailAttributes(
-						array(
-							'thumbnail_width' => 350,
-							'thumbnail_left_page_crop_left' => 10,
-							'thumbnail_left_page_crop_right' => 5,
-							'thumbnail_left_page_crop_bottom' => 2,
-							'thumbnail_right_page_crop_left' => 5))
-				->setRessources(array());
+			->newInstanceWithId(44)
+			->setTitre('Bible Souvigny')
+			->beLivreNumerique()
+			->setThumbnailAttributes(['thumbnail_width' => 350,
+																'thumbnail_left_page_crop_left' => 10,
+																'thumbnail_left_page_crop_right' => 5,
+																'thumbnail_left_page_crop_bottom' => 2,
+																'thumbnail_right_page_crop_left' => 5])
+			->setRessources([]);
 
 	  Class_Album::getLoader()
-				->newInstanceWithId(24)
-				->setTitre('Mes Romans')
-				->setLangue('');
-
-	
+			->newInstanceWithId(24)
+			->setTitre('Mes Romans')
+			->setLangue('');
 	}
 }
 
@@ -148,7 +145,7 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 				->whenCalled('countBy')
 				->answers(1);
 				
-		$this->dispatch('/admin/album');
+		$this->dispatch('/admin/album', true);
 	}
 
 
@@ -245,6 +242,18 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	/** @test */
 	public function albumMesRomansShouldHavePreviewLink() {
 		$this->assertXPath("//a[contains(@href, 'preview_album/id/24')]");
+	}
+
+
+	/** @test */
+	public function albumMesRomansPreviewLinkImgShouldBeShowDotGif() {
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/24')]//img[contains(@src, '/show.gif')]");
+	}
+
+
+	/** @test */
+	public function albumMesBDPreviewLinkImgShouldBeHideDotGif() {
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/43')]//img[contains(@src, '/hide.gif')]");
 	}
 
 
@@ -788,6 +797,12 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 	/** @test */
   public function formShouldHaveATextFieldForTitre() {
 		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='titre'][@value='Mes BD']");
+	}
+
+
+	/** @test */
+	public function formShouldHaveACheckBoxForVisible() {
+		$this->assertXPath('//form//input[@type="checkbox"][@name="visible"][@checked="checked"]');
 	}
 
 

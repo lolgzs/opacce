@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_AlbumController extends Zend_Controller_Action {
+	use Trait_Translator;
+
 	protected $_baseUrlOptions = array('module' => 'admin', 'controller' => 'album');
 		
 	public function init() {
@@ -368,107 +370,104 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	protected function _albumForm($album) {
-		$form = $this->view->newForm(array('id'			=> 'album',
-																			 'enctype' => Zend_Form::ENCTYPE_MULTIPART));
+		$form = $this->view->newForm(['id'			=> 'album',
+																	'enctype' => Zend_Form::ENCTYPE_MULTIPART]);
 
 		$vignette_element = new ZendAfi_Form_Element_Image('fichier',
-																											array(
-																														'label'			=> 'Vignette<br/><em style="font-size:80%;font-weight:normal">(jpg, gif, png)</em>',
-																														'escape'    => false,
-																														'basePath'	=> $album->getBasePath(),
-																														'baseUrl'		=> $album->getBaseUrl(),
-																														'thumbnailUrl' => $album->getThumbnailUrl(),
-																														'actionUrl'	=> $this->view->url(array('action' => 'album-delete-vignette'))));
+																											 ['label'			=> 'Vignette<br/><em style="font-size:80%;font-weight:normal">(jpg, gif, png)</em>',
+																												'escape'    => false,
+																												'basePath'	=> $album->getBasePath(),
+																												'baseUrl'		=> $album->getBaseUrl(),
+																												'thumbnailUrl' => $album->getThumbnailUrl(),
+																												'actionUrl'	=> $this->view->url(['action' => 'album-delete-vignette'])]);
 		$vignette_element
 			->getDecorator('label')
 			->setOption('escape', false);	
 
 		$form
-			->addElement('text', 'titre', array('label'			=> 'Titre *',
-																					'size'				=> 80,	
-																					'required'		=> true,
-																					'allowEmpty'	=> false))
-			->addElement('text', 'sous_titre', array('label'			=> 'Sous-titre',
-																							 'size'				=> 80))
+			->addElement('text', 'titre', ['label'			=> 'Titre *',
+																		 'size'				=> 80,	
+																		 'required'		=> true,
+																		 'allowEmpty'	=> false])
+			->addElement('text', 'sous_titre', ['label'			=> 'Sous-titre',
+																					'size'				=> 80])
 
-			->addElement('select', 'cat_id', array('label' => 'Catégorie',
-																						 'multiOptions' => Class_AlbumCategorie::getLoader()->getAllLibelles()))
+			->addElement('select', 'cat_id', ['label' => 'Catégorie',
+																				'multiOptions' => Class_AlbumCategorie::getAllLibelles()])
+			->addElement('checkbox', 'visible', ['label' => $this->_('Visible')])
 			->addElement($vignette_element)
 
 			->addElement(new ZendAfi_Form_Element_File('pdf',
-																						 array(
-																									 'label'			=> 'Album PDF',
+																								 [ 'label'			=> 'Album PDF',
 																									 'escape'    => false,
 																									 'basePath'	=> $album->getBasePath(),
 																									 'baseUrl'		=> $album->getBaseUrl(),
-																									 'actionUrl'	=> $this->view->url(array('action' => 'album-delete-pdf')))))
+																									 'actionUrl'	=> $this->view->url(['action' => 'album-delete-pdf'])]))
 
-			->addElement('text', 'auteur', array('label' => 'Auteur', 
-																					 'size' => 80))
+			->addElement('text', 'auteur', ['label' => 'Auteur', 
+																			'size' => 80])
 
 			->addElement('ckeditor', 'description')
 
-			->addElement('text', 'annee', array('label' => "Année d'édition", 
-																					'size' => 4, 
-																					'maxlength' => 4))
+			->addElement('text', 'annee', ['label' => "Année d'édition", 
+																		 'size' => 4, 
+																		 'maxlength' => 4])
 
-			->addElement('text', 'editeur', array('label' => 'Editeur', 
-																					 'size' => 80))
+			->addElement('text', 'editeur', ['label' => 'Editeur', 
+																			 'size' => 80])
 
-			->addElement('text', 'cote', array('label' => 'Cote', 
-																					 'size' => 20))
+			->addElement('text', 'cote', ['label' => 'Cote', 
+																		'size' => 20])
 
-			->addElement('text', 'provenance', array('label' => 'Provenance', 
-																							 'size' => 80))
+			->addElement('text', 'provenance', ['label' => 'Provenance', 
+																					'size' => 80])
 
-			->addElement('select', 'id_langue', array('label' => 'Langue', 
-																								'multioptions' => Class_CodifLangue::allByIdLibelle()))
+			->addElement('select', 'id_langue', ['label' => 'Langue', 
+																					 'multioptions' => Class_CodifLangue::allByIdLibelle()])
 
-			->addElement('select', 'type_doc_id', array('label' => 'Type de document', 
-																									'multioptions' => Class_TypeDoc::allByIdLabelForAlbum()))
+			->addElement('select', 'type_doc_id', ['label' => 'Type de document', 
+																						 'multioptions' => Class_TypeDoc::allByIdLabelForAlbum()])
 
 			->addElement('listeSuggestion', 'matiere',
-									 array('label' => 'Matières / sujets',
-												 'name' => 'matiere',
-												 'rubrique' => 'matiere'))
+									 ['label' => 'Matières / sujets',
+										'name' => 'matiere',
+										'rubrique' => 'matiere'])
 
-			->addElement('listeSuggestion', 'dewey', array('label' => 'Indices dewey',
-																										 'name' => 'dewey',
-																										 'rubrique' => 'dewey'))
+			->addElement('listeSuggestion', 'dewey', ['label' => 'Indices dewey',
+																								'name' => 'dewey',
+																								'rubrique' => 'dewey'])
 
-			->addElement('cochesSuggestion', 'genre', array('label' => 'Genres',
-																											'name' => 'genre',
-																											'rubrique' => 'genre'))
+			->addElement('cochesSuggestion', 'genre', ['label' => 'Genres',
+																								 'name' => 'genre',
+																								 'rubrique' => 'genre'])
 
-			->addElement('textarea', 'tags', array('label' => 'Tags',
-																						 'rows' => 2))
-			->addDisplayGroup(
-												array('titre', 
-															'sous_titre',
-															'cat_id',
-															'fichier',
-															'pdf'), 
+			->addElement('textarea', 'tags', ['label' => 'Tags',
+																				'rows' => 2])
+			->addDisplayGroup(['titre', 
+												 'sous_titre',
+												 'cat_id',
+												 'fichier',
+												 'pdf'], 
 												'album', 
-												array("legend" => "Album"))
-			->addDisplayGroup(
-												array('description'),
+												["legend" => "Album"])
+
+			->addDisplayGroup(['description'],
 												'album_desc', 
-												array("legend" => "Description"))
-			->addDisplayGroup(
-												array(
-															'auteur', 
-															'annee', 
-															'editeur',
-															'provenance',
-															'id_langue',
-															'type_doc_id', 
-															'cote',
-															'matiere',
-															'dewey',
-															'genre',
-															'tags'),
+												["legend" => "Description"])
+
+			->addDisplayGroup(['auteur', 
+												 'annee', 
+												 'editeur',
+												 'provenance',
+												 'id_langue',
+												 'type_doc_id', 
+												 'cote',
+												 'matiere',
+												 'dewey',
+												 'genre',
+												 'tags'],
 												'album_metadata', 
-												array("legend" => "Metadonnées"))
+												["legend" => "Metadonnées"])
 			->populate($album->toArray());
 
 		return $form;
@@ -643,7 +642,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 											 'label' => "Gérer les médias",
 											 'caption' => 'formatedCount'),
 								 array('url' => $this->_getUrlForAction('preview_album'),
-											 'icon' => 'ico/show.gif',
+											 'icon' => function($model) {return $model->isVisible() ? 'ico/show.gif' : 'ico/hide.gif';},
 											 'label' => "Visualisation de l'album"),
 								 array('url' => $this->_getUrlForAction('delete_album'),
 											 'icon' => 'ico/del.gif',
