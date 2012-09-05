@@ -802,7 +802,7 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 
 	/** @test */
 	public function formShouldHaveACheckBoxForVisible() {
-		$this->assertXPath('//form//input[@type="checkbox"][@name="visible"][@checked="checked"]');
+		$this->assertXPath('//form//input[@type="checkbox"][@name="visible"]');
 	}
 
 
