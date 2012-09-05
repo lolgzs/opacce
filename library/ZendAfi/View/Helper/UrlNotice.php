@@ -21,14 +21,23 @@
 
 class ZendAfi_View_Helper_UrlNotice extends Zend_View_Helper_HtmlElement {
 	/**
-	 * @param array $notice
+	 * @param mixed $notice array or Class_Notice
 	 */
 	public function urlNotice($notice) {
-		return $this->view->url(array('controller' => 'recherche', 
-																	'action' => 'viewnotice', 
-																	'clef' => $notice['clef_alpha'], 
-																	'type_doc' => $notice['type_doc'],
-																	'id' => $notice['id_notice']));
+		$options = ['controller' => 'recherche', 
+			          'action' => 'viewnotice'];
+
+		if (is_array($notice)) {
+			$options['clef'] = $notice['clef_alpha'];
+			$options['type_doc'] = $notice['type_doc'];
+			$options['id'] = $notice['id_notice'];
+		} else {
+			$options['clef'] = $notice->getClefAlpha();
+			$options['type_doc'] = $notice->getTypeDoc();
+			$options['id'] = $notice->getId();
+		}
+
+		return $this->view->url($options);
 	}
 }
 

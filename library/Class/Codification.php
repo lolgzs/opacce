@@ -151,7 +151,8 @@ class Class_Codification
 								"photos" => $translate->_("Photos"),
 								"videos" => $translate->_("Archives vidéo"),
 								"resnumeriques" => $translate->_("Ressources numériques"),
-								"babeltheque" => $translate->_('Babelthèque'));
+								"babeltheque" => $translate->_('Babelthèque'),
+								'frbr' => $translate->_('Notices liées'));
 		if($onglet) return $libs[$onglet];
 		else return $libs;
 	}

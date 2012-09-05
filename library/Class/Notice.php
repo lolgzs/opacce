@@ -1153,6 +1153,16 @@ class Class_Notice extends Storm_Model_Abstract {
 		
 		return $avis;
 	}
+
+
+	public function getLinksAsSource() {
+		return Class_FRBR_Link::getLinksForSource($this->getClefAlpha());
+	}
+
+
+	public function getLinksAsTarget() {
+		return Class_FRBR_Link::getLinksForTarget($this->getClefAlpha());
+	}
 }
 
 ?>

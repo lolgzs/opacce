@@ -18,20 +18,14 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Controleur pour les parties dynamiques de la notice
-//////////////////////////////////////////////////////////////////////////////////////////
 
-class NoticeAjaxController extends Zend_Controller_Action
-{
+class NoticeAjaxController extends Zend_Controller_Action {
 	private $notice;								// Instance de la classe notice
 	private $notice_html;						// Instance de la classe html notice
 	private $service_afi;						// Web service afi actif ou pas
-		
-//------------------------------------------------------------------------------------------------------
-// Initialisation du controler
-//------------------------------------------------------------------------------------------------------
-	function init()	{
+
+
+	public function init() {
 		// Recup parametres
 		$this->id_notice=str_replace("N","", $this->_request->getParam("id_notice"));
 		if (!$this->notice = Class_Notice::getLoader()->find($this->id_notice))
@@ -51,48 +45,44 @@ class NoticeAjaxController extends Zend_Controller_Action
 		// Test services afi
 		$this->service_afi = Class_CosmoVar::get('url_services');
 	}
-//------------------------------------------------------------------------------------------------------
-// Notice complete (mode accordeon ou liste images)
-//------------------------------------------------------------------------------------------------------
-	function noticeAction()
-	{
+
+
+	public function noticeAction() {
 		// Preferences d'affichage
-		$current_module=$this->_getParam("current_module");
-		$preferences=$current_module["preferences"];
+		$current_module = $this->_getParam("current_module");
+		$preferences = $current_module["preferences"];
 		
 		// Lire la notice
-		$this->view->notice=$this->notice->getNoticeDetail($this->id_notice,$preferences);
-		if(!$this->view->notice) $this->_redirect('opac/recherche/simple');
-		$this->view->url_img=Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
+		$this->view->notice = $this->notice->getNoticeDetail($this->id_notice,$preferences);
+		if (!$this->view->notice)
+			$this->_redirect('opac/recherche/simple');
+
+		$this->view->url_img = Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
 		
 		// Url panier
 		$user = ZendAfi_Auth::getInstance()->getIdentity();
-		$this->view->url_panier="fonction_abonne('".$user->ID_USER."','/opac/abonne/panier?id=".$this->id_notice."')";
+		$this->view->url_panier = "fonction_abonne('".$user->ID_USER."','/opac/abonne/panier?id=".$this->id_notice."')";
 		
 		// View
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('noticeajax/notice.phtml');
 		
 		// Stats visualisation
-		$stat=new  Class_StatsNotices();
+		$stat = new  Class_StatsNotices();
 		$stat->addStatVisu($this->id_notice);
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Tags utilisateur
-//------------------------------------------------------------------------------------------------------
-	function tagsAction()	{
+
+	public function tagsAction() {
 		$tags=$this->notice->getTags($this->id_notice);
-		$html=$this->notice_html->getTags($tags,$this->id_notice);
+		$html=$this->notice_html->getTags($tags, $this->id_notice);
 
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody($html.Class_ScriptLoader::getInstance()->html());
+		$this->getResponse()->setBody($html . Class_ScriptLoader::getInstance()->html());
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Exemplaires
-//------------------------------------------------------------------------------------------------------
-	function exemplairesAction()	{
+
+	public function exemplairesAction()	{
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 	
 		if (!$this->id_notice) {
@@ -157,12 +147,7 @@ class NoticeAjaxController extends Zend_Controller_Action
 	}
 
 
-
-//------------------------------------------------------------------------------------------------------
-// Localisation sur le plan
-//------------------------------------------------------------------------------------------------------
-	function localisationAction()
-	{
+	public function localisationAction() {
 		$id_bib=$this->_request->getParam("id_bib");
 		$cote=$this->_request->getParam("cote");
 		$code_barres=$this->_request->getParam("code_barres");
@@ -176,11 +161,8 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($ret);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Notice détaillée
-//------------------------------------------------------------------------------------------------------
-	function detailAction()
-	{
+
+	public function detailAction() {
 		$notice=$this->notice->getTousChamps($this->id_notice);
 		if($notice["type_doc"]==2) {
 			$notice=$this->notice->getArticlesPeriodique($this->id_notice);
@@ -191,48 +173,33 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Notices similaires
-//------------------------------------------------------------------------------------------------------
-	function similairesAction()	{
+
+	public function similairesAction()	{
 		$notices=$this->notice->getNoticesSimilaires($this->id_notice);
-		$html=$this->notice_html->getListeNotices($notices, $this->view);
+		$html = $this->notice_html->getListeNotices($notices, $this->view);
 		$this->_sendResponse($html);
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Résumés et analyses
-//------------------------------------------------------------------------------------------------------
-	function resumeAction()	{
+
+	public function resumeAction()	{
 		$avis = $this->notice->findAllResumes();
 		$html=$this->notice_html->getResume($avis);
 		$this->_sendResponse($html);
 	}
 
 
-	
-
-//------------------------------------------------------------------------------------------------------
-// Vignette
-//------------------------------------------------------------------------------------------------------
-	function vignetteAction()
-	{
+	public function vignetteAction() {
 		$img=new Class_WebService_Vignette();
 		$img->getFluxImage($_REQUEST["clef"],$_REQUEST["id_notice"]);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Biographie
-//------------------------------------------------------------------------------------------------------
-	function biographieAction() {
+
+	public function biographieAction() {
 		$this->_sendResponse($this->view->biographie($this->notice));
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Bande annonce
-//------------------------------------------------------------------------------------------------------
-	function bandeannonceAction()
-	{
+
+	public function bandeannonceAction() {
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		if($this->service_afi > "")
 		{
@@ -246,16 +213,12 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Photos
-//------------------------------------------------------------------------------------------------------
-	function photosAction()
-	{
+
+	public function photosAction() {
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		
 		// Docs sonores : lastFm
-		if($notice["type_doc"]==3)
-		{
+		if($notice["type_doc"]==3) {
 			$lastfm=new Class_WebService_Lastfm();
 			$photos=$lastfm->getPhotos($notice["A"]);
 		}
@@ -264,15 +227,12 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// bibliographie
-//------------------------------------------------------------------------------------------------------
-	function bibliographieAction() {
+
+	public function bibliographieAction() {
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		
 		// Docs sonores : lastFm
-		if($notice["type_doc"]==3)
-		{
+		if ($notice["type_doc"]==3) {
 			$lastfm=new Class_WebService_Lastfm();
 			$biblio=$lastfm->getDiscographie($notice["A"]);
 		}
@@ -282,27 +242,24 @@ class NoticeAjaxController extends Zend_Controller_Action
 	}
 
 
-	function resnumeriquesAction() {
+	public function resnumeriquesAction() {
 		$html = sprintf('<p>%s</p>', $this->view->_('Aucune ressource correspondante'));
 		if (null !== $exemplaire = Class_Exemplaire::getLoader()->findFirstBy(array('id_notice' => $this->id_notice)))
 			$html = $this->view->renderAlbum($exemplaire->getAlbum());
 		$this->_sendResponse($html.Class_ScriptLoader::getInstance()->html());
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Morceaux docs sonores
-//------------------------------------------------------------------------------------------------------
-	function morceauxAction()
-	{
+
+	public function morceauxAction() {
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 
 		// Chez amazon
-		$source="Amazon";
+		$source = "Amazon";
 		$amazon = new Class_WebService_AmazonSonores();
-		$morceaux=$amazon->rend_notice_ean($notice["ean"]);
+		$morceaux = $amazon->rend_notice_ean($notice["ean"]);
 
 		// Chez LastFm
-		if(!$morceaux["nb_resultats"])
+		if (!$morceaux["nb_resultats"]) 
 		{
 			$source="Last.fm";
 			$last_fm=new Class_WebService_Lastfm();
@@ -314,11 +271,8 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Video pour un morceau doc sonore
-//------------------------------------------------------------------------------------------------------
-	function videomorceauAction()
-	{
+
+	public function videomorceauAction() {
 		if($this->service_afi > "")
 		{
 			$args=array("titre" => $_REQUEST["titre"], "auteur" => $_REQUEST["auteur"]);
@@ -333,21 +287,15 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Player last fm
-//------------------------------------------------------------------------------------------------------
-	function playerlastfmAction()
-	{
+
+	public function playerlastfmAction() {
 		$lastfm=new Class_WebService_Lastfm();
 		$html=$lastfm->getPlayer($_REQUEST["url"]);
 		$this->_sendResponse($html);
 	}
 
 
-//------------------------------------------------------------------------------------------------------
-// Videos : INTERVIEWS
-//------------------------------------------------------------------------------------------------------
-	function videosAction()	{
+	public function videosAction() {
 		if ($num_video = $this->_getParam("num_video", 0))	{
 			$num_video = $num_video-1;
 			$html.=$_SESSION["video_interview"][$num_video]["player"];
@@ -372,10 +320,8 @@ class NoticeAjaxController extends Zend_Controller_Action
 		$this->_sendResponse($html);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Avis
-//------------------------------------------------------------------------------------------------------	
-	function avisAction()	{
+
+	public function avisAction() {
 		// Lire la notice
 		$notice = Class_Notice::getLoader()->find($this->id_notice);
 
@@ -400,6 +346,91 @@ class NoticeAjaxController extends Zend_Controller_Action
 			$html .= sprintf('<div id="BW_%s"></div>', $bloc);
 
 		$this->_sendResponse($html);
+	}
+
+
+	public function frbrAction() {
+		$noResultMessage = $this->view->_('Aucun lien n\'a été trouvé');
+		$id = str_replace('N', '', $this->_getParam('id_notice'));
+		
+		if (!$model = Class_Notice::find((int)$id)) {
+			$this->_sendResponse($noResultMessage);
+			return;
+		}
+		
+		$sourceLinks = $model->getLinksAsSource();
+		$targetLinks = $model->getLinksAsTarget();
+		
+		if (0 == count($sourceLinks) and 0 == count($targetLinks)) {
+			$this->_sendResponse($noResultMessage);
+			return;
+		}
+
+		$html = '';
+		foreach ($this->_getLinksBySourceTypes($sourceLinks) as $label => $links)
+			$html .= $this->_getTargetTypeLinks($label, $links);
+
+		foreach ($this->_getLinksByTargetTypes($targetLinks) as $label => $links)
+			$html .= $this->_getSourceTypeLinks($label, $links);
+
+		$this->_sendResponse($html);
+	}
+
+
+	protected function _getLinksBySourceTypes($links) {
+		return $this->_getLinksByType($links, function ($link) {
+			return $link->getTypeLabelFromSource();
+		});
+	}
+
+
+	protected function _getLinksByTargetTypes($links) {
+		return $this->_getLinksByType($links, function ($link) {
+			return $link->getTypeLabelFromTarget();
+		});
+	}
+
+
+  protected function _getLinksByType($links, $callback) {
+		$byTypes = [];
+		foreach ($links as $link) {
+			$typeLabel = $callback($link);
+			if (!array_key_exists($typeLabel, $byTypes))
+				$byTypes[$typeLabel] = [];
+			
+			$byTypes[$typeLabel][] = $link;
+		}
+		return $byTypes;
+	}
+
+
+	protected function _getTargetTypeLinks($label, $links) {
+		return $this->_getTypeLinks($label, $links, function($link) {
+			return $link->getTargetNotice();
+		});
+	}
+
+
+	protected function _getSourceTypeLinks($label, $links) {
+		return $this->_getTypeLinks($label, $links, function($link) {
+			return $link->getSourceNotice();
+		});
+	}
+
+
+  protected function _getTypeLinks($label, $links, $callback) {
+		$html = '';
+		if (!$links)
+			return $html;
+
+		$html .= '<div class="notice_info_titre">' . $label . '</div>';
+		$notices = [];
+		foreach ($links as $link)
+			$notices[] = $callback($link);
+
+		$html .= $this->notice_html->getListeNotices($notices, $this->view);
+				
+		return $html;
 	}
 
 

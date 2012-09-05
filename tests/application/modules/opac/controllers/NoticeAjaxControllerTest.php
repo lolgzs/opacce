@@ -331,4 +331,131 @@ class NoticeAjaxControllerBabelthequeWithoutOptionTest extends AbstractControlle
 }
 
 
-?>
+
+class NoticeAjaxControllerFrbrNotFoundTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+				->whenCalled('find')
+				->with(777)
+				->answers(null);
+				
+		$this->dispatch('/opac/noticeajax/frbr?id_notice=777', true);
+	}
+
+
+	/** @test */
+	public function actionShouldBeFrbr() {
+		$this->assertAction('frbr');
+	}
+
+
+	/** @test */
+	public function responseShouldContainAucunLien() {
+		$this->assertTrue(false !== strpos($this->_response->getBody(), 'Aucun lien'));
+	}
+}
+
+
+abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControllerTestCase {
+	private $_lesGrandsTextes;
+	private $_moiCEstQuoi;
+	
+	public function setUp() {
+		parent::setUp();
+		$leCombat = 'LECOMBATDESJUGES--BILLYY--ZARAFAFILMSDISTRIB-2006-4';
+		$this->_lesGrandsTextes = 'LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1';
+		$this->_moiCEstQuoi = 'MOICESTQUOI--BRENIFIERO--NATHANJEUNESSE-2004-1';
+		
+		$type = Class_FRBR_LinkType::newInstanceWithId(1)
+				->setLibelle('Suite')
+				->setFromSource('a pour suite')
+				->setFromTarget('est une suite de');
+				
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_FRBR_Link')
+				->whenCalled('getLinksForSource')
+				->with($leCombat)
+				->answers([Class_FRBR_Link::newInstanceWithId(1)
+						       ->setType($type)
+						       ->setSource($leCombat)
+						       ->setTarget($this->_lesGrandsTextes)])
+
+				->whenCalled('getLinksForTarget')
+				->with($leCombat)
+				->answers([Class_FRBR_Link::newInstanceWithId(2)
+						       ->setType($type)
+						       ->setSource($this->_moiCEstQuoi)
+						       ->setTarget($leCombat)]);
+		
+		Class_Notice::newInstanceWithId(777)
+				->setClefAlpha($leCombat);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+				->whenCalled('getNoticeByClefAlpha')
+				->with($this->_lesGrandsTextes)
+				->answers(Class_Notice::newInstanceWithId(888)
+					        ->setTitrePrincipal('Les grands textes de droit')
+					        ->setClefAlpha($this->_lesGrandsTextes))
+
+				->whenCalled('getNoticeByClefAlpha')
+				->with($this->_moiCEstQuoi)
+				->answers(Class_Notice::newInstanceWithId(999)
+					        ->setTitrePrincipal('Moi, c\'est quoi ?')
+					        ->setClefAlpha($this->_moiCEstQuoi));
+	}
+
+
+	/** @test */
+	public function linkTypeAPourSuiteShouldBePresent() {
+		$this->assertXPathContentContains('//div', 'a pour suite');
+	}
+
+		
+	/** @test */
+	public function lesGrandsTextesShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Les grands textes de droit');
+	}
+
+
+	/** @test */
+	public function linkToTargetShouldBePresent() {
+		$this->assertXPath('//td[contains(@onclick, "/viewnotice/clef/' . $this->_lesGrandsTextes . '")]');
+	}
+
+
+	/** @test */
+	public function linkTypeEstSuiteShouldBePresent() {
+		$this->assertXPathContentContains('//div', 'est une suite de', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function moiCEstQuoiShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Moi, c\'est quoi');
+	}
+
+
+	/** @test */
+	public function linkToSourceShouldBePresent() {
+		$this->assertXPath('//td[contains(@onclick, "/viewnotice/clef/' . $this->_moiCEstQuoi . '")]');
+	}
+}
+
+
+
+class NoticeAjaxControllerFrbrWithLinksTest extends NoticeAjaxControllerFrbrWithLinksTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/noticeajax/frbr?id_notice=777', true);
+	}
+}
+
+
+
+class NoticeAjaxControllerFrbrWithLinksAndNInIdTest extends NoticeAjaxControllerFrbrWithLinksTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/noticeajax/frbr?id_notice=N777', true);
+	}
+}

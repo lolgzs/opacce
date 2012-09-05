@@ -466,28 +466,31 @@ class Class_NoticeHtml {
 		return $html;
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Liste de notices
-//------------------------------------------------------------------------------------------------------
+
 	public function getListeNotices($notices, $view, $base_url = BASE_URL) {
-		$html=$this->haut_onglet;
+		$html = $this->haut_onglet;
 
-		if(!$notices) 
-			return $html.$this->getNonTrouve();
+		if (!$notices) 
+			return $html . $this->getNonTrouve();
 
-		$html.='<table cellspacing="0" width="100%">';
-
-		if($nb = count($notices)>1) 
-			$nb = $this->_translate->_("%s livres", $nb); 
-		else 
-			$nb = $this->_translate->_("%s livre", $nb);
+		$html .= '<table cellspacing="0" width="100%">';
 
 		$read_speaker_helper = new ZendAfi_View_Helper_ReadSpeaker();
-		$num=0;
+		$num = 0;
 
-		foreach($notices as $notice)	{
+		foreach ($notices as $notice) {
+			if (is_object($notice)) {
+				$model = $notice;
+				$notice = ['id_notice' => $model->getId(),
+					         'clef_alpha' => $model->getClefAlpha(),
+					         'type_doc' => $model->getTypeDoc(),
+					         'titre_principal' => $model->getTitrePrincipal(),
+					         'auteur_principal' => $model->getAuteurPrincipal(),
+					         'annee' => $model->getAnnee()];
+			}
+			
 			$num++;
-			$url_notice="document.location.replace('".$view->urlNotice($notice)."')";
+			$url_notice = "document.location.replace('".$view->urlNotice($notice)."')";
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			
 			$read_speaker_tag = $read_speaker_helper->readSpeaker('recherche', 
