@@ -637,9 +637,10 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 	public function setUp() {
 		parent::setUp();
 
-		$data = array('titre' => 'Renaissance',
-									'sous_titre' => 'Ze Renaissance',
-									'description' => 'Oeuvres majeures sous François 1er');
+		$data = ['titre' => 'Renaissance',
+						 'sous_titre' => 'Ze Renaissance',
+			       'description' => 'Oeuvres majeures sous François 1er',
+			       'video_url' => 'http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1'];
 
 		$this
 			->getRequest()
@@ -688,6 +689,20 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 	/** @test */
 	public function newAlbumDescriptionShouldBeOeuvresMajeures() {
 		$this->assertEquals('Oeuvres majeures sous François 1er', $this->new_album->getDescription());
+	}
+
+
+	/** @test */
+	public function newAlbumNotesShouldContainVideoUrl() {
+		$this->assertEquals('http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1',
+			                  $this->new_album->getNotesAsArray()[0]['data']['a']);
+	}
+
+
+	/** @test */
+	public function newAlbumNotesShouldContainVideoType() {
+		$this->assertEquals('video',
+			                  $this->new_album->getNotesAsArray()[0]['data']['x']);
 	}
 
 
@@ -875,6 +890,12 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 
 
 	/** @test */
+	public function formShouldHaveAInputForVideoUrl() {
+		$this->assertXPath('//input[@type="text"][@name="video_url"]');
+	}
+
+
+	/** @test */
 	function formShouldHaveTagSuggestForMatiere() {
 		$this->assertXPath("//input[@name='matiere'][@value='1;3;5']");
 	}
@@ -911,7 +932,10 @@ class Admin_AlbumControllerEditAlbumMesRomans extends Admin_AlbumControllerTestC
 		Class_Album::getLoader()
 				->newInstanceWithId(24)
 				->setTitre('Mes Romans')
-				->setLangue('');
+				->setLangue('')
+				->setNotes([['field' => 856,
+							       'data' => ['x' => 'video',
+											          'a' => 'http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1']]]);
 		$this->dispatch('/admin/album/edit_album/id/24');
 	}
 
@@ -929,6 +953,12 @@ class Admin_AlbumControllerEditAlbumMesRomans extends Admin_AlbumControllerTestC
 																			'français');
 		$this->assertXPathContentContains("//select[@name='id_langue']//option[@value='dak']", 
 																			'dakota');
+	}
+
+
+	/** @test */
+	public function formShouldHaveVideoUrlAsExpected() {
+		$this->assertXPath('//input[@name="video_url"][@value="http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1"]');
 	}
 }
 

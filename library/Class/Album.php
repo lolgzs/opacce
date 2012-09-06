@@ -68,6 +68,9 @@ class Class_Album extends Storm_Model_Abstract {
 	const ORIGINAL_PATH	= 'big/';
 	const ANNEE_MIN = 800;
 	const DEFAULT_CODE_LANGUE = 'fre';
+	const VIDEO_URL_FIELD = '856';
+	const VIDEO_URL_TYPE = 'video';
+	
 	
 	protected static $DEFAULT_THUMBNAIL_VALUES;
 
@@ -886,6 +889,47 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	/**
+	 * @param $field string
+	 * @param $datas array
+	 */
+	public function getNoteForFieldAndDatas($field, $datas = []) {
+		$notes = $this->getNotesAsArray();
+
+		foreach ($notes as $note) {
+			if (!array_key_exists('field', $note)
+				or !array_key_exists('data', $note)
+				or $field != $note['field'])
+				continue;
+
+			foreach ($datas as $k => $v) {
+				if ($note['data'][$k] != $v)
+					continue 2;
+			}
+
+			return $note['data']['a'];
+		}
+	}
+
+
+	/** @return string */
+	public function getVideoUrl() {
+		return $this->getNoteForFieldAndDatas(self::VIDEO_URL_FIELD,
+			                                    ['x' => self::VIDEO_URL_TYPE]);
+	}
+
+		
+	/**
+	 * @param $url string
+	 * @return Class_Album
+	 */
+	public function setVideoUrl($url) {
+		return $this->setNotes([[
+				'field' => self::VIDEO_URL_FIELD, 
+				'data' => ['x' => self::VIDEO_URL_TYPE, 'a' => $url]]]);
+	}
+
+		
 	public function setNotes($array_or_string) {
 		if (is_array($array_or_string)) 
 			parent::setNotes(serialize($array_or_string));

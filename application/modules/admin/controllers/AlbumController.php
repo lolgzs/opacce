@@ -370,108 +370,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	protected function _albumForm($album) {
-		$form = $this->view->newForm(['id'			=> 'album',
-																	'enctype' => Zend_Form::ENCTYPE_MULTIPART]);
-
-		$vignette_element = new ZendAfi_Form_Element_Image('fichier',
-																											 ['label'			=> 'Vignette<br/><em style="font-size:80%;font-weight:normal">(jpg, gif, png)</em>',
-																												'escape'    => false,
-																												'basePath'	=> $album->getBasePath(),
-																												'baseUrl'		=> $album->getBaseUrl(),
-																												'thumbnailUrl' => $album->getThumbnailUrl(),
-																												'actionUrl'	=> $this->view->url(['action' => 'album-delete-vignette'])]);
-		$vignette_element
-			->getDecorator('label')
-			->setOption('escape', false);	
-
-		$form
-			->addElement('text', 'titre', ['label'			=> 'Titre *',
-																		 'size'				=> 80,	
-																		 'required'		=> true,
-																		 'allowEmpty'	=> false])
-			->addElement('text', 'sous_titre', ['label'			=> 'Sous-titre',
-																					'size'				=> 80])
-
-			->addElement('select', 'cat_id', ['label' => 'Catégorie',
-																				'multiOptions' => Class_AlbumCategorie::getAllLibelles()])
-			->addElement('checkbox', 'visible', ['label' => $this->_('Visible')])
-			->addElement($vignette_element)
-
-			->addElement(new ZendAfi_Form_Element_File('pdf',
-																								 [ 'label'			=> 'Album PDF',
-																									 'escape'    => false,
-																									 'basePath'	=> $album->getBasePath(),
-																									 'baseUrl'		=> $album->getBaseUrl(),
-																									 'actionUrl'	=> $this->view->url(['action' => 'album-delete-pdf'])]))
-
-			->addElement('text', 'auteur', ['label' => 'Auteur', 
-																			'size' => 80])
-
-			->addElement('ckeditor', 'description')
-
-			->addElement('text', 'annee', ['label' => "Année d'édition", 
-																		 'size' => 4, 
-																		 'maxlength' => 4])
-
-			->addElement('text', 'editeur', ['label' => 'Editeur', 
-																			 'size' => 80])
-
-			->addElement('text', 'cote', ['label' => 'Cote', 
-																		'size' => 20])
-
-			->addElement('text', 'provenance', ['label' => 'Provenance', 
-																					'size' => 80])
-
-			->addElement('select', 'id_langue', ['label' => 'Langue', 
-																					 'multioptions' => Class_CodifLangue::allByIdLibelle()])
-
-			->addElement('select', 'type_doc_id', ['label' => 'Type de document', 
-																						 'multioptions' => Class_TypeDoc::allByIdLabelForAlbum()])
-
-			->addElement('listeSuggestion', 'matiere',
-									 ['label' => 'Matières / sujets',
-										'name' => 'matiere',
-										'rubrique' => 'matiere'])
-
-			->addElement('listeSuggestion', 'dewey', ['label' => 'Indices dewey',
-																								'name' => 'dewey',
-																								'rubrique' => 'dewey'])
-
-			->addElement('cochesSuggestion', 'genre', ['label' => 'Genres',
-																								 'name' => 'genre',
-																								 'rubrique' => 'genre'])
-
-			->addElement('textarea', 'tags', ['label' => 'Tags',
-																				'rows' => 2])
-			->addDisplayGroup(['titre', 
-												 'sous_titre',
-												 'cat_id',
-												 'visible',
-												 'fichier',
-												 'pdf'], 
-												'album', 
-												["legend" => "Album"])
-
-			->addDisplayGroup(['description'],
-												'album_desc', 
-												["legend" => "Description"])
-
-			->addDisplayGroup(['auteur', 
-												 'annee', 
-												 'editeur',
-												 'provenance',
-												 'id_langue',
-												 'type_doc_id', 
-												 'cote',
-												 'matiere',
-												 'dewey',
-												 'genre',
-												 'tags'],
-												'album_metadata', 
-												["legend" => "Metadonnées"])
-			->populate($album->toArray());
-
-		return $form;
+		return ZendAfi_Form_Album::newWith($album);
 	}
 
 
@@ -538,7 +437,11 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		unset($values['fichier']);
 		unset($values['pdf']);
 
+		$video_url = $values['video_url'];
+		unset($values['video_url']);
 		$album->updateAttributes($values);
+		$album->setVideoUrl($video_url);
+
 
 		if ($album->save() && $album->receiveFile() && $album->receivePDF()) {
 			$this->_helper->notify('Album sauvegardé');
