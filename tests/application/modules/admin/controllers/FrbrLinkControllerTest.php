@@ -167,34 +167,32 @@ abstract class Admin_FrbrLinkControllerEditSuiteValidPostTestCase extends Admin_
 
 
 
-class Admin_FrbrLinkControllerEditSuiteValidPostTest extends Admin_FrbrLinkControllerEditSuiteValidPostTestCase {
-	public function setUp() {
-		parent::setUp();
-
-		$this->postDispatch('/admin/frbr-link/edit/id/2',
-			                  ['type_id' => 3, 'source' => 'TOTOALAPLAGE', 'target' => 'TOTOFAITDUTUBA'],
-			                  true);
-	}
-}
-
-
-
-class Admin_FrbrLinkControllerEditSuiteValidWithFullURLPostTest extends Admin_FrbrLinkControllerEditSuiteValidPostTestCase {
+class Admin_FrbrLinkControllerEditSuiteValidWithLocalUrlsPostTest extends Admin_FrbrLinkControllerEditSuiteValidPostTestCase {
+	protected $_link;
+	
 	public function setUp() {
 		parent::setUp();
 
 		$this->postDispatch('/admin/frbr-link/edit/id/2',
 			                  ['type_id' => 3,
 												 'source' => 'http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LES1000MOTSDELINFO-POURMIEUXCOMPRENDREE-COMBRESE--GALLIMARDJEUNESSE-2003-1/type_doc/1/id/44275',
-												 'target' => 'TOTOFAITDUTUBA'],
+												 'target' => 'http://localhost/afi-opac3-ce/recherche/viewnotice/clef/1928--ELLINGTOND-VOLUME4-MEDIA7-1992-3?id_profil=1&type_doc=3'],
 			                  true);
+
+		$this->_link = Class_FRBR_Link::find(2);
 	}
 
 	
 	/** @test */
-	public function sourceShouldContainOnlyKey() {
-		$model = Class_FRBR_Link::find(2);
-		$this->assertEquals('LES1000MOTSDELINFO-POURMIEUXCOMPRENDREE-COMBRESE--GALLIMARDJEUNESSE-2003-1',
-			                  $model->getSource());
+	public function sourceTypeShouldBeNotice() {
+		$this->assertEquals(Class_FRBR_Link::TYPE_NOTICE,
+			                  $this->_link->getSourceType());
+	}
+
+
+	/** @test */
+	public function targetTypeShouldBeNotice() {
+		$this->assertEquals(Class_FRBR_Link::TYPE_NOTICE,
+			                  $this->_link->getTargetType());
 	}
 }

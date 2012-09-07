@@ -373,6 +373,9 @@ class NoticeAjaxController extends Zend_Controller_Action {
 		foreach ($this->_getLinksByTargetTypes($targetLinks) as $label => $links)
 			$html .= $this->_getSourceTypeLinks($label, $links);
 
+		if ('' == $html)
+			$html = $noResultMessage;
+
 		$this->_sendResponse($html);
 	}
 
@@ -425,9 +428,14 @@ class NoticeAjaxController extends Zend_Controller_Action {
 
 		$html .= '<div class="notice_info_titre">' . $label . '</div>';
 		$notices = [];
-		foreach ($links as $link)
-			$notices[] = $callback($link);
+		foreach ($links as $link) {
+			if ($model = $callback($link))
+				$notices[] = $model;
+		}
 
+		if (empty($notices))
+			return '';
+		
 		$html .= $this->notice_html->getListeNotices($notices, $this->view);
 				
 		return $html;

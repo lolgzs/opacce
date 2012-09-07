@@ -29,8 +29,8 @@ class ZendAfi_Form_FRBR_Link extends ZendAfi_Form {
 			->setAttrib('class', 'zend_form')
 			
 			->addElement('frbrType', 'type_id', ['label' => $this->_('Type').' *'])
-			->addElement('text', 'source', ['label' => $this->_('Objet A') . ' *', 'size' => 80])
-			->addElement('text', 'target', ['label' => $this->_('Objet B') . ' *', 'size' => 80])
+			->addElement('text', 'source', ['label' => $this->_('URL Objet A') . ' *', 'size' => 80])
+			->addElement('text', 'target', ['label' => $this->_('URL Objet B') . ' *', 'size' => 80])
 
 			->addDisplayGroup(['type_id', 'source', 'target'], 'link', ['legend' => '']);
 	}

@@ -364,6 +364,7 @@ abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControl
 	
 	public function setUp() {
 		parent::setUp();
+
 		$leCombat = 'LECOMBATDESJUGES--BILLYY--ZARAFAFILMSDISTRIB-2006-4';
 		$this->_lesGrandsTextes = 'LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1';
 		$this->_moiCEstQuoi = 'MOICESTQUOI--BRENIFIERO--NATHANJEUNESSE-2004-1';
@@ -378,18 +379,20 @@ abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControl
 				->with($leCombat)
 				->answers([Class_FRBR_Link::newInstanceWithId(1)
 						       ->setType($type)
-						       ->setSource($leCombat)
-						       ->setTarget($this->_lesGrandsTextes)])
+						       ->setSource($this->_getUrlForKey($leCombat))
+						       ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
+						       ->setTarget($this->_getUrlForKey($this->_lesGrandsTextes))
+						       ->setTargetType(Class_FRBR_Link::TYPE_NOTICE)])
 
 				->whenCalled('getLinksForTarget')
 				->with($leCombat)
 				->answers([Class_FRBR_Link::newInstanceWithId(2)
 						       ->setType($type)
-						       ->setSource($this->_moiCEstQuoi)
-						       ->setTarget($leCombat)]);
+						       ->setSource($this->_getUrlForKey($this->_moiCEstQuoi))
+						       ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
+						       ->setTarget($this->_getUrlForKey($leCombat))
+						       ->setTargetType(Class_FRBR_Link::TYPE_NOTICE)]);
 		
-		Class_Notice::newInstanceWithId(777)
-				->setClefAlpha($leCombat);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
 				->whenCalled('getNoticeByClefAlpha')
@@ -402,10 +405,23 @@ abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControl
 				->with($this->_moiCEstQuoi)
 				->answers(Class_Notice::newInstanceWithId(999)
 					        ->setTitrePrincipal('Moi, c\'est quoi ?')
-					        ->setClefAlpha($this->_moiCEstQuoi));
+					        ->setClefAlpha($this->_moiCEstQuoi))
+
+				->whenCalled('find')
+				->with(777)
+				->answers(Class_Notice::newInstanceWithId(777)
+					          ->setClefAlpha($leCombat))
+
+				->beStrict();
 	}
 
 
+	protected function _getUrlForKey($key) {
+		return 'http://localhost/afi-opac3-ce/recherche/viewnotice/clef/' . $key
+				. '?id_profil=1&type_doc=1';
+	}
+
+		
 	/** @test */
 	public function linkTypeAPourSuiteShouldBePresent() {
 		$this->assertXPathContentContains('//div', 'a pour suite');

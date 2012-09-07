@@ -43,7 +43,7 @@ class FRBR_LinkLoader extends Storm_Model_Loader {
 	 * @param $value string
 	 */
 	public function getLinksFor($name, $value) {
-		return $this->findAllBy([$name => $value,
+		return $this->findAllBy(['where' => $name . ' like \'%' . $value . '%\'',
 				                     'order' => 'type_id']);
 	}
 }
@@ -51,6 +51,9 @@ class FRBR_LinkLoader extends Storm_Model_Loader {
 
 class Class_FRBR_Link extends Storm_Model_Abstract {
 	use Trait_Translator;
+
+	const TYPE_NOTICE = 'afi:notice';
+	const TYPE_EXTERNAL = 'afi:external';
 	
 	protected $_table_name = 'frbr_link';
 	protected $_belongs_to = ['type' => ['model' => 'Class_FRBR_LinkType',
@@ -81,33 +84,45 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 
 	public function validate() {
 		$this
-			->validateAttribute('source', 'Zend_Validate_NotEmpty', $this->_('Un libellé objet A est requis'))
-			->validateAttribute('target', 'Zend_Validate_NotEmpty', $this->_('Un libellé objet B est requis'));
+			->validateAttribute('source', 'Zend_Validate_NotEmpty', $this->_('URL objet A est requis'))
+			->validateAttribute('source', 'ZendAfi_Validate_Url', $this->_('N\'est pas une url valide'))
+			->validateAttribute('target', 'Zend_Validate_NotEmpty', $this->_('URL objet B est requis'))
+			->validateAttribute('target', 'ZendAfi_Validate_Url', $this->_('N\'est pas une url valide'));
 	}
 
 
 	public function beforeSave() {
 		parent::beforeSave();
-		if (false === strpos($this->getSource(), '/clef/'))
+		$this->_detectSourceType();
+		$this->_detectTargetType();
+	}
+
+
+	protected function _detectEntityTypeFromUrl($url, $callback) {
+		if (false === strpos($url, 'http:'))
 			return;
 
-		$parts = explode('/', $this->getSource());
-		$this->setSource($parts[array_search('clef', $parts) + 1]);
+		$uri = Zend_Uri_Http::fromString($url);
+		$callback(($uri->getHost() == $_SERVER['HTTP_HOST']) ?
+			self::TYPE_NOTICE :
+			self::TYPE_EXTERNAL);
 	}
 
 
-	/** @return string */
-	public function getTargetTitle() {
-		return $this->getTargetNotice()->getTitrePrincipal();
+	protected function _detectSourceType() {
+		$this->_detectEntityTypeFromUrl(
+				$this->getSource(),
+				function ($type) {$this->setSourceType($type);});
 	}
 
 
-	/** @return string */
-	public function getSourceTitle() {
-		return $this->getSourceNotice()->getTitrePrincipal();
+	protected function _detectTargetType() {
+		$this->_detectEntityTypeFromUrl(
+				$this->getTarget(),
+				function ($type) {$this->setTargetType($type);});
 	}
 
-	
+
 	/** @return Class_Notice */
 	public function getTargetNotice() {
 		return $this->getEntityFor('target');
@@ -125,22 +140,15 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 	 * @return Class_Notice
 	 */
 	public function getEntityFor($type) {
+		if (self::TYPE_EXTERNAL == $this->{'get'. ucfirst($type) . 'Type'}())
+			return;
+		
 		$attribute = '_' . $type .'_entity';
-		if (!$this->$attribute)
-			$this->$attribute = Class_Notice::getLoader()->getNoticeByClefAlpha($this->$type);
+		if (!$this->$attribute) {
+			$key = $this->_extractKeyFromUrl($this->{'get'. ucfirst($type)}());
+			$this->$attribute = Class_Notice::getLoader()->getNoticeByClefAlpha($key);
+		}
 		return $this->$attribute;
-	}
-
-	
-	/** @param $view Zend_View */
-	public function getTargetUrl($view) {
-		return $view->urlNotice($this->getTargetNotice());
-	}
-
-
-	/** @param $view Zend_View */
-	public function getSourceUrl($view) {
-		return $view->urlNotice($this->getSourceNotice());
 	}
 
 
@@ -153,6 +161,24 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 	/** @return string */
 	public function getTypeLabelFromTarget() {
 		return $this->getType()->getFromTarget();
+	}
+
+
+	/**
+	 * @param $url string
+	 * @return string
+	 */
+	protected function _extractKeyFromUrl($url) {
+		if ('' == $url)
+			return '';
+
+		// simule un routage standard
+		$request = new Zend_Controller_Request_Http($url);
+		$request->setBaseUrl(BASE_URL);
+		$router = new Zend_Controller_Router_Rewrite();
+		$router->route($request);
+		
+		return $request->getParam('clef', '');
 	}
 }
 
