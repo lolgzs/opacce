@@ -18,9 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301	 USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Menu admin
-//////////////////////////////////////////////////////////////////////////////////////////
+
 class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_BaseHelper {
 	public function addTitleIconJS() {
 		Class_ScriptLoader::getInstance()
@@ -68,6 +66,10 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		}
 		$menu_modules .= $this->closeBoite();
 
+		$menu_frbr = $this->openBoite($this->translate()->_('FRBR'));
+		$menu_frbr .= $this->addMenu('frbr_16.png', $this->translate()->_('Types de lien'), '/admin/frbr-linktype', $acl_admins);
+		$menu_frbr .= $this->addMenu('frbr_16.png', $this->translate()->_('Liens'), '/admin/frbr-link', $acl_admins);
+		$menu_frbr .= $this->closeBoite();
 
 		$menu_bibnum = '';
 		if (Class_AdminVar::isBibNumEnabled()) {
@@ -128,7 +130,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_systeme .= $this->closeBoite();
 
 		// Activation des menus en fonction du rôle
-		$html_menu = $menu_modules;
+		$html_menu = $menu_modules . $menu_frbr;
 		if (in_array($this->user->ROLE, $acl_admins)) $html_menu .= $menu_bibnum.$menu_page;
 		$html_menu .= $menu_stat;
 		if (in_array($this->user->ROLE, $acl_admins)) $html_menu .= $menu_portail;
@@ -175,7 +177,7 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 
 		$class_selected = '';
 		if (array_key_exists('REQUEST_URI', $_SERVER)
-				and $_SERVER['REQUEST_URI'] == $lien) {
+			and false !== strpos($_SERVER['REQUEST_URI'], $lien)) {
 			$class_selected = 'class="selected"';
 		}
 
