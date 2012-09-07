@@ -93,8 +93,14 @@ class Admin_FrbrLinktypeControllerIndexTest extends Admin_FrbrLinktypeController
 
 
 	/** @test */
-	public function linkToAddNewTypeShouldBePresent() {
+	public function linkToAddNewShouldBePresent() {
 		$this->assertXPath('//div[contains(@onclick, "frbr-linktype/add")]');
+	}
+
+
+	/** @test */
+	public function linkToManageLinksShouldBePresent()  {
+		$this->assertXPath('//div[contains(@onclick, "frbr-link\')")]');
 	}
 }
 

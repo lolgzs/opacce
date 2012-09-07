@@ -1,8 +1,16 @@
 <?php
-echo $this->bouton('id=add_category',
+echo $this->bouton('id=manage_types',
+									 'picto=fonctions_admin.png',
+									 'texte=' . $this->_('Gérer les types de relation'),
+	                 'url=' . $this->url(['controller' => 'frbr-linktype', 'id' => null]),
+	                 'largeur=250px;'
+									 );
+
+echo $this->bouton('id=add_link',
 									 'picto=add.gif',
 									 'texte=' . $this->_('Ajouter une relation'),
-									 'url=' . $this->url(['action' => 'add', 'id' => null])
+	                 'url=' . $this->url(['action' => 'add', 'id' => null]),
+	                 'largeur=250px;'
 									 );
 
 $truncate = function ($value) {

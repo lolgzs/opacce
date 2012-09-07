@@ -57,7 +57,7 @@ class Admin_FrbrLinkControllerIndexTest extends Admin_FrbrLinkControllerTestCase
 
 	/** @test */
 	public function pageTitleShouldBeTypesDeRelation() {
-		$this->assertXPathContentContains('//h1', 'Relations');
+		$this->assertXPathContentContains('//h1', 'Notices liées');
 	}
 
 
@@ -100,8 +100,14 @@ class Admin_FrbrLinkControllerIndexTest extends Admin_FrbrLinkControllerTestCase
 
 
 	/** @test */
-	public function linkToAddNewTypeShouldBePresent() {
+	public function linkToAddNewShouldBePresent() {
 		$this->assertXPath('//div[contains(@onclick, "frbr-link/add")]');
+	}
+
+
+	/** @test */
+	public function linkToManageTypesShouldBePresent() {
+		$this->assertXPath('//div[contains(@onclick, "frbr-linktype")]');
 	}
 }
 

@@ -1,8 +1,16 @@
 <?php
+echo $this->bouton('id=manage_links',
+									 'picto=back.gif',
+									 'texte=' . $this->_('Retour aux liens'),
+	                 'url=' . $this->url(['controller' => 'frbr-link', 'id' => null]),
+	                 'largeur=250px;'
+									 );
+
 echo $this->bouton('id=add_category',
 									 'picto=add.gif',
 									 'texte=' . $this->_('Ajouter un type de relation'),
-									 'url=' . $this->url(['action' => 'add', 'id' => null])
+									 'url=' . $this->url(['action' => 'add', 'id' => null]),
+	                 'largeur=250px;'
 									 );
 
 echo $this->tagModelTable($this->relations, 

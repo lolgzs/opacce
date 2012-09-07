@@ -33,7 +33,7 @@ class Admin_FrbrLinkController extends ZendAfi_Controller_Action {
 
 						'actions' => ['add' => ['title' => $this->_('Nouvelle relation')],
 								          'edit' => ['title' => $this->_('Modifier une relation')],
-							            'index' => ['title' => $this->_('Relations')]],
+							            'index' => ['title' => $this->_('Notices liées')]],
 
 						'form' => (new ZendAfi_Form_FRBR_Link())];
 	}
