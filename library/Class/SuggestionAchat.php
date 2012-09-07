@@ -23,10 +23,10 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 
 	protected $_table_name = 'suggestion_achat';
 
-	protected $_belongs_to = array('user' => array('model' => 'Class_Users',
-																								 'referenced_in' => 'user_id'));
+	protected $_belongs_to = ['user' => ['model' => 'Class_Users',
+																			 'referenced_in' => 'user_id']];
 
-	protected $_default_attribute_values = array('date_creation' => '');
+	protected $_default_attribute_values = ['date_creation' => ''];
 
 	public function setIsbn($isbn) {
 		return parent::_set('isbn', preg_replace('/[\s\.\-\_]/', '', (string)$isbn));
