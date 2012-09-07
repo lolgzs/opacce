@@ -87,6 +87,12 @@ class UsersMilesDavisAttributesTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('Miles', $this->miles->PRENOM);
 	}
 
+
+	/** @test */
+	public function idSigbShouldDefaultToEmpty() {
+		$this->assertEquals('', $this->miles->getIdSigb());
+	}
+
 	public function testSetPRENOM() {
 		$this->miles->PRENOM = 'Miles Dewey';
 		$this->assertEquals('Miles Dewey', $this->miles->PRENOM);

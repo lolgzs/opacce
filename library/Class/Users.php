@@ -196,7 +196,8 @@ class Class_Users extends Storm_Model_Abstract {
 																							 'prenom' => '',
 																							 'adresse' => '',
 																							 'code_postal' => '',
-																							 'ville' => ''
+																							 'ville' => '',
+																							 'id_sigb' => null
 																							 );
 
 	protected $_translate;
