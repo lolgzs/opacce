@@ -20,6 +20,8 @@
  */
 
 class ZendAfi_View_Helper_TagVideo extends Zend_View_Helper_HtmlElement {
+	use Trait_Translator;
+
 	public function tagVideo($album) {
 		Class_ScriptLoader::getInstance()
 			->addScript('http://vjs.zencdn.net/c/video.js')
@@ -35,9 +37,22 @@ class ZendAfi_View_Helper_TagVideo extends Zend_View_Helper_HtmlElement {
 											 $trailer->getMimeType());
 		}
 
-		return sprintf('<video id="my_vid" class="video-js vjs-default-skin" poster="%s" controls preload="auto" data-setup="{}" width="640" height="400">%s</video>',
-									 $album->getPoster(),
-									 $html);
+		return 
+			sprintf('<video id="my_vid" class="video-js vjs-default-skin" poster="%s" controls preload="auto" data-setup="{}" width="640" height="400">%s</video>',
+							$album->getPoster(),
+							$html)
+			.$this->getViewLink($album);
+	}
+
+
+	public function getViewLink($album) {
+		$current_user = Class_Users::getIdentity();
+		if (!$current_user->isAbonne())
+			return '';
+
+		$arte_vod_link = Class_ArteVodLink::forAlbumAndUser($album, $current_user);
+		return $this->view->tagAnchor($arte_vod_link->url(),
+																	$this->_('Visionner le film dans son intégralité'));
 	}
 }
 

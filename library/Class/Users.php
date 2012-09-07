@@ -973,4 +973,14 @@ class Class_Users extends Storm_Model_Abstract {
 			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
 			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB));
 	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beInvite() {
+		return $this
+			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::INVITE)
+			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole(ZendAfi_Acl_AdminControllerRoles::INVITE));
+	}
 }
