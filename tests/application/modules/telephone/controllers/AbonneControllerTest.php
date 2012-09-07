@@ -52,6 +52,7 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 
 		$this->_user = Class_Users::getLoader()->getIdentity()
 			->setIdabon(23)
+			->beAbonneSIGB()
 			->setFicheSIGB(array('type_comm' => Class_IntBib::COM_VSMART,
 													 'fiche' => $emprunteur));
 
@@ -67,7 +68,7 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 class AbonneControllerTelephoneFicheTest extends AbonneControllerTelephoneTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('abonne/fiche');
+		$this->dispatch('abonne/fiche', true);
 	}
 
 

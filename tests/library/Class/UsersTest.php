@@ -26,8 +26,8 @@ class UserFixtures {
 	public static function miles() {
 		return array('ID_USER' => 1,
 				'LOGIN' => 'mdavis',
-				'ROLE' => 'invite',
-				'ROLE_LEVEL' => 0,
+				'ROLE' => 'abonne_sigb',
+				'ROLE_LEVEL' => 2,
 				'PASSWORD' => 'nifniff',
 				'ID_SITE' => 1,
 				'NOM' => 'Davis',

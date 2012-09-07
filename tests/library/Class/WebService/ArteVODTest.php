@@ -94,4 +94,11 @@ class ArteVODHarverstingTwoFilmsInTwoPages extends ArteVODHarverstingTestCase {
 	public function shouldHaveCreatedTwoAlbums() {
 		$this->assertEquals(2, $this->_category_wrapper->methodCallCount('save'));
 	}
+
+
+	/** @test */
+	public function secondAlbumExternalUriShouldBeBlancheNeige() {
+		$this->assertEquals('http://www.mediatheque-numerique.com/films/blanche-nage',
+												$this->_album_wrapper->getFirstAttributeForLastCallOn('save')->getExternalUri());
+	}
 }

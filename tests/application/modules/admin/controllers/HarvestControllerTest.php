@@ -50,12 +50,9 @@ abstract class HarvestControllerArteVodNotActivatedTestCase extends HarvestContr
 abstract class HarvestControllerArteVodActivatedTestCase extends HarvestControllerArteVodTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD_LOGIN')
-			->setValeur('user');
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('ARTE_VOD_KEY')
-			->setValeur('pass');
+		Class_AdminVar::newInstanceWithId('ARTE_VOD_LOGIN')->setValeur('user');
+		Class_AdminVar::newInstanceWithId('ARTE_VOD_KEY')->setValeur('pass');
+		Class_AdminVar::newInstanceWithId('ARTE_VOD_SSO_KEY')->setValeur('secret');
 	}
 }
 

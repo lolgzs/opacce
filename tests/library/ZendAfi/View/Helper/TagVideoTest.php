@@ -51,18 +51,21 @@ class ZendAfi_View_Helper_TagVideoTest extends ViewHelperTestCase {
 			->newInstanceWithId(102)
 			->setTitre('Mulholland drive')
 			->beArteVOD()
-			->setExternalUri('http://www.mediatheque-numerique.com/films/mulholland-drive')
-			->setNotes(array(
-				array('field' => '856',
-							'data' => array('x' => 'trailer',
-															'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4')),
-				array('field' => '856',
-							'data' => array('x' => 'trailer',
-															'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv')),
+			->setNotes([['field' => '856',
+									 'data' => ['x' => 'trailer',
+															'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4']],
+
+									['field' => '856',
+									 'data' => ['x' => 'trailer',
+															'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv']],
 											 
-				array('field' => '856',
-							'data' => array('x' => 'poster',
-															'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg'))));
+									['field' => '856',
+									 'data' => ['x' => 'poster',
+															'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg']],
+
+									['field' => '856',
+									 'data' => ['x' => 'external_uri',
+															'a' => 'http://www.mediatheque-numerique.com/films/mulholland-drive']]]);
 
 		$view = new ZendAfi_Controller_Action_Helper_View();
 		$this->_helper = new ZendAfi_View_Helper_TagVideo();
@@ -73,7 +76,6 @@ class ZendAfi_View_Helper_TagVideoTest extends ViewHelperTestCase {
 	/** @test */
 	public function withCurrentUserAbonneSigbShouldDisplayLinkFullPlay() {
 		$this->_james_bond
-			->setDateDebut('1999-09-12')
 			->setDateFin('2023-09-12')
 			->beAbonneSIGB();
 

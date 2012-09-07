@@ -1101,6 +1101,24 @@ class Class_Album extends Storm_Model_Abstract {
 	public function isVisible() {
 		return (bool)$this->getVisible();
 	}
+
+
+	/**
+	 * @return string url
+	 */
+	public function getExternalUri()  {
+		if ($values = $this->getUnimarc856Values(Class_WebService_ArteVOD_Film::TYPE_EXTERNAL_URI))
+			return $values[0];
+		return '';
+	}
+
+
+	public function setExternalUri($uri)  {
+		$notes = $this->getNotesAsArray();
+		$notes [] = ['field' => '856', 
+								 'data' => array('x' => Class_WebService_ArteVOD_Film::TYPE_EXTERNAL_URI, 'a' => $uri)];
+		return $this->setNotes($notes);
+	}
 }
 
 ?>

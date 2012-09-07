@@ -231,8 +231,7 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	public function isAbonne() {
-		return ($this->getDateDebut() != null  &&
-						$this->getDateFin() != null);
+		return $this->getRoleLevel() == ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB;
 	}
 
 	public function isBibliothequaire() {
@@ -306,6 +305,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 * @return bool
 	 */
 	public function isAbonnementValid() {
+		if (! $this->isAbonne()) return false;
 		if (! $this->hasDateFin()) return true;
 		return ($this->getDateFin() >= date("Y-m-d"));
 	}

@@ -49,7 +49,7 @@ class ArteVodLinkTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function withKeySECRETUrlShouldContainsEncryptedDate() {
-		Class_AdminVar::newInstanceWithId('ARTEVOD_SSO_KEY')->setValeur('GOGO');
+		Class_AdminVar::newInstanceWithId('ARTE_VOD_SSO_KEY')->setValeur('GOGO');
 
 		$this->assertEquals('http://www.mediatheque-numerique.com/films/entre-les-murs'
 												.'?sso_id=afi'
@@ -64,7 +64,7 @@ class ArteVodLinkTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function userWithoutNomEmailAndPrenomUrlSSOShouldNotContainsNomEmailPrenom() {
-		Class_AdminVar::newInstanceWithId('ARTEVOD_SSO_KEY')->setValeur('secret');
+		Class_AdminVar::newInstanceWithId('ARTE_VOD_SSO_KEY')->setValeur('secret');
 
 		$this->_james_bond
 			->setPrenom('')

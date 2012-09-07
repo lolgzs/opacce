@@ -75,6 +75,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	public function vodeclicUrlWithUserLoggedShouldBeVodeclicSSO() {
 		$this->_logUserGaston()
+			->beAbonneSIGB()
 			->setDateDebut('1999-02-10')
 			->setDateFin('2025-09-12');
 		

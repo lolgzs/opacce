@@ -23,6 +23,7 @@ class Class_WebService_ArteVOD_Film {
 	const TYPE_POSTER = 'poster';
 	const TYPE_TRAILER = 'trailer';
 	const TYPE_PHOTOS = 'photo';
+	const TYPE_EXTERNAL_URI = 'external_uri';
 
 	protected $_id;
 	protected $_external_uri;
@@ -188,12 +189,13 @@ class Class_WebService_ArteVOD_Film {
 		foreach ($this->_photos as $url)
 			$notes[] = $this->_getUnimarcForType(self::TYPE_PHOTOS, $url);
 
+		$notes []= $this->_getUnimarcForType(self::TYPE_EXTERNAL_URI, $this->_external_uri);
 		return serialize($notes);
 	}
 
 
 	protected function _getUnimarcForType($type, $url) {
-		return array('field' => '856', 
-								 'data' => array('x' => $type, 'a' => $url));
+		return ['field' => '856', 
+						'data' => array('x' => $type, 'a' => $url)];
 	}
 }

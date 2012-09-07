@@ -275,7 +275,7 @@ class AbonneControllerMultimediaAuthenticateLaurentTest extends AbonneController
 
 	/** @test */
 	public function groupShoudBeAdulteAbonneAdminAndAgile() {
-		$this->assertEquals(array('adulte','abonne','admin_bib', 'Devs agiles'),
+		$this->assertEquals(array('adulte','abonne', 'abonne_sigb', 'Devs agiles'),
 			                  $this->_json->groupes);
 	}
 
@@ -381,8 +381,8 @@ class AbonneControllerMultimediaAuthenticateArnaudTest extends AbonneControllerM
 
 
 	/** @test */
-	public function groupsShouldBeInviteAndPatrons() {
-		$this->assertEquals(array('invite', 'Patrons'), $this->_json->groupes);	
+	public function groupsShouldBeAbonneAndPatrons() {
+		$this->assertEquals(array('abonne_sigb', 'Patrons'), $this->_json->groupes);	
 	}
 
 
@@ -1223,7 +1223,7 @@ class AbonneControllerMultimediaUsersFixtures {
 				->setPassword("afi")
 				->setNom('laffont')
 				->setPrenom('laurent')
-				->setRoleLevel(4)
+				->setRoleLevel(2)
 				->setIdabon('bca2')
 				->setNaissance('1978-02-17');
 	}
@@ -1231,25 +1231,27 @@ class AbonneControllerMultimediaUsersFixtures {
 
 	public static function getBaptiste() {
 		return Class_Users::getLoader()->newInstanceWithId(9)
-				->setLogin("baptiste")
-				->setPassword("afi")
-				->setRoleLevel(2)
-				->setNaissance('2005-02-17')
-				->setDateFin('3000-01-01');
+			->setLogin("baptiste")
+			->setPassword("afi")
+			->beAbonneSIGB()
+			->setNaissance('2005-02-17')
+			->setDateFin('3000-01-01');
 	}
 
 
 	public static function getMireille() {
 		return Class_Users::getLoader()->newInstanceWithId(10)
-				->setLogin("mireille")
-				->setPassword("afi")
-				->setDateFin('1999-01-01');
+			->beAbonneSIGB()
+			->setLogin("mireille")
+			->setPassword("afi")
+			->setDateFin('1999-01-01');
 	}
 
 
 	public static function getArnaud() {
 		return Class_Users::getLoader()->newInstanceWithId(11)
-				->setLogin("arnaud")
-				->setPassword("lelache");
+			->beAbonneSIGB()
+			->setLogin("arnaud")
+			->setPassword("lelache");
 	}
 }
