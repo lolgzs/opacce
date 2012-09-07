@@ -47,8 +47,8 @@ class ZendAfi_View_Helper_TagVideo extends Zend_View_Helper_HtmlElement {
 
 	public function getViewLink($album) {
 		$current_user = Class_Users::getIdentity();
-		if (!$current_user->isAbonne())
-			return '';
+		if (!$current_user || !$current_user->isAbonne())
+			return '<p>'.$this->_('Vous devez être connecté sous un compte avec abonnement valide pour pouvoir visionner le film dans son intégralité').'</p>';
 
 		$arte_vod_link = Class_ArteVodLink::forAlbumAndUser($album, $current_user);
 		return $this->view->tagAnchor($arte_vod_link->url(),

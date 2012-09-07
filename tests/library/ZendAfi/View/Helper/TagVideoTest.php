@@ -84,7 +84,7 @@ class ZendAfi_View_Helper_TagVideoTest extends ViewHelperTestCase {
 
 
 	/** @test */
-	public function withCurrentUserNotAbonneShouldDisplayErrorMessage() {
+	public function withCurrentUserNotAbonneShouldNotDisplayLinkArteVod() {
 		$this->_james_bond->beInvite();
 
 		$this->assertNotXPathContentContains($this->_helper->tagVideo($this->_album), 
@@ -93,6 +93,23 @@ class ZendAfi_View_Helper_TagVideoTest extends ViewHelperTestCase {
 	}
 
 
+	/** @test */
+	public function withCurrentUserNotAbonneShouldDisplayErrorMessage() {
+		$this->_james_bond->beInvite();
+
+		$this->assertXPathContentContains($this->_helper->tagVideo($this->_album), 
+																			'//p', 'abonnement valide');
+		
+	}
+
+
+	/** @test */
+	public function withNoCurrentUserShouldDisplayErrorMessage() {
+		ZendAfi_Auth::getInstance()->getStorage()->clear();
+
+		$this->assertXPathContentContains($this->_helper->tagVideo($this->_album), 
+																			'//p', 'abonnement valide');
+	}
 
 }
 
