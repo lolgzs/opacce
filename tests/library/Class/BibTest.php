@@ -31,6 +31,27 @@ class BibTest extends Storm_Test_ModelTestCase {
 		$this->assertEquals(0, 
 												array_first(Class_Bib::getLoader()->findAllByWithPortail(array()))->getId());
 	}
+
+
+	/** 
+	 * Non régression bug n'affiche aucune bib sur sélection territoire "toutes" admin bib
+	 * @test 
+	 */
+	public function findAllByIdZoneShouldForceIntForRequest() {
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Bib')
+			->whenCalled('findAllBy')
+			->with(['order' => 'ville'])
+			->answers('ALL')
+
+			->whenCalled('findAllBy')
+			->with(['id_zone' => 3, 
+							'order' => 'ville'])
+			->answers('ZONE');
+
+		$this->assertEquals('ALL', Class_Bib::findAllByIdZone('ALL'));
+		$this->assertEquals('ZONE', Class_Bib::findAllByIdZone(3));
+
+	}
 }
 
 ?>

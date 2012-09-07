@@ -51,9 +51,10 @@ class BibLoader extends Storm_Model_Loader {
 
 
 	public function findAllByIdZone($id_zone=0) {
+		$id_zone = (int)$id_zone;
 		if (!$id_zone)
-			return $this->findAllBy(array('order' => 'ville'));
-		return $this->findAllBy(array('id_zone' => $id_zone,
+			return Class_Bib::findAllBy(array('order' => 'ville'));
+		return Class_Bib::findAllBy(array('id_zone' => $id_zone,
 																	'order' => 'ville'));
 	}
 
