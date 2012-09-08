@@ -340,7 +340,8 @@ class UploadControllerVignetteNoticeActionInvalidPostTest extends UploadControll
 		return [
 						['http://upload.wikimedia.org/potter.bmp'],
 						['http://upload.wikimedia.org/potter'],
-						['zor k']
+						['zor k'],
+						['']
 		];
 	}
 

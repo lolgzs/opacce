@@ -158,6 +158,25 @@ class RechercheControllerViewNoticeClefAlphaWithDoublonsTest extends RechercheCo
 
 
 
+class RechercheControllerUploadVignetteTest extends RechercheControllerNoticeTestCase {
+	/** @test */
+	public function linkToUploadVignetteShouldNotBePresentForInvite() {
+		Class_Users::getIdentity()->beInvite();
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertNotXPathContentContains('//a', 'Modifier la vignette');
+	}
+
+	/** @test */
+	public function linkToUploadVignetteShouldBePresentForAdmin() {
+		Class_Users::getIdentity()->beAdminPortail();
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertXPathContentContains('//a', 'Modifier la vignette');
+	}
+}
+
+
+
+
 class RechercheControllerReservationPickupAjaxActionTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();

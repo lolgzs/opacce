@@ -969,9 +969,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 * return Class_Users
 	 */
 	public function beAbonneSIGB() {
-		return $this
-			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
-			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB));
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB);
 	}
 
 
@@ -979,8 +977,24 @@ class Class_Users extends Storm_Model_Abstract {
 	 * return Class_Users
 	 */
 	public function beInvite() {
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::INVITE);
+	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beAdminPortail() {
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL);
+	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function changeRoleTo($role) {
 		return $this
-			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::INVITE)
-			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole(ZendAfi_Acl_AdminControllerRoles::INVITE));
+			->setRoleLevel($role)
+			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole($role));
 	}
 }

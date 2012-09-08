@@ -19,6 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_UploadController extends Zend_Controller_Action {
+	public function preDispatch(){
+		Zend_Layout::startMvc(array());
+	}
+
 	public function multipleAction() {
 		$this->view->headScript()
 								->appendFile(JQUERY)
@@ -71,7 +75,7 @@ $(document).ready(function () {
 
 
 	public function vignetteNoticeAction() {
-		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('subModal.phtml');
 
 		$form = new ZendAfi_Form_VignetteNotice();
 

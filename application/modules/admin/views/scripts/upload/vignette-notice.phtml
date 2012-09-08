@@ -1,5 +1,19 @@
+<h1 style="text-align: center; margin-bottom: 10px"><?php echo $this->_('Modifier la vignette'); ?></h1>
+
+<div class="formTable" style="margin: 0 auto">
+
 <?php 
 if ($this->error)
 	echo '<div class="error">'.$this->_('Erreur: ').$this->error.'</div>';
-echo $this->form; 
+echo $this->renderForm($this->form); 
 ?>
+
+<img class="patience" style="display:none; margin: 0 auto" src="<?php echo URL_ADMIN_IMG ?>patience.gif" border="0"  alt="'.$this->_('Chargement en cours').'" />
+</div>
+
+
+<script>
+$('input[type=submit]').click(function() {
+		$('img.patience').css('display', 'block');
+	});
+</script>
