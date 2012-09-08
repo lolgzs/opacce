@@ -237,6 +237,13 @@ class UploadControllerVignetteNoticeActionPostValidUrlTest extends UploadControl
 	public function pageShouldDisplayVignetteTransferee() {
 		$this->assertXPathContentContains('//p', 'La vignette a bien été transférée');		
 	}
+
+
+	/** @test */
+	public function pageShouldContainsAButtonToCloseWindow() {
+		$this->assertXPathContentContains('//button[contains(@onclick, "hidePopWin")]', 
+																			'Fermer');		
+	}
 }
 
 
