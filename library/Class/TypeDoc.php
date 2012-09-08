@@ -119,6 +119,7 @@ class Class_TypeDoc extends Storm_Model_Abstract {
   protected $_loader_class = 'TypeDocLoader';
 	const LIVRE = 1;
 	const PERIODIQUE = 2;
+	const DISQUE = 3;
 	const DVD = 4;
 	const LIVRE_NUM = 100;
 	const DIAPORAMA = 101;
@@ -145,14 +146,6 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 	public static function newWithLabel($label) {
 		$instance = new self();
 		return $instance->setLabel($label);
-	}
-
-
-	/**
-	 * @return Storm_Model_Loader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
 	}
 
 
@@ -189,6 +182,14 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 				$for_album[$id] = $label;
 		}
 		return $for_album;
+	}
+
+
+	/**
+	 * return int identifiant type doc codifié Pergame
+	 */
+	public function toPergame() {
+		return $this->getId();
 	}
 }
 

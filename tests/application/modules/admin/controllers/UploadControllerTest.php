@@ -147,8 +147,9 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 	public function setUp() {
 		parent::setUp();
 
-		$this->dispatch('/admin/upload/vignette-notice', true);
+		$this->dispatch('/admin/upload/vignette-notice/id/12345', true);
 	}
+
 
 	/** @test */
 	public function formShouldHaveInputUrlVignette() {
@@ -160,6 +161,67 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 	public function formShouldHaveSubmitButtonEnvoyer() {
 		$this->assertXPath('//form//input[@type="submit"][@value="Envoyer"]');
 	}
+}
+
+
+
+
+class UploadControllerVignetteNoticeActionPostValidUrlTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('save')
+			->answers(true);
+
+
+		Class_Notice::newInstanceWithId(12345)
+			->setIsbn('0123456789')
+			->setTypeDoc(Class_TypeDoc::LIVRE)
+			->setTitrePrincipal('Harry Potter')
+			->setAuteurPrincipal('J.K.Rowling');
+
+		Class_CosmoVar::newInstanceWithId('url_services')->setValeur('http://cache.org');
+
+		Class_WebService_AllServices::setHttpClient($http_client = Storm_Test_ObjectWrapper::mock()
+																								->whenCalled('open_url')
+																								->with('http://cache.org?isbn=0123456789'
+																											 .'&type_doc=1'
+																											 .'&titre='.urlencode('Harry Potter')
+																											 .'&auteur='.urlencode('J.K.Rowling')
+																											 .'&image='.urlencode('http://upload.wikimedia.org/potter.jpg')
+																											 .'&src='.Class_WebService_AllServices::createSecurityKey()
+																											 .'&action=12'
+																								)
+																								->answers(json_encode(['vignette' => 'http://cache.org/potter_thumb.jpg',
+																																			 'image' => 'http://cache.org/potter.jpg',
+																																			 'statut' => 'ok'])
+																								)
+																								->beStrict()
+		);
+
+		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
+												['url_vignette' => 'http://upload.wikimedia.org/potter.jpg'],
+												true);
+	}
+
+	
+	public function tearDown() {
+		Class_WebService_AllServices::setHttpClient(null);
+	}
+
+
+	/** @test */
+	public function noticeShouldHaveBeenSaved() {
+		$this->assertEquals('0123456789', Class_Notice::getFirstAttributeForLastCallOn('save')->getIsbn());
+	}
+
+
+	/** @test */
+	public function noticeUrlVignetteShouldBePotterThumbDotJpg() {
+		$this->assertEquals('http://cache.org/potter_thumb.jpg', Class_Notice::find(12345)->getUrlVignette());
+	}
+
 }
 
 ?>

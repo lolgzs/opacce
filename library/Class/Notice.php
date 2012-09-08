@@ -1163,6 +1163,14 @@ class Class_Notice extends Storm_Model_Abstract {
 	public function getLinksAsTarget() {
 		return Class_FRBR_Link::getLinksForTarget($this->getClefAlpha());
 	}
+
+
+	/**
+	 * return int identifiant type doc codifié Pergame
+	 */
+	public function getTypeDocPergame() {
+		return Class_TypeDoc::find($this->getTypeDoc())->toPergame();
+	}
 }
 
 ?>

@@ -23,16 +23,12 @@ class Class_CosmoVar extends Storm_Model_Abstract {
 	protected $_table_name = 'variables';
 	protected $_table_primary = 'clef';
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
 	/**
 	 * @param string $name
 	 * @return mixed
 	 */
 	public static function get($name) {
-		$var = self::getLoader()->find($name);
+		$var = self::find($name);
 		if ($var == null)
 			return null;
 		return $var->getValeur();

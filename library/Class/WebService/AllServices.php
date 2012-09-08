@@ -110,8 +110,26 @@ class Class_WebService_AllServices {
 		return self::runServiceAfi(7, $args);
 	}
 
+	static function runServiceAfiUploadVignette($args) {
+		return self::runServiceAfi(12, $args);
+	}
+
 	static function setHttpClient($client) {
 		self::$_http_client = $client;
+	}
+
+
+	static function uploadVignetteForNotice($url, $id) {
+		$notice = Class_Notice::find($id);
+		$result = static::runServiceAfiUploadVignette(['isbn' => $notice->getIsbn(),
+																									 'type_doc' => $notice->getTypeDocPergame(),
+																									 'titre' => $notice->getTitrePrincipal(),
+																									 'auteur' => $notice->getAuteurPrincipal(),
+																									 'image' => $url]);
+		$notice
+			->setUrlVignette($result['vignette'])
+			->setUrlImage($result['image'])
+			->save();
 	}
 
 

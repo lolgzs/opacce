@@ -71,6 +71,11 @@ $(document).ready(function () {
 
 
 	public function vignetteNoticeAction() {
+		if ($this->getRequest()->isPost()) {
+			Class_WebService_AllServices::uploadVignetteForNotice($this->_getParam('url_vignette'),
+																														$this->_getParam('id'));
+		}
+
 		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
 		$this->view->form = new ZendAfi_Form_VignetteNotice();
 	}
