@@ -90,7 +90,9 @@ class Class_Notice extends Storm_Model_Abstract {
 	protected $_default_attribute_values = array('type_doc' => 0,
 																							 'annee' => null,
 																							 'isbn' => null,
-																							 'ean' => null);
+																							 'ean' => null,
+																							 'tome_alpha' => '',
+																							 'clef_chapeau' => '');
 
 
 	public static function getLoader()	{

@@ -167,6 +167,9 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 
 
 abstract class UploadControllerVignetteNoticeActionPostTestCase extends AbstractControllerTestCase {
+	protected $_http_client;
+	protected $_notice;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -175,13 +178,20 @@ abstract class UploadControllerVignetteNoticeActionPostTestCase extends Abstract
 			->answers(true);
 
 
-		Class_Notice::newInstanceWithId(12345)
+		$this->_notice = Class_Notice::newInstanceWithId(12345)
 			->setIsbn('0123456789')
 			->setTypeDoc(Class_TypeDoc::LIVRE)
 			->setTitrePrincipal('Harry Potter')
 			->setAuteurPrincipal('J.K.Rowling');
 
 		Class_CosmoVar::newInstanceWithId('url_services')->setValeur('http://cache.org');
+
+		Class_WebService_AllServices::setHttpClient($this->_http_client = Storm_Test_ObjectWrapper::mock());
+	}
+
+
+	public function tearDown() {
+		Class_WebService_AllServices::setHttpClient(null);
 	}
 }
 
@@ -191,33 +201,25 @@ abstract class UploadControllerVignetteNoticeActionPostTestCase extends Abstract
 class UploadControllerVignetteNoticeActionPostValidUrlTest extends UploadControllerVignetteNoticeActionPostTestCase {
 	public function setUp() {
 		parent::setUp();
-		Class_WebService_AllServices::setHttpClient($http_client = Storm_Test_ObjectWrapper::mock()
-																								->whenCalled('open_url')
-																								->with('http://cache.org?isbn=0123456789'
-																											 .'&type_doc=1'
-																											 .'&titre='.urlencode('Harry Potter')
-																											 .'&auteur='.urlencode('J.K.Rowling')
-																											 .'&image='.urlencode('http://upload.wikimedia.org/potter.jpg')
-																											 .'&src='.Class_WebService_AllServices::createSecurityKey()
-																											 .'&action=12'
-																								)
-																								->answers(json_encode(['vignette' => 'http://cache.org/potter_thumb.jpg',
-																																			 'image' => 'http://cache.org/potter.jpg',
-																																			 'statut' => 'ok'])
-																								)
-																								->beStrict()
-		);
+
+		$this->_http_client
+			->whenCalled('open_url')
+			->with('http://cache.org?isbn=0123456789'
+						 .'&type_doc=1'
+						 .'&titre='.urlencode('Harry Potter')
+						 .'&auteur='.urlencode('J.K.Rowling')
+						 .'&image='.urlencode('http://upload.wikimedia.org/potter.jpg')
+						 .'&src='.Class_WebService_AllServices::createSecurityKey()
+						 .'&action=12')
+			->answers(json_encode(['vignette' => 'http://cache.org/potter_thumb.jpg',
+														 'image' => 'http://cache.org/potter.jpg',
+														 'statut' => 'ok']))
+			->beStrict();
 
 		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
 												['url_vignette' => 'http://upload.wikimedia.org/potter.jpg'],
 												true);
 	}
-
-	
-	public function tearDown() {
-		Class_WebService_AllServices::setHttpClient(null);
-	}
-
 
 	/** @test */
 	public function noticeShouldHaveBeenSaved() {
@@ -228,6 +230,47 @@ class UploadControllerVignetteNoticeActionPostValidUrlTest extends UploadControl
 	/** @test */
 	public function noticeUrlVignetteShouldBePotterThumbDotJpg() {
 		$this->assertEquals('http://cache.org/potter_thumb.jpg', Class_Notice::find(12345)->getUrlVignette());
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayVignetteTransferee() {
+		$this->assertXPathContentContains('//p', 'La vignette a bien été transférée');		
+	}
+}
+
+
+
+
+class UploadControllerVignetteNoticeActionPostValidUrlForPeriodiqueTest extends UploadControllerVignetteNoticeActionPostTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->_notice
+			->setTypeDoc(Class_TypeDoc::PERIODIQUE)
+			->setTitrePrincipal("Science et vie")
+			->setAuteurPrincipal('')
+			->setTomeAlpha('1118')
+			->setClefChapeau('SCIENCE VIE');
+
+		$this->_http_client
+			->whenCalled('open_url')
+			->with('http://cache.org?isbn=0123456789'
+						 .'&type_doc=2'
+						 .'&titre='.urlencode('Science et vie')
+						 .'&image='.urlencode('http://upload.wikimedia.org/science_vie.jpg')
+						 .'&tome_alpha=1118'
+						 .'&clef_chapeau='.urlencode('SCIENCE VIE')
+						 .'&src='.Class_WebService_AllServices::createSecurityKey()
+						 .'&action=12')
+			->answers(json_encode(['vignette' => 'http://cache.org/science_vie_thumb.jpg',
+														 'image' => 'http://cache.org/science_vie.jpg',
+														 'statut' => 'ok']))
+			->beStrict();
+
+		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
+												['url_vignette' => 'http://upload.wikimedia.org/science_vie.jpg'],
+												true);
 	}
 
 

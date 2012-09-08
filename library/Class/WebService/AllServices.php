@@ -121,11 +121,13 @@ class Class_WebService_AllServices {
 
 	static function uploadVignetteForNotice($url, $id) {
 		$notice = Class_Notice::find($id);
-		$result = static::runServiceAfiUploadVignette(['isbn' => $notice->getIsbn(),
-																									 'type_doc' => $notice->getTypeDocPergame(),
-																									 'titre' => $notice->getTitrePrincipal(),
-																									 'auteur' => $notice->getAuteurPrincipal(),
-																									 'image' => $url]);
+		$result = static::runServiceAfiUploadVignette(array_filter(['isbn' => $notice->getIsbn(),
+																																'type_doc' => $notice->getTypeDocPergame(),
+																																'titre' => $notice->getTitrePrincipal(),
+																																'auteur' => $notice->getAuteurPrincipal(),
+																																'image' => $url,
+																																'tome_alpha' => $notice->getTomeAlpha(),
+																																'clef_chapeau' => $notice->getClefChapeau()]));
 
 		if ('ok' !== $result['statut'])
 			return $result['message'];
