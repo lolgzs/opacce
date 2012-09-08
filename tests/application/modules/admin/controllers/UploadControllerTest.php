@@ -139,3 +139,27 @@ class UploadControllerMultipleProcessPostAction extends AbstractControllerTestCa
 		$this->assertContains($today->toString('yyyy-MM-dd'),	$album->getDateMaj());
 	}
 }
+
+
+
+
+class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/admin/upload/vignette-notice', true);
+	}
+
+	/** @test */
+	public function formShouldHaveInputUrlVignette() {
+		$this->assertXPath('//form//input[@type="url"][@name="url_vignette"][contains(@placeholder, "ex: http://upload")]');
+	}
+
+
+	/** @test */
+	public function formShouldHaveSubmitButtonEnvoyer() {
+		$this->assertXPath('//form//input[@type="submit"][@value="Envoyer"]');
+	}
+}
+
+?>

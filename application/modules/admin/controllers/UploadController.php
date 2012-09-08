@@ -68,5 +68,11 @@ $(document).ready(function () {
 
 		$this->_helper->json(array('success' => 'false'));
 	}
+
+
+	public function vignetteNoticeAction() {
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
+		$this->view->form = new ZendAfi_Form_VignetteNotice();
+	}
 }
 ?>

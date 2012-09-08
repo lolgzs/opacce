@@ -153,3 +153,5 @@ class UploadController extends Zend_Controller_Action
 		exit;
 	}
 }
+
+?>
