@@ -18,22 +18,21 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-
-class ZendAfi_Form_VignetteNotice extends ZendAfi_Form {
-	use Trait_Translator;
-
-	public function init() {
-		parent::init();
-		$this
-			->addElement('url', 
-									 'url_vignette', 
-									 ['label' => $this->_('URL de la vignette'),
-										'placeholder' => 'ex: http://upload.wikimedia.org/wikipedia/en/2/2c/Harry_Potter_and_the_Philosopher%27s_Stone.jpg',
-										'validators' => ['url', 'vignetteUrl']])
-			->addElement('submit',
-									 'envoyer',
-									 ['label' => 'Envoyer']);
+class ZendAfi_Validate_VignetteUrl extends Zend_Validate_Abstract {
+	const INVALID_EXTENSION = 'invalidExtension';
+	
+	protected $_messageTemplates = array(self::INVALID_EXTENSION   => "'%value%' n'est pas une extension de type .png, .jpeg, .jpg, .gif.");
+	
+	public function isValid($value)	{
+		$parts = explode('.', $value);
+		$extension = end($parts);
+		$this->_setValue($extension);
+		
+		if (!in_array(strtolower($extension), ['png', 'jpg', 'jpeg', 'gif'])) {
+			$this->_error(self::INVALID_EXTENSION);
+			return false;
+		}
+		return true;
 	}
 }
-
 ?>

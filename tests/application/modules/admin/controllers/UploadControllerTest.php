@@ -311,4 +311,62 @@ class UploadControllerVignetteNoticePostServeurCacheErrorTest extends UploadCont
 
 }
 
+
+
+
+class UploadControllerVignetteNoticeActionInvalidPostTest extends UploadControllerVignetteNoticeActionPostTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_http_client
+			->whenCalled('open_url')
+			->answers(json_encode(['vignette' => 'http://cache.org/science_vie_thumb.jpg',
+														 'image' => 'http://cache.org/science_vie.jpg',
+														 'statut' => 'ok']));
+	}
+
+
+	public function validUrls() {
+		return [
+						['http://upload.wikimedia.org/potter.jpg'],
+						['http://upload.wikimedia.org/potter.jpeg'],
+						['http://upload.wikimedia.org/potter.gif'],
+						['http://upload.wikimedia.org/potter.GIF'],
+						['http://upload.wikimedia.org/potter.png']
+		];
+	}
+
+
+	public function invalidUrls() {
+		return [
+						['http://upload.wikimedia.org/potter.bmp'],
+						['http://upload.wikimedia.org/potter'],
+						['zor k']
+		];
+	}
+
+
+	/** 
+	 * @dataProvider validUrls
+	 * @test 
+	 */
+	public function pageShouldDisplayErrorIfExtensionNotAllowed($url) {
+		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
+												['url_vignette' => $url],
+												true);
+		$this->assertXPathContentContains('//p', 'La vignette a bien été transférée');		
+	}
+
+
+	/** 
+	 * @dataProvider invalidUrls
+	 * @test 
+	 */
+	public function pageShouldNotDisplayErrorIfUrlCorrect($url) {
+		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
+												['url_vignette' => $url],
+												true);
+		$this->assertXPath('//ul[@class="errors"]');		
+	}
+}
+
 ?>

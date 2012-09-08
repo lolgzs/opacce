@@ -95,11 +95,6 @@ class Class_Notice extends Storm_Model_Abstract {
 																							 'clef_chapeau' => '');
 
 
-	public static function getLoader()	{
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
 	public function getAvisByUser($user)	{
 		return Class_AvisNotice::getLoader()
 			->findAllBy(array('clef_oeuvre' => $this->getClefOeuvre(),
