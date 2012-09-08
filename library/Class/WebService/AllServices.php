@@ -126,6 +126,10 @@ class Class_WebService_AllServices {
 																									 'titre' => $notice->getTitrePrincipal(),
 																									 'auteur' => $notice->getAuteurPrincipal(),
 																									 'image' => $url]);
+
+		if ('ok' !== $result['statut'])
+			return $result['message'];
+
 		$notice
 			->setUrlVignette($result['vignette'])
 			->setUrlImage($result['image'])

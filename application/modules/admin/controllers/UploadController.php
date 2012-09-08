@@ -71,12 +71,14 @@ $(document).ready(function () {
 
 
 	public function vignetteNoticeAction() {
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
+
 		if ($this->getRequest()->isPost()) {
-			Class_WebService_AllServices::uploadVignetteForNotice($this->_getParam('url_vignette'),
-																														$this->_getParam('id'));
+			if (!$this->view->error = Class_WebService_AllServices::uploadVignetteForNotice($this->_getParam('url_vignette'),
+																																											$this->_getParam('id')))
+				$this->renderScript('upload/vignette-uploaded.phtml');
 		}
 
-		$this->_helper->getHelper('viewRenderer')->setLayoutScript('empty.phtml');
 		$this->view->form = new ZendAfi_Form_VignetteNotice();
 	}
 }

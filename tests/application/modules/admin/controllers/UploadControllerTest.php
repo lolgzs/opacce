@@ -166,7 +166,7 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 
 
 
-class UploadControllerVignetteNoticeActionPostValidUrlTest extends AbstractControllerTestCase {
+abstract class UploadControllerVignetteNoticeActionPostTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -182,7 +182,15 @@ class UploadControllerVignetteNoticeActionPostValidUrlTest extends AbstractContr
 			->setAuteurPrincipal('J.K.Rowling');
 
 		Class_CosmoVar::newInstanceWithId('url_services')->setValeur('http://cache.org');
+	}
+}
 
+
+
+
+class UploadControllerVignetteNoticeActionPostValidUrlTest extends UploadControllerVignetteNoticeActionPostTestCase {
+	public function setUp() {
+		parent::setUp();
 		Class_WebService_AllServices::setHttpClient($http_client = Storm_Test_ObjectWrapper::mock()
 																								->whenCalled('open_url')
 																								->with('http://cache.org?isbn=0123456789'
@@ -220,6 +228,42 @@ class UploadControllerVignetteNoticeActionPostValidUrlTest extends AbstractContr
 	/** @test */
 	public function noticeUrlVignetteShouldBePotterThumbDotJpg() {
 		$this->assertEquals('http://cache.org/potter_thumb.jpg', Class_Notice::find(12345)->getUrlVignette());
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayVignetteTransferee() {
+		$this->assertXPathContentContains('//p', 'La vignette a bien été transférée');		
+	}
+}
+
+
+
+
+class UploadControllerVignetteNoticePostServeurCacheErrorTest extends UploadControllerVignetteNoticeActionPostTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_WebService_AllServices::setHttpClient($http_client = Storm_Test_ObjectWrapper::mock()
+																								->whenCalled('open_url')
+																								->answers(json_encode(['statut' => 'erreur', 'message' => 'Image indisponible'])));
+
+
+		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
+												['url_vignette' => 'http://upload.wikimedia.org/potter.jpg'],
+												true);
+	}
+
+
+	/** @test */
+	public function pageShouldDisplayErrorMessageImageIndisponible() {
+		$this->assertXPathContentContains('//div[@class="error"]', 'Erreur: Image indisponible');		
+	}
+
+
+	/** @test */
+	public function noticeShouldNotHaveBeenSaved() {
+		$this->assertFalse(Class_Notice::methodHasBeenCalled('save'));
 	}
 
 }
