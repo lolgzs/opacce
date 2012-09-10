@@ -148,6 +148,13 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 	public function pageShouldNotContainsLinkToRessourcesNumeriques() {
 		$this->assertNotXPath('//a[contains(@href, "recherche/ressourcesnumeriques/id/4")]');
 	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToFRBR() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/frbr/id/4")]', 'Notices liées');
+	}
+
 }
 
 
