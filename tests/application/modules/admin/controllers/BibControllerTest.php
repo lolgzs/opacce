@@ -185,6 +185,16 @@ class BibControllerWithAdminBibTest extends BibControllerWithAdminBibTestCase {
 
 
 
+class BibControllerWithAdminBibPlanAccesTestTest extends BibControllerWithAdminBibTestCase {
+	/** @test */
+	function responseToEditSite2ShouldNotBeARedirect() {
+		$this->dispatch('admin/bib/planacces/id_bib/3');
+		$this->assertNotRedirect();
+	}
+}
+
+
+
 
 class BibControllerWithAdminBibEditAnnecyTest extends BibControllerWithAdminBibTestCase {
 	public function setUp() {

@@ -591,7 +591,7 @@ class Admin_BibController extends Zend_Controller_Action
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('sansMenuGauche.phtml');
 
-		$id_bib = (int)$this->_request->getParam('id');
+		$id_bib = (int)$this->_request->getParam('id_bib');
 		if($id_bib <= 0)	$this->_redirect('admin/bib');
 		$this->_session->ID_SITE = $id_bib;
 		$cle_plan_acces = getVar('CLEF_GOOGLE_MAP');
