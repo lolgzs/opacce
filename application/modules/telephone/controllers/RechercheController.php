@@ -162,9 +162,21 @@ class Telephone_RechercheController extends RechercheController {
   }
 
 
+  public function frbrAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+   
+    
+    
+  }
+
+
+
   public function bibliothequeAction() {
     $this->view->bib = Class_Bib::getLoader()->find($this->_getParam('id'));
   }
+
+
+
 
 
   protected function _loadUrlRetourForExemplaire($id_exemplaire) {
@@ -193,5 +205,5 @@ class Telephone_RechercheController extends RechercheController {
       ->setParam('b', $params['b'])
       ->setParam('e', $params['e'])
       ->setParam('a', $params['a']);
-  }
-}
+  }}
+  
