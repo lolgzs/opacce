@@ -142,10 +142,19 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 	public function getEntityFor($type) {
 		if (self::TYPE_EXTERNAL == $this->{'get'. ucfirst($type) . 'Type'}())
 			return;
-		
+
+		if (!self::TYPE_NOTICE)
+			return;
+
 		$attribute = '_' . $type .'_entity';
 		if (!$this->$attribute) {
-			$key = $this->_extractKeyFromUrl($this->{'get'. ucfirst($type)}());
+
+			try {		
+				$key = $this->_extractKeyFromUrl($this->{'get'. ucfirst($type)}());
+			} catch(Zend_Uri_Exception $e) {
+				return $this->$attribute = null;
+			}
+
 			$this->$attribute = Class_Notice::getLoader()->getNoticeByClefAlpha($key);
 		}
 		return $this->$attribute;
