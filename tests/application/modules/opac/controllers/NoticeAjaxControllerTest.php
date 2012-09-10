@@ -415,7 +415,7 @@ abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControl
 
 
 	protected function _getUrlForKey($key) {
-		return 'http://localhost/afi-opac3-ce/recherche/viewnotice/clef/' . $key
+		return 'http://localhost' . BASE_URL . '/recherche/viewnotice/clef/' . $key
 				. '?id_profil=1&type_doc=1';
 	}
 
