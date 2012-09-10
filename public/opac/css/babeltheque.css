@@ -1,5 +1,6 @@
 /* Pour l'instant juste un backup */
 
+
 /* Perso AFI */
 /* Tags */
 #BW_etiquettes nobr {
@@ -32,12 +33,17 @@
 }
 
 /* Avis */
-
+#BW_critiques h2,
 #BW_notes h2 {
   display: inline;
 }
 
-#BW_critiques h2,
+#BW_critiques h2 {
+  font-size: 11px;
+  margin-right: 5px;
+}
+
+
 #BW_critiques_pro h2 {
   display: none;
 }
@@ -72,7 +78,6 @@
   background-color: #DFE7EF;
   font-size: 13px;
 }
-
 
 /* Vidéos */
 #BW_videos h2 { 
