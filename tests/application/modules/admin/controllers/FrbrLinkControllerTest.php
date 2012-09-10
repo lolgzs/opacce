@@ -34,16 +34,16 @@ abstract class Admin_FrbrLinkControllerTestCase extends Admin_AbstractController
 			->answers([
 								 Class_FRBR_Link::newInstanceWithId(2)
 								 ->setType($type)
-								 ->setSource('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1?id_profil=1&type_doc=4')
+								 ->setSource('http://localhost' . BASE_URL . '/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1?id_profil=1&type_doc=4')
 								 ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
-								 ->setTarget('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-2?id_profil=1&type_doc=4')
+								 ->setTarget('http://localhost' . BASE_URL . '/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-2?id_profil=1&type_doc=4')
 								 ->setTargetType(Class_FRBR_Link::TYPE_NOTICE),
 
 								 Class_FRBR_Link::newInstanceWithId(3)
 								 ->setType($type)
-								 ->setSource('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-1?id_profil=1&type_doc=4')
+								 ->setSource('http://localhost' . BASE_URL . '/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-1?id_profil=1&type_doc=4')
 								 ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
-								 ->setTarget('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-2?id_profil=1&type_doc=4')
+								 ->setTarget('http://localhost' . BASE_URL . '/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-2?id_profil=1&type_doc=4')
 								 ->setTargetType(Class_FRBR_Link::TYPE_NOTICE)
 								 ]);
 
