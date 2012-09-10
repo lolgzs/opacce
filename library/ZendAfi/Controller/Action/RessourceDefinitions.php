@@ -76,8 +76,12 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 
 
 	public function successfulAddMessage($model) {
-		return sprintf($this->_definitions['messages']['successful_add'],
-									 $model->getLibelle());
+		if (isset($this->_definitions['messages']['successful_add']))
+			$successfull_add = $this->_definitions['messages']['successful_add'];
+		else
+			$successfull_add = $this->_definitions['messages']['successful_save'];
+
+		return sprintf($successfull_add, $model->getLibelle());
 	}
 
 

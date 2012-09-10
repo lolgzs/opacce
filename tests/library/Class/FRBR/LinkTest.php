@@ -25,9 +25,9 @@ class FRBR_LinkWrongAttributesTest extends Storm_Test_ModelTestCase {
 
 		$this->link = Class_FRBR_Link::newInstanceWithId(34)
 			->setSource('zork')
-			->setTarget('grouik')
+			->setTarget('http://localhost/notice/view/clef/TINTIN')
 			->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
-			->setTargetType('http://localhost/notice/view/clef/TINTIN')
+			->setTargetType('inexistant')
 			->setLinkType(Class_FRBR_LinkType::newInstanceWithId(4)
 										->setLibelle('synonyme')
 										->setFromSource('est un synonyme de')
