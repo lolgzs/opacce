@@ -13,10 +13,16 @@ echo $this->bouton('id=add_link',
 	                 'largeur=250px;'
 									 );
 
-$truncate = function ($value) {
-		if (40 < mb_strlen($value))
-			$value = mb_substr($value, 0, 40) . '...';
-		return $value;
+$label = function ($model, $attrib) {
+	if ($notice = $model->{'get'. ucfirst($attrib) . 'Notice'}()) {
+		return '<a href="' . $model->{'get' . ucfirst($attrib)}() . '" onclick="window.open(this.href);return false;">' . $notice->getTitrePrincipal() . '</a>'
+					 . '<br>' . $notice->getAuteurPrincipal();
+	}
+
+	$value = $model->callGetterByAttributeName($attrib);
+	if (40 < mb_strlen($value))
+		$value = mb_substr($value, 0, 40) . '...';
+	return $value;
 };
 
 echo $this->tagModelTable($this->relations, 
@@ -32,9 +38,9 @@ echo $this->tagModelTable($this->relations,
 
 	                        null,
 	
-	                        ['source' => $truncate,
-													 'target' => $truncate,
-													 'link_complete_label' => function($value) {
-															 return '<pre>' . $value . '</pre>';
+	                        ['source' => $label,
+													 'target' => $label,
+													 'link_complete_label' => function($model, $attrib) {
+															 return '<pre>' . $model->callGetterByAttributeName($attrib) . '</pre>';
 													 },]);
 ?>

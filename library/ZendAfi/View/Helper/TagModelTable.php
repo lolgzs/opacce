@@ -94,11 +94,13 @@ class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
 	public function renderModelAsTableRow($model, $attribs, $actions, $callbacks) {
 		$cols = '';
 
-		$default_callback = function ($value) {return $this->view->escape($value);};
+		$default_callback = function ($model, $attrib) {
+				return $this->view->escape($model->callGetterByAttributeName($attrib));
+		};
 		
 		foreach ($attribs as $attrib) {
 			$callback = (array_key_exists($attrib, $callbacks)) ? $callbacks[$attrib] : $default_callback;
-			$cols .= '<td>' . $callback($model->callGetterByAttributeName($attrib)) . '</td>';
+			$cols .= '<td>' . $callback($model, $attrib) . '</td>';
 		}
 
 		$row = '<tr>'.$cols.'<td>';

@@ -7,7 +7,7 @@
  * the Free Software Foundation.
  *
  * There are special exceptions to the terms and conditions of the AGPL as it
- * is applied to this software (see README file).
+ * is applied to this software (see README f ile).
  *
  * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,14 +34,31 @@ abstract class Admin_FrbrLinkControllerTestCase extends Admin_AbstractController
 			->answers([
 								 Class_FRBR_Link::newInstanceWithId(2)
 								 ->setType($type)
-								 ->setSource('LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1')
-								 ->setTarget('LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-2'),
+								 ->setSource('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1?id_profil=1&type_doc=4')
+								 ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
+								 ->setTarget('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-2?id_profil=1&type_doc=4')
+								 ->setTargetType(Class_FRBR_Link::TYPE_NOTICE),
 
 								 Class_FRBR_Link::newInstanceWithId(3)
 								 ->setType($type)
-								 ->setSource('AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-1')
-								 ->setTarget('AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-2')
+								 ->setSource('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-1?id_profil=1&type_doc=4')
+								 ->setSourceType(Class_FRBR_Link::TYPE_NOTICE)
+								 ->setTarget('http://localhost/afi-opac3-ce/recherche/viewnotice/clef/AMNESTYINTERNATIONAL--GRANTR--GAMMA-2002-2?id_profil=1&type_doc=4')
+								 ->setTargetType(Class_FRBR_Link::TYPE_NOTICE)
 								 ]);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('getNoticeByClefAlpha')
+			->with('LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1')
+			->answers(Class_Notice::newInstanceWithId(33)
+				          ->setTitrePrincipal('Les grands textes tome 1')
+				          ->setAuteurPrincipal('Vidalio Nesti'))
+
+			->whenCalled('getNoticeByClefAlpha')
+			->with('LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-2')
+			->answers(Class_Notice::newInstanceWithId(33)
+				          ->setTitrePrincipal('Les grands textes tome 2')
+				          ->setAuteurPrincipal('Vidalio Nesto'));
 	}
 }
 
@@ -62,16 +79,32 @@ class Admin_FrbrLinkControllerIndexTest extends Admin_FrbrLinkControllerTestCase
 
 
 	/** @test */
-	public function firstRowTDShouldContainsSourceKey() {
-		$this->assertXPathContentContains('//tr[1]//td',
-			                                'LESGRANDSTEXTESDEDROITINTERNATIONALPUBLI...');
+	public function firstRowTDShouldContainsSourceTitle() {
+		$this->assertXPathContentContains('//tr[1]//td', 'Les grands textes tome 1');
 	}
 
 
 	/** @test */
-	public function firstRowTDShouldContainsTargetKey() {
-		$this->assertXPathContentContains('//tr[1]//td',
-			                                'LESGRANDSTEXTESDEDROITINTERNATIONALPUBLI...');
+	public function firstRowTDShouldContainsSourceAuthor() {
+		$this->assertXPathContentContains('//tr[1]//td', 'Vidalio Nesti');
+	}
+
+
+	/** @test */
+	public function firstRowTDShouldContainsSourceLink() {
+		$this->assertXPath('//tr[1]//td//a[contains(@href, "LESGRANDSTEXTESDEDROITINTERNATIONALPUBLIC--DUPUYP--DALLOZ-2010-1")]');
+	}
+
+
+	/** @test */
+	public function firstRowTDShouldContainsTargetTitle() {
+		$this->assertXPathContentContains('//tr[1]//td', 'Les grands textes tome 2');
+	}
+
+
+	/** @test */
+	public function firstRowTDShouldContainsTargetAuthor() {
+		$this->assertXPathContentContains('//tr[1]//td', 'Vidalio Nesto');
 	}
 
 
