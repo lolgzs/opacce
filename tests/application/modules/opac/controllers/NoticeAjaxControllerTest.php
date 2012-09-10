@@ -410,9 +410,7 @@ abstract class NoticeAjaxControllerFrbrWithLinksTestCase extends AbstractControl
 				->whenCalled('find')
 				->with(777)
 				->answers(Class_Notice::newInstanceWithId(777)
-					          ->setClefAlpha($leCombat))
-
-				->beStrict();
+					          ->setClefAlpha($leCombat));
 	}
 
 
