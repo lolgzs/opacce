@@ -143,9 +143,6 @@ class Class_FRBR_Link extends Storm_Model_Abstract {
 		if (self::TYPE_EXTERNAL == $this->{'get'. ucfirst($type) . 'Type'}())
 			return;
 
-		if (!self::TYPE_NOTICE)
-			return;
-
 		$attribute = '_' . $type .'_entity';
 		if (!$this->$attribute) {
 
