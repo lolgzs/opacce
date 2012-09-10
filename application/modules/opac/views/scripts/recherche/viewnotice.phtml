@@ -54,7 +54,7 @@ $notice_html=new Class_NoticeHtml($this->notice);
 					else 
 						echo printf('<img src="%s" width="100" border="0" alt="%s" /> ', $this->url_img["vignette"], $this->_('Vignette'));
 
-          if (Class_Users::isCurrentUserCanAccesBackend())
+          if (Class_Users::isCurrentUserCanAccesBackend() && defined('DEVELOPMENT'))
 						echo sprintf('<a href="#" onclick="showPopWin(\'%s\', 700, 200); return false;">%s</a>',
 												 $this->url(['module' => 'admin', 
 																		 'controller' => 'upload',
