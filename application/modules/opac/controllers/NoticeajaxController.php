@@ -349,96 +349,15 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	}
 
 
-	public function frbrAction() {
-		$noResultMessage = $this->view->_('Aucun lien n\'a été trouvé');
-		$id = str_replace('N', '', $this->_getParam('id_notice'));
-		
-		if (!$model = Class_Notice::find((int)$id)) {
-			$this->_sendResponse($noResultMessage);
-			return;
-		}
-		
-		$sourceLinks = $model->getLinksAsSource();
-		$targetLinks = $model->getLinksAsTarget();
-		
-		if (0 == count($sourceLinks) and 0 == count($targetLinks)) {
-			$this->_sendResponse($noResultMessage);
-			return;
-		}
+	public function frbrAction() {		
+	  $id = str_replace('N', '', $this->_getParam('id_notice'));
 
-		$html = '';
-		foreach ($this->_getLinksBySourceTypes($sourceLinks) as $label => $links)
-			$html .= $this->_getTargetTypeLinks($label, $links);
-
-		foreach ($this->_getLinksByTargetTypes($targetLinks) as $label => $links)
-			$html .= $this->_getSourceTypeLinks($label, $links);
-
-		if ('' == $html)
-			$html = $noResultMessage;
-
-		$this->_sendResponse($html);
-	}
-
-
-	protected function _getLinksBySourceTypes($links) {
-		return $this->_getLinksByType($links, function ($link) {
-			return $link->getTypeLabelFromSource();
-		});
-	}
-
-
-	protected function _getLinksByTargetTypes($links) {
-		return $this->_getLinksByType($links, function ($link) {
-			return $link->getTypeLabelFromTarget();
-		});
-	}
-
-
-  protected function _getLinksByType($links, $callback) {
-		$byTypes = [];
-		foreach ($links as $link) {
-			$typeLabel = $callback($link);
-			if (!array_key_exists($typeLabel, $byTypes))
-				$byTypes[$typeLabel] = [];
-			
-			$byTypes[$typeLabel][] = $link;
-		}
-		return $byTypes;
-	}
-
-
-	protected function _getTargetTypeLinks($label, $links) {
-		return $this->_getTypeLinks($label, $links, function($link) {
-			return $link->getTargetNotice();
-		});
-	}
-
-
-	protected function _getSourceTypeLinks($label, $links) {
-		return $this->_getTypeLinks($label, $links, function($link) {
-			return $link->getSourceNotice();
-		});
-	}
-
-
-  protected function _getTypeLinks($label, $links, $callback) {
-		$html = '';
-		if (!$links)
-			return $html;
-
-		$html .= '<div class="notice_info_titre">' . $label . '</div>';
-		$notices = [];
-		foreach ($links as $link) {
-			if ($model = $callback($link))
-				$notices[] = $model;
-		}
-
-		if (empty($notices))
-			return '';
-		
-		$html .= $this->notice_html->getListeNotices($notices, $this->view);
-				
-		return $html;
+	  if (!$model = Class_Notice::find((int)$id)) {
+	    $this->_sendResponse(ZendAfi_View_Helper_Frbr::NO_RESULT_MESSAGE);
+	    return;
+	  }
+ 
+	  $this->_sendResponse($this->view->frbr($model));
 	}
 
 
@@ -446,4 +365,4 @@ class NoticeAjaxController extends Zend_Controller_Action {
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 		$this->getResponse()->setBody($html);
 	}
-}
+} 

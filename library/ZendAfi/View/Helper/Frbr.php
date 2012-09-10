@@ -33,10 +33,8 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
     $sourceLinks = $model->getLinksAsSource();
     $targetLinks = $model->getLinksAsTarget();
 
-    if (0 == count($sourceLinks) and 0 == count($targetLinks)) {
-      
-      return self::NO_RESULT_MESSAGE; }
-
+    if (0 == count($sourceLinks) and 0 == count($targetLinks))
+      return self::NO_RESULT_MESSAGE;
     
     $html = '';
     foreach ($this->_getLinksBySourceTypes($sourceLinks) as $label => $links)
@@ -44,6 +42,10 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
     
     foreach ($this->_getLinksByTargetTypes($targetLinks) as $label => $links)
       $html .= $this->_getSourceTypeLinks($label, $links);
+
+    if ('' == $html)
+      return self::NO_RESULT_MESSAGE;
+
     return $html;
   }
   
@@ -96,15 +98,18 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
       
       $html .= '<div class="notice_info_titre">' . $label . '</div>';
       $notices = [];
-      foreach ($links as $link)
-	$notices[] = $callback($link);
+      foreach ($links as $link) {
+	if ($model = $callback($link))
+	  $notices[] = $model;
+      }
+
+      if (empty($notices))
+	return '';
       
       $html .= $this->notice_html->getListeNotices($notices, $this->view);
       
       return $html;
     }
-  
-
 }
 
 
