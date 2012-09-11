@@ -25,6 +25,11 @@ class ZendAfi_Form_Element_Url extends Zend_Form_Element_Text {
 	 * @var string
 	 */
 	public $helper = 'formUrl';
+
+
+	public function init() {
+		$this->addValidator(new ZendAfi_Validate_Url());
+	}
 }
 
 ?>

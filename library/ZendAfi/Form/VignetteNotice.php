@@ -31,7 +31,7 @@ class ZendAfi_Form_VignetteNotice extends ZendAfi_Form {
 										'size' => 80,
 										'required' => true,
 										'placeholder' => 'ex: http://upload.wikimedia.org/wikipedia/en/2/2c/Harry_Potter_and_the_Philosopher%27s_Stone.jpg',
-										'validators' => ['url', 'vignetteUrl']])
+										'validators' => ['vignetteUrl']])
 			->addElement('submit',
 									 'envoyer',
 									 ['label' => 'Envoyer']);
