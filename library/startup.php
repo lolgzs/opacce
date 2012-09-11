@@ -148,7 +148,7 @@ function setupCache($cfg) {
 
 function setupSession($cfg) {
 	// Start Session
-	$session = new Zend_Session_Namespace('afiopac');
+	$session = new Zend_Session_Namespace(md5(BASE_URL));
 	if (!isset($session->initialized))
 		{
 			Zend_Session::regenerateId();
