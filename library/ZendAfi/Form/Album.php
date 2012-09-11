@@ -29,7 +29,6 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 			->populate($album->toArray())
 			->addVignetteFor($album)
 			->addFileFor($album)
-			->addVideoUrlFor($album)
 			->addDisplayGroup(['titre', 
 												 'sous_titre',
 												 'cat_id',
@@ -49,7 +48,6 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 												 'provenance',
 												 'id_langue',
 												 'type_doc_id',
-					               'video_url',
 												 'cote',
 												 'matiere',
 												 'dewey',
@@ -119,16 +117,6 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 
 			->addElement('textarea', 'tags', ['label' => 'Tags',
 					                              'rows' => 2]);
-
-		Class_ScriptLoader::getInstance()
-				->addInlineScript("function toggleAlbumVideoUrl() {
-														if ('" . Class_TypeDoc::STREAMING_VIDEO . "' == \$('#type_doc_id').val()) {
-												     $('#video_url').parents('tr').show();
-												     return true;
-													 }
-													 $('#video_url').parents('tr').hide();}")
-				->addJQueryReady('toggleAlbumVideoUrl();');
-
 	}
 
 
@@ -165,18 +153,6 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 					'basePath'	=> $album->getBasePath(),
 					'baseUrl'		=> $album->getBaseUrl(),
 					'actionUrl'	=> $this->getView()->url(['action' => 'album-delete-pdf'])]));
-	}
-
-
-	/**
-	 * @param $album Class_Album
-	 * @return ZendAfi_Form_Album
-	 */
-	public function addVideoUrlFor($album) {
-		return $this->addElement('text', 'video_url',
-			['label' => 'Adresse de la vidéo', 
-				'size' => 80,
-				'value' => $album->getVideoUrl()]);
 	}
 }
 

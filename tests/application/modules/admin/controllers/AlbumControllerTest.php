@@ -639,8 +639,7 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 
 		$data = ['titre' => 'Renaissance',
 						 'sous_titre' => 'Ze Renaissance',
-			       'description' => 'Oeuvres majeures sous François 1er',
-			       'video_url' => 'http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1'];
+			       'description' => 'Oeuvres majeures sous François 1er'];
 
 		$this
 			->getRequest()
@@ -663,7 +662,7 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 					return true;
 				});
 
-		$this->dispatch('/admin/album/add_album_to/id/38');
+		$this->dispatch('/admin/album/add_album_to/id/38', true);
 		$this->new_album = $this->_album_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
@@ -693,23 +692,10 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 
 
 	/** @test */
-	public function newAlbumNotesShouldContainVideoUrl() {
-		$this->assertEquals('http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1',
-			                  $this->new_album->getNotesAsArray()[0]['data']['a']);
-	}
-
-
-	/** @test */
-	public function newAlbumNotesShouldContainVideoType() {
-		$this->assertEquals('video',
-			                  $this->new_album->getNotesAsArray()[0]['data']['x']);
-	}
-
-
-	/** @test */
 	public function shouldRedirectToEditAlbum() {
 		$this->assertRedirectTo('/admin/album/edit_album/id/67');
 	}
+
 
 	/** @test */
 	public function categoryShouldBePatrimoine() {
@@ -890,12 +876,6 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 
 
 	/** @test */
-	public function formShouldHaveAInputForVideoUrl() {
-		$this->assertXPath('//input[@type="text"][@name="video_url"]');
-	}
-
-
-	/** @test */
 	function formShouldHaveTagSuggestForMatiere() {
 		$this->assertXPath("//input[@name='matiere'][@value='1;3;5']");
 	}
@@ -953,12 +933,6 @@ class Admin_AlbumControllerEditAlbumMesRomans extends Admin_AlbumControllerTestC
 																			'français');
 		$this->assertXPathContentContains("//select[@name='id_langue']//option[@value='dak']", 
 																			'dakota');
-	}
-
-
-	/** @test */
-	public function formShouldHaveVideoUrlAsExpected() {
-		$this->assertXPath('//input[@name="video_url"][@value="http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1"]');
 	}
 }
 
@@ -1283,13 +1257,6 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 	/** @test */
 	function textAreaDescriptionShouldContainsLeVaisseauSpatial() {
 		$this->assertXPathContentContains('//textarea[@name="description"]', 'Le vaisseau spatial');
-	}
-
-
-	/** @test */
-	function imageOneDotPngShouldBeDisplayed() {
-		$this->assertXPath('//img[@src="' . BASE_URL . '/userfiles/album/999/thumbs/media/1.png"]',
-											 $this->_response->getBody());
 	}
 
 

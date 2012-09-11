@@ -219,6 +219,35 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	}
 
 
+	public function addRessourceAction () {
+		if (null === ($album = Class_Album::find($this->_getParam('id')))) {
+			$this->_redirect('admin/album');
+			return;
+		}
+
+		$this->view->album = $album;
+		$ressource = Class_AlbumRessource::newInstance()
+				->setAlbum($album);
+		$form = $this->_ressourceForm($ressource);
+
+		if ($this->_request->isPost() && ($form->isValid($this->_request->getPost()))) {
+			$ressource->updateAttributes($this->_request->getPost());
+			if ($ressource->getAlbum()->save()
+				&& $ressource->save()
+				&& $ressource->receiveFile()) {
+				$this->_helper->notify(sprintf('Média %s sauvegardé', 
+																			 $ressource->getTitre()));
+				$this->_redirect('admin/album/edit_ressource/id/'
+												 . $ressource->getId());
+				return;
+			}
+		}
+
+		$this->view->errors = $ressource->getErrors();
+		$this->view->form = $form;
+	}
+
+		
 	public function editressourceAction() {
 		if (null === ($ressource = Class_AlbumRessource::getLoader()
 																							->find($this->_getParam('id')))) {
@@ -379,44 +408,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	protected function _ressourceForm($ressource) {
-		return $this->view->newForm(array(
-																			'id' => 'ressourceForm',
-																			'enctype' => Zend_Form::ENCTYPE_MULTIPART))
-			->setAction($this->view->url())
-			->addElement('image', 'fichier', array(
-																						 'label'			=> 'Fichier *',
-																						 'required'	=> true,
-																						 'basePath'	=> $ressource->getOriginalsPath(),
-																						 'baseUrl'	=> $ressource->getThumbnailsUrl(),
-																						 'thumbnailUrl' => $ressource->getThumbnailUrl()))
-
-			->addElement('text', 'titre', array(
-																					'label' => 'Titre',
-																					'size' => '80'))
-
-			->addElement('text', 'folio', array(
-																					'label' => 'Folio',
-																					'size' => '20'))
-
-
-			->addElement('text', 'link_to', array( 'label' => 'Lien vers',
-																						 'size' => '80',
-																						 'validators' => array(new ZendAfi_Validate_Url())))
-
-			->addElement('ckeditor', 'description')
-
-			->addElement('listeSuggestion', 'matiere',array('label' => 'Matières / sujets',
-																											'name' => 'matiere',
-																											'rubrique' => 'matiere'))
-
-			->addDisplayGroup(array('titre', 'folio', 'fichier', 'link_to', 'matiere'),
-												'ressource',
-												array('legend' => 'Media'))
-			->addDisplayGroup(array('description'),
-												'ressource_desc',
-												array('legend' => 'Description'))
-
-			->populate($ressource->toArray());
+		return ZendAfi_Form_Album_Ressource::newWith($ressource);
 	}
 
 		/**
@@ -437,11 +429,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		unset($values['fichier']);
 		unset($values['pdf']);
 
-		$video_url = $values['video_url'];
-		unset($values['video_url']);
 		$album->updateAttributes($values);
-		$album->setVideoUrl($video_url);
-
 
 		if ($album->save() && $album->receiveFile() && $album->receivePDF()) {
 			$this->_helper->notify('Album sauvegardé');

@@ -1,6 +1,13 @@
 <?php
 echo $this->partial('album/_album_panel.phtml', 
 										array('album' => $this->album));
+
+echo $this->bouton('id=add_link',
+									 'picto=add.gif',
+									 'texte=' . $this->_('Ajouter un media'),
+	                 'url=' . $this->url(['action' => 'add-ressource', 'id' => $this->album->getId()]),
+	                 'largeur=250px;'
+									 );
 ?>
 
 <center>
