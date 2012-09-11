@@ -71,7 +71,13 @@ class ZendAfi_View_Helper_ComboCodification extends ZendAfi_View_Helper_BaseHelp
 	public function getTypeDocs() {
 		$items[] = array('value' => '', 'libelle' => $this->view->_('tous'));
 
-		$types  = Class_TypeDoc::getLoader()->findAll();
+		$used_ids = Class_TypeDoc::findUsedTypeDocIds();
+		$types = array_filter(Class_TypeDoc::findAll(), 
+													function ($type_doc) use ($used_ids) {
+														return in_array($type_doc->getId(),
+																						$used_ids);
+													});
+
 		$profil = Class_Profil::getCurrentProfil();
 
 		$filter = array();

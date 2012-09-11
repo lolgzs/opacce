@@ -105,12 +105,18 @@ class TypeDocLoader {
 	}
 
 
-
 	protected function _saveSerialized($serialized) {
 		return Class_CosmoVar::getLoader()
 			->find('types_docs')
 			->setListe(implode("\r\n", $serialized))
 			->save();
+	}
+
+
+	public function findUsedTypeDocIds() {
+		$rows = Class_Notice::getTable()->getAdapter()->fetchAll('select distinct(type_doc) from notices');
+		return array_map(function($row){return $row['type_doc'];},
+										 $rows);
 	}
 }
 

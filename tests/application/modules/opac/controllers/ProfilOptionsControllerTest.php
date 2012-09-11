@@ -256,18 +256,18 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 	public function setUp() {
 		parent::setUp();
 
+		$cfg_accueil_jeunesse = ['modules' => ['1' => ['division' => '4',
+																									 'type_module' => 'RECH_SIMPLE',
+																									 'preferences' => ['recherche_avancee' => "on",
+																																		 'select_doc' => 'on',
+																																		 'select_annexe' => 'on']],
 
-		$cfg_accueil_jeunesse = 
-			array('modules' => array('1' => array('division' => '4',
-																						'type_module' => 'RECH_SIMPLE',
-																						'preferences' => array('recherche_avancee' => "on")),
+																					 '2' => ['division' => '4',
+																									 'type_module' => 'LOGIN'],
 
-															 '2' => array('division' => '4',
-																						'type_module' => 'LOGIN'),
-
-															 '4' => array('division' => '1',
-																						'type_module' => 'NEWS')), 
-						'options' => 	array());
+																					 '4' => ['division' => '1',
+																									 'type_module' => 'NEWS']], 
+														 'options' => 	[]];
 
 
 		$this->profil_jeunesse = Class_Profil::getCurrentProfil()
@@ -283,33 +283,31 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 			->setLogoDroiteLink('http://macommune.fr')
 			->setHeaderImgCycle(true);
 
-		$cfg_accueil_jeux = 
-			array('modules' => array(
-															 '4' => array('division' => '1',
-																						'type_module' => 'CRITIQUES'),
-															 '7' => array('division' => '1',
-																						'type_module' => 'KIOSQUE'),
-															 '8' => array('division' => '1',
-																						'type_module' => 'RSS'),
-															 '10' => array('division' => '2',
-																						 'type_module' => 'SITO')),
-						'options' => 	array());
+		$cfg_accueil_jeux = ['modules' => ['4' => ['division' => '1',
+																							 'type_module' => 'CRITIQUES'],
+																			 '7' => ['division' => '1',
+																							 'type_module' => 'KIOSQUE'],
+																			 '8' => ['division' => '1',
+																							 'type_module' => 'RSS'],
+																			 '10' => ['division' => '2',
+																								'type_module' => 'SITO']],
+												 'options' => 	[]];
 
-		$this->page_jeux = Class_Profil::getLoader()
-			->newInstanceWithId(12)
+		$this->page_jeux = Class_Profil::newInstanceWithId(12)
 			->setParentId($this->profil_jeunesse->getId())
 			->setLibelle('Jeux')
 			->setCfgAccueil($cfg_accueil_jeux);
 
 
-		$this->page_musique = Class_Profil::getLoader()
-			->newInstanceWithId(23)
+		$this->page_musique = Class_Profil::newInstanceWithId(23)
 			->setParentId($this->profil_jeunesse->getId())
 			->setLibelle('Musique');
 
 		$_SERVER["REQUEST_URI"] = '/';
 	}
 }
+
+
 
 
 class ProfilOptionsControllerProfilJeunesseAndJeuxTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
@@ -319,12 +317,15 @@ class ProfilOptionsControllerProfilJeunesseAndJeuxTest extends ProfilOptionsCont
 		$this->assertXPath('//div[@class="recherche_avancee"]//a[contains(@href, "avancee")]');
 	}
 
+
 	/** @test */
 	public function titleShouldBeProfilJeunesseSeConnecterInAuth() {
 		$this->dispatch('/opac/auth/login');
 		$this->assertQueryContentContains('head title', 'Profil Jeunesse - Se connecter');
 	}
 }
+
+
 
 
 class ProfilOptionsControllerProfilJeunesseViewPageJeuxTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
@@ -359,9 +360,17 @@ class ProfilOptionsControllerProfilJeunesseViewPageJeuxTest extends ProfilOption
 }
 
 
+
+
 class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_TypeDoc')
+			->whenCalled('findUsedTypeDocIds')
+			->answers([1, 2, 4]);
+
+
 		$this->dispatch('/opac/');
 	}
 
@@ -386,6 +395,26 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 	/** @test */
 	function rechercheAvanceLinkShouldBeVisible() {
 		$this->assertXPath('//div[@class="recherche_avancee"]//a[contains(@href, "avancee")]');
+	}
+
+
+	/** @test */
+	public function comboRechSimpleTypeDocShouldBeVisible() {
+		$this->assertXPath('//form[@class="rechSimpleForm"]//select[@name="type_doc"]');
+	}
+
+
+	/** @test */
+	public function comboRechSimpleTypeDocShouldOnlyContainsTypesOneTwoAndFour() {
+		foreach([1,2,4] as $id)
+			$this->assertXPath('//form[@class="rechSimpleForm"]//select[@name="type_doc"]//option[@value="'.$id.'"]');
+		$this->assertNotXPath('//form[@class="rechSimpleForm"]//select[@name="type_doc"]//option[@value="3"]');
+	}
+
+
+	/** @test */
+	public function comboRechSimpleSelectAnnexeBeVisible() {
+		$this->assertXPath('//form[@class="rechSimpleForm"]//select[@name="annexe"]');
 	}
 
 
@@ -454,6 +483,8 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 		$this->assertXPath('//div[@id="banniere"]//a[@class="home"]');
 	}
 }
+
+
 
 
 class UserRoleLevelThreeViewPrivateProfilTest extends AbstractControllerTestCase {
