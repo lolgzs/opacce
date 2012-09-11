@@ -163,10 +163,7 @@ class Telephone_RechercheController extends RechercheController {
 
 
   public function frbrAction() {
-    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
-   
-    
-    
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));   
   }
 
 
