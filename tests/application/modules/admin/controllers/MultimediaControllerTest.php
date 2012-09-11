@@ -21,7 +21,7 @@
 require_once 'AdminAbstractControllerTestCase.php';
 require_once 'TimeSourceForTest.php';
 
-abstract class Admin_MultimetiaControllerTestCase extends Admin_AbstractControllerTestCase {
+abstract class Admin_MultimediaControllerTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -36,7 +36,7 @@ abstract class Admin_MultimetiaControllerTestCase extends Admin_AbstractControll
 
 
 
-class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerIndexTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -113,7 +113,7 @@ class Admin_MultimediaControllerIndexTest extends Admin_MultimetiaControllerTest
 
 
 
-class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerEditTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -192,7 +192,7 @@ class Admin_MultimediaControllerEditTest extends Admin_MultimetiaControllerTestC
 
 
 
-class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerBrowseTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -259,7 +259,7 @@ class Admin_MultimediaControllerBrowseTest extends Admin_MultimetiaControllerTes
 
 
 
-class Admin_MultimediaControllerAddTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerAddTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/multimedia/add', true);
@@ -275,7 +275,7 @@ class Admin_MultimediaControllerAddTest extends Admin_MultimetiaControllerTestCa
 
 
 
-class Admin_MultimediaControllerDeleteTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerDeleteTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/multimedia/delete/id/255', true);
@@ -292,7 +292,7 @@ class Admin_MultimediaControllerDeleteTest extends Admin_MultimetiaControllerTes
 
 
 
-class Admin_MultimediaControllerHoldsTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerHoldsTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -342,6 +342,12 @@ class Admin_MultimediaControllerHoldsTest extends Admin_MultimetiaControllerTest
 
 
 	/** @test */
+	public function secondRowShouldContainsActionToDeleteHold() {
+		$this->assertXPath('//tr[2]//td//a[contains(@href, "multimedia/delete-hold/id/3")]');
+	}
+
+
+	/** @test */
 	public function firstRowShouldContainsGroup2012_09_13() {
 		$this->assertXPathContentContains('//tr[3]//td', '2012-09-13');
 	}
@@ -369,7 +375,7 @@ class Admin_MultimediaControllerHoldsTest extends Admin_MultimetiaControllerTest
 
 
 
-class Admin_MultimediaControllerHoldsOnUnknownDeviceTest extends Admin_MultimetiaControllerTestCase {
+class Admin_MultimediaControllerHoldsOnUnknownDeviceTest extends Admin_MultimediaControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/multimedia/holds/id/9999999999', true);
@@ -379,6 +385,37 @@ class Admin_MultimediaControllerHoldsOnUnknownDeviceTest extends Admin_Multimeti
 	/** @test */
 	public function responseShouldRedirectToIndex() {
 		$this->assertRedirectTo('/admin/multimedia/index');
+	}
+}
+
+
+
+
+class Admin_MultimediaControllerDeleteHoldTest extends Admin_MultimediaControllerTestCase {
+	protected $_hold;
+
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
+			->whenCalled('delete')
+			->answers(true);
+
+		$this->_hold = Class_Multimedia_DeviceHold::newInstanceWithId(3)
+			->setIdDevice(10);
+
+		$this->dispatch('/admin/multimedia/delete-hold/id/3', true);
+	}
+
+
+	/** @test */
+	public function holdShouldHaveBeenDeleted() {
+		$this->assertSame($this->_hold, Class_Multimedia_DeviceHold::getFirstAttributeForLastCallOn('delete'));
+	}
+
+	
+	/** @test */
+	public function responseShouldRedirectToHoldsIdTen() {
+		$this->assertRedirectTo('/admin/multimedia/holds/id/10');
 	}
 }
 

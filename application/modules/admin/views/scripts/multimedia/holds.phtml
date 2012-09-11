@@ -4,7 +4,7 @@ echo $this->tagModelTable(
 													$this->device->getNextHolds(),
 													[$this->_('Utilisateur'), $this->_('Début'), $this->_('Fin')],
 													['username', 'startHHMM', 'endHHMM'],
-													[], 
+													[['action' => 'delete-hold', 'content' => $this->boutonIco('type=del')]], 
 													'multimedia_holds',
 													'jour');
 

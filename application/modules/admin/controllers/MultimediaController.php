@@ -20,6 +20,8 @@
  */
 
 class Admin_MultimediaController extends ZendAfi_Controller_Action {
+	use Trait_Translator;
+
 	public function getRessourceDefinitions() {
 
 		return [
@@ -170,6 +172,14 @@ disponible',
 																																		$device->getOs()),
 																								 'device' => $device]);
 		$this->_forward('index');
+	}
+
+
+	public function deleteHoldAction() {
+		$hold = Class_Multimedia_DeviceHold::find($this->_getParam('id'));
+		$hold->delete();
+		$this->_redirect('/admin/multimedia/holds/id/'.$hold->getIdDevice());
+		$this->_helper->notify($this->_('Réservation supprimée'));
 	}
 }
 
