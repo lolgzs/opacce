@@ -210,6 +210,7 @@ class Telephone_RechercheControllerFrbrWithLinksTest extends TelephoneAbstractCo
       ->with($this->_tintinPicaros)
       ->answers(Class_Notice::newInstanceWithId(555)
 		->setTitrePrincipal('Tintin e i picaros')
+		->setAuteurPrincipal('Hergé')
 		->setClefAlpha($this->_tintinPicaros))
 
       ->whenCalled('getNoticeByClefAlpha')
@@ -233,31 +234,31 @@ class Telephone_RechercheControllerFrbrWithLinksTest extends TelephoneAbstractCo
 
   /** @test */
   public function linkTypeAPourSuiteShouldBePresent(){
-    $this->assertXPathContentContains('//div', 'a pour suite');
+    $this->assertXPathContentContains('//li[@data-role="list-divider"]', 'a pour suite');
+  }
+
+
+  /** @test */
+  public function linkTypeEstLaSuiteShouldBePresent(){
+    $this->assertXPathContentContains('//li[@data-role="list-divider"]', 'est une suite de');
   }
 
 
   /** @test */
   public function tintinPicarosShouldBePresent() {
-    $this->assertXPathContentContains('//td', 'Tintin e i picaros');
+    $this->assertXPathContentContains('//li/a[contains(@href, "/viewnotice/clef/' . $this->_tintinPicaros . '")]', 'Tintin e i picaros');
   }
-  
+
 
   /** @test */
-  public function linkToTargetShouldBePresent() {
-    $this->assertXPath('//td[contains(@onclick, "/viewnotice/clef/' . $this->_tintinPicaros . '")]');
+  public function auteurTintinPicarosShouldBePresent() {
+    $this->assertXPathContentContains('//li/a[contains(@href, "/viewnotice/clef/' . $this->_tintinPicaros . '")]', 'Hergé');
   }
 
 
   /** @test */
   public function tintinAventureShouldBePresent() {
-    $this->assertXPathContentContains('//td', 'The adventure of Tintin');
-  }
-
-
-  /** @test */
-  public function linkToSourceShoudlBePresent() {
-    $this->assertXPath('//td[contains(@onclick, "/viewnotice/clef/' . $this->_tintinAventure . '")]');
+    $this->assertXPathContentContains('//li/a[contains(@href, "/viewnotice/clef/' . $this->_tintinAventure . '")]', 'The adventure of Tintin');
   }
 }
 

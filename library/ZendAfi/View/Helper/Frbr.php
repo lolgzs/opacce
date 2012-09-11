@@ -22,6 +22,8 @@
 class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
   const NO_RESULT_MESSAGE = 'Aucun lien n\'a été trouvé';
  
+  protected $linksRenderer;
+
   /**
    * Retourne les notices liées
    *
@@ -29,7 +31,7 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
    * @return string
    */
   public function frbr($model) {
-    $this->notice_html = new Class_NoticeHtml();
+    $this->linksRenderer = $this->getLinksRenderer();
     $sourceLinks = $model->getLinksAsSource();
     $targetLinks = $model->getLinksAsTarget();
 
@@ -96,7 +98,7 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
       if (!$links)
 	return $html;
       
-      $html .= '<div class="notice_info_titre">' . $label . '</div>';
+      $html .= $this->linksRenderer->renderType($label);
       $notices = [];
       foreach ($links as $link) {
 	if ($model = $callback($link))
@@ -106,11 +108,28 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
       if (empty($notices))
 	return '';
       
-      $html .= $this->notice_html->getListeNotices($notices, $this->view);
+      $html .= $this->linksRenderer->render($notices, $this->view);
       
       return $html;
+    }
+
+
+    public function getLinksRenderer(){
+      return new FrbrNoticesOpacRenderer();
     }
 }
 
 
+
+class FrbrNoticesOpacRenderer {
+  public function render($notices, $view){
+    $noticeHtml = new Class_NoticeHtml();
+    return $noticeHtml->getListeNotices($notices, $view);
+  }
+
+
+  public function renderType($type) {
+    return '<div class="notice_info_titre">' . $type . '</div>';
+  } 
+} 
 ?>
