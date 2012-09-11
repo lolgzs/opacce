@@ -7,9 +7,9 @@
 } else {
 echo $this->tagModelTable($this->suggestions, 
 													
-													[$this->_('Date'), $this->_('Titre'), $this->_('Auteur')],
+													[$this->_('Date'), $this->_('Titre'), $this->_('Auteur'), $this->_('N° abonné'), $this->_('Compte')],
 
-													['date_creation', 'titre', 'auteur'],
+													['date_creation', 'titre', 'auteur', 'idabon', 'compte'],
 
 													[ ['action' => 'suggestion-achat-edit', 'content' => $this->boutonIco('type=edit')],
 														['action' => 'suggestion-achat-delete', 'content' => $this->boutonIco('type=del')] ],

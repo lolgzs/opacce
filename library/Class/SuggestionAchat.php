@@ -26,7 +26,9 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 	protected $_belongs_to = ['user' => ['model' => 'Class_Users',
 																			 'referenced_in' => 'user_id']];
 
-	protected $_default_attribute_values = ['date_creation' => ''];
+	protected $_default_attribute_values = ['date_creation' => '',
+																					'titre' => '',
+																					'auteur' => ''];
 
 	public function setIsbn($isbn) {
 		return parent::_set('isbn', preg_replace('/[\s\.\-\_]/', '', (string)$isbn));
@@ -92,6 +94,20 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 			$mail->addTo($mail_profil);
 
 		$mail->send();
+	}
+
+
+	public function getIdabon() {
+		if ($this->hasUser() &&  $this->getUser()->isAbonne())
+			return $this->getUser()->getIdabon();
+		return '';
+	}
+
+
+	public function getCompte() {
+		if ($this->hasUser())
+			return $this->getUser()->getNomComplet();
+		return '';
 	}
 }
 ?>

@@ -77,12 +77,27 @@ abstract class ModoControllerSuggestionAchatTestCase extends Admin_AbstractContr
 								 ->setAuteur('J.K.Rowling')
 								 ->setIsbn('1234567890')
 								 ->setDescriptionUrl('http://harrypotter.fr')
-								 ->setCommentaire('Je veux le lire'),
+								 ->setCommentaire('Je veux le lire')
+								 ->setUser(Class_Users::newInstanceWithId(6)
+													 ->setIdabon('3435')
+													 ->beAbonneSIGB()
+													 ->setPrenom('Petit')
+													 ->setNom('Poucet')),
 
 								 Class_SuggestionAchat::newInstanceWithId(3)
 								 ->setDateCreation('2012-03-02')
 								 ->setTitre('Millenium')
-								 ->setAuteur('Stieg Larsson')
+								 ->setAuteur('Stieg Larsson'),
+
+								 Class_SuggestionAchat::newInstanceWithId(3)
+								 ->setDateCreation('2012-03-19')
+								 ->setTitre('Habibi')
+								 ->setCommentaire('Une bonne BD')
+								 ->setUser(Class_Users::newInstanceWithId(10)
+													 ->beInvite()
+													 ->setIdabon('0')
+													 ->setPrenom('Marcel')
+													 ->setNom('Duchamp'))
 								 ]);
 	}
 }
@@ -115,6 +130,12 @@ class ModoControllerSuggestionAchatActionTest extends ModoControllerSuggestionAc
 
 
 	/** @test */
+	public function firstRowTDShouldContainsIdAbon3435() {
+		$this->assertXPathContentContains('//tr[1]//td', '3435');		
+	}
+
+
+	/** @test */
 	public function firstRowTDShouldContainsDateCreation2012_03_01() {
 		$this->assertXPathContentContains('//tr[1]//td', '2012-03-01');		
 	}
@@ -135,6 +156,18 @@ class ModoControllerSuggestionAchatActionTest extends ModoControllerSuggestionAc
 	/** @test */
 	public function secondRowTDShouldContainsMillenium() {
 		$this->assertXPathContentContains('//tr[2]//td', 'Millenium');		
+	}
+
+
+	/** @test */
+	public function thirdRowTDIdAbonShouldBeEmpty() {
+		$this->assertNotXPathContentContains('//tr[3]//td[4]', '0');		
+	}
+
+
+	/** @test */
+	public function fourthRowTDShouldContainsMarcelDuchamp() {
+		$this->assertXPathContentContains('//tr[3]//td[5]', 'Marcel Duchamp');		
 	}
 }
 
