@@ -49,7 +49,7 @@ class CmsController extends Zend_Controller_Action {
 		$preferences['id_bib']				= $this->_getParam('b');
 		$preferences['display_order'] = 'EventDebut';
 		$preferences['events_only']		= true;
-		$preferences['published'] = false;
+		$preferences['published'] = !(bool)$preferences['event_date'];
 
 		if ($id_cat = (int)$this->_getParam('select_id_categorie'))
 			$preferences['id_categorie'] = $id_cat;

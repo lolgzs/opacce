@@ -311,6 +311,41 @@ class CmsControllerArticleViewByDateCategorie23AndNoProfilParamTest extends Abst
 
 
 
+
+class CmsControllerArticleViewByDateWitoutEventDateTest extends AbstractControllerTestCase {
+	protected $_article_loader;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+			->whenCalled('getArticlesByPreferences')
+			->with(['event_date' => null,
+							'id_bib' => null,
+							'display_order' => 'EventDebut',
+							'events_only' => true,
+							'published' => true])
+			->answers([Class_Article::newInstanceWithId(1)
+								->setTitre('Corrige le clic sur le bandeau de la boite calendrier qui affichait les articles non publiés')
+								->setCategorie(Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
+												->setLibelle('Bugs')
+												->setBib(Class_Bib::newInstanceWithId(1)->setLibelle('Annecy')))
+			]);
+
+
+		$this->dispatch('/cms/articleviewbydate/id_module/8/id_profil/2');
+	}
+
+
+	/** @test */
+	public function articleCorrigeCalendirerShouldBePresent() {
+		$this->assertXpathContentContains('//ul//li//a', 'Corrige le clic');
+	}
+}
+
+
+
+
 abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
