@@ -1,0 +1,10 @@
+<?php
+echo $this->partial('album/_album_panel.phtml', 
+										array('album' => $this->album));
+
+if ($this->errors) {
+	echo $this->htmlList($this->errors, false, array('class' => 'errors'));
+}
+
+echo $this->renderForm($this->form);
+?>
