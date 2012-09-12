@@ -66,7 +66,6 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 
 
 	public function renderSlideShowScripts() {
-		return $this;
 		if (!$this->_album)
 			return $this;
 
@@ -170,7 +169,11 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 																		null,
 																		true);
 
-    $content = $this->_mediaTag($url_media, $media);
+		$content = $this->view->tagImg($url_media, 
+																	 array('style' => sprintf('width: %spx',  
+																														$this->_preferences['op_largeur_img']),
+																				 'title' => htmlspecialchars($media->getTitre()),
+																				 'alt' => htmlspecialchars($media->getDescription())));
 		
 		$datas = array('titre' => $media->getTitre(), 
 									 'content' => $content, 
@@ -181,11 +184,11 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 															 $media->getLinkTo(),
 															 $data);
 		} else {
-			$datas['content'] = sprintf('<a href="%s" rel="prettyPhoto[%s]" title="%s">%s</a>',
+			$datas['content'] = sprintf('<a href="%s" rel="prettyphoto[%s]" title="%s">%s</a>',
 																	$this->view->url(array('module' => 'opac',
 																												 'controller' => 'bib-numerique',
 																												 'action' => 'get-resource',
-																												 'id' => $media->getId())).'.'.$media->getFileExtension(),
+																												 'id' => $media->getId())),
 																	htmlentities($media->getAlbum()->getTitre()),
 																	$media->getTitre(),
 																	$content);
@@ -204,24 +207,12 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	}
 
 
-  protected function _mediaTag($url_media, $media) {
-		if ($media->isImage())
-      return $this->view->tagImg($url_media, 
-																 ['style' => sprintf('width: %spx',  
-																										 $this->_preferences['op_largeur_img']),
-																	'title' => htmlspecialchars($media->getTitre()),
-																	'alt' => htmlspecialchars($media->getDescription())]);
-
-    return '';
-  }
-
-
 
 	public function _getMedias($album) {
 		if (null === $album)
 			return array();
 
-		$medias = $album->getRessources();
+		$medias = $album->getImages();
 
 		if (array_key_exists('order', $this->_preferences)
 				&& Class_Systeme_ModulesAccueil_BibliothequeNumerique::ORDER_RANDOM == $this->_preferences['order']) {
