@@ -114,7 +114,6 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 
 		$html .= $this->_renderContainerActions($container);
 
-				xdebug_break();
 		if ($container->hasChildren()) {
 			$html .= '<ul style="display:none;" id="child-of-' . $container->getId() . '">';
 			

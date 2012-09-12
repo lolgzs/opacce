@@ -96,10 +96,8 @@ class Class_AlbumCategorie extends Storm_Model_Abstract {
 	}
 
 	public function getItems() {
-		xdebug_break();
 		return Class_Album::getLoader()->getItemsOf($this->getId());
 	}
-
 
 	public function isNew() {
 		return parent::isNew() || 0 == $this->getId();
