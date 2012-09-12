@@ -40,7 +40,9 @@ class ZendAfi_View_Helper_Album_XspfPlaylistVisitor extends  Zend_View_Helper_Ab
 
 	public function visitRessource($ressource, $index) {
 		$this->_tracks []= $this->_builder->track(
-			$this->_builder->title($ressource->getTitre())
+			 $this->_builder->title($this->view->escape($ressource->getTitre()))
+			 .$this->_builder->image('http://' . $_SERVER['SERVER_NAME'] . $ressource->getThumbnailUrl())
+			 .$this->_builder->location('http://' . $_SERVER['SERVER_NAME'] . $ressource->getOriginalUrl())
 		);
 	}
 }

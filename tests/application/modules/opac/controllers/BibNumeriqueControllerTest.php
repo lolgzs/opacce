@@ -541,6 +541,30 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
 																							'Emilie jolie');
 	}
+
+
+	/** @test */
+	public function firstTrackImageShouldBeMimiJolieDotPng() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:image', 
+																							'http://localhost/afi-opac3/userfiles/album/999/thumbs/media/mimi_jolie.png');
+	}
+
+
+	/** @test */
+	public function firstTrackLocationShouldBeMimiJolieDotMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
+																							'http://localhost/afi-opac3/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+
+	/** @test */
+	public function secondTrackTitleShouldBeBatmanDarkKnight() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
+																							'Batman Dark Knight');
+	}
 }
 
 ?>

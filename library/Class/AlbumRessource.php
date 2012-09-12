@@ -461,6 +461,9 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 	 * @return string
 	 */
 	public function getThumbnailUrl() {
+		if ($this->hasVignette())
+			return $this->getThumbnailsUrl().$this->getVignette();
+
 		if ($this->isImage())
 			return $this->getLocatedFile($this->getThumbnailsUrl());
 		return $this->_getDefaultThumbnailUrl();
