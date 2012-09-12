@@ -553,7 +553,7 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 	public function firstTrackImageShouldBeMimiJolieDotPng() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:image', 
-																							'http://localhost/afi-opac3/userfiles/album/999/thumbs/media/mimi_jolie.png');
+																							'http://localhost' . BASE_URL . '/userfiles/album/999/thumbs/media/mimi_jolie.png');
 	}
 
 
@@ -561,7 +561,7 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 	public function firstTrackLocationShouldBeMimiJolieDotMp3() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
-																							'http://localhost/afi-opac3/userfiles/album/999/big/media/mimi_jolie.mp3');
+																							'http://localhost' . BASE_URL . '/userfiles/album/999/big/media/mimi_jolie.mp3');
 	}
 
 
