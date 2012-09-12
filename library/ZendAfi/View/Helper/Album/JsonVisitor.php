@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_Album_JsonVisitor extends Zend_View_Helper_Json {
+	protected $json;
+
 	public function albumPageParams($album, $left_or_right) {
 		return array('width' => (int)$album->getThumbnailWidth(),
 								 'crop_top' => (int)$album->_get('thumbnail_'.$left_or_right.'_page_crop_top'),
@@ -39,29 +41,37 @@ class ZendAfi_View_Helper_Album_JsonVisitor extends Zend_View_Helper_Json {
 
 
 	public function album_jsonVisitor($album) {
-		$thumbnail_params = array($this->albumPageParams($album, 'right'),
-															$this->albumPageParams($album, 'left'));
+		$this->json = new StdClass();
+		$this->json->album = new StdClass();
+		$this->json->album->ressources = array();
 
-		$thumbnail_urls = array($this->albumPageThumbnailUrl($album, 'right'),
-														$this->albumPageThumbnailUrl($album, 'left'));
+		$album->acceptVisitor($this);
+
+		return $this->json($this->json);
+	}
 
 
-		$json = new StdClass();
-		$json->album = new StdClass();
-		$json->album->id = $album->getId();
-		$json->album->titre = $album->getTitre();
-		$json->album->download_url = '';
-		if ($album->hasPdf())
-			$json->album->download_url = $this->view->url(array('action' => 'download_album',
-																													'id' => $album->getId().'.pdf'));
-		$json->album->description = $album->getDescription();
-		$json->album->ressources = array();
-		$json->album->width = $album->getThumbnailWidth();
-		$json->album->height = $album->getThumbnailHeight();
+	public function visitAlbum($album) {
+		$this->thumbnail_params = [$this->albumPageParams($album, 'right'),
+															 $this->albumPageParams($album, 'left')];
 
-		$page = 0;
-		foreach($album->getRessources() as $ressource) {
-			$right_or_left = ($page++ % 2);
+		$this->thumbnail_urls = [$this->albumPageThumbnailUrl($album, 'right'),
+														 $this->albumPageThumbnailUrl($album, 'left')];
+
+		$this->json->album->id = $album->getId();
+		$this->json->album->titre = $album->getTitre();
+		$this->json->album->description = $album->getDescription();
+		$this->json->album->width = $album->getThumbnailWidth();
+		$this->json->album->height = $album->getThumbnailHeight();
+
+		$this->json->album->download_url = $album->hasPdf() 
+			? $this->view->url(['action' => 'download_album', 'id' => $album->getId().'.pdf'])
+			: '';
+	}
+
+
+	public function visitRessource($ressource, $index) {
+			$right_or_left = ($index % 2);
 			$json_ressource = new StdClass();
 			$json_ressource->id = $ressource->getId();
 			$json_ressource->foliono = $ressource->getFolio();
@@ -69,20 +79,17 @@ class ZendAfi_View_Helper_Album_JsonVisitor extends Zend_View_Helper_Json {
 			$json_ressource->link_to = $ressource->getLinkTo();
 			$json_ressource->description = $ressource->getDescription();
 
-			$params = $thumbnail_params[$right_or_left];
+			$params = $this->thumbnail_params[$right_or_left];
 			$params['id'] = (int)$ressource->getId();
 
-			if ($ressource->isThumbnailExistsForParams($params))
-				$json_ressource->thumbnail = $ressource->getThumbnailUrlForParams($params);
-			else
-				$json_ressource->thumbnail = $thumbnail_urls[$right_or_left].'/id/'.$ressource->getId();
+			$json_ressource->thumbnail = $ressource->isThumbnailExistsForParams($params)
+				? $ressource->getThumbnailUrlForParams($params)
+				: $json_ressource->thumbnail = $this->thumbnail_urls[$right_or_left].'/id/'.$ressource->getId();
 
 			$json_ressource->navigator_thumbnail = $ressource->getThumbnailUrl();
 			$json_ressource->original = $ressource->getOriginalUrl();
-			$json->album->ressources []= $json_ressource;
-		}
 
-		return $this->json($json);
+			$this->json->album->ressources []= $json_ressource;
 	}
 }
 

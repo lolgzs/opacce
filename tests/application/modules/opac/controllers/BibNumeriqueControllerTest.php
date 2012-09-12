@@ -87,7 +87,7 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/bib-numerique/album/id/999.json');
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
 		$this->json = json_decode($this->_response->getBody());
 	}
 

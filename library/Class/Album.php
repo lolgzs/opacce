@@ -1119,6 +1119,13 @@ class Class_Album extends Storm_Model_Abstract {
 								 'data' => array('x' => Class_WebService_ArteVOD_Film::TYPE_EXTERNAL_URI, 'a' => $uri)];
 		return $this->setNotes($notes);
 	}
+
+
+	public function acceptVisitor($visitor) {
+		$visitor->visitAlbum($this);
+		foreach($this->getRessources() as $index => $ressource)
+			$visitor->visitRessource($ressource, $index);
+	}
 }
 
 ?>
