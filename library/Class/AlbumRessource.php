@@ -74,7 +74,9 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 		'description' => '',
 		'ordre' => 0,
 		'link_to' => '',
-		'matiere' => ''
+		'matiere' => '',
+		'vignette' => '',
+		'url' => ''
 	);
 
 	/**
@@ -509,6 +511,9 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 	 * @return string
 	 */
 	public function getOriginalUrl() {
+		if ($this->hasUrl())
+			return $this->getUrl();
+
 		return $this->getLocatedFile($this->getOriginalsUrl());
 	}
 

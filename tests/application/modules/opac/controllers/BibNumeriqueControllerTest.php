@@ -517,7 +517,13 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 											 Class_AlbumRessource::newInstanceWithId(4)
 											 ->setFichier('dark_night.mp4')
 											 ->setTitre('Batman Dark Knight')
-											 ->setVignette('batman.jpg')]);
+											 ->setVignette('batman.jpg'),
+
+
+											 Class_AlbumRessource::newInstanceWithId(4)
+											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
+											 ->setTitre('Hunger Games')
+											 ->setVignette('hunger.jpg')]);
 
 		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xml', true);
 	}
@@ -565,6 +571,15 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
 																							'Batman Dark Knight');
 	}
+
+
+	/** @test */
+	public function thirsTrackLocationShouldBeTotaleClipsDotCom() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
+																							'http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4');
+	}
+
 }
 
 ?>
