@@ -54,6 +54,7 @@ class ArteVodLinkTest extends Storm_Test_ModelTestCase {
 		$this->assertEquals('http://www.mediatheque-numerique.com/films/entre-les-murs'
 												.'?sso_id=afi'
 												.'&id=45'
+												.'&id_encrypted='. hash('sha256', '45GOGO')
 												.'&d='. hash('sha256', date('dmY').'GOGO')
 												.'&prenom=James'
 												.'&nom=Bond'
@@ -74,6 +75,7 @@ class ArteVodLinkTest extends Storm_Test_ModelTestCase {
 		$this->assertEquals('http://www.mediatheque-numerique.com/films/entre-les-murs'
 												.'?sso_id=afi'
 												.'&id=45'
+												.'&id_encrypted='. hash('sha256', '45secret')
 												.'&d='. hash('sha256', date('dmY').'secret'),
 												
 												$this->_arte_vod_link->url());

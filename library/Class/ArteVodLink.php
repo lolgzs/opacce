@@ -41,8 +41,10 @@ class Class_ArteVodLink {
 
 	public function url() {
 		$hash = Class_Hash::sha256WithKey(Class_AdminVar::get('ARTE_VOD_SSO_KEY'));
+		$id_abon = $this->_user->getIdabon();
 		$params = ['sso_id' => 'afi',
-							 'id' => $this->_user->getIdabon(),
+							 'id' => $id_abon,
+							 'id_encrypted' => $hash->encrypt($id_abon),
 							 'd' => $hash->encrypt(date('dmY'))];
 
 		$params['prenom'] = $this->_user->getPrenom();
