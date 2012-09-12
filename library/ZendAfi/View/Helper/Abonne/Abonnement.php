@@ -20,14 +20,17 @@
  */
 class ZendAfi_View_Helper_Abonne_Abonnement extends ZendAfi_View_Helper_Abonne_Abstract {
 	public function abonne_abonnement($user) {
-		if (!$user->isAbonne()) 
+		$date_fin=formatDate($user->getDateFin(),"1");
+
+		if (!$user->isAbonne() || !$date_fin) 
 			return '';
 
-		$date_fin=formatDate($user->getDateFin(),"1");
-		if ($user->isAbonnementValid())
-			return $this->tagFicheAbonne($this->view->_("Votre abonnement est valide jusqu'au %s.", $date_fin));
 
-		return $this->tagFicheAbonne($this->view->_("Votre abonnement est terminé depuis le %s.", $date_fin));
+		$html = $user->isAbonnementValid() 
+			? $this->tagFicheAbonne($this->view->_("Votre abonnement est valide jusqu'au %s.", $date_fin))
+			: $this->tagFicheAbonne($this->view->_("Votre abonnement est terminé depuis le %s.", $date_fin));
+
+		return '<div class="abonnement">'.$html.'</div>';
 	}
 }
 

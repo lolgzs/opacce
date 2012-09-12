@@ -1078,6 +1078,12 @@ body.abonne_multimedia-hold-view .actions a {
 }
 
 
+.abonne_fiche .abonnement .abonneFiche {
+		text-align: center;
+		width: 100%;
+		margin-bottom: 10px;
+}
+
 
 #header .share {
 		position: absolute;
@@ -1087,3 +1093,4 @@ body.abonne_multimedia-hold-view .actions a {
 		cursor: pointer;
 		z-index: 101;
 }
+
