@@ -46,7 +46,7 @@ class ZendAfi_View_Helper_ComboCodificationTest extends ViewHelperTestCase {
 
 
 	/** @test */
-	public function numericBooksTypeShouldBePresent() {
-		$this->assertXPath($this->_html, '//option[@value="' . Class_TypeDoc::LIVRE_NUM . '"]');
+	public function livreTypeShouldBePresent() {
+		$this->assertXPath($this->_html, '//option[@value="' . Class_TypeDoc::LIVRE . '"]');
 	}
 }
