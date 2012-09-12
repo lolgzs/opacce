@@ -40,6 +40,14 @@ class BibNumeriqueController extends Zend_Controller_Action {
 	}
 
 
+	public function albumXspfPlaylistAction() {
+		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
+
+		$this->getHelper('ViewRenderer')->setNoRender();
+		$this->_response->setBody($this->view->album_XspfPlayListVisitor($album));
+	}
+
+
 	public function downloadalbumAction() {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
 		echo $this->_renderFile($album->getBasePath().$album->getPdf(), true);

@@ -84,6 +84,8 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 }
 
 
+
+
 class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -341,6 +343,7 @@ class BibNumeriqueControllerBookletTest extends AbstractBibNumeriqueControllerAl
 
 
 
+
 class BibNumeriqueControllerViewAlbumActionPremierVolumeTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -377,6 +380,7 @@ class BibNumeriqueControllerViewAlbumActionPremierVolumeTest extends AbstractBib
 		$this->assertXPath('//script[contains(@src, "prettyPhoto.js")]');
 	}
 }
+
 
 
 
@@ -464,6 +468,7 @@ abstract class BibNumeriqueControllerBibleDeSouvignyTestCase extends AbstractCon
 
 
 
+
 class BibNumeriqueControllerViewCategorieActionLaBibleDeSouvignyTest extends BibNumeriqueControllerBibleDeSouvignyTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -491,3 +496,51 @@ class BibNumeriqueControllerViewCategorieActionLaBibleDeSouvignyTest extends Bib
 
 
 
+
+class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestCase {
+	protected $_xpath;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_xpath = new Storm_Test_XPathXML();
+		$this->_xpath->registerNameSpace('xspf', 'http://xspf.org/ns/0/');
+	
+		$album = Class_Album::newInstanceWithId(999)
+			->beDiaporama()
+			->setTitre('Plein de medias')
+			->setRessources([Class_AlbumRessource::newInstanceWithId(2)
+											 ->setFichier('mimi_jolie.mp3')
+											 ->setTitre('Emilie jolie')
+											 ->setVignette('mimi_jolie.png'),
+											 
+											 Class_AlbumRessource::newInstanceWithId(4)
+											 ->setFichier('dark_night.mp4')
+											 ->setTitre('Batman Dark Knight')
+											 ->setVignette('batman.jpg')]);
+
+		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xml', true);
+	}
+
+
+	/** @test */
+	public function xmlVersionShouldOneDotZero() {
+		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");
+	}
+
+
+	/** @test */
+	public function xmlEncodingShouldBeUtf8() {
+		$this->_xpath->assertXmlEncoding($this->_response->getBody(), "UTF-8");
+	}
+
+
+	/** @test */
+	public function firstTrackTitleShouldBeMimiJolie() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
+																							'Emilie jolie');
+	}
+}
+
+?>
