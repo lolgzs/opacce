@@ -21,7 +21,7 @@
 
 class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
    protected $linksRenderer;
-
+   const NO_RESULT_MESSAGE = 'Aucun lien n\'a été trouvé';
   /**
    * Retourne les notices liées
    *
@@ -35,7 +35,7 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
 
     if (0 == count($sourceLinks) and 0 == count($targetLinks)){
       $noResultMessage = $this->linksRenderer->returnNoResultMessage();
-      return $noResultMessage;
+      return $noresultmessage;
       }
  
     

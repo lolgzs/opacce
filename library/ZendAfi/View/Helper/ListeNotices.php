@@ -25,6 +25,7 @@
 //										3=liste vignette
 //										4= Liste images bookflip
 //////////////////////////////////////////////////////////////////////////////////////////
+
 class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 	/**
 	 * @param array $notices

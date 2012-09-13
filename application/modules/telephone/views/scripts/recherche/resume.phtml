@@ -5,9 +5,25 @@ echo $this->toolbar($this->_("Résumés"),
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
 
-<div class="resumes">
+<ul data-role="listview" data-inset="true">
+  
 <?php
-$notice_html=new Class_NoticeHtml($this->notice);
-echo $notice_html->getResume($this->notice->findAllResumes());
-?>
-</div>
+
+  $resumes = $this->notice->findAllResumes();
+foreach($resumes as $resume){?>
+  <li data-role="list-divider">
+    <?php echo $this->_('Source : ') . $resume["source"];?>
+  </li>
+  <li>
+    <?php echo $resume["texte"];?>
+  </li>
+    <?php } ?>
+    <?php  if (empty($resumes)) { ?>
+  <li><?php echo 'Aucun resumé';?></li>
+    <?php } ?>
+</ul>
+  
+
+    
+
+

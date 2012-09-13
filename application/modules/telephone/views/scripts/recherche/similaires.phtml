@@ -3,12 +3,9 @@ echo $this->toolbar($this->_("Notices similaires"), array('action' => 'viewnotic
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
 
-<div class="pave">
+<ul data-role="listview">
 <?php
-	echo $this->listeNotices($this->notices, 
-													 count($this->notices), 
-													 1, 
-													 $this->preferences);
+	echo $this->listeNotices($this->notices,count($this->notices),1,$this->preferences);
 ?>
-</div>
+</ul>
 

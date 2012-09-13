@@ -3,7 +3,7 @@ echo $this->toolbar($this->_("Recherche"),
 		    array('action' => 'simple')); ?>
 
 <ul data-role="listview" data-inset="true">
-  <li date-theme="c">
+  <li data-theme="c">
     <img src="<?php echo $this->notice->getUrlVignette();?>">
     <h3><?php echo $this->iconeSupport($this->notice->getTypeDoc()) . $this->notice->getTitrePrincipal() ;?></h3>
     <p><?php echo $this->notice->getAuteurPrincipal();?></p>

@@ -3,7 +3,9 @@ echo $this->toolbar($this->_("Biographie"), array('action' => 'viewnotice'), tru
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
 
-<div class="pave">
-	<?php echo $this->biographie($this->notice); ?>
-</div>
+<ul data-role="listview" data-inset="true">
+  <li>
+    <?php echo $this->biographie($this->notice); ?>
+  </li>
+</ul>
 

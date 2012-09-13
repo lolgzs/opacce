@@ -62,13 +62,13 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 	/** @test */
 	public function titleShouldBeHarryPotter() {
-		$this->assertXPathContentContains('//h1', 'Harry Potter à l\'ecole des sorciers');
+		$this->assertXPathContentContains('//li[@data-theme="c"]', 'Harry Potter à l\'ecole des sorciers');
 	}
 
 
 	/** @test */
 	public function auteurShouldBeJKRowling() {
-		$this->assertXPathContentContains('//h1', 'J.K. Rowling');
+		$this->assertXPathContentContains('//li[@data-theme="c"]', 'J.K. Rowling');
 	}
 
 
@@ -86,7 +86,7 @@ class Telephone_RechercheControllerHarryPotterViewNoticeTest extends Telephone_R
 
 	/** @test */
 	public function pageShouldContainsVignetteForHarryPotter() {
-		$this->assertXPath('//a[contains(@href, "recherche/grandeimage")]//img[contains(@src, "potter.jpg")]');
+		$this->assertXPath('//img[contains(@src, "potter.jpg")]');
 	}
 
 
@@ -769,7 +769,7 @@ class Telephone_RechercheControllerHarryPotterVideoNotFoundTest extends Telephon
 
 	/** @test */
 	public function pageShouldDisplayAucuneVideoTrouvee() {
-		$this->assertXPathContentContains('//p', 'Aucune vidéo');
+		$this->assertXPathContentContains('//li[@data-theme="c"]', 'Aucune vidéo');
 	}
 }
 

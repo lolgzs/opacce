@@ -3,7 +3,9 @@ echo $this->toolbar($this->_("Tags"), array('action' => 'viewnotice') ,true);
 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
 
-<div class="pave">
-<?php echo $this->tags; ?>
-</div>
+<ul data-role="listview" data-inset="true">
+  <li>
+   <?php echo $this->tags; ?>
+  </li>
+</ul>
 

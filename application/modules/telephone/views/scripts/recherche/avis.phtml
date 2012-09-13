@@ -8,13 +8,13 @@ $avis_abon = $this->notice->getAvisAbonne();
 
 
 <ul data-role="listview" data-inset="true">
-  <li date-theme="c">
+  <li data-theme="c">
   <?php 
   echo $this->resumeAvis($this->_('Bibliothécaires'), $avis_bib);
   echo $this->resumeAvis($this->_('Lecteurs du portail'), $avis_abon);?>
   </li>
   
-  <li date-theme="c" data-role="list-divider">
+  <li data-theme="c" data-role="list-divider">
     <?php echo $this->_('Avis des bibliothécaires');?>
   </li>
   <?php foreach ($avis_bib as $avis) { ?>
@@ -24,7 +24,7 @@ $avis_abon = $this->notice->getAvisAbonne();
 <li><?php echo 'Aucun commentaire';?></li>
 <?php } ?>
 
-  <li date-theme="c" data-role="list-divider">
+  <li data-theme="c" data-role="list-divider">
     <?php echo $this->_('Avis des lecteurs');?>
   </li>
   <?php foreach ($avis_abon as $avis) { ?>

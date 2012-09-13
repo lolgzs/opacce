@@ -1,7 +1,8 @@
+<ul data-role="listview">
 <?php
 echo $this->toolbar("Recherche", $this->url(array(), null, true));
 echo '<div>' . $this->texte_selection . '</div>';
-// Liste notices
+
 echo $this->listeNotices($this->liste,
 												 $this->resultat['nombre'],
 												 $this->resultat['page_cours'],
@@ -12,3 +13,4 @@ echo $this->pager($this->resultat['nombre'],
 									$this->resultat['page_cours'],
 									$this->url_retour);
 ?>
+</ul>

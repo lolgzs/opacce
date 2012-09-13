@@ -56,13 +56,13 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
     if ($nombre_resultats == 1) 
 			$html .= $this->translate()->_('1 notice trouvée');
     if ($nombre_resultats > 1) 
-			$html .= $this->translate()->_('%s notices trouvées', $nombre_resultats) . '</td><td align="right">page&nbsp;' . $page;
+      $html .= $this->translate()->_('%s notices trouvées', $nombre_resultats) . '</td><td align="right">page&nbsp;' . $page;
 
     $html .= '</td></tr></table>';
 
     // Liste en fonction du format
 		$html .= $this->listeVignette($notices, $preferences["liste_codes"]);
-    return $html;
+    return '<li>' . $html . '</li>';
 	}
 
 
@@ -71,7 +71,7 @@ class ZendAfi_View_Helper_Telephone_ListeNotices extends ZendAfi_View_Helper_Bas
 		$html = '';
 		foreach ($data as $notice)
 			$this->_writeNoticeOn($notice, $champs, $html);		
-		return '<div class="liste"><ul>' . $html . '</ul></div>';
+		return $html;
 	}
 
 
