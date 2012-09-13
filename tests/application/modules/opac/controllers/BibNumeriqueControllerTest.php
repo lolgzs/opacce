@@ -511,7 +511,8 @@ class BibNumeriqueControllerViewCategorieActionLaBibleDeSouvignyTest extends Bib
 
 
 
-class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestCase {
+
+abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -533,12 +534,26 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 											 ->setTitre('Batman Dark Knight')
 											 ->setVignette('batman.jpg'),
 
-
-											 Class_AlbumRessource::newInstanceWithId(4)
+											 Class_AlbumRessource::newInstanceWithId(5)
 											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
 											 ->setTitre('Hunger Games')
-											 ->setVignette('hunger.jpg')]);
+											 ->setVignette('hunger.jpg'),
 
+											 Class_AlbumRessource::newInstanceWithId(6)
+											 ->setFichier('Monsieur l\'escargot.mp3')
+											 ->setTitre('Monsieur l\'escargot')
+											 ->setVignette('l\'escargot.jpg')]);
+	}
+}
+
+
+
+
+class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
+	protected $_xpath;
+
+	public function setUp() {
+		parent::setUp();
 		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
 	}
 
@@ -601,10 +616,17 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 
 
 	/** @test */
-	public function thirsTrackLocationShouldBeTotaleClipsDotCom() {
+	public function thirdTrackLocationShouldBeTotaleClipsDotCom() {
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+			 '//xspf:playlist/xspf:trackList/xspf:track/xspf:location[text()="http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4"]');
+	}
+
+
+	/** @test */
+	public function fourthTrackLocationShouldBeUrlEncoded() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
-																							'http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4');
+																							'Monsieur%20l%27escargot.mp3');
 	}
 
 }

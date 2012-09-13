@@ -515,7 +515,7 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 		if ($this->hasUrl())
 			return $this->getUrl();
 
-		return $this->getLocatedFile($this->getOriginalsUrl());
+		return $this->getOriginalsUrl() . rawurlencode($this->getFichier());
 	}
 
 
