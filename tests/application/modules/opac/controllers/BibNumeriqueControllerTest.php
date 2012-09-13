@@ -44,8 +44,7 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 	public function setUp() {
 		parent::setUp();
 		
-		$album = Class_Album::getLoader()
-			->newInstanceWithId(999)
+		$album = Class_Album::newInstanceWithId(999)
 			->beDiaporama()
 			->setTitre('Premier volume')
 			->setDescription("On ne peut que reconnaitre le talent de l'artiste !")
@@ -75,7 +74,7 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 		$album->setRessources(array($firstRessource,
 																Class_AlbumRessource::getLoader()
 																->newInstanceWithId(2)
-																->setFichier('2.pdf')
+																->setFichier('2.jpg')
 																->setAlbum($album)
 																->setTitre('Procedure de numerisation')
 																->setLinkTo('http://wikipedia.org/numerisation')
@@ -194,14 +193,29 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 		$this->assertContains('/bib-numerique/thumbnail/width/200/crop_top/0/crop_right/10/crop_bottom/0/crop_left/0/id/2',
 													$this->json->album->ressources[1]->thumbnail);
 	}
+}
+
+
+
+
+class BibNumeriqueControllerAlbumPremierVolumeWithPDFTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AlbumRessource::find(2)->setFichier('2.pdf');
+
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
+		$this->json = json_decode($this->_response->getBody());
+	}
 
 
 	/** @test */
-	function secondRessourceNavigatorThumbnailShouldPassResizeParamsOfLeftPageCropRightTenWidth50() {
-		$this->assertContains(BASE_URL . '/public/opac/images/earth-logo.jpg',
-													$this->json->album->ressources[1]->navigator_thumbnail);
+	function secondRessourceNavigatorThumbnailShouldBeEarthLogoDotJpg() {
+				$this->assertContains(BASE_URL . '/public/opac/images/earth-logo.jpg',
+															$this->json->album->ressources[1]->navigator_thumbnail);
 	}
 }
+
 
 
 

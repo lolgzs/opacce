@@ -161,14 +161,15 @@ class NoticeAjaxControllerResNumeriquesTest extends AbstractControllerTestCase {
 
 		$album = Class_Album::getLoader()
 			->newInstanceWithId(8)
-			->setTypeDocId(Class_TypeDoc::DIAPORAMA);
+			->setTypeDocId(Class_TypeDoc::DIAPORAMA)
+			->setRessources([]);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
 			->whenCalled('findFirstBy')
 			->with(array('id_notice' => 123))
 			->answers($exemplaire);
 
-		$this->dispatch('noticeajax/resnumeriques?id_notice=123');
+		$this->dispatch('noticeajax/resnumeriques?id_notice=123', true);
 
 		$this->assertXPath('//script[contains(@src, "jquery.cycle.all")]');
 	}

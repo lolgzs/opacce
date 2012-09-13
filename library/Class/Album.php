@@ -587,7 +587,8 @@ class Class_Album extends Storm_Model_Abstract {
 	public function hasOnlyImages() {
 		foreach($this->getRessources() as $ressource)
 			if (!$ressource->isImage())
-				return;
+				return false;
+		return true;
 	}
 
 
