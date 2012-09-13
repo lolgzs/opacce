@@ -7,27 +7,30 @@ $avis_abon = $this->notice->getAvisAbonne();
 ?>
 
 
-<div class="pave">
-	<?php 
-	echo $this->resumeAvis($this->_('Bibliothécaires'), $avis_bib);
+<ul data-role="listview" data-inset="true">
+  <li date-theme="c">
+  <?php 
+  echo $this->resumeAvis($this->_('Bibliothécaires'), $avis_bib);
+  echo $this->resumeAvis($this->_('Lecteurs du portail'), $avis_abon);?>
+  </li>
+  
+  <li date-theme="c" data-role="list-divider">
+    <?php echo $this->_('Avis des bibliothécaires');?>
+  </li>
+  <?php foreach ($avis_bib as $avis) { ?>
+    <li><?php echo $this->enteteAvis($avis);?></li>
+  <?php } ?>
+<?php  if (empty($avis_bib)) { ?>
+<li><?php echo 'Aucun commentaire';?></li>
+<?php } ?>
 
-	echo $this->resumeAvis($this->_('Lecteurs du portail'), $avis_abon);
-  ?>
-</div>
-
-
-<div class="pave">
-		<?php 
-		echo '<div>'.$this->_('Avis des bibliothécaires').'</div>';
-		foreach ($avis_bib as $avis) 
-			echo '<div class="fonction">'.$this->enteteAvis($avis).'</div>';	
-    ?>
-</div>
-
-
-<div class="pave">
-		<?php 
-		echo '<div>'.$this->_('Avis des lecteurs').'</div>';
-    foreach ($avis_abon as $avis) echo $this->enteteAvis($avis);	
-    ?>
-</div>
+  <li date-theme="c" data-role="list-divider">
+    <?php echo $this->_('Avis des lecteurs');?>
+  </li>
+  <?php foreach ($avis_abon as $avis) { ?>
+    <li><?php echo $this->enteteAvis($avis);?></li>
+  <?php } ?>
+<?php  if (empty($avis_abon)) { ?>
+<li><?php echo 'Aucun commentaire';?></li>
+<?php } ?>
+</ul>

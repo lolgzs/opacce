@@ -4,9 +4,10 @@ echo $this->toolbar($this->_('Notice détaillée'),
 										true);
 ?>
 
-<div class='pave'>
+<ul data-role="listview" data-inset="true">
+  <li date-theme="c">
 <?php
-	echo $this->noticeDetaillee($this->notice);
+  echo $this->noticeDetaillee($this->notice);
 ?>
-</div>
+</li></ul>
 

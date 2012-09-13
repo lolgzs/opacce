@@ -20,9 +20,7 @@
  */
 
 class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
-  const NO_RESULT_MESSAGE = 'Aucun lien n\'a été trouvé';
- 
-  protected $linksRenderer;
+   protected $linksRenderer;
 
   /**
    * Retourne les notices liées
@@ -35,8 +33,11 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
     $sourceLinks = $model->getLinksAsSource();
     $targetLinks = $model->getLinksAsTarget();
 
-    if (0 == count($sourceLinks) and 0 == count($targetLinks))
-      return self::NO_RESULT_MESSAGE;
+    if (0 == count($sourceLinks) and 0 == count($targetLinks)){
+      $noResultMessage = $this->linksRenderer->returnNoResultMessage();
+      return $noResultMessage;
+      }
+ 
     
     $html = '';
     foreach ($this->_getLinksBySourceTypes($sourceLinks) as $label => $links)
@@ -45,11 +46,13 @@ class ZendAfi_View_Helper_Frbr extends Zend_View_Helper_HtmlElement{
     foreach ($this->_getLinksByTargetTypes($targetLinks) as $label => $links)
       $html .= $this->_getSourceTypeLinks($label, $links);
 
-    if ('' == $html)
-      return self::NO_RESULT_MESSAGE;
+    if ('' == $html){
+      $noResultMessage = $this->linksRenderer->returnNoResultMessage();
+      return $noResultMessage;
+    }
 
-    return $html;
-  }
+    return $html;}
+    
   
 
     protected function _getLinksBySourceTypes($links) {
@@ -131,5 +134,10 @@ class FrbrNoticesOpacRenderer {
   public function renderType($type) {
     return '<div class="notice_info_titre">' . $type . '</div>';
   } 
+  
+
+  public function returnNoResultMessage() {
+    return 'Aucun lien n\'a été trouvé';
+  }
 } 
 ?>

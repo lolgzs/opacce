@@ -49,6 +49,11 @@ class FrbrNoticesTelephoneRenderer {
   public function renderType($type) {
     return '<li data-role="list-divider">' . $type . '</li>';
   }
+
+  
+  public function returnNoResultMessage() {
+    return '<li data-role="list-divider">' . 'Aucun lien n\'a été trouvé' . '</li>';
+  }
 }
 
   

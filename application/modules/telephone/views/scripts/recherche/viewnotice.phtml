@@ -1,34 +1,25 @@
 <?php 
 echo $this->toolbar($this->_("Recherche"), 
-										array('action' => 'simple')); ?>
+		    array('action' => 'simple')); ?>
 
-<div class="pave">
-	 <div class="entete_notice">
+<ul data-role="listview" data-inset="true">
+  <li date-theme="c">
+    <img src="<?php echo $this->notice->getUrlVignette();?>">
+    <h3><?php echo $this->iconeSupport($this->notice->getTypeDoc()) . $this->notice->getTitrePrincipal() ;?></h3>
+    <p><?php echo $this->notice->getAuteurPrincipal();?></p>
+    <p><?php if ($annee = $this->notice->getAnnee())
+      echo $this->_('Année')," : ", $annee;?></p>
+    <p><?php if ($editeur = $this->notice->getEditeur())
+      echo $this->_('Editeur(s)')," : ", $editeur;?></p>
+  </li>
+<?php foreach ($this->actions as $libelle => $action) { ?>
+	<li><?php echo  $this->tagAnchor(array('action' => $action['action']),
+					  $libelle,
+					  isset($action['attribs']) ? $action['attribs'] : array());?>
+	</li>
+<?php } ?>
+</ul>
 
-	 <?php 
-	 echo $this->iconeSupport($this->notice->getTypeDoc());
-	 echo sprintf('<a href="%s"><img src="%s" alt="%s"/></a>',
-								$this->url(array('action' => 'grandeimage')),
-								$this->notice->getUrlVignette(),
-								$this->_('Vignette'));
-	 echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>'; 
-	 echo '<h1>'.$this->notice->getAuteurPrincipal().'</h1>'; 
-
-   if ($editeur = $this->notice->getEditeur())
-		 echo sprintf('<div>%s : %s</div>', $this->_('Editeur(s)'), $editeur);
-
-   if ($annee = $this->notice->getAnnee())
-		 echo sprintf('<div>%s : %s</div>', $this->_('Année'), $annee);
-   ?>
-   <div class="clear"></div>
-   </div>
-
-<?php
-foreach ($this->actions as $libelle => $action) {
-	echo $this->tagAnchor(array('action' => $action['action']),
-												'<div class="fonction">'.$libelle.'</div>',
-												isset($action['attribs']) ? $action['attribs'] : array());
-}
+<?php 
 
 ?>
-</div>
