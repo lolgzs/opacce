@@ -42,7 +42,7 @@ class Class_Xml_Builder {
 
 
 	public function _xmlString($name, $content, $attributes = '') {
-		return '<'.$name.$attributes.'>'.$content.'</'.$name.'>';
+		return '<'.htmlentities($name, ENT_XML1).$attributes.'>'.$content.'</'.$name.'>';
 	}
 
 	

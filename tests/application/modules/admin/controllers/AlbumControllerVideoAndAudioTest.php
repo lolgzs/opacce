@@ -71,7 +71,7 @@ class Admin_AlbumControllerVideoAndAudio extends Admin_AlbumControllerTestCase {
 		$this->_xpath->assertXpathContentContains(
 			Class_ScriptLoader::getInstance()->html(),
 			'//script',
-			"playlist: '/bib-numerique/album-xspf-playlist/id/999.xml'"
+			'"playlist":"\/bib-numerique\/album-xspf-playlist\/id\/999.xml"'
 		);
 	}
 
