@@ -42,10 +42,20 @@ class BibNumeriqueController extends Zend_Controller_Action {
 
 	public function albumXspfPlaylistAction() {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
+		$playlist = $this->view->album_XspfPlaylistVisitor($album);
+
 
 		$this->getHelper('ViewRenderer')->setNoRender();
-		$this->_response->setHeader('Content-Type', 'text/xml');
-		$this->_response->setBody($this->view->album_XspfPlaylistVisitor($album));
+		$response = $this->_response;
+		$response->clearAllHeaders();
+		$response->setHeader('Content-Type', 'application/xspf+xml; name="' . $album->getId(). '.xspf"', true);
+		$response->setHeader('Content-Disposition', 'attachment; filename="' . $album->getId(). '.xspf"', true);
+		$response->setHeader('Content-Transfer-Encoding', 'base64', true);
+		$response->setHeader('Content-Length', count($playlist), true);
+		$response->setHeader('Expires', '0');
+		$response->setHeader('Cache-Control', 'no-cache, must-revalidate');
+		$response->setHeader('Pragma', 'no-cache');
+		$response->setBody($playlist);
 	}
 
 

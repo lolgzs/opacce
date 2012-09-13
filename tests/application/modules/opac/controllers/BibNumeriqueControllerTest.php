@@ -539,9 +539,22 @@ class BibNumeriqueControllerAlbumMultiMediasTest extends AbstractControllerTestC
 											 ->setTitre('Hunger Games')
 											 ->setVignette('hunger.jpg')]);
 
-		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xml', true);
+		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
 	}
 
+
+	
+	/** @test */
+	public function headerShouldContainsContentTypeXspf() {
+		$this->assertHeaderContains('Content-Type', 'application/xspf+xml');
+	}
+
+
+	/** @test */
+	public function headerShouldContainsContentDispositionAttachment() {
+		$this->assertHeaderContains('Content-Disposition', 'attachment');
+	}
+	
 
 	/** @test */
 	public function xmlVersionShouldOneDotZero() {
