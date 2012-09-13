@@ -223,9 +223,11 @@ osmplayer.prototype.playNext = function() {
  * @param {function} callback Called when the image is retrieved.
  */
 osmplayer.getImage = function(mediafiles, type, callback) {
-
   var image = '';
   var images = mediafiles.image;
+	if (undefined == callback)
+		callback = function() {};
+
   if (images) {
 
     // If the image type exists, then just use that one...

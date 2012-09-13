@@ -44,6 +44,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
 
 		$this->getHelper('ViewRenderer')->setNoRender();
+		$this->_response->setHeader('Content-Type', 'text/xml');
 		$this->_response->setBody($this->view->album_XspfPlaylistVisitor($album));
 	}
 

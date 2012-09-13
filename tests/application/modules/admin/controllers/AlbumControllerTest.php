@@ -1666,5 +1666,4 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 	}
 }
 
-
 ?>

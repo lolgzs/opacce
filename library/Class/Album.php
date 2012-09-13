@@ -584,6 +584,13 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function hasOnlyImages() {
+		foreach($this->getRessources() as $ressource)
+			if (!$ressource->isImage())
+				return;
+	}
+
+
 	/**
 	 * @param Class_AlbumRessource $resourceToMove
 	 * @param int $targetId

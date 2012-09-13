@@ -21,22 +21,31 @@
 
 class ZendAfi_View_Helper_RenderAlbum extends Zend_View_Helper_HtmlElement {
 	public function renderAlbum($album) {
-		if (!$album)
-			return '';
+		return $album 
+			? sprintf('<div id="resnum">%s</div>', $this->renderAlbumHelper($album))
+			: '';
+	}
 
-		$content = '';
-		if ($album->isLivreNumerique())
+
+	public function renderAlbumHelper($album) {
+		if ($album->isLivreNumerique()) {
 			Class_ScriptLoader::getInstance()->loadBooklet($album->getId(), '#resnum');
-		else if ($album->isDiaporama())
-			$content = $this->view->tagSlideshow($album);
-		else if ($album->isGallica())
-			$content = $this->view->gallicaPlayer($album);
-		else if ($album->isArteVod())
-			$content = $this->view->tagVideo($album);
-		else
-			$content = $this->view->tagAlbumMediaList($album);
-		
-		return sprintf('<div id="resnum">%s</div>', $content); 
+			return '';
+		}
+
+		if ($album->isDiaporama() && $album->hasOnlyImages())
+			return $this->view->tagSlideshow($album);
+
+		if ($album->isDiaporama())
+			return $this->view->osmPlayer($album);
+
+		if ($album->isGallica())
+			return  $this->view->gallicaPlayer($album);
+
+		if ($album->isArteVod())
+			return $this->view->tagVideo($album);
+
+		return $this->view->tagAlbumMediaList($album);
 	}
 }
 
