@@ -59,6 +59,14 @@ class BibNumeriqueController extends Zend_Controller_Action {
 	}
 
 
+	public function albumRssFeedAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
+		$rss = $this->view->album_RssFeedVisitor($album);
+		$this->_response->setBody($rss);
+	}
+
+
 	public function downloadalbumAction() {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
 		echo $this->_renderFile($album->getBasePath().$album->getPdf(), true);

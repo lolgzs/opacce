@@ -550,8 +550,6 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 
 
 class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
-	protected $_xpath;
-
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
@@ -628,7 +626,37 @@ class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControl
 																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
 																							'Monsieur%20l%27escargot.mp3');
 	}
-
 }
+
+
+
+
+class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/bib-numerique/album-rss-feed/id/999.xml', true);
+	}
+
+
+	/** @test */
+	public function xmlVersionShouldOneDotZero() {
+		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");
+	}
+
+
+	/** @test */
+	public function xmlEncodingShouldBeUtf8() {
+		$this->_xpath->assertXmlEncoding($this->_response->getBody(), "utf-8");
+	}
+
+
+	/** @test */
+	public function titleShouldBePleinDeMedias() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//channel/title',
+																							'Plein de medias');
+	}
+}
+
 
 ?>
