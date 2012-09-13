@@ -75,7 +75,14 @@ class ZendAfi_Form_Album_Ressource extends ZendAfi_Form {
 	 * @return ZendAfi_Form_Album_Ressource
 	 */
 	public function addFileFor($model) {
-		return $this->addElement('file', 'fichier', ['label' => 'Fichier']);
+		$element = new ZendAfi_Form_Element_Image('fichier', ['label' => 'Fichier']);
+		if ($model) {
+			$element
+				->setBasePath($model->getOriginalsPath())
+				->setBaseUrl($model->getThumbnailsUrl())
+				->setThumbnailUrl($model->getThumbnailUrl());
+		}
+		return $this->addElement($element);
 	}
 }
 

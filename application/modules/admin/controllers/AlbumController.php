@@ -260,7 +260,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		if ($this->_request->isPost() && ($form->isValid($this->_request->getPost()))) {
 			$ressource->updateAttributes($this->_request->getPost());
 			if ($ressource->getAlbum()->save() && $ressource->save() && $ressource->receiveFile()) {
-				$this->_helper->notify(sprintf('Média %s sauvegardé', 
+				$this->_helper->notify(sprintf('Média "%s" sauvegardé', 
 																			 $ressource->getTitre()));
 				$this->_redirect('admin/album/edit_ressource/id/'
 												 . $ressource->getId());

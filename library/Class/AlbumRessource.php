@@ -177,7 +177,8 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 			unlink($oldOriginal);
 		}
 
-		unlink($oldThumbnail);
+		if (file_exists($oldThumbnail))
+			@unlink($oldThumbnail);
 
 		return $this->createThumbnail();
 	}
