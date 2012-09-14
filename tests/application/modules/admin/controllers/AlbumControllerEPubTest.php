@@ -21,7 +21,7 @@
 
 require_once 'AlbumControllerTest.php';
 
-class Admin_AlbumControllerEPubTest extends Admin_AlbumControllerTestCase {
+class Admin_AlbumControllerPreviewEPubTest extends Admin_AlbumControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {

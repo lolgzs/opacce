@@ -766,14 +766,14 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 
 	/** @test */
 	public function permalienShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice/ido/DC023"]',
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice/ido/DC023"]',
 											 $this->_response->getBody());
 	}
 
 
 	/** @test */
 	public function permalienVignetteShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice-thumbnail/ido/DC023"]');
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/ido/DC023"]');
 	}
 
 
@@ -1293,7 +1293,7 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceTwoActionTest extends Admin_
 
 	/** @test */
 	public function permalienShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice/ido/HL22/folio/4R"]',
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice/ido/HL22/folio/4R"]',
 											 $this->_response->getBody());
 	}
 }
