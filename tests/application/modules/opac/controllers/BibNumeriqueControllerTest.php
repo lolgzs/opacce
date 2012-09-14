@@ -675,9 +675,8 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 	/** @test */
 	public function itunesImageShouldBeNoticeThumbnail() {
-		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
-																							'//channel/itunes:image',
-																							'http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/id/999');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//channel/itunes:image[@href="http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/id/999"]');
 	}
 
 
@@ -755,9 +754,8 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 	/** @test */
 	public function firstItemItunesImageShouldBeMimiJolie() {
-		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
-																							'//channel/item[1]/itunes:image',
-																							'http://localhost'.BASE_URL.'/userfiles/album/999/thumbs/media/mimi_jolie.png');
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//channel/item[1]/itunes:image[@href="http://localhost'.BASE_URL.'/userfiles/album/999/thumbs/media/mimi_jolie.png"]');
 	}
 
 

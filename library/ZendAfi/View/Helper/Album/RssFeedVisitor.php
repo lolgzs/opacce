@@ -51,15 +51,20 @@ class ZendAfi_View_Helper_Album_RssFeedVisitor extends  Zend_View_Helper_Abstrac
 
 
 	public function visitAlbum($album) {		
-		$description = $album->getDescription();
+
 		$this->appendTags($this->_channel,
 											['title' 	=> $album->getTitre(),
 											 'link'  	=> $this->view->absoluteUrl($album->getPermalink()),
-											 'charset'	  => 'utf-8',
-											 'itunes:image' => $this->view->absoluteUrl($album->getPermalinkThumbnail()),
-											 'description' => $description,
-											 'itunes:summary' => $description,
 											 'pubDate'  => gmdate('r', strtotime($album->getDateMaj()))]);
+
+		$itunes_image = $this->_channel->appendChild($this->_doc->createElement('itunes:image'));
+		$itunes_image->setAttribute('href', $this->view->absoluteUrl($album->getPermalinkThumbnail()));
+
+		$description = $this->_channel->appendChild($this->_doc->createElement('description'));
+		$description->appendChild($this->_doc->createCDATASection($album->getDescription()));
+
+		$summary = $this->_channel->appendChild($this->_doc->createElement('itunes:summary'));
+		$summary->appendChild($this->_doc->createCDATASection($album->getDescription()));
 	}
 
 
@@ -69,13 +74,18 @@ class ZendAfi_View_Helper_Album_RssFeedVisitor extends  Zend_View_Helper_Abstrac
 		$this->appendTags($item = $this->appendTag($this->_channel, 'item'),
 											['title' => $ressource->getTitre(),
 											 'link' => $media_url,
-											 'description' => $ressource->getDescription(),
 											 'itunes:order' => $ressource->getOrdre(),
-											 'itunes:image' => $this->view->absoluteUrl($ressource->getThumbnailUrl()),
 											 'guid' => $media_url]);
 		$enclosure = $item->appendChild($this->_doc->createElement('enclosure'));
 		$enclosure->setAttribute('url', $media_url);
 		$enclosure->setAttribute('type', Class_File_Mime::getType($ressource->getFileExtension()));
+
+		$itunes_image = $item->appendChild($this->_doc->createElement('itunes:image'));
+		$itunes_image->setAttribute('href', $this->view->absoluteUrl($ressource->getThumbnailUrl()));
+
+		$description = $item->appendChild($this->_doc->createElement('description'));
+		$description->appendChild($this->_doc->createCDATASection($ressource->getDescription()));
+
 	}
 }
 
