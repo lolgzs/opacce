@@ -54,7 +54,7 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 		$podcast_url = $this->view->url(['module' => 'opac', 
 																		 'controller' => 'bib-numerique',
 																		 'action' => 'album-rss-feed', 
-																		 'id' => $album->getId()]).'.xml';
+																		 'id' => $album->getId()]);
 
 
 		$loader
@@ -69,7 +69,7 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 		return '<ul>'
 			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($xspf_url.'.xspf'), 
 																		 $this->view->_('Téléchargez la playlist (VLC, WinAmp)')).'</li>'
-			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($podcast_url), 
+			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($podcast_url.'.xml'), 
 																		 $this->view->_('Podcastez l\'album (iTunes, Lecteur RSS)')).'</li>'
 			.'</ul>'
 			.'<div id="'.$div_id.'"></div>';

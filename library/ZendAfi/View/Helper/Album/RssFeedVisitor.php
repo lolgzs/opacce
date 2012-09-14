@@ -71,6 +71,7 @@ class ZendAfi_View_Helper_Album_RssFeedVisitor extends  Zend_View_Helper_Abstrac
 											 'link' => $media_url,
 											 'description' => $ressource->getDescription(),
 											 'itunes:order' => $ressource->getOrdre(),
+											 'itunes:image' => $this->view->absoluteUrl($ressource->getThumbnailUrl()),
 											 'guid' => $media_url]);
 		$enclosure = $item->appendChild($this->_doc->createElement('enclosure'));
 		$enclosure->setAttribute('url', $media_url);

@@ -752,6 +752,15 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 																							'http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3');
 	}
 
+
+	/** @test */
+	public function firstItemItunesImageShouldBeMimiJolie() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/itunes:image',
+																							'http://localhost'.BASE_URL.'/userfiles/album/999/thumbs/media/mimi_jolie.png');
+	}
+
+
 	/** @test */
 	public function secondItemTitleShouldBeDarkKnight() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
