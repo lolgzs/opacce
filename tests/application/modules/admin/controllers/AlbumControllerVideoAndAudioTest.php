@@ -21,7 +21,7 @@
 
 require_once 'AlbumControllerTest.php';
 
-class Admin_AlbumControllerVideoAndAudio extends Admin_AlbumControllerTestCase {
+class Admin_AlbumControllerVideoAndAudioTest extends Admin_AlbumControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {

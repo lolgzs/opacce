@@ -23,23 +23,30 @@ class ZendAfi_View_Helper_Album_RssFeedVisitor extends  Zend_View_Helper_Abstrac
 	protected $_data_rss;
 
 	public function album_rssFeedVisitor($album) {
-		$this->_data_rss = [
-			'title' 	=> $album->getTitre(),
-			'link'  	=> '',
-			'charset'	  => 'utf-8',
-			'description' => '',
-			'lastUpdate'  => time()];
-
 		$album->acceptVisitor($this);
 
 		$feed = Zend_Feed::importArray($this->_data_rss, 'rss');
 		return $feed->saveXML();
 	}
 
+
 	public function visitAlbum($album) {		
+		$this->_data_rss = [
+			'title' 	=> $album->getTitre(),
+			'link'  	=> $this->view->absoluteUrl($album->getPermalink()),
+			'charset'	  => 'utf-8',
+			'description' => $album->getDescription(),
+			'lastUpdate'  => strtotime($album->getDateMaj()),
+			'entries' => []];
 	}
 
+
 	public function visitRessource($ressource, $index) {
+		$this->_data_rss['entries'] []= [
+			'title' => $ressource->getTitre(),
+			'link' => $this->view->absoluteUrl($ressource->getOriginalUrl()),
+			'description' => $ressource->getDescription()
+		];
 	}
 }
 

@@ -41,16 +41,9 @@ class ZendAfi_View_Helper_Album_XspfPlaylistVisitor extends  Zend_View_Helper_Ab
 	public function visitRessource($ressource, $index) {
 		$this->_tracks []= $this->_builder->track(
 			 $this->_builder->title($ressource->getTitre())
-			 .$this->_builder->image($this->absoluteUrl($ressource->getThumbnailUrl()))
-			 .$this->_builder->location($this->absoluteUrl($ressource->getOriginalUrl()))
+			 .$this->_builder->image($this->view->absoluteUrl($ressource->getThumbnailUrl()))
+			 .$this->_builder->location($this->view->absoluteUrl($ressource->getOriginalUrl()))
 		);
-	}
-
-
-	public function absoluteUrl($url) {
-		if (preg_match('/http[s]?:\/\//', $url))
-			return $url;
-		return 'http://' . $_SERVER['SERVER_NAME'] . $url;
 	}
 }
 

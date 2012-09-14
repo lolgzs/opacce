@@ -524,6 +524,8 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 		$album = Class_Album::newInstanceWithId(999)
 			->beDiaporama()
 			->setTitre('Plein de medias')
+			->setDateMaj('2012-02-17 10:00:00')
+			->setDescription('<p>pour passer la soirée</p>')
 			->setRessources([Class_AlbumRessource::newInstanceWithId(2)
 											 ->setFichier('mimi_jolie.mp3')
 											 ->setTitre('Emilie jolie')
@@ -532,7 +534,8 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 											 Class_AlbumRessource::newInstanceWithId(4)
 											 ->setFichier('dark_night.mp4')
 											 ->setTitre('Batman Dark Knight')
-											 ->setVignette('batman.jpg'),
+											 ->setVignette('batman.jpg')
+											 ->setDescription('Une nouvelle aventure du justicier noir'),
 
 											 Class_AlbumRessource::newInstanceWithId(5)
 											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
@@ -554,7 +557,6 @@ class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControl
 		parent::setUp();
 		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
 	}
-
 
 	
 	/** @test */
@@ -651,10 +653,72 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 
 	/** @test */
+	public function headerShouldContainsContentTypeRss() {
+		$this->assertHeaderContains('Content-Type', 'application/rss+xml');
+	}
+
+
+	/** @test */
 	public function titleShouldBePleinDeMedias() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
 																							'//channel/title',
 																							'Plein de medias');
+	}
+
+
+	/** @test */
+	public function descriptionShouldBePourPasserLaSoiree() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/description',
+																							'<p>pour passer la soirée</p>');
+	}
+
+
+	/** @test */
+	public function linkShouldBeBibNumeriqueNoticeId999() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/link',
+																							'http://localhost'.BASE_URL.'/bib-numerique/notice/id/999');
+	}
+
+	
+	/** @test */
+	public function pubDateShouldBeFri17Feb2012() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/pubDate',
+																							'Fri, 17 Feb 2012');
+	}
+
+
+	/** @test */
+	public function firstItemTibleShouldBeEmilieJolie() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/title',
+																							'Emilie jolie');
+	}
+
+
+	/** @test */
+	public function firstItemLinkShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/link',
+																							'http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+
+	/** @test */
+	public function secondItemTitleShouldBeDarkKnight() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/title',
+																							'Batman Dark Knight');
+	}
+
+
+	/** @test */
+	public function secondItemDescriptionShouldBeAventureJusticierNoir() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/description',
+																							'Une nouvelle aventure du justicier noir');
 	}
 }
 

@@ -19,7 +19,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_AbsoluteUrl extends Zend_View_Helper_HtmlElement {
-	public function absoluteUrl(array $urlOptions = array(), $name = null, $reset = false, $encode = true) {
-		return 'http://'.$_SERVER["HTTP_HOST"].$this->view->url($urlOptions, $name, $reset, $encode);
+	public function absoluteUrl($url_array_or_string = [], $name = null, $reset = false, $encode = true) {
+		$url = is_string($url_array_or_string) 
+			? $url_array_or_string
+			: $this->view->url($url_array_or_string, $name, $reset, $encode);
+
+		if (preg_match('/http[s]?:\/\//', $url))
+			return $url;
+
+		if (0 !== strpos($url, BASE_URL))
+			$url = BASE_URL . $url;		
+
+		return 'http://' . $_SERVER['SERVER_NAME'] . $url;
 	}
 }

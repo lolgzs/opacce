@@ -64,6 +64,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
 		$rss = $this->view->album_RssFeedVisitor($album);
 		$this->_response->setBody($rss);
+		$this->_response->setHeader('Content-Type', 'application/rss+xml', true);
 	}
 
 

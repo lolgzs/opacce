@@ -63,7 +63,7 @@ class ZendAfi_View_Helper_RenderAlbumEPUBTest extends ZendAfi_View_Helper_Render
 	/** @test */
 	public function pageShouldContainsLinkToDownloadEPUB() {
 		$this->assertXPathContentContains($this->html, 
-																			'//a[contains(@href, "'.BASE_URL.'/bib-numerique/download-resource/id/123")]',
+																			'//a[@href="/bib-numerique/download-resource/id/123"]',
 																			'versailles.epub');
 	}
 }
