@@ -519,8 +519,7 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 		parent::setUp();
 
 		$this->_xpath = new Storm_Test_XPathXML();
-		$this->_xpath->registerNameSpace('xspf', 'http://xspf.org/ns/0/');
-	
+
 		$album = Class_Album::newInstanceWithId(999)
 			->beDiaporama()
 			->setTitre('Plein de medias')
@@ -529,22 +528,26 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 			->setRessources([Class_AlbumRessource::newInstanceWithId(2)
 											 ->setFichier('mimi_jolie.mp3')
 											 ->setTitre('Emilie jolie')
+											 ->setOrdre(1)
 											 ->setVignette('mimi_jolie.png'),
 											 
 											 Class_AlbumRessource::newInstanceWithId(4)
 											 ->setFichier('dark_night.mp4')
 											 ->setTitre('Batman Dark Knight')
 											 ->setVignette('batman.jpg')
+											 ->setOrdre(2)
 											 ->setDescription('Une nouvelle aventure du justicier noir'),
 
 											 Class_AlbumRessource::newInstanceWithId(5)
 											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
 											 ->setTitre('Hunger Games')
+											 ->setOrdre(3)
 											 ->setVignette('hunger.jpg'),
 
 											 Class_AlbumRessource::newInstanceWithId(6)
 											 ->setFichier('Monsieur l\'escargot.mp3')
 											 ->setTitre('Monsieur l\'escargot')
+											 ->setOrdre(4)
 											 ->setVignette('l\'escargot.jpg')]);
 	}
 }
@@ -555,6 +558,7 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
 	public function setUp() {
 		parent::setUp();
+		$this->_xpath->registerNameSpace('xspf', 'http://xspf.org/ns/0/');
 		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
 	}
 
@@ -636,6 +640,9 @@ class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControl
 class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		$this->_xpath->registerNameSpace('itunes', 'http://www.itunes.com/dtds/podcast-1.0.dtd');
+
 		$this->dispatch('/opac/bib-numerique/album-rss-feed/id/999.xml', true);
 	}
 
@@ -667,9 +674,25 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 
 	/** @test */
+	public function itunesImageShouldBeNoticeThumbnail() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//channel/itunes:image',
+																							'http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/id/999');
+	}
+
+
+	/** @test */
 	public function descriptionShouldBePourPasserLaSoiree() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//channel/description',
+																							'<p>pour passer la soirée</p>');
+	}
+
+
+	/** @test */
+	public function itunesSummaryShouldBePourPasserLaSoiree() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/itunes:summary',
 																							'<p>pour passer la soirée</p>');
 	}
 
@@ -681,6 +704,7 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 																							'http://localhost'.BASE_URL.'/bib-numerique/notice/id/999');
 	}
 
+
 	
 	/** @test */
 	public function pubDateShouldBeFri17Feb2012() {
@@ -691,7 +715,7 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 
 	/** @test */
-	public function firstItemTibleShouldBeEmilieJolie() {
+	public function firstItemTitleShouldBeEmilieJolie() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//channel/item[1]/title',
 																							'Emilie jolie');
@@ -707,6 +731,28 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 
 
 	/** @test */
+	public function firstItemEnclosureShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//channel/item[1]/enclosure[@url="http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3"][@type="audio/mpeg"]');
+	}
+
+
+	/** @test */
+	public function firstItemITunesOrderShouldBeOne() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/itunes:order',
+																							'1');
+	}
+
+
+	/** @test */
+	public function firstItemGUIDShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/guid',
+																							'http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+	/** @test */
 	public function secondItemTitleShouldBeDarkKnight() {
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
 																							'//channel/item[2]/title',
@@ -720,6 +766,14 @@ class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControll
 																							'//channel/item[2]/description',
 																							'Une nouvelle aventure du justicier noir');
 	}
+
+	/** @test */
+	public function firstItemITunesOrderShouldBeTwo() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/itunes:order',
+																							'2');
+	}
+
 }
 
 

@@ -21,32 +21,60 @@
 
 class ZendAfi_View_Helper_Album_RssFeedVisitor extends  Zend_View_Helper_Abstract {
 	protected $_data_rss;
+	protected $_channel;
+	protected $_doc;
 
 	public function album_rssFeedVisitor($album) {
+		$this->_doc = new DOMDocument('1.0', 'utf-8');
+		$root = $this->appendTag($this->_doc, 'rss');
+		$root->setAttribute('version', '2.0');
+		$root->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
+		$root->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:itunes',  'http://www.itunes.com/dtds/podcast-1.0.dtd');
+		$this->_channel = $this->appendTag($root, 'channel');
+
 		$album->acceptVisitor($this);
 
-		$feed = Zend_Feed::importArray($this->_data_rss, 'rss');
-		return $feed->saveXML();
+		return $this->_doc->saveXML();
+	}
+
+
+	public function appendTag($parent, $name, $content = '') {
+		$parent->appendChild($element = $this->_doc->createElement($name, $content));
+		return $element;
+	}
+
+
+	public function appendTags($parent, $tags) {
+		foreach ($tags as $name => $content) 
+			$this->appendTag($parent, $name, $content);
 	}
 
 
 	public function visitAlbum($album) {		
-		$this->_data_rss = [
-			'title' 	=> $album->getTitre(),
-			'link'  	=> $this->view->absoluteUrl($album->getPermalink()),
-			'charset'	  => 'utf-8',
-			'description' => $album->getDescription(),
-			'lastUpdate'  => strtotime($album->getDateMaj()),
-			'entries' => []];
+		$description = $album->getDescription();
+		$this->appendTags($this->_channel,
+											['title' 	=> $album->getTitre(),
+											 'link'  	=> $this->view->absoluteUrl($album->getPermalink()),
+											 'charset'	  => 'utf-8',
+											 'itunes:image' => $this->view->absoluteUrl($album->getPermalinkThumbnail()),
+											 'description' => $description,
+											 'itunes:summary' => $description,
+											 'pubDate'  => gmdate('r', strtotime($album->getDateMaj()))]);
 	}
 
 
 	public function visitRessource($ressource, $index) {
-		$this->_data_rss['entries'] []= [
-			'title' => $ressource->getTitre(),
-			'link' => $this->view->absoluteUrl($ressource->getOriginalUrl()),
-			'description' => $ressource->getDescription()
-		];
+		$media_url = $this->view->absoluteUrl($ressource->getOriginalUrl());
+
+		$this->appendTags($item = $this->appendTag($this->_channel, 'item'),
+											['title' => $ressource->getTitre(),
+											 'link' => $media_url,
+											 'description' => $ressource->getDescription(),
+											 'itunes:order' => $ressource->getOrdre(),
+											 'guid' => $media_url]);
+		$enclosure = $item->appendChild($this->_doc->createElement('enclosure'));
+		$enclosure->setAttribute('url', $media_url);
+		$enclosure->setAttribute('type', Class_File_Mime::getType($ressource->getFileExtension()));
 	}
 }
 
