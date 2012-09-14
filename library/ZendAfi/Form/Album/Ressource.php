@@ -32,15 +32,26 @@ class ZendAfi_Form_Album_Ressource extends ZendAfi_Form {
 		$form
 			->populate($model->toArray())
 			->addFileFor($model)
+			->addPosterFor($model)
+			->detectMediaType($model)
+			->addDisplayGroup(['media_type', 'fichier', 'url', 'poster', 'link_to'],
+				                 'file',
+				                 ['legend' => 'Fichier'])
 
-			->addDisplayGroup(array('titre', 'folio', 'fichier', 'link_to', 'matiere'),
+			->addDisplayGroup(['titre', 'folio', 'matiere'],
 												'ressource',
-												array('legend' => 'Media'))
+												['legend' => 'Media'])
 
-			->addDisplayGroup(array('description'),
+			->addDisplayGroup(['description'],
 												'ressource_desc',
-												array('legend' => 'Description'));
+												['legend' => 'Description'])
+			->addJs();
 
+		if ($album = $model->getAlbum()
+			  and !$album->isLivreNumerique())
+			$form->removeElement('folio');
+
+		
 		return $form;
 	}
 
@@ -51,15 +62,19 @@ class ZendAfi_Form_Album_Ressource extends ZendAfi_Form {
 			->setAttrib('id', 'ressourcesForm')
 			->setAttrib('enctype', self::ENCTYPE_MULTIPART)
 
-			->addElement('text', 'titre', ['label' => 'Titre',
-					                           'size' => '80'])
+			->addElement('text', 'titre', ['label' => 'Titre', 'size' => '80'])
 
-			->addElement('text', 'folio', ['label' => 'Folio',
-																		 'size' => '20'])
+			->addElement('text', 'folio', ['label' => 'Folio', 'size' => '20'])
 
-
-			->addElement('url', 'link_to', ['label' => 'Lien vers',
-																			'size' => '80'])
+			->addElement('radio', 'media_type',
+					['label' => 'Type de média',
+					 'separator' => '',
+					 'multioptions' => [1 => 'Image', 2 => 'Autre fichier', 3 => 'Média en ligne'],
+					 'value' => 1])
+				
+			->addElement('url', 'url', ['label' => 'Url *', 'size' => '80'])
+				
+			->addElement('url', 'link_to', ['label' => 'Lien vers', 'size' => '80'])
 
 			->addElement('ckeditor', 'description')
 
@@ -75,7 +90,7 @@ class ZendAfi_Form_Album_Ressource extends ZendAfi_Form {
 	 * @return ZendAfi_Form_Album_Ressource
 	 */
 	public function addFileFor($model) {
-		$element = new ZendAfi_Form_Element_Image('fichier', ['label' => 'Fichier']);
+		$element = new ZendAfi_Form_Element_Image('fichier', ['label' => 'Fichier *']);
 		if ($model) {
 			$element
 				->setBasePath($model->getOriginalsPath())
@@ -83,6 +98,94 @@ class ZendAfi_Form_Album_Ressource extends ZendAfi_Form {
 				->setThumbnailUrl($model->getThumbnailUrl());
 		}
 		return $this->addElement($element);
+	}
+
+
+	/**
+	 * @param $album Class_AlbumRessource
+	 * @return ZendAfi_Form_Album_Ressource
+	 */
+	public function addPosterFor($model) {
+		$element = new ZendAfi_Form_Element_Image('poster', ['label' => 'Affiche / Jacquette']);
+		if ($model) {
+			$element
+				->setBasePath($model->getOriginalsPath())
+				->setBaseUrl($model->getThumbnailsUrl())
+				->setThumbnailUrl($model->getThumbnailUrl());
+		}
+		return $this->addElement($element);
+	}
+
+		
+
+	public function addJs() {
+		Class_ScriptLoader::getInstance()
+				->addInlineScript('
+				 function showMediaInputRowWithId(id) {
+					 getMediaRowOfInputId(id).show();
+				 }
+
+				 function hideMediaInputRowWithId(id) {
+					 getMediaRowOfInputId(id).hide();
+				 }
+
+				 function changeMediaInputLabelWithId(id, label) {
+					 getMediaRowOfInputId(id).find("label").first().html(label);
+				 }
+
+				 function getMediaRowOfInputId(id) {
+					 return $("#" + id).parent("td").parent("tr");
+				 }
+
+				 function toggleMediaType() {
+					 var currentVal = $("input:radio[name=media_type]:checked").val();
+					 if (1 == currentVal) {
+						 hideMediaInputRowWithId("url");
+						 hideMediaInputRowWithId("poster");
+						 changeMediaInputLabelWithId("fichier", "Image *");
+						 showMediaInputRowWithId("fichier");
+ 						 showMediaInputRowWithId("link_to");
+						 return;
+					 }
+
+					 if (2 == currentVal) {
+						 hideMediaInputRowWithId("url");
+						 hideMediaInputRowWithId("link_to");
+						 changeMediaInputLabelWithId("fichier", "Fichier *");
+						 showMediaInputRowWithId("fichier");
+						 showMediaInputRowWithId("poster");
+						 return;
+					 }
+
+					 hideMediaInputRowWithId("fichier");
+					 hideMediaInputRowWithId("link_to");
+					 showMediaInputRowWithId("url");
+					 showMediaInputRowWithId("poster");
+				}')
+
+				->addJQueryReady('$("input:radio[name=media_type]").change(function(){toggleMediaType();});
+													toggleMediaType();');
+		return $this;
+	}
+
+
+	/**
+	 * @param $model Class_AlbumRessource
+	 * @return Zendafi_Form_Album_Ressource
+	 */
+	public function detectMediaType($model) {
+		if ($model->isImage()) {
+			$this->getElement('media_type')->setValue(1);
+			return $this;
+		}
+
+		if ($model->getFichier()) {
+			$this->getElement('media_type')->setValue(2);
+			return $this;
+		}
+
+		$this->getElement('media_type')->setValue(3);
+		return $this;
 	}
 }
 

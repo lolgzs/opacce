@@ -64,12 +64,11 @@ echo $this->bouton('id=add_link',
 				<?php foreach ($this->ressources as $ressource) { ?>
 					<li class="ressource" id="<?php echo $ressource->getId();?>">
 						<div style="width:50px;"><?php
-						if ($ressource->isImage()) {
+					  if ($ressource->isImage() || $ressource->hasPoster()) {
 							echo sprintf('<a rel="prettyPhoto" href="%s" title="%s">%s</a>', 
-													 $ressource->getOriginalUrl(),
+								           ($ressource->isImage()) ? $ressource->getOriginalUrl() : $ressource->getPosterUrl(),
 													 $ressource->getTitre(),
-													 $this->tagImg(
-																				 $ressource->getThumbnailUrl(),
+													 $this->tagImg($ressource->getThumbnailUrl(),
 																				 array('style' => 'width:50px')
 																				 ));
 						}

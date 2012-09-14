@@ -1249,8 +1249,8 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 
 
 	/** @test */
-	public function inputFolioShouldContainsOne() {
-		$this->assertXPath('//input[@name="folio"][@value="1"]', $this->_response->getBody());
+	public function inputFolioShouldNotBePresent() {
+		$this->assertNotXPath('//input[@name="folio"]');
 	}
 
 
@@ -1324,12 +1324,13 @@ class Admin_AlbumControllerAlbumHarlocPostRessourceOneActionTest extends Admin_A
 			->answers(true);
 
 		$this->postDispatch('/admin/album/edit_ressource/id/1',
-												array('titre' => 'Atlantis',
-															'description' => 'autre vaisseau',
-															'link_to' => 'http://www.atlantis.com',
-															'matiere' => '666',
-															'folio' => '3R'));
-		$this->ressource = Class_AlbumRessource::getLoader()->find(1);
+												['titre' => 'Atlantis',
+												 'description' => 'autre vaisseau',
+												 'link_to' => 'http://www.atlantis.com',
+												 'matiere' => '666',
+												 'folio' => '3R']);
+		
+		$this->ressource = Class_AlbumRessource::find(1);
 	}
 
 

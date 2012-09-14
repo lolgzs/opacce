@@ -529,12 +529,12 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 											 ->setFichier('mimi_jolie.mp3')
 											 ->setTitre('Emilie jolie')
 											 ->setOrdre(1)
-											 ->setVignette('mimi_jolie.png'),
+											 ->setPoster('mimi_jolie.png'),
 											 
 											 Class_AlbumRessource::newInstanceWithId(4)
 											 ->setFichier('dark_night.mp4')
 											 ->setTitre('Batman Dark Knight')
-											 ->setVignette('batman.jpg')
+											 ->setPoster('batman.jpg')
 											 ->setOrdre(2)
 											 ->setDescription('Une nouvelle aventure du justicier noir'),
 
@@ -542,13 +542,13 @@ abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractCo
 											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
 											 ->setTitre('Hunger Games')
 											 ->setOrdre(3)
-											 ->setVignette('hunger.jpg'),
+											 ->setPoster('hunger.jpg'),
 
 											 Class_AlbumRessource::newInstanceWithId(6)
 											 ->setFichier('Monsieur l\'escargot.mp3')
 											 ->setTitre('Monsieur l\'escargot')
 											 ->setOrdre(4)
-											 ->setVignette('l\'escargot.jpg')]);
+											 ->setPoster('l\'escargot.jpg')]);
 	}
 }
 

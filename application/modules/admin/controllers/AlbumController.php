@@ -226,25 +226,15 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		}
 
 		$this->view->album = $album;
-		$ressource = Class_AlbumRessource::newInstance()
-				->setAlbum($album);
-		$form = $this->_ressourceForm($ressource);
+		$ressource = Class_AlbumRessource::newInstance()->setAlbum($album);
 
-		if ($this->_request->isPost() && ($form->isValid($this->_request->getPost()))) {
-			$ressource->updateAttributes($this->_request->getPost());
-			if ($ressource->getAlbum()->save()
-				&& $ressource->save()
-				&& $ressource->receiveFile()) {
-				$this->_helper->notify(sprintf('Média %s sauvegardé', 
-																			 $ressource->getTitre()));
-				$this->_redirect('admin/album/edit_ressource/id/'
-												 . $ressource->getId());
-				return;
-			}
+		if ($this->_setupRessourceFormAndSave($ressource)) {
+			$this->_helper->notify('Média "' . $ressource->getTitre() . '" sauvegardé');
+			$this->_redirect('admin/album/edit_ressource/id/' . $ressource->getId());
+			return;
 		}
 
 		$this->view->errors = $ressource->getErrors();
-		$this->view->form = $form;
 	}
 
 		
@@ -255,26 +245,39 @@ class Admin_AlbumController extends Zend_Controller_Action {
 			return;
 		}
 
-		$form = $this->_ressourceForm($ressource);
-
-		if ($this->_request->isPost() && ($form->isValid($this->_request->getPost()))) {
-			$ressource->updateAttributes($this->_request->getPost());
-			if ($ressource->getAlbum()->save() && $ressource->save() && $ressource->receiveFile()) {
-				$this->_helper->notify(sprintf('Média "%s" sauvegardé', 
-																			 $ressource->getTitre()));
-				$this->_redirect('admin/album/edit_ressource/id/'
-												 . $ressource->getId());
-				return;
-			}
+		if ($this->_setupRessourceFormAndSave($ressource)) {
+			$this->_helper->notify('Média "' . $ressource->getTitre() .  '" sauvegardé');
+			$this->_redirect('admin/album/edit_ressource/id/' . $ressource->getId());
+			return;
 		}
 
 		$this->view->errors = $ressource->getErrors();
-		$form->getElement('fichier')->setValue($ressource->getFichier());
+		$this->view->form->getElement('fichier')
+				->setValue($ressource->getFichier());
+		$this->view->form->getElement('poster')
+				->setValue($ressource->getPoster());
 
-		$this->view->form = $form;
 		$this->view->ressource	= $ressource;
 	}
 
+
+	protected function _setupRessourceFormAndSave($model) {
+		$form = $this->_ressourceForm($model);
+		
+		$this->view->form = $form;
+
+		if ($this->_request->isPost()) {
+			$model->updateAttributes($this->_request->getPost());
+			
+			return $form->isValid($model)
+				     && $model->save()
+					   && $model->receiveFiles()
+				     && $model->getAlbum()->save();
+		}
+
+		return false;
+  }
+		
 
 	public function sortressourcesAction() {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));

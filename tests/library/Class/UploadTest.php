@@ -106,7 +106,7 @@ class UploadFichierTest extends PHPUnit_Framework_TestCase {
 													'name' => 'test.xml'
 												);
 
-		$this->_assertError('Type de fichier non permis');
+		$this->_assertError('Le fichier n\'est pas de type gif');
 	}
 
 

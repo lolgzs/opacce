@@ -156,7 +156,13 @@ class AlbumRessourceReceivingFileTest extends AlbumRessourceFileUploadTestCase {
 			->method('receive')
 			->will($this->returnValue(false));
 
-		$this->assertFalse($this->_resource->setUploadHandler($this->_handler)->receiveFile());
+		$this->_handler
+			->expects($this->once())
+			->method('resetError')
+			->will($this->returnValue($this->_handler));
+
+		$this->assertFalse($this->_resource->setUploadHandlerFor($this->_handler, 'fichier')
+			                                 ->receiveFile());
 	}
 }
 

@@ -20,6 +20,8 @@
  */
 
 class Class_Upload {
+	use Trait_Translator;
+	
 	/** @var string */
 	protected $_name;
 
@@ -45,7 +47,7 @@ class Class_Upload {
 	protected $_required = false;
 
 	/** @var array */
-	protected $_allowedExtensions = array();
+	protected $_allowedExtensions = [];
 	
 
 	/**
@@ -105,7 +107,7 @@ class Class_Upload {
 	 * @return bool
 	 */
 	public function receive() {
-		if (!$this->_validate()) {
+		if (!$this->validate()) {
 			return false;
 		}
 
@@ -174,6 +176,15 @@ class Class_Upload {
 	 */
 	public function getError() {
 		return $this->_error;
+	}
+
+
+	/**
+	 * @return Class_Upload
+	 */
+	public function resetError() {
+		$this->_error = null;
+		return $this;
 	}
 
 
@@ -252,19 +263,19 @@ class Class_Upload {
 
 
 	/** @return bool */
-	protected function _validate() {
+	public function validate() {
 		if ('' == $this->_name) {
-			$this->setError('Transfert impossible, ce formulaire est mal configuré');
+			$this->setError($this->_('Transfert impossible, ce formulaire est mal configuré'));
 			return false;
 		}
 
 		if (!array_key_exists($this->_name, $_FILES)) {
-			$this->setError('Transfert impossible, champ de fichier introuvable');
+			$this->setError($this->_('Transfert impossible, champ de fichier introuvable'));
 			return false;
 		}
 
 		if (0 == (int)$_FILES[$this->_name]['size']) {
-			$this->setError('Le fichier était vide ou un problème réseau est survenu');
+			$this->setError($this->_('Le fichier était vide ou un problème réseau est survenu'));
 			return false;
 		}
 
@@ -276,9 +287,10 @@ class Class_Upload {
 		$parts = explode('.', $_FILES[$this->_name]['name']);
 		$ext = end($parts);
 
-		if ((0 < count($this->getAllowedExtensions()))
-				&& (!in_array($ext, $this->getAllowedExtensions()))) {
-			$this->setError('Type de fichier non permis');
+		$allowedExtensions = $this->getAllowedExtensions();
+		if ((0 < count($allowedExtensions))
+				&& (!in_array($ext, $allowedExtensions))) {
+			$this->setError(sprintf($this->_('Le fichier n\'est pas de type %s'), implode(', ', $allowedExtensions)));
 			return false;
 		}
 
@@ -292,6 +304,8 @@ class Class_Upload {
  * @category testing
  */
 class UploadMover {
+	use Trait_Translator;
+	
 	/** @var string */
 	protected $_error;
 
@@ -304,7 +318,7 @@ class UploadMover {
 	 */
 	public function moveTo($source, $destination) {
 		if (!move_uploaded_file($source, $destination)) {
-			$this->setError('Impossible d\'écrire le fichier sur le serveur au chemin [' . $destination . ']');
+			$this->setError(sprintf($this->_('Impossible d\'écrire le fichier sur le serveur au chemin [%s]'),  $destination));
 			return false;
 		}
 
