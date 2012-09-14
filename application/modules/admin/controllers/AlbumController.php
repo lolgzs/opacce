@@ -434,9 +434,11 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 		$album->updateAttributes($values);
 
-		if ($album->save() && $album->receiveFile() && $album->receivePDF()) {
+		if ($album->save()
+			  && $album->receiveFile()
+			  && $album->receivePDF()) {
 			$this->_helper->notify('Album sauvegardé');
-			$this->_redirect('admin/album/edit_album/id/'.$album->getId());
+			$this->_redirect('admin/album/edit_album/id/' . $album->getId());
 		} 
 	}
 
@@ -502,10 +504,14 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 */
 	protected function _renderAlbumForm($album, $titre) {
 		$this->_validateAndSaveAlbum($album);
-
+		
 		$this->view->titre	= $titre;
 		$this->view->errors	= $album->getErrors();
 		$this->view->album = $album;
+		$this->view->form->getElement('fichier')
+				->setValue($album->getFichier());
+		$this->view->form->getElement('pdf')
+				->setValue($album->getPdf());
 		$this->render('album_form');
 	}
 
