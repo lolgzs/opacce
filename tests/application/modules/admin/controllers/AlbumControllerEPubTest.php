@@ -19,24 +19,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_TagAlbumMediaList extends Zend_View_Helper_HtmlElement {
-	public function tagAlbumMediaList($album) {
-		$html = '<ul>';
+require_once 'AlbumControllerTest.php';
 
-		$ressources = $album->getRessources();
-		foreach($ressources as $ressource) {
-			$html .= sprintf('<li>%s</li>',
-											 $this->view->tagAnchor(['module' => 'opac',
-																							 'controller' => 'bib-numerique',
-																							 'action' => 'download-resource',
-																							 'id' => $ressource->getId()],
-																							$this->view->albumRessourceInfos($ressource),
-																							['data-ajax' => 'false']));
-		}
-		
-		$html .= '</ul>';
-		return $html;
+class Admin_AlbumControllerEPubTest extends Admin_AlbumControllerTestCase {
+	protected $_xpath;
+
+	public function setUp() {
+		parent::setUp();
+
+		$album = Class_Album::newInstanceWithId(999)
+			->beEPUB()
+			->setTitre('Informatique')
+			->setRessources([Class_AlbumRessource::newInstanceWithId(4)
+											 ->setUrl('pragmatic_programmers.epub')
+											 ->setTitre('Pragmatic Programmers')
+											 ->setVignette('pragprog.jpg')]);
+
+		$this->dispatch('/admin/album/preview_album/id/999', true);
+	}
+
+
+	/** @test */
+	public function linkToDownloadEPubShouldBeModuleOPACBibNumDownload() {
+		$this->assertXpath('//a[@href="/bib-numerique/download-resource/id/4"]');
 	}
 }
+
 
 ?>
