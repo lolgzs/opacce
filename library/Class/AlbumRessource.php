@@ -285,17 +285,18 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 	 * @return Imagick
 	 */
 	public function getImage() {
-		if (!isset($this->_image)) {
-			try {
-				$this->_image = new Imagick(($this->isImage) ?
-					                             $this->getOriginalPath() :
-					                             $this->getPosterPath());
+		if (isset($this->_image))
+			return $this->_image;
+				
+		try {
+			$this->_image = new Imagick(($this->isImage()) ?
+				                             $this->getOriginalPath() :
+				                             $this->getPosterPath());
 
-			} catch (Exception $e) {
-				$this->_image = new Imagick();
-				$this->_image->newPseudoImage(50, 50, "gradient:black-black");
-				$this->_image->setImageFormat('jpg');
-			}
+		} catch (Exception $e) {
+			$this->_image = new Imagick();
+			$this->_image->newPseudoImage(50, 50, "gradient:black-black");
+			$this->_image->setImageFormat('jpg');
 		}
 
 		return $this->_image;
@@ -629,14 +630,47 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 
 		if ($this->isNew())
 			$this->setOrdre($this->getNextOrder());
+
+		if (!$mediaType = $this->getMediaType())
+			return;
+
+		if (in_array($mediaType, [self::MEDIA_TYPE_IMAGE, self::MEDIA_TYPE_FILE])
+			  && $this->hasUrl()) {
+			$this->setUrl('');
+		}
+
+		if ((self::MEDIA_TYPE_IMAGE == $mediaType) && $this->hasPoster()) {
+			$this->deletePosterAndThumbnail();
+			$this->setPoster('');
+		}
+				
+		if ((self::MEDIA_TYPE_URL == $mediaType) && $this->hasFichier()) {
+			$this->deleteFichierAndThumbnail();
+			$this->setFichier('');
+		}
 	}
 
 
 	public function deleteFiles() {
-		if ('' != $this->getFichier()) {
-			$this->unlink($this->getOriginalPath());
-			$this->unlink($this->getThumbnailPath());
+		if ($this->isImage() && $this->hasFichier()) {
+			$this->deleteFichierAndThumbnail();
+			return;
 		}
+
+		if ($this->hasPoster())
+			$this->deletePosterAndThumbnail();
+	}
+
+
+	public function deleteFichierAndThumbnail() {
+		$this->unlink($this->getOriginalPath());
+		$this->unlink($this->getThumbnailPath());
+	}
+
+
+	public function deletePosterAndThumbnail() {
+		$this->unlink($this->getPosterPath());
+		$this->unlink($this->getThumbnailPath());
 	}
 
 
@@ -722,7 +756,6 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 		return $folio;
 	}
 
-
 	
 	public function setMediaType($type) {
 		$this->_media_type = $type;
@@ -767,7 +800,7 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 
 
 	public function validateMediaIsFileWithExtensions($extensions = []) {
-	// en édition et fichier inchangé
+		// en édition et fichier inchangé
 		if (!$this->isNew() && !$this->isFileUploadedForName('fichier'))
 			return;
 
