@@ -24,8 +24,16 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 		$loader = Class_ScriptLoader::getInstance();
 		$div_id = 'osmplayer'.$album->getId();
 
+		foreach(['compatibility', 'flags', 'async', 'plugin', 'display'] as $js)
+			$loader->addAdminScript('osmplayer/minplayer/src/minplayer.'.$js);
+
+		$loader->addAdminScript('osmplayer/minplayer/src/minplayer.js');
+
+		foreach(['image', 'file', 'playLoader', 'players.base', 'players.html5', 'players.flash', 'players.minplayer',
+						 'players.youtube', 'players.vimeo', 'controller'] as $js)
+			$loader->addAdminScript('osmplayer/minplayer/src/minplayer.'.$js);
+
 		$loader
-			->addAdminScript('osmplayer/minplayer/bin/minplayer.js')
 			->addAdminScript('osmplayer/src/iscroll/src/iscroll.js')
 			->addAdminScript('osmplayer/src/osmplayer.js');
 
