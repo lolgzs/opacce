@@ -80,6 +80,23 @@ class Admin_AlbumControllerVideoAndAudioTest extends Admin_AlbumControllerTestCa
 	public function pageShouldContainsDivIdOsmplayer999() {
 		$this->assertXpath('//div[@id="osmplayer999"]');
 	}
+
+
+	/** @test */
+	public function formThumbnailShouldNotBeVisible() {
+		$this->assertNotXpath('//form[@id="thumbnails"]');
+	}
+
+	
+	/** @test */
+	public function pageShouldContainsLinkToXSPFPlayList() {
+		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-xspf-playlist/id/999.xspf"]');
+	}
+
+	/** @test */
+	public function pageShouldContainsLinkToRSSPodcast() {
+		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-rss-feed/id/999.xml"]');
+	}
 }
 
 

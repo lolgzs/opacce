@@ -38,20 +38,33 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 			$loader->addAdminScript('osmplayer/templates/default/js/osmplayer.'.$template.'.default.js');
 
 
+		$xspf_url = $this->view->url(['module' => 'opac', 
+																	'controller' => 'bib-numerique',
+																	'action' => 'album-xspf-playlist', 
+																	'id' => $album->getId()]);
+
+		$podcast_url = $this->view->url(['module' => 'opac', 
+																		 'controller' => 'bib-numerique',
+																		 'action' => 'album-rss-feed', 
+																		 'id' => $album->getId()]).'.xml';
+
 
 		$loader
 			->addStyleSheet(URL_ADMIN_JS.'osmplayer/templates/default/css/osmplayer_default.css')
 			->addJQueryReady(sprintf('$("#%s").osmplayer(%s)',
 															 $div_id,
-															 json_encode(['playlist' => $this->view->url(['module' => 'opac', 
-																																						'controller' => 'bib-numerique',
-																																						'action' => 'album-xspf-playlist', 
-																																						'id' => $album->getId()]).'.xml',
+															 json_encode(['playlist' => $xspf_url.'.xml',
 																						'height' => '500px',
 																						'swfplayer' => URL_ADMIN_JS.'osmplayer/minplayer/flash/minplayer.swf',
 																						'logo' => URL_ADMIN_JS.'osmplayer/logo.png'])
 															 ));
-		return '<div id="'.$div_id.'"></div>';
+		return '<ul>'
+			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($xspf_url.'.xspf'), 
+																		 $this->view->_('Téléchargez la playlist (VLC, WinAmp)')).'</li>'
+			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($podcast_url), 
+																		 $this->view->_('Podcastez l\'album (iTunes, Lecteur RSS)')).'</li>'
+			.'</ul>'
+			.'<div id="'.$div_id.'"></div>';
 	}
 }
 

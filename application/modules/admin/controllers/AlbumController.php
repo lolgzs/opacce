@@ -445,7 +445,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	public function _thumbnailsForm($album) {
-		if (! ($album->isLivreNumerique() || $album->isDiaporama())) {
+		if (! ($album->isLivreNumerique() || ($album->isDiaporama()  &&  $album->hasOnlyImages()))) {
 			return;
 		}
 
