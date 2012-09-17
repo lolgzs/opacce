@@ -290,7 +290,7 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 
 	/** @test */
 	public function critiqueOnPotterShouldBeVisible() {
-		$this->assertXPathContentContains('//a[@class="entete_critique"]', 'bien', $this->_response->getBody());
+		$this->assertXPathContentContains('//li//a', 'bien', $this->_response->getBody());
 	}
 }
 

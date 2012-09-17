@@ -20,23 +20,23 @@
  */
 
 class ZendAfi_View_Helper_EnteteAvis extends ZendAfi_View_Helper_BaseHelper {
-	public function avis($avis) {
-		return  $this->enteteAvis($avis);
-	}
+  public function avis($avis) {
+    return $this->enteteAvis($avis);
+  
+  }
+	
+  public function enteteAvis($avis) {
+    $auteur = $avis->getUserName();
+    $date_avis = $avis->getReadableDateAvis();
+    $url_avis = $this->view->url(["controller" => "blog",
+				  "action" => "viewavis", 
+				  "id" => $avis->getId()]);
+    $entete = $avis->getEntete();
+    $urlVignette = $avis->getUrlVignette();
+    $urlImgNote = $this->view->noteImg($avis->getNote());
 
-	public function enteteAvis($avis) {
-		$auteur = $avis->getUserName();
-		$date_avis = $avis->getReadableDateAvis();
-		$url_avis = $this->view->url(array("controller" => "blog","action" => "viewavis", "id" => $avis->getId()));
-		$entete = $avis->getEntete();
 
-		return sprintf('<a class="entete_critique" href="%s">%s %s<div class="auteur_critique">%s - %s</div></a>',
-									 $url_avis,
-									 $this->view->noteImg($avis->getNote()),
-									 $entete,
-									 $auteur,
-									 $date_avis);
-	}
+    return sprintf('<a href="' . $url_avis . '"><img src ="' . $urlVignette. '"><span>' . $urlImgNote . '<h3>' . $entete . '</h3><p>' . $auteur . ' - ' . $date_avis . '</p></span>');
+  }
 }
-
 ?>

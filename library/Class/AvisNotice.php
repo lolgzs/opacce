@@ -285,6 +285,12 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 			$this->setAbonOuBib(0);
 	}
 
+	
+	public function getUrlVignette() {
+		if (!$notice = $this->getFirstNotice())
+			return '';
+		return $notice->getUrlVignette();
+	}
 
 }
 

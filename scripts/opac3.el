@@ -44,7 +44,6 @@
 	(require 'geben)
 	(require 'phpunit)
 	(require 'auto-complete)
-	(require 'auto-complete-etags)
 	(auto-complete-mode t)
 ;;	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(setq ac-sources '(ac-source-etags ac-source-words-in-buffer))
@@ -52,13 +51,14 @@
 
   (setq 
 	 tab-width 2
-   indent-tabs-mode t
+	 indent-tabs-mode t
 	 flymake-mode t
 	 compilation-error-regexp-alist  '(	("^\\(/.*\\):\\([0-9]+\\)$" 1 2)
 																			("^.* \\(/.*\\):\\([0-9]+\\)" 1 2)
 																			("PHP\s+[0-9]+\. [^/]* \\([^:]+\\):\\([0-9]+\\)" 1 2)
-																			("in \\(/.*\\) on line \\([0-9]+\\)" 1 2) ) 
-	 geben-pause-at-entry-line nil)	
+																		("in \\(/.*\\) on line \\([0-9]+\\)" 1 2) ) 
+	 geben-pause-at-entry-line nil
+	 geben-show-breakpoints-debugging-only nil)	
 	)
 
 

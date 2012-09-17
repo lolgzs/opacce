@@ -30,7 +30,7 @@ class ZendAfi_View_Helper_Telephone_Critiques extends ZendAfi_View_Helper_Accuei
 
 
 	protected function decorateContenu($html) {
-		return '<div class="liste"><ul>'.$html.'</ul></div>';
+		return '<ul data-role="listview" data-inset="true"> '.$html.'</ul>';
 	}
 
 }
