@@ -434,7 +434,7 @@ class CatalogueTestGetNoticesByPreferences extends ModelTestCase {
 
 		$this->_catalogue = Class_Catalogue::getLoader()->newInstanceWithId(666);
 		$this->_notices = $this->_catalogue->getNoticesByPreferences(array('id_catalogue' => 666,
-																																			 'aleatoire' => 1,
+																																			 'aleatoire' => '1',
 																																			 'nb_analyse' => 25,
 																																			 'nb_notices' => 40));
 	}

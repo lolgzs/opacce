@@ -21,9 +21,7 @@
 
 class ZendAfi_View_Helper_EnteteAvis extends ZendAfi_View_Helper_BaseHelper {
 	public function avis($avis) {
-		return sprintf('<div class="vignette_notice"><img src="%s" /></div>%s',
-									 $avis->getFirstNotice()->getUrlVignette(),
-									 $this->enteteAvis($avis));
+		return  $this->enteteAvis($avis);
 	}
 
 	public function enteteAvis($avis) {

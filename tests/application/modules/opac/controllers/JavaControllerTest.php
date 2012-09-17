@@ -23,9 +23,9 @@ require_once 'AbstractControllerTestCase.php';
 class JavaControllerTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$cfg_accueil = array('modules' => array('1' => array('division' => 1,
-																												 'type_module' => 'KIOSQUE')), 
-												 'options' => 	array());
+		$cfg_accueil = ['modules' => ['1' => ['division' => 1,
+																					'type_module' => 'KIOSQUE']], 
+										'options' => 	[]];
 
 
 		

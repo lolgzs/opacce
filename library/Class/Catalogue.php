@@ -301,7 +301,7 @@ class Class_Catalogue extends Storm_Model_Abstract {
 	public function getNoticesByPreferences($preferences,$cache_vignette=false)	{
 		$notices = $this->getNoticesFromCacheByPreferences($preferences, $cache_vignette);
 
-		if ($preferences["aleatoire"] !== 1) 
+		if ((int)$preferences["aleatoire"] !== 1) 
 			return $notices;
 
 		shuffle($notices);
@@ -431,7 +431,7 @@ class Class_Catalogue extends Storm_Model_Abstract {
 	public function limitForCatalogueRequestByPreferences($preferences, $no_limit=false) {
 		$limite = 0;
 
-		if (isset($preferences["aleatoire"]) && $preferences["aleatoire"]==1) 
+		if (isset($preferences["aleatoire"]) && (int)$preferences["aleatoire"]==1) 
 			$limite = (int)$preferences["nb_analyse"];
 		else if (isset($preferences['nb_notices']))
 			$limite = (int)$preferences["nb_notices"];
