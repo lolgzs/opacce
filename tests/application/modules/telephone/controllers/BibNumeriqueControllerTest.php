@@ -57,13 +57,13 @@ class BibNumeriqueControllerTelephoneViewCategorieEPUBTest extends BibNumeriqueC
 
 	/** @test */
 	public function liShouldContainsLinkToAlbumMonuments() {
-		$this->assertXPathContentContains('//li/a[contains(@href, "bib-numerique/view-album/id/234")]', 'Monuments');
+		$this->assertXPathContentContains('//li/a[contains(@href, "bib-numerique/view-album/id/234")][@data-ajax="false"]', 'Monuments');
 	}
 
 
 	/** @test */
 	public function liShouldContainsLinkToAlbumHistoires() {
-		$this->assertXPathContentContains('//li/a[contains(@href, "bib-numerique/view-album/id/567")]', 'Histoires');
+		$this->assertXPathContentContains('//li/a[contains(@href, "bib-numerique/view-album/id/567")][@data-ajax="false"]', 'Histoires');
 	}
 }
 

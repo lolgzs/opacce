@@ -104,7 +104,7 @@ class ZendAfi_View_Helper_Accueil_BibNumerique_TreeRenderer {
 		if (0 < count($albums = $categorie->getAlbums())) {
 			$content .= '<ul>';
 			foreach ($albums as $album) {
-				$options = ($this->_isCurrentAlbum($album)) ? array('class' => 'selected') : array();
+				$options = ($this->_isCurrentAlbum($album)) ? ['class' => 'selected'] : [];
 				$content .= '<li>' . $this->_getLinkedItemFor($album, 'view-album', $options) . '</li>';
 			}
 			$content .= '</ul>';

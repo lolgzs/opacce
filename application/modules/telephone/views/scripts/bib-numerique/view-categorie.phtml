@@ -5,6 +5,7 @@
 	<?php foreach($this->albums as $album) { ?>
 		<li><?php echo $this->tagAnchor($this->url(array('action' => 'view-album', 
 																										 'id' => $album->getId())),
-																		$album->getTitre());?></li>
+																		$album->getTitre(),
+																		['data-ajax' => 'false']);?></li>
 	<?php } ?>
 </ul>
