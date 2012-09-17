@@ -68,9 +68,11 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 															 ));
 		return '<ul>'
 			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($xspf_url.'.xspf'), 
-																		 $this->view->_('Téléchargez la playlist (VLC, WinAmp)')).'</li>'
+																		 $this->view->_('Téléchargez la playlist (VLC, WinAmp)'),
+																		 ['data-ajax' => 'false']).'</li>'
 			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($podcast_url.'.xml'), 
-																		 $this->view->_('Podcastez l\'album (iTunes, Lecteur RSS)')).'</li>'
+																		 $this->view->_('Podcastez l\'album (iTunes, Lecteur RSS)'),
+																		 ['data-ajax' => 'false']).'</li>'
 			.'</ul>'
 			.'<div id="'.$div_id.'"></div>';
 	}

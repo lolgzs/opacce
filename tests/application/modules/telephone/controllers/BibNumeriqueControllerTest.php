@@ -84,4 +84,43 @@ class BibNumeriqueControllerTelephoneViewAlbumMonumentsTest extends BibNumerique
 	}
 }
 
+
+
+class BibNumeriqueControllerTelephoneViewAlbumMultiMedia extends TelephoneAbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Album::newInstanceWithId(999)
+			->beDiaporama()
+			->setTitre('Antigone')
+			->setDateMaj('2012-02-17 10:00:00')
+			->setAuteur('Sophocle')
+			->setCategorie(Class_AlbumCategorie::getLoader()
+										 ->newInstanceWithId(12)
+										 ->setLibelle('antiquité'))
+			->setRessources([Class_AlbumRessource::newInstanceWithId(12)
+											 ->setFichier('introduction.mp3')
+											 ->setTitre('Introduction'),
+
+											 Class_AlbumRessource::newInstanceWithId(13)
+											 ->setFichier('choeur.mp3')
+											 ->setTitre('Le Choeur')]);
+
+		$this->dispatch('/bib-numerique/view-album/id/999', true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToXSPFPlayList() {
+		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-xspf-playlist/id/999.xspf"][@data-ajax="false"]', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToRSSPodcast() {
+		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-rss-feed/id/999.xml"][@data-ajax="false"]');
+	}
+}
+
+
 ?>
