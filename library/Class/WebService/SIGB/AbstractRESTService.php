@@ -25,6 +25,15 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 
 	/**
 	 * @param string $server_root
+	 * @return Class_WebService_SIGB_AbstractService
+	 */
+	public static function getService($server_root) {
+		return static::newInstance()->setServerRoot($server_root);
+	}
+
+
+	/**
+	 * @param string $server_root
 	 * @return Class_WebService_SIGB_AbstractRESTService
 	 */
 	public function setServerRoot($server_root) {

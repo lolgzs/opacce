@@ -18,5 +18,23 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_Nanook extends Class_WebService_SIGB_Abstract {}
+
+class DynixGetServiceTest extends Storm_Test_ModelTestCase {
+	protected $_service;
+
+	public function setUp() {
+		Class_WebService_SIGB_Dynix::reset();
+		$this->_service = Class_WebService_SIGB_Dynix::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/rest/standard',
+																															 'client_id' => 'myid']);
+	}
+
+
+	/** @test */
+	public function getServiceShouldCreateAnInstanceOfDynixService() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Dynix_Service',
+														$this->_service);
+	}
+}
+
+
 ?>

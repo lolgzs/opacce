@@ -18,5 +18,21 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_Nanook extends Class_WebService_SIGB_Abstract {}
+class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_AbstractRESTService {
+	public function getEmprunteur($user){}
+
+
+	public function reserverExemplaire($user, $exemplaire, $code_annexe){}
+
+
+	public function supprimerReservation($user, $reservation_id){}
+
+
+	public function prolongerPret($user, $pret_id){}
+
+
+	public function getNotice($id){}
+
+}
+
 ?>

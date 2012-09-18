@@ -20,23 +20,6 @@
  */
 class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_AbstractRESTService {
 	/**
-	 * @return Class_Webservice_SIGB_Nanook_Service
-	 */
-	public static function newInstance() {
-		return new self();
-	}
-
-
-	/**
-	 * @param string $server_root
-	 * @return Class_Webservice_SIGB_Nanook_Service
-	 */
-	public static function getService($server_root) {
-		return self::newInstance()->setServerRoot($server_root);
-	}
-
-
-	/**
 	 * @param string $server_root
 	 * @return Class_WebService_SIGB_AbstractRESTService
 	 */

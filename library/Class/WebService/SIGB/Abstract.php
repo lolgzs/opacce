@@ -18,5 +18,27 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_Nanook extends Class_WebService_SIGB_Abstract {}
+class Class_WebService_SIGB_Abstract {
+	protected static $service;
+
+	public static function getService($params){
+		if (!isset(static::$service)) {
+			$instance = new static();
+			$classname = get_called_class().'_Service';
+			static::$service = $classname::getService($params['url_serveur']);
+		}
+
+		return static::$service;
+	}
+
+
+	public static function setService($service) {
+		static::$service = $service;
+	}
+
+
+	public static function reset() {
+		static::$service = null;
+	}
+}
 ?>
