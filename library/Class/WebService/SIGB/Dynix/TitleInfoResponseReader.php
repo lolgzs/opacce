@@ -20,8 +20,28 @@
  */
 
 class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebService_SIGB_AbstractXMLNoticeReader {
+	protected $_current_code_annexe;
+	protected $_current_exemplaire;
+
+
 	public function endTitleId($content) {
 		$this->_notice = new Class_WebService_SIGB_Notice($content);
+	}
+
+
+	public function endLibraryId($data) {
+		$this->_current_code_annexe = $data;
+	}
+
+
+	public function endItemId($content) {
+		$this->_current_exemplaire = (new Class_WebService_SIGB_Exemplaire($content))->setCodeBarre($content);
+		$this->_notice->addExemplaire($this->_current_exemplaire);
+	}
+
+
+	public function endCallInfo() {
+		$this->_current_exemplaire->setCodeAnnexe($this->_current_code_annexe);
 	}
 }
 

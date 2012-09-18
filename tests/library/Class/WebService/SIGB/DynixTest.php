@@ -83,6 +83,43 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 	public function shouldAnswerANotice() {
 		$this->assertInstanceOf('Class_WebService_SIGB_Notice', $this->_notice);
 	}
+
+
+	/** @test */
+	public function noticeIdShouldBe233823() {
+		$this->assertEquals(233823, $this->_notice->getId());
+	}
+
+
+	/** @test */
+	public function getExemplairesShouldReturnAnArrayWithSizeTwo() {
+		$this->assertEquals(2, count($this->_notice->getExemplaires()));
+	}
+
+
+	/** @test */
+	public function firstExemplaireIdShouldBe39410001517933() {
+		$this->assertEquals('39410001517933', $this->_notice->exemplaireAt(0)->getId());
+	}
+
+
+	/** @test */
+	public function firstCodeBarresShouldBe39410001517933() {
+		$this->assertEquals('39410001517933', $this->_notice->exemplaireAt(0)->getCodeBarre());
+	}
+
+
+	/** @test */
+	public function firstExemplaireCodeAnnexeShouldBeALFMEDA() {
+		$this->assertEquals('ALFMEDA', $this->_notice->exemplaireAt(0)->getCodeAnnexe());
+	}
+
+
+	/** @test */
+	public function secondExemplaireCodeAnnexeShouldBeALFAX1() {
+		$this->assertEquals('ALFAX1', $this->_notice->exemplaireAt(1)->getCodeAnnexe());
+	}
+	
 }
 
 
