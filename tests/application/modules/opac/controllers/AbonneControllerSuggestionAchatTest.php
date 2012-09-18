@@ -176,6 +176,68 @@ class AbonneControllerSuggestionAchatPostValidDataTest extends AbstractControlle
 	public function fromShouldBeNoReplyAtLocalhost() {
 		$this->assertEquals('noreply@localhost', $this->_mail->getFrom());
 	}
+
+
+	/** @test */
+	public function notificationShouldBeEmpty() {
+		$this->assertFalse(isset($_SESSION['FlashMessenger']));
+	}
+
+}
+
+
+
+
+class AbonneControllerSuggestionAchatPostValidDataButNoMailSentTest extends AbstractControllerTestCase {
+	protected $_suggestion;
+	protected $_mail;
+
+	protected function _loginHook($account) {
+		$account->username     = 'Arnaud';
+		$account->ID_USER      = 666;
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+
+		Class_Users::getIdentity()->setMail('');
+		Class_Profil::getPortail()->setMailSite('');
+		Class_Profil::getCurrentProfil()->setMailSite('');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SuggestionAchat')
+			->whenCalled('save')
+			->willDo(
+							 function($suggestion){
+								 $this->_suggestion = $suggestion->setId(66);
+							 });
+
+		$mock_transport = new MockMailTransport();
+		Zend_Mail::setDefaultTransport($mock_transport);
+		$mock_transport->onSendDo(function() {throw new Zend_Mail_Exception('Error');});
+
+		$this->postDispatch('/opac/abonne/suggestion-achat', 
+												['titre' => 'Harry Potter',
+												 'description_url' => '',
+												 'isbn' => '',
+												 'commentaire' => '',
+												 'submit' => 'Envoyer'],
+												true);
+
+		$this->_mail = $mock_transport->sent_mail;
+	}
+
+
+	/** @test */
+	public function notificationShouldContainsAucunCourrielEnvoye() {
+		$this->assertContains('Aucun courriel', $_SESSION['FlashMessenger']['default'][0]);
+	}
+
+
+	/** @test */
+	public function newSuggestionShouldHaveTitreHarryPotter() {
+		$this->assertEquals('Harry Potter', $this->_suggestion->getTitre());
+	}
 }
 
 
