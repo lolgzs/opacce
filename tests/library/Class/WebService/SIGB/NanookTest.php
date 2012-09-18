@@ -57,7 +57,6 @@ class NanookGetServiceTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http://localhost:8080/afi_Nanook/ilsdi/',
 												$this->service->getServerRoot());
 	}
-
 }
 
 

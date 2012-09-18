@@ -100,19 +100,24 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 	}
 
 
+	public function httpGetNotice($params, $reader) {
+		$xml = $this->httpGet($params);
+
+ 		if ($notice = $reader->getNoticeFromXML($xml))
+			$this->cacheNotice($notice);
+
+		return $notice;
+	}
+
+
 	/**
 	 * @param int $id
 	 * @param Class_WeClass_WebService_SIGB*Reader $reader
 	 * @return string Class_WebService_SIGB_Notice
 	 */
 	public function ilsdiGetRecords($id, $reader) {
-		$xml = $this->httpGet(array('service' => 'GetRecords',
-																'id' => $id));
-
- 		if ($notice = $reader->getNoticeFromXML($xml))
-			$this->cacheNotice($notice);
-
-		return $notice;
+		return $this->httpGetNotice(['service' => 'GetRecords', 'id' => $id],
+																$reader);
 	}
 
 

@@ -31,7 +31,26 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	public function prolongerPret($user, $pret_id){}
 
 
-	public function getNotice($id){}
+	public function getNotice($id){
+		return $this->httpGetNotice(['service' => 'lookupTitleInfo',
+																 'clientID' => 'myid',
+																 'titleID' => '233823',
+																 'includeItemInfo' => 'true',
+																 'includeAvailabilityInfo' => 'true'],
+
+																Class_WebService_SIGB_Dynix_TitleInfoResponseReader::newInstance());
+	}
+
+
+	/**
+	 * @param array $options
+	 * @return string
+	 */
+	public function buildQueryURL($options) {
+		$service = $options['service'];
+		unset($options['service']);
+		return sprintf('%s/%s?%s', $this->getServerRoot(), $service, http_build_query($options));
+	}
 
 }
 

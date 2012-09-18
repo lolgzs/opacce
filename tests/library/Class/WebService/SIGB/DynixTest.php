@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+require('DynixFixtures.php');
+
 class DynixGetServiceTest extends Storm_Test_ModelTestCase {
 	protected $_service;
 
@@ -33,6 +35,53 @@ class DynixGetServiceTest extends Storm_Test_ModelTestCase {
 	public function getServiceShouldCreateAnInstanceOfDynixService() {
 		$this->assertInstanceOf('Class_WebService_SIGB_Dynix_Service',
 														$this->_service);
+	}
+}
+
+
+
+
+abstract class DynixTestCase extends Storm_Test_ModelTestCase {
+	/** @var PHPUnit_Framework_MockObject_MockObject */
+	protected $_mock_web_client;
+
+	/** @var Class_WebService_SIGB_Dynix_Service */
+	protected $_service;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_mock_web_client = Storm_Test_ObjectWrapper::mock();
+
+		$this->_service = Class_WebService_SIGB_Dynix_Service::newInstance()
+			->setServerRoot('http://www.infocom94.fr:8080/capcvm/rest/standard')
+			->setWebClient($this->_mock_web_client);
+	}
+}
+
+
+
+
+class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
+	protected $_notice;
+
+	public function setUp() {
+		parent::setUp();
+
+		Class_Profil::getCurrentProfil()->setCfgNotice(['exemplaires' => []]);
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=myid&titleID=233823&includeItemInfo=true&includeAvailabilityInfo=true')
+			->answers(DynixFixtures::xmlLookupTitleInfoLeCombatOrdinaire())
+			->beStrict();
+
+		$this->_notice = $this->_service->getNotice('233823');
+	}
+
+
+	/** @test */
+	public function shouldAnswerANotice() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Notice', $this->_notice);
 	}
 }
 

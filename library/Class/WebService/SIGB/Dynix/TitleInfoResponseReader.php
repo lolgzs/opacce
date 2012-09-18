@@ -18,30 +18,10 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-abstract class Class_WebService_SIGB_AbstractXMLNoticeReader {
-	/** @var Class_WebService_XMLParser */
-	protected $_xml_parser;
 
-	/** @var Class_WebService_SIGB_Notice */
-	protected $_notice;
-
-	/**
-	 * @return Class_WebService_SIGB_AbstractXMLNoticeReader
-	 */
-	public static function newInstance() {
-		return new static();
-	}
-
-	/**
-	 * @param string $xml
-	 * @return Class_WebService_SIGB_Notice
-	 */
-	public function getNoticeFromXML($xml) {
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance()
-			->setElementHandler($this)
-			->parse($xml);
-
-		return $this->_notice;
+class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebService_SIGB_AbstractXMLNoticeReader {
+	public function endTitleId($content) {
+		$this->_notice = new Class_WebService_SIGB_Notice($content);
 	}
 }
 
