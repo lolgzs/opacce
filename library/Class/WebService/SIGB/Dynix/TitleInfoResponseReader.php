@@ -43,6 +43,15 @@ class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebServi
 	public function endCallInfo() {
 		$this->_current_exemplaire->setCodeAnnexe($this->_current_code_annexe);
 	}
+
+
+	public function endCurrentLocationID($data) {
+		if ($data == 'CHECKEDOUT')
+			$this->_current_exemplaire->setDisponibiliteEnPret();
+
+		if ($data == 'INTRANSIT')
+			$this->_current_exemplaire->setDisponibiliteEnTransit();
+	}
 }
 
 ?>

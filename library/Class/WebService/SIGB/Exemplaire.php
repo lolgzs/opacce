@@ -26,6 +26,7 @@ class Class_WebService_SIGB_Exemplaire {
 	const DISPO_PERDU = "Perdu";
 	const DISPO_PILONNE = "Pilonné";
 	const DISPO_ENDOMMAGE = "Endommagé";
+	const DISPO_TRANSIT = "En transit";
 
 
 	protected $id;
@@ -255,6 +256,11 @@ class Class_WebService_SIGB_Exemplaire {
 		$this->setDisponibilite($this->getLibelleDispoEnPret());
 		$this->_isEnPret = true;
 		return $this;
+	}
+
+
+	public function setDisponibiliteEnTransit() {
+		return $this->setDisponibilite(self::DISPO_TRANSIT);
 	}
 
 

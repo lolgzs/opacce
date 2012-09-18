@@ -119,7 +119,20 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 	public function secondExemplaireCodeAnnexeShouldBeALFAX1() {
 		$this->assertEquals('ALFAX1', $this->_notice->exemplaireAt(1)->getCodeAnnexe());
 	}
-	
+
+
+	/** @test */
+	public function firstExemplaireDisponibiliteShouldBeEnPret() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_EN_PRET,
+												$this->_notice->exemplaireAt(0)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function secondExemplairDisponibiliteShouldBeEnTransit() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_TRANSIT,
+												$this->_notice->exemplaireAt(1)->getDisponibilite());
+	}	
 }
 
 
