@@ -107,4 +107,5 @@ div.formTable table {
 
 #liste_picto_picto {
 		z-index: 10;
+		margin-top: -5px;
 }
