@@ -213,7 +213,7 @@ class UploadControllerVignetteNoticeActionPostValidUrlTest extends UploadControl
 						 .'&action=12')
 			->answers(json_encode(['vignette' => 'http://cache.org/potter_thumb.jpg',
 														 'image' => 'http://cache.org/potter.jpg',
-														 'statut' => 'ok']))
+														 'statut_recherche' => 2]))
 			->beStrict();
 
 		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
@@ -266,13 +266,13 @@ class UploadControllerVignetteNoticeActionPostValidUrlForPeriodiqueTest extends 
 						 .'&type_doc=2'
 						 .'&titre='.urlencode('Science et vie')
 						 .'&image='.urlencode('http://upload.wikimedia.org/science_vie.jpg')
-						 .'&tome_alpha=1118'
+						 .'&numero=1118'
 						 .'&clef_chapeau='.urlencode('SCIENCE VIE')
 						 .'&src='.Class_WebService_AllServices::createSecurityKey()
 						 .'&action=12')
 			->answers(json_encode(['vignette' => 'http://cache.org/science_vie_thumb.jpg',
 														 'image' => 'http://cache.org/science_vie.jpg',
-														 'statut' => 'ok']))
+														 'statut_recherche' => 2]))
 			->beStrict();
 
 		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
@@ -296,7 +296,8 @@ class UploadControllerVignetteNoticePostServeurCacheErrorTest extends UploadCont
 
 		Class_WebService_AllServices::setHttpClient($http_client = Storm_Test_ObjectWrapper::mock()
 																								->whenCalled('open_url')
-																								->answers(json_encode(['statut' => 'erreur', 'message' => 'Image indisponible'])));
+																								->answers(json_encode(['statut_recherche' => 'erreur', 
+																																			 'message' => 'Image indisponible'])));
 
 
 		$this->postDispatch('/admin/upload/vignette-notice/id/12345', 
@@ -328,7 +329,7 @@ class UploadControllerVignetteNoticeActionInvalidPostTest extends UploadControll
 			->whenCalled('open_url')
 			->answers(json_encode(['vignette' => 'http://cache.org/science_vie_thumb.jpg',
 														 'image' => 'http://cache.org/science_vie.jpg',
-														 'statut' => 'ok']));
+														 'statut_recherche' => '2']));
 	}
 
 

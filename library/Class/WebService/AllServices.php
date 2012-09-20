@@ -23,6 +23,8 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 class Class_WebService_AllServices {
+	const RETOUR_SERVICE_OK = 2;
+
 	private static $_http_client;
 
 	private $services = array
@@ -129,8 +131,7 @@ class Class_WebService_AllServices {
 																																'image' => $url,
 																																'numero' => $notice->getTomeAlpha(),
 																																'clef_chapeau' => $notice->getClefChapeau()]));
-
-		if ('ok' !== $result['statut_recherche'])
+		if (self::RETOUR_SERVICE_OK != $result['statut_recherche'])
 			return $result['message'];
 
 		$notice
