@@ -30,6 +30,8 @@
 | Nuvola icons                        | LGPL                        |               | icônes                            |                  | http://www.icon-king.com/projects/nuvola/                                                                                      |
 | JQuery PlaceHolder plugin           | MIT/GPL                     |               | compat IE                         |                  | https://github.com/mathiasbynens/jquery-placeholder                                                                            |
 | OSM Player                          | GPL v3                      |               | player multimedia                 |                  | http://mediafront.org/osmplayer/index.html#.UFB0Q3lOpw4                                                                        |
+| jQuery Mobile Icon Pack             | CC BY 3.0 + MIT / GPL       |               | icônes version téléphone          |                  | https://github.com/commadelimited/jQuery-Mobile-Icon-Pack                                                                      |
+|                                     |                             |               |                                   |                  |                                                                                                                                |
 
 
 

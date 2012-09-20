@@ -157,7 +157,9 @@ class Class_ScriptLoader {
 
 		return $this
 			->addScript(BASE_URL.'/public/telephone/js/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
-			->addSkinStyleSheet('../jquerymobile/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min');
+			->addSkinStyleSheet('../jquerymobile/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
+			->addSkinStyleSheet('../jQuery-Mobile-Icon-Pack/original/jqm-icon-pack-2.0-original')
+			->addSkinStyleSheet('../jQuery-Mobile-Icon-Pack/font-awesome/jqm-icon-pack-2.1.2-fa');
 	}
 
 
