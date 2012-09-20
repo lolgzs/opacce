@@ -34,7 +34,7 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	public function getNotice($id){
 		return $this->httpGetNotice(['service' => 'lookupTitleInfo',
 																 'clientID' => 'myid',
-																 'titleID' => '233823',
+																 'titleID' => $id,
 																 'includeItemInfo' => 'true',
 																 'includeAvailabilityInfo' => 'true'],
 

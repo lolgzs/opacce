@@ -21,7 +21,9 @@
 
 class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebService_SIGB_AbstractXMLNoticeReader {
 	protected $_current_code_annexe;
+	protected $_current_location_id;
 	protected $_current_exemplaire;
+	protected $_is_reservable = false;
 
 
 	public function endTitleId($content) {
@@ -35,7 +37,10 @@ class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebServi
 
 
 	public function endItemId($content) {
-		$this->_current_exemplaire = (new Class_WebService_SIGB_Exemplaire($content))->setCodeBarre($content);
+		$this->_current_exemplaire = (new Class_WebService_SIGB_Exemplaire($content))
+			->setCodeBarre($content)
+			->setReservable($this->_is_reservable);
+		
 		$this->_notice->addExemplaire($this->_current_exemplaire);
 	}
 
@@ -51,6 +56,19 @@ class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebServi
 
 		if ($data == 'INTRANSIT')
 			$this->_current_exemplaire->setDisponibiliteEnTransit();
+
+		$this->_current_location_id = $data;
+	}
+
+	
+	public function endHomeLocationId($data) {
+		if ($this->_current_location_id == $data)
+			$this->_current_exemplaire->setDisponibiliteLibre();
+	}
+
+
+	public function endHoldable($data) {
+		$this->_is_reservable = ($data == 'true');
 	}
 }
 

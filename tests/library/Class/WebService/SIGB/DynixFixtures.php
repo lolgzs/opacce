@@ -64,8 +64,84 @@ class DynixFixtures {
 				<fixedTimeBooking>false</fixedTimeBooking>
 			</ItemInfo>
 		</CallInfo>
+		<CallInfo>
+			<libraryID>CRETMAC</libraryID>
+			<classificationID>ASIS</classificationID>
+			<callNumber>BD LAR</callNumber>
+			<numberOfCopies>1</numberOfCopies>
+			<ItemInfo>
+				<itemID>00580317</itemID>
+				<itemTypeID>1IMP</itemTypeID>
+				<currentLocationID>11ABD</currentLocationID>
+				<homeLocationID>11ABD</homeLocationID>
+				<chargeable>true</chargeable>
+				<fixedTimeBooking>false</fixedTimeBooking>
+			</ItemInfo>
+		</CallInfo>
 	</TitleInfo>
 </LookupTitleInfoResponse>';
+	}
+
+
+	public static function xmlLookupTitleInfoHarryPotter() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<LookupTitleInfoResponse xmlns="http://schemas.sirsidynix.com/symws/standard">
+	<TitleInfo>
+		<titleID>353917</titleID>
+		<TitleAvailabilityInfo>
+			<totalCopiesAvailable>3</totalCopiesAvailable>
+			<libraryWithAvailableCopies>Créteil : Maison des Arts</libraryWithAvailableCopies>
+			<libraryWithAvailableCopies>Créteil : Bibliobus</libraryWithAvailableCopies>
+			<libraryWithAvailableCopies>Limeil-Brévannes</libraryWithAvailableCopies>
+			<totalResvCopiesAvailable>0</totalResvCopiesAvailable>
+			<locationOfFirstAvailableItem>02MFILM</locationOfFirstAvailableItem>
+			<holdable>false</holdable>
+			<bookable>false</bookable>
+		</TitleAvailabilityInfo>
+		<CallInfo>
+			<libraryID>CRETMAC</libraryID>
+			<classificationID>ASIS</classificationID>
+			<callNumber>520 HAR</callNumber>
+			<numberOfCopies>1</numberOfCopies>
+			<ItemInfo>
+				<itemID>00580322</itemID>
+				<itemTypeID>1MUS</itemTypeID>
+				<currentLocationID>02MFILM</currentLocationID>
+				<homeLocationID>02MFILM</homeLocationID>
+				<chargeable>true</chargeable>
+				<fixedTimeBooking>false</fixedTimeBooking>
+			</ItemInfo>
+		</CallInfo>
+		<CallInfo>
+			<libraryID>CRETBUS</libraryID>
+			<classificationID>ASIS</classificationID>
+			<callNumber>520 HAR</callNumber>
+			<numberOfCopies>1</numberOfCopies>
+			<ItemInfo>
+				<itemID>00580317</itemID>
+				<itemTypeID>1MUS</itemTypeID>
+				<currentLocationID>07MFILM</currentLocationID>
+				<homeLocationID>07MFILM</homeLocationID>
+				<chargeable>true</chargeable>
+				<fixedTimeBooking>false</fixedTimeBooking>
+			</ItemInfo>
+		</CallInfo>
+		<CallInfo>
+			<libraryID>LB</libraryID>
+			<classificationID>ASIS</classificationID>
+			<callNumber>8.1 HAR</callNumber>
+			<numberOfCopies>1</numberOfCopies>
+			<ItemInfo>
+				<itemID>00594173</itemID>
+				<itemTypeID>1MUS</itemTypeID>
+				<currentLocationID>09JENR</currentLocationID>
+				<homeLocationID>09JENR</homeLocationID>
+				<chargeable>true</chargeable>
+				<fixedTimeBooking>false</fixedTimeBooking>
+			</ItemInfo>
+		</CallInfo>
+	</TitleInfo>
+		</LookupTitleInfoResponse>';
 	}
 }
 
