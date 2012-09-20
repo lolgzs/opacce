@@ -19,6 +19,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_AbstractRESTService {
+	protected $_client_id;
+
+	public function setClientId($client_id) {
+		$this->_client_id = $client_id;
+		return $this;
+	}
+
+
 	public function getEmprunteur($user){}
 
 
@@ -33,7 +41,7 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 
 	public function getNotice($id){
 		return $this->httpGetNotice(['service' => 'lookupTitleInfo',
-																 'clientID' => 'myid',
+																 'clientID' => $this->_client_id,
 																 'titleID' => $id,
 																 'includeItemInfo' => 'true',
 																 'includeAvailabilityInfo' => 'true'],

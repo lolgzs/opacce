@@ -55,8 +55,10 @@ abstract class DynixTestCase extends Storm_Test_ModelTestCase {
 
 		$this->_mock_web_client = Storm_Test_ObjectWrapper::mock();
 
-		$this->_service = Class_WebService_SIGB_Dynix_Service::newInstance()
-			->setServerRoot('http://www.infocom94.fr:8080/capcvm/rest/standard')
+
+		$this->_service = Class_WebService_SIGB_Dynix
+			::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/rest/standard',
+																															 'client_id' => 'SymWS'])
 			->setWebClient($this->_mock_web_client);
 	}
 }
@@ -72,7 +74,7 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 
 		$this->_mock_web_client
 			->whenCalled('open_url')
-			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=myid&titleID=233823&includeItemInfo=true&includeAvailabilityInfo=true')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=SymWS&titleID=233823&includeItemInfo=true&includeAvailabilityInfo=true')
 			->answers(DynixFixtures::xmlLookupTitleInfoLeCombatOrdinaire())
 			->beStrict();
 
@@ -164,9 +166,11 @@ class DynixGetNoticeHarryPotter extends DynixTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->_service->setClientId('RealWS');
+
 		$this->_mock_web_client
 			->whenCalled('open_url')
-			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=myid&titleID=353917&includeItemInfo=true&includeAvailabilityInfo=true')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=RealWS&titleID=353917&includeItemInfo=true&includeAvailabilityInfo=true')
 			->answers(DynixFixtures::xmlLookupTitleInfoHarryPotter())
 			->beStrict();
 

@@ -18,5 +18,10 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_Dynix extends Class_WebService_SIGB_Abstract {}
+class Class_WebService_SIGB_Dynix extends Class_WebService_SIGB_Abstract {
+	public static function getService($params){
+		return parent::getService($params)->setClientId($params['client_id']);
+	}
+}
+
 ?>
