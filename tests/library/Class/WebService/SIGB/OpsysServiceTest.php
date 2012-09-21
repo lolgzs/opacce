@@ -1004,7 +1004,7 @@ class EmpruntFixtures {
 																			 'Dateretourprevue' => '21/10/2010',
 																			 'Section' => 'Espace jeunesse',
 																			 'Auteur' => 'Lewis Caroll',
-																			 'Bibliotheque' => 'Astrolabe',
+																			 'Bibliothèque' => 'Astrolabe',
 																			 'N° de notice' => '5678'));
 		return $alice;
 	}
@@ -1121,10 +1121,21 @@ class OpsysServiceEmpruntTestSort extends PHPUnit_Framework_TestCase {
 		$this->emprunteur->setService($this->opsys_service);
 	}
 
+
 	public function testOrderEmprunt(){
 		$this->assertEquals($this->emprunteur->getEmpruntAt(0)->getTitre(), 'Alice');
 		$this->assertEquals($this->emprunteur->getEmpruntAt(1)->getTitre(), 'Cendrillon');
 		$this->assertEquals($this->emprunteur->getEmpruntAt(2)->getTitre(), 'Potter');
+	}
+
+	/** @test */
+	public function cendrillonBibliothequeShouldBeAstrolabe() {
+		$this->assertEquals('Astrolabe', $this->emprunteur->getEmpruntAt(1)->getBibliotheque());
+	}
+
+	/** @test */
+	public function aliceBibliothequeShouldBeAstrolabe() {
+		$this->assertEquals('Astrolabe', $this->emprunteur->getEmpruntAt(0)->getBibliotheque());
 	}
 }
 

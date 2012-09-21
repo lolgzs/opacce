@@ -49,9 +49,7 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 		 CLOSED: [2012-08-20 Mon 17:39]
 
 *** [[file:tests/application/modules/opac/controllers/AbonneControllerMultimediaTest.php::class%20AbonneControllerMultimediaHoldConfirmTest%20extends%20AbonneControllerMultimediaHoldTestCase%20{][5ème écran confirmation]]
-** TODO Fiche abonné: afficher conso + temps restant par jour / semaine / mois
-** DONE Skin réservation timeline 
-	 CLOSED: [2012-08-11 Sat 14:14]
+** Skin réservation timeline 
 	[[http://localhost/afi-opac3/abonne/multimedia-hold-location][url page réservation]]
 	[[file:public/opac/css/global.css::.timeline%20{][CSS .timeline]]
 	[[file:application/modules/opac/views/scripts/abonne/multimedia-hold-location.phtml::<?php%20foreach%20($this->locations%20as%20$location)%20{%20?][vue réservation]]
@@ -74,6 +72,9 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 	 [[file:tests/library/Class/WebService/SIGB/MicrobibServiceTest.php::$this->emprunteur%20%3D%20$this->_microbib->getEmprunteur(Class_Users::getLoader()][Tests getEmprunteur]]
 
 
+* WS Opsys
+** [[file:library/Class/WebService/SIGB/Opsys/Service.php::class%20Class_WebService_SIGB_Opsys_Service%20extends%20Class_WebService_SIGB_AbstractService%20{][Opsys_Service]]
+** [[file:tests/library/Class/WebService/SIGB/OpsysServiceTest.php::abstract%20class%20OpsysServiceFactoryWithCatalogueWebTestCase%20extends%20PHPUnit_Framework_TestCase%20{][Test Opsys]]
 
 * Scaffolding avec ZendAfi
 	[[file:application/modules/admin/controllers/OaiController.php::public%20function%20getRessourceDefinitions()%20{][Exemple de définition de ressources dans l'OAI controller]]

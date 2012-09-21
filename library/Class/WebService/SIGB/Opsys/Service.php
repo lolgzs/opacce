@@ -87,6 +87,7 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 
 
 	public function getEmpruntsOf($emprunteur) {
+		xdebug_break();
 		// prets pas en retard
 		$liste_prets_result = $this->search_client->EmprListerEntite(
 																					EmprListerEntite::prets($this->guid));

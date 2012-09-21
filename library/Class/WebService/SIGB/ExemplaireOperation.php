@@ -215,7 +215,7 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	public function parseExtraAttributes($attributes) {
 		$this->_attributes = $attributes;
 
-		$this->_exemplaire->setBibliotheque($this->getAttribute('Bibliotheque'));
+		$this->_exemplaire->setBibliotheque($this->getAttribute('Biblio'));
 		$this->_exemplaire->setSection($this->getAttribute('Section'));
 		$this->_exemplaire->setAuteur($this->getAttribute('Auteur'));
 		$this->_exemplaire->setNoNotice($this->getAttribute('N° de notice'));
