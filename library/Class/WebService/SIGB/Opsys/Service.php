@@ -87,7 +87,6 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 
 
 	public function getEmpruntsOf($emprunteur) {
-		xdebug_break();
 		// prets pas en retard
 		$liste_prets_result = $this->search_client->EmprListerEntite(
 																					EmprListerEntite::prets($this->guid));
@@ -638,6 +637,7 @@ class RecupererNoticeResponse {
 			$exemplaire->setCodeBarre($nfille->getCodeBarre());
 			$exemplaire->setDateRetour($nfille->getDateRetour());
 			$exemplaire->setReservable($nfille->Reservable);
+			$exemplaire->setCote($nfille->getCote());
 			$notice->addExemplaire($exemplaire);
 		}
 		return $notice;
@@ -685,6 +685,9 @@ class ListeNoticesFilles {
 	public $NoticesFilles; // ArrayOfNoticeFille
 }
 
+
+
+
 class NoticeFille {
 	public $NumFille; // string
 	public $StatutFille; // string
@@ -703,6 +706,7 @@ class NoticeFille {
 		return "";
 	}
 
+
 	public function getDisponibilite(){
 		$dispo = $this->getData("Disponibilité");
 		if (!$piege = $this->getData("Piège"))
@@ -712,22 +716,33 @@ class NoticeFille {
 		return $dispo;
 	}
 
+
 	public function getSection(){
 		return $this->getData('Section');
 	}
+
 
 	public function getBibliotheque(){
 		return $this->getData("Site");
 	}
 
+
 	public function getCodeBarre(){
 		return $this->getData("Code barre");
 	}
 
+
 	public function getDateRetour(){
 		return $this->getData("Retour");
 	}
+
+
+	public function getCote() {
+		return $this->getData('Cote');
+	}
 }
+
+
 
 class DonneeFille {
 	public $NomDonnee; // string

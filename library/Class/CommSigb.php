@@ -69,6 +69,9 @@ class Class_CommSigb {
 		$exemplaire["date_retour"]=$sigb_exemplaire->getDateRetour();
 		$exemplaire["reservable"]=$sigb_exemplaire->isReservable();
 		$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
+		
+		if ($cote = $sigb_exemplaire->getCote())
+			$exemplaire["cote"] = $cote;
 
 		if (!$code_annexe = $sigb_exemplaire->getCodeAnnexe())
 			return $exemplaire;

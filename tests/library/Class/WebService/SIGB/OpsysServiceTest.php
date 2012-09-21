@@ -278,6 +278,8 @@ class OpsysServiceNoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
 }
 
 
+
+
 class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 	private $notices;
 	private $cache;
@@ -291,10 +293,10 @@ class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCas
 	public function setUp(){
 		$this->notice_potter = new Class_WebService_SIGB_Notice('potter');
 		for ($i = 0; $i <= 2; $i++) {
-			$ex = new Class_WebService_SIGB_Exemplaire("$i");
-			$ex->setDisponibiliteLibre();
-			$ex->setCodeBarre("$i");
-			$this->notice_potter->addExemplaire($ex);
+			$this->notice_potter->addExemplaire((new Class_WebService_SIGB_Exemplaire("$i"))
+																					->setDisponibiliteLibre()
+																					->setCodeBarre("$i")
+																					->setCote("HP $i"));
 		}
 
 		$notice_vide = new Class_WebService_SIGB_Notice('vide');
@@ -304,30 +306,36 @@ class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCas
 		$this->cache = new Class_WebService_SIGB_NoticeCache($this);
 	}
 
+
 	public function testGetExemplaireWithInexistantNoticeIsIndisponible(){
 		$exemplaire = $this->cache->getExemplaire("inexistant", "");
 		$this->assertEquals("Indisponible", $exemplaire->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithInexistantNoticeIsNotValid(){
 		$exemplaire = $this->cache->getExemplaire("inexistant", "");
 		$this->assertFalse($exemplaire->isValid());
 	}
 
+
 	public function testGetExemplaireWithEmptyNoticeIsIndisponible(){
 		$exemplaire = $this->cache->getExemplaire("vide", "");
 		$this->assertEquals("Indisponible", $exemplaire->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithEmptyNoticeIsNotValid(){
 		$exemplaire = $this->cache->getExemplaire("vide", "");
 		$this->assertFalse($exemplaire->isValid());
 	}
 
+
 	public function testGetExemplaireWithPotterPopDisponiblite(){
 		$this->assertEquals("Disponible",
 												$this->cache->getExemplaire("potter", "0")->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithPotterIsValid(){
 		$this->assertTrue($this->cache
@@ -346,6 +354,16 @@ class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCas
 	}
 
 
+	public function testGetExemplaireWithCote() {
+		$this->assertEquals("HP 0",
+												$this->cache->getExemplaire("potter", "0")->getCote());
+		$this->assertEquals("HP 1",
+												$this->cache->getExemplaire("potter", "1")->getCote());
+		$this->assertEquals("HP 2",
+												$this->cache->getExemplaire("potter", "2")->getCote());
+	}
+
+
 	public function testCallLoadNoticeOnlyOncePerNotice(){
 		$this->assertEquals("Disponible",
 												$this->cache->getExemplaire("potter", "0")->getDisponibilite());
@@ -358,6 +376,7 @@ class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCas
 												$this->cache->getExemplaire("potter", "3")->getDisponibilite());
 	}
 
+
 	public function testExemplaireReservableIfNoticeReservable(){
 		$this->notice_potter->setReservable(true);
 		$this->assertTrue($this->cache->getExemplaire("potter", "1")->isReservable());
@@ -365,6 +384,7 @@ class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCas
 		$this->assertFalse($this->cache->getExemplaire("potter", "1")->isReservable());
 	}
 }
+
 
 
 
@@ -816,12 +836,16 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 		$code_barre_scrap->NomDonnee = "Code barre";
 		$code_barre_scrap->ValeurDonnee = "5678";
 
+		$cote_scrap = new DonneeFille();
+		$cote_scrap->NomDonnee = "Cote";
+		$cote_scrap->ValeurDonnee = "SCRAP";
+
 
 		$scrap = new NoticeFille();
 		$scrap->NumFille = "scrap";
 		$scrap->Reservable = "false";
 		$scrap->DonneesFille = new StdClass();
-		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap);
+		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap, $cote_scrap);
 
 		$rsp = new RecupererNoticeResponse();
 		$rsp->RecupererNoticeResult = new RspRecupererNotice();
@@ -843,6 +867,7 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 		$this->assertEquals("Non disponible (Manquant)", $potter->getDisponibilite());
 	}
 
+
 	public function testScrapDispoLibre() {
 		$this->response->RecupererNoticeResult->Notice->Reservable = "false";
 		$notice = $this->response->createNotice();
@@ -853,12 +878,21 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 		$this->assertEquals("Disponible", $scrap->getDisponibilite());
 	}
 
+
+	/** @test */
+	public function coteScrapShouldBeSCRAP() {
+		$this->assertEquals('SCRAP', $this->response->createNotice()->exemplaireAt(1)->getCote());
+	}
+
+
 	public function testCodeBarre(){
 		$notice = $this->response->createNotice();
 		$this->assertEquals("1234", $notice->exemplaireAt(0)->getCodeBarre());
 		$this->assertEquals("5678", $notice->exemplaireAt(1)->getCodeBarre());
 	}
 }
+
+
 
 
 class OpsysServiceEmprReserverResponseTest extends PHPUnit_Framework_TestCase {

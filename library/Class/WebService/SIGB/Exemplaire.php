@@ -48,6 +48,7 @@ class Class_WebService_SIGB_Exemplaire {
 	protected $_exemplaire_opac;
 	protected $_disponibiliteLabel;
 	protected $_isEnPret;
+	protected $_cote;
 
 
 	public static function newInstance() {
@@ -221,6 +222,17 @@ class Class_WebService_SIGB_Exemplaire {
 	public function setCodeBarre($code_barre){
 		$this->code_barre = $code_barre;
 		return $this;
+	}
+
+
+	public function setCote($cote) {
+		$this->_cote = $cote;
+		return $this;
+	}
+
+
+	public function getCote() {
+		return $this->_cote;
 	}
 
 
