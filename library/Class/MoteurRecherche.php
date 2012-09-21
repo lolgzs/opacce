@@ -44,6 +44,8 @@ class Class_MoteurRecherche {
 		$tri = 0;
 		$mode_isbn = false;
 		$conditions = '';
+		$against = '';
+		$order_by = '';
 
 		extract($crit);
 		
@@ -115,12 +117,13 @@ class Class_MoteurRecherche {
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		if($annexe) $conditions.=" And MATCH(facettes) AGAINST('+Y".$annexe."' IN BOOLEAN MODE)";
 		if($avec_vignette) $conditions.=" and url_vignette >'' and url_vignette !='NO'";
-		
-		if($tri and $tri!="*" and !$pertinence or $mode_isbn==true)
-		{
+
+		if ($tri and $tri!="*" and !$pertinence or $mode_isbn==true) {
 			$select = "select id_notice from notices ";
-			if($tri) $order_by=" order by ".$tri;
+			if ($tri and $tri!="*")
+				$order_by=" order by ".$tri;
 		}
+
 		else
 		{
 			$filtre_against=str_replace("+"," ",$against);
@@ -154,12 +157,25 @@ class Class_MoteurRecherche {
 //------------------------------------------------------------------------------------------------------
 // Recherche Avancée
 //------------------------------------------------------------------------------------------------------
-	function lancerRechercheAvancee($crit)
-	{
+	function lancerRechercheAvancee($crit) {
+		$selection_bib = '';
+		$section = '';
+		$selection_sections = '';
+		$conditions = '';
+		$facette = '';
+		$selection_annexe = '';
+		$type_doc = 0;
+		$annee_debut = '';
+		$annee_fin = '';
+		$annexe = '';
+		$nouveaute = false;
+
 		extract($crit);
 		if(trim($selection_bib)=="B") $selection_bib="";
-		if($section) $selection_sections="S".$section;
-		else $selection_sections=$crit["selection_sections"];
+		if ($section) 
+			$selection_sections="S".$section;
+		else if (isset($crit["selection_sections"]))
+			$selection_sections=$crit["selection_sections"];
 
 		// Analyse des expressions
 		foreach($crit as $clef => $valeur)
@@ -201,8 +217,7 @@ class Class_MoteurRecherche {
 			}
 		}
 		
-		if(!$conditions)
-		{
+		if(!$conditions)	{
 			//$ret["statut"]="erreur";
 			//$ret["erreur"]=$this->_translate->_("Il n'y aucun mot assez significatif pour la recherche");
 			//return $ret;
@@ -226,7 +241,10 @@ class Class_MoteurRecherche {
 			$date=date("Y-m-d",$date);
 			$conditions.=" and date_creation >'".$date."' ";
 		}
-		if($tri > "") $order_by=" order by ".$tri;
+		if (($tri > "") && ($tri !== '*')) 
+			$order_by=" order by ".$tri;
+		else
+			$order_by = '';
 
 		// Finalisation des requetes
 		$req_notices = "Select id_notice from notices Where ".$conditions.$order_by;

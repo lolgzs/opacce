@@ -45,6 +45,7 @@ class Class_Isbn
 		if(!$code) return;
 		
 		// filtrer
+		$new = '';
 		for($i=0;$i < strLen($code); $i++) if($code[$i]>="0" and $code[$i] <="9") $new.= $code[$i]; 
 		
 		// Tester la longueur
@@ -90,14 +91,16 @@ class Class_Isbn
 // ----------------------------------------------------------------
 // Calcul l'isbn 10 et 13
 // ----------------------------------------------------------------
-	private function calculIsbn($code)
-	{
+	private function calculIsbn($code) {
+		$prefixe13 = '';
+
 		if(strLeft($code,3)=="978" or strLeft($code,3)=="979")
 		{
 			$prefixe13=substr($code,0,3);
 			$code=substr($code,3);
 		}
 		// isbn 10
+		$somme = 0;
 		for($i=0;$i<9; $i++)
 		{
 			$facteur = 10 -$i;
@@ -119,6 +122,7 @@ class Class_Isbn
 // ----------------------------------------------------------------
 	private function clefEan($code)
 	{		
+		$somme = 0;
 		for($i=0; $i<12; $i++)
 		{
 			if($i & 1) $facteur=3; else $facteur=1;

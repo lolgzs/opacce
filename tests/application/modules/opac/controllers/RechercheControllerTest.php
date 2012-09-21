@@ -233,6 +233,38 @@ class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 
 
 
+class RechercheControllerSimpleByISBNActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/recherche/simple', ['expressionRecherche' => '2-203-00119-4'], true);
+	}
+
+	
+	/** @test */
+	public function pageResultatRechecheShouldBeDisplayed() {
+		$this->assertXPathContentContains('//div', 'Recherche : 2-203-00119-4');
+	}
+}
+
+
+
+
+class RechercheControllerAvanceeActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/recherche/avancee', true);
+	}
+
+	
+	/** @test */
+	public function pageRechercheAvanceeShouldBeDisplayed() {
+		$this->assertXPathContentContains('//h1', 'recherche');
+	}
+}
+
+
+
+
 class RechercheControllerPostReservationAction extends AbstractControllerTestCase {
 	protected $_sent_mails;
 

@@ -247,10 +247,10 @@ class RechercheController extends Zend_Controller_Action
 
 		// Lancer la recherche
 		$this->view->texte_selection=$this->getTexteSelection();
- 		if(!$_SESSION["recherche"]["resultat"])
+ 		if(!isset($_SESSION["recherche"]["resultat"]))
  		{
  			$ret=$this->moteur->lancerRechercheAvancee($_SESSION["recherche"]["selection"]);
-			if($ret["statut"]=="erreur")
+			if (isset($ret['statut']) && ($ret['statut']=='erreur'))
 			{
 				$ret["nombre"]=0;
 				$this->view->liste=$ret;
@@ -270,7 +270,7 @@ class RechercheController extends Zend_Controller_Action
 
 		// Variables viewer
 		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
+		$this->view->resultat["page_cours"] = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -459,34 +459,34 @@ class RechercheController extends Zend_Controller_Action
 												 "or" => $this->view->_(" ou "),
 												 "and not" => $this->view->_(" sauf "));
 
-			$signe = ($rech["type_recherche"]=="commence") ? 
+			$signe = (isset($rech["type_recherche"]) && ($rech["type_recherche"]=="commence")) ? 
 				$this->view->_(" commence par :"):
 				$this->view->_(" contient :");
 
 			$texte = '';
-			if ($rech["rech_titres"]) 
+			if (isset($rech["rech_titres"])) 
 				$texte .= $this->view->_(", Titre") . $signe . $rech["rech_titres"];
-			if ($rech["rech_auteurs"]) 
+			if (isset($rech["rech_auteurs"])) 
 				$texte .= ", " . $operateur[$rech["operateur_auteurs"]] . "Auteur" . $signe . $rech["rech_auteurs"];
-			if ($rech["rech_matieres"]) 
+			if (isset($rech["rech_matieres"])) 
 				$texte .= ", " . $operateur[$rech["operateur_matieres"]] . "Sujet" . $signe . $rech["rech_matieres"];
-			if ($rech["rech_dewey"]) 
+			if (isset($rech["rech_dewey"]))
 				$texte .= ", " . $operateur[$rech["operateur_dewey"]] . "Dewey /pcdm4" . $signe . $rech["rech_dewey"];
-			if ($rech["rech_editeur"]) 
+			if (isset($rech["rech_editeur"]))
 				$texte.= ", ". $operateur[$rech["operateur_editeur"]] . "Editeur" . $signe . $rech["rech_editeur"];
-			if ($rech["rech_collection"]) 
+			if (isset($rech["rech_collection"]))
 				$texte.= ", " . $operateur[$rech["operateur_collection"]] . "Collection" . $signe . $rech["rech_collection"];
-			if ($rech["type_doc"]) 
+			if (isset($rech["type_doc"]))
 				$texte .= '  ' . BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
 
-			if ($rech["annexe"]) {
+			if (isset($rech["annexe"])) {
 				if ($texte) 
 					$texte .= BR;
 				$texte .= $this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
 				$texte .= '&nbsp;&raquo;&nbsp;<a href="'. $this->view->url() . '?annexe=reset">Elargir la recherche à tous les sites</a>';
 			}
 
-			if ($rech["annee_debut"] and $rech["annee_fin"]) {
+			if (isset($rech["annee_debut"]) && isset($rech["annee_fin"])) {
 				$texte .= BR . $this->view->_("Documents parus ");
 				$texte .= ($rech["annee_debut"] == $rech["annee_fin"]) ?
 					"en " . $rech["annee_debut"] :
