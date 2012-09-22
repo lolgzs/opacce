@@ -62,8 +62,8 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_modules .= $this->addMenu("lettres_16.png",					$this->translate()->_("Lettres d'information"),		"/admin/newsletter",				 $acl_admins);
 		if (Class_AdminVar::isFormationEnabled()) {
 			$menu_modules .= $this->addMenu("formations_16.png",		$this->translate()->_("Formations"),							"/admin/formation",					 $acl_admins);
-			$menu_modules .= $this->addMenu("lieux_16.png",					$this->translate()->_("Lieux"),										"/admin/lieu",							 $acl_admins);
 		}
+		$menu_modules .= $this->addMenu("lieux_16.png",					$this->translate()->_("Lieux"),										"/admin/lieu",							 $acl_admins);
 		$menu_modules .= $this->closeBoite();
 
 		$menu_bibnum = '';

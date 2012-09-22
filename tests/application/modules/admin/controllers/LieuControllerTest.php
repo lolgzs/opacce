@@ -26,7 +26,7 @@ abstract class LieuControllerTestCase extends AbstractControllerTestCase {
 
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
-			->setValeur(1);
+			->setValeur(0);
 
 		$this->afi_annecy = Class_Lieu::getLoader()
 			->newInstanceWithId(3)
