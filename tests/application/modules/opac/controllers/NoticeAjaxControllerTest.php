@@ -474,3 +474,23 @@ class NoticeAjaxControllerFrbrWithLinksAndNInIdTest extends NoticeAjaxController
 		$this->dispatch('/opac/noticeajax/frbr?id_notice=N777', true);
 	}
 }
+
+
+
+
+class NoticeAjaxControllerNoticeActionTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->notice = Class_Notice::getLoader()->findFirstBy([]);
+		$this->notice->setTitrePrincipal('Bending new corners');
+		$this->dispatch('/opac/noticeajax/notice?id_notice=N'.$this->notice->getId(), true);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsTitreNotice() {
+		$this->assertXPathContentContains('//h1', 'Bending new corners');
+	}
+}
+
+?>

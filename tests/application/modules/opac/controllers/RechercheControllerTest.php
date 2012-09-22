@@ -23,7 +23,7 @@ require_once 'AbstractControllerTestCase.php';
 abstract class RechercheControllerNoticeTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->notice = Class_Notice::getLoader()->findFirstBy(array());
+		$this->notice = Class_Notice::getLoader()->findFirstBy([]);
 	}
 }
 

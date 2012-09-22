@@ -53,12 +53,9 @@ class NoticeAjaxController extends Zend_Controller_Action {
 		$preferences = $current_module["preferences"];
 		
 		// Lire la notice
-		$this->view->notice = $this->notice->getNoticeDetail($this->id_notice,$preferences);
-		if (!$this->view->notice)
+		if (!$this->view->notice = Class_Notice::find($this->id_notice))
 			$this->_redirect('opac/recherche/simple');
 
-		$this->view->url_img = Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
-		
 		// Url panier
 		$user = ZendAfi_Auth::getInstance()->getIdentity();
 		$this->view->url_panier = "fonction_abonne('".$user->ID_USER."','/opac/abonne/panier?id=".$this->id_notice."')";
@@ -70,6 +67,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 		// Stats visualisation
 		$stat = new  Class_StatsNotices();
 		$stat->addStatVisu($this->id_notice);
+		$this->view->preferences = $preferences;
 	}
 	
 
