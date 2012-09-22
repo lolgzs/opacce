@@ -23,6 +23,7 @@ require_once 'AdminAbstractControllerTestCase.php';
 abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 	/** @var Class_Article */
 	protected $concert;
+	protected $lieu_bonlieu, $lieu_arcadium;
 
 
 	protected function _loginHook($account) {
@@ -31,8 +32,33 @@ abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 	}
 
 
+	public function setupLieux() {
+		$this->lieu_bonlieu = Class_Lieu::newInstanceWithId(3)
+			->setLibelle('Bonlieu')
+			->setAdresse('1, rue Jean Jaures')
+			->setCodePostal('74000')
+			->setVille('Annecy')
+			->setPays('France');
+
+		$this->lieu_arcadium = Class_Lieu::newInstanceWithId(10)
+			->setLibelle('Arcadium')
+			->setAdresse('32 bd du Fier')
+			->setCodePostal('74000')
+			->setVille('Annecy')
+			->setPays('France');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+			->whenCalled('findAllBy')
+			->with(array('order' => 'libelle'))
+			->answers([$this->lieu_bonlieu, $this->lieu_arcadium])
+			->whenCalled('save')->answers(true);
+	}
+
+
 	public function setUp() {
 		parent::setUp();
+
+		$this->setupLieux();
 
 		$cat_a_la_une = Class_ArticleCategorie::getLoader()
                 			->newInstanceWithId(23)
@@ -62,7 +88,7 @@ abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 			->setAvis(true)
 			->setIndexation(false)
 			->setDateCreation('2010-12-25')
-			->setAvisUsers(array());
+			->setAvisUsers([]);
 
 
 		$this->article_wrapper = Storm_Test_ObjectWrapper
@@ -163,6 +189,8 @@ class CmsControllerArticleEditWithoutLanguesTest extends CmsControllerTestCase {
 }
 
 
+
+
 class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "admin_portail";
@@ -175,7 +203,7 @@ class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControl
 			->getIdentity()
 			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL);
 
-		$this->dispatch('/admin/cms/newsedit/id/4');
+		$this->dispatch('/admin/cms/newsedit/id/4', true);
 	}
 
 
@@ -195,7 +223,27 @@ class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControl
 	function categorieSelectShouldContainsOptGroupCranGevrier() {
 		$this->assertXPath('//select[@name="id_cat"]//optgroup[@label="Cran-Gevrier"]');
 	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsAucun() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Aucun"][@value="0"]');		
+	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsBonlieu() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Bonlieu"][@value="3"]');		
+	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsArcadium() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Arcadium"][@value="10"]');		
+	}
 }
+
+
 
 
 class CmsControllerArticleWithoutCategoryAddActionTest extends CmsControllerTestCase {

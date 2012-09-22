@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_CmsController extends Zend_Controller_Action {
+	use Trait_Translator;
+
 	/** @var Class_Bib */
 	private $_bib;
 
@@ -195,6 +197,12 @@ class Admin_CmsController extends Zend_Controller_Action {
 
 		$this->view->article = $article;
 		$this->view->combo_cat = $this->_getArticleCategoryInput($article->getCategorie());
+
+		$combo_lieu_options = ['0' => $this->_('Aucun')];
+		foreach(Class_Lieu::findAllBy(['order' => 'libelle']) as $lieu)
+			$combo_lieu_options[$lieu->getId()] = $lieu->getLibelle();
+
+		$this->view->combo_lieu_options = $combo_lieu_options;
 
 		if ($article->isTraduction()) {
 			$this->view->titre = 'Traduire un article';

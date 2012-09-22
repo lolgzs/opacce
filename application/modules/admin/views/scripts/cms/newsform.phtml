@@ -129,6 +129,15 @@ Class_ScriptLoader::getInstance()
 					</span>
 				</td>
 			</tr>
+
+			<tr>
+				<td><?php echo $this->traduire('Lieu'); ?></td>
+        <td><?php echo $this->formSelect('id_lieu', 
+																				 null, 
+																				 null, 
+																				 $this->combo_lieu_options); ?></td>
+			</tr>
+
 		</table>
 	</fieldset>
 
