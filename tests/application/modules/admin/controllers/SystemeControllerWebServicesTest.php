@@ -52,7 +52,8 @@ class SystemeControllerWebServicesActionTest extends Admin_AbstractControllerTes
 	public function webServiceFnacGetResumeShouldWork() {
 		$this->dispatch('/admin/systeme/webservices/id_service/Fnac/id_fonction/1');
 		$this->assertXPathContentContains('//pre[@class="resultat"]', 
-																			'Tandis que Lisbeth Salander');
+																			'Lisbeth et Mickael',
+																			$this->_response->getBody());
 	}
 
 

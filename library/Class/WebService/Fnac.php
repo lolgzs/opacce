@@ -43,7 +43,7 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 		$url_lire_la_suite = $this->getUrlLireLaSuite($data);
 
 		$suite = self::getHttpClient()->open_url($url_lire_la_suite);
-		return $this->extractResumeFromHTML($suite);
+		return strip_tags($this->extractResumeFromHTML($suite));
 	}
 
 
@@ -59,13 +59,30 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 
 
 	public function extractResumeFromHTML($html) {
-		$pos = striPos($html, "laSuite bigLaSuite");
+		if (!$pos = striPos($html, "laSuite bigLaSuite"))
+				return $this->extractLireLaSuiteDivFromHTML($html);
+
 		$pos = striPos($html, "img", $pos);
 		$pos = striPos($html, ">", $pos) + 1;
 
 		$posfin = strPos($html, "<p>", $pos);
 
 		$resume = substr($html, $pos, ($posfin-$pos));
+		return trim($resume);
+	}
+
+
+	public function extractLireLaSuiteDivFromHTML($html) {
+		$start_string = "lireLaSuite mrg_v_sm";
+		if (!$pos = striPos($html, $start_string))
+			return '';
+
+		$pos = $pos + strlen($start_string)+2;
+
+		$posfin = strPos($html, "</", $pos);
+
+		$resume = substr($html, $pos, ($posfin - $pos));
+
 		return trim($resume);
 	}
 }

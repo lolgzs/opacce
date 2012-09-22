@@ -19,12 +19,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class FnactTest extends PHPUnit_Framework_TestCase {
-	protected $_fnac;
 
-	public function setup() {
+abstract class FnacTestCase extends PHPUnit_Framework_TestCase {
+	protected $_fnac;
+	protected $_http_client;
+
+	public function setUp() {
+		$this->_fnac = new Class_WebService_Fnac();
+
 		$this->_http_client = Storm_Test_ObjectWrapper::mock();
 		Class_WebService_Fnac::setDefaultHttpClient($this->_http_client);
+	}
+
+
+	public function tearDown() {
+		Class_WebService_Fnac::setDefaultHttpClient(null);
+		parent::tearDown();
+	}
+}
+
+
+
+
+class FnactHarryPotterTest extends FnacTestCase {
+	public function setup() {
+		parent::setUp();
 
 		$this->_http_client
 			->whenCalled('open_url')
@@ -35,8 +54,6 @@ class FnactTest extends PHPUnit_Framework_TestCase {
 			->with('http://livre.fnac.com/a1715839/Harry-Potter-T6-Harry-Potter-et-le-Prince-de-Sang-Mele-J-K-Rowling')
 			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/fnac_harry_potter_suite.html'))
 			->beStrict();
-
-		$this->_fnac = new Class_WebService_Fnac();
 	}
 
 
@@ -46,11 +63,32 @@ class FnactTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('Harry, Ron et Hermione entrent',	$resume);
 		$this->assertContains('Le sens des responsabilités et du sacrifice, revêtent',	$resume);
 	}
+}
 
 
-	public function tearDown() {
-		Class_WebService_Fnac::setDefaultHttpClient(null);
-		parent::tearDown();
+
+
+class FnacMilleniumTest extends FnacTestCase {
+	public function setup() {
+		parent::setUp();
+
+		$this->_http_client
+			->whenCalled('open_url')
+			->with('http://www3.fnac.com/advanced/book.do?isbn=9782742765010')
+			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/fnac_millenium_front.html'))
+
+			->whenCalled('open_url')
+			->with('http://livre.fnac.com/a1891354/Millenium-T2-La-fille-qui-revait-d-un-bidon-d-essence-et-d-une-allumette-Stieg-Larsson')
+			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/fnac_millenium_suite.html'))
+			->beStrict();
+	}
+
+
+	/** @test */
+	public function getResumeShouldFetchItFromPotterSuite() {
+		$resume = $this->_fnac->getResume('978-2-7427-6501-0');
+		$this->assertEquals('Lisbeth et Mickael sont de retour dans un roman aussi trépidant que le premier. Nos deux anti-héros sont à nouveau plongés dans une aventure passionnante. Un livre époustoufflant, plein d\'humour et d\'effroi. Vivement le tome 3. Anais, libraire à la Fnac Clermont Q',	
+												$resume);
 	}
 }
 
