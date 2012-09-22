@@ -125,12 +125,15 @@ class Class_Codification
 								"8" => array($translate->_("Lien internet"),$translate->_("Liens internet")));
 		$l=getVar("PCDM4_LIB"); if(trim($l)) {$libs["P"][0]=$l; $libs["P"][1]=$l; }
 		$l=getVar("DEWEY_LIB"); if(trim($l)) {$libs["D"][0]=$l; $libs["D"][1]=$l; }
-		if($code=="tous")
-		{ 
+		if($code=="tous")	{ 
 			foreach($libs as $key => $valeur) $lib[$key]=$valeur[0];
 			return $lib;
 		}
-		else return $libs[$type][$pluriel];	
+
+		if (!isset($libs[$type]))
+			return '';
+		
+		return $libs[$type][$pluriel];	
 	}
 //------------------------------------------------------------------------------------------------------
 // Retourne un nom d'onglet pour les notices

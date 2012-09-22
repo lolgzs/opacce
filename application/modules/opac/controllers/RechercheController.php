@@ -321,27 +321,27 @@ class RechercheController extends Zend_Controller_Action
 			$id_notice = $notices[0]->getId();
 		}
 
-		if (!$oNotice = Class_Notice::find($id_notice)) {
+		if (!$notice = Class_Notice::find($id_notice)) {
 			$this->_redirect('opac/recherche/simple');
 			return;
 		}
 
-		$this->view->notice = $oNotice->getNoticeDetail($id_notice,$this->preferences);
+		$this->view->notice = $notice;
+		$this->view->preferences = $this->preferences;
 
 		if (array_isset('retour_liste', $_SESSION["recherche"]))
 			$this->view->url_retour = $_SESSION["recherche"]["retour_liste"];
 
-		$this->view->url_img = Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
-		$this->view->display_modifier_vignette_link = Class_Users::isCurrentUserCanAccesBackend() && $oNotice->isVignetteUpdatableToCacheServer();
+		$this->view->display_modifier_vignette_link = Class_Users::isCurrentUserCanAccesBackend() && $notice->isVignetteUpdatableToCacheServer();
 
 		// Pour les reseaux sociaux
-		$this->view->titreAdd(strip_tags($this->view->notice["titre_principal"]));
-		if ($this->view->notice["auteur_principal"] > "") 
-			$this->view->nomSite .= " / " . $this->view->notice["auteur_principal"];
+		$this->view->titreAdd(strip_tags($this->view->notice->getTitrePrincipal()));
+		if ($auteur = $this->view->notice->getAuteurPrincipal()) 
+			$this->view->nomSite .= " / " . $auteur;
 
 		// Picto du genre
-		if (($genres = $oNotice->getChampNotice("G", $this->view->notice["facettes"]))
-				&& ($genre = Class_CodifGenre::getLoader()->find($genres[0]['id']))
+		if (($genres = $notice->getChampNotice("G", $notice->getFacettes()))
+				&& ($genre = Class_CodifGenre::find($genres[0]['id']))
 				&& ('_vide.gif' != $genre->getPicto()))	{
 				$this->view->picto_genre = $genre->getPicto();
 		}

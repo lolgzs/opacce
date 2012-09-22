@@ -72,6 +72,103 @@ class RechercheControllerViewNoticeBabelthequeTest extends RechercheControllerNo
 
 
 
+class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+		$preferences = [
+			'barre_nav' => 'Notice',
+			'entete' =>"ABCDEFGIKLMNOPRSTtYZ8v",
+			'onglets' =>	[
+				'detail' =>					['titre' =>	'Details', 			'aff' =>	'1', 'ordre' =>	1, 'largeur' =>	10],
+				'avis' =>						['titre' =>	'avis', 				'aff' =>	'1', 'ordre' =>	2, 'largeur' =>	10],
+				'exemplaires' =>		['titre' =>	'exemplaires',	'aff' =>	'2', 'ordre' =>	3, 'largeur' =>	10],
+				'resume' =>					['titre' =>	'resume', 			'aff' =>	'2', 'ordre' =>	4, 'largeur' =>	10],
+				'tags' =>						['titre' =>	'tags', 				'aff' =>	'2', 'ordre' =>	5, 'largeur' =>	10],
+				'biographie' =>		 	['titre' =>	'biographie', 	'aff' =>	'2', 'ordre' =>	6, 'largeur' =>	10],
+				'similaires' =>			['titre' =>	'similaires', 	'aff' =>	'2', 'ordre' =>	7, 'largeur' =>	10],
+				'bibliographie' =>	['titre' =>	'bibliographie','aff' =>	'3', 'ordre' =>	7, 'largeur' =>	10],
+				'morceaux' =>				['titre' =>	'morceaux', 		'aff' =>	'3', 'ordre' =>	8, 'largeur' =>	10],
+				'bandeAnnonce' =>		['titre' =>	'bande annonce','aff' =>	'3', 'ordre' =>	8, 'largeur' =>	10],
+				'photos' =>					['titre' =>	'photos', 			'aff' =>	'3', 'ordre' =>	9, 'largeur' =>	10],
+				'videos' =>					['titre' =>	'videos', 			'aff' =>	'3', 'ordre' =>	10, 'largeur' =>	10],
+				'resnumeriques' =>	['titre' =>	'ressources n',	'aff' =>	'3', 'ordre' =>	11, 'largeur' =>	10],
+				'babeltheque' =>		['titre' =>	'babeltheque', 	'aff' =>	'3', 'ordre' =>	12, 'largeur' =>	10],
+				'frbr' =>						['titre' =>	'frbr', 				'aff' =>	'3', 'ordre' =>	13, 'largeur' =>	10]],
+			'boite' =>	null];
+
+		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' =>	['viewnotice1' => $preferences]]);
+		$this->notice
+			->setId(345)
+			->setAnnee('2002')
+			->setEditeur('Gallimard')
+			->setIsbn('1-234-56789-0')
+			->getLoader()->cacheInstance($this->notice);
+		$this->dispatch('recherche/viewnotice/id/345', true);
+	}
+
+
+	/** @test */
+	public function enteteShouldDisplayAnnee2002() {
+		$this->assertXPathContentContains('//table[@id="entete_notice"]//td', '2002');		
+	}
+
+
+	/** @test */
+	public function enteteShouldDisplayEditeurGallimard() {
+		$this->assertXPathContentContains('//table[@id="entete_notice"]//td', 'Gallimard');		
+	}
+
+
+	/** @test */
+	public function detailsBlocShouldHaveIdBloc_345_0() {
+		$this->assertXPathContentContains('//div[@id="bloc_345_0"][@class="notice_bloc_titre"]', 'Details');
+	}
+
+
+	/** @test */
+	public function javascriptShouldOpenFirstBlocDetails() {
+		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_0\",'1-234-56789-0','detail',0,'',0)");
+	}
+
+
+	/** @test */
+	public function javascriptShouldOpenSecondBlocAvis() {
+		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_1\",'1-234-56789-0','avis',0,'',1)");
+	}
+
+
+	/** @test */
+	public function noJavascriptShouldOpenThirdBlocExemplaires() {
+		$this->assertNotXPathContentContains('//script', "infos_bloc(\"bloc_345_2\"");
+	}
+
+
+	/** @test */
+	public function bibliographieOngletShouldHaveIdSet345_onglet_0() {
+		$this->assertXPathContentContains('//div[@id="set345_onglet_0"][@class="titre_onglet"]', 'bibliographie');
+	}
+
+
+	/** @test */
+	public function javascriptShouldOpenFirstOngletBibliographie() {
+		$this->assertXPathContentContains('//script', "infos_onglet('set345_onglet_0','1-234-56789-0','bibliographie',0,'',0)");
+	}
+
+
+	/** @test */
+	public function frbrOngletShouldHaveIdSet345_onglet_8() {
+		$this->assertXPathContentContains('//div[@id="set345_onglet_7"][@class="titre_onglet"]', 'frbr');
+	}
+
+	/** @test */
+	public function noJavascriptShouldOpenSecondOnglet() {
+		$this->assertNotXPathContentContains('//script', "infos_onglet('set345_onglet_1')");
+	}
+
+}
+
+
+
 
 abstract class RechercheControllerViewNoticeTestCase extends RechercheControllerNoticeTestCase {
 	/** @test */
@@ -132,11 +229,13 @@ class RechercheControllerViewNoticeClefAlphaWithDoublonsTest extends RechercheCo
 			->with(['clef_alpha' => 'TWILIGHT--SLADED-3-M6VIDEO-2010-4'])
 			->answers([Class_Notice::newInstanceWithId($this->notice->getId())
 								 ->setTitrePrincipal('Twilight 1')
-								 ->setClefAlpha('TWILIGHT--SLADED-3-M6VIDEO-2010-4'),
+								 ->setClefAlpha('TWILIGHT--SLADED-3-M6VIDEO-2010-4')
+								 ->setFacettes(''),
 								 
 								 Class_Notice::newInstanceWithId(1)
 								 ->setTitrePrincipal('Twilight 2')
 								 ->setClefAlpha('TWILIGHT--SLADED-3-M6VIDEO-2010-4')
+								 ->setFacettes('')
 								 ]);
 	}
 
