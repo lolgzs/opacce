@@ -18,22 +18,9 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 : FNAC
-//////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Fnac
-{
-	private $url;											// Url de base
-
-//------------------------------------------------------------------------------------------------------
-// Constructeur
-//------------------------------------------------------------------------------------------------------
-	function __construct()
-	{
-		$this->url='http://www3.fnac.com/advanced/book.do?isbn=';
-	}
-
+class Class_WebService_Fnac extends Class_WebService_Abstract {
+	private $url = 'http://www3.fnac.com/advanced/book.do?isbn=';
 
 	public function getResumes($notice) {
 		if (!$service = $notice->getIsbnOrEan())
@@ -51,26 +38,34 @@ class Class_WebService_Fnac
 	public function getResume($isbn) {
 		if(!$isbn) return false;
 		$isbn=str_replace("-","",$isbn);
-		
-		// Get http
-		$url=$this->url.$isbn;
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		$data = $response->getBody();
-		$matches = array();
 
+		$data = self::getHttpClient()->open_url($this->url.$isbn);
+		$url_lire_la_suite = $this->getUrlLireLaSuite($data);
+
+		$suite = self::getHttpClient()->open_url($url_lire_la_suite);
+		return $this->extractResumeFromHTML($suite);
+	}
+
+
+	public function getUrlLireLaSuite($data) {
 		$pos=striPos($data,"resume");
 		if(!$pos) 
 			return array();
 
-		$pos = strPos($data,">",$pos)+1;
-		$posfin = strPos($data,"</div",$pos);
-		$resume = substr($data,$pos,($posfin-$pos));
+		$pos = strPos($data,"a href=\"",$pos)+8;
+		$posfin = strPos($data,"\"",$pos);
+		return substr($data,$pos,($posfin-$pos));
+	}
 
-		$resume = str_replace('Avis de la Fnac&nbsp;:', '', strip_tags($resume));
-		$resume = str_replace('&raquo;&nbsp;Lire la suite...', '', $resume);
+
+	public function extractResumeFromHTML($html) {
+		$pos = striPos($html, "laSuite bigLaSuite");
+		$pos = striPos($html, "img", $pos);
+		$pos = striPos($html, ">", $pos) + 1;
+
+		$posfin = strPos($html, "<p>", $pos);
+
+		$resume = substr($html, $pos, ($posfin-$pos));
 		return trim($resume);
 	}
-	
 }

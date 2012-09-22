@@ -18,31 +18,14 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - LAST FM (docs sonores)
-//////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Lastfm {
-	protected static $_http_client;
 
+class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 	var $xml;																// Pointeur sur la classe xml de base
 	var $req;																// Racine requete http
 	var $id_afi;														// ID afi chez LastFm dans cfg
 	var $ix;																// Classe d'indexation
 	var $player;														// Template du player
-
-
-	public static function setDefaultHttpClient($http_client) {
-		self::$_http_client = $http_client;
-	}
-
-	
-	public static function getHttpClient() {
-		if (!isset(self::$_http_client))
-			self::$_http_client = new Class_WebService_SimpleWebClient();
-
-		return	self::$_http_client;
-	}
 	
 //------------------------------------------------------------------------------------------------------
 // Constructeur
