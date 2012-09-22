@@ -321,18 +321,18 @@ class RechercheController extends Zend_Controller_Action
 			$id_notice = $notices[0]->getId();
 		}
 
-
-		$oNotice = new Class_Notice();
-		$this->view->notice = $oNotice->getNoticeDetail($id_notice,$this->preferences);
-		if (!$this->view->notice) {
+		if (!$oNotice = Class_Notice::find($id_notice)) {
 			$this->_redirect('opac/recherche/simple');
 			return;
 		}
+
+		$this->view->notice = $oNotice->getNoticeDetail($id_notice,$this->preferences);
 
 		if (array_isset('retour_liste', $_SESSION["recherche"]))
 			$this->view->url_retour = $_SESSION["recherche"]["retour_liste"];
 
 		$this->view->url_img = Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
+		$this->view->display_modifier_vignette_link = Class_Users::isCurrentUserCanAccesBackend() && $oNotice->isVignetteUpdatableToCacheServer();
 
 		// Pour les reseaux sociaux
 		$this->view->titreAdd(strip_tags($this->view->notice["titre_principal"]));

@@ -159,18 +159,42 @@ class RechercheControllerViewNoticeClefAlphaWithDoublonsTest extends RechercheCo
 
 
 class RechercheControllerUploadVignetteTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->notice->setTypeDoc(5);
+	}
+
+
 	/** @test */
-	public function linkToUploadVignetteShouldNotBePresentForInvite() {
-		Class_Users::getIdentity()->beInvite();
+	public function linkToUploadVignetteShouldNotBePresentForAbonneSIGB() {
+		Class_Users::getIdentity()->beAbonneSIGB();
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
 		$this->assertNotXPathContentContains('//a', 'Modifier la vignette');
 	}
+
 
 	/** @test */
 	public function linkToUploadVignetteShouldBePresentForAdmin() {
 		Class_Users::getIdentity()->beAdminPortail();
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
 		$this->assertXPathContentContains('//a', 'Modifier la vignette');
+	}
+
+
+	/** @test */
+	public function linkToUploadVignetteShouldBePresentForModoBib() {
+		Class_Users::getIdentity()->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::MODO_BIB);
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertXPathContentContains('//a', 'Modifier la vignette');
+	}
+
+
+	/** @test */
+	public function linkToUploadVignetteShouldNotBePresentForTypeDocMoreThanFive() {
+		Class_Users::getIdentity()->beAdminPortail();
+		$this->notice->setTypeDoc(6);
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+		$this->assertNotXPathContentContains('//a', 'Modifier la vignette');
 	}
 }
 

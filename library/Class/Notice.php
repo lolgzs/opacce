@@ -277,7 +277,9 @@ class Class_Notice extends Storm_Model_Abstract {
 		return ($this->getTypeDoc() == Class_TypeDoc::ARTEVOD);
 	}
 
-
+	public function isVignetteUpdatableToCacheServer() {
+		return ($this->getTypeDoc() <= 5);
+	}
 
 // ----------------------------------------------------------------
 // Constructeur 
