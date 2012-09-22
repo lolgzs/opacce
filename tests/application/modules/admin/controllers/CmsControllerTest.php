@@ -226,14 +226,14 @@ class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControl
 
 
 	/** @test */
-	public function selectIdLieuShouldContainsAucun() {
-		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Aucun"][@value="0"]');		
+	public function selectIdLieuShouldContainsAucunAndBeSelected() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@selected="selected"][@label="Aucun"][@value="0"]');		
 	}
 
 
 	/** @test */
 	public function selectIdLieuShouldContainsBonlieu() {
-		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Bonlieu"][@value="3"]');		
+		$this->assertXPath('//select[@name="id_lieu"]//option[not(@selected)][@label="Bonlieu"][@value="3"]');		
 	}
 
 
@@ -453,7 +453,8 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 									'events_debut' => '02/03/2011',
 									'events_fin' => '05/03/2011',
 									'contenu' => 'Ici: <img src="../../images/bonlieu.jpg" />',
-									'description' => 'Affiche: <img src="http://localhost' . BASE_URL . '/images/concert.jpg" />');
+									'description' => 'Affiche: <img src="http://localhost' . BASE_URL . '/images/concert.jpg" />',
+									'id_lieu' => 3);
 
 		$this
 			->getRequest()
@@ -542,6 +543,17 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 	/** @test */
 	function categorieShouldBeEvenements() {
 		$this->assertEquals($this->cat_evenements, $this->concert->getCategorie());
+	}
+
+	
+	/** @test */
+	public function lieuShouldBeBonlieu() {
+		$this->assertEquals($this->lieu_bonlieu, $this->concert->getLieu());
+	}
+
+	/** @test */
+	public function comboLieuShouldHaveOptionBonlieuSelected() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@selected="selected"][@label="Bonlieu"][@value="3"]');		
 	}
 }
 

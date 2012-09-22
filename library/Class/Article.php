@@ -387,33 +387,36 @@ class Class_Article extends Storm_Model_Abstract {
 	protected $_table_name = 'cms_article';
 	protected $_table_primary = 'ID_ARTICLE';
 
-	protected $_has_many = array('traductions' => array('model' => 'Class_Article',
-																											'role' => 'article_original',
-																											'dependents' => 'delete'),
+	protected $_has_many = ['traductions' => ['model' => 'Class_Article',
+																						'role' => 'article_original',
+																						'dependents' => 'delete'],
 
-															 'avis_users' => array('model' => 'Class_Avis',
-																										 'role' => 'article',
-																										 'dependents' => 'delete',
-																										 'order' => 'date_avis desc'));
+													'avis_users' => ['model' => 'Class_Avis',
+																					 'role' => 'article',
+																					 'dependents' => 'delete',
+																					 'order' => 'date_avis desc']];
 
-	protected $_belongs_to = array('categorie' => array('model' => 'Class_ArticleCategorie',
-																											 'referenced_in' => 'id_cat'),
+	protected $_belongs_to = ['categorie' => ['model' => 'Class_ArticleCategorie',
+																						'referenced_in' => 'id_cat'],
 
-																 'article_original' => array('model' => 'Class_Article',
-																														 'referenced_in' => 'parent_id'),
-																 'bib' => array('through' => 'categorie')
-													);
+														'article_original' => ['model' => 'Class_Article',
+																									 'referenced_in' => 'parent_id'],
+
+														'bib' => ['through' => 'categorie'],
+
+														'lieu' => ['model' => 'Class_Lieu',
+																			 'referenced_in' => 'id_lieu'] ];
 
 
-	protected $_overrided_attributes = array('id',
-																					  'parent_id',
-																					  'article_original',
-																					  'langue',
-																					  'titre',
-																					  'description',
-																					  'contenu');
+	protected $_overrided_attributes = ['id',
+																			'parent_id',
+																			'article_original',
+																			'langue',
+																			'titre',
+																			'description',
+																			'contenu'];
 
-	protected $_default_attribute_values = array(
+	protected $_default_attribute_values = [
 																					'titre' => '',
 																					'description' => '',
 																					'contenu' => '',
@@ -428,7 +431,8 @@ class Class_Article extends Storm_Model_Abstract {
 																					'date_maj' => '',
 																					'date_creation' => '',
 																					'status' => self::STATUS_DRAFT,
-																				);
+																					'id_lieu' => 0
+																				];
 
 	/**
 	 * @return ArticleLoader
