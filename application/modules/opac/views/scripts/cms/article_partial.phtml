@@ -17,7 +17,7 @@ echo $this->openBoite($titre);
 echo $this->tagEditArticle($this->article);
 ?>
 
-<div class="auto_resize">
+<div class="auto_resize article">
 	<?php
 		
 	echo $this->readSpeaker(
@@ -42,6 +42,7 @@ echo $this->tagEditArticle($this->article);
 	<!-- RSPEAK_STOP -->
 
 	<?php if ($this->show_content == 'FullContent') { ?>
+  <?php echo $this->renderLieu($this->article->getLieu(), array('size' => '300x200')) ?>
 	<div id="reseaux-sociaux-<?php echo $this->article->getId();?>">
 	<?php echo $this->tagImg(URL_IMG . 'patience.gif');?>
 </div>

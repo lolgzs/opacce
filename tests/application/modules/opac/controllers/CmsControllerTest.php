@@ -359,44 +359,45 @@ abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractController
 			->setValeur(0);
 
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
-			->whenCalled('find')
-			->with(224)
-			->answers(
-					Class_Article::getLoader()
-					->newInstanceWithId(224)
-					->setTitre('La fête de la frite')
-					->setContenu('<div>Une fête appétissante</div>')
-					->setEventsDebut('2011-09-03')
-					->setEventsFin('2011-10-05')
-					->setTraductions(array(Class_Article::getLoader()
-																 ->newInstanceWithId(2241)
-																 ->setLangue('en')
-																 ->setParentId(224)
-																 ->setTitre('Feast of fried')
-																 ->setContenu('<div>an appetizing feast</div>')))
-					->setAvis(1)
-					->setAvisUsers(array($avis_mimi = Class_Avis::getLoader()
-															 ->newInstanceWithId(34)
-															 ->setAuteur(Class_Users::getLoader()
-																					 ->newInstanceWithId(98)
-																					 ->setPseudo('Mimi'))
-															 ->setDateAvis('2012-02-05')
-															 ->setNote(4)
-															 ->setEntete('Hmmm')
-															 ->setAvis('ça a l\'air bon')
-															 ->beWrittenByAbonne(),
+		Class_Article::newInstanceWithId(224)
+			->setTitre('La fête de la frite')
+			->setContenu('<div>Une fête appétissante</div>')
+			->setEventsDebut('2011-09-03')
+			->setEventsFin('2011-10-05')
+			->setTraductions(array(Class_Article::getLoader()
+														 ->newInstanceWithId(2241)
+														 ->setLangue('en')
+														 ->setParentId(224)
+														 ->setTitre('Feast of fried')
+														 ->setContenu('<div>an appetizing feast</div>')))
+			->setAvis(1)
+			->setLieu(Class_Lieu::newInstanceWithId(3)
+								->setLibelle('Bonlieu')
+								->setAdresse('1, rue Jean Jaures')
+								->setCodePostal('74000')
+								->setVille('Annecy')
+								->setPays('France'))
+			->setAvisUsers(array($avis_mimi = Class_Avis::getLoader()
+													 ->newInstanceWithId(34)
+													 ->setAuteur(Class_Users::getLoader()
+																			 ->newInstanceWithId(98)
+																			 ->setPseudo('Mimi'))
+													 ->setDateAvis('2012-02-05')
+													 ->setNote(4)
+													 ->setEntete('Hmmm')
+													 ->setAvis('ça a l\'air bon')
+													 ->beWrittenByAbonne(),
 
-															 $avis_florence = Class_Avis::getLoader()
-															 ->newInstanceWithId(35)
-															 ->setAuteur(Class_Users::getLoader()
-																					 ->newInstanceWithId(123)
-																					 ->setPseudo('Florence'))
-															 ->setDateAvis('2012-12-05')
-															 ->setNote(2)
-															 ->setEntete('Argg')
-															 ->setAvis('ça ne me tente pas')
-															 ->beWrittenByBibliothecaire())));
+													 $avis_florence = Class_Avis::getLoader()
+													 ->newInstanceWithId(35)
+													 ->setAuteur(Class_Users::getLoader()
+																			 ->newInstanceWithId(123)
+																			 ->setPseudo('Florence'))
+													 ->setDateAvis('2012-12-05')
+													 ->setNote(2)
+													 ->setEntete('Argg')
+													 ->setAvis('ça ne me tente pas')
+													 ->beWrittenByBibliothecaire()));
 
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CmsRank')
@@ -502,6 +503,18 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 	/** @test */
 	public function avisArgShouldNotHaveLinkForDeletion() {
 		$this->assertNotXPath('//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
+	}
+
+
+	/** @test */
+	function divShouldContainsAdresseBonlieu() {
+		$this->assertXPathContentContains('//div[@class="lieu"]', 'Bonlieu');
+	}
+
+
+	/** @test */
+	function divShouldContainsGoogleMap() {
+		$this->assertXPath('//div[@class="lieu"]//img[contains(@src,"http://maps.googleapis.com/maps")]');
 	}
 }
 

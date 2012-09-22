@@ -80,6 +80,23 @@ div#header .boiteBanniereGauche .recherche_avancee {
 }
 
 
+.article .lieu {
+		height: 200px;
+		width: 400px;
+		margin: 10px auto;
+		font-size: 1.2em;
+}
+
+.article .lieu p {
+		font-size: 0.8em;
+}
+
+.article .lieu img {
+		float: left;
+		margin-right: 10px;
+}
+
+
 /* AVIS */
 
 .avis_show_avis {
@@ -1093,3 +1110,5 @@ body.abonne_multimedia-hold-view .actions a {
 		cursor: pointer;
 		z-index: 101;
 }
+
+
