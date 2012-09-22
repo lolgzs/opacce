@@ -9,6 +9,10 @@ echo $this->renderForm($this->form);
 ?>
 
 <img class="patience" style="display:none; margin: 0 auto" src="<?php echo URL_ADMIN_IMG ?>patience.gif" border="0"  alt="'.$this->_('Chargement en cours').'" />
+<div style="text-align: center; margin-top: 10px">
+  <?php echo $this->_('Aperçu:') ?>
+	<img class="preview" width="150px" style="display:block; margin: 10px auto" src="<?php echo $this->url_vignette ?>"/>
+</div>
 </div>
 
 
@@ -16,4 +20,13 @@ echo $this->renderForm($this->form);
 $('input[type=submit]').click(function() {
 		$('img.patience').css('display', 'block');
 	});
+
+var url_input = $('input[name=url_vignette]');
+
+var update_preview = function() {
+	$('img.preview').attr('src', url_input.attr('value'))
+};
+
+url_input.keyup(update_preview);
+url_input.mouseup(update_preview);
 </script>

@@ -146,7 +146,7 @@ class UploadControllerMultipleProcessPostAction extends AbstractControllerTestCa
 class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
+		Class_Notice::newInstanceWithId(12345, ['url_vignette' => 'http://harrypotter.com/poster.jpg']);
 		$this->dispatch('/admin/upload/vignette-notice/id/12345', true);
 	}
 
@@ -160,6 +160,12 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 	/** @test */
 	public function formShouldHaveSubmitButtonEnvoyer() {
 		$this->assertXPath('//form//input[@type="submit"][@value="Envoyer"]');
+	}
+
+
+	/** @test */
+	public function previewImgSrcShouldBePosterDotJpeg() {
+		$this->assertXPath('//img[@class="preview"][@src="http://harrypotter.com/poster.jpg"]');
 	}
 }
 

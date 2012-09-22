@@ -86,6 +86,7 @@ $(document).ready(function () {
 		}
 
 		$this->view->form = $form;
+		$this->view->url_vignette = Class_Notice::find($this->_getParam('id'))->getUrlVignette();
 	}
 }
 ?>
