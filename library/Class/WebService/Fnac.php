@@ -66,6 +66,8 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 		$pos = striPos($html, ">", $pos) + 1;
 
 		$posfin = strPos($html, "<p>", $pos);
+		$posfin2 = strPos($html, "</div>", $pos);
+		$posfin = $posfin < $posfin2 ? $posfin : $posfin2;
 
 		$resume = substr($html, $pos, ($posfin-$pos));
 		return trim($resume);
