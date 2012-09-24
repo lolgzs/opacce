@@ -177,6 +177,7 @@ class Admin_CmsController extends Zend_Controller_Action {
 		$this->view->article		= $article;
 		$this->view->titre			= 'Ajouter un article';
 		$this->view->combo_cat	= $this->_getArticleCategoryInput($category);
+		$this->view->combo_lieu_options = $this->comboLieuOptions();
 	}
 
 
@@ -198,11 +199,7 @@ class Admin_CmsController extends Zend_Controller_Action {
 		$this->view->article = $article;
 		$this->view->combo_cat = $this->_getArticleCategoryInput($article->getCategorie());
 
-		$combo_lieu_options = ['0' => $this->_('Aucun')];
-		foreach(Class_Lieu::findAllBy(['order' => 'libelle']) as $lieu)
-			$combo_lieu_options[$lieu->getId()] = $lieu->getLibelle();
-
-		$this->view->combo_lieu_options = $combo_lieu_options;
+		$this->view->combo_lieu_options = $this->comboLieuOptions();
 
 		if ($article->isTraduction()) {
 			$this->view->titre = 'Traduire un article';
@@ -211,6 +208,14 @@ class Admin_CmsController extends Zend_Controller_Action {
 			$this->view->titre = 'Modifier un article';
 			$this->render('newsform');
 		}
+	}
+
+
+	protected function comboLieuOptions() {
+		$combo_lieu_options = ['0' => $this->_('Aucun')];
+		foreach(Class_Lieu::findAllBy(['order' => 'libelle']) as $lieu)
+			$combo_lieu_options[$lieu->getId()] = $lieu->getLibelle();
+		return $combo_lieu_options;
 	}
 
 

@@ -721,7 +721,13 @@ class CmsControllerNewsAddActionTest extends CmsControllerTestCase {
 																			$this->_response->getBody());
 	}
 
+
+	/** @test */
+	public function selectIdLieuShouldContainsBonlieu() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[not(@selected)][@label="Bonlieu"][@value="3"]');		
+	}
 }
+
 
 
 
