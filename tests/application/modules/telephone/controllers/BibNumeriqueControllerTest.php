@@ -73,14 +73,13 @@ class BibNumeriqueControllerTelephoneViewCategorieEPUBTest extends BibNumeriqueC
 class BibNumeriqueControllerTelephoneViewAlbumMonumentsTest extends BibNumeriqueControllerTelephoneTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/bib-numerique/view-album/id/234');
+		$this->dispatch('/bib-numerique/view-album/id/234', true);
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToDownloadEPub() {
-		$this->assertXPathContentContains('//a[contains(@href, "bib-numerique/download-resource/id/123")][@data-ajax="false"]', 
-																			'versailles.epub');
+		$this->assertXPath('//a[contains(@href, "media/versailles.epub")]');
 	}
 }
 
@@ -112,14 +111,21 @@ class BibNumeriqueControllerTelephoneViewAlbumMultiMedia extends TelephoneAbstra
 
 	/** @test */
 	public function pageShouldContainsLinkToXSPFPlayList() {
-		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-xspf-playlist/id/999.xspf"][@data-ajax="false"]', $this->_response->getBody());
+		$this->assertXPath('//a[contains(@href, "bib-numerique/album-xspf-playlist/id/999.xspf")]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToRSSPodcast() {
-		$this->assertXPath('//a[@href="http://localhost'.BASE_URL.'/bib-numerique/album-rss-feed/id/999.xml"][@data-ajax="false"]');
+		$this->assertXPath('//a[contains(@href, "bib-numerique/Album-rss-feed/id/999.xml")]');
 	}
+
+	
+	/** @test */
+	public function pageShouldContainLinkIntroductionMp3() {
+	  $this->assertXPath('//a[contains(@href, "media/introduction.mp3")]');
+	}
+
 }
 
 
