@@ -51,6 +51,11 @@ abstract class ZendAfi_View_Helper_Notice_Abstract extends Zend_View_Helper_Html
 
 			$onglets[$nom] = $config;
 		}
+
+		uasort($onglets, 
+					 function($cfg_a, $cfg_b) {
+						 return (int)$cfg_a['ordre'] - (int)$cfg_b['ordre'];
+					 });
 		return $onglets;
 	}
 }

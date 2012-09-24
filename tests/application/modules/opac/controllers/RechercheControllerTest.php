@@ -88,12 +88,12 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 				'similaires' =>			['titre' =>	'similaires', 	'aff' =>	'2', 'ordre' =>	7, 'largeur' =>	10],
 				'bibliographie' =>	['titre' =>	'bibliographie','aff' =>	'3', 'ordre' =>	7, 'largeur' =>	10],
 				'morceaux' =>				['titre' =>	'morceaux', 		'aff' =>	'3', 'ordre' =>	8, 'largeur' =>	10],
-				'bandeAnnonce' =>		['titre' =>	'bande annonce','aff' =>	'3', 'ordre' =>	8, 'largeur' =>	10],
-				'photos' =>					['titre' =>	'photos', 			'aff' =>	'3', 'ordre' =>	9, 'largeur' =>	10],
-				'videos' =>					['titre' =>	'videos', 			'aff' =>	'3', 'ordre' =>	10, 'largeur' =>	10],
-				'resnumeriques' =>	['titre' =>	'ressources n',	'aff' =>	'3', 'ordre' =>	11, 'largeur' =>	10],
-				'babeltheque' =>		['titre' =>	'babeltheque', 	'aff' =>	'3', 'ordre' =>	12, 'largeur' =>	10],
-				'frbr' =>						['titre' =>	'frbr', 				'aff' =>	'3', 'ordre' =>	13, 'largeur' =>	10]],
+				'bandeAnnonce' =>		['titre' =>	'bande annonce','aff' =>	'3', 'ordre' =>	9, 'largeur' =>	10],
+				'photos' =>					['titre' =>	'photos', 			'aff' =>	'3', 'ordre' =>	14, 'largeur' =>	10],
+				'videos' =>					['titre' =>	'videos', 			'aff' =>	'3', 'ordre' =>	11, 'largeur' =>	10],
+				'resnumeriques' =>	['titre' =>	'ressources n',	'aff' =>	'3', 'ordre' =>	12, 'largeur' =>	10],
+				'babeltheque' =>		['titre' =>	'babeltheque', 	'aff' =>	'3', 'ordre' =>	13, 'largeur' =>	10],
+				'frbr' =>						['titre' =>	'frbr', 				'aff' =>	'3', 'ordre' =>	10, 'largeur' =>	10]],
 			'boite' =>	null];
 
 		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' =>	['viewnotice1' => $preferences]]);
@@ -127,7 +127,7 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 
 	/** @test */
 	public function javascriptShouldOpenFirstBlocDetails() {
-		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_0\",'1-234-56789-0','detail',0,'',0)");
+		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_0\",'1-234-56789-0','detail',0,'',0)", $this->_response->getBody());
 	}
 
 
@@ -156,8 +156,8 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 
 
 	/** @test */
-	public function frbrOngletShouldHaveIdSet345_onglet_8() {
-		$this->assertXPathContentContains('//div[@id="set345_onglet_7"][@class="titre_onglet"]', 'frbr');
+	public function frbrOngletShouldHaveIdSet345_onglet_3() {
+		$this->assertXPathContentContains('//div[@id="set345_onglet_3"][@class="titre_onglet"]', 'frbr', $this->_response->getBody());
 	}
 
 	/** @test */
