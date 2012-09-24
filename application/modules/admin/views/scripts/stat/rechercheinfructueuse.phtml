@@ -20,8 +20,13 @@ foreach($this->liste as $ligne)
 	addSelection("RESET","","");
 	$crit="";
 	$date=substr($ligne["date_recherche"],8,2).substr($ligne["date_recherche"],4,4).substr($ligne["date_recherche"],0,4);
-	if (!$crit = ZendAfi_Filters_Serialize::unserialize($ligne["criteres"]))
-		$crit = array();
+	try {
+		if (!$crit = ZendAfi_Filters_Serialize::unserialize($ligne["criteres"]))
+			$crit = [];
+	} catch (Exception $e) {
+		$crit = [];
+	}
+
 	$crit = array_merge(array('type_doc' => 0, 'selection_bib' => 0),
 											$crit);
 	switch($ligne["type_recherche"])
