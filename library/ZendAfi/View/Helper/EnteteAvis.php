@@ -36,7 +36,7 @@ class ZendAfi_View_Helper_EnteteAvis extends ZendAfi_View_Helper_BaseHelper {
     $urlImgNote = $this->view->noteImg($avis->getNote());
 
 
-    return '<a href="' . $url_avis . '"><img src ="' . $urlVignette. '"><span>' . $urlImgNote . '<h3>' . $entete . '</h3><p>' . $auteur . ' - ' . $date_avis . '</p></span>';
+    return '<a href="' . $url_avis . '"><img src ="' . $urlVignette. '">' . $urlImgNote . '<h3>' . $entete . '</h3><div>' . $auteur . ' - ' . $date_avis . '</div></a>';
   }
 }
 ?>
