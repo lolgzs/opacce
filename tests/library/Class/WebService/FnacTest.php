@@ -92,4 +92,26 @@ class FnacMilleniumTest extends FnacTestCase {
 	}
 }
 
+
+
+
+class FnactNoLinkFoundTest extends FnacTestCase {
+	public function setup() {
+		parent::setUp();
+
+		$this->_http_client
+			->whenCalled('open_url')
+			->with('http://www3.fnac.com/advanced/book.do?isbn=2070572676')
+			->answers('bla bla bla')
+			->beStrict();
+	}
+
+
+	/** @test */
+	public function getResumeShourdReturnEmptyString() {
+		$resume = $this->_fnac->getResume('2-07-057267-6');
+		$this->assertEmpty($resume);
+	}
+}
+
 ?>

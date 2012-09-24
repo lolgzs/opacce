@@ -42,6 +42,9 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 		$data = self::getHttpClient()->open_url($this->url.$isbn);
 		$url_lire_la_suite = $this->getUrlLireLaSuite($data);
 
+		if (!($url_lire_la_suite && (new ZendAfi_Validate_Url())->isValid($url_lire_la_suite)))
+			return '';
+
 		$suite = self::getHttpClient()->open_url($url_lire_la_suite);
 		return strip_tags($this->extractResumeFromHTML($suite));
 	}
@@ -50,7 +53,7 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 	public function getUrlLireLaSuite($data) {
 		$pos=striPos($data,"resume");
 		if(!$pos) 
-			return array();
+			return '';
 
 		$pos = strPos($data,"a href=\"",$pos)+8;
 		$posfin = strPos($data,"\"",$pos);
