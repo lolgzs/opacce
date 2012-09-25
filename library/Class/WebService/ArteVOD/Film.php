@@ -65,7 +65,7 @@ class Class_WebService_ArteVOD_Film {
 
 
 	public function getTitle() {
-		return $this->_title;
+		return trim($this->_title);
 	}
 
 
@@ -148,9 +148,8 @@ class Class_WebService_ArteVOD_Film {
 			->setCategorie($category)
 			->setNotes($this->getSerializedNotes())
 			->beArteVOD();
-		$album->save();
-
-		Class_WebService_ArteVOD_Vignette::getInstance()->updateAlbum($album);
+		if ($album->save())
+			Class_WebService_ArteVOD_Vignette::getInstance()->updateAlbum($album);
 	}
 
 
