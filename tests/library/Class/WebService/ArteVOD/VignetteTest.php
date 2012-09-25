@@ -19,9 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Class_WebService_ArteVOD_VignetteBlancheNeigeTest extends Storm_Test_ModelTestCase {
-	protected $_album;
-	protected $_file_writer;
+abstract class Class_WebService_ArteVOD_VignetteTestCase extends Storm_Test_ModelTestCase {
+	protected $_vignette, $_http_client;
 
 	public function setUp() {
 		parent::setup();
@@ -30,35 +29,85 @@ class Class_WebService_ArteVOD_VignetteBlancheNeigeTest extends Storm_Test_Model
 			->whenCalled('save')
 			->answers(true);
 
-
-		$this->_album = Class_Album::newInstanceWithId(45)
-			->setTitre('Blanche Neige')
-			->beArteVOD()
-			->setNotes([['field' => '856', 
-									 'data' => ['x' => 'poster', 
-															'a' => 'http://mediatheque.com/blanche_neige.jpg']]]);
+		Class_WebService_ArteVOD_Vignette::resetInstance();
+		$this->_vignette = Class_WebService_ArteVOD_Vignette::getInstance();
 
 		$this->_http_client = Storm_Test_ObjectWrapper::mock();
 		Class_WebService_ArteVOD_Vignette::setDefaultHttpClient($this->_http_client);
-		$this->_http_client
-			->whenCalled('open_url')
-			->with('http://mediatheque.com/blanche_neige.jpg')
-			->answers('an image');
-
-		$vignette = new Class_WebService_ArteVOD_Vignette();
-		$vignette->setFileWriter($this->_file_writer = Storm_Test_ObjectWrapper::mock()
-														 ->whenCalled('putContents')
-														 ->with(PATH_TEMP.'blanche_neige.jpg', 'an image')
-														 ->answers(8)
-														 ->beStrict());
-		$vignette->updateAlbum($this->_album);
-
 	}
 
 
 	public function tearDown() {
 		Class_WebService_ArteVOD_Vignette::setDefaultHttpClient(null);
 		parent::tearDown();
+	}
+}
+
+
+
+
+class Class_WebService_ArteVOD_VignetteInitializationTest extends Class_WebService_ArteVOD_VignetteTestCase {
+	/** @test */
+	public function defaultFileWriterShouldBeAnInstanceOfRealFileWriter() {
+		$this->assertInstanceOf('Class_FileWriter', $this->_vignette->getFileWriter());
+	}
+}
+
+
+
+
+abstract class Class_WebService_ArteVOD_VignetteBlancheNeigeTestCase extends Class_WebService_ArteVOD_VignetteTestCase {
+	protected $_album;
+	protected $_file_writer;
+
+
+	public function setUp() {
+		parent::setup();
+
+		$this->_album = Storm_Test_ObjectWrapper::on(
+			Class_Album::newInstanceWithId(45)
+			->setTitre('Blanche Neige')
+			->beArteVOD()
+			->setNotes([['field' => '856', 
+									 'data' => ['x' => 'poster', 
+															'a' => 'http://mediatheque.com/blanche_neige.jpg']]]));
+
+
+
+		$this->_http_client
+			->whenCalled('open_url')
+			->with('http://mediatheque.com/blanche_neige.jpg')
+			->answers('an image');
+
+		$this->_vignette->setFileWriter($this->_file_writer = Storm_Test_ObjectWrapper::mock());
+		$this->_file_writer
+			->whenCalled('putContents')
+			->answers('');
+	}
+}
+
+
+
+
+class Class_WebService_ArteVOD_VignetteBlancheNeigeTest extends Class_WebService_ArteVOD_VignetteBlancheNeigeTestCase {
+	public function setUp() {
+		parent::setup();
+
+		$this->_album
+			->whenCalled('receiveFile')
+			->willDo(function() {
+					$this->_album->setFichier('blanche_neige.jpg');
+					return true;
+				});
+
+
+		$this->_file_writer
+			->whenCalled('putContents')
+			->with(PATH_TEMP.'blanche_neige.jpg', 'an image')
+			->answers(8)
+			->beStrict();
+
+		$this->_vignette->updateAlbum($this->_album);
 	}
 
 
@@ -108,6 +157,45 @@ class Class_WebService_ArteVOD_VignetteBlancheNeigeTest extends Storm_Test_Model
 	public function albumUploadMoverShouldBeAnInstanceOfClass_UploadMover_LocalFile() {
 		$this->assertInstanceOf('Class_UploadMover_LocalFile', 
 														$this->_album->getUploadHandler('fichier')->getUploadMover());
+	}
+}
+
+
+
+
+class Class_WebService_ArteVOD_VignetteBlancheNeigeErrorsTest extends Class_WebService_ArteVOD_VignetteBlancheNeigeTestCase {
+	/** @test */
+	public function withoutValidUrlShouldNotDownloadImage() {
+		$this->_album
+			->setNotes([['field' => '856', 
+									 'data' => ['x' => 'poster', 
+															'a' => 'zork']]]);
+		$this->_vignette->updateAlbum($this->_album);
+		$this->assertFalse($this->_http_client->methodHasBeenCalled('open_url'));
+	}
+
+
+	/** @test */
+	public function withoutDataShouldNotSaveImage() {
+		$this->_http_client
+			->whenCalled('open_url')
+			->with($this->_album->getPoster())
+			->answers('');
+
+		$this->_vignette->updateAlbum($this->_album);
+		$this->assertFalse($this->_file_writer->methodHasBeenCalled('putContents'));
+	}
+
+
+
+	/** @test */
+	public function withFailedWriteFileShouldNotMoveIt() {
+		$this->_file_writer
+			->whenCalled('putContents')
+			->answers(false);
+
+		$this->_vignette->updateAlbum($this->_album);
+		$this->assertFalse($this->_album->methodHasBeenCalled('receiveFile'));
 	}
 }
 

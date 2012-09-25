@@ -20,23 +20,54 @@
  */
 
 class Class_WebService_ArteVOD_Vignette  extends Class_WebService_Abstract {
+	protected static $_instance;
 	protected $_file_writer;
+	protected $_updload_mover;
+	protected $_url_validator;
+
+
+	public static function getInstance() {
+		if (!isset(static::$_instance))
+			static::$_instance = new static();
+		return static::$_instance;
+	}
+
+
+	public static function resetInstance() {
+		static::$_instance = null;
+	}
+
+
+	public function __construct() {
+		$this->_upload_mover = new Class_UploadMover_LocalFile();
+		$this->_url_validator = new ZendAfi_Validate_Url();
+	}
+
 
 	public function updateAlbum($album) {
-		$parts = explode('/', $album->getPoster());
+		$url_poster = $album->getPoster();
+		if (!($url_poster && $this->_url_validator->isValid($url_poster)))
+			return $this;
+
+		if (!$image = static::getHttpClient()->open_url($url_poster))
+			return $this;
+
+		$parts = explode('/', $url_poster);
 		$filename = array_pop($parts);
 		$temp_name = PATH_TEMP.$filename;
-
-		$image = static::getHttpClient()->open_url($album->getPoster());
-		$this->getFileWriter()->putContents($temp_name, $image);
+		if (false === $this->getFileWriter()->putContents($temp_name, $image))
+			return $this;
 
 		$_FILES['fichier'] = ['name' => $filename,
 													'tmp_name' => $temp_name,
 													'size' => strlen($image)];
 
-		$album->setUploadMover('fichier', new Class_UploadMover_LocalFile());
+		$album->setUploadMover('fichier', $this->_upload_mover);
 
+		$album->receiveFile();
 		$album->save();
+
+		return $this;
 	}
 
 
@@ -46,6 +77,8 @@ class Class_WebService_ArteVOD_Vignette  extends Class_WebService_Abstract {
 
 
 	public function getFileWriter() {
+		if (!isset($this->_file_writer))
+			$this->_file_writer = new Class_FileWriter();
 		return $this->_file_writer;
 	}
 }
