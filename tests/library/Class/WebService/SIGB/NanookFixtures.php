@@ -217,4 +217,13 @@ class NanookFixtures {
 			</body>
 		</html>';
 	}
+
+
+	/** @return string */
+	public static function xmlAuthenticatePatronChristelDelpeyroux() {
+		return '<?xml version="1.0" encoding="utf-8"?>
+<AuthenticatePatron>
+  <patronId>1</patronId>
+</AuthenticatePatron>';
+	}
 }

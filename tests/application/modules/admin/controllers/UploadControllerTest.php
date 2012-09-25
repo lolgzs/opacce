@@ -165,7 +165,7 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 
 	/** @test */
 	public function previewImgSrcShouldBePosterDotJpeg() {
-		$this->assertXPath('//img[@class="preview"][@src="http://harrypotter.com/poster.jpg"]');
+		$this->assertXPath('//img[@class="preview"][@src="http://harrypotter.com/poster.jpg"]', $this->_response->getBody());
 	}
 }
 

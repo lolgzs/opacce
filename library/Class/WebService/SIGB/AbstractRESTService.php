@@ -147,6 +147,22 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 
 
 	/**
+	 * Authentifie un utilisateur via SIGB et si réussi affecte l'id_sigb reçu
+	 * @param $user Class_Users
+	 */
+	public function ilsdiAuthenticatePatron($user) {
+		$params = ['service' => 'AuthenticatePatron',
+			         'username' => $user->getIdabon(),
+			         'password' => $user->getPassword()];
+
+		$xml = $this->httpGet($params);
+
+		if ('' != $patronId = $this->_getTagData($xml, 'patronId'))
+			$user->setIdSigb($patronId);
+	}
+		
+
+	/**
 	 * @param array $params
 	 * @return array
 	 */
@@ -169,8 +185,8 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 	public function ilsdiRenewLoan($params, $error_tag='error') {
 		return $this->ilsdiAction('RenewLoan', $params, $error_tag, 'Prolongation impossible');
 	}
-
-
+	
+		
 	public function ilsdiAction($name, $params, $error_tag, $error_message) {
 		$params = array_merge(array('service' => $name), $params);
 

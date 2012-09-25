@@ -29,12 +29,13 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 		return parent::setServerRoot($server_root);
 	}
 
-
+	
 	/**
 	 * @param Class_Users $user
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
 	public function getEmprunteur($user) {
+		$this->_authenticate($user);
 		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb()),
 																		 Class_WebService_SIGB_Nanook_PatronInfoReader::newInstance());
 	}
@@ -110,5 +111,15 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 		return $this->getServerRoot() . implode('/', $parts);
 	}
 
+
+	/**
+	 * @param $user Class_Users
+	 */
+	protected function _authenticate($user) {
+		if (null != $user->getIdSigb())
+			return;
+
+		$this->ilsdiAuthenticatePatron($user);
+	}
 }
 ?>
