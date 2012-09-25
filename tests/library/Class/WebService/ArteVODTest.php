@@ -40,6 +40,10 @@ abstract class ArteVODHarverstingTestCase extends PHPUnit_Framework_TestCase {
 			->whenCalled('setAuth')->with('user', 'pass')->answers(null);
 
 		Class_WebService_ArteVOD::setDefaultWebClient($this->_web_client);
+
+		Class_WebService_ArteVOD_Vignette::setInstance(Storm_Test_ObjectWrapper::mock()
+																									 ->whenCalled('updateAlbum')
+																									 ->answers(true));
 	}
 }
 
@@ -100,5 +104,11 @@ class ArteVODHarverstingTwoFilmsInTwoPages extends ArteVODHarverstingTestCase {
 	public function secondAlbumExternalUriShouldBeBlancheNeige() {
 		$this->assertEquals('http://www.mediatheque-numerique.com/films/blanche-nage',
 												$this->_album_wrapper->getFirstAttributeForLastCallOn('save')->getExternalUri());
+	}
+
+
+	/** @test */
+	public function vignetteShouldHaveBeenUploaded() {
+		$this->assertTrue(Class_WebService_ArteVOD_Vignette::getInstance()->methodHasBeenCalled('updateAlbum'));
 	}
 }

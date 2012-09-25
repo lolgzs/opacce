@@ -33,6 +33,11 @@ class Class_WebService_ArteVOD_Vignette  extends Class_WebService_Abstract {
 	}
 
 
+	public static function setInstance($instance) {
+		static::$_instance = $instance;
+	}
+
+
 	public static function resetInstance() {
 		static::$_instance = null;
 	}

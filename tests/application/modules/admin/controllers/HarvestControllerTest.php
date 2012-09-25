@@ -31,6 +31,9 @@ abstract class HarvestControllerArteVodTestCase extends Admin_AbstractController
 			->whenCalled('setAuth')->answers(null);
 
 		Class_WebService_ArteVOD::setDefaultWebClient($this->_web_client);
+		Class_WebService_ArteVOD_Vignette::setInstance(Storm_Test_ObjectWrapper::mock()
+																									 ->whenCalled('updateAlbum')
+																									 ->answers(true));
 	}
 }
 
