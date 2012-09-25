@@ -118,7 +118,7 @@ class UploadFichierTest extends PHPUnit_Framework_TestCase {
 			->will($this->returnValue(true));
 
 		$this->_upload->setUploadMover(
-			Storm_Test_ObjectWrapper::on(new UploadMover())
+			Storm_Test_ObjectWrapper::on(new Class_UploadMover_HttpPost())
 				->whenCalled('moveTo')->answers(false)->getWrapper()
 				->whenCalled('getError')->answers('Move error')->getWrapper()
 		);

@@ -679,6 +679,12 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function setUploadMover($name, $mover) {
+		$this->getUploadHandler($name)->setUploadMover($mover);
+		return $this;
+	}
+
+
 	/**
 	 * @category testing
 	 * @param Class_Upload $handler

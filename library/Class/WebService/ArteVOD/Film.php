@@ -149,6 +149,19 @@ class Class_WebService_ArteVOD_Film {
 			->setNotes($this->getSerializedNotes())
 			->beArteVOD();
 		$album->save();
+
+		/* $upload_mover = new Class_UploadMover_LocalFile(); */
+		/* $http = new Class_WebService_SimpleWebClient(); */
+		/* $img = $http->open_url($album->getPoster()); */
+		/* $parts = explode('/', $album->getPoster()); */
+		/* $filename = array_pop($parts); */
+		/* file_put_contents(PATH_TEMP.$filename, $img); */
+		/* $_FILES['fichier']['name'] = $filename; */
+		/* $_FILES['fichier']['tmp_name'] = PATH_TEMP.$filename; */
+		/* $_FILES['fichier']['size'] = strlen($img); */
+		/* $album->setUploadMover('fichier', $upload_mover); */
+		/* if ($album->receiveFile())  */
+		/* 	$album->save(); */
 	}
 
 

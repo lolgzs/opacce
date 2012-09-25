@@ -204,7 +204,7 @@ class Class_Upload {
 	 */
 	public function getUploadMover() {
 		if (null === $this->_uploadMover) {
-			$this->_uploadMover = new UploadMover();
+			$this->_uploadMover = new Class_UploadMover_HttpPost();
 		}
 
 		return $this->_uploadMover;
@@ -298,51 +298,4 @@ class Class_Upload {
 	}
 }
 
-
-
-/**
- * @category testing
- */
-class UploadMover {
-	use Trait_Translator;
-	
-	/** @var string */
-	protected $_error;
-
-
-	/**
-	 * @codeCoverageIgnore
-	 * @param string $source
-	 * @param string $destination
-	 * @return bool
-	 */
-	public function moveTo($source, $destination) {
-		if (!move_uploaded_file($source, $destination)) {
-			$this->setError(sprintf($this->_('Impossible d\'écrire le fichier sur le serveur au chemin [%s]'),  $destination));
-			return false;
-		}
-
-		return true;
-	}
-
-
-	/**
-	 * @codeCoverageIgnore
-	 * @param string $error
-	 * @return UploadMover
-	 */
-	public function setError($error) {
-		$this->_error = $error;
-		return $this;
-	}
-
-
-	/**
-	 * @codeCoverageIgnore
-	 * @return string
-	 */
-	public function getError() {
-		return $this->_error;
-	}
-}
 ?>
