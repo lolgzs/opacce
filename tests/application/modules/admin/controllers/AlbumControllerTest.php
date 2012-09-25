@@ -297,6 +297,36 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 
+class Admin_AlbumControllerWithoutBibNumTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::newInstanceWithId('BIBNUM')->setValeur('0');
+		$this->dispatch('/admin/album', true);
+	}
+
+
+	/** @test */
+	public function buttonAddAlbumShouldNotBeVisible() {
+
+		$this->assertNotXPath("//div[contains(@onclick, '/admin/album/add_categorie')]");
+	}
+
+
+	/** @test */
+	public function noAjouteAlbumLinkShouldBeVisible() {
+		$this->assertNotXPath("//a[contains(@href, 'add_album_to')]");
+	}
+
+
+	/** @test */
+	public function noAddCategorieToLinkShouldBeVisible() {
+		$this->assertNotXPath("//a[contains(@href, 'add_categorie_to')]");
+	}
+}
+
+
+
+
 class Admin_AlbumControllerAddCategorieToFavorisTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();

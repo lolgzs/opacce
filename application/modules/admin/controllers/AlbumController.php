@@ -517,20 +517,27 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	protected function _getTreeViewContainerActions() {
-		return array(array('url' => $this->_getUrlForAction('add_categorie_to'),
-											 'icon' => 'ico/add_cat.gif',
-											 'label' => 'Ajouter une sous-catégorie'),
-			           array('url' => $this->_getUrlForAction('add_album_to'),
-											 'icon' => 'ico/add_news.gif',
-											 'label' => 'Ajouter un album'),
-			           array('url' => $this->_getUrlForAction('edit_categorie'),
-											 'icon' => 'ico/edit.gif',
-											 'label' => 'Modifier la catégorie'),
-			           array('url' => $this->_getUrlForAction('delete_categorie'),
-											 'icon' => 'ico/del.gif',
-											 'label' => 'Supprimer la catégorie',
-									     'condition' => 'hasNoChild',
-											 'anchorOptions' => array('onclick' => "return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?')")));
+		$actions = Class_AdminVar::isBibNumEnabled() 
+			? [['url' => $this->_getUrlForAction('add_categorie_to'),
+					'icon' => 'ico/add_cat.gif',
+					'label' => 'Ajouter une sous-catégorie'],
+
+				 ['url' => $this->_getUrlForAction('add_album_to'),
+					'icon' => 'ico/add_news.gif',
+					'label' => 'Ajouter un album']]
+
+			: [];
+
+		return array_merge($actions, 
+											 [['url' => $this->_getUrlForAction('edit_categorie'),
+												 'icon' => 'ico/edit.gif',
+												 'label' => 'Modifier la catégorie'],
+
+												['url' => $this->_getUrlForAction('delete_categorie'),
+												 'icon' => 'ico/del.gif',
+												 'label' => 'Supprimer la catégorie',
+												 'condition' => 'hasNoChild',
+												 'anchorOptions' => ['onclick' => "return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?')"]]]);
 	}
 
 

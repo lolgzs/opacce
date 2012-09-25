@@ -67,17 +67,18 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$menu_modules .= $this->closeBoite();
 
 		$menu_bibnum = '';
-		if (Class_AdminVar::isBibNumEnabled()) {
-			$menu_bibnum .= $this->openBoite($this->translate()->_("Bibliothèque numérique"));
+		$menu_bibnum .= $this->openBoite($this->translate()->_("Bibliothèque numérique"));
+		if (Class_AdminVar::isBibNumEnabled() || Class_AdminVar::isArteVODEnabled()) {
 			$menu_bibnum .= $this->addMenu("collections_16.png",		$this->translate()->_("Collections"),						"/admin/album",								 $acl_admins);
-			$menu_bibnum .= $this->addMenu("epub_16.png",						$this->translate()->_("Catalogues OPDS"),				"/admin/opds",								 $acl_admins);
-			$menu_bibnum .= $this->addMenu("oai_16.png",						$this->translate()->_("Entrepôts OAI"),					"/admin/oai",									 $acl_admins);
 			$menu_bibnum .= $this->addMenu("artevod_16.png",				$this->translate()->_("Arte VOD"),							"/admin/harvest/arte-vod-browse",	$acl_admins);
-			$menu_bibnum .= $this->addMenu("ead_16.png",						$this->translate()->_("Import EAD"),						"/admin/album/import_ead",		 $acl_admins);
-			$menu_bibnum .= $this->addMenu('frbr_16.png', $this->translate()->_('Notices liées'), '/admin/frbr-link', $acl_admins);
-			$menu_bibnum .= $this->closeBoite();
+			if (Class_AdminVar::isBibNumEnabled()) {
+				$menu_bibnum .= $this->addMenu("epub_16.png",						$this->translate()->_("Catalogues OPDS"),				"/admin/opds",								 $acl_admins);
+				$menu_bibnum .= $this->addMenu("oai_16.png",						$this->translate()->_("Entrepôts OAI"),					"/admin/oai",									 $acl_admins);
+				$menu_bibnum .= $this->addMenu("ead_16.png",						$this->translate()->_("Import EAD"),						"/admin/album/import_ead",		 $acl_admins);
+			} 
 		}
-
+		$menu_bibnum .= $this->addMenu('frbr_16.png', $this->translate()->_('Notices liées'), '/admin/frbr-link', $acl_admins);
+		$menu_bibnum .= $this->closeBoite();
 
 		$menu_page	= $this->openBoite($this->translate()->_("Mise en page"));
 		$menu_page .= $this->addMenu("profils_16.png",			$this->translate()->_("Profils"),									"/admin/profil",				 $acl_admins);
