@@ -135,6 +135,8 @@ class NanookFixtures {
   <patronId>1</patronId>
   <lastName>DELPEYROUX</lastName>
   <firstName>Christel</firstName>
+	<endDate>2012-12-21</endDate>
+	<mail>cdelpeyroux@server.com</mail>
   <loans>
     <loan>
       <bibId>117661</bibId>
@@ -192,6 +194,19 @@ class NanookFixtures {
 	}
 
 
+
+	/** @return string */
+	public static function xmlGetPatronPB() {
+		return '<?xml version="1.0" encoding="utf-8"?>
+<GetPatronInfo>
+  <patronId>555</patronId>
+  <lastName>Barroca</lastName>
+  <firstName>Patrick</firstName>
+	<endDate>null</endDate>
+	<mail>null</mail>
+</GetPatronInfo>';
+  }
+				
 	/**
 	 * @return string
 	 */

@@ -93,6 +93,7 @@ abstract class AuthCommSigbWithWebServicesAndAbonneZorkTestCase extends AuthComm
 								->setNom('Zork')
 								->setPrenom('Zinn')
 								->setEMail('zork@gmail.com')
+				        ->setEndDate('2015-12-25')
 								->beValid());
 		return $this;
 	}
@@ -139,6 +140,7 @@ class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServi
 		$this->assertEquals('Zork', $result->NOM);
 		$this->assertEquals('Zinn', $result->PRENOM);
 		$this->assertEquals('zork@gmail.com', $result->MAIL);
+		$this->assertEquals('2015-12-25', $result->DATE_FIN);
 	}
 }
 

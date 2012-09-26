@@ -75,12 +75,8 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 			if (!$emprunteur->isValid())
 				continue;
 
-			$user
-				->setIdabon($emprunteur->getId())
-				->setIdSite($bib->getId())
-				->setNom($emprunteur->getNom())
-				->setPrenom($emprunteur->getPrenom())
-				->setMail($emprunteur->getEmail());
+			$emprunteur->updateUser($user);
+			$user->setIdSite($bib->getId());
 
 			if (!$user->save())
 				continue;

@@ -363,6 +363,18 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 
 
 	/** @test */
+	public function endDateShouldBe2012December21() {
+		$this->assertEquals('2012-12-21', $this->_emprunteur->getEndDate());
+	}
+
+
+	/** @test */
+	public function mailShouldBeCdelpeyrouxAtServerDotCom() {
+		$this->assertEquals('cdelpeyroux@server.com', $this->_emprunteur->getEmail());
+	}
+		
+
+	/** @test */
 	public function nbEmpruntsShouldBeThree() {
 		$this->assertEquals(3, $this->_emprunteur->getNbEmprunts());
 	}
@@ -589,6 +601,44 @@ class NanookGetEmprunteurWithoutIdSigbTest extends NanookTestCase {
 
 		$this->assertNotNull($emprunteur);
 		$this->assertEquals(1, $user->getIdSigb());
+	}
+}
+
+
+
+class NanookGetEmprunteurPBTest extends NanookTestCase {
+	/** @var Class_WebService_SIGB_Emprunteur */
+	protected $_emprunteur;
+
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/555')
+			->answers(NanookFixtures::xmlGetPatronPB());
+
+		$this->_emprunteur = $this->_service->getEmprunteur(
+														Class_Users::getLoader()
+															->newInstance()
+															->setIdSigb(555)
+													);
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+			->answers(null);
+	}
+
+
+	/** @test */
+	public function endDateShouldBeNull() {
+		$this->assertNull($this->_emprunteur->getEndDate());
+	}
+
+
+	/** @test */
+	public function mailShouldBeNull() {
+		$this->assertNull($this->_emprunteur->getEmail());
 	}
 }
 

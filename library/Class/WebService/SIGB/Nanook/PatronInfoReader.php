@@ -35,6 +35,24 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader extends Class_WebService_SIG
 
 
 	/**
+	 * @param $data string
+	 */
+	public function endEndDate($data) {
+		if ($data && 'null' != $data)
+			$this->getEmprunteur()->setEndDate($data);
+	}
+
+
+	/**
+	 * @param $data string
+	 */
+	public function endMail($data) {
+		if ($data && 'null' != $data)
+			$this->getEmprunteur()->setEmail($data);
+	}
+
+		
+	/**
 	 * @param string $data
 	 */
 	public function endDueDate($data) {
