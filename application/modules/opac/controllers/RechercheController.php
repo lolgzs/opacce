@@ -376,6 +376,7 @@ class RechercheController extends Zend_Controller_Action
 	function rebondAction()	{
 		// Lancer la recherche
  		$code=$_REQUEST["code_rebond"];
+		$_SESSION["recherche"]["mode"]="rebond";
  		$_SESSION["recherche"]["selection"]["code_rebond"]=$code;
  		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
 
@@ -402,6 +403,11 @@ class RechercheController extends Zend_Controller_Action
 		$this->view->resultat["url_retour"].="?code_rebond=".$code;
 		$this->view->url_facette=BASE_URL."/opac/recherche/rebond?code_rebond=".$code;
 		$this->view->resultat["page_cours"]=$_REQUEST["page"];
+
+    $params = $_REQUEST;
+    $this->view->tri = isset($params['tri']) ? $params['tri'] : '*';
+    unset($params['tri']);
+		$this->view->url_retour = $this->view->url().'?'.http_build_query($params);
 	}
 
 

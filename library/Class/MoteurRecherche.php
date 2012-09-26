@@ -305,13 +305,13 @@ class Class_MoteurRecherche {
 //------------------------------------------------------------------------------------------------------
 // Recherche rebondissante
 //------------------------------------------------------------------------------------------------------
-	function lancerRechercheRebond($recherche)
-	{
+	function lancerRechercheRebond($recherche)	{
 		// Parametres
 		$type_doc=$recherche["type_doc"];
 		$selection_bib=$recherche["selection_bib"];
 		$rebond=$recherche["code_rebond"];
 		$facette=$recherche["facette"];
+    $tri = $recherche["tri"];
 
 		// Constitution des requetes
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
@@ -320,15 +320,16 @@ class Class_MoteurRecherche {
 		$conditions=" Where MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		$order_by=" order by alpha_titre";
+		if (($tri > "") && ($tri !== '*')) 
+			$order_by=" order by ".$tri;
 
 		$req_liste = "select id_notice from notices ".$conditions.$order_by;
 		$req_comptage = "Select count(*) from notices ".$conditions;
 		$req_facettes = "select id_notice,type_doc,facettes from notices ".$conditions.$this->limite_facettes;
-	
+
 		// Lancer les requetes
 		$nb=fetchOne($req_comptage);
-		if(!$nb) 
-		{
+		if(!$nb) {
 			$ret["statut"]="erreur"; 
 			$ret["erreur"]=$this->_translate->_("Aucun résultat trouvé");
 			return $ret;

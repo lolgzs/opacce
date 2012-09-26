@@ -60,9 +60,8 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 		$html.='</td>';
 
 		// combo tri
-		if($url)
-		{
-			$onchange="var tri=$('#tri').val();document.location='".$url."?tri='+tri;";
+		if($url)	{
+			$onchange="var tri=$('#tri').val();document.location='".$url.(strpos($url, '?') ? '&' : '?')."tri='+tri;";
 			$html.='<td align="right">Trier&nbsp;par </td>';
 			$html.='<td style="padding-right:10px">';
 			$html.='<select id="tri" name="tri" onchange="'.$onchange.'">';
