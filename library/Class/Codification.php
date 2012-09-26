@@ -82,7 +82,7 @@ class Class_Codification
 			case "G": return fetchOne("select libelle from codif_genre where id_genre=".(int)$id);
 			case "L": return fetchOne("select libelle from codif_langue where id_langue='$id'");
 			case "S": return fetchOne("select libelle from codif_section where id_section=".(int)$id);
-			case "E": return fetchOne("select libelle from codif_emplacement where id_emplacement=$id");
+		  case "E": return fetchOne("select libelle from codif_emplacement where id_emplacement=".(int)$id);
 		  case "B": return fetchOne("select nom_court from int_bib where id_bib=".(int)$id);
 		  case "Y": return fetchOne("select libelle from codif_annexe where code='".addslashes($id)."'");
 			case "Z": return fetchOne("select libelle from codif_tags where id_tag=$id");

@@ -82,7 +82,8 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 			->setReservable(false)
 			->setCodeAnnexe(8)
 			->setDateRetour('')
-			->setCote('ALI MER');
+			->setCote('ALI MER')
+			->setEmplacement('2');
 
 
 		$potter_invalide = new Class_WebService_SIGB_Exemplaire(null);
@@ -118,7 +119,8 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 																		'reservable' => true,
 																		'date_retour' => '17/02/1978',
 																		'id_exemplaire' => '123',
-																		'cote' => 'POT'),
+																		'cote' => 'POT',
+																		'emplacement' => '1'),
 															
 															array('id_origine' => '789',
 																		'code_barres' => 'ALM',
@@ -128,7 +130,8 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 																		'reservable' => false,
 																		'date_retour' => '',
 																		'id_exemplaire' => '789',
-																		'cote' => 'ALI MER'),
+																		'cote' => 'ALI MER',
+																		'emplacement' => '2'),
 
 															array('id_origine' => '666',
 																		'code_barres' => 'PTI',
@@ -139,7 +142,8 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 												$this->comm_sigb->getDispoExemplaires(array(array('id_origine' => '123',
 																																					'code_barres' => 'ABC',
 																																					'id_bib' => 5,
-																																					'cote' => 'POT'),
+																																					'cote' => 'POT',
+																																					'emplacement' => '1'),
 
 																																		array('id_origine' => '456',
 																																					'code_barres' => 'LOR',
@@ -149,7 +153,8 @@ abstract class CommSigbTestCase extends Storm_Test_ModelTestCase {
 																																					'code_barres' => 'ALM',
 																																					'id_bib' => 5,
 																																					'annexe' => 5,
-																																					'cote' => 'A'),
+																																					'cote' => 'A',
+																																					'emplacement' => '9'),
 
 																																		array('id_origine' => '666',
 																																					'code_barres' => 'PTI',

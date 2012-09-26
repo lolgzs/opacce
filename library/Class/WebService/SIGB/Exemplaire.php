@@ -49,6 +49,7 @@ class Class_WebService_SIGB_Exemplaire {
 	protected $_disponibiliteLabel;
 	protected $_isEnPret;
 	protected $_cote;
+	protected $_emplacement;
 
 
 	public static function newInstance() {
@@ -233,6 +234,17 @@ class Class_WebService_SIGB_Exemplaire {
 
 	public function getCote() {
 		return $this->_cote;
+	}
+
+
+	public function setEmplacement($emplacement) {
+		$this->_emplacement = $emplacement;
+		return $this;
+	}
+
+
+	public function getEmplacement() {
+		return $this->_emplacement;
 	}
 
 

@@ -638,6 +638,7 @@ class RecupererNoticeResponse {
 			$exemplaire->setDateRetour($nfille->getDateRetour());
 			$exemplaire->setReservable($nfille->Reservable);
 			$exemplaire->setCote($nfille->getCote());
+			$exemplaire->setEmplacement($nfille->getEmplacement());
 			$notice->addExemplaire($exemplaire);
 		}
 		return $notice;
@@ -739,6 +740,15 @@ class NoticeFille {
 
 	public function getCote() {
 		return $this->getData('Cote');
+	}
+
+
+	public function getEmplacement() {
+		if (!$code = $this->getData('Emplacement'))
+			return '';
+		if (!$emplacement = Class_CodifEmplacement::findFirstBy(['regles' => '995$u='.$code]))
+			return '';
+		return $emplacement->getId();
 	}
 }
 

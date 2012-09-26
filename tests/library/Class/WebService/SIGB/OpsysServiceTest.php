@@ -801,6 +801,16 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 
 class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase {
 	public function setUp() {
+		$emplacement_reserve = Class_CodifEmplacement::newInstanceWithId(3)
+			->setLibelle('Réserve')
+			->setRegles('995$u=RES');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifEmplacement')
+			->whenCalled('findFirstBy')
+			->with(['regles' => '995$u=RES'])
+			->answers($emplacement_reserve);
+
+
 		$dispo_reserve = new DonneeFille();
 		$dispo_reserve->NomDonnee = "Disponibilité";
 		$dispo_reserve->ValeurDonnee = "Non disponible";
@@ -840,12 +850,16 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 		$cote_scrap->NomDonnee = "Cote";
 		$cote_scrap->ValeurDonnee = "SCRAP";
 
+		$emplacement_scrap = new DonneeFille();
+		$emplacement_scrap->NomDonnee = "Emplacement";
+		$emplacement_scrap->ValeurDonnee = "RES";
+
 
 		$scrap = new NoticeFille();
 		$scrap->NumFille = "scrap";
 		$scrap->Reservable = "false";
 		$scrap->DonneesFille = new StdClass();
-		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap, $cote_scrap);
+		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap, $cote_scrap, $emplacement_scrap);
 
 		$rsp = new RecupererNoticeResponse();
 		$rsp->RecupererNoticeResult = new RspRecupererNotice();
@@ -882,6 +896,12 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 	/** @test */
 	public function coteScrapShouldBeSCRAP() {
 		$this->assertEquals('SCRAP', $this->response->createNotice()->exemplaireAt(1)->getCote());
+	}
+
+
+	/** @test */
+	public function emplacementScrapShouldBe3() {
+		$this->assertEquals('3', $this->response->createNotice()->exemplaireAt(1)->getEmplacement());
 	}
 
 

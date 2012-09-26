@@ -73,6 +73,9 @@ class Class_CommSigb {
 		if ($cote = $sigb_exemplaire->getCote())
 			$exemplaire["cote"] = $cote;
 
+		if ($emplacement = $sigb_exemplaire->getEmplacement())
+			$exemplaire["emplacement"] = $emplacement;
+
 		if (!$code_annexe = $sigb_exemplaire->getCodeAnnexe())
 			return $exemplaire;
 
