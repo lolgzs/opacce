@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_WebService_SIGB_Nanook_GetRecordsResponseReader {
+
 	/** @var Class_WebService_XMLParser */
 	protected $_xml_parser;
 
@@ -94,9 +95,7 @@ class Class_WebService_SIGB_Nanook_GetRecordsResponseReader {
 	 * @param string $data
 	 */
 	public function endAvailable($data) {
-		if ('1' == $data) {
-			$this->_current_item->setDisponibiliteLibre();
-		}
+		Nanook_AvailabilityMapper::setAvailabilityOn($data, $this->_current_item);
 	}
 
 
@@ -145,6 +144,37 @@ class Class_WebService_SIGB_Nanook_GetRecordsResponseReader {
 	 */
 	public function endActivityMessage($data) {
 		$this->_current_item->setDisponibiliteLabel($data);
+	}
+}
+
+
+
+class Nanook_AvailabilityMapper {
+	const AVAILABILITY_AVAILABLE = '1';
+	const AVAILABILITY_TRANSIT = 'InTransit';
+	const AVAILABILITY_ORDERED = 'Ordered';
+	const AVAILABILITY_ALREADY_HOLD = 'AlreadyHold';
+
+	private static $_map;
+
+	public static function getMap() {
+		if (null == static::$_map) {
+			static::$_map = [
+				self::AVAILABILITY_AVAILABLE => function ($item) {$item->setDisponibiliteLibre();},
+				self::AVAILABILITY_TRANSIT => function ($item) {$item->setDisponibiliteEnTransit();},
+				self::AVAILABILITY_ALREADY_HOLD => function ($item) {$item->setDisponibiliteDejaReserve();},
+				self::AVAILABILITY_ORDERED => function ($item) {$item->setDisponibiliteEnCommande();},
+			];
+		}
+
+		return static::$_map;
+	}
+
+
+	public static function setAvailabilityOn($availability, $item) {
+		$map = static::getMap();
+		if (array_key_exists($availability, $map))
+			$map[$availability]($item);
 	}
 }
 

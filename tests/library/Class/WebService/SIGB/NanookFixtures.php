@@ -113,6 +113,36 @@ class NanookFixtures {
 										<locationLabel>Annexe Cran-Gevrier</locationLabel>
 										<locationId>10</locationId>
 								</item>
+						    <item>
+										<barcode>L-072670</barcode>
+										<itemId>10720</itemId>
+										<available>InTransit</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
+						    <item>
+										<barcode>L-072671</barcode>
+										<itemId>10722</itemId>
+										<available>AlreadyHold</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
+						    <item>
+										<barcode>L-072672</barcode>
+										<itemId>10724</itemId>
+										<available>Ordered</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
 						</items>
 				</record>
 		</GetRecords>';

@@ -204,8 +204,8 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 
 
 	/** @test */
-	public function getExemplairesShouldReturnAnArrayWithSizeThree() {
-		$this->assertEquals(3, count($this->_notice->getExemplaires()));
+	public function noticeShouldHaveSixItems() {
+		$this->assertEquals(6, count($this->_notice->getExemplaires()));
 	}
 
 
@@ -290,9 +290,31 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 		$this->assertEquals('Annexe Cran-Gevrier', $this->_notice->exemplaireAt(2)->getBibliotheque());
 	}
 
+
 	/** @test */
 	public function thirdExemplaireCodeAnnexeShouldBeThree() {
 		$this->assertEquals(3, $this->_notice->exemplaireAt(2)->getCodeAnnexe());
+	}
+
+
+	/** @test */
+	public function fourthExemplaireShouldBeEnTransit() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_TRANSIT,
+			                  $this->_notice->exemplaireAt(3)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function fiftExemplaireShouldBeDejaReserve() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_DEJA_RESERVE,
+			                  $this->_notice->exemplaireAt(4)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function sixthExemplaireShouldBeEnCommande() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_EN_COMMANDE,
+			                  $this->_notice->exemplaireAt(5)->getDisponibilite());
 	}
 }
 

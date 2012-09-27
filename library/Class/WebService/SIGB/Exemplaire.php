@@ -20,13 +20,15 @@
  */
 
 class Class_WebService_SIGB_Exemplaire {
-	const DISPO_EN_PRET = "En prêt";
-	const DISPO_LIBRE = "Disponible";
-	const DISPO_INDISPONIBLE = "Indisponible";
-	const DISPO_PERDU = "Perdu";
-	const DISPO_PILONNE = "Pilonné";
-	const DISPO_ENDOMMAGE = "Endommagé";
-	const DISPO_TRANSIT = "En transit";
+	const DISPO_EN_PRET = 'En prêt';
+	const DISPO_LIBRE = 'Disponible';
+	const DISPO_INDISPONIBLE = 'Indisponible';
+	const DISPO_PERDU = 'Perdu';
+	const DISPO_PILONNE = 'Pilonné';
+	const DISPO_ENDOMMAGE = 'Endommagé';
+	const DISPO_TRANSIT = 'En transit';
+	const DISPO_DEJA_RESERVE = 'Réservé';
+	const DISPO_EN_COMMANDE = 'En commande';
 
 
 	protected $id;
@@ -325,6 +327,18 @@ class Class_WebService_SIGB_Exemplaire {
 
 	public function setDisponibiliteEndommage()	{
 		$this->setDisponibilite(self::DISPO_ENDOMMAGE);
+		return $this;
+	}
+
+
+	public function setDisponibiliteDejaReserve() {
+		$this->setDisponibilite(self::DISPO_DEJA_RESERVE);
+		return $this;
+	}
+
+
+	public function setDisponibiliteEnCommande() {
+		$this->setDisponibilite(self::DISPO_EN_COMMANDE);
 		return $this;
 	}
 
