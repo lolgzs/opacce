@@ -75,13 +75,14 @@ class RechercheController extends Zend_Controller_Action
 		}
 
 		// Facettes
-		if($this->_getParam("facette"))
-		{
-			if($_REQUEST["facette"]=="reset") unset($_SESSION["recherche"]["selection"]["facette"]);
+		if ($this->_getParam("facette")) {
+			if ($this->_getParam("facette") =="reset") 
+				unset($_SESSION["recherche"]["selection"]["facette"]);
 			else
 			{
-				$facette="[".$_REQUEST["facette"]."]";
-				if(strpos($_SESSION["recherche"]["selection"]["facette"],$facette) === false) $_SESSION["recherche"]["selection"]["facette"].=" ".$facette;
+				$facette="[".$this->_getParam("facette")."]";
+				if(strpos($_SESSION["recherche"]["selection"]["facette"],$facette) === false) 
+					$_SESSION["recherche"]["selection"]["facette"].=" ".$facette;
 			}
 			unset($_SESSION["recherche"]["resultat"]);
 		}
@@ -375,39 +376,39 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	function rebondAction()	{
 		// Lancer la recherche
- 		$code=$_REQUEST["code_rebond"];
+ 		$code = $this->_getParam('code_rebond');
 		$_SESSION["recherche"]["mode"]="rebond";
  		$_SESSION["recherche"]["selection"]["code_rebond"]=$code;
  		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
 
- 		$this->view->texte_selection=$this->getTexteSelection();
  		$ret=$this->moteur->lancerRechercheRebond($_SESSION["recherche"]["selection"]);
-		if($ret["statut"]=="erreur")
-		{
-			$ret["nombre"]=0;
-			$this->view->liste=$ret;
-			return false;
+		if($ret["statut"]=="erreur") {
+			$this->view->liste = $ret;
+			$this->view->resultat = $ret;
+		} else {
+			// Facettes et tags
+			$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
+
+			// Mettre les elements dans la session
+			$resultat = array_merge($facettes,$ret);
+			$_SESSION["recherche"]["resultat"] = $resultat;
+			$this->view->resultat = $resultat;
+			$this->view->liste=$this->_getListNotices($ret["req_liste"]);
 		}
 
-		// Facettes et tags
-		$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
+		$this->view->resultat["url_retour"] = isset($this->view->resultat["url_retour"]) 
+			? $this->view->resultat["url_retour"]."?code_rebond=".$code
+			: $this->view->url(['action' => 'simple']);
 
-		// Mettre les elements dans la session
-		$_SESSION["recherche"]["resultat"]=array_merge($facettes,$ret);
+		$this->view->resultat["page_cours"] = $this->_getParam('page');
+ 		$this->view->texte_selection = $this->getTexteSelection();
+		$this->view->url_facette = BASE_URL."/opac/recherche/rebond?code_rebond=".$code;
 
-		// Get de la liste
-		$this->view->liste=$this->_getListNotices($ret["req_liste"]);
-
-		// Variables viewer
-		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["url_retour"].="?code_rebond=".$code;
-		$this->view->url_facette=BASE_URL."/opac/recherche/rebond?code_rebond=".$code;
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
-
-    $params = $_REQUEST;
+		$params = $this->_request->getParams();
     $this->view->tri = isset($params['tri']) ? $params['tri'] : '*';
-    unset($params['tri']);
-		$this->view->url_retour = $this->view->url().'?'.http_build_query($params);
+		unset($params['tri']);
+		unset($params['current_module']);
+		$this->view->url_retour = $this->view->url($params);
 	}
 
 
@@ -460,6 +461,7 @@ class RechercheController extends Zend_Controller_Action
 		}
 
 		// Recherche avancee
+		$texte = '';
 		if ('avancee' == $mode) {
 			$operateur = array("and" => $this->view->_(" et "), 
 												 "or" => $this->view->_(" ou "),
@@ -469,7 +471,6 @@ class RechercheController extends Zend_Controller_Action
 				$this->view->_(" commence par :"):
 				$this->view->_(" contient :");
 
-			$texte = '';
 			if (isset($rech["rech_titres"])) 
 				$texte .= $this->view->_(", Titre") . $signe . $rech["rech_titres"];
 			if (isset($rech["rech_auteurs"])) 

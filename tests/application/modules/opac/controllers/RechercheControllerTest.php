@@ -72,6 +72,7 @@ class RechercheControllerViewNoticeBabelthequeTest extends RechercheControllerNo
 
 
 
+
 class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControllerNoticeTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -449,6 +450,26 @@ class RechercheControllerPostReservationAction extends AbstractControllerTestCas
 													array_last($this->_sent_mails)->getRecipients());
 	}
 
+}
+
+
+
+
+class RechercheControllerRebondTest extends AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$facettes = Class_Notice::findFirstBy(['where' => 'facettes>""'])->getFacettes();
+		$code_rebond = explode(' ', trim($facettes))[0];
+		$this->dispatch('/recherche/rebond?facette=reset&code_rebond='.$code_rebond.'&tri=alpha_titre', true);
+	}
+
+	
+	/** @test */
+	public function comboTriShouldHaveAnneePublicationSelected() {
+		$this->assertXPathContentContains('//select[@id="tri"]//option[@value="alpha_titre"][@selected="selected"]', 
+																			'Titre et auteur',
+																			$this->_response->getBody());
+	}
 }
 
 ?>

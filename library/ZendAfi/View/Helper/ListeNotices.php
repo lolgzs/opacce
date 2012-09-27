@@ -64,24 +64,15 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$onchange="var tri=$('#tri').val();document.location='".$url.(strpos($url, '?') ? '&' : '?')."tri='+tri;";
 			$html.='<td align="right">Trier&nbsp;par </td>';
 			$html.='<td style="padding-right:10px">';
-			$html.='<select id="tri" name="tri" onchange="'.$onchange.'">';
-			$html.='<option value="*">pertinence</option>';
-			$html.='<option value="alpha_titre"';
-			if($tri== "alpha_titre") $html.='selected="selected"';
-			$html.='>Titre</option>';
-			$html.='<option value="alpha_auteur,alpha_titre"';
-			if($tri == "alpha_auteur,alpha_titre") $html.='selected="selected"';
-			$html.='>Auteur et titre</option>';
-			$html.='<option value="annee desc"';
-			if($tri == "annee desc") $html.='selected="selected"';
-			$html.='>Année de publication</option>';
-			$html.='<option value="type_doc,alpha_titre"';
-			if($tri == "type_doc,alpha_titre") $html.='selected="selected"';
-			$html.='>Type de document</option>';
-			$html.='<option value="date_creation desc"';
-			if($tri == "date_creation desc") $html.='selected="selected"';
-			$html.='>Date de nouveauté</option>';
-			$html.='</select></td>';
+
+			$html.=$this->view->formSelect('tri', 
+																		 $tri, 
+																		 ['onchange' => $onchange], 
+																		 ['*' => $this->view->_('Pertinence'),
+																		  'alpha_titre' => $this->view->_('Titre et auteur'),
+																			'annee desc' => $this->view->_('Année de publication'),
+																			'type_doc,alpha_titre' => $this->view->_('Type de document'),
+																			'date_creation_desc' => $this->view->_('Date de nouveauté')]);
 		}
 
 		$html.=' <td align="right">page&nbsp;'.$page.'</td>';

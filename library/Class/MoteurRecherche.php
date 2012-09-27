@@ -302,16 +302,18 @@ class Class_MoteurRecherche {
 		}
 		return $ret;
 }
+
+
 //------------------------------------------------------------------------------------------------------
 // Recherche rebondissante
 //------------------------------------------------------------------------------------------------------
 	function lancerRechercheRebond($recherche)	{
 		// Parametres
-		$type_doc=$recherche["type_doc"];
-		$selection_bib=$recherche["selection_bib"];
-		$rebond=$recherche["code_rebond"];
-		$facette=$recherche["facette"];
-    $tri = $recherche["tri"];
+		$type_doc = isset($recherche["type_doc"]) ? $recherche["type_doc"] : 0;
+		$selection_bib = isset($recherche["selection_bib"]) ? $recherche["selection_bib"] : 0;
+		$rebond = isset($recherche["code_rebond"]) ? $recherche["code_rebond"] : '';
+		$facette = isset($recherche["facette"]) ? $recherche["facette"] : '';
+    $tri = isset($recherche["tri"]) ? $recherche["tri"] : '';
 
 		// Constitution des requetes
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
@@ -328,15 +330,20 @@ class Class_MoteurRecherche {
 		$req_facettes = "select id_notice,type_doc,facettes from notices ".$conditions.$this->limite_facettes;
 
 		// Lancer les requetes
+    $ret = ['nb_mots' => 0,
+            'nombre' => 0,
+            'statut' => 'OK'];
+
 		$nb=fetchOne($req_comptage);
 		if(!$nb) {
-			$ret["statut"]="erreur"; 
-			$ret["erreur"]=$this->_translate->_("Aucun résultat trouvé");
+			$ret["statut"] = "erreur"; 
+			$ret["erreur"] = $this->_translate->_("Aucun résultat trouvé");
 			return $ret;
 		}
-		$ret["nombre"]=$nb;
-		$ret["req_liste"]=$req_liste;
-		$ret["req_facettes"]=$req_facettes;
+
+		$ret["nombre"] = $nb;
+		$ret["req_liste"] = $req_liste;
+		$ret["req_facettes"] = $req_facettes;
 		
 		return $ret;
 	}
