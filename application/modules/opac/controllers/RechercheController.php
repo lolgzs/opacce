@@ -139,6 +139,10 @@ class RechercheController extends Zend_Controller_Action
 		// Préférences
 		$current_module=$this->_getParam("current_module");
 		$this->preferences=$current_module["preferences"];
+
+		$simple_ou_avancee = $this->_request->getActionName() == 'avancee' ? 'avancee' : 'simple';
+		$this->view->url_retour_recherche_initiale = $this->view->url(['action' => $simple_ou_avancee]).'?statut=saisie';
+		$this->view->url_nouvelle_recherche = $this->view->url(['action' => $simple_ou_avancee]).'?statut=reset';
 	}
 
 

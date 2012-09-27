@@ -72,7 +72,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 																		  'alpha_titre' => $this->view->_('Titre et auteur'),
 																			'annee desc' => $this->view->_('Année de publication'),
 																			'type_doc,alpha_titre' => $this->view->_('Type de document'),
-																			'date_creation_desc' => $this->view->_('Date de nouveauté')]);
+																			'date_creation desc' => $this->view->_('Date de nouveauté')]);
 		}
 
 		$html.=' <td align="right">page&nbsp;'.$page.'</td>';

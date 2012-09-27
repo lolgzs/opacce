@@ -467,7 +467,21 @@ class RechercheControllerRebondTest extends AbstractControllerTestCase {
 	/** @test */
 	public function comboTriShouldHaveAnneePublicationSelected() {
 		$this->assertXPathContentContains('//select[@id="tri"]//option[@value="alpha_titre"][@selected="selected"]', 
-																			'Titre et auteur',
+																			'Titre et auteur');
+	}
+
+	
+	/** @test */
+	public function lienRetourRechercheInitialeShouldBeRechercheSimple() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/simple?statut=saisie")]', 
+																			'Retour');
+	}
+
+
+	/** @test */
+	public function lienNouvelleRechercheShouldBeRechercheSimple() {
+		$this->assertXPathContentContains('//a[contains(@href, "recherche/simple?statut=reset")]', 
+																			'Nouvelle recherche', 
 																			$this->_response->getBody());
 	}
 }

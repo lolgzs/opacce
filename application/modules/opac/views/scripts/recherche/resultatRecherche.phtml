@@ -19,7 +19,7 @@ print($this->texte_selection);
 <div>
 	<span style="padding-right:10px">
 	<?php 
-	echo $this->tagAnchor($this->url_retour . '?statut=saisie', 
+	echo $this->tagAnchor($this->url_retour_recherche_initiale, 
 												sprintf('&raquo; %s', 
 																$this->_('Retour à la recherche initiale')));?>
   </span>
@@ -33,7 +33,7 @@ print($this->texte_selection);
 	<?php } ?>
 	<span>
   <?php 
-  echo $this->tagAnchor($this->url_retour . '?statut=reset', 
+  echo $this->tagAnchor($this->url_nouvelle_recherche, 
 												sprintf('&raquo; %s', 
 																$this->_('Nouvelle recherche'))); ?>
   </span>
