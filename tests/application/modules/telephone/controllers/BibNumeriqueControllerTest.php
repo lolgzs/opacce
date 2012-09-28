@@ -79,9 +79,15 @@ class BibNumeriqueControllerTelephoneViewAlbumMonumentsTest extends BibNumerique
 
 	/** @test */
 	public function pageShouldContainsLinkToDownloadEPub() {
-		$this->assertXPath('//a[contains(@href, "media/versailles.epub")]');
+		$this->assertXPathContentContains('//a[contains(@href, "media/versailles.epub")][@data-ajax="false"]', 'versailles.epub');
+	}
+
+	/** @test */
+	public function iconShouldBeEPubDotPng() {
+		$this->assertXPath('//a[contains(@href, "media/versailles.epub")]//img[contains(@src, "epub.png")]');
 	}
 }
+
 
 
 
@@ -111,13 +117,13 @@ class BibNumeriqueControllerTelephoneViewAlbumMultiMedia extends TelephoneAbstra
 
 	/** @test */
 	public function pageShouldContainsLinkToXSPFPlayList() {
-		$this->assertXPath('//a[contains(@href, "bib-numerique/album-xspf-playlist/id/999.xspf")]');
+		$this->assertXPath('//a[contains(@href, "bib-numerique/album-xspf-playlist/id/999.xspf")][@data-ajax="false"]');
 	}
 
 
 	/** @test */
 	public function pageShouldContainsLinkToRSSPodcast() {
-		$this->assertXPath('//a[contains(@href, "bib-numerique/Album-rss-feed/id/999.xml")]');
+		$this->assertXPath('//a[contains(@href, "bib-numerique/Album-rss-feed/id/999.xml")][@data-ajax="false"]');
 	}
 
 	

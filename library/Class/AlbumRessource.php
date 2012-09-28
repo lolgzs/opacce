@@ -53,7 +53,8 @@ class Class_AlbumRessource extends Storm_Model_Abstract {
 
 	protected static $THUMBNAILS_BY_EXT = ['swf' => 'flash-logo.jpg',
 																				 'mov' => 'quicktime-logo.png',
-																				 'unknown' => 'earth-logo.jpg'];
+																				 'unknown' => 'earth-logo.jpg',
+																				 'epub' => 'epub.png'];
 
 	protected static $_thumbnail_dir_checked = false;
 
