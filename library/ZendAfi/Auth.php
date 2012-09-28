@@ -22,11 +22,16 @@
 class ZendAfi_Auth extends Zend_Auth {
 	public static function getInstance()  {
 		if (null === self::$_instance) {
-			self::$_instance = new self();
+			$instance = new self();
+			$instance->setStorage(
+				new Zend_Auth_Storage_Session(Zend_Auth_Storage_Session::NAMESPACE_DEFAULT
+					                            . md5(BASE_URL)));
+			self::$_instance = $instance;
 		}
 
 		return self::$_instance;
 	}
+
 
 	public static function setInstance($instance) {
 		self::$_instance = $instance;
