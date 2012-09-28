@@ -29,7 +29,7 @@ class ZendAfi_View_Helper_Accueil_Kiosque extends ZendAfi_View_Helper_Accueil_Ba
 		
 		// Proprietes en fonction du type de liste
 		$args = array("id_module" => $this->id_module, 
-								'id_profil' => Class_Profil::getCurrentProfil()->getId());
+									'id_profil' => Class_Profil::getCurrentProfil()->getId());
 		$action = "kiosque";
 		switch($style_liste) {
 			case "slide_show":
@@ -106,9 +106,9 @@ class ZendAfi_View_Helper_Accueil_Kiosque extends ZendAfi_View_Helper_Accueil_Ba
 		$iframe = new ZendAfi_View_Helper_IframeContainer();
 		$iframe->iframeContainer("100%",
 														 $hauteur,
-														 array('controller' => $controler,
-																	 'action' => $action),
-														 $args);
+														 array_merge(['controller' => $controler,
+																					'action' => $action],
+																				 $args));
 		if ($this->shouldCacheContent())
 			$iframe->setCacheKey($this->getCacheKey());
 
