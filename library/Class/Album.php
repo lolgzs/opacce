@@ -113,7 +113,9 @@ class Class_Album extends Storm_Model_Abstract {
 																							 'provenance' => '',
 																							 'cote' => '',
 																							 'notes' => '',
-																							 'visible' => true);
+		                                           'visible' => true,
+	                                             'droits' => '');
+
 	/** @var Class_Upload */
 	protected $_uploadHandler;
 

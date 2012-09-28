@@ -21,7 +21,8 @@
 class Admin_AlbumController extends Zend_Controller_Action {
 	use Trait_Translator;
 
-	protected $_baseUrlOptions = array('module' => 'admin', 'controller' => 'album');
+	protected $_baseUrlOptions = ['module' => 'admin',
+		                            'controller' => 'album'];
 		
 	public function init() {
 		$this->view->titre = 'Collections';
@@ -431,6 +432,11 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		$values = $form->getValues();
 		unset($values['fichier']);
 		unset($values['pdf']);
+
+		$droits_precision = $values['droits_precision'];
+		unset($values['droits_precision']);
+		$values['droits'] = (2 == $values['droits']) ?
+				$droits_precision : 'Domaine public';
 
 		$album->updateAttributes($values);
 

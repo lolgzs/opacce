@@ -22,11 +22,14 @@
 class ZendAfi_Form_Album extends ZendAfi_Form {
 	use Trait_Translator;
 
+	const RIGHT_PUBLIC_DOMAIN = 'Domaine public';
+
 	public static function newWith($album) {
 		$form = new self();
 
 		$form
 			->populate($album->toArray())
+			->addRightsFor($album)
 			->addVignetteFor($album)
 			->addFileFor($album)
 			->addDisplayGroup(['titre', 
@@ -35,14 +38,16 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 												 'visible',
 												 'fichier',
 												 'pdf'], 
-												'album', 
-												["legend" => "Album"])
+				                 'album', 
+				                 ['legend' => $form->_('Album')])
 
 			->addDisplayGroup(['description'],
-												'album_desc', 
-												["legend" => "Description"])
+												 'album_desc', 
+				                 ['legend' => $form->_('Description')])
 
-			->addDisplayGroup(['auteur', 
+			->addDisplayGroup(['auteur',
+					               'droits',
+					               'droits_precision',
 												 'annee', 
 												 'editeur',
 												 'provenance',
@@ -53,8 +58,8 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 												 'dewey',
 												 'genre',
 												 'tags'],
-												'album_metadata', 
-				["legend" => $form->_("Metadonnées")]);
+												 'album_metadata', 
+				                 ['legend' => $form->_('Metadonnées')]);
 
 		return $form;
 	}
@@ -62,6 +67,16 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 		
 	public function init() {
 		parent::init();
+		Class_ScriptLoader::getInstance()
+				->addInlineScript('function toggleAlbumRights() {
+													   var target = $("#droits_precision").parent().parent();
+													   (2 == $("input[name=\'droits\']:checked").val()) ?
+													     target.show() :
+													     target.hide();
+													 }')
+				->addJQueryReady('$("input[name=\'droits\']").change(toggleAlbumRights);
+													toggleAlbumRights();');
+						
 		$this
 			->setAttrib('id', 'album')
 			->setAttrib('enctype', self::ENCTYPE_MULTIPART)
@@ -75,11 +90,12 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 
 			->addElement('select', 'cat_id', ['label' => 'Catégorie',
 																				'multiOptions' => Class_AlbumCategorie::getAllLibelles()])
+
 			->addElement('checkbox', 'visible', ['label' => 'Visible'])
 
 			->addElement('text', 'auteur', ['label' => 'Auteur', 
 																			'size' => 80])
-
+				
 			->addElement('ckeditor', 'description')
 
 			->addElement('text', 'annee', ['label' => "Année d'édition", 
@@ -99,8 +115,7 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 																					 'multioptions' => Class_CodifLangue::allByIdLibelle()])
 
 			->addElement('select', 'type_doc_id', ['label' => 'Type de document', 
-					'multioptions' => Class_TypeDoc::allByIdLabelForAlbum(),
-					'onchange' => 'toggleAlbumVideoUrl();'])
+					                                   'multioptions' => Class_TypeDoc::allByIdLabelForAlbum()])
 
 			->addElement('listeSuggestion', 'matiere',
 									 ['label' => 'Matières / sujets',
@@ -153,6 +168,28 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 					'basePath'	=> $album->getBasePath(),
 					'baseUrl'		=> $album->getBaseUrl(),
 					'actionUrl'	=> $this->getView()->url(['action' => 'album-delete-pdf'])]));
+	}
+
+
+	/**
+	 * @param $album Class_Album
+	 * @return ZendAfi_Form_Album
+	 */
+	public function addRightsFor($album) {
+		$current = (self::RIGHT_PUBLIC_DOMAIN == $album->getDroits() || $album->isNew()) ? 1: 2;
+		$current_precision = (self::RIGHT_PUBLIC_DOMAIN != $album->getDroits()) ?
+				$album->getDroits(): '';
+
+		return $this
+				->addElement('radio', 'droits',
+					['label' => 'Droits',
+						'value' => $current,
+						'separator' => '',
+						'multiOptions' => [1 => self::RIGHT_PUBLIC_DOMAIN,
+							                 2 => 'Autre, Précisez']])
+
+				->addElement('text', 'droits_precision',
+					['label' => '', 'value' => $current_precision, 'size' => 80]);
 	}
 }
 

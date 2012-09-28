@@ -635,10 +635,27 @@ class Admin_AlbumControllerAddAlbumToPatrimoineTest extends Admin_AlbumControlle
 	}
 
 
-
 	/** @test */
   public function formShouldHaveATextAreaForDescription() {
 		$this->assertXPath("//form[@id='album']//textarea[@name='description']");
+	}
+
+
+	/** @test */
+	public function fieldForAuthorShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='auteur']");
+	}
+
+
+	/** @test */
+	public function fieldForRightsShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='radio'][@name='droits']");
+	}
+
+
+	/** @test */
+	public function fieldForRightsPrecisionShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='droits_precision']");
 	}
 
 
