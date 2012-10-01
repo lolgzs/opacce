@@ -217,7 +217,7 @@ class ZoneControllerAddActionTest extends ZoneControllerTestCase {
 	/** @test */
 	function uploadFormActionShouldPointModuleOpac() {
 		$this->dispatch('admin/zone/add');
-		$this->assertXPath('//iframe[contains(@src, "localhost/upload/form")]');
+		$this->assertXPath(sprintf('//iframe[contains(@src, "localhost%s/upload/form")]', BASE_URL));
 	}
 
 
