@@ -34,10 +34,8 @@ class IframeContainerTest extends ViewHelperTestCase
 	}
 
 	/** @test */
-	public function srcAttributeShouldBeXhtmlValid()
-	{
+	public function srcAttributeShouldBeXhtmlValid() {
 		$this->assertTrue((bool)strpos($this->html, '&amp;'));
-
 	}
 
 }

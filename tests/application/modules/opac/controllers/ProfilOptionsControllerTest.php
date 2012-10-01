@@ -286,7 +286,9 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 		$cfg_accueil_jeux = ['modules' => ['4' => ['division' => '1',
 																							 'type_module' => 'CRITIQUES'],
 																			 '7' => ['division' => '1',
-																							 'type_module' => 'KIOSQUE'],
+																							 'type_module' => 'KIOSQUE',
+																							 'preferences' => ['style_liste' => 'cube',
+																																 'op_hauteur_img' => 90]],
 																			 '8' => ['division' => '1',
 																							 'type_module' => 'RSS'],
 																			 '10' => ['division' => '2',
@@ -322,6 +324,23 @@ class ProfilOptionsControllerProfilJeunesseAndJeuxTest extends ProfilOptionsCont
 	public function titleShouldBeProfilJeunesseSeConnecterInAuth() {
 		$this->dispatch('/opac/auth/login');
 		$this->assertQueryContentContains('head title', 'Profil Jeunesse - Se connecter');
+	}
+}
+
+
+
+
+class ProfilOptionsControllerPageJeuxViewModuleCritiquesTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/blog/viewcritiques?id_module=4&id_profil=12');
+	}
+
+	
+	/** @test */
+	public function iframeKiosqueUrlShouldHaveIdModuleSeven() {
+		$this->assertXPath(sprintf('//iframe[@src="http://localhost%s/java/kiosque/id_module/7/id_profil/12/vue/cube"]', BASE_URL),
+											 $this->_response->getBody());
 	}
 }
 
