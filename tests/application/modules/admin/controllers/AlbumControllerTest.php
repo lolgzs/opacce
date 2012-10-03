@@ -371,8 +371,8 @@ class Admin_AlbumControllerAddCategorieToFavorisTest extends Admin_AlbumControll
 
 
 	/** @test */
-	public function shouldHaveCancelButton() {
-		$this->assertXPathContentContains("//table//td", "Annuler");
+	public function shouldHaveBackButton() {
+		$this->assertXPathContentContains("//table//td", "Retour");
 	}
 }
 
@@ -666,8 +666,8 @@ class Admin_AlbumControllerAddAlbumToPatrimoineTest extends Admin_AlbumControlle
 
 
 	/** @test */
-	public function shouldHaveCancelButton() {
-		$this->assertXPathContentContains("//table//td", "Annuler");
+	public function shouldHaveBackButton() {
+		$this->assertXPathContentContains("//table//td", "Retour");
 	}
 
 

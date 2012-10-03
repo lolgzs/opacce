@@ -122,8 +122,8 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 	    <tr>
         <td align='right'>".$this->view->bouton('type=V', "form=$id", "javascript=;setFlagMaj(false);")."</td>
         <td align='left'>".$this->view->bouton('id=29',
-																							 'picto=del.gif',
-																							 sprintf('texte=%s', $this->translate()->_('Annuler')),
+																							 'picto=back.gif',
+																							 sprintf('texte=%s', $this->translate()->_('Retour')),
 					                                     'url='. $this->_getBackUrl($form),
 																							 'largeur=120px')."</td>
     	</tr>
