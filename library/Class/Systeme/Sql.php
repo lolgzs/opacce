@@ -44,6 +44,7 @@ class Class_Systeme_Sql {
 			exit;
 		}
 		$this->hpdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->hpdo->query('set names "UTF8"');
 		$this->filtre_write=new ZendAfi_Filters_WriteSql();
 	}
 
