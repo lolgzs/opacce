@@ -26,7 +26,7 @@ class ZendAfi_View_Helper_Admin_MenuHorizontalAdmin extends ZendAfi_View_Helper_
 		$menus = array(array("icon" => "icon_home.gif",
 												 "label" => $this->translate()->_("Accueil"),
 												 "url" => "/admin"),
-									 array("icon" => "go_back.png",
+									 array("icon" => "profils_16.png",
 												 "label" => $this->translate()->_("Retour au site"),
 												 "url" => "?id_profil=".Class_Profil::getCurrentProfil()->getId()),
 									 array("icon" => "deconnexion.png",
