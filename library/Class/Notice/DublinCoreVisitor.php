@@ -41,24 +41,57 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function xml() {
-		return $this->_builder->oai_dc($this->_xml);
+		return $this->_builder->oai_dc(
+			$this->_builder->identifier($this->_identifier)
+			. $this->_xml);
 	}
 
 
 	public function visitClefAlpha($clef) {
 		$this->_identifier = sprintf('http://%s%s/recherche/viewnotice/clef/%s',
 																 $_SERVER['SERVER_NAME'], BASE_URL, $clef);
-		$this->_xml .= $this->_builder->identifier($this->_identifier);
 	}
 
 
-	public function visitTitre($titre) {
-		$this->_xml .= $this->_builder->title($this->cdata(strip_tags($titre)));
+	/**
+	 * @param $titres array
+	 */
+	public function visitTitres($titres) {
+		if (!is_array($titres) || empty($titres))
+			return;
+		
+		$this->_xml .= $this->_builder->title($this->cdata(strip_tags(implode('. ', $titres))));
 	}
 
 
-	public function visitAuteur($auteur) {
-		$this->_xml .= $this->_builder->creator($this->cdata($auteur));
+	/**
+	 * @param $auteurs array
+	 */
+	public function visitAuteurs($auteurs) {
+		$this->_visitAuteurWithClosure($auteurs, function ($data) {
+			return $this->_builder->creator($this->cdata($data));
+		});
+	}
+
+
+	/**
+	 * @param $auteurs array
+	 */
+	public function visitContributeurs($auteurs) {
+		$this->_visitAuteurWithClosure($auteurs, function ($data) {
+			return $this->_builder->contributor($this->cdata($data));
+		});
+	}
+
+
+	protected function _visitAuteurWithClosure($auteurs, $closure) {
+		if (!is_array($auteurs) || empty($auteurs))
+			return;
+
+		foreach ($auteurs as $auteur) {
+			$parts = explode('|', $auteur);
+			$this->_xml .= $closure(implode(', ', $parts));
+		}
 	}
 
 
@@ -103,13 +136,27 @@ class Class_Notice_DublinCoreVisitor {
 		if (!$id)
 			return;
 
-		if ($type = Class_TypeDoc::getLoader()->find($id))
+		if ($type = Class_TypeDoc::find($id))
 			$this->_xml .= $this->_builder->type($this->cdata($type->getLabel()));
 
-		if (in_array($id, array(Class_TypeDoc::LIVRE_NUM, Class_TypeDoc::DIAPORAMA))) 
-			$this->_xml .= $this->_builder->format('image/jpeg');
+		if (in_array($id, [Class_TypeDoc::LIVRE_NUM, Class_TypeDoc::DIAPORAMA])) 
+			$this->visitFormat('image/jpeg');
+	}
 
-		$this->_xml .= $this->_builder->rights((Class_TypeDoc::LIVRE_NUM == $id) ? 'domaine public' : '');
+
+	public function visitFormats($datas) {
+		if (!is_array($datas) || empty($datas))
+			return;
+
+		foreach ($datas as $data)
+			$this->visitFormat($data);
+	}
+
+	
+	public function visitFormat($data) {
+		if (!$data)
+			return;
+		$this->_xml .= $this->_builder->format($this->cdata($data));
 	}
 
 
@@ -132,6 +179,25 @@ class Class_Notice_DublinCoreVisitor {
 		if (!$ean)
 			return;
 		$this->_xml .= $this->_builder->identifier($ean);
+	}
+
+
+	/**
+	 * @param $album Class_Album
+	 */
+	public function visitAlbum($album) {
+		$this->_xml .= $this->_builder->rights((null === $album) ? '' : $album->getDroits());
+	}
+
+
+	/**
+	 * @param $source array
+	 */
+	public function visitSource($source) {
+		if (!is_array($source) || empty($source))
+			return;
+
+		$this->_xml .= $this->_builder->source($this->cdata(implode(', ', $source)));
 	}
 
 
@@ -160,5 +226,4 @@ class Class_Notice_DublinCoreVisitor {
 		return $this->_globalSetSpec;
 	}
 }
-
 ?>

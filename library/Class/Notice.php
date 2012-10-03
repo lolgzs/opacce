@@ -72,9 +72,10 @@ class Class_Notice extends Storm_Model_Abstract {
 	protected $_loader_class = 'NoticeLoader';
 	protected $_table_name = 'notices';
 	protected $_table_primary = 'id_notice';
-	protected $_unimarc;
-	protected $_has_many = array('exemplaires' => array('model' => 'Class_Exemplaire',
-																											'role' => 'notice'));
+	/** @var Class_NoticeUnimarc */
+	protected $_notice_unimarc;
+	protected $_has_many = ['exemplaires' => ['model' => 'Class_Exemplaire',
+																						'role' => 'notice']];
 
 
 	protected
@@ -87,25 +88,25 @@ class Class_Notice extends Storm_Model_Abstract {
 		$_editeur,
 		$_langueCodes;
 
-	protected $_default_attribute_values = array('type_doc' => 0,
-																							 'annee' => null,
-																							 'isbn' => null,
-																							 'ean' => null,
-																							 'tome_alpha' => '',
-																							 'clef_chapeau' => '');
+	protected $_default_attribute_values = ['type_doc' => 0,
+																					'annee' => null,
+																					'isbn' => null,
+																					'ean' => null,
+																					'tome_alpha' => '',
+																					'clef_chapeau' => ''];
 
 
 	public function getAvisByUser($user)	{
 		return Class_AvisNotice::getLoader()
-			->findAllBy(array('clef_oeuvre' => $this->getClefOeuvre(),
-					'id_user' => $user->getId()));
+			->findAllBy(['clef_oeuvre' => $this->getClefOeuvre(),
+					         'id_user' => $user->getId()]);
 	}
 
 
 	public function getAvis() {
 		if (!isset($this->_avis))	{
 			$avis_loader = Class_AvisNotice::getLoader();
-			$this->_avis = $avis_loader->findAllBy(array('clef_oeuvre' => $this->getClefOeuvre()));
+			$this->_avis = $avis_loader->findAllBy(['clef_oeuvre' => $this->getClefOeuvre()]);
 		}
 
 		return $this->_avis;
@@ -134,17 +135,17 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
-	/*
+	/**
 	 * @return Class_Album
 	 */
 	public function getAlbum() {
 		if ($first_exemplaire = $this->getFirstExemplaire())
-			return Class_Album::getLoader()->find($first_exemplaire->getIdOrigine());
+			return Class_Album::find($first_exemplaire->getIdOrigine());
 		return null;
 	}
 
 
-	/*
+	/**
 	 * @return Class_Exemplaire
 	 */
 	public function getFirstExemplaire() {
@@ -154,7 +155,7 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
-	/*
+	/**
 	 * @return boolean
 	 */
 	public function isLivreNumerique() {
@@ -162,41 +163,41 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
-	/*
+	/**
 	 * @return Class_Notice
 	 */
-	public function beLivreNumerique() {
-		return $this->setTypeDoc(Class_TypeDoc::LIVRE_NUM);
-	}
+	 public function beLivreNumerique() {
+		 return $this->setTypeDoc(Class_TypeDoc::LIVRE_NUM);
+	 }
 
 
-	/*
-	 * @return Class_Notice
-	 */
-	public function beLivre() {
-		return $this->setTypeDoc(Class_TypeDoc::LIVRE);
-	}
+	 /**
+		* @return Class_Notice
+		*/
+	 public function beLivre() {
+		 return $this->setTypeDoc(Class_TypeDoc::LIVRE);
+	 }
 
 
-	public function getAllAvisPerSource($page = null)
-	{
-		$all_avis = array('bib' => array('liste' => $avis_bib = $this->getAvisBibliothequaires(),
-						'note' => $this->getNoteMoyenneAvisBibliothequaires(),
-						'nombre' => count($avis_bib),
-						'titre' => 'Bibliothécaires'),
-				'abonne' => array('liste' => $avis_abon = $this->getAvisAbonnes(),
-						'note' => $this->getNoteMoyenneAvisAbonnes(),
-						'nombre' => count($avis_abon),
-						'titre' => 'Lecteurs du portail'));
+	 public function getAllAvisPerSource($page = null)
+	 {
+		 $all_avis = array('bib' => array('liste' => $avis_bib = $this->getAvisBibliothequaires(),
+						 'note' => $this->getNoteMoyenneAvisBibliothequaires(),
+						 'nombre' => count($avis_bib),
+						 'titre' => 'Bibliothécaires'),
+				 'abonne' => array('liste' => $avis_abon = $this->getAvisAbonnes(),
+						 'note' => $this->getNoteMoyenneAvisAbonnes(),
+						 'nombre' => count($avis_abon),
+						 'titre' => 'Lecteurs du portail'));
 
-		foreach (array('Class_WebService_Babelio', 'Class_WebService_Amazon') as $provider_class)
-		{
-			$provider = new $provider_class();
-			$source = strtolower(array_last(explode('_', $provider_class)));
-			if ($data = $provider->getAvis($this, $page)) $all_avis[$source] = $data;
-		}
+		 foreach (array('Class_WebService_Babelio', 'Class_WebService_Amazon') as $provider_class)
+		 {
+			 $provider = new $provider_class();
+			 $source = strtolower(array_last(explode('_', $provider_class)));
+			 if ($data = $provider->getAvis($this, $page)) $all_avis[$source] = $data;
+		 }
 
-		return $all_avis;
+				return $all_avis;
 	}
 
 	public function getAvisBibliothequaires()
@@ -226,7 +227,7 @@ class Class_Notice extends Storm_Model_Abstract {
 
 	public function setUnimarc($unimarc)
 	{
-		$this->_unimarc->setNotice($unimarc, 0);
+		$this->getNoticeUnimarc()->setNotice($unimarc, 0);
 		parent::setUnimarc($unimarc);
 	}
 
@@ -281,23 +282,16 @@ class Class_Notice extends Storm_Model_Abstract {
 		return ($this->getTypeDoc() <= 5);
 	}
 
-// ----------------------------------------------------------------
-// Constructeur 
-// ----------------------------------------------------------------
-	function __construct()
-	{
-		$this->_unimarc = new Class_NoticeUnimarc();
-	}
 
 	// ----------------------------------------------------------------
 	// délégation des appels notice unimarc (Class_Notice n'hérite plus NoticeUnimarc)
 	// ----------------------------------------------------------------
-	public function __call($method, $args)
-	{
-		if (method_exists($this->_unimarc, $method))
-		{
-			if (!$this->_unimarc->hasNotice() and array_key_exists('unimarc', $this->_attributes)) $this->_unimarc->setNotice($this->_attributes['unimarc']);
-			return call_user_func_array(array($this->_unimarc, $method), $args);
+	public function __call($method, $args) {
+		if (method_exists($this->getNoticeUnimarc(), $method)) {
+			if (!$this->getNoticeUnimarc()->hasNotice()
+				  and array_key_exists('unimarc', $this->_attributes))
+				$this->getNoticeUnimarc()->setNotice($this->_attributes['unimarc']);
+			return call_user_func_array(array($this->getNoticeUnimarc(), $method), $args);
 		}
 
 		return parent::__call($method, $args);
@@ -320,16 +314,19 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Rend la structure notice pour affichage liste
 // ----------------------------------------------------------------
-	public function getNotice($id_notice, $champs="")	{
+	public function getNotice($id_notice, $champs = '')	{
 		$this->_resetFieldsForCompatibility();	// note: ne pas enlever sinon impossible à tester les notices
 
-		if (!$id_notice) return null;
+		if (!$id_notice)
+			return null;
 
 		// Lire la notice
 		$req = "select type_doc,facettes,isbn,ean,annee,tome_alpha,clef_alpha,unimarc from notices where id_notice=$id_notice";
 		$data = fetchEnreg($req);
-		if (!$data["unimarc"]) return false;
-		$this->_unimarc->setNotice($data["unimarc"], 0);
+		if (!$data["unimarc"])
+			return false;
+
+		$this->getNoticeUnimarc()->setNotice($data["unimarc"], 0);
 
 		// Champs de base
 		$notice["id_notice"] = $id_notice;
@@ -342,16 +339,12 @@ class Class_Notice extends Storm_Model_Abstract {
 		$notice["clef_alpha"] = $data["clef_alpha"];
 
 		// Id service (isbn ou ean)
-		if ($data["isbn"]) $notice["id_service"] = str_replace("-", "", $data["isbn"]);
-		else $notice["id_service"] = $data["ean"];
+		$notice["id_service"] = ($data["isbn"]) ? str_replace("-", "", $data["isbn"]) : $data["ean"];
 
 		// Champs demandés
-		if ($champs)
-		{
-			for ($i = 0; $i < strlen($champs); $i++)
-			{
-				switch ($champs[$i])
-				{
+		if ($champs) {
+			for ($i = 0; $i < strlen($champs); $i++) {
+				switch ($champs[$i]) {
 					case "T": $notice["T"] = $this->getTitrePrincipal($notice["type_doc"], $notice["tome_alpha"]); break;
 					case "A": $notice["A"] = $this->getAuteurPrincipal(); break;
 					case "E": $notice["E"] = $this->getEditeur(); break;
@@ -435,24 +428,31 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Renvoie tous les champs de la notice (notice detaillee)
 // ----------------------------------------------------------------
-	public function getTousChamps($id_notice)
-	{
+	public function getTousChamps($id_notice) {
 		// Lire la notice de base
 		$notice = $this->getNotice($id_notice, "N");
-		if (!$notice) return false;
+		if (!$notice)
+			return false;
 
 		// Champs
 		$champs = "TAKEFCNMDGPILOR8";
-		for ($i = 0; $i < strlen($champs); $i++)
-		{
+		for ($i = 0; $i < strlen($champs); $i++) {
 			$clef = $champs[$i];
 			$rubrique = Class_Codification::getNomChamp($clef, 1);
-			if ($clef == "N") $notice["entete"][$rubrique] = $notice["N"];
-			elseif ($clef == "I")
-			{ if ($notice["isbn"] )$notice["entete"]["Isbn"] = $notice["isbn"]; else $notice["entete"]["Ean"] = $notice["ean"]; }
-			elseif ($clef == "A") $notice["entete"][$rubrique] = $this->getAuteurs(false, true);
-			elseif ($clef == "L") $notice["entete"][$rubrique] = $this->getLangues();
-			else $notice["entete"][$rubrique] = $this->getChampNotice($clef, $notice["facettes"]);
+			if ($clef == "N") {
+				$notice["entete"][$rubrique] = $notice["N"];
+			} elseif ($clef == "I") {
+				if ($notice["isbn"])
+					$notice["entete"]["Isbn"] = $notice["isbn"];
+				else
+					$notice["entete"]["Ean"] = $notice["ean"];
+			} elseif ($clef == "A") {
+				$notice["entete"][$rubrique] = $this->getAuteurs(false, true);
+			} elseif ($clef == "L") {
+				$notice["entete"][$rubrique] = $this->getLangues();
+			} else {
+				$notice["entete"][$rubrique] = $this->getChampNotice($clef, $notice["facettes"]);
+			}
 		}
 		return $notice;
 	}
@@ -469,19 +469,20 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Renvoie les articles d'un périodique
 // ----------------------------------------------------------------
-	public function getArticlesPeriodique($id_notice)
-	{
+	public function getArticlesPeriodique($id_notice) {
 		// lire dans la base
 		$notice = fetchEnreg("select clef_chapeau,tome_alpha from notices where id_notice=$id_notice");
 		$data = fetchAll("select unimarc from notices_articles where clef_chapeau='" . $notice["clef_chapeau"] . "' and clef_numero='" . $notice["tome_alpha"] . "'");
-		if (!$data) return false;
-		foreach ($data as $enreg)
-		{
-			if (!$enreg["unimarc"]) continue;
-			$this->_unimarc->setNotice($enreg["unimarc"], 0);
+		if (!$data)
+			return false;
+		foreach ($data as $enreg) {
+			if (!$enreg["unimarc"])
+				continue;
+			$this->getNoticeUnimarc()->setNotice($enreg["unimarc"], 0);
 			$article["titre"] = $this->getTitrePrincipal();
 			$complement = $this->getComplementTitre();
-			if ($complement) $article["titre"].=" : " . $complement;
+			if ($complement)
+				$article["titre"].=" : " . $complement;
 			$auteurs = $this->getAuteurs(true);
 			$article["auteur"] = $auteurs[0];
 			$article["pagination"] = $this->getCollation();
@@ -497,17 +498,15 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Rend un champ notice détaillé avec rebond et libellé
 // ----------------------------------------------------------------
-	public function getChampNotice($champ, $facettes="")
-	{
-		$ret = array();
+	public function getChampNotice($champ, $facettes = '') {
+		$ret = [];
 		// Si facettte
-		if (strPos("ADPMG", $champ) !== false)
-		{
-			$items = array_filter(explode(" ", trim($facettes)));
-			foreach ($items as $item)
-			{
+		if (strPos("ADPMG", $champ) !== false) {
+			$items = array_filter(explode(' ', trim($facettes)));
+			foreach ($items as $item) {
 				$type = $item[0];
-				if ($type != $champ) continue;
+				if ($type != $champ)
+					continue;
 				$id = substr($item, 1);
 				$libelle = Class_Codification::getLibelleFacette($item);
 				$url = BASE_URL . "/recherche/rebond?facette=reset&amp;code_rebond=" . $item;
@@ -517,8 +516,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		// Champ texte
 		else
 		{
-			switch ($champ)
-			{
+			switch ($champ) {
 				case "T": $ret = $this->getZonesTitre(); break;
 				case "E": $ret = $this->getEditeur(); break;
 				case "F": $ret = $this->getCentreInteret(); break;
@@ -651,31 +649,26 @@ class Class_Notice extends Storm_Model_Abstract {
 		return $data[0];
 	}
 
-// ----------------------------------------------------------------
-// Titre principal
-// ----------------------------------------------------------------
-	public function getTitrePrincipal($type_doc=false, $tome=false)
-	{
-		if (!isset($this->_titre_principal))
-		{
+
+	public function getTitrePrincipal($type_doc = false, $tome = false) {
+		if (!isset($this->_titre_principal)) {
 			// 200$a
 			$titre = '';
-			if ($titres = $this->get_subfield("200", "a")) $titre = trim($titres[0]);
+			if ($titres = $this->get_subfield('200', 'a'))
+				$titre = trim($titres[0]);
 
 			// Périodique on cherche le chapeau et le n°
-			if ($data = $this->get_subfield("461", "t"))
-			{
+			if ($data = $this->get_subfield("461", "t")) {
 				$chapeau = trim($data[0]);
-				if ($chapeau)
-				{
+				if ($chapeau) {
 					if ($titre == $chapeau) $titre = "";
-					if ($tome) $chapeau.=" n° " . $tome;
+					if ($tome) $chapeau .= " n° " . $tome;
 					if ($titre) $titre = $chapeau . BR . $titre;
-					else $titre=$chapeau;
+					else $titre = $chapeau;
 				}
 			}
 
-			$titre=$this->filtreTitre($titre);
+			$titre = $this->filtreTitre($titre);
 			$this->_titre_principal = $titre;
 		}
 		return $this->_titre_principal;
@@ -697,39 +690,47 @@ class Class_Notice extends Storm_Model_Abstract {
 		return trim($titre);
 	}
 
-// ----------------------------------------------------------------
-// TITRES
-// ----------------------------------------------------------------
-	protected function getZonesTitre()
-	{
+
+	/**
+	 * @return array
+	 */
+	protected function getZonesTitre() {
 		// Recup des zones titres dans les variables
 		$zones = fetchOne("Select valeur from variables where clef='unimarc_zone_titre'");
-		$zones = explode(";", trim($zones));
-		foreach ($zones as $elem)
-		{
+		$zones = explode(';', trim($zones));
+		return $this->_getTitresDansZones($zones);
+	}
+
+
+	/**
+	 * @param $zones array of string ex:200$a
+	 * @return array
+	 */
+	protected function _getTitresDansZones($zones) {
+		xdebug_break();
+		if (!is_array($zones) || empty($zones))
+			return [];
+
+		$titres = [];
+		foreach ($zones as $elem) {
 			$zone = strLeft($elem, 3);
 			$champ = strRight($elem, 1);
 			$data = $this->get_subfield($zone);
-			foreach ($data as $items)
-			{
+			foreach ($data as $items) {
 				$sous_champs = $this->decoupe_bloc_champ($items);
-				foreach ($sous_champs as $item)
-				{
-					if ($item["code"] == $champ)
-					{
-						$item = $this->filtreTitre($item["valeur"]);
-						if ($item) $titre[] = $item;
+				foreach ($sous_champs as $item) {
+					if ($item['code'] == $champ) {
+						$item = $this->filtreTitre($item['valeur']);
+						if ($item) $titres[] = $item;
 					}
 				}
 			}
 		}
-		return($titre);
+		return $titres;
 	}
-// ----------------------------------------------------------------
-// Filtrage des titres
-// ----------------------------------------------------------------
-	private function filtreTitre($titre)
-	{
+
+
+	private function filtreTitre($titre) {
 		$titre = str_replace(BR, "#BR#", $titre);
 		$titre = str_replace("[", "", $titre);
 		$titre = str_replace("]", " ", $titre);
@@ -738,111 +739,209 @@ class Class_Notice extends Storm_Model_Abstract {
 		$titre = str_replace("  ", " ", $titre);
 		$titre = str_replace(chr(136), "", $titre);
 		$titre = str_replace(chr(137), "", $titre);
-		if (substr($titre, 0, 1) == "?")
-		{
+
+		if (substr($titre, 0, 1) == '?') {
 			$deb = substr($titre, 0, 6);
-			$titre = str_replace("?", "", $deb) . substr($titre, 6);
+			$titre = str_replace('?', '', $deb) . substr($titre, 6);
 		}
+		
 		// filtrage caractères terminaux
-		$filtre=array("/",";",",",":");
-		foreach($filtre as $car)
-		{
-			if(substr($titre,-1,1)==$car) $titre=substr($titre,0,strlen($titre)-1);
+		$filtre = ["/", ";", ",", ":"];
+		foreach($filtre as $car) {
+			if (substr($titre,-1,1) == $car)
+				$titre = substr($titre, 0, strlen($titre)-1);
 		}
+		
 		$titre = str_replace("#BR#",BR, $titre);
 		return $titre;
 	}
-	
-	public function getAuteurPrincipal()
-	{
-		if (!isset($this->_auteur_principal))
-		{
-			$this->_auteur_principal = '';
 
-			if (count($auteurs = $this->getAuteurs(true))) $this->_auteur_principal = $auteurs[0];
-			else
-			{
-				if ($data = $this->get_subfield("200", "f")) $this->_auteur_principal = $data[0];
+	
+	public function getAuteurPrincipal() {
+		if (!isset($this->_auteur_principal)) {
+			$this->_auteur_principal = '';
+			if (count($auteurs = $this->getAuteurs(true))) {
+				$this->_auteur_principal = $auteurs[0];
+			} else {
+				if ($data = $this->get_subfield("200", "f"))
+					$this->_auteur_principal = $data[0];
 			}
 		}
 
 		return $this->_auteur_principal;
 	}
 
-	public function setAuteurPrincipal($auteur)
-	{
+
+	public function setAuteurPrincipal($auteur) {
 		$this->_auteur_principal = $auteur;
 		return $this;
 	}
 
-	public function getUnimarcZone($zone)
-	{
+
+	public function getUnimarcZone($zone) {
 		return $this->get_subfield($zone);
 	}
 
-// ----------------------------------------------------------------
-// AUTEURS
-// ----------------------------------------------------------------
-	public function getAuteurs($auteurPrincipal=false, $getFonction=false)
-	{
-		$indexation=new Class_Indexation();
-		$auteur = array();
-		$zones = array("700", "710", "720", "730", "701", "702", "711", "712", "721", "722");
-		foreach ($zones as $zone)
-		{
-			$data = $this->get_subfield($zone);
-			foreach ($data as $items)
-			{
-				$sous_champs = $this->decoupe_bloc_champ($items);
-				$nom = "";
-				$prenom = "";
-				$fonction = "";
-				$fonction_pergame = "";
-				foreach ($sous_champs as $item)
-				{
-					if ($item["code"] == "a") $nom = trim($item["valeur"]);
-					elseif ($item["code"] == "b") $prenom = trim($item["valeur"]);
-					elseif ($item["code"] == "4") $fonction = trim($item["valeur"]);
-					elseif ($item["code"] == "g") $fonction_pergame = trim($item["valeur"]);
-				}
-				$nm = $nom . "|" . $prenom;
-				if ($getFonction == true) $nm.="|" . $fonction . "|" . $fonction_pergame;
-				if((strlen($nm) > 2 or $indexation->isMotInclu($nom))and striPos($nm,"ANONYME") === false) // On elimine les auteurs avec 1 seule lettre
-				{
-					$auteur[] = $nm;
-					if ($auteurPrincipal == true) return array(trim($prenom . " " . $nom));
-				}
-			}
+
+	public function getAuteurs($auteurPrincipal = false, $getFonction = false) {
+		$indexation = new Class_Indexation();
+		$auteurs = [];
+		$zones = ['700', '710', '720', '730', '701', '702', '711', '712', '721', '722'];
+
+		foreach ($zones as $zone) {
+			if ($auteurPrincipal
+				  && $auteur = $this->_getPremierAuteurDansZone($zone, $indexation))
+				return [$auteur];
+
+			$auteurs = array_merge($auteurs, $this->_getAuteursDansZone($zone, $indexation, $getFonction));
 		}
+
 		// Si fonctions on constitue une nouvelle matrice détaillée
-		if ($getFonction == true and count($auteur) > 0)
-		{
-			$ix = new Class_Indexation();
-			$new = array();
-			foreach ($auteur as $lig)
-			{
-				$item = explode("|", $lig);
-				$nom = $item[0];
-				$prenom = $item[1];
-				$fonction = $item[2];
-				$fonction_pergame = $item[3];
-				$code_alpha = $ix->alphaMaj($nom . "|" . $prenom);
-				$code_alpha = str_replace(" ", "x", $code_alpha);
-				if (!$code_alpha) continue;
-				$id_auteur = fetchOne("Select id_auteur from codif_auteur where MATCH(formes) AGAINST('\"" . $code_alpha . "\"' IN BOOLEAN MODE) ");
-				if (!$id_auteur) continue;
-				$fonction = fetchOne("select libelle from codif_auteurs_fonctions where id_fonction='$fonction'");
-				$index = count($new);
-				$new[$index]["id"] = $id_auteur;
-				$new[$index]["libelle"] = trim($prenom . " " . $nom);
-				if ($fonction_pergame) $fonction = $fonction_pergame;
-				if ($fonction) $new[$index]["libelle"].=' <font color="#666666">(' . $fonction . ')</font>';
-				$new[$index]["url"] = BASE_URL . "/recherche/rebond?facette=reset&amp;code_rebond=A" . $id_auteur;
-			}
-			return $new;
-		}
-		return($auteur);
+		if ($getFonction and 0 < count($auteurs))
+			return $this->_getAuteursAvecFonctions($auteurs);
+		
+		return $auteurs;
 	}
+
+
+	/**
+	 * @param $zone string
+	 * @param $indexation Class_Indexation
+	 * @return string
+	 */
+	protected function _getPremierAuteurDansZone($zone, $indexation) {
+		$data = $this->get_subfield($zone);
+		foreach ($data as $items) {
+			$auteur = $this->_getAuteurDansSousChamps($this->decoupe_bloc_champ($items));
+			$libelle = $auteur->nom . '|' . $auteur->prenom;
+			
+			if ($this->_isAuteurDansZoneValide($libelle, $indexation)) {
+				return trim($auteur->prenom . ' ' . $auteur->nom);
+			}
+		}
+		return '';
+	}
+
+
+	/**
+	 * @param $zone string
+	 * @param $indexation Class_Indexation
+	 * @param $avec_fonction boolean
+	 * @return array
+	 */
+	protected function _getAuteursDansZone($zone, $indexation, $avec_fonction = false) {
+		$auteurs = [];
+		$data = $this->get_subfield($zone);
+		foreach ($data as $items) {
+			$libelle = $this->_getAuteurDansZone($items, $avec_fonction);
+			
+			if ($this->_isAuteurDansZoneValide($libelle, $indexation)) {
+				$auteurs[] = $libelle;
+			}
+		}
+
+		return $auteurs;
+	}
+
+
+	/**
+	 * @param $data array
+	 * @param $indexation Class_Indexation
+	 * @param $avec_fonction boolean
+	 * @return string
+	 */
+	protected function _getAuteurDansZone($data, $avec_fonction = false) {
+		$auteur = $this->_getAuteurDansSousChamps($this->decoupe_bloc_champ($data));
+		$libelle = $auteur->nom . '|' . $auteur->prenom;
+		if ($avec_fonction)
+			$libelle .= '|' . $auteur->fonction . '|' . $auteur->fonction_pergame;
+	 
+		return $libelle;
+	}
+
+
+	/**
+	 * @param $auteur string
+	 * @param $indexation Class_Indexation
+	 * @return boolean
+	 */
+	protected function _isAuteurDansZoneValide($auteur, $indexation) {
+		return (strlen($auteur) > 2 or $indexation->isMotInclu($auteur))
+				and striPos($auteur, 'ANONYME') === false;
+	}
+
+
+	/**
+	 * @param $data array
+	 * @return stdClass
+	 */
+	protected function _getAuteurDansSousChamps($data) {
+		$auteur = new stdClass();
+		$auteur->nom = $auteur->prenom = $auteur->fonction = $auteur->fonction_pergame = '';
+		foreach ($data as $item) {
+			if ($item['code'] == 'a')
+				$auteur->nom = trim($item['valeur']);
+			elseif ($item['code'] == 'b')
+				$auteur->prenom = trim($item['valeur']);
+			elseif ($item['code'] == '4')
+				$auteur->fonction = trim($item['valeur']);
+			elseif ($item['code'] == 'g')
+				$auteur->fonction_pergame = trim($item['valeur']);
+		}
+		return $auteur;
+	}
+
+
+	/**
+	 * @param $auteur array
+	 * @return array
+	 */
+	protected function _getAuteursAvecFonctions($auteurs) {
+		if (!is_array($auteurs) || empty($auteurs))
+			return [];
+		
+		$ix = new Class_Indexation();
+		$result = [];
+		foreach ($auteurs as $auteur) {
+			$avec_fonction = $this->_getAuteurAvecFonction($auteur, $ix);
+			if (!empty($avec_fonction))
+				$result[] = $avec_fonction;
+		}
+ 
+		return $result;
+	}
+
+
+	/**
+	 * @param $auteur string formatted
+	 * @see getAuteurs
+	 */
+	protected function _getAuteurAvecFonction($auteur, $indexation) {
+		$item = explode('|', $auteur);
+		$nom = $item[0];
+		$prenom = $item[1];
+		$fonction = $item[2];
+		$fonction_pergame = $item[3];
+		$code_alpha = $indexation->alphaMaj($nom . '|' . $prenom);
+		$code_alpha = str_replace(' ', 'x', $code_alpha);
+		if (!$code_alpha)
+			return [];
+				
+		$id_auteur = fetchOne("Select id_auteur from codif_auteur where MATCH(formes) AGAINST('\"" . $code_alpha . "\"' IN BOOLEAN MODE) ");
+		if (!$id_auteur)
+			return [];
+				
+		$fonction = fetchOne("select libelle from codif_auteurs_fonctions where id_fonction='$fonction'");
+		if ($fonction_pergame)
+			$fonction = $fonction_pergame;
+		
+		return [
+			'id' => $id_auteur,
+			'libelle' => trim($prenom . ' ' . $nom) . (($fonction) ? ' <font color="#666666">(' . $fonction . ')</font>': ''),
+			'url' => BASE_URL . "/recherche/rebond?facette=reset&amp;code_rebond=A" . $id_auteur
+		];
+	}
+
 
 // ----------------------------------------------------------------
 // EDITEUR
@@ -855,6 +954,14 @@ class Class_Notice extends Storm_Model_Abstract {
 		if (!$data = $this->get_subfield("210", "c"))
 			return '';
 		return trim($data[0]);
+	}
+
+
+	public function getEditeurAvecVille() {
+		$editeur = $this->getEditeur();
+		if ($data = $this->get_subfield('210', 'a'))
+			$editeur .= ' (' . trim($data[0]) . ')';
+		return $editeur;
 	}
 
 
@@ -1022,9 +1129,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		return($notes);
 	}
 
-// ----------------------------------------------------------------
-// Collation
-// ----------------------------------------------------------------
+
 	public function getCollation() {
 		if (!isset($this->_collation))	{
 			$collation = '';
@@ -1040,6 +1145,24 @@ class Class_Notice extends Storm_Model_Abstract {
 		}
 		return $this->_collation;
 	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getCollations() {
+		$collations = [];
+		$data = $this->get_subfield('215');
+		foreach ($data as $items)	{
+			$sous_champs = $this->decoupe_bloc_champ($items);
+			foreach ($sous_champs as $item)	{
+				$collations[] = $item['valeur'];
+			}
+		}
+
+		return $collations;
+	}
+	
 
 // ----------------------------------------------------------------
 // Résumé
@@ -1114,21 +1237,27 @@ class Class_Notice extends Storm_Model_Abstract {
 
 
 	public function acceptVisitor($visitor) {
+		$indexation = new Class_Indexation();
 		$visitor->visitClefAlpha($this->getClefAlpha());
-		$visitor->visitTitre($this->getTitrePrincipal());
-		$visitor->visitAuteur($this->getAuteurPrincipal());
+		$visitor->visitTitres($this->_getTitresDansZones(['200$a', '200$e']));
+		$visitor->visitAuteurs($this->_getAuteursDansZone('700', $indexation));
+		$visitor->visitContributeurs($this->_getAuteursDansZone('702', $indexation));
 		foreach ($this->getMatieres() as $matiere)
 			$visitor->visitMatiere($matiere);
+		$visitor->visitFormats($this->getCollations());
 		$visitor->visitResume($this->getResume());
 		$visitor->visitDateMaj($this->getDateMaj());
 		$visitor->visitAnnee($this->getAnnee());
-		$visitor->visitEditeur($this->getEditeur());
+		$visitor->visitEditeur($this->getEditeurAvecVille());
 		$visitor->visitLangues($this->getLangueCodes());
 		$visitor->visitTypeDoc($this->getTypeDoc());
 		if ($this->hasVignette())
 			$visitor->visitVignette($this->getUrlVignette());
 		$visitor->visitIsbn($this->getIsbn());
 		$visitor->visitEan($this->getEan());
+		$visitor->visitAlbum($this->getAlbum());
+		$visitor->visitSource(array_merge($this->get_subfield('801', 'b'),
+				                              $this->get_subfield('852', 'k')));
 	}
 
 
@@ -1169,6 +1298,27 @@ class Class_Notice extends Storm_Model_Abstract {
 	 */
 	public function getTypeDocPergame() {
 		return Class_TypeDoc::find($this->getTypeDoc())->toPergame();
+	}
+
+
+	/**
+	 * @param $noticeUnimarc Class_NoticeUnimarc
+	 * @category testing
+	 * @return Class_Notice
+	 */
+	public function setNoticeUnimarc($noticeUnimarc) {
+		$this->_notice_unimarc = $noticeUnimarc;
+		return $this;
+	}
+
+
+	/**
+	 * @return Class_NoticeUnimarc
+	 */
+  public function getNoticeUnimarc() {
+		if (null == $this->_notice_unimarc)
+			$this->_notice_unimarc = new Class_NoticeUnimarc();
+		return $this->_notice_unimarc;
 	}
 }
 

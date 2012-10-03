@@ -38,20 +38,26 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 		parent::setUp();
 		$this->_summary = 'Apres la mort < tragique de Lily et James Potter, Harry est recueilli par sa tante Petunia, la soeur de Lily et son oncle Vernon. Son oncle et sa tante, possedant une haine feroce envers les parents d\'Harry, le maltraitent et laissent leur fils Dudley l\'humilier. Harry ne sait rien sur ses parents. On lui a toujours dit qu\'ils etaient morts dans un accident de voiture.';
 
-		$potter = Class_Notice::getLoader()
-			->newInstanceWithId(4)
+		$potter = Class_Notice::newInstanceWithId(4)
 			->setClefAlpha('harrypotter-sorciers')
-			->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
-			->setAuteurPrincipal('Joanne Kathleen Rowling')
 			->setDateMaj('2012-04-23')
 			->setAnnee('2012')
 			->setResume($this->_summary)
 			->setMatieres(array('Potions', 'Etude des runes'))
-			->setEditeur('Bloomsbury Publishing')
 			->setLangueCodes(array('fre', 'eng'))
 			->setIsbn('978-2-07-054127-0')
 			->setEan('')
-			->setTypeDoc(1);
+			->setTypeDoc(1)
+			->setNoticeUnimarc(DublinCoreNoticeUnimarcTesting::newInstance()
+				->subfieldWillReturn(['215'], [' 1a636 p.d22 cm'])
+				->subfieldWillReturn(['200'], ['1 aHarry Potter a l\'ecole des sorciersePotter est un coquinfJoanne K. RowlinghT.4'])
+				->subfieldWillReturn(['700'], [' 1aRowlingbJoanne Kathleen',
+						                           ' 1aRowlingbBebop a lula'])
+				->subfieldWillReturn(['702'], [' 1aCoutonbPatrick'])
+				->subfieldWillReturn(['210', 'c'], ['Bloomsbury Publishing'])
+				->subfieldWillReturn(['210', 'a'], ['Londres'])
+				->subfieldWillReturn(['801', 'b'], ['Castagnera'])
+				->subfieldWillReturn(['852', 'k'], ['LV/R ROW']));
 		$this->_dublin_core_visitor->visit($potter);
 	}
 
@@ -69,28 +75,47 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 
 	/** @test */
 	public function identifierShouldBeHarryPotterSorciers() {
-		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
-																							'//oai_dc:dc/dc:identifier',
-																							sprintf('http://localhost%s/recherche/viewnotice/clef/harrypotter-sorciers',
-																											BASE_URL));
+		$xml = $this->_dublin_core_visitor->xml();
+		$this->_xpath->assertXPathContentContains(
+				$xml,
+				'//oai_dc:dc/dc:identifier',
+				sprintf('http://localhost%s/recherche/viewnotice/clef/harrypotter-sorciers',
+								BASE_URL)
+		);
 	}
 
 
 	/** @test */
-	public function titleShouldBeHarryPotterEcoleSorciers() {
+	public function titleShouldBeHarryPotterEcoleSorciersWithComplements() {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:title',
-																							'Harry Potter a l\'ecole des sorciers');
+																							'Harry Potter a l\'ecole des sorciers. Potter est un coquin');
 	}
 
 
 	/** @test */
-	public function creatorShouldBeJKRowling() {
+	public function creatorJKRowlingShouldBePresent() {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:creator',
-																							'Joanne Kathleen Rowling');
+																							'Rowling, Joanne Kathleen');
 	}
 
+
+	/** @test */
+	public function creatorBebopRowlingShouldBePresent() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:creator',
+																							'Rowling, Bebop a lula');
+	}
+
+
+	/** @test */
+	public function contributorPatrickCoutonShouldBePresent() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:contributor',
+																							'Couton, Patrick');
+	}
+	
 
 	/** @test */
 	public function dateShouldBe2012() {
@@ -135,7 +160,7 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 	public function publisherShouldBeBloomsbury() {
 		$this->_xpath->assertXpathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:publisher',
-																							'Bloomsbury Publishing');
+																							'Bloomsbury Publishing (Londres)');
 	}
 
 
@@ -177,6 +202,29 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 																							'');
 	}
 
+
+	/** @test */
+	public function shouldHave636PagesFormat() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:format',
+																							'636 p.');
+	}
+
+
+	/** @test */
+	public function shouldHave22CmFormat() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:format',
+																							'22 cm');
+	}
+
+
+	/** @test */
+	public function shouldHaveCastagneraSource() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:source',
+																							'Castagnera, LV/R ROW');
+	}
 }
 
 
@@ -184,21 +232,23 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$souvigny = Class_Notice::getLoader()
-			->newInstanceWithId(5)
+		$souvigny = Class_Notice::newInstanceWithId(5)
 			->setClefAlpha('souvigny-bible-11eme')
 			->setDateMaj('2012-04-23')
 			->setUrlVignette('http://server.fr/vignette.png')
 			->setIsbn('')
+			->setExemplaires([Class_Exemplaire::newInstanceWithId(22, ['id_origine' => 33])])
 			->setEan('4719-5120-0288-9')
 			->beLivreNumerique();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_TypeDoc')
 			->whenCalled('find')
 			->with(Class_TypeDoc::LIVRE_NUM)
-			->answers(Class_TypeDoc::getLoader()->newInstanceWithId(Class_TypeDoc::LIVRE_NUM)
-								->setLabel('livre numerise'));
-
+				->answers(Class_TypeDoc::newInstanceWithId(Class_TypeDoc::LIVRE_NUM)
+					           ->setLabel('livre numerise'));
+		
+		Class_Album::newInstanceWithId(33, ['droits' => 'domaine public',
+				                                'description' => '']);
 
 		$oldServerName = $_SERVER['SERVER_NAME'];
 		$_SERVER['SERVER_NAME'] = 'moulins.fr';
@@ -227,6 +277,13 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 	public function shouldNotHavePublisher() {
 		$this->_xpath->assertNotXPath($this->_dublin_core_visitor->xml(),
 																	'//oai_dc:dc/dc:publisher');
+	}
+
+
+	/** @test */
+	public function shouldNotHaveSource() {
+		$this->_xpath->assertNotXPath($this->_dublin_core_visitor->xml(),
+																	'//oai_dc:dc/dc:source');
 	}
 
 
@@ -267,6 +324,33 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:rights',
 																							'domaine public');
+	}
+}
+
+
+class DublinCoreNoticeUnimarcTesting extends Class_NoticeUnimarc {
+	protected $_subfields = [];
+
+	public static function newInstance() {
+		return new self();
+	}
+
+
+	public function subfieldWillReturn($call_params, $return) {
+		$this->_subfields[$this->_getKeyForParams($call_params)] = $return;
+		return $this;
+	}
+
+
+	public function get_subfield() {
+		if (array_key_exists($key = $this->_getKeyForParams(func_get_args()), $this->_subfields))
+			return $this->_subfields[$key];
+		return call_user_func_array(['parent', 'get_subfield'], func_get_args());
+	}
+
+
+	private function _getKeyForParams($params) {
+		return md5(serialize($params));
 	}
 }
 ?>
