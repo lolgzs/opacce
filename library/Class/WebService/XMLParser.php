@@ -139,7 +139,7 @@ class Class_WebService_XMLParser {
 	 * @return string
 	 */
 	public function tagWithoutNamespace($tag) {
-		$parts = split(':', $tag);
+		$parts = explode(':', $tag);
 		return end($parts);
 	}
 }
