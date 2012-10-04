@@ -30,6 +30,11 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	protected $_attributes;
 
 
+	public static function newInstanceWithEmptyExemplaire() {
+		return new static(null, new Class_WebService_SIGB_Exemplaire(null));
+	}
+
+
 	/**
 	 * @param string $id
 	 * @param Class_WebService_SIGB_Exemplaire $exemplaire

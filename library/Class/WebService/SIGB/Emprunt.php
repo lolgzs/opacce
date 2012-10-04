@@ -23,12 +23,6 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	protected $enRetard;
 	protected $renewable = true;
 
-	/**
-	 * @return Class_WebService_SIGB_Emprunt
-	 */
-	public static function newInstanceWithEmptyExemplaire() {
-		return new self(null, new Class_WebService_SIGB_Exemplaire(null));
-	}
 
 	/**
 	 * @return string

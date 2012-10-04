@@ -21,13 +21,21 @@
 class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_AbstractRESTService {
 	protected $_client_id;
 
+	/**
+	 * @param string $server_root
+	 * @return Class_Webservice_SIGB_Dynix_Service
+	 */
+	public function setServerRoot($server_root) {
+		if ('/' == substr($server_root, -1))
+			$server_root = substr($server_root, 0, -1);
+		return parent::setServerRoot($server_root);
+	}
+
+
 	public function setClientId($client_id) {
 		$this->_client_id = $client_id;
 		return $this;
 	}
-
-
-	public function getEmprunteur($user){}
 
 
 	public function reserverExemplaire($user, $exemplaire, $code_annexe){}
@@ -40,7 +48,8 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 
 
 	public function getNotice($id){
-		return $this->httpGetNotice(['service' => 'lookupTitleInfo',
+		return $this->httpGetNotice(['namespace' => 'standard',
+																 'service' => 'lookupTitleInfo',
 																 'clientID' => $this->_client_id,
 																 'titleID' => $id,
 																 'includeItemInfo' => 'true',
@@ -50,14 +59,53 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+	public function openSessionForUser($user) {
+		$xml = $this->httpGet(['namespace' => 'security',
+													 'service' => 'loginUser',
+													 'clientID' => $this->_client_id,
+													 'login' => $user->getLogin(),
+													 'password' => $user->getPassword()]);
+		return $this->_getTagData($xml, 'sessionToken');
+	}
+
+
+	/**
+	 * @param Class_Users $user
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function getEmprunteur($user) {
+		$session_token = $this->openSessionForUser($user);
+		$xml = $this->httpGet(['namespace' => 'patron',
+													 'service' => 'lookupMyAccountInfo',
+													 'includePatronHoldInfo' => 'ACTIVE',
+													 'includePatronInfo' => 'true',
+													 'includePatronCheckoutInfo' => 'ALL',
+													 'clientID' => $this->_client_id,
+													 'sessionToken' => $session_token]);
+
+		return Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader::newInstance()
+			->getEmprunteurFromXML($xml)
+			->setService($this);
+	}
+
+
+
 	/**
 	 * @param array $options
 	 * @return string
 	 */
 	public function buildQueryURL($options) {
+		$namespace = $options['namespace'];
+		unset($options['namespace']);
+
 		$service = $options['service'];
 		unset($options['service']);
-		return sprintf('%s/%s?%s', $this->getServerRoot(), $service, http_build_query($options));
+
+		return sprintf('%s/rest/%s/%s?%s', 
+									 $this->getServerRoot(), 
+									 $namespace,
+									 $service, 
+									 http_build_query($options));
 	}
 
 }

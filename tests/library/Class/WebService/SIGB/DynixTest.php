@@ -26,7 +26,7 @@ class DynixGetServiceTest extends Storm_Test_ModelTestCase {
 
 	public function setUp() {
 		Class_WebService_SIGB_Dynix::reset();
-		$this->_service = Class_WebService_SIGB_Dynix::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/rest/standard',
+		$this->_service = Class_WebService_SIGB_Dynix::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/',
 																															 'client_id' => 'myid']);
 	}
 
@@ -57,7 +57,7 @@ abstract class DynixTestCase extends Storm_Test_ModelTestCase {
 
 
 		$this->_service = Class_WebService_SIGB_Dynix
-			::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/rest/standard',
+			::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/',
 																															 'client_id' => 'SymWS'])
 			->setWebClient($this->_mock_web_client);
 	}
@@ -184,5 +184,99 @@ class DynixGetNoticeHarryPotter extends DynixTestCase {
 	}
 }
 
+
+
+
+class DynixGetEmprunteurManuLarcinet extends DynixTestCase {
+	protected $_manu;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/security/loginUser?clientID=SymWS&login=0917036&password=secret')
+			->answers(DynixFixtures::loginUserManuLarcinetXml())
+
+
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/lookupMyAccountInfo?includePatronHoldInfo=ACTIVE&includePatronInfo=true&includePatronCheckoutInfo=ALL&clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->answers(DynixFixtures::manuLarcinetAccoutInfoXml())
+
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/security/logoutUser?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->answers('')
+			->beStrict();
+
+		$this->_manu = $this->_service->getEmprunteur(Class_Users::newInstanceWithId(3, ['login' => '0917036', 
+																																										 'password' => 'secret']));
+	}
+
+
+	/** @test */
+	public function shouldAnswerAnEmprunteur() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Emprunteur', $this->_manu);
+	}
+
+
+	/** @test */
+	public function idShouldBe0917036() {
+		$this->assertEquals('0917036', $this->_manu->getId());
+	}
+
+
+	/** @test */
+	public function nbEmpruntsShouldBeThree() {
+		$this->assertEquals(3, $this->_manu->getNbEmprunts());
+	}
+
+
+	/** @test */
+	public function firstEmpruntCodeBarreShouldBe00406882() {
+		$this->assertEquals('00406882', $this->_manu->getEmpruntAt(0)->getCodeBarre());
+	}
+
+
+	/** @test */
+	public function firstEmpruntShouldDateRetourShouldBe17_10_2012() {
+		$this->assertEquals('17/10/2012', $this->_manu->getEmpruntAt(0)->getDateRetour());
+	}
+
+
+	/** @test */
+	public function nbReservationsShouldBeTwo() {
+		$this->assertEquals(2, $this->_manu->getNbReservations());
+	}
+
+
+	/** @test */
+	public function firstReservationCodeBarreShouldBe00577705() {
+		$this->assertEquals('00577705', $this->_manu->getReservationAt(0)->getCodeBarre());		
+	}
+
+
+	/** @test */
+	public function firstReservationRangShouldBeOne() {
+		$this->assertEquals(1, $this->_manu->getReservationAt(0)->getRang());		
+	}
+
+
+	/** @test */
+	public function firstReservationEtatShouldBeReserve() {
+		$this->assertEquals('Réservé', $this->_manu->getReservationAt(0)->getEtat());		
+	}
+
+
+	/** @test */
+	public function secondReservationRangShouldBeTwo() {
+		$this->assertEquals(2, $this->_manu->getReservationAt(1)->getRang());		
+	}
+
+
+	/** @test */
+	public function secondReservationEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', $this->_manu->getReservationAt(1)->getEtat());		
+	}
+}
 
 ?>

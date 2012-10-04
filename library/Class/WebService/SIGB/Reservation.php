@@ -23,12 +23,6 @@ class Class_WebService_SIGB_Reservation extends Class_WebService_SIGB_Exemplaire
 	protected $rang;
 	protected $etat;
 
-
-	public static function newInstanceWithEmptyExemplaire() {
-		return new self(null, new Class_WebService_SIGB_Exemplaire(null));
-	}
-
-
 	public function getRang() {
 		if (!isset($this->rang)) $this->rang=1;
 		return $this->rang;
