@@ -1732,4 +1732,68 @@ class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerT
 	}
 }
 
+
+
+class Admin_AlbumControllerMassRessourceDeleteActionTest extends Admin_AlbumControllerTestCase {
+	/** @var Storm_Test_ObjectWrapper */
+	protected $_ressource_wrapper;
+	
+	public function setUp() {
+		parent::setUp();
+
+		$this->_ressource_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumRessource')
+				->whenCalled('delete')->answers(null);
+	}
+
+
+	/** @test */
+	public function withoutIdShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withoutIdsShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withEmptyIdsShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withValidRessourceShouldDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(Class_Album::newInstanceWithId(999));
+				
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withRessourceOfAnotherAlbumShouldNotDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(Class_Album::newInstanceWithId(7));
+				
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @tests */
+	public function withRessourceOfEmptyAlbumShouldNotDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(null);
+
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+}
 ?>

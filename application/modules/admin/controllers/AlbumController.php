@@ -290,8 +290,8 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 	public function massRessourceDeleteAction() {
 		$this->_helper->getHelper('viewRenderer')->setNoRender(true);
-				if ((!$ids = $this->_getParam('ids'))
-					  || (!$id = $this->_getParam('id'))) {
+		if ((!$ids = $this->_getParam('ids'))
+				 || (!$id = $this->_getParam('id'))) {
 			$this->_helper->notify('Paramètres manquants dans la requête de suppression');
 			return;
 		}
