@@ -288,6 +288,39 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	}
 
 
+	public function massRessourceDeleteAction() {
+		$this->_helper->getHelper('viewRenderer')->setNoRender(true);
+				if ((!$ids = $this->_getParam('ids'))
+					  || (!$id = $this->_getParam('id'))) {
+			$this->_helper->notify('Paramètres manquants dans la requête de suppression');
+			return;
+		}
+
+		$ids = explode(',', $ids);
+		if (empty($ids)) {
+			$this->_helper->notify('Rien à supprimer');
+			return;
+		}
+
+		$deleted_count = 0;
+		foreach ($ids as $ressource_id) {
+			if (!$ressource = Class_AlbumRessource::find($ressource_id))
+				continue;
+
+			if (!$ressource->getAlbum())
+				continue;
+
+			if ($id != $ressource->getAlbum()->getId())
+				continue;
+
+			$ressource->delete();
+			++$deleted_count;
+		}
+
+		$this->_helper->notify($deleted_count . ' média(s) supprimé(s)');
+	}
+
+
 	public function deleteimageAction() {
 		if (null === ($ressource = Class_AlbumRessource::getLoader()
 																							->find($this->_getParam('id')))) {
@@ -548,20 +581,20 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	protected function _getTreeViewItemActions() {
-		return array(array('url' => $this->_getUrlForAction('edit_album'),
-											 'icon' => 'ico/edit.gif',
-											 'label' => "Modifier l'album"),
-			           array('url' => $this->_getUrlForAction('edit_images'),
-											 'icon' => 'ico/album_images.png',
-											 'label' => "Gérer les médias",
-											 'caption' => 'formatedCount'),
-								 array('url' => $this->_getUrlForAction('preview_album'),
-											 'icon' => function($model) {return $model->isVisible() ? 'ico/show.gif' : 'ico/hide.gif';},
-											 'label' => "Visualisation de l'album"),
-								 array('url' => $this->_getUrlForAction('delete_album'),
-											 'icon' => 'ico/del.gif',
-											 'label' => "Supprimer l'album",
-											 'anchorOptions' => array('onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer cet album');")));
+		return [['url' => $this->_getUrlForAction('edit_album'),
+				     'icon' => 'ico/edit.gif',
+				     'label' => "Modifier l'album"],
+			      ['url' => $this->_getUrlForAction('edit_images'),
+						 'icon' => 'ico/album_images.png',
+						 'label' => "Gérer les médias",
+						 'caption' => 'formatedCount'],
+			      ['url' => $this->_getUrlForAction('preview_album'),
+						 'icon' => function($model) {return $model->isVisible() ? 'ico/show.gif' : 'ico/hide.gif';},
+						 'label' => "Visualisation de l'album"],
+			      ['url' => $this->_getUrlForAction('delete_album'),
+						 'icon' => 'ico/del.gif',
+						 'label' => "Supprimer l'album",
+						 'anchorOptions' => ['onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer cet album');"]]];
 	}
 
 

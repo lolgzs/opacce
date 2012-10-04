@@ -1,41 +1,41 @@
 <?php
 echo $this->partial('album/_album_panel.phtml', 
-										array('album' => $this->album));
-
+										['album' => $this->album]);
+?>
+<table style="border-collapse:collapse;text-align:center">
+	<tr><td><?php 
 echo $this->bouton('id=add_link',
 									 'picto=add.gif',
 									 'texte=' . $this->_('Ajouter un media'),
-	                 'url=' . $this->url(['action' => 'add-ressource', 'id' => $this->album->getId()]),
-	                 'largeur=250px;'
-									 );
+	                 'url=' . $this->url(['action' => 'add-ressource',
+											                  'id' => $this->album->getId()]),
+	                 'largeur=250px;');
 ?>
-
+			</td>
+			<td>
+<?php
+echo $this->tagUploadMultiple('albumRessourcesUpload',
+	                            $this->traduire('Ajouter des medias'),
+	                            ['modelClass' => 'Class_Album',
+															 'modelId' => $this->album->getId()]);
+?>
+			</td>
+	</tr>
+</table>
 <center>
 	<div class="form" style="text-align:center;">
-		<fieldset>
-			<legend><?php echo $this->traduire('Ajouter des medias par lot'); ?></legend>
-			<div><?php echo $this->tagUploadMultiple(
-							'albumRessourcesUpload',
-							$this->traduire('Choisir des medias'),
-							array('modelClass' => 'Class_Album',
-										'modelId' => $this->album->getId())
-						);?></div>
-		</fieldset>
-
 		<?php if ($this->ressources) { ?>
 		<fieldset>
 				<legend><?php echo $this->traduire('Gérer les medias'); ?></legend>
         <?php 	
 
-				echo $this->tagAnchor(array('action' => 'sortressources'),
+				echo $this->tagAnchor(['action' => 'sortressources'],
 															sprintf('%s Réordonner par nom de fichier',
-																			$this->tagImg(
-																										URL_ADMIN_IMG . 'ico/sort.gif',
-																										array('alt' => 'Trier ce media',
-																													'title' => 'Trier ce media',
-																													'class' => 'sort-handler')
-																										)),
-															array('class' => 'sort_ressources'));
+																			$this->tagImg(URL_ADMIN_IMG . 'ico/sort.gif',
+																										['alt' => 'Trier ce media',
+																										 'title' => 'Trier ce media',
+																										 'class' => 'sort-handler'])),
+															['class' => 'sort_ressources']);
 				?>
         <button class="bouton switchview"><?php echo $this->traduire('Changer la disposition'); ?></button>
 			  <div class='clear'></div>
@@ -59,7 +59,68 @@ echo $this->bouton('id=add_link',
 
 						$('.switchview').click(function() {$('fieldset ul.tree').toggleClass('thumbwall')})
 				});
+				
+				function toggleMediaSelection() {
+					var hasChecked = false;
+					$('input.mass_deletion').each(function(i, item) {
+						$(item).parents('li').css('background-color',
+						                          (item.checked) ? 'lightgrey' : 'transparent');
+						if (item.checked) hasChecked = true;
+					});
+					if (hasChecked)
+						$('.mass_actions').show();
+					else
+						$('.mass_actions').hide();
+				}
+
+
+				function extractMediaCheckedIds() {
+					var ids = '';
+					$('input.mass_deletion:checked').each(function(i, item){
+						ids = ids + $(item).val() + ',';
+					});
+				  return ids;
+				}
+						
+				function fireMediaMassDeletion() {
+					var count = $('input.mass_deletion:checked').size();
+					if (0 == count) {
+						return false;
+					}
+					
+					if (!confirm((1 < count)
+						? '<?php echo $this->_('Êtes-vous sûr de vouloir supprimer ces %s medias ?');?>'.replace('%s', count)
+						: '<?php echo $this->_('Êtes-vous sûr de vouloir supprimer ce media ?');?>')) {
+						return false;
+					}
+
+					//the real work
+					$.ajax('<?php echo $this->url(['action' => 'mass-ressource-delete']);?>',
+						     {
+						       data: {ids: extractMediaCheckedIds()},
+						       complete: function(){window.location.reload(true);},
+						       async: false
+						     });
+					
+					return false;
+				}
 				</script>
+				<div style="float:right;width:100%;text-align:right;margin:5px 0;">
+					<span class="mass_actions" style="display:none;">
+				  <?php
+					$actionLabel = $this->_('Supprimer les médias sélectionnés');
+					echo $this->tagAnchor(
+								'#',
+								$this->tagImg(URL_ADMIN_IMG . 'ico/del.gif',
+									            ['alt' => '', 'style' => 'vertical-align:middle'])
+								. ' ' . $actionLabel,
+								['onclick' => "return fireMediaMassDeletion();"]);
+		      ?>
+					</span>
+					<input type="checkbox"
+						onclick="$('input.mass_deletion').attr('checked', this.checked);toggleMediaSelection();"
+						title="Tout sélectionner" value="1" class="all_mass_deletions">
+				</div>
 				<ul class="tree">
 				<?php foreach ($this->ressources as $ressource) { ?>
 					<li class="ressource" id="<?php echo $ressource->getId();?>">
@@ -69,8 +130,7 @@ echo $this->bouton('id=add_link',
 								           ($ressource->isImage()) ? $ressource->getOriginalUrl() : $ressource->getPosterUrl(),
 													 $ressource->getTitre(),
 													 $this->tagImg($ressource->getThumbnailUrl(),
-																				 array('style' => 'width:50px')
-																				 ));
+																				 ['style' => 'width:50px']));
 						}
 						?></div>
 
@@ -79,36 +139,26 @@ echo $this->bouton('id=add_link',
 						 </div>
 
 						<div class="actions">
-							<?php echo $this->tagImg(
-								URL_ADMIN_IMG . 'ico/sort.gif',
-									array('alt' => 'Trier ce media',
-												'title' => 'Trier ce media',
-												'class' => 'sort-handler')
-							);?>
 							<?php
-							echo $this->tagAnchor(
-								$this->url(
-									array('action' => 'edit_ressource',	'id' => $ressource->getId())
-								),
-								$this->tagImg(
-									URL_ADMIN_IMG . 'ico/edit.gif',
-									array('alt' => 'Modifier ce media',
-																								'title' => 'Modifier ce media')
-								)
-							);
+							echo $this->tagImg(URL_ADMIN_IMG . 'ico/sort.gif',
+								                 ['alt' => 'Trier ce media',
+																	'title' => 'Trier ce media',
+																	'class' => 'sort-handler']);
 
 							echo $this->tagAnchor(
-								$this->url(
-									array('action' => 'delete_image',	'id' => $ressource->getId())
-								),
-								$this->tagImg(
-									URL_ADMIN_IMG . 'ico/del.gif',
-									array('alt' => "Supprimer ce média",
-																								'title' => 'Supprimer ce media')
-								),
-								array('onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer ce media ?');")
-							);
-							?>
+								$this->url(['action' => 'edit_ressource', 'id' => $ressource->getId()]),
+								$this->tagImg(URL_ADMIN_IMG . 'ico/edit.gif',
+									            ['alt' => 'Modifier ce media', 'title' => 'Modifier ce media']));
+
+							echo $this->tagAnchor(
+								$this->url(['action' => 'delete_image',	'id' => $ressource->getId()]),
+								$this->tagImg(URL_ADMIN_IMG . 'ico/del.gif',
+									            ['alt' => "Supprimer ce média", 'title' => 'Supprimer ce media']),
+								['onclick' => "return confirm('Êtes-vous sûr de vouloir supprimer ce media ?');"]);
+				      ?>
+							<input type="checkbox" class="mass_deletion"
+								value="<?php echo $ressource->getId();?>" name="mass_delete[]"
+								title="Sélectionner ce média" onclick="toggleMediaSelection(this);">
 						</div>
 					</li>
 					<?php } ?>
@@ -121,8 +171,7 @@ echo $this->bouton('id=add_link',
 		echo $this->bouton('id=c_2',
 											 'picto=del.gif',
 											 'texte=Fermer',
-											 'url='.$this->url(array('controller' => 'album',
-																							 'action' => 'index')),
+											 'url=' . $this->url(['controller' => 'album', 'action' => 'index']),
 											 'largeur=120px');
 	?>
 </center>

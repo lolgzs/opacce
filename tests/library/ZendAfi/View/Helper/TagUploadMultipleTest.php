@@ -35,7 +35,7 @@ Class TagUploadMultipleTest extends ViewHelperTestCase {
 		$this->_html = $this->_helper->tagUploadMultiple(
 											'MultipleImagesTest',
 											'Un libelle de bouton',
-											array('modelClass' => '', 'modelId' => '')
+											['modelClass' => '', 'modelId' => '']
 									);
 	}
 
@@ -43,14 +43,15 @@ Class TagUploadMultipleTest extends ViewHelperTestCase {
 	/** @test */
 	public function triggererButtonShouldBePresent() {
 		$this->assertXpath($this->_html,
-			'//input[@type="button"][@onclick="load_MultipleImagesTest();"]');
+			                 '//div[contains(@onclick, "load_MultipleImagesTest();")]');
 	}
 
 
 	/** @test */
 	public function triggererButtonLabelShouldBeUnLibelleDeBouton() {
-		$this->assertXpath($this->_html,
-												'//input[@type="button"][@value="Un libelle de bouton"]');
+		$this->assertXpathContentContains($this->_html,
+			                                '//div[@id="menu_itemmass_upload"]',
+			                                'Un libelle de bouton');
 	}
 
 	/** @test */

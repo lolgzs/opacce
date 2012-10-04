@@ -1242,14 +1242,32 @@ class Admin_AlbumControllerAlbumHarlockEditImagesActionTest extends Admin_AlbumC
 
 
 	/** @test */
+	public function checkAllSelectionShouldBePresent() {
+		$this->assertXPath('//input[@type="checkbox"][@class="all_mass_deletions"]');
+	}
+
+
+	/** @test */
+	public function massDeletionLinkShouldBePresent() {
+		$this->assertXPath('//a[@onclick="return fireMediaMassDeletion();"]');
+	}
+
+
+	/** @test */
 	public function shouldHaveTwoRessources() {
 		$this->assertXpathCount('//ul[@class="tree"]/li[@class="ressource"]', 2);
 	}
 
 
 	/** @test */
-	function linkToEditRessourceNausicaShouldBePresent() {
+	public function linkToEditRessourceNausicaShouldBePresent() {
 		$this->assertXpath('//a[contains(@href, "album/edit_ressource/id/2")]');
+	}
+
+
+	/** @test */
+	public function selectionCheckboxNausicaShouldBePresent() {
+		$this->assertXPath('//input[@type="checkbox"][@value="2"][@onclick="toggleMediaSelection(this);"]');
 	}
 
 
