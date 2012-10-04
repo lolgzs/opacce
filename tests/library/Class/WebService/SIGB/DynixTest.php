@@ -187,7 +187,7 @@ class DynixGetNoticeHarryPotter extends DynixTestCase {
 
 
 
-class DynixGetEmprunteurManuLarcinet extends DynixTestCase {
+class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 	protected $_manu;
 
 	public function setUp() {
@@ -276,6 +276,14 @@ class DynixGetEmprunteurManuLarcinet extends DynixTestCase {
 	/** @test */
 	public function secondReservationEtatShouldBeDisponible() {
 		$this->assertEquals('Disponible', $this->_manu->getReservationAt(1)->getEtat());		
+	}
+
+
+	/** @test */
+	public function sessionShouldBeClosed() {
+		$this->assertTrue($this->_mock_web_client
+											->methodHasBeenCalledWithParams('open_url',
+																											['http://www.infocom94.fr:8080/capcvm/rest/security/logoutUser?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5']));
 	}
 }
 

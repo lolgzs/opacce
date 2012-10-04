@@ -69,6 +69,15 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+	public function closeSession($token) {
+		$this->httpGet(['namespace' => 'security',
+										'service' => 'logoutUser',
+										'clientID' => $this->_client_id,
+										'sessionToken' => $token]);
+		return $this;
+	}
+
+
 	/**
 	 * @param Class_Users $user
 	 * @return Class_WebService_SIGB_Emprunteur
@@ -82,6 +91,8 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 													 'includePatronCheckoutInfo' => 'ALL',
 													 'clientID' => $this->_client_id,
 													 'sessionToken' => $session_token]);
+
+		$this->closeSession($session_token);
 
 		return Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader::newInstance()
 			->getEmprunteurFromXML($xml)
