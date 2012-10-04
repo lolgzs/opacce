@@ -346,7 +346,7 @@ class Admin_UserGroupControllerEditGroupModerateursBibTest extends Admin_UserGro
 	/** @test */
 	public function roleLevelSelectShouldHaveRoleModoBibSelected() {
 		$this->assertXPath('//select[@name="role_level"]/option[@value="0"][@label="invité"][not(@selected)]');
-		$this->assertXPath('//select[@name="role_level"]/option[@value="1"][@label="abonné"][not(@selected)]');
+		$this->assertXPath('//select[@name="role_level"]/option[@value="2"][@label="abonné identifié SIGB"][not(@selected)]');
 
 		$this->assertXPath('//select[@name="role_level"]/option[@value="3"][@label="rédacteur bibliothèque"][@selected="selected"]');
 

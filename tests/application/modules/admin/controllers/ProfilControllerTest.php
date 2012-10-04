@@ -440,7 +440,7 @@ class Admin_ProfilControllerEditProfilVideTest extends Admin_AbstractControllerT
 																			"public");
 
 		foreach(array('0' => 'invité',
-									'1' => 'abonné',
+//									'1' => 'abonné',
 									'2' => 'abonné identifié SIGB',
 									'3' => 'rédacteur bibliothèque',
 									'4' => 'administrateur bibliothèque',
@@ -449,7 +449,8 @@ class Admin_ProfilControllerEditProfilVideTest extends Admin_AbstractControllerT
 		$this->assertXPathContentContains("//select[@name='access_level']//option[@value='$level']",
 																			$label);
 
-		$this->assertNotXPath("//select[@name='access_level']//option[@value='7']");
+		$this->assertNotXPath("//select[@name='access_level']//option[@value='1']");
+    $this->assertNotXPath("//select[@name='access_level']//option[@value='7']");
 	}
 
 
