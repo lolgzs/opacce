@@ -298,11 +298,11 @@ class Class_NoticeHtml {
 		// lien pour exemplaires de la meme oeuvre
 		if($nb_notices_oeuvre)
 		{
-			$onclick="$('#exemplaires_oeuvre').show().load(baseUrl+'/opac/noticeajax/exemplaires?id_notice=".$ex["id_notice"]."&data=OEUVRE')";
+			$onclick="$('.exemplaires_oeuvre').show().load(baseUrl+'/opac/noticeajax/exemplaires?id_notice=".$ex["id_notice"]."&data=OEUVRE')";
 			$html.='<div class="notice_bloc_titre" style="padding:10px;" onclick="'.$onclick.'">';
 			$html.=sprintf('<b>%s</b>', $this->_translate->_('Afficher toutes les éditions de ce document'));
 			$html.='</div>';
-			$html.='<div id="exemplaires_oeuvre" style="display:none"><img src="'.URL_IMG.'patience.gif"></div>';
+			$html.='<div class="exemplaires_oeuvre" style="display:none"><img src="'.URL_IMG.'patience.gif"></div>';
 		}
 		
 		// Pour afficher la localisation sur le plan
