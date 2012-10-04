@@ -319,6 +319,30 @@ class DynixFixtures {
 		   <string>La réservation a déjà été enlevée</string>
 		</Fault>';
 	}
+
+
+	public static function renewMyCheckoutSuccessXML() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		  <RenewMyCheckoutResponse xmlns="http://schemas.sirsidynix.com/symws/patron">
+				 <message>Document renouvelé</message>
+		     <userID>0900500</userID>
+		     <userName>DUONG Virginie</userName>
+		     <itemID>00608642</itemID>
+		     <callNumber>SI 025 MEM</callNumber>
+		     <title>Mémento du bibliothécaire [Texte imprimé] : guide pratique</title>
+		     <author>Coignet, Béatrice</author>
+		     <dueDate>2012-10-25T23:59:00+02:00</dueDate>
+		 </RenewMyCheckoutResponse>';
+	}
+
+
+	public static function renewMyCheckoutFaultXML() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		  <Fault xmlns="http://schemas.sirsidynix.com/rest">
+				 <code>com.sirsidynix.symws.service.exceptions.ErrorResponseException.$(7)</code>
+		     <string>Le document ne figure pas au catalogue</string>
+		  </Fault>';
+	}
 }
 
 

@@ -47,9 +47,8 @@ class Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader {
 	public function getEmprunteurFromXML($xml) {
 		$this->_emprunteur = Class_WebService_SIGB_Emprunteur::newInstance();
 
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance()
-			->setElementHandler($this)
-			->parse($xml);
+		$this->_xml_parser = Class_WebService_XMLParser::newInstance()->setElementHandler($this);
+		$this->_xml_parser->parse($xml);
 
 		return $this->_emprunteur;
 	}
@@ -78,6 +77,8 @@ class Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader {
 
 	public function endItemId($data) {
 		$this->_current_operation->setCodeBarre($data);
+		if ($this->_xml_parser->inParents('patronCheckoutInfo'))
+			$this->_current_operation->setId($data);
 	}
 
 

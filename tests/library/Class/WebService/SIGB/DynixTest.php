@@ -238,6 +238,12 @@ class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 
 
 	/** @test */
+	public function firstEmpruntIdShouldBe00406882() {
+		$this->assertEquals('00406882', $this->_manu->getEmpruntAt(0)->getId());
+	}
+
+
+	/** @test */
 	public function firstEmpruntShouldDateRetourShouldBe17_10_2012() {
 		$this->assertEquals('17/10/2012', $this->_manu->getEmpruntAt(0)->getDateRetour());
 	}
@@ -371,6 +377,31 @@ class DynixOperationsTestTest extends DynixTestCase {
 												$this->_service->supprimerReservation($this->_manu,	'161340'));
 	}
 
+
+
+	/** @test */
+	public function successfulProlongerPretShouldReturnStatutTrue() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/renewMyCheckout?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&itemID=39410001449012')
+			->answers(DynixFixtures::renewMyCheckoutSuccessXML());
+
+		$this->assertEquals(['statut' => true, 'erreur' => ''],
+												$this->_service->prolongerPret($this->_manu,	'39410001449012'));
+	}
+
+
+
+	/** @test */
+	public function errorProlongerPretShouldReturnStatutFalseWithErrorMessage() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/renewMyCheckout?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&itemID=39410001449012')
+			->answers(DynixFixtures::renewMyCheckoutFaultXML());
+
+		$this->assertEquals(['statut' => false, 'erreur' => 'Le document ne figure pas au catalogue'],
+												$this->_service->prolongerPret($this->_manu,	'39410001449012'));
+	}
 }
 
 ?>

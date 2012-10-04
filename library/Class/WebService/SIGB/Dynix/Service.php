@@ -106,7 +106,11 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
-	public function prolongerPret($user, $pret_id){}
+	public function prolongerPret($user, $pret_id){
+		return $this->_userHttpAction($user, 
+																	'renewMyCheckout', 
+																	['itemID' => $pret_id]);
+	}
 
 
 	protected function _userHttpAction($user, $service, $params) {
