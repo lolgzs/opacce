@@ -199,3 +199,20 @@ echo $container(
 	 
 
 
+
+
+
+* Ergonomie réservation
+#+BEGIN_SRC
+<script>
+
+var openDialogExemplaires = function() {
+	$
+	.ajax({url: "<?php echo $this->url(['controller' => 'noticeajax', 'action' => 'exemplaires', 'id_notice' => $this->notice->getId()]) ?>"})
+	.done(function(data) {$('<div id="dialog"></div>').html(data).dialog({width:800, modal: true, title: '<?php echo $this->_("Exemplaires") ?>'})});
+}
+
+</script>
+
+<span id="bloc_reserver"><a href="#" onclick="openDialogExemplaires();return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Réserver') ?></a></span>
+#+END_SRC
