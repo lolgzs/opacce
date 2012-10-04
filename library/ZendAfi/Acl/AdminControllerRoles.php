@@ -36,7 +36,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 	
 	protected static $listeRole = array(
 	'0' => array('abrege' => 'invite','libelle' => 'invité'),   													// 0 - Invité - Par default axx contenu.
-	'1' => array('abrege' => 'abonne','libelle' => 'abonné'),															// 1 - Abonne (registered) - Utilisateur du site (fonctionnalité non pergame reservation par mail, etc...)
+	//	'1' => array('abrege' => 'abonne','libelle' => 'abonné'),															// 1 - Abonne (registered) - Utilisateur du site (fonctionnalité non pergame reservation par mail, etc...)
 	'2' => array('abrege' => 'abonne_sigb','libelle' => 'abonné identifié SIGB'), 		// 2 - Abonne identifié dans 1 sigb - Utilisateur de site bib.( axx fonctionalité pergame)
 	'3' => array('abrege' => 'modo_bib','libelle' => 'rédacteur bibliothèque'),				// 3 - Modo bib - Modo all MAIS que sur sa bib
 	'4' => array('abrege' => 'admin_bib','libelle' => 'administrateur bibliothèque'),	// 4 - Admin de bib - Axx all MAIS que sur sa bib
@@ -151,8 +151,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$sel = ($selected=="") ? ' selected="selected"' : '';
 		$html[]='<option value=""'.$sel.'>&nbsp;</option>';
 	}
-	foreach(self::$listeRole as $level => $role)
-	{
+	foreach(self::$listeRole as $level => $role)	{
 		if ($role["abrege"] == $selected or ($selected > "" and $level==(int)$selected )) $ligne='selected="selected"'; else $ligne="";
 		if ($level <= $user_role_level and $level!=7) $html[]= '<option value="'.$level.'" '.$ligne.'>'. $role["libelle"] . '</option>';
 	}
