@@ -310,6 +310,15 @@ class DynixFixtures {
 		   <string>Vous ne pouvez plus emprunter, adressez-vous au bibliothécaire</string>
 		</Fault>';
 	}
+
+
+	public static function cancelMyHoldFaultXML() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		<Fault xmlns="http://schemas.sirsidynix.com/rest">
+			 <code>com.sirsidynix.symws.service.exceptions.ErrorResponseException.$(18199)</code>
+		   <string>La réservation a déjà été enlevée</string>
+		</Fault>';
+	}
 }
 
 

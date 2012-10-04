@@ -742,7 +742,7 @@ class NanookOperationsTest extends NanookTestCase {
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
 												$this->_service->supprimerReservation(
-													Class_Users::getLoader()->newInstance()	->setIdSigb('1'),
+													Class_Users::getLoader()->newInstance()->setIdSigb('1'),
 													'196895'
 												));
 	}

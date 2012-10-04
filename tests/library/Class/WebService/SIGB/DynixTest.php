@@ -321,7 +321,7 @@ class DynixOperationsTestTest extends DynixTestCase {
 	public function successfulReservationShouldReturnStatutTrue() {
 		$this->_mock_web_client		
 			->whenCalled('open_url')
-			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?titleKey=231595&pickupLibraryID=ALFMEDA&clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&titleKey=231595&pickupLibraryID=ALFMEDA')
 			->answers('163144');
 
 		$this->assertEquals(['statut' => true, 'erreur' => ''],
@@ -336,7 +336,7 @@ class DynixOperationsTestTest extends DynixTestCase {
 	public function reservationWithFaultShouldReturnStatutFalseWithErrorMessage() {
 		$this->_mock_web_client		
 			->whenCalled('open_url')
-			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?titleKey=231596&pickupLibraryID=CRETBUS&clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&titleKey=231596&pickupLibraryID=CRETBUS')
 			->answers(DynixFixtures::createMyHoldFaultXML());
 
 		$this->assertEquals(['statut' => false, 
@@ -346,6 +346,31 @@ class DynixOperationsTestTest extends DynixTestCase {
 																														->setIdOrigine('231596'),
 																														'CRETBUS'));
 	}
+
+
+	/** @test */
+	public function successfulSupprimerReservationShouldReturnStatutTrue() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/cancelMyHold?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&holdKey=161340')
+			->answers('true');
+
+		$this->assertEquals(['statut' => true, 'erreur' => ''],
+												$this->_service->supprimerReservation($this->_manu,	'161340'));
+	}
+
+
+	/** @test */
+	public function errorSupprimerReservationShouldReturnStatutFalseWithErrorMessage() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/cancelMyHold?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5&holdKey=161340')
+			->answers(DynixFixtures::cancelMyHoldFaultXML());
+
+		$this->assertEquals(['statut' => false, 'erreur' => 'La réservation a déjà été enlevée'],
+												$this->_service->supprimerReservation($this->_manu,	'161340'));
+	}
+
 }
 
 ?>
