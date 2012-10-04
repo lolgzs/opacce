@@ -95,4 +95,9 @@ class Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader {
 	public function endAvailable($data) {
 		$this->_current_operation->setEtat($data == 'true' ? $this->_('Disponible') : $this->_('Réservé'));
 	}
+
+	
+	public function endHoldKey($data) {
+		$this->_current_operation->setId($data);
+	}
 }

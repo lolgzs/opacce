@@ -301,6 +301,15 @@ class DynixFixtures {
 	</ns3:patronHoldInfo>
 </ns3:LookupMyAccountInfoResponse>';
 	}
+
+
+	public static function createMyHoldFaultXML() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		<Fault xmlns="http://schemas.sirsidynix.com/rest">
+			 <code>com.sirsidynix.symws.service.exceptions.ErrorResponseException.$(92)</code>
+		   <string>Vous ne pouvez plus emprunter, adressez-vous au bibliothécaire</string>
+		</Fault>';
+	}
 }
 
 

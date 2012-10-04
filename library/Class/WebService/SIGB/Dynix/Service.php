@@ -38,15 +38,6 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
-	public function reserverExemplaire($user, $exemplaire, $code_annexe){}
-
-
-	public function supprimerReservation($user, $reservation_id){}
-
-
-	public function prolongerPret($user, $pret_id){}
-
-
 	public function getNotice($id){
 		return $this->httpGetNotice(['namespace' => 'standard',
 																 'service' => 'lookupTitleInfo',
@@ -99,6 +90,27 @@ class Class_Webservice_SIGB_Dynix_Service extends Class_WebService_SIGB_Abstract
 			->setService($this);
 	}
 
+
+	public function reserverExemplaire($user, $exemplaire, $code_annexe){
+		$session_token = $this->openSessionForUser($user);
+		$xml = $this->httpGet(['namespace' => 'patron',
+													 'service' => 'createMyHold',
+													 'titleKey' => $exemplaire->getIdOrigine(),
+													 'pickupLibraryID' => $code_annexe,
+													 'clientID' => $this->_client_id,
+													 'sessionToken' => $session_token]);
+
+		if ($error = $this->_getTagData($xml, 'string'))
+			return ['statut' => false, 'erreur' => $error];
+
+		return ['statut' => true, 'erreur' => ''];
+	}
+
+
+	public function supprimerReservation($user, $reservation_id){}
+
+
+	public function prolongerPret($user, $pret_id){}
 
 
 	/**

@@ -256,6 +256,12 @@ class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 
 
 	/** @test */
+	public function firstReservationIDShouldBe160540() {
+		$this->assertEquals('160540', $this->_manu->getReservationAt(0)->getId());		
+	}
+
+
+	/** @test */
 	public function firstReservationRangShouldBeOne() {
 		$this->assertEquals(1, $this->_manu->getReservationAt(0)->getRang());		
 	}
@@ -284,6 +290,61 @@ class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 		$this->assertTrue($this->_mock_web_client
 											->methodHasBeenCalledWithParams('open_url',
 																											['http://www.infocom94.fr:8080/capcvm/rest/security/logoutUser?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5']));
+	}
+}
+
+
+
+
+class DynixOperationsTestTest extends DynixTestCase {
+	protected $_manu;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/security/loginUser?clientID=SymWS&login=0917036&password=secret')
+			->answers(DynixFixtures::loginUserManuLarcinetXml())
+
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/security/logoutUser?clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->answers('')
+			->beStrict();
+
+		$this->_manu = Class_Users::newInstanceWithId(3, ['login' => '0917036', 
+																											'password' => 'secret']);
+	}
+
+
+	/** @test */
+	public function successfulReservationShouldReturnStatutTrue() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?titleKey=231595&pickupLibraryID=ALFMEDA&clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->answers('163144');
+
+		$this->assertEquals(['statut' => true, 'erreur' => ''],
+												$this->_service->reserverExemplaire($this->_manu,
+																														Class_Exemplaire::newInstance()
+																														->setIdOrigine('231595'),
+																														'ALFMEDA'));
+	}
+
+
+	/** @test */
+	public function reservationWithFaultShouldReturnStatutFalseWithErrorMessage() {
+		$this->_mock_web_client		
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/patron/createMyHold?titleKey=231596&pickupLibraryID=CRETBUS&clientID=SymWS&sessionToken=497e6380-69fb-4850-b552-40dede41f0b5')
+			->answers(DynixFixtures::createMyHoldFaultXML());
+
+		$this->assertEquals(['statut' => false, 
+												 'erreur' => 'Vous ne pouvez plus emprunter, adressez-vous au bibliothécaire'],
+												$this->_service->reserverExemplaire($this->_manu,
+																														Class_Exemplaire::newInstance()
+																														->setIdOrigine('231596'),
+																														'CRETBUS'));
 	}
 }
 
