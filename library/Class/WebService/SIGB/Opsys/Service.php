@@ -140,10 +140,11 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	 * @return array
 	 */
 	public function reserverExemplaire($user, $exemplaire, $code_annexe){
+		$exemplaire_sigb = $this->getExemplaire($exemplaire->getIdOrigine(), $exemplaire->getCodeBarres());
 		$emprunteur = $this->authentifierEmprunteur($user);
 		$reserv_result = $this->search_client->EmprReserver(
 																								 new EmprReserver($this->guid,
-																																	$exemplaire->getIdOrigine(),
+																																	$exemplaire_sigb->getId(),
 																																	$code_annexe));
 		return $reserv_result->getReussite();
 	}

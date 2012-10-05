@@ -1220,6 +1220,7 @@ class OpsysServiceEmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase
 
 
 
+
 class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -1229,19 +1230,24 @@ class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase
 
 		$this->search_client
 			->whenCalled('EmprReserver')
-			->with(new EmprReserver('guid_12345', 'cb344', 'melun'))
+			->with(new EmprReserver('guid_12345', 'id_ex_344', 'melun'))
 			->answers($reserverResponse);
+
+		$notice_sigb = (new Class_WebService_SIGB_Notice('ido344'))
+			              ->addExemplaire((new Class_WebService_SIGB_Exemplaire('id_ex_344'))
+																		->setCodeBarre('cb344'));
+
+		$this->opsys->getNoticeCache()->cacheNotice($notice_sigb);
 	}
 
 
 	public function testReserverSuccessful() {
 		$result = $this->opsys->reserverExemplaire(
-															Class_Users::getLoader()->newInstance()
-																->setLogin('tintin')
-																->setPassword('pass'),
-															Class_Exemplaire::getLoader()->newInstanceWithId(12)->setIdOrigine('cb344'),
-															'melun');
-		$this->assertEquals(array('statut' => 1, 'erreur' => ''), $result);
+			Class_Users::newInstance(['login' => 'tintin', 'password' => 'pass']),
+			Class_Exemplaire::newInstanceWithId(12, ['id_origine' => 'ido344', 'code_barres' => 'cb344']),
+			'melun');
+
+		$this->assertEquals(['statut' => 1, 'erreur' => ''], $result);
 	}
 }
 
