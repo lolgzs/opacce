@@ -217,6 +217,14 @@ Class_ScriptLoader::getInstance()
 				</tr>
 
 
+				<tr>
+					<td class="droite"><?php echo $this->traduire('Javascript'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+	          <?php echo $this->coreFiveFileInput('header_js', $this->profil->getHeaderJs(), 'js', 'File') ?>
+					</td>
+				</tr>
+
+
 				<tr class="only_browser">
 					<td align="right" style="width:25%"><?php echo $this->traduire('Largeur totale du site'); ?></td>
 					<td>

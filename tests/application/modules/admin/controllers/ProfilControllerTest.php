@@ -36,7 +36,9 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 											'logo_gauche_link' => 'http://mabib.fr',
 											'logo_droite_img' => '/userfiles/macommune.png',
 											'logo_droite_link' => 'http://macommune.fr',
-											'header_social_network' => true);
+											'header_social_network' => true,
+											'header_css' => '/userfiles/css/my.css',
+											'header_js' => '/userfiles/js/my.js');
 
 		$cfg_notice = array('exemplaires' => array('grouper' => 1,
 																							 'section' => 1,
@@ -109,6 +111,18 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 	/** @test */
 	public function textInputHeaderImgShouldContainsPathToJeunessePng() {
 		$this->assertXPath("//input[@type='text'][@name='header_img'][@value='/public/jeunesse.png']");
+	}
+
+
+	/** @test */
+	public function textInputHeaderCssShouldContainsPathToMyCss() {
+		$this->assertXPath("//input[@type='text'][@name='header_css'][@value='/userfiles/css/my.css']");
+	}
+
+
+	/** @test */
+	public function textInputHeaderJsShouldContainsPathToMyJs() {
+		$this->assertXPath("//input[@type='text'][@name='header_js'][@value='/userfiles/js/my.js']");
 	}
 
 
