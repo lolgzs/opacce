@@ -307,7 +307,7 @@ class CommSigbAstrolabeOpsysTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://astrolabe.com/opsys.wsdl',
 															"type" => Class_IntBib::COM_OPSYS,
 															"id_bib" => 5),
@@ -332,7 +332,7 @@ class CommSigbMoulinsVSmartTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://vpn.agglo-moulins.fr/production/',
 															"type" => Class_IntBib::COM_VSMART,
 															'id_bib' => 5),
@@ -358,7 +358,7 @@ class CommSigbMeuseKohaTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://cat-aficg55.biblibre.com/cgi-bin/koha/ilsdi.pl',
 															"type" => Class_IntBib::COM_KOHA,
 															'id_bib' => 5),
@@ -383,7 +383,7 @@ class CommSigbLocalNanookTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://192.168.2.3:9080/afi_Nanook-0.7.5/ilsdi/',
 															"type" => Class_IntBib::COM_NANOOK,
 															'id_bib' => 5),
@@ -408,7 +408,7 @@ class CommSigbCarthameTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://ifr.ro/webservices/index.php',
 															"type" => Class_IntBib::COM_CARTHAME,
 															'id_bib' => 5),
@@ -432,7 +432,7 @@ class CommSigbOrpheeTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://213.144.218.252:8080/wsOrphee/service.asmx?WSDL',
 															"type" => Class_IntBib::COM_ORPHEE,
 															'id_bib' => 5),
@@ -456,7 +456,7 @@ class CommSigbMicrobibTest extends CommSigbTestCase {
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://80.11.188.93/webservices/ws_maze.wsdl',
 															"type" => Class_IntBib::COM_MICROBIB,
 															'id_bib' => 5),
@@ -477,16 +477,47 @@ class CommSigbBiblixNetTest extends CommSigbTestCase {
 			->setCommParams(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi'))
 			->setCommSigb(10);
 
-		Class_WebService_SIGB_BiblixNet::setService($this->createMockForService('Microbib'));
+		Class_WebService_SIGB_BiblixNet::setService($this->createMockForService('BiblixNet'));
 	}
 
 
 	/** @test */
-	public function getModeCommShouldReturnAnArrrayWithCommParams() {
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
 		$this->assertEquals(array("url_serveur" => 'http://mediathequewormhout.biblixnet.com/exporte_afi',
 															"type" => Class_IntBib::COM_BIBLIXNET,
 															'id_bib' => 5),
 												$this->bib_wormhout->getModeComm(5));
+	}
+}
+
+
+
+
+class CommSigbDynixTest extends CommSigbTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->bib_pc94 = Class_IntBib::newInstanceWithId(5)
+			->setCommParams(["url_serveur" => 'http://www.dynix.fr:8080/capcvm/',
+											 'client_id' => 'SymWS'])
+			->setCommSigb(11);
+
+		Class_WebService_SIGB_Dynix::setService($this->createMockForService('Dynix'));
+
+		$this->mock_service
+			->expects($this->any())
+			->method('setClientId')
+			->will($this->returnValue($this->mock_service));
+	}
+
+
+	/** @test */
+	public function getModeCommShouldReturnAnArrayWithCommParams() {
+		$this->assertEquals(["url_serveur" => 'http://www.dynix.fr:8080/capcvm/',
+												 "type" => Class_IntBib::COM_DYNIX,
+												 'client_id' => 'SymWS',
+												 'id_bib' => 5],
+												$this->bib_pc94->getModeComm(5));
 	}
 }
 

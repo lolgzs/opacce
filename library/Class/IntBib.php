@@ -33,6 +33,8 @@ class Class_IntBib extends Storm_Model_Abstract {
 	const COM_ORPHEE = 8;
 	const COM_MICROBIB = 9;
 	const COM_BIBLIXNET = 10;
+	const COM_DYNIX = 11;
+	
 
 
 
@@ -44,7 +46,8 @@ class Class_IntBib extends Storm_Model_Abstract {
 																	 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
 																	 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
 																	 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
-																	 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet'];
+																	 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet',
+																	 self::COM_DYNIX => 'Class_WebService_SIGB_Dynix'];
 
 	protected $_table_name = 'int_bib';
 	protected $_table_primary = 'id_bib';
@@ -95,9 +98,9 @@ class Class_IntBib extends Storm_Model_Abstract {
 		if (!isset(self::$COM_CLASSES[$type_comm]))
 			return null;
 
-		return call_user_func([self::$COM_CLASSES[$type_comm], 'getService'], 
-													$this->getModeComm());
-
+		$comm = call_user_func([self::$COM_CLASSES[$type_comm], 'getService'], 
+												 $this->getModeComm());
+		return $comm;
 	}
 
 
