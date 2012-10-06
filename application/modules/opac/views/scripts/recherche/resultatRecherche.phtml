@@ -24,7 +24,7 @@ print($this->texte_selection);
 																$this->_('Retour à la recherche initiale')));?>
   </span> 
 	<?php if ($this->url_retour_notice) { ?>
-		<span style="padding-right:10px">
+		<span>
 		<?php 
 		echo $this->tagAnchor($this->url_retour_notice, 
 													sprintf('&raquo; %s', 
@@ -37,7 +37,7 @@ print($this->texte_selection);
 															'&raquo; '.$this->_('Nouvelle recherche')); ?>
   </span>
 
-	<span style="padding-right:10px">
+	<span>
 	<?php echo $this->tagAnchor(['controller' => 'abonne', 'action' => 'suggestion-achat'], 
 															'&raquo; '.$this->_('Suggérer un achat'));?>
   </span> 

@@ -33,7 +33,7 @@ foreach($this->liste as $ligne)
 	{
 		case 1: // recherche simple
 			$type="simple";
-			$expression=$crit["expressionRecherche"];
+			$expression = isset($crit["expressionRecherche"]) ? $crit["expressionRecherche"] : '';
 			break;
 		case 2: // recherche avancée
 			$type="avancée";

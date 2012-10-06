@@ -215,6 +215,8 @@ class RechercheController extends Zend_Controller_Action
 			$this->addHistoRecherche(1,$_SESSION["recherche"]["selection"]);
 			$facettes = $this->moteur->getFacettes($ret["req_facettes"], $this->preferences);
 			$_SESSION["recherche"]["resultat"] = array_merge($facettes, $ret);
+			$this->_redirect('/recherche/simple');
+			return;
 		}
 
 		// Get de la liste

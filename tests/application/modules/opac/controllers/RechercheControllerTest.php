@@ -340,16 +340,31 @@ class RechercheControllerReservationPickupAjaxActionTest extends AbstractControl
 
 
 
+abstract class RechercheControllerSimpleActionTestCase extends AbstractControllerTestCase {
+	public function lanceRecherche($params) {
+		$this->postDispatch('/recherche/simple', $params);
 
-class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
+		$this->assertRedirect('/recherche/simple');
+
+		$recherche = $_SESSION['recherche'];
+		$this->bootstrap();
+		$_SESSION['recherche'] = $recherche;
+		$this->dispatch('/recherche/simple', true);
+	}
+}
+
+
+
+
+class RechercheControllerSimpleActionTest extends RechercheControllerSimpleActionTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->postDispatch('/recherche/simple', array('expressionRecherche' => 'pomme'));
+		$this->lanceRecherche(['expressionRecherche' => 'pomme']);
 	}
 
-	
+
 	/** @test */
-	public function pommeShouldBePresent() {
+	public function pommeShouldBePresentInRedirectedPageAsResultatInSession() {
 		$this->assertXPathContentContains('//div', 'pomme');
 	}
 
@@ -364,10 +379,10 @@ class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 
 
 
-class RechercheControllerSimpleByISBNActionTest extends AbstractControllerTestCase {
+class RechercheControllerSimpleByISBNActionTest extends RechercheControllerSimpleActionTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->postDispatch('/recherche/simple', ['expressionRecherche' => '2-203-00119-4'], true);
+		$this->lanceRecherche(['expressionRecherche' => '2-203-00119-4']);
 	}
 
 	

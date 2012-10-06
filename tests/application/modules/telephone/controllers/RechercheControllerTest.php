@@ -83,18 +83,27 @@ class Telephone_RechercheControllerSimpleOneInexistingWordActionTest extends Tel
 
 
 class Telephone_RechercheControllerSimpleByPertinenceActionTest extends TelephoneAbstractControllerTestCase {
+	protected $_session_recherche;
+
   public function setUp() {
     parent::setUp();
     if (isset($_SESSION['recherche'])) 
       unset($_SESSION['recherche']);
-    $this->postDispatch('/telephone/recherche/simple', array('expressionRecherche' => 'pomme',
-							     'pertinence' => 1));
+
+    $this->postDispatch('/telephone/recherche/simple', ['expressionRecherche' => 'pomme',
+																												'pertinence' => 1]);
+		$this->assertRedirect('/telephone/recherche/simple');
+
+		$this->_session_recherche = $_SESSION['recherche'];
+		$this->bootstrap();
+		$_SESSION['recherche'] = $this->_session_recherche;
+		$this->dispatch('/telephone/recherche/simple', true);
   }
 
 
   /** @test */
   public function modeRechercheShouldBePertinence() {
-    $this->assertTrue($_SESSION['recherche']['selection']['pertinence']);
+    $this->assertTrue($this->_session_recherche['selection']['pertinence']);
   }
 
 
