@@ -34,10 +34,13 @@ if (file_exists(PATH_SKIN.'/css/bib.css'))
 	$head_scripts->addSkinStyleSheet('bib');
 
 if ($this->header_css)
-	$head_scripts->addStyleSheet($this->header_css);
+	$head_scripts->addStyleSheet($this->header_css, ['id' => 'profil_css']);
 
 if ($this->header_js)
 	$head_scripts->addJQueryReady('$.getScript("'.$this->header_js.'")');
+
+if (Class_Users::isCurrentUserAdmin())
+	$head_scripts->addAmberPackage('AFI-OPAC')->loadAmber();
 
 if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visuelles
 	$head_scripts
