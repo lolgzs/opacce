@@ -352,6 +352,13 @@ class RechercheControllerSimpleActionTest extends AbstractControllerTestCase {
 	public function pommeShouldBePresent() {
 		$this->assertXPathContentContains('//div', 'pomme');
 	}
+
+
+	/** @test */
+	public function pageShouldContainsLinkToSuggestionAchats() {
+		$this->assertXPathContentContains('//a[contains(@href, "/abonne/suggestion-achat")]', 
+																			'Suggérer un achat');
+	}
 }
 
 

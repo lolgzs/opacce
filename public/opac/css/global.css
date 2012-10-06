@@ -1112,3 +1112,11 @@ body.abonne_multimedia-hold-view .actions a {
 }
 
 
+.recherche_actions {
+		margin-top: 10px;
+}
+
+
+.recherche_actions span {
+		padding-right: 10px;
+}
