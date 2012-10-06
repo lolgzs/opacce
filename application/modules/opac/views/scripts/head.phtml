@@ -36,6 +36,9 @@ if (file_exists(PATH_SKIN.'/css/bib.css'))
 if ($this->header_css)
 	$head_scripts->addStyleSheet($this->header_css);
 
+if ($this->header_js)
+	$head_scripts->addJQueryReady('$.getScript("'.$this->header_js.'")');
+
 if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visuelles
 	$head_scripts
 		->addOPACStyleSheet('blanc_sur_noir', array('rel' => 'alternate stylesheet',

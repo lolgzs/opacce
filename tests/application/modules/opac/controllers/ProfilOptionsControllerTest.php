@@ -31,27 +31,27 @@ abstract class ProfilOptionsControllerWithProfilAdulteTestCase extends AbstractC
 	public function setUp() {
 		parent::setUp();
 
-		$cfg_menus = array(
-											 'H' => array( 
-																		"libelle" => "Menu horizontal",
-																		"picto" => "vide.gif",
-																		"menus" => array(array('type_menu' => 'MENU',
-																													 'libelle' => 'Pratique',
-																													 'picto' => 'bookmark.png',
-																													 'preferences' => array()),
-																										 array('type_menu' => 'URL',
-																													 'libelle' => 'Google',
-																													 'picto' => 'vide.gif',
-																													 'preferences' => array('url' => 'http://www.google.com',
-																																									'target' => 0)),
-																										 array('type_menu' => 'NEWS',
-																													 'libelle' => 'Articles',
-																													 'picto' => 'vide.gif',
-																													 'preferences' => array('id_items' => '1-3',
-																																									'display_order' => 'Selection')) )),
-											 'V' => array(
-																		"libelle" => "Menu vertical",
-																		"picto" => "vide.gif"));
+		$cfg_menus = ['H' => ['libelle' => 'Menu horizontal',
+													'picto' => 'vide.gif',
+													'menus' => [['type_menu' => 'MENU',
+																			 'libelle' => 'Pratique',
+																			 'picto' => 'bookmark.png',
+																			 'preferences' => []],
+
+																			['type_menu' => 'URL',
+																			 'libelle' => 'Google',
+																			 'picto' => 'vide.gif',
+																			 'preferences' => ['url' => 'http://www.google.com',
+																												 'target' => 0]],
+
+																			['type_menu' => 'NEWS',
+																			 'libelle' => 'Articles',
+																			 'picto' => 'vide.gif',
+																			 'preferences' => ['id_items' => '1-3',
+																												 'display_order' => 'Selection']] ]],
+
+									'V' => ['libelle' => 'Menu vertical',
+													'picto' => 'vide.gif']];
 
 
 
@@ -64,9 +64,11 @@ abstract class ProfilOptionsControllerWithProfilAdulteTestCase extends AbstractC
 			->setMenuHautOn(true)
 			->setCfgMenus($cfg_menus)
 			->setCommentaire('Super bib')
-			->setRefTags("bib,Adulte");
+			->setRefTags('bib,Adulte');
 	}
 }
+
+
 
 
 class ProfilOptionsControllerTwitterLinkWithProfilAdulteTest extends ProfilOptionsControllerWithProfilAdulteTestCase {
@@ -148,6 +150,8 @@ class ProfilOptionsControllerProfilAdulteTest extends ProfilOptionsControllerWit
 		$this->assertXPathContentContains('//div', 'accès au site est momentanément bloqué');
 	}
 }
+
+
 
 
 class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControllerWithProfilAdulteTestCase {
@@ -277,6 +281,7 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 			->setCfgAccueil($cfg_accueil_jeunesse)
 			->setFavicon('afi-opac3/userfiles/favicon.ico')
 			->setHeaderCss('afi-opac3/userfiles/jeunesse.css')
+			->setHeaderJs('afi-opac3/userfiles/jeunesse.js')
 			->setLogoGaucheImg('/userfiles/mabib.png')
 			->setLogoGaucheLink('http://mabib.fr')
 			->setLogoDroiteImg('/userfiles/macommune.png')
@@ -408,6 +413,12 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 	/** @test */
 	function headerCssJeunesseShouldBeIncluded() {
 		$this->assertXPath('//link[@rel="stylesheet"][@type="text/css"][contains(@href, "afi-opac3/userfiles/jeunesse.css")]');
+	}
+
+
+	/** @test */
+	function headerJsJeunesseShouldBeIncluded() {
+		$this->assertXPath('//script[contains(text(), "afi-opac3/userfiles/jeunesse.js")]');
 	}
 
 
