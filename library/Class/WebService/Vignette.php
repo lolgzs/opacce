@@ -219,6 +219,15 @@ class Class_WebService_Vignette
 		}
 		return $nom_fic;
 	}
+
+
+	static function deleteVignetteCacheForNotice($id) {
+    $vignette_cache = PATH_TEMP.'vignettes_titre/notice_'.$id.'.';
+    foreach(['jpg', 'png'] as $ext) {
+      $filepath = $vignette_cache.$ext;
+ 		  if (file_exists($filepath)) unlink($filepath);
+    }
+	}
   
 //------------------------------------------------------------------------------------------------------
 // Prend l'image sur internet et la met en cache (pour contourner le pb des objets flash)

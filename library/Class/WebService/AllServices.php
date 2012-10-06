@@ -138,6 +138,8 @@ class Class_WebService_AllServices {
 			->setUrlVignette($result['vignette'])
 			->setUrlImage($result['image'])
 			->save();
+
+    Class_WebService_Vignette::deleteVignetteCacheForNotice($id);
 	}
 
 
