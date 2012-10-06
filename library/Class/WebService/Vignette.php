@@ -210,17 +210,12 @@ class Class_WebService_Vignette
 //------------------------------------------------------------------------------------------------------
 // Crée l'image avec le titre et la sauvegarde dans le dossier temp
 //------------------------------------------------------------------------------------------------------  
-	private function saveImage($id_notice,$titre,$type_doc)
-	{
-		$path=getcwd();
-		$nom_fic="/temp/vignettes_titre/notice_".$id_notice.".jpg";
-		if(file_exists($path.$nom_fic)==false)
-		{
-			if(file_exists($path.$nom_fic)==false)
-			{
-				$image=$this->createImage($titre,$width=100,$height=90,$type_doc);
-				imagejpeg($image, $path.$nom_fic);
-			}
+	private function saveImage($id_notice,$titre,$type_doc)	{
+		$path = getcwd();
+		$nom_fic = "/temp/vignettes_titre/notice_".$id_notice.".png";
+		if(file_exists($path.$nom_fic)==false) {
+			$image=$this->createImage($titre,$width=100,$height=90,$type_doc);
+			imagepng($image, $path.$nom_fic);
 		}
 		return $nom_fic;
 	}
@@ -270,8 +265,9 @@ class Class_WebService_Vignette
 	private function writeText ($titre, $image_obj, $position = 0)
 	{
 		// Tronçonner le texte
-		$texte=wordwrap($titre, 12, ';');
-		$texte=explode(";",$texte);
+		$texte=wordwrap(utf8_decode(str_replace('<br />', ';', $titre)), 12, ';');
+		$texte=explode(";", $texte);
+
 		
 		// Parametres
 		$font = 3;
