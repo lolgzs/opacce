@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 :	Newsletters
-//////////////////////////////////////////////////////////////////////////////////////////
 
 /*
  * exemple des possibilités:
@@ -54,21 +51,16 @@
  * $nl = Class_Newsletter::getLoader()->find(3);
  * $this->assertEquals('test', $nl->getTitre());
  *
- * Très cool pour tester un controller / vue.
  */
 
 class Class_Newsletter extends Storm_Model_Abstract {
 	protected $_table_name = 'newsletters';
-	protected $_has_many = array('subscriptions' => array('model' => 'Class_NewsletterSubscription',
-																												'role' => 'newsletter',
-																												'dependents' => 'delete'),
-															 'users' => array('through' => 'subscriptions'));
+	protected $_has_many = ['subscriptions' => ['model' => 'Class_NewsletterSubscription',
+																							'role' => 'newsletter',
+																							'dependents' => 'delete'],
+													'users' => ['through' => 'subscriptions',
+																			'unique' => true]];
 	protected $_notices_finder;
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
 
 	public function send() {
 		$this

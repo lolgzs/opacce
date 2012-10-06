@@ -427,6 +427,7 @@ class Admin_UserGroupControllerAddMemberSupermanGroupStagiairesTest extends Admi
 												array('users' => array(56)));
 	}
 
+
 	/** @test */
 	public function groupStagiairesShouldIncludeSuperman() {
 		$this->assertEquals('superman',

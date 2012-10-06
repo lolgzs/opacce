@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Controleur Newsletter
-//////////////////////////////////////////////////////////////////////////////////////////
 
 class Admin_NewsletterController extends Zend_Controller_Action {
 	function init() {
@@ -144,6 +141,40 @@ class Admin_NewsletterController extends Zend_Controller_Action {
 																											'form' => $form,
 																											'newsletter' => $newsletter));
 		$this->_forward('index');
+	}
+
+
+	function editSubscribersAction() {
+		$newsletter = Class_Newsletter::find($this->_getParam('id'));
+
+		$redirect_url = '/admin/newsletter/edit-subscribers/id/'.$newsletter->getId();
+		if ($_GET)
+			$redirect_url .= '?'.http_build_query($_GET);
+
+		if ($id_user_to_delete = $this->_getParam('delete')) {
+			$newsletter
+				->removeUser(Class_Users::find($id_user_to_delete))
+				->save();
+			$this->_redirect($redirect_url);
+			return;
+		}
+
+		if ($this->_request->isPost() 
+				&& ($ids_users_to_add = $this->_request->getPost('users'))) {
+			foreach($ids_users_to_add as $id)
+				$newsletter->addUser(Class_Users::find($id));
+			$newsletter->save();
+			$this->_redirect($redirect_url);
+			return;
+		}
+
+		$this->view->getHelper('SubscribeUsers')
+			->setUsers($newsletter->getUsers())
+			->setSearch($this->_getParam('search'));
+
+		$this->view->subview = $this->view->partial('newsletter/edit-subscribers.phtml',
+																								['newsletter' => $newsletter]);
+		$this->_forward('index');		
 	}
 
 
