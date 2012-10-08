@@ -174,7 +174,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 			'ARTE_VOD_KEY'              => 'Clé ARTE VOD',
 			'ARTE_VOD_SSO_KEY'          => 'Clé ARTE VOD Single Sign-On',
 			'BABELTHEQUE_JS'            => 'URL du javascript Babelthèque à insérer dans l\'OPAC',
-			'MULTIMEDIA_KEY'            => 'Clé AFI-multimédia'
+			'MULTIMEDIA_KEY'            => 'Clé AFI-multimédia',
+			'CSS_EDITOR'                => 'Activation de l\'editeur CSS. 0 = inactif, 1 = actif'
 		);
 
 		if (!array_key_exists($name, $help)) {

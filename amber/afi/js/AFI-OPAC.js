@@ -210,12 +210,12 @@ selector: unescape('initialize'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
-smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){return smalltalk.send(self, "_open", []);})]);
+smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){smalltalk.send(smalltalk.send(smalltalk.send((smalltalk.TabManager || TabManager), "_current", []), "_tabs", []), "_do_", [(function(aTab){return smalltalk.send(smalltalk.send((smalltalk.TabManager || TabManager), "_current", []), "_removeTab_", [aTab]);})]);return smalltalk.send(smalltalk.send(self, "_current", []), "_open", []);})]);
 return self;},
 args: [],
-source: unescape('initialize%0A%09AFIIDETools%20default%20addButton%3A%20%27Editeur%20CSS%27%20action%3A%20%5Bself%20open%5D'),
-messageSends: ["addButton:action:", "default", "open"],
-referencedClasses: ["AFIIDETools"]
+source: unescape('initialize%0A%09AFIIDETools%20default%20addButton%3A%20%27Editeur%20CSS%27%20action%3A%20%5B%0A%09%09%09TabManager%20current%20tabs%20do%3A%20%5B%3AaTab%7C%20TabManager%20current%20removeTab%3A%20aTab%5D.%0A%09%09%09self%20current%20open%5D.'),
+messageSends: ["addButton:action:", "default", "do:", "tabs", "current", "removeTab:", "open"],
+referencedClasses: ["AFIIDETools", "TabManager"]
 }),
 smalltalk.AFICssEditor.klass);
 

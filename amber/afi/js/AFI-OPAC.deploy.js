@@ -149,7 +149,7 @@ smalltalk.method({
 selector: unescape('initialize'),
 fn: function (){
 var self=this;
-smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){return smalltalk.send(self, "_open", []);})]);
+smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){smalltalk.send(smalltalk.send(smalltalk.send((smalltalk.TabManager || TabManager), "_current", []), "_tabs", []), "_do_", [(function(aTab){return smalltalk.send(smalltalk.send((smalltalk.TabManager || TabManager), "_current", []), "_removeTab_", [aTab]);})]);return smalltalk.send(smalltalk.send(self, "_current", []), "_open", []);})]);
 return self;}
 }),
 smalltalk.AFICssEditor.klass);

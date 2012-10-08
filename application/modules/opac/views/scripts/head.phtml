@@ -39,7 +39,7 @@ if ($this->header_css)
 if ($this->header_js)
 	$head_scripts->addJQueryReady('$.getScript("'.$this->header_js.'")');
 
-if (Class_Users::isCurrentUserAdmin())
+if (Class_Users::isCurrentUserAdmin() && Class_AdminVar::isCssEditorEnabled())
 	$head_scripts
 		->addAmberPackage('AFI-OPAC')
 		->loadAmber(true);

@@ -92,7 +92,9 @@ current
 !
 
 initialize
-	AFIIDETools default addButton: 'Editeur CSS' action: [self open]
+	AFIIDETools default addButton: 'Editeur CSS' action: [
+			TabManager current tabs do: [:aTab| TabManager current removeTab: aTab].
+			self current open].
 !
 
 open

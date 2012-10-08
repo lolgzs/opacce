@@ -18,11 +18,47 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class IndexControllerTest extends AbstractControllerTestCase {
+class IndexControllerAsInviteTest extends AbstractControllerTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::INVITE;
+	}
+
 	/** @test */
 	public function withOnlyParamQShouldRedirectToRecherche() {
 		$this->dispatch('index/index?q=test');
 		$this->assertRedirectTo('/recherche?q=test');
+	}
+
+
+	/** @test */
+	public function cssEditorShouldNotBeLoadedEvenIfEnabled() {
+		Class_AdminVar::newInstanceWithID('CSS_EDITOR')->setValeur(1);
+		$this->dispatch('/');
+		$this->assertNotXPathContentContains('//script', 'AFI-OPAC.js');
+	}
+
+}
+
+
+
+class IndexControllerCssEditorAsAdminTest extends AbstractControllerTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+	}
+
+	/** @test */
+	public function withCssEditorEnabledShouldLoadIt() {
+		Class_AdminVar::newInstanceWithID('CSS_EDITOR')->setValeur(1);
+		$this->dispatch('/');
+		$this->assertXPathContentContains('//script', 'AFI-OPAC.js');
+	}
+
+
+	/** @test */
+	public function withCssEditorDisabledShouldNotLoadIt() {
+		Class_AdminVar::newInstanceWithID('CSS_EDITOR')->setValeur(0);
+		$this->dispatch('/');
+		$this->assertNotXPathContentContains('//script', 'AFI-OPAC.js');
 	}
 }
 

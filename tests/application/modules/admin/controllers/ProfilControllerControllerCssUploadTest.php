@@ -87,6 +87,15 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 	public function profilShouldBeSaved($profil_loader) {
 		$this->assertTrue($profil_loader->methodHasBeenCalled('save'));		
 	}
+
+
+	/**
+	 * @depends uploadShoulPutContentInANewCssFileWhenProfilHasNoCss
+	 * @test 
+	 */
+	public function profilCssShouldBeProfil5Css($profil_loader) {
+		$this->assertEquals(BASE_URL.'/userfiles/css/profil_5.css', $profil_loader->find(5)->getHeaderCss());		
+	}
 }
 
 ?>
