@@ -35,6 +35,9 @@ class AmberController extends Zend_Controller_Action {
 		if (Class_ScriptLoader::getInstance()->isAmberModeDeploy())
 			return $this;
 
+		if (!Class_Users::getIdentity()->isSuperAdmin())
+			return $this;
+
 		$request_uri = $this->_request->getRequestUri();
 		$filename = array_last(explode('/', $request_uri));
 		$contents = $this->_request->getRawBody();

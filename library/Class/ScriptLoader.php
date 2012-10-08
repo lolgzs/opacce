@@ -32,6 +32,7 @@ class Class_ScriptLoader {
 	protected $_jquery_ready_scripts;
 	protected $_is_mobile = false;
 	protected $_version_pergame_hash;
+	protected $_amber_mode_deploy = true;
 
 	/**
 	 * @return ScriptLoader
@@ -65,10 +66,12 @@ class Class_ScriptLoader {
 
 
 	/**
+	 * @param boolean $development
 	 * @return ScriptLoader
 	 */
-	public function loadAmber() {
+	public function loadAmber($development = false) {
 		$this->_should_load_amber = true;
+		$this->_amber_mode_deploy = ($development == false);
 		return $this;
 	}
 
@@ -373,6 +376,9 @@ class Class_ScriptLoader {
 	 * @return Boolean
 	 */	
 	public function isAmberModeDeploy() {
+		if ($this->_amber_mode_deploy)
+			return true;
+
 		if (null == $amber = Zend_Registry::get('cfg')->get('amber'))
 			return true;
 
