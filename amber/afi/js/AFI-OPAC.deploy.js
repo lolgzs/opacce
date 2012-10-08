@@ -6,7 +6,21 @@ smalltalk.method({
 selector: unescape('commit'),
 fn: function (){
 var self=this;
+var ajax=nil;
+(ajax=smalltalk.send((smalltalk.Ajax || Ajax), "_module_controller_action_", ["admin", "profil", unescape("commit-css")]));
+(function($rec){smalltalk.send($rec, "_at_put_", ["type", "PUT"]);smalltalk.send($rec, "_at_put_", ["data", smalltalk.send(self, "_contents", [])]);return smalltalk.send($rec, "_at_put_", ["contentType", unescape("text/css%3Bcharset%3DUTF-8")]);})(smalltalk.send(ajax, "_options", []));
+(function($rec){smalltalk.send($rec, "_onErrorDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["Erreur lors de la sauvegarde: "]);})]);smalltalk.send($rec, "_onSuccessDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [unescape("Fichier%20CSS%20sauvegard%E9")]);})]);return smalltalk.send($rec, "_send", []);})(ajax);
+return self;}
+}),
+smalltalk.AFICssEditor);
 
+smalltalk.addMethod(
+unescape('_contents'),
+smalltalk.method({
+selector: unescape('contents'),
+fn: function (){
+var self=this;
+return smalltalk.send(self['@sourceArea'], "_val", []);
 return self;}
 }),
 smalltalk.AFICssEditor);
@@ -65,7 +79,7 @@ fn: function (html){
 var self=this;
 (self['@sourceArea']=smalltalk.send((smalltalk.AFISourceArea || AFISourceArea), "_new", []));
 smalltalk.send(self['@sourceArea'], "_renderOn_", [html]);
-smalltalk.send(self, "_refreshContents", []);
+(function($rec){smalltalk.send($rec, "_loadCss", []);return smalltalk.send($rec, "_refreshContents", []);})(self);
 smalltalk.send(self['@sourceArea'], "_onChange_", [(function(){return smalltalk.send(self, "_updateStyleTag", []);})]);
 return self;}
 }),

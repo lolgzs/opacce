@@ -101,7 +101,23 @@ onSuccessDo: aBlock
 	self options at: 'success' put: aBlock
 ! !
 
+Ajax class instanceVariableNames: 'opacBaseUrl'!
+
+!Ajax class methodsFor: 'accessor'!
+
+opacBaseUrl: aString
+	opacBaseUrl := aString
+! !
+
 !Ajax class methodsFor: 'initialize'!
+
+controller:controllerName action:actionName
+	^ self module: 'opac' controller: controllerName action: actionName
+!
+
+module:moduleName controller:controllerName action:actionName
+	^ self url: baseUrl,'/',moduleName,'/',controllerName,'/',actionName
+!
 
 url: aString
 	^ self new 

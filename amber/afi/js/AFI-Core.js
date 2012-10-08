@@ -249,6 +249,55 @@ referencedClasses: []
 smalltalk.Ajax);
 
 
+smalltalk.Ajax.klass.iVarNames = ['opacBaseUrl'];
+smalltalk.addMethod(
+unescape('_controller_action_'),
+smalltalk.method({
+selector: unescape('controller%3Aaction%3A'),
+category: 'initialize',
+fn: function (controllerName, actionName){
+var self=this;
+return smalltalk.send(self, "_module_controller_action_", ["opac", controllerName, actionName]);
+return self;},
+args: ["controllerName", "actionName"],
+source: unescape('controller%3AcontrollerName%20action%3AactionName%0A%09%5E%20self%20module%3A%20%27opac%27%20controller%3A%20controllerName%20action%3A%20actionName'),
+messageSends: ["module:controller:action:"],
+referencedClasses: []
+}),
+smalltalk.Ajax.klass);
+
+smalltalk.addMethod(
+unescape('_module_controller_action_'),
+smalltalk.method({
+selector: unescape('module%3Acontroller%3Aaction%3A'),
+category: 'initialize',
+fn: function (moduleName, controllerName, actionName){
+var self=this;
+return smalltalk.send(self, "_url_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((typeof baseUrl == 'undefined' ? nil : baseUrl), "__comma", [unescape("/")]), "__comma", [moduleName]), "__comma", [unescape("/")]), "__comma", [controllerName]), "__comma", [unescape("/")]), "__comma", [actionName])]);
+return self;},
+args: ["moduleName", "controllerName", "actionName"],
+source: unescape('module%3AmoduleName%20controller%3AcontrollerName%20action%3AactionName%0A%09%5E%20self%20url%3A%20baseUrl%2C%27/%27%2CmoduleName%2C%27/%27%2CcontrollerName%2C%27/%27%2CactionName'),
+messageSends: ["url:", unescape("%2C")],
+referencedClasses: []
+}),
+smalltalk.Ajax.klass);
+
+smalltalk.addMethod(
+unescape('_opacBaseUrl_'),
+smalltalk.method({
+selector: unescape('opacBaseUrl%3A'),
+category: 'accessor',
+fn: function (aString){
+var self=this;
+(self['@opacBaseUrl']=aString);
+return self;},
+args: ["aString"],
+source: unescape('opacBaseUrl%3A%20aString%0A%09opacBaseUrl%20%3A%3D%20aString'),
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Ajax.klass);
+
 smalltalk.addMethod(
 unescape('_url_'),
 smalltalk.method({

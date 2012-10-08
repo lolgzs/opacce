@@ -7,11 +7,30 @@ selector: unescape('commit'),
 category: 'actions',
 fn: function (){
 var self=this;
-
+var ajax=nil;
+(ajax=smalltalk.send((smalltalk.Ajax || Ajax), "_module_controller_action_", ["admin", "profil", unescape("commit-css")]));
+(function($rec){smalltalk.send($rec, "_at_put_", ["type", "PUT"]);smalltalk.send($rec, "_at_put_", ["data", smalltalk.send(self, "_contents", [])]);return smalltalk.send($rec, "_at_put_", ["contentType", unescape("text/css%3Bcharset%3DUTF-8")]);})(smalltalk.send(ajax, "_options", []));
+(function($rec){smalltalk.send($rec, "_onErrorDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["Erreur lors de la sauvegarde: "]);})]);smalltalk.send($rec, "_onSuccessDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [unescape("Fichier%20CSS%20sauvegard%E9")]);})]);return smalltalk.send($rec, "_send", []);})(ajax);
 return self;},
 args: [],
-source: unescape('commit'),
-messageSends: [],
+source: unescape('commit%0A%09%7Cajax%7C%20%0A%09ajax%20%3A%3D%20Ajax%20module%3A%20%27admin%27%20controller%3A%20%27profil%27%20action%3A%20%27commit-css%27.%0A%09ajax%20options%20%0A%09%09%09at%3A%20%27type%27%20put%3A%20%27PUT%27%3B%0A%09%09%09at%3A%20%27data%27%20put%3A%20self%20contents%3B%0A%09%09%09at%3A%20%27contentType%27%20put%3A%20%27text/css%3Bcharset%3DUTF-8%27.%0A%09ajax%20%0A%09%09onErrorDo%3A%20%5Bwindow%20alert%3A%20%27Erreur%20lors%20de%20la%20sauvegarde%3A%20%27%20%5D%3B%0A%09%09onSuccessDo%3A%20%5Bwindow%20alert%3A%20%27Fichier%20CSS%20sauvegard%E9%27%20%5D%3B%0A%09%09send'),
+messageSends: ["module:controller:action:", "at:put:", "contents", "options", "onErrorDo:", "alert:", "onSuccessDo:", "send"],
+referencedClasses: ["Ajax"]
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
+unescape('_contents'),
+smalltalk.method({
+selector: unescape('contents'),
+category: 'accessor',
+fn: function (){
+var self=this;
+return smalltalk.send(self['@sourceArea'], "_val", []);
+return self;},
+args: [],
+source: unescape('contents%0A%09%5E%20sourceArea%20val'),
+messageSends: ["val"],
 referencedClasses: []
 }),
 smalltalk.AFICssEditor);
@@ -91,12 +110,12 @@ fn: function (html){
 var self=this;
 (self['@sourceArea']=smalltalk.send((smalltalk.AFISourceArea || AFISourceArea), "_new", []));
 smalltalk.send(self['@sourceArea'], "_renderOn_", [html]);
-smalltalk.send(self, "_refreshContents", []);
+(function($rec){smalltalk.send($rec, "_loadCss", []);return smalltalk.send($rec, "_refreshContents", []);})(self);
 smalltalk.send(self['@sourceArea'], "_onChange_", [(function(){return smalltalk.send(self, "_updateStyleTag", []);})]);
 return self;},
 args: ["html"],
-source: unescape('renderBoxOn%3A%20html%0A%20%20%20%20sourceArea%20%3A%3D%20AFISourceArea%20new.%0A%20%20%20%20sourceArea%20renderOn%3A%20html.%0A%0A%20%20%20%20self%20refreshContents.%0A%0A%20%20%20%20sourceArea%20onChange%3A%20%5Bself%20updateStyleTag%5D'),
-messageSends: ["new", "renderOn:", "refreshContents", "onChange:", "updateStyleTag"],
+source: unescape('renderBoxOn%3A%20html%0A%20%20%20%20sourceArea%20%3A%3D%20AFISourceArea%20new.%0A%20%20%20%20sourceArea%20renderOn%3A%20html.%0A%0A%20%20%20%20self%20loadCss%3B%20refreshContents.%0A%0A%20%20%20%20sourceArea%20onChange%3A%20%5Bself%20updateStyleTag%5D'),
+messageSends: ["new", "renderOn:", "loadCss", "refreshContents", "onChange:", "updateStyleTag"],
 referencedClasses: ["AFISourceArea"]
 }),
 smalltalk.AFICssEditor);

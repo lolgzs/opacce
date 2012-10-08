@@ -5,6 +5,10 @@ TabWidget subclass: #AFICssEditor
 
 !AFICssEditor methodsFor: 'accessor'!
 
+contents
+	^ sourceArea val
+!
+
 contents: aString
 	sourceArea val: aString
 !
@@ -23,6 +27,16 @@ styleTag
 !AFICssEditor methodsFor: 'actions'!
 
 commit
+	|ajax| 
+	ajax := Ajax module: 'admin' controller: 'profil' action: 'commit-css'.
+	ajax options 
+			at: 'type' put: 'PUT';
+			at: 'data' put: self contents;
+			at: 'contentType' put: 'text/css;charset=UTF-8'.
+	ajax 
+		onErrorDo: [window alert: 'Erreur lors de la sauvegarde: ' ];
+		onSuccessDo: [window alert: 'Fichier CSS sauvegardé' ];
+		send
 !
 
 loadCss
@@ -49,7 +63,7 @@ renderBoxOn: html
     sourceArea := AFISourceArea new.
     sourceArea renderOn: html.
 
-    self refreshContents.
+    self loadCss; refreshContents.
 
     sourceArea onChange: [self updateStyleTag]
 !
