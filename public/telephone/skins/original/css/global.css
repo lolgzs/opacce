@@ -305,6 +305,14 @@ div.bk-widget div.b-counter {
     height: 40px;
 }
 
+.boite_accueil {
+    margin-top: 10px;
+}
+
+.img-titre {
+    margin: 0 -10px -15px 0;
+}
+
 
 @media only screen and (max-width : 320px) {
     .boite_accueil {

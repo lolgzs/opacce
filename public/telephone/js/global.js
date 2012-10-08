@@ -1,7 +1,7 @@
 //-----------------------------------------------------------
 // Faire disparaitre le toolbar iphone
 //-----------------------------------------------------------
-$(document).ready(function(){
+$(document).bind('pageinit', function(){
 	setTimeout(function(){
 		window.scrollTo(0, 1);
 	}, 100);

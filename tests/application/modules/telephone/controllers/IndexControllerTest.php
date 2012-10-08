@@ -266,13 +266,13 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 
 	/** @test */
 	function titreBoiteBibNumeriqueShouldBeMesAlbums() {
-		$this->assertXPathContentContains('//div[@class="bib_numerique"]//div[@class="titre"]', 'Mes albums');
+		$this->assertXPathContentContains('//div[contains(@class, "bib_numerique")]//div[@class="titre"]//h2', 'Mes albums');
 	}
 
 
 	/** @test */
 	public function boiteCalendrierShouldBeVisible() {
-		$this->assertXPathContentContains('//div[@class="calendar"]//h2', 'Agenda', $this->_response->getBody());
+		$this->assertXPathContentContains('//div[contains(@class, "calendar")]//h2', 'Agenda', $this->_response->getBody());
 	}
 
 
