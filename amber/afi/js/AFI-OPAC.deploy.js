@@ -94,6 +94,17 @@ return self;}
 smalltalk.AFICssEditor.klass);
 
 smalltalk.addMethod(
+unescape('_initialize'),
+smalltalk.method({
+selector: unescape('initialize'),
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){return smalltalk.send(self, "_open", []);})]);
+return self;}
+}),
+smalltalk.AFICssEditor.klass);
+
+smalltalk.addMethod(
 unescape('_open'),
 smalltalk.method({
 selector: unescape('open'),

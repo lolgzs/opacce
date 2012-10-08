@@ -51,6 +51,10 @@ current
 	^current ifNil: [current := self new]
 !
 
+initialize
+	AFIIDETools default addButton: 'Editeur CSS' action: [self open]
+!
+
 open
 	current
 		 ifNil: [	current := self new.

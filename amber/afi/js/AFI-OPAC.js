@@ -134,6 +134,22 @@ referencedClasses: []
 smalltalk.AFICssEditor.klass);
 
 smalltalk.addMethod(
+unescape('_initialize'),
+smalltalk.method({
+selector: unescape('initialize'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send((smalltalk.AFIIDETools || AFIIDETools), "_default", []), "_addButton_action_", ["Editeur CSS", (function(){return smalltalk.send(self, "_open", []);})]);
+return self;},
+args: [],
+source: unescape('initialize%0A%09AFIIDETools%20default%20addButton%3A%20%27Editeur%20CSS%27%20action%3A%20%5Bself%20open%5D'),
+messageSends: ["addButton:action:", "default", "open"],
+referencedClasses: ["AFIIDETools"]
+}),
+smalltalk.AFICssEditor.klass);
+
+smalltalk.addMethod(
 unescape('_open'),
 smalltalk.method({
 selector: unescape('open'),
