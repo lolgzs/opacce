@@ -3,7 +3,7 @@ TabWidget subclass: #AFICssEditor
 	instanceVariableNames: 'sourceArea styleTag'
 	package: 'AFI-OPAC'!
 
-!AFICssEditor methodsFor: 'not yet classified'!
+!AFICssEditor methodsFor: 'accessor'!
 
 contents: aString
 	sourceArea val: aString
@@ -13,9 +13,37 @@ label
     ^ 'Editeur CSS'
 !
 
+styleTag
+	^ styleTag ifNil: [
+		styleTag := window jQuery: '<style id="profil_css_editor"> body {} </style>'.
+		styleTag appendTo: (window jQuery: 'body').
+	]
+! !
+
+!AFICssEditor methodsFor: 'actions'!
+
+commit
+!
+
+loadCss
+	|cssUrl|
+	cssUrl := (window jQuery: '#profil_css') attr: 'href'.
+	cssUrl ifNotNil: [	(Ajax url: cssUrl) 
+						onSuccessDo: [:data | self contents: data ];
+						send. ].
+! !
+
+!AFICssEditor methodsFor: 'callbacks'!
+
 refreshContents
 	self contents: self styleTag html
 !
+
+updateStyleTag
+	self styleTag html: sourceArea val
+! !
+
+!AFICssEditor methodsFor: 'rendering'!
 
 renderBoxOn: html
     sourceArea := AFISourceArea new.
@@ -26,15 +54,13 @@ renderBoxOn: html
     sourceArea onChange: [self updateStyleTag]
 !
 
-styleTag
-	^ styleTag ifNil: [
-		styleTag := window jQuery: '<style id="profil_css_editor"> body {} </style>'.
-		styleTag appendTo: (window jQuery: 'body').
-	]
-!
-
-updateStyleTag
-	self styleTag html: sourceArea val
+renderButtonsOn: html
+    html button
+	with: 'Réinitialiser';
+	onClick: [self loadCss].
+    html button
+	with: 'Sauvegarder';
+	onClick: [self commit].
 ! !
 
 AFICssEditor class instanceVariableNames: 'current'!

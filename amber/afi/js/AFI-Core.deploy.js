@@ -95,3 +95,94 @@ return self;}
 smalltalk.AFIIDETools.klass);
 
 
+smalltalk.addClass('Ajax', smalltalk.Object, ['url', 'settings', 'options', 'ajaxRequest'], 'AFI-Core');
+smalltalk.addMethod(
+unescape('_abort'),
+smalltalk.method({
+selector: unescape('abort'),
+fn: function (){
+var self=this;
+(($receiver = self['@ajaxRequest']) != nil && $receiver != undefined) ? (function(){return smalltalk.send(self['@ajaxRequest'], "_abort", []);})() : nil;
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_onCompleteDo_'),
+smalltalk.method({
+selector: unescape('onCompleteDo%3A'),
+fn: function (aBlock){
+var self=this;
+smalltalk.send(smalltalk.send(self, "_options", []), "_at_put_", ["complete", aBlock]);
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_onErrorDo_'),
+smalltalk.method({
+selector: unescape('onErrorDo%3A'),
+fn: function (aBlock){
+var self=this;
+smalltalk.send(smalltalk.send(self, "_options", []), "_at_put_", ["error", aBlock]);
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_onSuccessDo_'),
+smalltalk.method({
+selector: unescape('onSuccessDo%3A'),
+fn: function (aBlock){
+var self=this;
+smalltalk.send(smalltalk.send(self, "_options", []), "_at_put_", ["success", aBlock]);
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_options'),
+smalltalk.method({
+selector: unescape('options'),
+fn: function (){
+var self=this;
+return (($receiver = self['@options']) == nil || $receiver == undefined) ? (function(){return self['@options']=smalltalk.send((smalltalk.HashedCollection || HashedCollection), "_new", []);})() : $receiver;
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_send'),
+smalltalk.method({
+selector: unescape('send'),
+fn: function (){
+var self=this;
+(self['@ajaxRequest']=smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [self['@url'], self['@options']]));
+return self;}
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+unescape('_url_'),
+smalltalk.method({
+selector: unescape('url%3A'),
+fn: function (aString){
+var self=this;
+self['@url']=aString;
+return self;}
+}),
+smalltalk.Ajax);
+
+
+smalltalk.addMethod(
+unescape('_url_'),
+smalltalk.method({
+selector: unescape('url%3A'),
+fn: function (aString){
+var self=this;
+return (function($rec){smalltalk.send($rec, "_url_", [aString]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self, "_new", []));
+return self;}
+}),
+smalltalk.Ajax.klass);
+
+

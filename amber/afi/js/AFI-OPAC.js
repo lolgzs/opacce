@@ -1,10 +1,26 @@
 smalltalk.addPackage('AFI-OPAC', {});
 smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag'], 'AFI-OPAC');
 smalltalk.addMethod(
+unescape('_commit'),
+smalltalk.method({
+selector: unescape('commit'),
+category: 'actions',
+fn: function (){
+var self=this;
+
+return self;},
+args: [],
+source: unescape('commit'),
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_contents_'),
 smalltalk.method({
 selector: unescape('contents%3A'),
-category: 'not yet classified',
+category: 'accessor',
 fn: function (aString){
 var self=this;
 smalltalk.send(self['@sourceArea'], "_val_", [aString]);
@@ -20,7 +36,7 @@ smalltalk.addMethod(
 unescape('_label'),
 smalltalk.method({
 selector: unescape('label'),
-category: 'not yet classified',
+category: 'accessor',
 fn: function (){
 var self=this;
 return "Editeur CSS";
@@ -33,10 +49,28 @@ referencedClasses: []
 smalltalk.AFICssEditor);
 
 smalltalk.addMethod(
+unescape('_loadCss'),
+smalltalk.method({
+selector: unescape('loadCss'),
+category: 'actions',
+fn: function (){
+var self=this;
+var cssUrl=nil;
+(cssUrl=smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]), "_attr_", ["href"]));
+(($receiver = cssUrl) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){return smalltalk.send(self, "_contents_", [data]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [cssUrl]));})() : nil;
+return self;},
+args: [],
+source: unescape('loadCss%0A%09%7CcssUrl%7C%0A%09cssUrl%20%3A%3D%20%28window%20jQuery%3A%20%27%23profil_css%27%29%20attr%3A%20%27href%27.%0A%09cssUrl%20ifNotNil%3A%20%5B%09%28Ajax%20url%3A%20cssUrl%29%20%0A%09%09%09%09%09%09onSuccessDo%3A%20%5B%3Adata%20%7C%20self%20contents%3A%20data%20%5D%3B%0A%09%09%09%09%09%09send.%20%5D.'),
+messageSends: ["attr:", "jQuery:", "ifNotNil:", "onSuccessDo:", "contents:", "send", "url:"],
+referencedClasses: ["Ajax"]
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_refreshContents'),
 smalltalk.method({
 selector: unescape('refreshContents'),
-category: 'not yet classified',
+category: 'callbacks',
 fn: function (){
 var self=this;
 smalltalk.send(self, "_contents_", [smalltalk.send(smalltalk.send(self, "_styleTag", []), "_html", [])]);
@@ -52,7 +86,7 @@ smalltalk.addMethod(
 unescape('_renderBoxOn_'),
 smalltalk.method({
 selector: unescape('renderBoxOn%3A'),
-category: 'not yet classified',
+category: 'rendering',
 fn: function (html){
 var self=this;
 (self['@sourceArea']=smalltalk.send((smalltalk.AFISourceArea || AFISourceArea), "_new", []));
@@ -68,10 +102,27 @@ referencedClasses: ["AFISourceArea"]
 smalltalk.AFICssEditor);
 
 smalltalk.addMethod(
+unescape('_renderButtonsOn_'),
+smalltalk.method({
+selector: unescape('renderButtonsOn%3A'),
+category: 'rendering',
+fn: function (html){
+var self=this;
+(function($rec){smalltalk.send($rec, "_with_", [unescape("R%E9initialiser")]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_loadCss", []);})]);})(smalltalk.send(html, "_button", []));
+(function($rec){smalltalk.send($rec, "_with_", ["Sauvegarder"]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_commit", []);})]);})(smalltalk.send(html, "_button", []));
+return self;},
+args: ["html"],
+source: unescape('renderButtonsOn%3A%20html%0A%20%20%20%20html%20button%0A%09with%3A%20%27R%E9initialiser%27%3B%0A%09onClick%3A%20%5Bself%20loadCss%5D.%0A%20%20%20%20html%20button%0A%09with%3A%20%27Sauvegarder%27%3B%0A%09onClick%3A%20%5Bself%20commit%5D.'),
+messageSends: ["with:", "onClick:", "loadCss", "button", "commit"],
+referencedClasses: []
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_styleTag'),
 smalltalk.method({
 selector: unescape('styleTag'),
-category: 'not yet classified',
+category: 'accessor',
 fn: function (){
 var self=this;
 return (($receiver = self['@styleTag']) == nil || $receiver == undefined) ? (function(){(self['@styleTag']=smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%3Cstyle%20id%3D%22profil_css_editor%22%3E%20body%20%7B%7D%20%3C/style%3E")]));return smalltalk.send(self['@styleTag'], "_appendTo_", [smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", ["body"])]);})() : $receiver;
@@ -87,7 +138,7 @@ smalltalk.addMethod(
 unescape('_updateStyleTag'),
 smalltalk.method({
 selector: unescape('updateStyleTag'),
-category: 'not yet classified',
+category: 'callbacks',
 fn: function (){
 var self=this;
 smalltalk.send(smalltalk.send(self, "_styleTag", []), "_html_", [smalltalk.send(self['@sourceArea'], "_val", [])]);

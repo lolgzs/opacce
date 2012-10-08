@@ -1,6 +1,17 @@
 smalltalk.addPackage('AFI-OPAC', {});
 smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag'], 'AFI-OPAC');
 smalltalk.addMethod(
+unescape('_commit'),
+smalltalk.method({
+selector: unescape('commit'),
+fn: function (){
+var self=this;
+
+return self;}
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_contents_'),
 smalltalk.method({
 selector: unescape('contents%3A'),
@@ -18,6 +29,19 @@ selector: unescape('label'),
 fn: function (){
 var self=this;
 return "Editeur CSS";
+return self;}
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
+unescape('_loadCss'),
+smalltalk.method({
+selector: unescape('loadCss'),
+fn: function (){
+var self=this;
+var cssUrl=nil;
+(cssUrl=smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]), "_attr_", ["href"]));
+(($receiver = cssUrl) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){return smalltalk.send(self, "_contents_", [data]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [cssUrl]));})() : nil;
 return self;}
 }),
 smalltalk.AFICssEditor);
@@ -43,6 +67,18 @@ var self=this;
 smalltalk.send(self['@sourceArea'], "_renderOn_", [html]);
 smalltalk.send(self, "_refreshContents", []);
 smalltalk.send(self['@sourceArea'], "_onChange_", [(function(){return smalltalk.send(self, "_updateStyleTag", []);})]);
+return self;}
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
+unescape('_renderButtonsOn_'),
+smalltalk.method({
+selector: unescape('renderButtonsOn%3A'),
+fn: function (html){
+var self=this;
+(function($rec){smalltalk.send($rec, "_with_", [unescape("R%E9initialiser")]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_loadCss", []);})]);})(smalltalk.send(html, "_button", []));
+(function($rec){smalltalk.send($rec, "_with_", ["Sauvegarder"]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_commit", []);})]);})(smalltalk.send(html, "_button", []));
 return self;}
 }),
 smalltalk.AFICssEditor);
