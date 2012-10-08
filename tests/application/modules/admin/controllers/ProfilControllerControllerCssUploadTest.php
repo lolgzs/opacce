@@ -33,6 +33,11 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 
 		$this->_file_writer = Storm_Test_ObjectWrapper::mock();
 		Class_Profil::setFileWriter($this->_file_writer);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('save')
+			->answers(true);
+
 	}
 
 
@@ -71,6 +76,16 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 		$this->dispatch('/admin/profil/upload-css/id_profil/5', true);
 		
 		$this->assertTrue($this->_file_writer->methodHasBeenCalled('putContents'));
+		return Class_Profil::getLoader();
+	}
+
+
+	/**
+	 * @depends uploadShoulPutContentInANewCssFileWhenProfilHasNoCss
+	 * @test 
+	 */
+	public function profilShouldBeSaved($profil_loader) {
+		$this->assertTrue($profil_loader->methodHasBeenCalled('save'));		
 	}
 }
 

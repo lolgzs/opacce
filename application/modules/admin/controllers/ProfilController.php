@@ -119,7 +119,9 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 
 	public function uploadCssAction() {
-		$this->_profil->writeHeaderCss($this->_request->getRawBody());
+		$this->_profil
+			->writeHeaderCss($this->_request->getRawBody())
+			->save();
 		$this->getHelper('ViewRenderer')->setNoRender();
 	}
 

@@ -1290,5 +1290,6 @@ class Class_Profil extends Storm_Model_Abstract {
 			
 
 		$this->getFileWriter()->putContents($header_css_path, $data);
+		return $this;
 	}
 }
