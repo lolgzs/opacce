@@ -44,6 +44,7 @@ body.main
 }
 
 
+
 /* tags de base */
 table, td {padding:0px; margin:0px}
 table {width: 100%}
@@ -131,6 +132,7 @@ form{
 .titre { margin-top: 5px }
 
 .titre h2 {
+        
 		padding:  0px 0px 2px 10px;
 		margin: 0px;
 }
@@ -301,4 +303,28 @@ div.bk-widget div.b-counter {
 
 .contenu  div.vignette_notice img {
 		height: 40px;
+}
+
+@media all and (min-width: 480px) {
+
+    div.ui-content>div {
+
+	float: left;
+
+	margin-left: 1%;
+
+	margin-right: 1%;
+
+    }
+
+}
+
+@media all and (min-width: 480px) and (max-width: 1023px) {
+
+    div.ui-content>div {
+
+	width: 48%;
+
+    }
+
 }

@@ -139,10 +139,11 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 //---------------------------------------------------------------------
 	protected function getHtmlArray()
 	{
-		return array("TITRE" => $this->titre,
-								 "CONTENU" => $this->getFonctionAdmin().$this->contenu,
-								 "MESSAGE" => $this->message,
-								 "RSS" => $this->rss_interne);
+		return ["TITRE" => $this->titre,
+						"CONTENU" => $this->getFonctionAdmin().$this->contenu,
+						"MESSAGE" => $this->message,
+						"RSS" => $this->rss_interne,
+						"TYPE_MODULE" => strtolower($this->type_module)];
 	}
 
 //---------------------------------------------------------------------
