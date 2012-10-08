@@ -1,5 +1,5 @@
 smalltalk.addPackage('AFI-OPAC', {});
-smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag'], 'AFI-OPAC');
+smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag', 'cssUrl'], 'AFI-OPAC');
 smalltalk.addMethod(
 unescape('_commit'),
 smalltalk.method({
@@ -37,6 +37,18 @@ return self;}
 smalltalk.AFICssEditor);
 
 smalltalk.addMethod(
+unescape('_cssUrl'),
+smalltalk.method({
+selector: unescape('cssUrl'),
+fn: function (){
+var self=this;
+return (($receiver = self['@cssUrl']) == nil || $receiver == undefined) ? (function(){var linkTag=nil;
+(linkTag=smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]));(self['@cssUrl']=smalltalk.send(linkTag, "_attr_", ["href"]));smalltalk.send(linkTag, "_remove", []);return self['@cssUrl'];})() : $receiver;
+return self;}
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_label'),
 smalltalk.method({
 selector: unescape('label'),
@@ -53,9 +65,7 @@ smalltalk.method({
 selector: unescape('loadCss'),
 fn: function (){
 var self=this;
-var cssUrl=nil;
-(cssUrl=smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]), "_attr_", ["href"]));
-(($receiver = cssUrl) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){return smalltalk.send(self, "_contents_", [data]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [cssUrl]));})() : nil;
+(($receiver = smalltalk.send(self, "_cssUrl", [])) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){smalltalk.send(self, "_contents_", [data]);return smalltalk.send(self, "_updateStyleTag", []);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [self['@cssUrl']]));})() : nil;
 return self;}
 }),
 smalltalk.AFICssEditor);
@@ -79,7 +89,7 @@ fn: function (html){
 var self=this;
 (self['@sourceArea']=smalltalk.send((smalltalk.AFISourceArea || AFISourceArea), "_new", []));
 smalltalk.send(self['@sourceArea'], "_renderOn_", [html]);
-(function($rec){smalltalk.send($rec, "_loadCss", []);return smalltalk.send($rec, "_refreshContents", []);})(self);
+smalltalk.send(self, "_loadCss", []);
 smalltalk.send(self['@sourceArea'], "_onChange_", [(function(){return smalltalk.send(self, "_updateStyleTag", []);})]);
 return self;}
 }),

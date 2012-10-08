@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'AFI-OPAC' properties: #{}!
 TabWidget subclass: #AFICssEditor
-	instanceVariableNames: 'sourceArea styleTag'
+	instanceVariableNames: 'sourceArea styleTag cssUrl'
 	package: 'AFI-OPAC'!
 
 !AFICssEditor methodsFor: 'accessor'!
@@ -11,6 +11,14 @@ contents
 
 contents: aString
 	sourceArea val: aString
+!
+
+cssUrl
+	^ cssUrl ifNil: [	|linkTag| 
+				 	linkTag := (window jQuery: '#profil_css'). 
+				    	cssUrl := linkTag attr: 'href'.
+					linkTag remove.
+					cssUrl ]
 !
 
 label
@@ -40,10 +48,10 @@ commit
 !
 
 loadCss
-	|cssUrl|
-	cssUrl := (window jQuery: '#profil_css') attr: 'href'.
-	cssUrl ifNotNil: [	(Ajax url: cssUrl) 
-						onSuccessDo: [:data | self contents: data ];
+	self cssUrl ifNotNil: [	(Ajax url: cssUrl) 
+						onSuccessDo: [:data | 
+										self contents: data. 
+										 self updateStyleTag ];
 						send. ].
 ! !
 
@@ -63,7 +71,7 @@ renderBoxOn: html
     sourceArea := AFISourceArea new.
     sourceArea renderOn: html.
 
-    self loadCss; refreshContents.
+    self loadCss.
 
     sourceArea onChange: [self updateStyleTag]
 !

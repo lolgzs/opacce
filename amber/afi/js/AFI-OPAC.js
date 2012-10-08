@@ -1,5 +1,5 @@
 smalltalk.addPackage('AFI-OPAC', {});
-smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag'], 'AFI-OPAC');
+smalltalk.addClass('AFICssEditor', smalltalk.TabWidget, ['sourceArea', 'styleTag', 'cssUrl'], 'AFI-OPAC');
 smalltalk.addMethod(
 unescape('_commit'),
 smalltalk.method({
@@ -52,6 +52,23 @@ referencedClasses: []
 smalltalk.AFICssEditor);
 
 smalltalk.addMethod(
+unescape('_cssUrl'),
+smalltalk.method({
+selector: unescape('cssUrl'),
+category: 'accessor',
+fn: function (){
+var self=this;
+return (($receiver = self['@cssUrl']) == nil || $receiver == undefined) ? (function(){var linkTag=nil;
+(linkTag=smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]));(self['@cssUrl']=smalltalk.send(linkTag, "_attr_", ["href"]));smalltalk.send(linkTag, "_remove", []);return self['@cssUrl'];})() : $receiver;
+return self;},
+args: [],
+source: unescape('cssUrl%0A%09%5E%20cssUrl%20ifNil%3A%20%5B%09%7ClinkTag%7C%20%0A%09%09%09%09%20%09linkTag%20%3A%3D%20%28window%20jQuery%3A%20%27%23profil_css%27%29.%20%0A%09%09%09%09%20%20%20%20%09cssUrl%20%3A%3D%20linkTag%20attr%3A%20%27href%27.%0A%09%09%09%09%09linkTag%20remove.%0A%09%09%09%09%09cssUrl%20%5D'),
+messageSends: ["ifNil:", "jQuery:", "attr:", "remove"],
+referencedClasses: []
+}),
+smalltalk.AFICssEditor);
+
+smalltalk.addMethod(
 unescape('_label'),
 smalltalk.method({
 selector: unescape('label'),
@@ -74,13 +91,11 @@ selector: unescape('loadCss'),
 category: 'actions',
 fn: function (){
 var self=this;
-var cssUrl=nil;
-(cssUrl=smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_jQuery_", [unescape("%23profil_css")]), "_attr_", ["href"]));
-(($receiver = cssUrl) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){return smalltalk.send(self, "_contents_", [data]);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [cssUrl]));})() : nil;
+(($receiver = smalltalk.send(self, "_cssUrl", [])) != nil && $receiver != undefined) ? (function(){return (function($rec){smalltalk.send($rec, "_onSuccessDo_", [(function(data){smalltalk.send(self, "_contents_", [data]);return smalltalk.send(self, "_updateStyleTag", []);})]);return smalltalk.send($rec, "_send", []);})(smalltalk.send((smalltalk.Ajax || Ajax), "_url_", [self['@cssUrl']]));})() : nil;
 return self;},
 args: [],
-source: unescape('loadCss%0A%09%7CcssUrl%7C%0A%09cssUrl%20%3A%3D%20%28window%20jQuery%3A%20%27%23profil_css%27%29%20attr%3A%20%27href%27.%0A%09cssUrl%20ifNotNil%3A%20%5B%09%28Ajax%20url%3A%20cssUrl%29%20%0A%09%09%09%09%09%09onSuccessDo%3A%20%5B%3Adata%20%7C%20self%20contents%3A%20data%20%5D%3B%0A%09%09%09%09%09%09send.%20%5D.'),
-messageSends: ["attr:", "jQuery:", "ifNotNil:", "onSuccessDo:", "contents:", "send", "url:"],
+source: unescape('loadCss%0A%09self%20cssUrl%20ifNotNil%3A%20%5B%09%28Ajax%20url%3A%20cssUrl%29%20%0A%09%09%09%09%09%09onSuccessDo%3A%20%5B%3Adata%20%7C%20%0A%09%09%09%09%09%09%09%09%09%09self%20contents%3A%20data.%20%0A%09%09%09%09%09%09%09%09%09%09%20self%20updateStyleTag%20%5D%3B%0A%09%09%09%09%09%09send.%20%5D.'),
+messageSends: ["ifNotNil:", "cssUrl", "onSuccessDo:", "contents:", "updateStyleTag", "send", "url:"],
 referencedClasses: ["Ajax"]
 }),
 smalltalk.AFICssEditor);
@@ -110,12 +125,12 @@ fn: function (html){
 var self=this;
 (self['@sourceArea']=smalltalk.send((smalltalk.AFISourceArea || AFISourceArea), "_new", []));
 smalltalk.send(self['@sourceArea'], "_renderOn_", [html]);
-(function($rec){smalltalk.send($rec, "_loadCss", []);return smalltalk.send($rec, "_refreshContents", []);})(self);
+smalltalk.send(self, "_loadCss", []);
 smalltalk.send(self['@sourceArea'], "_onChange_", [(function(){return smalltalk.send(self, "_updateStyleTag", []);})]);
 return self;},
 args: ["html"],
-source: unescape('renderBoxOn%3A%20html%0A%20%20%20%20sourceArea%20%3A%3D%20AFISourceArea%20new.%0A%20%20%20%20sourceArea%20renderOn%3A%20html.%0A%0A%20%20%20%20self%20loadCss%3B%20refreshContents.%0A%0A%20%20%20%20sourceArea%20onChange%3A%20%5Bself%20updateStyleTag%5D'),
-messageSends: ["new", "renderOn:", "loadCss", "refreshContents", "onChange:", "updateStyleTag"],
+source: unescape('renderBoxOn%3A%20html%0A%20%20%20%20sourceArea%20%3A%3D%20AFISourceArea%20new.%0A%20%20%20%20sourceArea%20renderOn%3A%20html.%0A%0A%20%20%20%20self%20loadCss.%0A%0A%20%20%20%20sourceArea%20onChange%3A%20%5Bself%20updateStyleTag%5D'),
+messageSends: ["new", "renderOn:", "loadCss", "onChange:", "updateStyleTag"],
 referencedClasses: ["AFISourceArea"]
 }),
 smalltalk.AFICssEditor);
