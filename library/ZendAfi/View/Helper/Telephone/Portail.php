@@ -21,15 +21,25 @@
 class ZendAfi_View_Helper_Telephone_Portail extends ZendAfi_View_Helper_Portail {
 	public function init() {
 		Class_ScriptLoader::getInstance()
+	  
 			->loadJQueryUI()
-			->addJQueryReady('$(".app-icon").click(function(){
-						$(".app-icon").parent(":not(div." + $(this).parent("div").attr("class") + ")").effect("slide", {mode:"hide"});
-						$(this).siblings(".contenu").toggle();
-						$(this).hide();
-						$(this).siblings(".titre").hide();
-						//$(this).parent("div").css("float", "none");
-						//$(this).parent("div").css("width", "90%");
-						
-})');
+			->addJQueryReady('$(".app-icon").click(function(event){
+						var target = $(event.target).parent();
+						$(".app-icon").parent().not(target).removeClass("show-maximized");
+						target.toggleClass("show-maximized");
+						$("div[role=\"main\"]").toggleClass("one-block-visible", (0 < $(".show-maximized").size()));
+						/* $(".app-icon").parent(":not(div." + $(this).parent("div").attr("class") + ")").effect("slide", {mode:"hide"}); */
+						/* $(this).siblings(".contenu").toggle(); */
+						/* $(this).hide(); */
+						/* $(this).siblings(".titre").hide(); */
+						/* $(this).siblings(".icon-retour").css("display", "block"); */
+						/* //$(this).parent("div").css("float", "none"); */
+						/* //$(this).parent("div").css("width", "90%"); */
+					})');
 	}
+		
+  
+			/*	->addJQueryReady('$(".icon-retour").click(function(){
+							$(this).siblings(".contenu").hide();
+							})');*/
 }

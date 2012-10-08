@@ -306,11 +306,18 @@ div.bk-widget div.b-counter {
 }
 
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 960px) {
-    .app-icon, .titre {
+@media only screen and (max-width : 320px) {
+    .boite_accueil {
+	width: 50%;
+	height: 120px;
+	float: left;
+	text-align: center;
+    }
+
+    .app-icon {
 	margin-left: 4%;
 	margin-right: 4%;
-	float:left;
+	display: block;
     }
 
 
@@ -318,19 +325,86 @@ div.bk-widget div.b-counter {
 	display:block;
 	background-image: url(../images/apple-touch-icon.png);
 	background-repeat: no-repeat;
+	background-position: center top;
 	margin-left: 10px;
-	width: 64px;
 	height:64px;
     }
+    
+    .icon-retour {
+	display:none;
+	background-image: url(../images/retouracceuil.png);
+	background-repeat: no-repeat;
+	margin-left: 10px;
+	widht: 16px;
+	height: 16px;
+	}
 
     .titre {
 	font: 0.7em Helvetica,Arial;
 	margin-left: -10px;
+	
     }
 
     .contenu{
 	margin-left: 4%;
 	margin-right: 4%;
 	display:none;
+    }
+
+    
+    .show-maximized .contenu {
+	display: block;
+    }
+
+    .show-maximized .app-icon,
+    .show-maximizer .titre {
+	float:none;
+    }
+
+    .one-block-visible .show-maximized .app-icon{
+	
+	opacity: 1;
+    }
+   
+    .one-block-visible .contenu {
+	position: absolute;
+	margin: 0;
+	width: 100%;
+	left: 0;
+    }
+    .one-block-visible .titre {
+	display: none;
+	
+    }
+    .one-block-visible .boite_accueil {
+	width: 32px;
+	float: left;
+	height: 32px;
+	margin: 2px;
+    }
+    .one-block-visible .app-icon {
+	margin: 0;
+	opacity: 0.7;
+	height: 32px;
+	background-image: url(../images/apple-touch-icon32.png);
+    }
+}
+
+
+
+@media screen and (min-width: 480px) {
+    div.ui-content>div {
+	float: left;
+	margin-left: 1%;
+	margin-right: 1%;
+    }
+}
+
+
+
+@media screen and (min-width: 480px) and (max-width: 1023px) {
+    div.ui-content>div {
+	
+	width: 48%;
     }
 }
