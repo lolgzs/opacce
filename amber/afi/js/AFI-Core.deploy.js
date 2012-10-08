@@ -174,7 +174,7 @@ return self;}
 smalltalk.Ajax);
 
 
-smalltalk.Ajax.klass.iVarNames = ['opacBaseUrl'];
+smalltalk.Ajax.klass.iVarNames = ['opacBaseUrl','idProfil'];
 smalltalk.addMethod(
 unescape('_controller_action_'),
 smalltalk.method({
@@ -192,18 +192,19 @@ smalltalk.method({
 selector: unescape('module%3Acontroller%3Aaction%3A'),
 fn: function (moduleName, controllerName, actionName){
 var self=this;
-return smalltalk.send(self, "_url_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((typeof baseUrl == 'undefined' ? nil : baseUrl), "__comma", [unescape("/")]), "__comma", [moduleName]), "__comma", [unescape("/")]), "__comma", [controllerName]), "__comma", [unescape("/")]), "__comma", [actionName])]);
+return smalltalk.send(self, "_url_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((typeof baseUrl == 'undefined' ? nil : baseUrl), "__comma", [unescape("/")]), "__comma", [moduleName]), "__comma", [unescape("/")]), "__comma", [controllerName]), "__comma", [unescape("/")]), "__comma", [actionName]), "__comma", [unescape("/id_profil/")]), "__comma", [self['@idProfil']])]);
 return self;}
 }),
 smalltalk.Ajax.klass);
 
 smalltalk.addMethod(
-unescape('_opacBaseUrl_'),
+unescape('_opacBaseUrl_idProfil_'),
 smalltalk.method({
-selector: unescape('opacBaseUrl%3A'),
-fn: function (aString){
+selector: unescape('opacBaseUrl%3AidProfil%3A'),
+fn: function (baseUrlString, idProfilString){
 var self=this;
-(self['@opacBaseUrl']=aString);
+(self['@opacBaseUrl']=baseUrlString);
+(self['@idProfil']=idProfilString);
 return self;}
 }),
 smalltalk.Ajax.klass);

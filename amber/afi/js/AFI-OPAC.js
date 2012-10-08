@@ -8,12 +8,12 @@ category: 'actions',
 fn: function (){
 var self=this;
 var ajax=nil;
-(ajax=smalltalk.send((smalltalk.Ajax || Ajax), "_module_controller_action_", ["admin", "profil", unescape("commit-css")]));
+(ajax=smalltalk.send((smalltalk.Ajax || Ajax), "_module_controller_action_", ["admin", "profil", unescape("upload-css")]));
 (function($rec){smalltalk.send($rec, "_at_put_", ["type", "PUT"]);smalltalk.send($rec, "_at_put_", ["data", smalltalk.send(self, "_contents", [])]);return smalltalk.send($rec, "_at_put_", ["contentType", unescape("text/css%3Bcharset%3DUTF-8")]);})(smalltalk.send(ajax, "_options", []));
 (function($rec){smalltalk.send($rec, "_onErrorDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["Erreur lors de la sauvegarde: "]);})]);smalltalk.send($rec, "_onSuccessDo_", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [unescape("Fichier%20CSS%20sauvegard%E9")]);})]);return smalltalk.send($rec, "_send", []);})(ajax);
 return self;},
 args: [],
-source: unescape('commit%0A%09%7Cajax%7C%20%0A%09ajax%20%3A%3D%20Ajax%20module%3A%20%27admin%27%20controller%3A%20%27profil%27%20action%3A%20%27commit-css%27.%0A%09ajax%20options%20%0A%09%09%09at%3A%20%27type%27%20put%3A%20%27PUT%27%3B%0A%09%09%09at%3A%20%27data%27%20put%3A%20self%20contents%3B%0A%09%09%09at%3A%20%27contentType%27%20put%3A%20%27text/css%3Bcharset%3DUTF-8%27.%0A%09ajax%20%0A%09%09onErrorDo%3A%20%5Bwindow%20alert%3A%20%27Erreur%20lors%20de%20la%20sauvegarde%3A%20%27%20%5D%3B%0A%09%09onSuccessDo%3A%20%5Bwindow%20alert%3A%20%27Fichier%20CSS%20sauvegard%E9%27%20%5D%3B%0A%09%09send'),
+source: unescape('commit%0A%09%7Cajax%7C%20%0A%09ajax%20%3A%3D%20Ajax%20module%3A%20%27admin%27%20controller%3A%20%27profil%27%20action%3A%20%27upload-css%27.%0A%09ajax%20options%20%0A%09%09%09at%3A%20%27type%27%20put%3A%20%27PUT%27%3B%0A%09%09%09at%3A%20%27data%27%20put%3A%20self%20contents%3B%0A%09%09%09at%3A%20%27contentType%27%20put%3A%20%27text/css%3Bcharset%3DUTF-8%27.%0A%09ajax%20%0A%09%09onErrorDo%3A%20%5Bwindow%20alert%3A%20%27Erreur%20lors%20de%20la%20sauvegarde%3A%20%27%20%5D%3B%0A%09%09onSuccessDo%3A%20%5Bwindow%20alert%3A%20%27Fichier%20CSS%20sauvegard%E9%27%20%5D%3B%0A%09%09send'),
 messageSends: ["module:controller:action:", "at:put:", "contents", "options", "onErrorDo:", "alert:", "onSuccessDo:", "send"],
 referencedClasses: ["Ajax"]
 }),

@@ -52,6 +52,8 @@ class ProfilLoader extends Storm_Model_Loader {
 
 
 class Class_Profil extends Storm_Model_Abstract {
+	use Trait_StaticFileWriter;
+
   const DIV_BANNIERE = 4;
 	protected static $_default_translator = null;
 
@@ -1278,5 +1280,15 @@ class Class_Profil extends Storm_Model_Abstract {
 		$cfg_accueil['modules'] = $new_modules;
 
 		$this->setCfgAccueil($cfg_accueil);
+	}
+
+
+	public function writeHeaderCss($data) {
+		$header_css_path = $this->hasHeaderCss() 
+			? USERFILESPATH.str_replace(USERFILESURL, '/', $this->getHeaderCss())
+			: USERFILESPATH.'/css/profil_'.$this->getId().'.css';
+			
+
+		$this->getFileWriter()->putContents($header_css_path, $data);
 	}
 }

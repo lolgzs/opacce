@@ -118,6 +118,12 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
+	public function uploadCssAction() {
+		$this->_profil->writeHeaderCss($this->_request->getRawBody());
+		$this->getHelper('ViewRenderer')->setNoRender();
+	}
+
+	
 	public function menusmajAction() {
 		$id_menu=$this->_getParam('id_menu');
 		$profil = Class_Profil::getLoader()->find($this->id_profil);
@@ -505,6 +511,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 		$this->_redirect('admin/profil');
 	}
+
 
 
 	private function _splitArg($item) {

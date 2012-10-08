@@ -28,7 +28,7 @@ styleTag
 
 commit
 	|ajax| 
-	ajax := Ajax module: 'admin' controller: 'profil' action: 'commit-css'.
+	ajax := Ajax module: 'admin' controller: 'profil' action: 'upload-css'.
 	ajax options 
 			at: 'type' put: 'PUT';
 			at: 'data' put: self contents;

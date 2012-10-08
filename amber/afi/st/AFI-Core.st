@@ -101,12 +101,13 @@ onSuccessDo: aBlock
 	self options at: 'success' put: aBlock
 ! !
 
-Ajax class instanceVariableNames: 'opacBaseUrl'!
+Ajax class instanceVariableNames: 'opacBaseUrl idProfil'!
 
 !Ajax class methodsFor: 'accessor'!
 
-opacBaseUrl: aString
-	opacBaseUrl := aString
+opacBaseUrl: baseUrlString idProfil: idProfilString  
+	opacBaseUrl := baseUrlString.
+	idProfil := idProfilString.
 ! !
 
 !Ajax class methodsFor: 'initialize'!
@@ -116,7 +117,7 @@ controller:controllerName action:actionName
 !
 
 module:moduleName controller:controllerName action:actionName
-	^ self url: baseUrl,'/',moduleName,'/',controllerName,'/',actionName
+	^ self url: baseUrl,'/',moduleName,'/',controllerName,'/',actionName,'/id_profil/',idProfil
 !
 
 url: aString

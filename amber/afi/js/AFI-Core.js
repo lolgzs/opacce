@@ -249,7 +249,7 @@ referencedClasses: []
 smalltalk.Ajax);
 
 
-smalltalk.Ajax.klass.iVarNames = ['opacBaseUrl'];
+smalltalk.Ajax.klass.iVarNames = ['opacBaseUrl','idProfil'];
 smalltalk.addMethod(
 unescape('_controller_action_'),
 smalltalk.method({
@@ -273,26 +273,27 @@ selector: unescape('module%3Acontroller%3Aaction%3A'),
 category: 'initialize',
 fn: function (moduleName, controllerName, actionName){
 var self=this;
-return smalltalk.send(self, "_url_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((typeof baseUrl == 'undefined' ? nil : baseUrl), "__comma", [unescape("/")]), "__comma", [moduleName]), "__comma", [unescape("/")]), "__comma", [controllerName]), "__comma", [unescape("/")]), "__comma", [actionName])]);
+return smalltalk.send(self, "_url_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((typeof baseUrl == 'undefined' ? nil : baseUrl), "__comma", [unescape("/")]), "__comma", [moduleName]), "__comma", [unescape("/")]), "__comma", [controllerName]), "__comma", [unescape("/")]), "__comma", [actionName]), "__comma", [unescape("/id_profil/")]), "__comma", [self['@idProfil']])]);
 return self;},
 args: ["moduleName", "controllerName", "actionName"],
-source: unescape('module%3AmoduleName%20controller%3AcontrollerName%20action%3AactionName%0A%09%5E%20self%20url%3A%20baseUrl%2C%27/%27%2CmoduleName%2C%27/%27%2CcontrollerName%2C%27/%27%2CactionName'),
+source: unescape('module%3AmoduleName%20controller%3AcontrollerName%20action%3AactionName%0A%09%5E%20self%20url%3A%20baseUrl%2C%27/%27%2CmoduleName%2C%27/%27%2CcontrollerName%2C%27/%27%2CactionName%2C%27/id_profil/%27%2CidProfil'),
 messageSends: ["url:", unescape("%2C")],
 referencedClasses: []
 }),
 smalltalk.Ajax.klass);
 
 smalltalk.addMethod(
-unescape('_opacBaseUrl_'),
+unescape('_opacBaseUrl_idProfil_'),
 smalltalk.method({
-selector: unescape('opacBaseUrl%3A'),
+selector: unescape('opacBaseUrl%3AidProfil%3A'),
 category: 'accessor',
-fn: function (aString){
+fn: function (baseUrlString, idProfilString){
 var self=this;
-(self['@opacBaseUrl']=aString);
+(self['@opacBaseUrl']=baseUrlString);
+(self['@idProfil']=idProfilString);
 return self;},
-args: ["aString"],
-source: unescape('opacBaseUrl%3A%20aString%0A%09opacBaseUrl%20%3A%3D%20aString'),
+args: ["baseUrlString", "idProfilString"],
+source: unescape('opacBaseUrl%3A%20baseUrlString%20idProfil%3A%20idProfilString%20%20%0A%09opacBaseUrl%20%3A%3D%20baseUrlString.%0A%09idProfil%20%3A%3D%20idProfilString.'),
 messageSends: [],
 referencedClasses: []
 }),

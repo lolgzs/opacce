@@ -19,19 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class AmberController extends Zend_Controller_Action {
-	protected static $filewriter;
-
-	static public function setFileWriter($filewriter) {
-		self::$filewriter = $filewriter;
-	}
-
-
-	static public function getFileWriter() {
-		if (!isset(self::$filewriter))
-			self::$filewriter = new Class_FileWriter();
-		return self::$filewriter;
-	}
-
+	use Trait_StaticFileWriter;
 
 	public function init() {
 		$this->getHelper('ViewRenderer')->setNoRender();
