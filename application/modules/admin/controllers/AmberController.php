@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class AmberController extends Zend_Controller_Action {
+class Admin_AmberController extends Zend_Controller_Action {
 	use Trait_StaticFileWriter;
 
 	public function init() {

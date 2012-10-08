@@ -18,11 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
-require_once 'application/modules/opac/controllers/AmberController.php';
+require_once 'AdminAbstractControllerTestCase.php';
+require_once 'application/modules/admin/controllers/AmberController.php';
 
 
-class AmberControllerTest extends AbstractControllerTestCase {
+class AmberControllerTest extends Admin_AbstractControllerTestCase {
 	protected $_old_cfg, $cfg;
 
 	protected function _loginHook($account) {
@@ -32,10 +32,10 @@ class AmberControllerTest extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->assertInstanceOf('Class_FileWriter', AmberController::getFileWriter());
+		$this->assertInstanceOf('Class_FileWriter', Admin_AmberController::getFileWriter());
 
 		$this->mock_filewriter = $this->getMock('Class_FileWriter', array('putContents'));
-		AmberController::setFileWriter($this->mock_filewriter);
+		Admin_AmberController::setFileWriter($this->mock_filewriter);
 
 		$this->_old_cfg = Zend_Registry::get('cfg');
 		$this->cfg = new Zend_Config($this->_old_cfg->toArray(), true);
@@ -71,7 +71,7 @@ class AmberControllerTest extends AbstractControllerTestCase {
 			->method('putContents')
 			->with('./amber/src/js/Kernel.js', 'somejs');
 		
-		$this->putDispatch('amber/commitJs/Kernel.js', 'somejs');
+		$this->putDispatch('/admin/amber/commitJs/Kernel.js', 'somejs');
 	}
 
 
@@ -83,7 +83,7 @@ class AmberControllerTest extends AbstractControllerTestCase {
 			->method('putContents')
 			->with('./amber/afi/js/AFI-Core.js', 'somejs');
 		
-		$this->putDispatch('amber/commitJs/AFI-Core.js', 'somejs');
+		$this->putDispatch('/admin/amber/commitJs/AFI-Core.js', 'somejs');
 	}
 
 
@@ -96,7 +96,7 @@ class AmberControllerTest extends AbstractControllerTestCase {
 			->method('putContents')
 			->with('./amber/src/st/Kernel.st', 'some smalltalk');
 		
-		$this->putDispatch('amber/commitSt/Kernel.st', 'some smalltalk');
+		$this->putDispatch('/admin/amber/commitSt/Kernel.st', 'some smalltalk');
 	}
 
 
@@ -109,7 +109,7 @@ class AmberControllerTest extends AbstractControllerTestCase {
 			->expects($this->never())
 			->method('putContents');
 		
-		$this->putDispatch('amber/commitJs/Kernel.js', 'somejs');
+		$this->putDispatch('/admin/amber/commitJs/Kernel.js', 'somejs');
 	}
 }
 

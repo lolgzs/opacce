@@ -409,8 +409,8 @@ class Class_ScriptLoader {
 	 */	
 	public function &getAmberReadyScripts() {
 		if (!isset($this->_amber_ready_scripts))
-			$this->_amber_ready_scripts = array(sprintf('smalltalk.Package._defaultCommitPathJs_("%s/opac/amber/commitJs")', BASE_URL),
-																					sprintf('smalltalk.Package._defaultCommitPathSt_("%s/opac/amber/commitSt")', BASE_URL),
+			$this->_amber_ready_scripts = array(sprintf('smalltalk.Package._defaultCommitPathJs_("%s/admin/amber/commitJs")', BASE_URL),
+																					sprintf('smalltalk.Package._defaultCommitPathSt_("%s/admin/amber/commitSt")', BASE_URL),
 																					sprintf('smalltalk.Ajax._opacBaseUrl_idProfil_("%s", "%d")', BASE_URL, Class_Profil::getCurrentProfil()->getId()));
 		return $this->_amber_ready_scripts;
 	}
