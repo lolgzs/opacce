@@ -5,6 +5,11 @@ $(document).ready(function(){
 	setTimeout(function(){
 		window.scrollTo(0, 1);
 	}, 100);
+
+	setTimeout(function(){
+		$('div.main>img:first-child').slideUp('slow', 'linear');
+	},
+	500);
 });
 
 //-----------------------------------------------------------
