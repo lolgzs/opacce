@@ -318,30 +318,34 @@ div.bk-widget div.b-counter {
 	margin-left: 4%;
 	margin-right: 4%;
 	display: block;
-    }
-
-
-    .app-icon {
-	display:block;
-	background-image: url(../images/apple-touch-icon.png);
 	background-repeat: no-repeat;
 	background-position: center top;
 	margin-left: 10px;
 	height:64px;
     }
-    
-    .icon-retour {
-	display:none;
-	background-image: url(../images/retouracceuil.png);
-	background-repeat: no-repeat;
-	margin-left: 10px;
-	widht: 16px;
-	height: 16px;
-	}
 
-    .titre {
-	font: 0.7em Helvetica,Arial;
-	margin-left: -10px;
+    .news .app-icon {
+	background-image: url(../images/Iconemobiles/news64.png);
+    }
+    
+    .critiques .app-icon {
+	background-image: url(../images/Iconemobiles/critiques64.png);
+    }
+    
+    .bib_numerique .app-icon {
+	background-image: url(../images/Iconemobiles/bibnum64.png);
+    }
+    
+    .calendar .app-icon {
+	background-image: url(../images/Iconemobiles/date64.png);
+    }
+
+    .kiosque .app-icon {
+	background-image: url(../images/Iconemobiles/kiosque64.png);
+    }
+       .titre {
+	   font: 0.7em Helvetica,Arial;
+	   margin-left: -10px;
 	
     }
 
@@ -384,11 +388,62 @@ div.bk-widget div.b-counter {
     }
     .one-block-visible .app-icon {
 	margin: 0;
-	opacity: 0.7;
+	opacity: 0.2;
 	height: 32px;
-	background-image: url(../images/apple-touch-icon32.png);
     }
+    .one-block-visible .news .app-icon {
+	background-image: url(../images/Iconemobiles/news32.png);
+    }
+
+     .one-block-visible .critiques .app-icon {
+	background-image: url(../images/Iconemobiles/critiques32.png);
+    }
+
+     .one-block-visible .bib_numerique .app-icon {
+	background-image: url(../images/Iconemobiles/bibnum32.png);
+    }
+     .one-block-visible .kiosque .app-icon {
+	background-image: url(../images/Iconemobiles/kiosque32.png);
+    }
+    .one-block-visible .calendar .app-icon {
+	background-image: url(../images/Iconemobiles/date32.png);
+    }
+
 }
+
+@media screen and (min-width: 321px) {
+    .img-titre {
+	display: block;
+	background-repeat: no-repeat;
+	background-position: left;
+ 	height: 32px;
+     }
+
+    .titre {
+	margin-left: 32px;
+	float: left;
+    }
+
+    .news .img-titre {
+	background-image: url(../images/Iconemobiles/news32.png);
+    }
+    .critiques .img-titre {
+	background-image: url(../images/Iconemobiles/critiques32.png);
+    }
+
+    .bib_numerique .img-titre {
+	background-image: url(../images/Iconemobiles/bibnum32.png);
+    }
+    .kiosque .img-titre {
+	background-image: url(../images/Iconemobiles/kiosque32.png);
+    }
+    .calendar .img-titre {
+	background-image: url(../images/Iconemobiles/date32.png);
+    }
+
+}
+
+
 
 
 
