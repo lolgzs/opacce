@@ -25,6 +25,10 @@ require_once 'application/modules/opac/controllers/AmberController.php';
 class AmberControllerTest extends AbstractControllerTestCase {
 	protected $_old_cfg, $cfg;
 
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN;
+	}
+
 	public function setUp() {
 		parent::setUp();
 
