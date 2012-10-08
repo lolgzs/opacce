@@ -1,4 +1,4 @@
-<?php
+‹<?php
 /**
  * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
