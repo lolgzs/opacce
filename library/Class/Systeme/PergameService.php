@@ -188,7 +188,7 @@ class Class_Systeme_PergameService
 	private function getNoticeFromTransaction($support,$id_notice_pergame)
 	{
 		$cls_notice=new Class_Notice();
-		$ids=fetchAll("select id_notice from exemplaires where id_origine=$id_notice_pergame");
+		$ids=fetchAll("select id_notice from exemplaires where id_origine='".$id_notice_pergame."'");
 		if(!$ids)
 		{
 			$notice["T"]="Anomalie de lecture du titre";
