@@ -626,6 +626,7 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 		$this->profil_portail = Class_Profil::getLoader()
 			->newInstanceWithId(1)
 			->setBrowser('opac')
+			->setHeaderCss('/userfiles/portail.css')
 			->setCommentaire('Commentaire du portail')
 			->setTitreSite('Médiathèque de Melun');
 
@@ -667,6 +668,12 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 	/** @test */
 	public function profilPanelShouldNotBeVisible() {
 		$this->assertNotXPathContentContains("//div[contains(@class,'profils')]//ul//li//div", "** Nouveau Profil **");
+	}
+
+
+	/** @test */
+	public function inputHeaderCssShouldBeEmpty() {
+		$this->assertXPath("//input[@type='text'][@name='header_css'][@value='']");
 	}
 
 
@@ -882,21 +889,25 @@ class Admin_ProfilControllerEditProfilJeunesseWithPagesTest extends Admin_Profil
 
 
 
+
 class Admin_ProfilControllerEditAccueilPageMusiqueTest extends Admin_ProfilControllerProfilPanelTest  {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/profil/accueil/id_profil/23');
 	}
 
+
 	/** @test */
 	public function libelleFieldShouldBeVisible() {
 		$this->assertXPath("//input[@type='text'][@name='libelle'][@value='Musique']");
 	}
 
+
 	/** @test */
 	public function pageMusiqueShouldHaveClassSelected() {
 		$this->assertXPathContentContains("//div[contains(@class, 'profils')]//li[2][@class='selected']//div", "Musique");
 	}
+
 
 	/** @test */
 	public function pageJeuxShouldNotHaveClassSelected() {

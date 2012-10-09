@@ -448,6 +448,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 	public function addAction()	{
 		$profil = Class_Profil::getLoader()->find(1)->copy();
+		$profil->setHeaderCss('');
+
 		if ($this->_postProfil($profil))
 			$this->_redirect('admin/profil/edit/id_profil/'.$profil->getId());
 
