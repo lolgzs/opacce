@@ -671,76 +671,6 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 
 
 	/** @test */
-	public function postingValidDataShouldResultInProfilToBeValid() {
-		$wrapper = Storm_Test_ObjectWrapper
-			::onLoaderOfModel('Class_Profil')
-			->whenCalled('save')
-			->answers(true)
-			->getWrapper();
-
-		$data = array(	'libelle' => "Histoire",
-										'id_site' => 1,
-										'nb_divisions' => 2,
-										'largeur_division1' => 400,
-										'marge_division1' => 5,
-										'largeur_division2' => 500,
-										'marge_division2' => 8,
-										'largeur_site' => 900,
-										'access_level' => 6);
-
-		$this
-			->getRequest()
-			->setMethod('POST')
-			->setPost($data);
-		$this->dispatch('/admin/profil/add');
-
-		$new_profil = $wrapper->getFirstAttributeForLastCallOn('save');
-		$this->assertTrue($new_profil->isValid());
-
-		$this->assertRedirectTo('/admin/profil/edit/id_profil/'.$new_profil->getId()); // id_site=1 => par défaut
-
-		return $new_profil;
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getNbDivisionsShouldReturnTwo($profil) {
-		$this->assertEquals(2, $profil->getNbDivisions());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getLibelleShouldReturnHistoire($profil) {
-		$this->assertEquals("Histoire", $profil->getLibelle());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getAccessLevelShouldReturnSix($profil) {
-		$this->assertEquals(6, $profil->getAccessLevel());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getLargeurSiteShouldReturnNineHundred($profil) {
-		$this->assertEquals(900, $profil->getLargeurSite());
-	}
-
-
-
-	/** @test */
 	public function profilShouldNotBeSavedIfPostingLargeurTooLow() {
 		$wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil');
 
@@ -762,6 +692,100 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 	}
 
 }
+
+
+
+
+class Admin_ProfilControllerProfilPostAddTest extends Admin_ProfilControllerProfilJeunesseTestCase {
+	protected $_new_profil;
+
+	public function setUp() {
+		parent::setUp();
+		$wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('save')
+			->willDo(function($model) {
+					$model->setId(456); 
+					return true;
+				});
+
+		$data = array(	'libelle' => "Histoire",
+										'id_site' => 1,
+										'nb_divisions' => 2,
+										'largeur_division1' => 400,
+										'marge_division1' => 5,
+										'largeur_division2' => 500,
+										'marge_division2' => 8,
+										'largeur_site' => 900,
+										'access_level' => 6);
+
+		$this
+			->getRequest()
+			->setMethod('POST')
+			->setPost($data);
+		$this->dispatch('/admin/profil/add');
+
+		$this->_new_profil = $wrapper->getFirstAttributeForLastCallOn('save');
+	}
+
+
+	/** @test */
+	public function newProfilShouldBeValid() {
+		$this->assertTrue($this->_new_profil->isValid());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToEditNewProfil() {
+		$this->assertRedirectTo('/admin/profil/edit/id_profil/456');
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getNbDivisionsShouldReturnTwo() {
+		$this->assertEquals(2, $this->_new_profil->getNbDivisions());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getLibelleShouldReturnHistoire() {
+		$this->assertEquals("Histoire", $this->_new_profil->getLibelle());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getAccessLevelShouldReturnSix() {
+		$this->assertEquals(6, $this->_new_profil->getAccessLevel());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getLargeurSiteShouldReturnNineHundred() {
+		$this->assertEquals(900, $this->_new_profil->getLargeurSite());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function currentProfilShouldBeNewProfil() {
+		$this->assertEquals(456, Class_Profil::getCurrentProfil()->getId());
+	}
+
+	
+	/** @test */
+	public function sessionIdProfilShould456() {
+		$this->assertEquals(456, $_SESSION['id_profil']);
+	}
+}
+
 
 
 

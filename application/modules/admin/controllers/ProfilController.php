@@ -462,9 +462,12 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			return false;
 
 		$post = ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
-		return $profil
-			->updateAttributes($post)
-			->save();
+		if ($result = $profil->updateAttributes($post)->save()) {
+			Class_Profil::setCurrentProfil($profil);
+			$_SESSION['id_profil'] = $profil->getId();
+		}
+
+		return $result;
 	}
 
 
