@@ -20,16 +20,20 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
+
+abstract class ProfilControllerCssTestCase extends Admin_AbstractControllerTestCase {
 	protected $_file_writer;
 	protected $_profil_musique;
+	protected $_page_jazz;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->_profil_musique = Class_Profil::getLoader()
-			->newInstanceWithId(5)
-			->setLibelle('Profil musique');
+		$this->_profil_musique = Class_Profil::newInstanceWithId(5)
+			->setLibelle('Profil musique')
+			->setSubProfils([$this->_page_jazz = Class_Profil::newInstanceWithId(15)
+											 ->setParentId(15)
+											 ->setLibelle('Jazz')]);
 
 		$this->_file_writer = Storm_Test_ObjectWrapper::mock();
 		Class_Profil::setFileWriter($this->_file_writer);
@@ -37,12 +41,16 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
 			->whenCalled('save')
 			->answers(true);
-
 	}
+}
 
 
-	/** @test */
-	public function uploadShoulPutContentInCssFileWhenDefined() {
+
+
+class ProfilControllerCssUploadWithExistingCssTest extends ProfilControllerCssTestCase {
+	public function setUp() {
+		parent::setUp();
+
 		$this->_profil_musique->setCfgSite([ 'header_css' => USERFILESURL.'css/my.css' ] );
 
 		$this->getRequest()
@@ -56,13 +64,22 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 			->beStrict();
 
 		$this->dispatch('/admin/profil/upload-css/id_profil/5', true);
-		
-		$this->assertTrue($this->_file_writer->methodHasBeenCalled('putContents'));
 	}
 
 
 	/** @test */
-	public function uploadShoulPutContentInANewCssFileWhenProfilHasNoCss() {
+	public function fileWriterShouldHavePutContents() {
+		$this->assertTrue($this->_file_writer->methodHasBeenCalled('putContents'));
+	}
+}
+
+
+
+
+class ProfilControllerCssUploadWithNoCssFileTest extends ProfilControllerCssTestCase {
+	public function setUp() {
+		parent::setUp();
+		
 		$this->getRequest()
 			->setMethod('PUT')
 			->setRawBody('body {font-size: 15px}');
@@ -74,27 +91,57 @@ class ProfilControllerCssUploadTest extends Admin_AbstractControllerTestCase {
 			->beStrict();
 
 		$this->dispatch('/admin/profil/upload-css/id_profil/5', true);
-		
+	}
+
+
+	/** @test */
+	public function fileWriterShouldHavePutContents() {
 		$this->assertTrue($this->_file_writer->methodHasBeenCalled('putContents'));
-		return Class_Profil::getLoader();
+	}
+
+	
+	/** @test */
+	public function profilMusiqueShouldHaveBeenSaved() {
+		$this->assertTrue(Class_Profil::methodHasBeenCalledWithParams('save', [$this->_profil_musique]));		
 	}
 
 
-	/**
-	 * @depends uploadShoulPutContentInANewCssFileWhenProfilHasNoCss
-	 * @test 
-	 */
-	public function profilShouldBeSaved($profil_loader) {
-		$this->assertTrue($profil_loader->methodHasBeenCalled('save'));		
+	/** @test */
+	public function profilCssShouldBeProfil5Css() {
+		$this->assertEquals(BASE_URL.'/userfiles/css/profil_5.css', $this->_profil_musique->getHeaderCss());		
+	}
+}
+
+
+
+
+class ProfilControllerCssUploadOnPageJazz extends ProfilControllerCssTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->getRequest()
+			->setMethod('PUT')
+			->setRawBody('body {font-size: 15px}');
+
+		$this->_file_writer
+			->whenCalled('putContents')
+			->with(USERFILESPATH.'/css/profil_5.css', 'body {font-size: 15px}')
+			->answers(22)
+			->beStrict();
+
+		$this->dispatch('/admin/profil/upload-css/id_profil/15', true);
 	}
 
 
-	/**
-	 * @depends uploadShoulPutContentInANewCssFileWhenProfilHasNoCss
-	 * @test 
-	 */
-	public function profilCssShouldBeProfil5Css($profil_loader) {
-		$this->assertEquals(BASE_URL.'/userfiles/css/profil_5.css', $profil_loader->find(5)->getHeaderCss());		
+	/** @test */
+	public function profilMusiqueShouldHaveBeenSaved() {
+		$this->assertTrue(Class_Profil::methodHasBeenCalledWithParams('save', [$this->_profil_musique]));		
+	}
+
+
+	/** @test */
+	public function profilCssShouldBeProfil5Css() {
+		$this->assertEquals(BASE_URL.'/userfiles/css/profil_5.css', $this->_profil_musique->getHeaderCss());		
 	}
 }
 

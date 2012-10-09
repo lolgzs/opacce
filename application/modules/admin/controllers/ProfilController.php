@@ -119,9 +119,14 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 
 	public function uploadCssAction() {
-		$this->_profil
+		$profil_to_update = $this->_profil->hasParentProfil() 
+			? $this->_profil->getParentProfil() 
+			: $this->_profil;
+
+		$profil_to_update
 			->writeHeaderCss($this->_request->getRawBody())
 			->save();
+
 		$this->getHelper('ViewRenderer')->setNoRender();
 	}
 
