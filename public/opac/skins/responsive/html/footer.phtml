@@ -1,0 +1,15 @@
+	<div class="footer">
+		<?php
+			 if(Class_Users::isCurrentUserCanAccesBackend())
+			   echo '<div>'.$this->ComboProfils("ALL","ALL",Class_Profil::getCurrentProfil()->getId(),true).'</div>';
+		?>
+		<a href="<?php echo BASE_URL; ?>/admin"><?php echo $this->_('Accès pro.') ?></a>
+		<span class="credit">&copy; 2006-<?php print(date("Y")); ?>
+			<?php echo $this->traduire('- Tous droits réservés - Hébergement &amp; Conception graphique');?>
+			<a href="http://www.afi-sa.net" target="_blank">AFI</a>
+		</span>
+	</div>
+</div>
+<?php echo Class_AdminVar::get('GOOGLE_ANALYTICS'); ?>
+</body>
+</html>

@@ -13,11 +13,6 @@ a:hover {color:#D44100;}
 .siteWeb div#colDroiteInner,
 .siteWeb div#colContenuInner {vertical-align:top; padding-top:5px}
 
-.siteWeb div.colGauche {
-		height: 100%; 	
-		position:absolute;
-}
-
 .siteWeb div#colGaucheInner {padding-bottom: 10px;}
 
 #site_web_content,
@@ -31,12 +26,13 @@ a:hover {color:#D44100;}
 #site_web_wrapper {
 	width: auto !important;
 	max-width: none !important;
+	float: none !important;
 }
 
 
 .colGauche {
-		width: 200px;
-		max-width: 200px;
+	width: 200px;
+	max-width: 200px;
 }
 
 .colContenu {
@@ -48,9 +44,8 @@ a:hover {color:#D44100;}
 .auto_resize img, .auto_resize object, .auto_resize embed {display:none;}
 
 /* Footer */
-.footer {width: auto !important; min-height:40px; padding-top:5px}
-.footer .credit {color:#575757;  border-top:1px solid #a0a0a0;}
-.footer a {color:#C80A1E;}
+.footer {width: auto !important; padding: 0 10px}
+.credit {float: right}
 
 /* Menu horizontal */
 #menu_horizontal * {
