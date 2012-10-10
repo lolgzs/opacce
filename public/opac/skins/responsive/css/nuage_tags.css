@@ -1,0 +1,49 @@
+div.nuage {
+	text-align:left;
+	overflow:hidden;
+}
+span.nuage
+{
+	padding-right:4px;
+	padding-left:4px;
+}
+
+a:link.nuage_niveau1,
+a:visited.nuage_niveau1,
+a:hover.nuage_niveau1 {font-size:10px;color:#222;}
+
+a:link.nuage_niveau2,
+a:visited.nuage_niveau2,
+a:hover.nuage_niveau2 {font-size:11px;color:#97819a;}
+
+a:link.nuage_niveau3,
+a:visited.nuage_niveau3,
+a:hover.nuage_niveau3 {font-size:12px;color:#97c546;}
+
+a:link.nuage_niveau4,
+a:visited.nuage_niveau4,
+a:hover.nuage_niveau4 {font-size:13px;color:#53a1c4;}
+
+a:link.nuage_niveau5,
+a:visited.nuage_niveau5,
+a:hover.nuage_niveau5 {font-size:14px;color:#c956c5;}
+
+a:link.nuage_niveau6,
+a:visited.nuage_niveau6,
+a:hover.nuage_niveau6 {font-size:15px;color:#dc3040;}
+
+a:link.nuage_niveau7,
+a:visited.nuage_niveau7,
+a:hover.nuage_niveau7 {font-size:16px;color:#70a112;}
+
+a:link.nuage_niveau8,
+a:visited.nuage_niveau8,
+a:hover.nuage_niveau8 {font-size:17px;color:#8bd8bd3;}
+
+a:link.nuage_niveau9,
+a:visited.nuage_niveau9,
+a:hover.nuage_niveau9 {font-size:18px;color:#54d3f4;font-weight: bold}
+
+a:link.nuage_niveau10,
+a:visited.nuage_niveau10,
+a:hover.nuage_niveau10 {font-size:19px;color:#037ab7;font-weight: bold}
