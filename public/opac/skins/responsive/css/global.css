@@ -30,16 +30,6 @@ a:hover {color:#D44100;}
 }
 
 
-.colGauche {
-	width: 200px;
-	max-width: 200px;
-}
-
-.colContenu {
-	margin-left: 200px;
-}
-
-
 /* Eléments qui sont redimensionnés en fonction de leur conteneur  */
 .auto_resize img, .auto_resize object, .auto_resize embed {display:none;}
 
@@ -266,4 +256,35 @@ div#header .boiteBanniereDroite {
 
 #open_accessibility {
 		top:5px;
+}
+
+
+
+@media screen and (max-width: 600px) {
+		.colGauche {display: table}
+		#colGaucheInner {display: table-row}
+		#colGaucheInner>div {
+				display: table-cell;
+				width: auto;
+		}
+
+		.colGauche, .colContenu {
+				float: none !important;
+				width: 100% !important;
+				max-width: none !important;
+		} 
+
+		.colGauche .contenu {
+				display: none
+		}
+
+		#colGaucheInner>div:hover .contenu{ 
+				display: block; 
+				position: absolute; 
+				background-color: white; 
+				width: 90%;
+				left: 5%;
+				box-shadow: 0px 1px 10px;
+				z-index: 10;
+		}
 }
