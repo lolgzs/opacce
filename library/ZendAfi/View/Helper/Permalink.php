@@ -33,7 +33,7 @@ class ZendAfi_View_Helper_Permalink extends ZendAfi_View_Helper_BaseHelper {
 									 $onclick,
 									 $this->translate()->_('Lien permanent'));
 
-		$html.='<div id="permalink" style="background: #FFFFFF url('.URL_IMG.'box/degrade_gris.png) repeat-x bottom;display:none;position:absolute;padding:8px;text-align:center;border:1px solid #C8C8C8">';
+		$html.='<div id="permalink" style="background: #FFFFFF; display:none;position:absolute;padding:8px;text-align:center;border:1px solid #C8C8C8">';
 		$html.= sprintf('<div style="float:left">%s</div>', $this->translate()->_('Lien permanent'));
 		$html.= sprintf('<div align="right"><a href="#" onclick="getId(\'permalink\').style.display=\'none\'">&raquo;&nbsp;%s</a></div>', 
 										$this->translate()->_('fermer cette fenêtre'));
