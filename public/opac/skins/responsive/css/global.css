@@ -260,7 +260,7 @@ div#header .boiteBanniereDroite {
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 2000px) {
 		.colGauche {display: table}
 		#colGaucheInner {display: table-row}
 		#colGaucheInner>div {
