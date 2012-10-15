@@ -36,7 +36,8 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 																												 ->answers(false));
 		parent::setUp();
 		$this->dispatch(sprintf('recherche/reseau/id_notice/%d/type_doc/1', 
-														$this->notice->getId()));
+														$this->notice->getId()), 
+										true);
 	}
 	
 
@@ -45,8 +46,14 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 	}
 
 	/** @test */
-	public function getResauShouldReturnTwitterLink() {
-		$this->assertXPath('//img[contains(@src, "twitter.gif")]', $this->_response->getBody());
+	public function getResauShouldContainsTwitterGif() {
+		$this->assertXPath('//img[contains(@src, "twitter.gif")]');
+	}
+
+
+	/** @test */
+	public function getResauShouldContainsTwitterLink() {
+		$this->assertXPath('//a[contains(@onclick, "social-network/share/on/twitter")]', $this->_response->getBody());
 	}
 }
 
