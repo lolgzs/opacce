@@ -62,6 +62,9 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 
 
 	public function extractResumeFromHTML($html) {
+		if ($pos = striPos($html, "avisEdContent"))
+				return $this->extractLireLaSuiteDivAvisEditeurFromHTML($html);
+
 		if (!$pos = striPos($html, "laSuite bigLaSuite"))
 				return $this->extractLireLaSuiteDivFromHTML($html);
 
@@ -72,6 +75,14 @@ class Class_WebService_Fnac extends Class_WebService_Abstract {
 		$posfin2 = strPos($html, "</div>", $pos);
 		$posfin = $posfin < $posfin2 ? $posfin : $posfin2;
 
+		$resume = substr($html, $pos, ($posfin-$pos));
+		return trim($resume);
+	}
+
+
+	public function extractLireLaSuiteDivAvisEditeurFromHTML($html) {
+		$pos = strPos($html, "avisEdContent") + 15;
+		$posfin = strPos($html, "</div>", $pos);
 		$resume = substr($html, $pos, ($posfin-$pos));
 		return trim($resume);
 	}
