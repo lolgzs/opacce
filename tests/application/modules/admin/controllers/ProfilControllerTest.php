@@ -789,7 +789,7 @@ class Admin_ProfilControllerProfilPostAddTest extends Admin_ProfilControllerProf
 	
 	/** @test */
 	public function sessionIdProfilShould456() {
-		$this->assertEquals(456, $_SESSION['id_profil']);
+		$this->assertEquals(456, Zend_Registry::get('session')->id_profil);
 	}
 }
 

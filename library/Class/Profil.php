@@ -91,7 +91,8 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	public static function getCurrentProfil() {
 		if (!isset(self::$_current_profil)) {
-			$id_profil = array_isset('id_profil', $_SESSION) ? $_SESSION['id_profil'] : 1;
+			if (!$id_profil = Zend_Registry::get('session')->id_profil)
+				$id_profil = 1;
 			self::$_current_profil = self::getLoader()->find($id_profil);
 		}
 		return self::$_current_profil;
@@ -100,7 +101,8 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	public static function goBackToPreviousProfil() {
-		$_SESSION['id_profil'] = $_SESSION['previous_id_profil'];
+		$session = Zend_Registry::get('session');
+		$session->id_profil = $session->previous_id_profil;
 	}
 
 

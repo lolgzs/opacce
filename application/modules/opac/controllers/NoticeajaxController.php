@@ -81,6 +81,8 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function exemplairesAction()	{
+		session_write_close();
+
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 	
 		if (!$this->id_notice) {
@@ -180,6 +182,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function resumeAction()	{
+		session_write_close();
 		$avis = $this->notice->findAllResumes();
 		$html=$this->notice_html->getResume($avis);
 		$this->_sendResponse($html);
@@ -187,12 +190,14 @@ class NoticeAjaxController extends Zend_Controller_Action {
 
 
 	public function vignetteAction() {
+		session_write_close();
 		$img=new Class_WebService_Vignette();
 		$img->getFluxImage($_REQUEST["clef"],$_REQUEST["id_notice"]);
 	}
 
 
 	public function biographieAction() {
+		session_write_close();
 		$this->_sendResponse($this->view->biographie($this->notice));
 	}
 	
@@ -320,6 +325,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 
 
 	public function avisAction() {
+		session_write_close();
 		// Lire la notice
 		$notice = Class_Notice::getLoader()->find($this->id_notice);
 

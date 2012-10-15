@@ -340,7 +340,8 @@ class IndexControllerWithProfilPortailGoBackPhoneTest extends AbstractIndexContr
 																	 ->newInstanceWithId(1)
 																	 ->setBrowser('opac')
 																	 ->setTitreSite('portail'));
-		$_SESSION['id_profil'] = 1;
+
+		Zend_Registry::get('session')->id_profil = 1;
 		$this->dispatch('/telephone');
 	}
 
@@ -360,7 +361,7 @@ class IndexControllerTelephoneTelephoneSwitchProfilTest extends Zend_Test_PHPUni
  	public function setUp() {
  		parent::setUp();
  		$_SERVER['HTTP_USER_AGENT'] = 'iphone';
-		unset($_SESSION['id_profil']);
+		Zend_Registry::get('session')->id_profil = null;
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
 			->whenCalled('findFirstBy')

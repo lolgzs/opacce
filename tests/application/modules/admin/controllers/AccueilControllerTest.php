@@ -40,7 +40,7 @@ class AccueilControllerBoite2ColTest extends Admin_AbstractControllerTestCase {
 		$this->assertTrue($this->profil_biologie->isValid());
 
 		$this->request_url = '/admin/accueil/conteneur2colonnes?id_profil=34&id_module=3&type_module=CONTENEUR_DEUX_COLONNES&config=accueil';
-		$this->dispatch($this->request_url);
+		$this->dispatch($this->request_url, true);
 	}
 
 

@@ -102,7 +102,7 @@ class ZendAfi_View_Helper_Accueil_Kiosque extends ZendAfi_View_Helper_Accueil_Ba
 		}
 
 		// Iframe
-		$_SESSION["recherche"]["retour_liste"] = $_SERVER["REQUEST_URI"];
+		$_SESSION["recherche"]["retour_liste"] = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : BASE_URL;
 		$iframe = new ZendAfi_View_Helper_IframeContainer();
 		$iframe->iframeContainer("100%",
 														 $hauteur,

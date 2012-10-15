@@ -76,6 +76,7 @@ class Class_ScriptLoader {
 				->addScript(AMBERURL.'src/js/lib/jQuery/jquery.textarea.js')
 				->addScript(AMBERURL.'src/js/lib/CodeMirror/codemirror.js')
 				->addStyleSheet(AMBERURL.'src/js/lib/CodeMirror/codemirror.css')
+				->addStyleSheet(AMBERURL.'src/js/lib/CodeMirror/amber.css')
 				->addStyleSheet(AMBERURL.'src/css/amber.css')
 				->addAmberPackage('../../src/js/IDE')
 				->addAmberPackage('../../src/js/SUnit');

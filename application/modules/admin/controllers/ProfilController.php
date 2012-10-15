@@ -54,9 +54,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 		$this->id_profil = $this->_profil->getId();
 
-		$session['id_profil']	= $this->id_profil;
-		$_SESSION['admin']		= $session;
-
+		$session['id_profil'] = $this->id_profil;
+		$_SESSION['admin'] = $session;
 
 		$this->view->id_zone = $this->id_zone;
 		$this->view->id_bib = $this->id_bib;
@@ -466,7 +465,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		$post = ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
 		if ($result = $profil->updateAttributes($post)->save()) {
 			Class_Profil::setCurrentProfil($profil);
-			$_SESSION['id_profil'] = $profil->getId();
+			Zend_Registry::get('session')->id_profil = $profil->getId();
 		}
 
 		return $result;

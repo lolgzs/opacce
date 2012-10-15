@@ -22,9 +22,9 @@
 /* Regénère un nouveau front controller pour chaque test,
  * sinon les paramètres de requête sont gardés.
  */
-
-$_REQUEST["id_profil"] = $_SESSION["id_profil"] = 2;
 $_SERVER['HTTP_HOST'] = 'localhost';
+
+Zend_Registry::get('session')->id_profil = 2;
 
 $controller = Zend_Controller_Front::getInstance()
 	->throwExceptions(true)

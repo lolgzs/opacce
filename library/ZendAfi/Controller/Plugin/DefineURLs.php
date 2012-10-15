@@ -23,7 +23,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstract {
+	protected $_session;
+
 	function preDispatch(Zend_Controller_Request_Abstract $request)	{
+		$this->_session = Zend_Registry::get('session');
+
 		$this->memorizeLastProfil();
 		$profil = $this->selectProfilFromRequest($request);
 		$module = $this->getModuleNameForProfilAndRequest($profil, $request);
@@ -52,8 +56,8 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		// Initialisation du profil
 		$id_profil = ($requested_module === 'admin') ? 0 : (int)$request->getParam('id_profil');
 		
-		if ($id_profil <= 0 && (isset($_SESSION['id_profil']) && ($requested_module !== 'telephone')))
-				$id_profil = intval($_SESSION["id_profil"]);
+		if ($id_profil <= 0 && ($this->_session->id_profil) && ($requested_module !== 'telephone'))
+				$id_profil = intval($this->_session->id_profil);
 		
 		if ($id_profil <= 0 && $this->shouldSelectTelephone($request))
 				$id_profil = $this->findProfilTelephoneId();
@@ -64,14 +68,14 @@ class ZendAfi_Controller_Plugin_DefineURLs extends Zend_Controller_Plugin_Abstra
 		if (!$profil = Class_Profil::getLoader()->find($id_profil))
 			$profil = Class_Profil::getLoader()->findFirstBy(array('order' => 'id_profil'));
 
-		$_SESSION["id_profil"] = $profil->getId();
+		$this->_session->id_profil = $profil->getId();
 
 		return Class_Profil::setCurrentProfil($profil);
 	}
 
 
 	public function memorizeLastProfil() {
-		$_SESSION['previous_id_profil'] = isset($_SESSION['id_profil']) ? $_SESSION['id_profil'] : 1;
+		$this->_session->previous_id_profil = isset($this->_session->id_profil) ? $this->_session->id_profil : 1;
 		return $this;
 	}
 
