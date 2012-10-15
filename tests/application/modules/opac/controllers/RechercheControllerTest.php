@@ -53,7 +53,8 @@ class RechercheControllerReseauTest extends RechercheControllerNoticeTestCase {
 
 	/** @test */
 	public function getResauShouldContainsTwitterLink() {
-		$this->assertXPath('//a[contains(@onclick, "social-network/share/on/twitter")]', $this->_response->getBody());
+		$this->assertContains('onclick="$.getScript(\'/social-network/share/on/facebook?url=',
+													$this->_response->getBody());
 	}
 }
 
