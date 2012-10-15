@@ -32,7 +32,6 @@ class Class_ScriptLoader {
 	protected $_jquery_ready_scripts;
 	protected $_is_mobile = false;
 	protected $_version_pergame_hash;
-	protected $_force_amber_development_mode;
 
 	/**
 	 * @return ScriptLoader
@@ -66,13 +65,21 @@ class Class_ScriptLoader {
 
 
 	/**
-	 * @param boolean $force_development_mode
+	 * @param boolean $with_ide load IDE in read only mode
 	 * @return ScriptLoader
 	 */
-	public function loadAmber($force_development_mode = false) {
+	public function loadAmber($with_ide = false) {
 		$this->_should_load_amber = true;
-		if ($force_development_mode == true)
-			$this->_force_amber_development_mode = true;
+
+		if ($with_ide == true)
+			$this
+				->addScript(AMBERURL.'src/js/lib/jQuery/jquery.textarea.js')
+				->addScript(AMBERURL.'src/js/lib/CodeMirror/codemirror.js')
+				->addStyleSheet(AMBERURL.'src/js/lib/CodeMirror/codemirror.css')
+				->addStyleSheet(AMBERURL.'src/css/amber.css')
+				->addAmberPackage('../../src/js/IDE')
+				->addAmberPackage('../../src/js/SUnit');
+
 		return $this;
 	}
 
@@ -92,7 +99,7 @@ class Class_ScriptLoader {
 		$amber_options = sprintf('{"home":"%s", "files":%s, "deploy":%s, "ready":%s}',
 														 AMBERURL.'src/',
 														 json_encode($this->_amberAdditionalFiles($deploy)),
-														 $deploy?'true':'false',
+														 $deploy ? 'true':'false',
 														 sprintf('function(){$(function(){%s})}',
 																		 implode(';', $this->getAmberReadyScripts())));
 
@@ -377,9 +384,6 @@ class Class_ScriptLoader {
 	 * @return Boolean
 	 */	
 	public function isAmberModeDeploy() {
-		if (isset($this->_force_amber_development_mode) && ($this->_force_amber_development_mode == true))
-			return false;
-
 		if (null == $amber = Zend_Registry::get('cfg')->get('amber'))
 			return true;
 

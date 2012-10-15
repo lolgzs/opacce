@@ -41,8 +41,8 @@ if ($this->header_js)
 
 if (Class_Users::isCurrentUserAdmin() && Class_AdminVar::isCssEditorEnabled())
 	$head_scripts
-		->addAmberPackage('AFI-OPAC')
-		->loadAmber(true);
+		->loadAmber(true)
+		->addAmberPackage('AFI-OPAC');
 
 if ($this->accessibilite_on) {  //Feuilles de styles pour les déficiences visuelles
 	$head_scripts
