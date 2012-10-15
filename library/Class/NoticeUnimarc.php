@@ -79,11 +79,12 @@ class Class_NoticeUnimarc {
 // ---------------------------------------------------
 // Decoupage de l'enregistrement
 // ---------------------------------------------------
-	public function setNotice($string, $type_accents = 0)	{
+	function setNotice($string,$type_accents=0)
+	{
 		$this->reset_notice();
-		$this->type_accents = $type_accents;
-		// récupération de l'enregistrement intégral
-		$this->full_record = str_replace('\\', '/', $string);
+		$this->type_accents=$type_accents;
+		// récupération de l'enregistrement intégral 
+		$this->full_record = $string;
 		
 		// guide de l'enregistrement
 		$this->guide = substr($this->full_record, 0, 24);
@@ -107,54 +108,54 @@ class Class_NoticeUnimarc {
 		$pos23 = substr($this->guide, 23, 1);						// POS.23 : undefined, contains a blank
 
 		$this->inner_guide = array(
-															 'rl' =>  $rl ? $rl : 0,
-															 'rs' =>  $rs ? $rs : 'n',
-															 'dt' => $dt ? $dt : 'a',
-															 'bl' => $bl ? $bl : 'm',
-															 'hl' => $hl ? $hl : 0,
-															 'pos9' => $pos9 ? $pos9 : ' ',
-															 'il' => $il ? $il : 2,
-															 'sl' => $sl ? $sl : 2,
-															 'ba' => $ba ? $ba : 24, 
-															 'el' => $el ? $el : '1',
-															 'ru' => $ru ? $ru : 'i',
-															 'pos19' => $pos19 ? $pos19 : ' ',
-															 'dm1' => $dm1 ? $dm1 : 4,
-															 'dm2' => $dm2 ? $dm2 : 5,
-															 'dm3' =>  $dm3 ? $dm3 : 0,
-															 'pos23' => $pos23 ? $pos23 : ' '
-															 );
+			'rl' =>  $rl ? $rl : 0,
+			'rs' =>  $rs ? $rs : 'n',
+			'dt' => $dt ? $dt : 'a',
+			'bl' => $bl ? $bl : 'm',
+			'hl' => $hl ? $hl : 0,
+			'pos9' => $pos9 ? $pos9 : ' ',
+			'il' => $il ? $il : 2,
+			'sl' => $sl ? $sl : 2,
+			'ba' => $ba ? $ba : 24, 
+			'el' => $el ? $el : '1',
+			'ru' => $ru ? $ru : 'i',
+			'pos19' => $pos19 ? $pos19 : ' ',
+			'dm1' => $dm1 ? $dm1 : 4,
+			'dm2' => $dm2 ? $dm2 : 5,
+			'dm3' =>  $dm3 ? $dm3 : 0,
+			'pos23' => $pos23 ? $pos23 : ' '
+		);
 
 		// récupération du répertoire
 		$m = 3 + $this->inner_guide['dm1'] + $this->inner_guide['dm2'];
-		$this->directory = substr($this->full_record,	24,	$this->inner_guide['ba'] - 25);
+		$this->directory = substr(	$this->full_record,	24,	$this->inner_guide['ba'] - 25);
 
 		$tmp_dir = explode('|', chunk_split($this->directory, $m, '|'));
-		for ($i = 0; $i < count($tmp_dir); $i++) {
-			if ($tmp_dir[$i]) {
+		for($i = 0; $i < count($tmp_dir); $i++) 
+		{
+			if($tmp_dir[$i]) 
+			{
 				$this->inner_directory[$i] = array('label' => substr($tmp_dir[$i], 0, 3),
-																					 'length' => intval(substr($tmp_dir[$i], 3, $this->inner_guide['dm1'])),
-																					 'adress' => intval(substr($tmp_dir[$i], 3 + $this->inner_guide['dm1'], $this->inner_guide['dm2'])));
+																				'length' => intval(	substr($tmp_dir[$i],3,$this->inner_guide['dm1'])),
+																				'adress' => intval(	substr($tmp_dir[$i],3 + $this->inner_guide['dm1'],$this->inner_guide['dm2'])));
 			}
 		}
 
 		// récupération des champs
-		$m = substr($this->full_record, 
-								$this->inner_guide['ba'], 
-								strlen($this->full_record) - $this->inner_guide['ba']);
-
-		if ($m) {
-			while (list($cle, $valeur) = each($this->inner_directory)) {
+		$m = substr($this->full_record, $this->inner_guide['ba'], strlen($this->full_record) - $this->inner_guide['ba']);
+		if($m) 
+		{
+			while(list($cle, $valeur)=each($this->inner_directory)) 
+			{
 				$this->inner_data[$cle] = array('label' => $this->inner_directory[$cle]['label'],
-																				'content' => substr($this->full_record,
-																														$this->inner_guide['ba'] + $valeur['adress'],
-																														$valeur['length']));
+					'content' => substr($this->full_record,$this->inner_guide['ba'] + $valeur['adress'],$valeur['length']));
 			}
-		} else {
+		} 
+		else
+		{
 			$this->inner_data = array();
 			$this->inner_directory = array();
-		}
-
+		}	
 		$this->update();
 	}
 	
@@ -176,73 +177,52 @@ class Class_NoticeUnimarc {
 // 		récupération d'un ou plusieurs sous-champ(s)
 // ---------------------------------------------------
 
-	/**
-	 * Premier argument label de champ obligatoire
-	 * Puis liste de sous-champs sinon renvoit le bloc entier
-	 */
-	public function get_subfield() {
+	function get_subfield() 
+	{
 		$result = array();
+		// vérification des paramètres
+		if(!func_num_args()) return $result;
 
-		// premier param obligatoire
-		$args_count = func_num_args();
-		if (!$args_count) 
-			return $result;
+		for($i = 0; $i < sizeof($this->inner_data); $i++) {
+			if(preg_match('/'.func_get_arg(0).'/', $this->inner_data[$i]['label'])) {
+				switch(func_num_args()) {
+					case 1:		// pas d'indication de sous-champ : on retourne le contenu entier
+						$result[] = preg_replace("/$this->rgx_field_end/",'',$this->inner_data[$i]['content']);
+						break;
+					case 2 :	// un seul sous-champ demandé
+						// récupération de la valeur du champ
+						$field = $this->inner_data[$i]['content'];
 
-		$contents = array();
-		for ($i = 0; $i < sizeof($this->inner_data); $i++) {
-			if (func_get_arg(0) == $this->inner_data[$i]['label'])
-				$contents[] = $this->inner_data[$i]['content'];
+						// le masque de recherche : subfield_begin cars. subfield_begin ou field_end
+
+						$mask = $this->rgx_subfield_begin.func_get_arg(1);
+						$mask .= '(.*)['.$this->rgx_subfield_begin.'|'.$this->rgx_field_end.']';
+
+						while (preg_match("/$mask/sU", $field)) {
+							preg_match("/$mask/sU", $field, $regs);
+							$result[] = $regs[1];
+							$field = preg_replace("/$mask/sU", '', $field);
+						}
+						break;
+					default:	// un ou plusieurs sous-champs
+						// récupération de la valeur du champ
+						$field = $this->inner_data[$i]['content'];
+				
+						for($j = 1; $j < func_num_args(); $j++) {
+							$subfield = func_get_arg($j);
+							$mask = $this->rgx_subfield_begin.$subfield;
+							$mask .= '(.*)['.$this->rgx_subfield_begin.'|'.$this->rgx_field_end.']';
+
+							preg_match("/$mask/sU", $field, $regs);
+							$tmp[$subfield] = $regs[1]; 
+						}
+						$result[] = $tmp;
+						break;
+				}
+			}
 		}
-
-		if (0 == count($contents))
-			return $result;
-
-		$subfields = array();
-		if (2 == $args_count) {
-			$subfields[] = func_get_arg(1);
-		} else {
-			for ($j = 1; $j < $args_count; $j++)
-				$subfields[] = func_get_arg($j);
-		}
-
-		foreach ($contents as $content)
-			$this->_getSubfieldInContent($content, $subfields, $result);
-
 		return $result;
 	}
-
-
-	protected function _getSubfieldInContent($content, $subfields, &$result) {
-		if (0 == count($subfields)) {
-			$result[] = preg_replace('/' . $this->rgx_field_end .'/', '', $content);
-			return;
-		}
-
-		// un seul sous-champ demandé
-		if (1 == count($subfields)) {
-			$mask = $this->_getPatternForSubfield($subfields[0]);
-			while (preg_match($mask, $content, $regs)) {
-				$result[] = $regs[1];
-				$content = preg_replace($mask, '', $content);
-			}
-			return;
-		}
-
-		// plusieurs sous-champs
-		foreach ($subfields as $subfield) {
-			preg_match($this->_getPatternForSubfield($subfield), $content, $regs);
-			$tmp[$subfield] = $regs[1]; 
-		}
-		$result[] = $tmp;
-	}
-
-
-	protected function _getPatternForSubfield($subfield) {
-		return '/' . $this->rgx_subfield_begin . $subfield
-			. '(.*)['.$this->rgx_subfield_begin.'|'.$this->rgx_field_end.']'
-			. '/sU';
-	}
-
 // ----------------------------------------------------------------
 // 		Decoupage d'un champ complet par son indice 
 // ----------------------------------------------------------------
