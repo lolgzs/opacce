@@ -68,6 +68,9 @@ class NoticeLoader extends Storm_Model_Loader
 	}
 }
 
+
+
+
 class Class_Notice extends Storm_Model_Abstract {
 	protected $_loader_class = 'NoticeLoader';
 	protected $_table_name = 'notices';
@@ -707,7 +710,6 @@ class Class_Notice extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	protected function _getTitresDansZones($zones) {
-		xdebug_break();
 		if (!is_array($zones) || empty($zones))
 			return [];
 
@@ -926,19 +928,21 @@ class Class_Notice extends Storm_Model_Abstract {
 		$code_alpha = str_replace(' ', 'x', $code_alpha);
 		if (!$code_alpha)
 			return [];
-				
-		$id_auteur = fetchOne("Select id_auteur from codif_auteur where MATCH(formes) AGAINST('\"" . $code_alpha . "\"' IN BOOLEAN MODE) ");
-		if (!$id_auteur)
+
+		if (!$codif_auteur = Class_CodifAuteur::findFirstBy(['where' => "MATCH(formes) AGAINST('" . $code_alpha . "' IN BOOLEAN MODE)"]))
 			return [];
-				
-		$fonction = fetchOne("select libelle from codif_auteurs_fonctions where id_fonction='$fonction'");
+
 		if ($fonction_pergame)
 			$fonction = $fonction_pergame;
+		else {
+			if ($auteur_fonction = Class_CodifAuteurFonction::find($fonction))
+				$fonction = $auteur_fonction->getLibelle();
+		}
 		
 		return [
-			'id' => $id_auteur,
+			'id' => $codif_auteur->getId(),
 			'libelle' => trim($prenom . ' ' . $nom) . (($fonction) ? ' <font color="#666666">(' . $fonction . ')</font>': ''),
-			'url' => BASE_URL . "/recherche/rebond?facette=reset&amp;code_rebond=A" . $id_auteur
+			'url' => BASE_URL . "/recherche/rebond?facette=reset&amp;code_rebond=A" . $codif_auteur->getId()
 		];
 	}
 

@@ -224,4 +224,67 @@ class DecodageUnimarcHarryPotterTest extends PHPUnit_Framework_TestCase {
 	}
 }
 
+
+
+class DecodageUnimarcConcertoTest extends PHPUnit_Framework_TestCase {
+	public function setUp() {
+		$this->concerto = new Class_Notice();
+		$this->concerto->setUnimarc("00963njm0 2200265   450 001000600000010002000006101001300026200002400039200002600063200002700089200002800116200004400144210004000188215003300228608003800261608003800299610005900337610005900396686000600455700006500461700005300526702002900579702004200608702004700650265555  aHMU907286d15.7  afreafre1 aPiano concerto N  3  iIallegro ma non tanto  iII Intermezzo : adagio  iIII Finale : alla breve  iRhapsody on a theme of Paganini, op. 43  aArlesd 2001cHarmonia mundi France  a1 disque compacte1 brochure  amusique instrumentale orchestrale  amusique instrumentale orchestrale  aConcertos (piano) - Disques compactsxDisques compacts  aConcertos (piano) - Disques compactsxDisques compacts  a3 1aRACHMANINOVbSergueï Vassilievitch4Fonction indéterminée 1aRACHMANINOVbSergueï Vassilievitch4Compositeur 1aNAKAMATSUbJon4Musicien 1aSEAMANbChristopher4Chef d'orchestre 1aROCHESTER PHILHARMONIC ORCHESTRA4Musicien");
+	}
+
+
+	/** @test */
+	public function getAuteursShouldAnswerAnArray() {
+		$rachmaninov = Class_CodifAuteur::newInstanceWithId(3);
+		$nakamatsu = Class_CodifAuteur::newInstanceWithId(4);
+		$seaman = Class_CodifAuteur::newInstanceWithId(5);
+		$orchestra = Class_CodifAuteur::newInstanceWithId(6);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAuteur')
+			->whenCalled('findFirstBy')
+			->with(['where' => "MATCH(formes) AGAINST('RACHMANINOVxSERGUEIxVASSILIEVITCH' IN BOOLEAN MODE)"])
+			->answers($rachmaninov)
+
+			->whenCalled('findFirstBy')
+			->with(['where' => "MATCH(formes) AGAINST('NAKAMATSUxJON' IN BOOLEAN MODE)"])
+			->answers($nakamatsu)
+
+			->whenCalled('findFirstBy')
+			->with(['where' => "MATCH(formes) AGAINST('SEAMANxCHRISTOPHER' IN BOOLEAN MODE)"])
+			->answers($seaman)
+
+			->whenCalled('findFirstBy')
+			->with(['where' => "MATCH(formes) AGAINST('ROCHESTERxPHILHARMONICxORCHESTRA' IN BOOLEAN MODE)"])
+			->answers($orchestra)
+
+			->beStrict();
+
+
+		Class_CodifAuteurFonction::newInstanceWithId('000', ['libelle' => 'On sait pas']);
+		Class_CodifAuteurFonction::newInstanceWithId('545', ['libelle' => 'Zikos']);
+
+		$this->assertEquals([ ['id' => 3,
+													 'libelle' => 'Sergueï Vassilievitch RACHMANINOV <font color="#666666">(Fonction indéterminée)</font>',
+													 'url' => BASE_URL.'/recherche/rebond?facette=reset&amp;code_rebond=A3'],
+
+													['id' => 3,
+													 'libelle' => 'Sergueï Vassilievitch RACHMANINOV <font color="#666666">(Compositeur)</font>',
+													 'url' => BASE_URL.'/recherche/rebond?facette=reset&amp;code_rebond=A3'],
+
+													['id' => 4,
+													 'libelle' => 'Jon NAKAMATSU <font color="#666666">(Musicien)</font>',
+													 'url' => BASE_URL.'/recherche/rebond?facette=reset&amp;code_rebond=A4'],
+
+													['id' => 5,
+													 'libelle' => 'Christopher SEAMAN <font color="#666666">(Chef d\'orchestre)</font>',
+													 'url' => BASE_URL.'/recherche/rebond?facette=reset&amp;code_rebond=A5'],
+
+													['id' => 6,
+													 'libelle' => 'ROCHESTER PHILHARMONIC ORCHESTRA <font color="#666666">(Musicien)</font>',
+													 'url' => BASE_URL.'/recherche/rebond?facette=reset&amp;code_rebond=A6'] ], 
+
+												$this->concerto->getAuteurs(false, true));
+	}
+}
+
 ?>
