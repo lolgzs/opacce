@@ -1,13 +1,14 @@
 RewriteEngine on
 RewriteRule !(userfiles|public|tmp|temp)/.*\.(js|ico|txt|gif|jpg|jpeg|png|css|xml|swf|mov|pdf|doc|docx|woff|eot|svg|ttf|xls|wsdl|mp3|m4v|ogg)$ index.php [NC,NE]
 
-php_flag magic_quotes_gpc off
-php_flag register_globals off
-
 AddType application/x-javascript .js
 AddType text/css .css
 AddType application/json .json
 
+<FilesMatch "\.(css|js)($|\?.*$)">
+  SetOutputFilter DEFLATE
+  Header add "Cache-Control" "max-age=604800, public"
+</FilesMatch>
 
 AddOutputFilterByType DEFLATE text/html
 AddOutputFilterByType DEFLATE text/plain
