@@ -20,7 +20,7 @@
  */
 
 
-class ZendAfi_View_Helper_ReseauxSociauxForArticleTest extends ViewHelperTestCase {
+class ZendAfi_View_Helper_ReseauxSociauxTest extends ViewHelperTestCase {
 	/** @var ZendAfi_View_Helper_ReseauxSociaux */
 	protected $_helper;
 
@@ -32,14 +32,22 @@ class ZendAfi_View_Helper_ReseauxSociauxForArticleTest extends ViewHelperTestCas
 		$_SERVER["HTTP_HOST"] = 'localhost';
 		$this->_helper = new ZendAfi_View_Helper_ReseauxSociaux();
 		$this->_helper->setView(new ZendAfi_Controller_Action_Helper_View());
-		$this->_html = $this->_helper->reseauxSociaux('article', 123456789);
 	}
 
 
 	/** @test */
-	public function linkShouldExpectationArticleId() {
+	public function onArticlelinkShouldContainsArticleId() {
+		$this->_html = $this->_helper->reseauxSociaux('article', 123456789);
 		$this->assertContains('id/123456789', $this->_html);
 	}
+
+
+	/** @test */
+	public function onInexistantNoticeLinkShouldBeEmpty() {
+		$this->_html = $this->_helper->reseauxSociaux('notice', 1234567891234);
+		$this->assertEmpty($this->_html);
+	}
 }
+
 
 ?>

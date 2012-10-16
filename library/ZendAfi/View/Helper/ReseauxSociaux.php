@@ -33,7 +33,9 @@ class ZendAfi_View_Helper_ReseauxSociaux extends ZendAfi_View_Helper_BaseHelper
 
 		switch($type)	{
 		case "notice" : 
-			$notice = Class_Notice::find($id_notice);
+			if (!$notice = Class_Notice::find($id_notice))
+				return '';
+
 			$url_portail="/recherche/viewnotice/clef/".$notice->getClefAlpha()."?id_profil=".$id_profil."&amp;type_doc=".$notice->getTypeDoc(); 
 			$message = $notice->getTitrePrincipal();
       break;
