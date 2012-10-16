@@ -83,6 +83,8 @@ abstract class AbstractIndexControllerTelephoneWithModulesTest extends Telephone
 			->whenCalled('findFirstBy')
 			->with(array('BROWSER' => 'telephone'))
 			->answers($this->profil_adulte);
+
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()->whenCalled('fileExists')->answers(true));
 	}
 }
 

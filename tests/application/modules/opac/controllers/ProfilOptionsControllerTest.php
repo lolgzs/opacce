@@ -250,6 +250,7 @@ class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControlle
 
 
 abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase extends AbstractControllerTestCase {
+	
 	protected function _loginHook($account) {
 		$account->ROLE = "";
 		$account->ROLE_LEVEL = 0;
@@ -395,8 +396,19 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 			->answers([1, 2, 4]);
 
 
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()
+																->whenCalled('fileExists')
+																->answers(true));
+
 		$this->dispatch('/opac/');
 	}
+
+
+	public function tearDown() {
+		Class_Profil::setFileWriter(null);
+		parent::tearDown();
+	}
+
 
 	/** @test */
 	public function hauteurBanniereShouldBe100() {

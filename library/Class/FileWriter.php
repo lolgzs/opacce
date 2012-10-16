@@ -23,6 +23,10 @@ class Class_FileWriter {
 	public function putContents($path, $contents) {
 		return file_put_contents($path, $contents);
 	}
+
+	public function fileExists($path) {
+		return file_exists($path);
+	}
 }
 
 ?>

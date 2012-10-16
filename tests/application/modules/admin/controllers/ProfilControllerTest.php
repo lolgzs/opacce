@@ -79,6 +79,8 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControllerProfilJeunesseTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()->whenCalled('fileExists')->answers(true));
 		$this->dispatch('/admin/profil/edit/id_profil/5');
 	}
 

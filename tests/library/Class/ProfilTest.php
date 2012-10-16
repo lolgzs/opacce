@@ -73,6 +73,8 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 			::onLoaderOfModel('Class_Profil')
 			->whenCalled('findAllBy')
 			->answers(array());
+
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()->whenCalled('fileExists')->answers(true));
 	}
 
 

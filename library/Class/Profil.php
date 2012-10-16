@@ -1286,12 +1286,24 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	public function writeHeaderCss($data) {
-		$header_css = $this->hasHeaderCss() 
-			? str_replace(USERFILESURL, '', $this->getHeaderCss())
-			: 'css/profil_'.$this->getId().'.css';
-			
+		if (!$header_css = $this->getHeaderCssPath()) 
+			$header_css = USERFILESPATH.'/css/profil_'.$this->getId().'.css';
 
-		$this->getFileWriter()->putContents(USERFILESPATH.'/'.$header_css, $data);		
-		return $this->setHeaderCss(USERFILESURL.$header_css);
+		$this->getFileWriter()->putContents($header_css, $data);		
+		return $this->setHeaderCss(str_replace(USERFILESPATH.'/', USERFILESURL, $header_css));
+	}
+
+	
+	public function getHeaderCssPath() {
+		if ($header_css = $this->_get('header_css'))
+			return USERFILESPATH.str_replace(USERFILESURL, '/', $this->_get('header_css'));
+		return '';
+	}
+
+
+	public function getHeaderCss() {
+		if ($this->getFileWriter()->fileExists($this->getHeaderCssPath()))
+			return $this->_get('header_css');
+		return '';
 	}
 }

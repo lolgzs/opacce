@@ -42,6 +42,12 @@ abstract class ProfilControllerCssTestCase extends Admin_AbstractControllerTestC
 			->whenCalled('save')
 			->answers(true);
 	}
+
+
+	public function tearDown() {
+		Class_Profil::setFileWriter(null);
+		parent::tearDown();
+	}
 }
 
 
@@ -85,9 +91,19 @@ class ProfilControllerCssUploadWithNoCssFileTest extends ProfilControllerCssTest
 			->setRawBody('body {font-size: 15px}');
 
 		$this->_file_writer
+			->whenCalled('fileExists')
+			->with(USERFILESPATH.'/css/profil_5.css')
+			->answers(false)
+
 			->whenCalled('putContents')
 			->with(USERFILESPATH.'/css/profil_5.css', 'body {font-size: 15px}')
-			->answers(22)
+			->willDo(function() {
+					$this->_file_writer
+						->whenCalled('fileExists')
+						->with(USERFILESPATH.'/css/profil_5.css')
+						->answers(true);
+					return 22;
+				})
 			->beStrict();
 
 		$this->dispatch('/admin/profil/upload-css/id_profil/5', true);
@@ -124,6 +140,10 @@ class ProfilControllerCssUploadOnPageJazz extends ProfilControllerCssTestCase {
 			->setRawBody('body {font-size: 15px}');
 
 		$this->_file_writer
+			->whenCalled('fileExists')
+			->with(USERFILESPATH.'/css/profil_5.css')
+			->answers(true)
+
 			->whenCalled('putContents')
 			->with(USERFILESPATH.'/css/profil_5.css', 'body {font-size: 15px}')
 			->answers(22)
