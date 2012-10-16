@@ -364,9 +364,11 @@ abstract class RechercheControllerSimpleActionTestCase extends AbstractControlle
 
 
 
-class RechercheControllerSimpleActionTest extends RechercheControllerSimpleActionTestCase {
+class RechercheControllerSimpleActionWithDefaultConfigTest extends RechercheControllerSimpleActionTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Profil::getCurrentProfil()->setCfgModules([]);
 		$this->lanceRecherche(['expressionRecherche' => 'pomme']);
 	}
 
@@ -381,6 +383,24 @@ class RechercheControllerSimpleActionTest extends RechercheControllerSimpleActio
 	public function pageShouldContainsLinkToSuggestionAchats() {
 		$this->assertXPathContentContains('//a[contains(@href, "/abonne/suggestion-achat")]', 
 																			'Suggérer un achat');
+	}
+}
+
+
+
+
+class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatTest extends RechercheControllerSimpleActionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' => ['simple' => ['suggestion_achat' => 0]]]);
+		$this->lanceRecherche(['expressionRecherche' => 'pomme']);
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsLinkToSuggestionAchats() {
+		$this->assertNotXPath('//a[contains(@href, "/abonne/suggestion-achat")]');
 	}
 }
 

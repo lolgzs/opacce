@@ -19,6 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class BibNumeriqueController extends Zend_Controller_Action {
+	public function init() {
+		session_write_close();
+	}
+
 	public function viewAlbumAction() {
 		if (null === ($album = Class_Album::getLoader()->find((int)$this->_getParam('id')))) {
 			$this->_redirect('opac/');

@@ -22,6 +22,14 @@ echo $this->tagSelectionChamps("libelles");
 						<td class="droite">Style de boite&nbsp;</td>
 						<td class="gauche"><?php echo $this->combo_templates ?></td>
 					</tr>
+
+					<tr>
+	          <td class="droite"><?php echo $this->_('Lien "Suggérer un achat"').'&nbsp;' ?></td>
+	            <td class="gauche"><?php echo $this->formCheckbox('suggestion_achat', 
+																																$this->preferences['suggestion_achat'], 
+																																null,
+																																[1, 0]) ?></td>
+					</tr>
 				</table>
 			</fieldset>
 

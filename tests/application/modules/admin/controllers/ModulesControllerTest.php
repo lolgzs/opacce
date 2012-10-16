@@ -92,4 +92,30 @@ class ModulesControllerBibIndexTest extends Admin_AbstractControllerTestCase {
 	}
 }
 
+
+
+
+class ModulesControllerConfigRechercheResultatTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$_SESSION["recherche"] = array("mode" => '');
+	}
+
+
+	/** @test */
+	public function checkboxSuggestionAchatShouldBeCheckedByDefault() {
+		Class_Profil::getCurrentProfil()->setCfgModules([]);
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
+		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][@checked="checked"]');
+	}
+
+
+	/** @test */
+	public function checkboxSuggestionAchatShouldBeUncheckedIfPrefencesSuggestionEqualsZero() {
+		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' => ['simple' => ['suggestion_achat' => 0]]]);
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
+		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][@checked="checked"]');
+	}
+}
+
 ?>

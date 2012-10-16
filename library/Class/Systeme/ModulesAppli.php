@@ -38,60 +38,61 @@ class Class_Systeme_ModulesAppli extends Class_Systeme_ModulesAbstract {
 	 * @var array
 	 */
 	private $modules = array(
-		"index" => array(
-			"formulairecontact" => array("libelle" => "Contact", "popup_width" => 500, "popup_height" => 300)
+		'index' => array(
+			'formulairecontact' => array('libelle' => 'Contact', 'popup_width' => 500, 'popup_height' => 300)
   	 ),
 
-		"abonne" => array(
-			"*" => array("libelle" => "Abonne", "popup_width" => 500, "popup_height" => 300),
-			"formations" => array("libelle" => "Contact", "popup_width" => 500, "popup_height" => 300)
+		'abonne' => array(
+			'*' => array('libelle' => 'Abonne', 'popup_width' => 500, 'popup_height' => 300),
+			'formations' => array('libelle' => 'Contact', 'popup_width' => 500, 'popup_height' => 300)
   	 ),
 
-		"auth" => array(
-			"*" => array("libelle" => "Connexion", "popup_width" => 500, "popup_height" => 300),
-			"login" => array("libelle" => "Connexion utilisateur", "popup_width" => 500, "popup_height" => 300),
-			"register" => array("libelle" => "Demande d'inscription", "popup_width" => 710, "popup_height" => 290),
-			"lostpass" => array("libelle" => "Mot de passe oublié", "popup_width" => 710, "popup_height" => 290)
+		'auth' => array(
+			'*' => array('libelle' => 'Connexion', 'popup_width' => 500, 'popup_height' => 300),
+			'login' => array('libelle' => 'Connexion utilisateur', 'popup_width' => 500, 'popup_height' => 300),
+			'register' => array('libelle' => 'Demande d\'inscription', 'popup_width' => 710, 'popup_height' => 290),
+			'lostpass' => array('libelle' => 'Mot de passe oublié', 'popup_width' => 710, 'popup_height' => 290)
 		),
 
-		"recherche" => array(
-			"*" => array("libelle" => "Recherche", "popup_width" => 500, "popup_height" => 300),
-			"simple" => array("libelle" => "Recherche simple", "popup_width" => 710, "popup_height" => 340),
-			"avancee" => array("libelle" => "Recherche avancee", "popup_width" => 710, "popup_height" => 290),
-			"guidee" => array("libelle" => "Recherche guidée", "popup_width" => 710, "popup_height" => 290),
-			"resultat" => array("libelle" => "Résultat", "popup_width" => 710, "popup_height" => 620),
-			"viewnotice" => array("libelle" => "Notice", "popup_width" => 700, "popup_height" => 720)),
+		'recherche' => array(
+			'*' => array('libelle' => 'Recherche', 'popup_width' => 500, 'popup_height' => 300),
+			'simple' => array('libelle' => 'Recherche simple', 'popup_width' => 710, 'popup_height' => 340),
+			'avancee' => array('libelle' => 'Recherche avancee', 'popup_width' => 710, 'popup_height' => 290),
+			'guidee' => array('libelle' => 'Recherche guidée', 'popup_width' => 710, 'popup_height' => 290),
+			'resultat' => array('libelle' => 'Résultat', 'popup_width' => 710, 'popup_height' => 620),
+			'resultatsimple' => array('libelle' => 'Résultat', 'titre' => 'test', 'popup_width' => 710, 'popup_height' => 620),
+			'viewnotice' => array('libelle' => 'Notice', 'popup_width' => 700, 'popup_height' => 720)),
 
-		"noticeajax" => array(
-			"*" => array("libelle" => "Notice", "popup_width" => 500, "popup_height" => 300),
-			"notice" => array("libelle" => "Notice", "popup_width" => 600, "popup_height" => 620)
+		'noticeajax' => array(
+			'*' => array('libelle' => 'Notice', 'popup_width' => 500, 'popup_height' => 300),
+			'notice' => array('libelle' => 'Notice', 'popup_width' => 600, 'popup_height' => 620)
 		),
 
-		"cms" => array(
-			"*" => array("libelle" => "Articles", "popup_width" => 500, "popup_height" => 200)
+		'cms' => array(
+			'*' => array('libelle' => 'Articles', 'popup_width' => 500, 'popup_height' => 200)
 		),
 
-		"rss" => array(
-			"*" => array("libelle" => "Fils Rss", "popup_width" => 500, "popup_height" => 200)
+		'rss' => array(
+			'*' => array('libelle' => 'Fils Rss', 'popup_width' => 500, 'popup_height' => 200)
 		),
 
-		"sito" => array(
-			"*" => array("libelle" => "Sitothèque", "popup_width" => 500, "popup_height" => 200)
+		'sito' => array(
+			'*' => array('libelle' => 'Sitothèque', 'popup_width' => 500, 'popup_height' => 200)
 		),
 
-		"blog" => array(
-			"*" => array("libelle" => "Avis", "popup_width" => 500, "popup_height" => 200)
+		'blog' => array(
+			'*' => array('libelle' => 'Avis', 'popup_width' => 500, 'popup_height' => 200)
 		),
 
-		"bib" => array(
-			"*" => array("libelle" => "Recherche géographique", "popup_width" => 500, "popup_height" => 260),
-			"zoneview" => array("libelle" => "Zone", "popup_width" => 500, "popup_height" => 260),
-			"mapzoneview" => array("libelle" => "Réseau", "popup_width" => 500, "popup_height" => 260),
-			"bibview" => array("libelle" => "Bibliothèque", "popup_width" => 500, "popup_height" => 260)
+		'bib' => array(
+			'*' => array('libelle' => 'Recherche géographique', 'popup_width' => 500, 'popup_height' => 260),
+			'zoneview' => array('libelle' => 'Zone', 'popup_width' => 500, 'popup_height' => 260),
+			'mapzoneview' => array('libelle' => 'Réseau', 'popup_width' => 500, 'popup_height' => 260),
+			'bibview' => array('libelle' => 'Bibliothèque', 'popup_width' => 500, 'popup_height' => 260)
 		),
 
-		"catalogue" => array(
-			"*" => array("libelle" => "Catalogues", "popup_width" => 710, "popup_height" => 620)
+		'catalogue' => array(
+			'*' => array('libelle' => 'Catalogues', 'popup_width' => 710, 'popup_height' => 620)
 		)
 	);
 
@@ -232,6 +233,7 @@ class Class_Systeme_ModulesAppli extends Class_Systeme_ModulesAbstract {
 				break;
 			case "resultat":
 				$ret["barre_nav"] = "Résultat";							 // Barre de nav
+				$ret["titre"] = '';
 				$ret["liste_nb_par_page"] = 10;							 // Nombre de notices par page
 				$ret["liste_format"] = 1;									// Format de liste (1=liste 2=accordéon 3=vignettes 4=bookflip)
 				$ret["liste_codes"] = "TAN";								// Champs a afficher dans la liste (TANECR)
@@ -245,6 +247,8 @@ class Class_Systeme_ModulesAppli extends Class_Systeme_ModulesAbstract {
 				$ret["tags_calcul"] = 3;									// Méthode de calcul pour les tranches (0=répartition 1=ecart/moyenne 2=ecart/moyenne pondÃ©rÃ©)
 				$ret["tags_position"] = 2;								 // Position 2=sous les facettes 1=sous la liste
 				$ret["tags_message"] = "Elargir la recherche...";			// Message au dessus de la boite
+				$ret["suggestion_achat"] = 1;          // Afficher le lien "Suggérer un achat"
+
 				break;
 			case "viewnotice":
 				$ret["barre_nav"] = "Notice";						// Barre de nav

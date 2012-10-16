@@ -37,9 +37,11 @@ print($this->texte_selection);
 															'&raquo; '.$this->_('Nouvelle recherche')); ?>
   </span>
 
+  
 	<span>
-	<?php echo $this->tagAnchor(['controller' => 'abonne', 'action' => 'suggestion-achat'], 
-															'&raquo; '.$this->_('Suggérer un achat'));?>
+	<?php if ((int)$preferences['suggestion_achat'] == 1)
+           echo $this->tagAnchor(['controller' => 'abonne', 'action' => 'suggestion-achat'], 
+																 '&raquo; '.$this->_('Suggérer un achat'));?>
   </span> 
 </div>
 
