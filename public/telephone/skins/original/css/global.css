@@ -316,158 +316,155 @@ div.bk-widget div.b-counter {
 
 @media only screen and (max-width : 320px) {
     .boite_accueil {
-	width: 50%;
-	height: 120px;
-	float: left;
-	text-align: center;
+				width: 50%;
+				height: 105px;
+				float: left;
+				text-align: center;
     }
 
     .app-icon {
-	margin-left: 4%;
-	margin-right: 4%;
-	display: block;
-	background-repeat: no-repeat;
-	background-position: center top;
-	margin-left: 10px;
-	height:64px;
+				margin-left: 4%;
+				margin-right: 4%;
+				display: block;
+				background-repeat: no-repeat;
+				background-position: center top;
+				margin-left: 10px;
+				height:64px;
     }
 
     .news .app-icon {
-	background-image: url(../images/Iconemobiles/news64.png);
+				background-image: url(../images/Iconemobiles/news64.png);
     }
     
     .critiques .app-icon {
-	background-image: url(../images/Iconemobiles/critiques64.png);
+				background-image: url(../images/Iconemobiles/critiques64.png);
     }
     
     .bib_numerique .app-icon {
-	background-image: url(../images/Iconemobiles/bibnum64.png);
+				background-image: url(../images/Iconemobiles/bibnum64.png);
     }
     
     .calendar .app-icon {
-	background-image: url(../images/Iconemobiles/date64.png);
+				background-image: url(../images/Iconemobiles/date64.png);
     }
 
     .kiosque .app-icon {
-	background-image: url(../images/Iconemobiles/kiosque64.png);
+				background-image: url(../images/Iconemobiles/kiosque64.png);
     }
-       .titre {
-	   font: 0.7em Helvetica,Arial;
-	   margin-left: -10px;
-	
+    .titre {
+				font: 0.7em Helvetica,Arial;
+				margin-left: -10px;
+				
     }
 
     .contenu{
-	margin-left: 4%;
-	margin-right: 4%;
-	display:none;
+				margin-left: 4%;
+				margin-right: 4%;
+				display:none;
     }
 
     
     .show-maximized .contenu {
-	display: block;
+				display: block;
     }
 
     .show-maximized .app-icon,
     .show-maximizer .titre {
-	float:none;
+				float:none;
     }
 
     .one-block-visible .show-maximized .app-icon{
-	
-	opacity: 1;
+				opacity: 1;
     }
-   
+		
     .one-block-visible .contenu {
-	position: absolute;
-	margin: 0;
-	width: 100%;
-	left: 0;
+				position: absolute;
+				margin: 0;
+				width: 100%;
+				left: 0;
     }
+
     .one-block-visible .titre {
-	display: none;
-	
+				display: none;
     }
+
     .one-block-visible .boite_accueil {
-	width: 32px;
-	float: left;
-	height: 32px;
-	margin: 2px;
+				width: 32px;
+				float: left;
+				height: 32px;
+				margin: 2px;
     }
+
     .one-block-visible .app-icon {
-	margin: 0;
-	opacity: 0.2;
-	height: 32px;
+				margin: 0;
+				opacity: 0.2;
+				height: 32px;
     }
+
     .one-block-visible .news .app-icon {
-	background-image: url(../images/Iconemobiles/news32.png);
+				background-image: url(../images/Iconemobiles/news32.png);
     }
 
-     .one-block-visible .critiques .app-icon {
-	background-image: url(../images/Iconemobiles/critiques32.png);
+    .one-block-visible .critiques .app-icon {
+				background-image: url(../images/Iconemobiles/critiques32.png);
     }
 
-     .one-block-visible .bib_numerique .app-icon {
-	background-image: url(../images/Iconemobiles/bibnum32.png);
+    .one-block-visible .bib_numerique .app-icon {
+				background-image: url(../images/Iconemobiles/bibnum32.png);
     }
-     .one-block-visible .kiosque .app-icon {
-	background-image: url(../images/Iconemobiles/kiosque32.png);
+    .one-block-visible .kiosque .app-icon {
+				background-image: url(../images/Iconemobiles/kiosque32.png);
     }
     .one-block-visible .calendar .app-icon {
-	background-image: url(../images/Iconemobiles/date32.png);
+				background-image: url(../images/Iconemobiles/date32.png);
     }
 
 }
 
 @media screen and (min-width: 321px) {
     .img-titre {
-	display: block;
-	background-repeat: no-repeat;
-	background-position: left;
- 	height: 32px;
-     }
+				display: block;
+				background-repeat: no-repeat;
+				background-position: left;
+ 				height: 32px;
+    }
 
     .titre {
-	margin-left: 32px;
-	float: left;
+				margin-left: 32px;
+				float: left;
     }
 
     .news .img-titre {
-	background-image: url(../images/Iconemobiles/news32.png);
+				background-image: url(../images/Iconemobiles/news32.png);
     }
     .critiques .img-titre {
-	background-image: url(../images/Iconemobiles/critiques32.png);
+				background-image: url(../images/Iconemobiles/critiques32.png);
     }
 
     .bib_numerique .img-titre {
-	background-image: url(../images/Iconemobiles/bibnum32.png);
+				background-image: url(../images/Iconemobiles/bibnum32.png);
     }
     .kiosque .img-titre {
-	background-image: url(../images/Iconemobiles/kiosque32.png);
+				background-image: url(../images/Iconemobiles/kiosque32.png);
     }
     .calendar .img-titre {
-	background-image: url(../images/Iconemobiles/date32.png);
+				background-image: url(../images/Iconemobiles/date32.png);
     }
 
 }
-
-
-
 
 
 @media screen and (min-width: 480px) {
     div.ui-content>div {
-	float: left;
-	margin-left: 1%;
-	margin-right: 1%;
+				float: left;
+				margin-left: 1%;
+				margin-right: 1%;
     }
 }
 
 
-
 @media screen and (min-width: 480px) and (max-width: 1023px) {
-    div.ui-content>div {
-	
-	width: 48%;
+    div.ui-content>div {				
+				width: 48%;
     }
 }
