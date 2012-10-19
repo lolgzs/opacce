@@ -44,7 +44,7 @@ class ZendAfi_View_Helper_ReseauxSociauxTest extends ViewHelperTestCase {
 
 	/** @test */
 	public function onInexistantNoticeLinkShouldBeEmpty() {
-		$this->_html = $this->_helper->reseauxSociaux('notice', 1234567891234);
+		$this->_html = $this->_helper->reseauxSociaux('notice', -1);
 		$this->assertEmpty($this->_html);
 	}
 }

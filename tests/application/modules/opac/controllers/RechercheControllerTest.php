@@ -357,6 +357,7 @@ abstract class RechercheControllerSimpleActionTestCase extends AbstractControlle
 		$recherche = $_SESSION['recherche'];
 		$this->bootstrap();
 		$_SESSION['recherche'] = $recherche;
+		var_dump($_SESSION['recherche']);
 		$this->dispatch('/recherche/simple', true);
 	}
 }
@@ -393,8 +394,15 @@ class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatTest extend
 	public function setUp() {
 		parent::setUp();
 
-		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' => ['simple' => ['suggestion_achat' => 0]]]);
-		$this->lanceRecherche(['expressionRecherche' => 'pomme']);
+		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' => ['resultatsimple' => ['suggestion_achat' => 0]]]);
+		$_SESSION['recherche'] = ['selection' => ['expressionRecherche' => 'potter',
+																							'mode' => 'simple'],
+															'resultat' => ['req_liste' => "select id_notice,MATCH(alpha_titre)  AGAINST(' (POMME POMMES POM)' ) as rel1, MATCH(alpha_auteur) AGAINST(' (POMME POMMES POM)' ) as rel2 from notices Where MATCH(titres,auteurs,editeur,collection,matieres,dewey) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE) order by (rel1 * 1.5)+(rel2) desc",
+																						 'req_facettes' => "select id_notice,type_doc,facettes from notices Where MATCH(titres,auteurs,editeur,collection,matieres,dewey) AGAINST('+(POMME POMMES POM)' IN BOOLEAN MODE) limit 15000",
+																						 'nombre' => 5,
+																						 'facettes' => [],
+																						 'tags' => []]];
+		$this->dispatch('/recherche/simple', true);
 	}
 
 
