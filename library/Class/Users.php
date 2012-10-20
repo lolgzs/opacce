@@ -209,14 +209,6 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
-	/**
-	 * @return UsersLoader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
 	public static function currentUserId() {
 		if (!$user = self::getLoader()->getIdentity())
 			return 0;
@@ -234,9 +226,18 @@ class Class_Users extends Storm_Model_Abstract {
 		return $this->getRoleLevel() == ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB;
 	}
 
+
 	public function isBibliothequaire() {
 		return $this->getRoleLevel() >= ZendAfi_Acl_AdminControllerRoles::MODO_BIB;
 	}
+
+
+	public function getLibelleBib() {
+		if (!$bib = $this->getBib())
+			return '';
+		return $bib->getLibelle();
+	}
+
 
 	/**
 	 * @return bool

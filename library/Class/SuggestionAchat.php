@@ -109,5 +109,14 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 			return $this->getUser()->getNomComplet();
 		return '';
 	}
+
+
+	public function getLibelleBib() {
+		if ($user = $this->getUser())
+			return $user->getLibelleBib();
+
+		return '';
+	}
+
 }
 ?>

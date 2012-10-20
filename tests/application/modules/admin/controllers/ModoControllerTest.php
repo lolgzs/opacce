@@ -97,7 +97,9 @@ abstract class ModoControllerSuggestionAchatTestCase extends Admin_AbstractContr
 													 ->beInvite()
 													 ->setIdabon('0')
 													 ->setPrenom('Marcel')
-													 ->setNom('Duchamp'))
+													 ->setNom('Duchamp')							
+													 ->setBib(Class_Bib::newInstanceWithId(3)
+																		->setLibelle('Annecy')))
 								 ]);
 	}
 }
@@ -167,9 +169,17 @@ class ModoControllerSuggestionAchatActionTest extends ModoControllerSuggestionAc
 
 	/** @test */
 	public function fourthRowTDShouldContainsMarcelDuchamp() {
-		$this->assertXPathContentContains('//tr[3]//td[5]', 'Marcel Duchamp');		
+		$this->assertXPathContentContains('//tr[3]//td[6]', 'Marcel Duchamp');		
+	}
+
+
+	/** @test */
+	public function fourthRowTDShouldContainsBibAnnecy() {
+		$this->assertXPathContentContains('//tr[3]//td[5]', 'Annecy');		
 	}
 }
+
+
 
 
 class ModoControllerSuggestionAchatEditHarryPotterTest extends ModoControllerSuggestionAchatTestCase {
