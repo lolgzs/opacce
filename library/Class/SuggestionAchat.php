@@ -90,7 +90,7 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 		if ($mail_user = $this->getUser()->getMail())
 			$mail->addTo($mail_user);
 
-		if ($mail_profil = Class_Profil::getCurrentProfil()->getMailSiteOrPortail())
+		if ($mail_profil = Class_Profil::getCurrentProfil()->getMailSuggestionAchatOrPortail())
 			$mail->addTo($mail_profil);
 
 		$mail->send();

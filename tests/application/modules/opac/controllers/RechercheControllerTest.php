@@ -357,7 +357,6 @@ abstract class RechercheControllerSimpleActionTestCase extends AbstractControlle
 		$recherche = $_SESSION['recherche'];
 		$this->bootstrap();
 		$_SESSION['recherche'] = $recherche;
-		var_dump($_SESSION['recherche']);
 		$this->dispatch('/recherche/simple', true);
 	}
 }

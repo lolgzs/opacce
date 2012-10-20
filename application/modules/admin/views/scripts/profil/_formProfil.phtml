@@ -3,9 +3,7 @@ Class_ScriptLoader::getInstance()
 ->addStylesheet(URL_ADMIN_JS.'color_picker/jquery.vreboton.ColorPicker')
 ->addAdminScript('color_picker/jquery.vreboton.ColorPicker')
 ->addInlineStyle('div.ColorPickerDivSample {margin-top:4px; margin-right:0px}')
-->addJQueryReady('$(".colorpicker").attachColorPicker()');
-
-Class_ScriptLoader::getInstance()
+->addJQueryReady('$(".colorpicker").attachColorPicker()')
 ->addAdminScript('tag_selection')
 ->addInlineScript("	function changeBrowser(sBrowser){
 		if (sBrowser=='telephone')	{
@@ -64,6 +62,11 @@ Class_ScriptLoader::getInstance()
 				<tr>
 					<td class="droite"><?php echo $this->traduire('E-mail du Webmestre'); ?></td>
 					<td class="gauche"><input type="text" style="width:100%" name="mail_site" value="<?php echo $this->escape(trim($this->profil->getMailSite()));?>" maxlength="50"/></td>
+				</tr>
+
+				<tr>
+					<td class="droite"><?php echo $this->traduire('E-mail de réception des suggestions d\'achat'); ?></td>
+					<td class="gauche"><input type="text" style="width:100%" name="mail_suggestion_achat" value="<?php echo $this->escape(trim($this->profil->getMailSuggestionAchat()));?>" maxlength="50"/></td>
 				</tr>
 			</table>
 		</fieldset>

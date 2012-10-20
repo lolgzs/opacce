@@ -62,6 +62,7 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 			->setCfgSite(ZendAfi_Filters_Serialize::serialize($cfg_site))
 			->setCfgNotice($cfg_notice)
 			->setMailSite('tintin@herge.be')
+			->setMailSuggestionAchat('suggestion@herge.be')
 			->setHauteurBanniere(150)
 			->setBoiteLoginInBanniere(true);
 
@@ -198,6 +199,13 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 	public function skinAstrolabeShouldBeSelected() {
 		$this->assertXPath("//select[@name='skin']/option[@value='modele'][@selected='selected']");
 	}
+
+
+	/** @test */
+	public function mailSuggestionAchatsShouldContainsSuggestionAtHergeDotBe() {
+		$this->assertXPath("//input[@type='text'][@name='mail_suggestion_achat'][@value='suggestion@herge.be']");
+	}
+
 
 	/** @test */
 	public function mailSiteShouldContainsTintinAtHergeDotBe() {

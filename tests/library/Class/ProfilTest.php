@@ -316,7 +316,8 @@ abstract class ProfilAdulteChatenayTestCase extends ModelTestCase {
 			->setLargeurDivision2(600)
 			->setLargeurDivision3(0)
 			->setCfgAccueil($cfg_accueil)
-			->setAccessLevel('-1');
+			->setAccessLevel('-1')
+			->setMailSuggestionAchat('chatenay@chatenay.fr');
 	}
 }
 
@@ -539,6 +540,28 @@ class ProfilAdulteChatenayTest extends ProfilAdulteChatenayTestCase  {
 		$this->assertTrue($loader
 											->methodHasBeenCalledWithParams('delete',
 																											array($this->page_histoire)));
+	}
+
+
+	/** @test */
+	public function pagePolitiqueMailSuggestionAchatShouldBeChatenayAtChatenayDotFr() {
+		$this->assertEquals('chatenay@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatPagePolitiqueShouldGetOneFromPortail() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('suggest@chatenay.fr');
+		$this->profil->setMailSuggestionAchat('');
+		$this->assertEquals('suggest@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatqShouldGetMailSite() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('');
+		$this->profil->setMailSuggestionAchat('')->setMailSite('contact@chatenay.fr');
+		$this->assertEquals('contact@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
 	}
 }
 

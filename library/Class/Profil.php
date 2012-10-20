@@ -178,6 +178,7 @@ class Class_Profil extends Storm_Model_Abstract {
 																															 'en_pret' => 'En prêt']),
 				 'hauteur_banniere' => 100,
 				 'mail_site' => '',
+				 'mail_suggestion_achat' => '',
 				 'skin' => 'original',
 				 'largeur_site' => 1000,
 				 'nb_divisions' => 3,
@@ -1235,6 +1236,20 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $this->getMailSite();
 
 		return $this->getLoader()->getPortail()->getMailSite();
+	}
+
+
+	public function getMailSuggestionAchatOrPortail() {
+		if ($this->isPortail())
+			return $this->getMailSuggestionAchat();
+
+		if ($this->hasMailSuggestionAchat())
+			return $this->getMailSuggestionAchat();
+
+		if ($mail = $this->getLoader()->getPortail()->getMailSuggestionAchat())
+			return $mail;
+
+		return $this->getMailSiteOrPortail();
 	}
 
 

@@ -35,7 +35,7 @@ abstract class SuggestionAchatTestCase extends Storm_Test_ModelTestCase {
 			->setId(1)
 			->setLibelle('PHP Unit')
 			->setTitreSite('PHP Unit')
-			->setMailSite('laurent@afi-sa.fr');
+			->setMailSuggestionAchat('laurent@afi-sa.fr');
 		Class_Profil::setCurrentProfil($profil);
 
 		$this->_suggestion = Class_SuggestionAchat::newInstanceWithId(2)
@@ -138,7 +138,7 @@ class SuggestionAchatMailTest extends SuggestionAchatTestCase {
 class SuggestionAchatMailErrorsTest extends SuggestionAchatTestCase {
 	/** @test */
 	public function withoutMailSiteShouldSendMailOnlyToUser() {
-		Class_Profil::getCurrentProfil()->setMailSite('');
+		Class_Profil::getCurrentProfil()->setMailSuggestionAchat('');
 		$this->_suggestion->sendMail('noreply@astromelun.fr');
 		$this->assertEquals(['sbelle@gmail.com'], 
 												$this->_mock_transport->sent_mail->getRecipients());

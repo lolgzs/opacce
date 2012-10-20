@@ -163,7 +163,7 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 
 	/** @test */
 	function firstRessourceNavigatorDownloadShouldBeUrlToDownloadRessource() {
-		$this->assertContains('/bib-numerique/download-resource/1',
+		$this->assertContains('/bib-numerique/download-resource/id/1',
 													$this->json->album->ressources[0]->download);
 	}
 
