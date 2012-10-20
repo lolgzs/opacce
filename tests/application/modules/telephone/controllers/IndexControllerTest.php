@@ -475,13 +475,14 @@ class IndexControllerTelephoneWithNoProfilTelephoneTest extends Zend_Test_PHPUni
 																	 ->setBrowser('opac')
 																	 ->setTitreSite('portail')
 																	 ->setCfgAccueil($cfg_accueil));
-		$_SESSION['id_profil'] = 1;
+
+		Zend_Registry::get('session')->id_profil = 1;
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel("Class_Profil")
 			->whenCalled('findFirstBy')
 			->with(array('BROWSER' => 'telephone'))
 			->answers(null);
-		$this->dispatch('/');
+		$this->dispatch('/', true);
 	}
 
 
