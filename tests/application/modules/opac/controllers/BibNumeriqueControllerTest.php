@@ -161,6 +161,12 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 													$this->json->album->ressources[0]->navigator_thumbnail);
 	}
 
+	/** @test */
+	function firstRessourceNavigatorDownloadShouldBeUrlToDownloadRessource() {
+		$this->assertContains('/bib-numerique/download-resource/1',
+													$this->json->album->ressources[0]->download);
+	}
+
 
 	/** @test */
 	function firstRessourceOriginalShouldBeOneDotJpg() {

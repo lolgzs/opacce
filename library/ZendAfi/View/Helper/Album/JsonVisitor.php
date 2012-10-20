@@ -88,6 +88,11 @@ class ZendAfi_View_Helper_Album_JsonVisitor extends Zend_View_Helper_Json {
 
 			$json_ressource->navigator_thumbnail = $ressource->getThumbnailUrl();
 			$json_ressource->original = $ressource->getOriginalUrl();
+			$json_ressource->download = $this->view->url(['controller' => 'bib-numerique',
+																										'action' => 'download-resource',
+																										'id' => $ressource->getId()], 
+																									 null, 
+																									 true);
 
 			$this->json->album->ressources []= $json_ressource;
 	}

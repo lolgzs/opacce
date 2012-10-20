@@ -415,7 +415,8 @@ buildBookFromJSon: aJSONObjectOrString
 							thumbnailURL: (aRessource at: 'thumbnail');
                              				fullImageURL: (aRessource at: 'original');
 							foliono: (aRessource at: 'foliono');
-							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail')].
+							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail');
+							downloadURL: (aRessource at: 'download')].
 	^ book
 !
 
@@ -1087,11 +1088,11 @@ zoomControlsStyle
 				z-index: 20;
 				position: relative;
 				cursor: pointer;
-				background: url(', self scriptsRoot, 'images/download_black.png) no-repeat;
+				background: url(', self scriptsRoot, 'images/download_pdf_black.png) no-repeat;
 			}
 
 			.b-download-book a:hover {
-				background: url(', self scriptsRoot, 'images/download_white.png) no-repeat;
+				background: url(', self scriptsRoot, 'images/download_pdf_white.png) no-repeat;
 			}
 
 			.small>.bk-widget .b-zoom-magnify a {
@@ -1553,7 +1554,7 @@ filter: aJQueryList withInput: aJQueryInput
 ! !
 
 Object subclass: #Page
-	instanceVariableNames: 'brush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book'
+	instanceVariableNames: 'brush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book downloadURL'
 	package: 'AFI'!
 
 !Page methodsFor: 'accessing'!
@@ -1580,6 +1581,14 @@ description
 
 description: aString
 	description := aString
+!
+
+downloadURL
+	^ downloadURL ifNil: [downloadURL := '']
+!
+
+downloadURL: aString
+	downloadURL := aString
 !
 
 foliono
@@ -1712,7 +1721,7 @@ page: aPage
 ! !
 
 Widget subclass: #PageWidget
-	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock rotateRightControl rotation'
+	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock rotateRightControl rotation downloadImageControl'
 	package: 'AFI'!
 !PageWidget commentStamp!
 I display a full page with zoom controller and description!
@@ -1739,6 +1748,7 @@ initIViewer: aViewer
 	fitControl onClick: [aViewer fit].
 	zeroControl onClick: [<aViewer.set_zoom(100)>].
 	rotateRightControl onClick: [self rotateRight].
+	downloadImageControl onClick: [window open: page downloadURL].
 !
 
 rotateRight
@@ -1795,6 +1805,7 @@ renderControlsOn: html
           		fitControl := addControl value: 'fit'.
           		statusControl := addControl value: 'status'.
           		rotateRightControl := addControl value: 'rotate_right'.
+          		downloadImageControl := addControl value: 'download_image'.
         ].
 !
 

@@ -83,7 +83,8 @@ tintinJSON
                                                           					"description":"Created in 1929 by Herge" ,
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/1.jpg",
                                                           					"navigator_thumbnail":"userfiles/album/2/thumbs/media/1_small.jpg",
-                                                          					"original":"bib-numerique/get-resource/id/1.jpg"},
+                                                          					"original":"bib-numerique/get-resource/id/1.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/1"},
                                                           
                                                           				{	"id":13,
                                                           					"titre": "Haddock",
@@ -92,7 +93,8 @@ tintinJSON
                                                           					"description":"Captain living in Moulinsard",
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/2.jpg",
                                                           					"navigator_thumbnail":"userfiles/album/2/thumbs/media/2_small.jpg",
-                                                          					"original":"bib-numerique/get-resource/id/2.jpg" }                                                        
+                                                          					"original":"bib-numerique/get-resource/id/2.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/2" }                                                        
                                                           				]
 				} }'.
 ! !
@@ -142,6 +144,10 @@ testDivBookShouldBePresent
 	|book|
 	book := container find: '.book'.
 	self assert: (0 < book length).
+!
+
+testFirstPageDownloadURLShouldLinkToDownloadResourceAction
+	self assert: 'bib-numerique/download-resource/id/1' equals: album pages first downloadURL
 !
 
 testFirstPageImageFolioNumberShouldBeTwelveR
