@@ -71,7 +71,7 @@ class Class_ScriptLoader {
 	public function loadAmber($with_ide = false) {
 		$this->_should_load_amber = true;
 
-		if ($with_ide == true)
+		if (($with_ide == true) && $this->isAmberModeDeploy())
 			$this
 				->addScript(AMBERURL.'src/js/lib/jQuery/jquery.textarea.js')
 				->addScript(AMBERURL.'src/js/lib/CodeMirror/codemirror.js')
