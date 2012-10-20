@@ -32,6 +32,7 @@ abstract class Telephone_RechercheControllerBibleSouvignyTestCase extends Teleph
 			->setClefAlpha('bible-souvigny')
 			->setTitrePrincipal('Bible de Souvigny')
 			->setUrlVignette('http://moulins.fr/souvigny.jpg')
+			->setUrlImage('http://moulins.fr/souvigny.jpg')
 			->setExemplaire(Class_Exemplaire::getLoader()
 											->newInstanceWithId(34)
 											->setIdOrigine(111))

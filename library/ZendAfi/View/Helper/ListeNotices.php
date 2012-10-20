@@ -230,10 +230,10 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 
 			// Titre / auteur principal
 			$html.='<td class="'. $style_css .'" style="text-align:left;vertical-align:top;width:100%">';
+			$html.='<div style="float:right; width:auto">'.$this->view->notice_LienReserver($notice["id_notice"]).'</div>';
 			$html.='<a href="'.$url_notice.'">';
 			$html.=$notice["T"].BR.$notice["A"];
 			$html.='</a>';
-
 			// Type de document
 			$html.=BR.'<table cellspacing="0" style="border-color:#bfbfbf;border-left:none;border-right:none;border-bottom:none;border-top:1px solid;width:100%;margin-top:5px">';
 			$html.=sprintf('<tr><td class="%s">%s</td>',

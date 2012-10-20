@@ -158,7 +158,7 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 			case "PANIER":
 				$url = BASE_URL . "/panier";
 				$retour = null;
-				if (array_isset("recherche", $_SESSION))
+				if (isset($_SESSION["recherche"]) && isset($_SESSION["retour_liste"]))
 					$retour = $_SESSION["recherche"]["retour_liste"];
 
 				if (!$retour or strpos($retour, "viewnotice") > 0)

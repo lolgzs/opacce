@@ -96,7 +96,8 @@ class Class_Notice extends Storm_Model_Abstract {
 																					'isbn' => null,
 																					'ean' => null,
 																					'tome_alpha' => '',
-																					'clef_chapeau' => ''];
+																					'clef_chapeau' => '',
+																					'facettes' => ''];
 
 
 	public function getAvisByUser($user)	{

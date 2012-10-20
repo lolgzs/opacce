@@ -79,13 +79,13 @@ class Admin_SuggestionAchatControllerIndexTest extends Admin_SuggestionAchatCont
 
 	/** @test */
 	function firstRowTDShouldHaveLinkToEdit() {
-		$this->assertXPath('//tr[1]//a[contains(@href, "suggestion-achat/edit/id/2")]');
+		$this->assertXPath('//tr[1]//a[contains(@href, "suggestion-achat-edit/id/2")]');
 	}
 
 
 	/** @test */
 	function firstRowTDShouldHaveLinkToDelete() {
-		$this->assertXPath('//tr[1]//a[contains(@href, "suggestion-achat/delete/id/2")]');
+		$this->assertXPath('//tr[1]//a[contains(@href, "suggestion-achat-delete/id/2")]');
 	}
 
 

@@ -16,33 +16,7 @@ $script_loader = Class_ScriptLoader::getInstance()
 ?>
 
 <script>
-	var popupDialog = null;
 
-	var showPopWin = function(url, width, height, returnFunc, showCloseBox) {
-		popupDialog = $('<iframe src="'+url+'" style="min-width:95%"></div>').dialog({width: width, height: height, close: returnFunc});
-	}
-
-
-	var hidePopWin = function() {
-		popupDialog.dialog('close');
-	}
-
-	var openDialogExemplaires = function() {
-			$.ajax({url: "<?php echo $this->url(['controller' => 'noticeajax', 'action' => 'exemplaires', 'id_notice' => $this->notice->getId()]) ?>"})
-			 .done(function(data) {
-					 var dialog_reserver = $('<div id="dialog_reserver"></div>')
-																 .html(data)
-																 .dialog({width:800, modal: true, title: '<?php echo $this->_("Exemplaires") ?>'});
-
-					$reserver_links = dialog_reserver.find('td.exemplaires:last-child img');
-					$.each($reserver_links, function(index, link) {
-							link = $(link);
-							var onclick = link.attr('onclick');
-							link.attr('onclick', '');
-							link.click(function() {dialog_reserver.dialog('close'); eval(onclick);});			
-					});
-			})
-	}
 </script>
 
 <div class="view_notice">
@@ -50,7 +24,7 @@ $script_loader = Class_ScriptLoader::getInstance()
 		<div>
 			<a href="<?php if(!$this->url_retour) print(BASE_URL); else print($this->url_retour); ?>">&raquo;&nbsp;<?php echo $this->_('Retour à la liste') ?></a>
 			<span id="bloc_panier"><a href="<?php echo $this->url_panier ?>">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Ajouter au Panier') ?></a></span>
-      <span id="bloc_reserver"><a href="#" onclick="openDialogExemplaires();return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Réserver') ?></a></span>
+      <span id="bloc_reserver"><?php echo $this->notice_LienReserver($this->notice->getId()); ?></span>
 		</div>
 
 		<div style="background:transparent url(<?php echo URL_IMG ?>separ.gif) repeat-x scroll center bottom; width:100%; height:5px; margin-bottom:5px"></div>
