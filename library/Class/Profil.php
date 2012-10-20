@@ -144,7 +144,8 @@ class Class_Profil extends Storm_Model_Abstract {
 																		'logo_gauche_link',
 																		'logo_droite_img',
 																		'logo_droite_link',
-																		'header_social_network');
+																		'header_social_network',
+																		'mail_suggestion_achat');
 	  return self::$CFG_SITE_KEYS;
 
 	}
