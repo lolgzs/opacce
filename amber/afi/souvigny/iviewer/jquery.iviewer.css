@@ -60,6 +60,6 @@
 		background: url(img/iviewer.zoom_rotate_right.png);
 }
 
-a.iviewer_zoom_download_image { 
+.iviewer_zoom_download_image { 
 		background: url(img/iviewer.zoom_download_image.png);
 }
