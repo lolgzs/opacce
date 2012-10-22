@@ -55,7 +55,6 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$response->setHeader('Content-Type', 'application/xspf+xml; name="' . $album->getId(). '.xspf"', true);
 		$response->setHeader('Content-Disposition', 'attachment; filename="' . $album->getId(). '.xspf"', true);
 		$response->setHeader('Content-Transfer-Encoding', 'base64', true);
-		$response->setHeader('Content-Length', count($playlist), true);
 		$response->setHeader('Expires', '0');
 		$response->setHeader('Cache-Control', 'no-cache, must-revalidate');
 		$response->setHeader('Pragma', 'no-cache');
