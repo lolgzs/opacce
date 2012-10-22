@@ -35,7 +35,7 @@ abstract class SuggestionAchatTestCase extends Storm_Test_ModelTestCase {
 			->setId(1)
 			->setLibelle('PHP Unit')
 			->setTitreSite('PHP Unit')
-			->setMailSuggestionAchat('laurent@afi-sa.fr');
+			->setMailSuggestionAchat('laurent@afi-sa.fr, patrick@afi-sa.fr ; estelle@afi-sa.fr');
 		Class_Profil::setCurrentProfil($profil);
 
 		$this->_suggestion = Class_SuggestionAchat::newInstanceWithId(2)
@@ -130,6 +130,17 @@ class SuggestionAchatMailTest extends SuggestionAchatTestCase {
 	/** @test */
 	public function toShouldContainsLaurentAtAfiDotFr() {
 		$this->assertContains('laurent@afi-sa.fr', $this->_sent_mail->getRecipients());
+	}
+
+
+	/** @test */
+	public function toShouldContainsPatrickAtAfiDotFr() {
+		$this->assertContains('patrick@afi-sa.fr', $this->_sent_mail->getRecipients());
+	}
+
+	/** @test */
+	public function toShouldContainsEstelleAtAfiDoFr() {
+		$this->assertContains('estelle@afi-sa.fr', $this->_sent_mail->getRecipients());
 	}
 }
 

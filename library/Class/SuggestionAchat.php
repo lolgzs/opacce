@@ -81,7 +81,7 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 		foreach($infos as $label => $value)
 			$body_text .= sprintf("%s: %s\n", $label, $value);
 
-		$mail = new Zend_Mail('utf8');
+		$mail = new ZendAfi_Mail('utf8');
 		$mail
 			->setFrom($from)
 			->setSubject($this->_('Suggestion d\'achat: ').$this->getTitre())
@@ -91,7 +91,7 @@ class Class_SuggestionAchat extends Storm_Model_Abstract {
 			$mail->addTo($mail_user);
 
 		if ($mail_profil = Class_Profil::getCurrentProfil()->getMailSuggestionAchatOrPortail())
-			$mail->addTo($mail_profil);
+				$mail->addTo($mail_profil);
 
 		$mail->send();
 	}

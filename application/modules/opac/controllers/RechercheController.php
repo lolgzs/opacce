@@ -623,7 +623,7 @@ class RechercheController extends Zend_Controller_Action
 				$message = implode("\r\n", $messages);
 
 				//pour la bibliothèque
-				$mail = new Zend_Mail('utf8');
+				$mail = new ZendAfi_Mail('utf8');
 				$mail
 					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
 					->setBodyText($message)
@@ -633,7 +633,7 @@ class RechercheController extends Zend_Controller_Action
 					->send();
 
 				//pour l'utilisateur
-				$mail = new Zend_Mail('utf8');
+				$mail = new ZendAfi_Mail('utf8');
 				$mail
 					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
 					->setBodyText($message_user.$message)

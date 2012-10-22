@@ -50,7 +50,7 @@ class Class_Mail
 
 
 	public function mail($destinataire, $sujet, $body, $headers) {
-		$mail = new Zend_Mail('utf8');
+		$mail = new ZendAfi_Mail('utf8');
 		$mail
 			->setSubject($sujet)
 			->setBodyText($body)

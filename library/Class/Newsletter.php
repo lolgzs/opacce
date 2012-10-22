@@ -90,7 +90,7 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	protected function _newMail() {
 		$notices = $this->getNotices();
 
-		$mail = new Zend_Mail('utf8');
+		$mail = new ZendAfi_Mail('utf8');
 		$mail
 			->setSubject($this->getTitre())
 			->setBodyText($this->_getBodyText($notices))

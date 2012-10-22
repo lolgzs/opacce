@@ -179,7 +179,7 @@ class IndexController extends Zend_Controller_Action {
 
 			$data = $this->_request->getPost();
 
-			$mail = new Zend_Mail('utf8');
+			$mail = new ZendAfi_Mail('utf8');
 			$mail
 				->setFrom('no-reply@'.$this->_request->getHttpHost())
 				->addTo($mail_address)
