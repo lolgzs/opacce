@@ -160,7 +160,7 @@ class SuggestionAchatMailErrorsTest extends SuggestionAchatTestCase {
 	public function withoutMailUserShouldSendMailOnlyToMailProfil() {
 		$this->_suggestion->getUser()->setMail('');
 		$this->_suggestion->sendMail('noreply@astromelun.fr');
-		$this->assertEquals(['laurent@afi-sa.fr'], 
+		$this->assertEquals(['laurent@afi-sa.fr', 'patrick@afi-sa.fr', 'estelle@afi-sa.fr'], 
 												$this->_mock_transport->sent_mail->getRecipients());
 	}
 }
