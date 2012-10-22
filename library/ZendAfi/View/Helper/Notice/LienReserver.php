@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_Notice_LienReserver extends Zend_View_Helper_HtmlElement {
+	protected $_script_added = false;
+
 	public function getScriptDialog() {
 		return '
 			var popupDialog = null;
@@ -33,12 +35,15 @@ class ZendAfi_View_Helper_Notice_LienReserver extends Zend_View_Helper_HtmlEleme
 			}
 
 			var closeDialogExemplaires = function () {
-				$(\'#dialog_reserver\').dialog(\'close\').remove();
+				$(\'#dialog_reserver\').dialog(\'close\');
+				$(\'#dialog_reserver\').remove();
 			}
 
-			var openDialogExemplaires = function(id_notice) {
+			var openDialogExemplaires = function(id_notice, anchor) {
+				var img_patience = $(\'<img src="'.URL_ADMIN_IMG.'patience.gif" style="vertical-align:middle"/>\').prependTo(anchor);
 				$.ajax({url: "'.$this->view->url(['controller' => 'noticeajax', 'action' => 'exemplaires'], null, true).'/id_notice/"+id_notice})
 				.done(function(data) {
+						img_patience.remove();
 						var dialog_reserver = $(\'<div id="dialog_reserver"></div>\')
 							.html(data)
 							.dialog({width: 800, 
@@ -63,8 +68,12 @@ class ZendAfi_View_Helper_Notice_LienReserver extends Zend_View_Helper_HtmlEleme
 	}
 
 	public function notice_LienReserver($id_notice) {
-		Class_ScriptLoader::getInstance()->addInlineScript($this->getScriptDialog());
-		return '<a href="#" onclick="openDialogExemplaires('.$id_notice.');return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;'.$this->view->_('Réserver').'</a>';
+		if (!$this->_script_added) {
+			Class_ScriptLoader::getInstance()->addInlineScript($this->getScriptDialog());
+			$this->_script_added = true;
+		}
+
+		return '<a href="#" onclick="openDialogExemplaires('.$id_notice.', $(this));return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;'.$this->view->_('Réserver').'</a>';
 	}
 }
 
