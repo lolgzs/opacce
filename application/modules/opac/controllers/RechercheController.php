@@ -333,6 +333,9 @@ class RechercheController extends Zend_Controller_Action
 			return;
 		}
 
+		$this->preferences = Class_Profil::getCurrentProfil()->getCfgModulesPreferences('recherche', 
+																																										'viewnotice', 
+																																										$notice->getTypeDoc());
 		$this->view->notice = $notice;
 		$this->view->preferences = $this->preferences;
 

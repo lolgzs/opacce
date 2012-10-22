@@ -35,18 +35,8 @@ class ZendAfi_Controller_Plugin_InitModule extends Zend_Controller_Plugin_Abstra
 		if($controller=="noticeajax") 
 			$action2=$request->getParam("type_doc");
 
-		if($controller=="recherche")	{ 
-			if($action=="viewnotice") {
-				$id_notice=$request->getParam("id_notice");
-				if(!$id_notice) 
-					$id_notice=$request->getParam("id");
-
-				$action2=$request->getParam("type_doc");
-				if(!$action2 and $id_notice) 
-					$action2=fetchOne("select type_doc from notices where id_notice=$id_notice");
-			}
-
-			elseif($request->getParam("statut") != "saisie" and $request->getParam("statut") != "reset") { 
+		if($controller=="recherche") {
+			if($request->getParam("statut") != "saisie" and $request->getParam("statut") != "reset") { 
 				$action2=$action; 
 				$action="resultat";
 			}

@@ -29,11 +29,9 @@ class ZendAfi_View_Helper_UrlNotice extends Zend_View_Helper_HtmlElement {
 
 		if (is_array($notice)) {
 			$options['clef'] = $notice['clef_alpha'];
-			$options['type_doc'] = $notice['type_doc'];
 			$options['id'] = $notice['id_notice'];
 		} else {
 			$options['clef'] = $notice->getClefAlpha();
-			$options['type_doc'] = $notice->getTypeDoc();
 			$options['id'] = $notice->getId();
 		}
 

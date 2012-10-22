@@ -106,13 +106,14 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 			'boite' =>	null];
 
 		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' =>	['viewnotice1' => $preferences]]);
+
 		$this->notice
 			->setId(345)
 			->setAnnee('2002')
 			->setEditeur('Gallimard')
 			->setIsbn('1-234-56789-0')
 			->getLoader()->cacheInstance($this->notice);
-		$this->dispatch('recherche/viewnotice/id/345/type_doc/1', true);
+		$this->dispatch('recherche/viewnotice/id/345', true);
 	}
 
 
