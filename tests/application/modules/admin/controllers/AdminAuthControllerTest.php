@@ -20,7 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class AdminAuthControllerTest extends Admin_AbstractControllerTestCase {
+class AdminAuthControllerNobodyLoggedTest extends Admin_AbstractControllerTestCase {
 	protected $_auth;
 	protected $_auth_db_adapter;
 
@@ -38,6 +38,12 @@ class AdminAuthControllerTest extends Admin_AbstractControllerTestCase {
 			->answers($this->_auth_db_adapter);
 		
 		ZendAfi_Auth::setInstance($this->_auth);
+	}
+
+
+	public function tearDown() {
+		ZendAfi_Auth::setInstance(null);
+		parent::tearDown();
 	}
 
 
@@ -63,6 +69,7 @@ class AdminAuthControllerTest extends Admin_AbstractControllerTestCase {
 		$this->assertNotRedirect('/admin/');
 	}
 
+
 	/** @test */
 	public function withNoUsernameShouldDisplayMessageEntrezVotreNom() {
 		$this->postDispatch('/admin/auth/login', []);
@@ -70,9 +77,10 @@ class AdminAuthControllerTest extends Admin_AbstractControllerTestCase {
 	}
 
 
-	public function tearDown() {
-		ZendAfi_Auth::setInstance(null);
-		parent::tearDown();
+	/** @test */
+	public function withNoUserNameShouldContainsLinkToGoBackToProfilOne() {
+		$this->dispath('/admin/auth/login');
+		$this->assertXPathContentContains('//a[contains(@href, "'.BASE_URL.'/id_profil/1")]', 'Retour au site');
 	}
 }
 
