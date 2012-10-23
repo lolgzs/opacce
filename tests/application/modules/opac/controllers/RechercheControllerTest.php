@@ -112,6 +112,7 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 			->setAnnee('2002')
 			->setEditeur('Gallimard')
 			->setIsbn('1-234-56789-0')
+			->setTypeDoc(1)
 			->getLoader()->cacheInstance($this->notice);
 		$this->dispatch('recherche/viewnotice/id/345', true);
 	}

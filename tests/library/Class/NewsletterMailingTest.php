@@ -160,6 +160,7 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 
 
 
+
 class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 	public function setUp() {
 		$jpasse = new Class_Users();
@@ -212,10 +213,11 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 													$this->mail->getRecipients());
 	}
 
-	public function testRecipientsSizeIsTwo() {
-		$this->assertEquals(2, count($this->mail->getRecipients()));
+	public function testRecipientsSizeIsOne() {
+		$this->assertEquals(1, count($this->mail->getRecipients()));
 	}
 }
+
 
 
 
