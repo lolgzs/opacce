@@ -79,8 +79,8 @@ class AdminAuthControllerNobodyLoggedTest extends Admin_AbstractControllerTestCa
 
 	/** @test */
 	public function withNoUserNameShouldContainsLinkToGoBackToProfilOne() {
-		$this->dispath('/admin/auth/login');
-		$this->assertXPathContentContains('//a[contains(@href, "'.BASE_URL.'/id_profil/1")]', 'Retour au site');
+		$this->dispatch('/admin/auth/login');
+		$this->assertXPathContentContains('//a[contains(@href, "index/id_profil/1")]', 'Retour au site');
 	}
 }
 
