@@ -53,7 +53,7 @@ class LastfmFixParserErrorTest extends LastfmParserTestCase {
 
 		$this->_http_client
 			->whenCalled('open_url')
-			->with('http://ws.audioscrobbler.com/2.0/?api_key=b25b959554ed76058ac220b7b2e0a026&method=album.search&album=ANNEES+PELERINAGE')
+			->with('http://ws.audioscrobbler.com/2.0/?api_key=76d470da0d3d5cb08a7025aae2c8686a&method=album.search&album=ANNEES+PELERINAGE')
 			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/as_wrong_franz_liszt_pelerinage.xml'))
 
 			->whenCalled('open_url')
@@ -98,7 +98,7 @@ class LastfmParserTest extends LastfmParserTestCase {
 
 		$this->_http_client 
 			->whenCalled('open_url')
-			->with('http://ws.audioscrobbler.com/2.0/?api_key=b25b959554ed76058ac220b7b2e0a026&method=album.search&album=ANNEES+PELERINAGE')
+			->with('http://ws.audioscrobbler.com/2.0/?api_key=76d470da0d3d5cb08a7025aae2c8686a&method=album.search&album=ANNEES+PELERINAGE')
 			->answers(file_get_contents(realpath(dirname(__FILE__)). '/../../../fixtures/as_right_franz_liszt_pelerinage.xml'))
 
 			->whenCalled('open_url')

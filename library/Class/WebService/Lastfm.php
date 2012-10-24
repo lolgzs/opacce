@@ -33,7 +33,7 @@ class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 	function __construct()
 	{
 		$cfg = Zend_Registry::get('cfg');
-		$this->id_afi = "b25b959554ed76058ac220b7b2e0a026";
+		$this->id_afi = "76d470da0d3d5cb08a7025aae2c8686a";
 		
 		$this->xml= new Class_Xml();
 		$this->req="http://ws.audioscrobbler.com/2.0/?";
