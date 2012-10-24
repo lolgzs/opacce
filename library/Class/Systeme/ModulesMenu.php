@@ -158,11 +158,6 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 			case "PANIER":
 				$url = BASE_URL . "/panier";
 				$retour = null;
-				if (isset($_SESSION["recherche"]) && isset($_SESSION["retour_liste"]))
-					$retour = $_SESSION["recherche"]["retour_liste"];
-
-				if (!$retour or strpos($retour, "viewnotice") > 0)
-					$_SESSION["recherche"]["retour_liste"] = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER["HTTP_REFERER"] : '';
 				break;
 
 			case "AVIS": $url = BASE_URL . "/blog/lastcritique/nb/" . $preferences["nb"];
