@@ -108,23 +108,19 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 		parent::setUp();
 
 		$this->_category_wrapper
-				->whenCalled('findAllBy')
-				->with(array('parent_id' => 0))
-				->answers(array(
-						Class_AlbumCategorie::getLoader()
-						->newInstanceWithId(2)
-						->setParentId(0)
-						->setLibelle('Favoris')
-						->setSousCategories(array(Class_AlbumCategorie::getLoader()->find(6)
-								->setAlbums(array(Class_Album::getLoader()->find(24)))))
-						->setAlbums(array(Class_Album::getLoader()->find(43))),
-						Class_AlbumCategorie::getLoader()
-					  ->newInstanceWithId(38)
-					  ->setParentId(0)
-					  ->setSousCategories(array())
-					  ->setAlbums(array())
-					  ->setLibelle('Patrimoine')
-				));
+			->whenCalled('findAllBy')
+			->with(['parent_id' => 0, 'order' => 'libelle'])
+			->answers([Class_AlbumCategorie::newInstanceWithId(2)
+								 ->setParentId(0)
+								 ->setLibelle('Favoris')
+								 ->setSousCategories([Class_AlbumCategorie::find(6)
+																			->setAlbums([Class_Album::find(24)])])
+								 ->setAlbums([Class_Album::find(43)]),
+								 Class_AlbumCategorie::newInstanceWithId(38)
+								 ->setParentId(0)
+								 ->setSousCategories([])
+								 ->setAlbums([])
+								 ->setLibelle('Patrimoine')]);
 
 		$this->_album_wrapper
 				->whenCalled('getItemsOf')

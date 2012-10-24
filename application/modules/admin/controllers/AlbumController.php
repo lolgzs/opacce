@@ -33,7 +33,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	public function indexAction() {
-		$categories = Class_AlbumCategorie::getLoader()->findAllBy(array('parent_id' => 0));
+		$categories = Class_AlbumCategorie::getLoader()->findAllBy(['parent_id' => 0, 'order' => 'libelle']);
 		$categories []= Class_AlbumCategorie::getLoader()
 				->newInstanceWithId(0)
 				->setLibelle('Albums non classés')
