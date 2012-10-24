@@ -314,7 +314,8 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	public function viewnoticeAction() {
 		unset($_SESSION["recherche"]["rebond"]);
-		$_SESSION["recherche"]["retour_notice"] = $this->_request->REQUEST_URI;
+		if ((new Zend_Controller_Request_Http($this->view->absoluteUrl($this->_request->REQUEST_URI)))->getModuleName() !== 'admin')
+				$_SESSION["recherche"]["retour_notice"] = $this->_request->REQUEST_URI;
 
 		$id_notice = (int)$this->_getParam('id');
 		$clef_alpha = $this->_getParam('clef');
