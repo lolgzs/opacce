@@ -172,6 +172,15 @@ class UploadControllerVignetteNoticeActionTest extends AbstractControllerTestCas
 
 
 
+class UploadControllerVignetteNoticeAsRedacteurBibliothequeTest extends UploadControllerVignetteNoticeActionTest {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::MODO_BIB;
+	}
+}
+
+
+
+
 abstract class UploadControllerVignetteNoticeActionPostTestCase extends AbstractControllerTestCase {
 	protected $_http_client;
 	protected $_notice;
