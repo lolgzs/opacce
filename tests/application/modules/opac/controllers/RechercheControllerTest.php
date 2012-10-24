@@ -386,6 +386,12 @@ class RechercheControllerSimpleActionWithDefaultConfigTest extends RechercheCont
 		$this->assertXPathContentContains('//a[contains(@href, "/abonne/suggestion-achat")]', 
 																			'Suggérer un achat');
 	}
+
+
+	/** @test */
+	public function urlRetourNoticeShouldBeRechercheSimple() {
+		$this->assertEquals('/recherche/simple',	$_SESSION["recherche"]["retour_liste"]);
+	}
 }
 
 

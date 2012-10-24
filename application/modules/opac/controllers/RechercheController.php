@@ -188,7 +188,7 @@ class RechercheController extends Zend_Controller_Action
 	public function simpleAction() {
     // Dernier mode de recherche
 		$_SESSION["recherche"]["mode"] = 'simple';
-		$_SESSION["recherche"]["retour_liste"] = $this->_request->REQUEST_URI;
+		$_SESSION["recherche"]["retour_liste"] = $this->view->url(['controller' => 'recherche', 'action' => 'simple'], null, true);
 
 		if ($this->view->statut == "saisie") return;
 
