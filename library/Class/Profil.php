@@ -1241,8 +1241,11 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	public function getMailSuggestionAchatOrPortail() {
-		if ($this->isPortail())
-			return $this->getMailSuggestionAchat();
+		if ($this->isPortail()) {
+			if ($mail =$this->getMailSuggestionAchat())
+				return $mail;
+			return $this->getMailSite();
+		}
 
 		if ($this->hasMailSuggestionAchat())
 			return $this->getMailSuggestionAchat();

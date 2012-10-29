@@ -558,10 +558,17 @@ class ProfilAdulteChatenayTest extends ProfilAdulteChatenayTestCase  {
 
 
 	/** @test */
-	public function withoutMailSuggestionAchatqShouldGetMailSite() {
+	public function withoutMailSuggestionAchatShouldGetMailSite() {
 		Class_Profil::getPortail()->setMailSuggestionAchat('');
 		$this->profil->setMailSuggestionAchat('')->setMailSite('contact@chatenay.fr');
 		$this->assertEquals('contact@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatProfilPortailShouldGetMailSite() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('')->setMailSite('admin@chatenay.fr');
+		$this->assertEquals('admin@chatenay.fr', Class_Profil::getPortail()->getMailSuggestionAchatOrPortail());
 	}
 }
 
