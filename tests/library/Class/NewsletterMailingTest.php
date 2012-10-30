@@ -188,6 +188,8 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 			->addUser($jpasse)
 			->addUser($user_without_mail);
 
+		Class_Profil::getPortail()->setMailSite('');
+
 		$this->mail = $concerts->generateMail();
 	}
 
