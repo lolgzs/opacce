@@ -69,8 +69,10 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 	}
 }
 
-class PretsTestWithNonConnectedUser extends ViewHelperTestCase {	
 
+
+
+class PretsTestWithNonConnectedUser extends ViewHelperTestCase {	
 	public function setUp() {
 		parent::setUp();
 

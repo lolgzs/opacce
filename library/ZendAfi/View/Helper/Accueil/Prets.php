@@ -25,15 +25,19 @@ class ZendAfi_View_Helper_Accueil_Prets extends ZendAfi_View_Helper_Accueil_Base
 		$user = Class_Users::getIdentity();
 		if (!isset($user))
 			return $this->getHtmlArray() ;
-		$listePrets='<ul>'.implode('',
-															 array_map(function($emprunt) {
-																	 return '<li>'.$emprunt->getTitre().'</li>'; 
-																 },
-																 $user->getEmprunts())
-							
-		                          ).'</ul>';
 
-		$this->contenu = '<div id="boite_prets"><div>'.$user->getNom().'</div>'.$listePrets.'</div>';
+		$listePrets= sprintf('<ul>%s</ul>',
+												 implode('',
+																 array_map(
+																	 function($emprunt) {
+																		 return '<li>'.$emprunt->getTitre().'</li>'; 
+																	 },
+																	 $user->getEmprunts())));
+
+		$this->contenu = sprintf('<div id="boite_prets"><div>%s</div>%s</div>',
+														 $user->getNom(),
+														 $listePrets);
+
 		return $this->getHtmlArray();
 	}
 

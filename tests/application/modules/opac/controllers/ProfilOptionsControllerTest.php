@@ -393,6 +393,9 @@ class ProfilOptionsControllerProfilJeunesseViewPageJeuxTest extends ProfilOption
 
 
 class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
+	protected function _loginHook($account) {}
+
+
 	public function setUp() {
 		parent::setUp();
 
