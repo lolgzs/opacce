@@ -27,30 +27,30 @@ class ZendAfi_Controller_Plugin_InitModule extends Zend_Controller_Plugin_Abstra
 
 	function preDispatch(Zend_Controller_Request_Abstract $request) {
 		$module=$request->getModuleName();
-		$controller=$request->getParam("controller");
-		$action=$request->getParam("action");
-		$action2="";
+		$controller=$request->getParam('controller');
+		$action=$request->getParam('action');
+		$action2='';
 		
 		// Cas particuliers
-		if($controller=="noticeajax") 
-			$action2=$request->getParam("type_doc");
+		if($controller=='noticeajax') 
+			$action2=$request->getParam('type_doc');
 
-		if($controller=="recherche") {
-			if($request->getParam("statut") != "saisie" and $request->getParam("statut") != "reset") { 
+		if (($controller=='recherche') && ($action != 'viewnotice')) {
+			if ($request->getParam('statut') != 'saisie' and $request->getParam('statut') != 'reset') { 
 				$action2=$action; 
-				$action="resultat";
+				$action='resultat';
 			}
 		}
 
 		// Proprietes du module courant
-		$current_module["module"]=$module;
-		$current_module["controller"]=$controller;
-		$current_module["action"]=$action;
-		$current_module["action2"]=$action2;
-		$current_module["preferences"] = Class_Profil::getCurrentProfil()->getCfgModulesPreferences($controller, $action, $action2);
+		$current_module['module']=$module;
+		$current_module['controller']=$controller;
+		$current_module['action']=$action;
+		$current_module['action2']=$action2;
+		$current_module['preferences'] = Class_Profil::getCurrentProfil()->getCfgModulesPreferences($controller, $action, $action2);
 
 		// On le passe au controller
-		$request->setParam("current_module",$current_module);
+		$request->setParam('current_module', $current_module);
 	} 
 
 }

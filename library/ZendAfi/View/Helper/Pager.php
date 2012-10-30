@@ -26,7 +26,8 @@ class ZendAfi_View_Helper_Pager extends ZendAfi_View_Helper_BaseHelper
 {
 
 	function Pager($nombre,$nb_par_page,$page,$url)	{
-		if(!$nombre) return;
+		if (!$nombre or !$nb_par_page) return;
+
 		// Nombre de pages
 		if(!$page) $page=1;
 		$nb_pages=intval($nombre / $nb_par_page);

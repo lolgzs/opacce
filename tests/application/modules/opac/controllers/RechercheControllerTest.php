@@ -284,14 +284,6 @@ class RechercheControllerUploadVignetteTest extends RechercheControllerNoticeTes
 
 
 	/** @test */
-	public function linkToUploadVignetteShouldBePresentForAdmin() {
-		Class_Users::getIdentity()->beAdminPortail();
-		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
-		$this->assertXPathContentContains('//a', 'Modifier la vignette');
-	}
-
-
-	/** @test */
 	public function linkToUploadVignetteShouldBePresentForModoBib() {
 		Class_Users::getIdentity()->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::MODO_BIB);
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
@@ -305,6 +297,31 @@ class RechercheControllerUploadVignetteTest extends RechercheControllerNoticeTes
 		$this->notice->setTypeDoc(6);
 		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
 		$this->assertNotXPathContentContains('//a', 'Modifier la vignette');
+	}
+}
+
+
+
+
+
+class RechercheControllerViewNoticeAsAdminTest extends RechercheControllerNoticeTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->notice->setTypeDoc(5);
+		Class_Users::getIdentity()->beAdminPortail();
+		$this->dispatch(sprintf('recherche/viewnotice/id/%d', $this->notice->getId()), true);
+	}
+
+
+	/** @test */
+	public function linkToUploadVignetteShouldBePresent() {
+		$this->assertXPathContentContains('//a', 'Modifier la vignette');
+	}	
+
+
+	/** @test */
+	public function linkToConfigModulesRechercheShouldHaveActionViewNotice() {
+		$this->assertXPath('//img[contains(@onclick, "admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice")]');
 	}
 }
 
@@ -397,7 +414,7 @@ class RechercheControllerSimpleActionWithDefaultConfigTest extends RechercheCont
 
 
 
-class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatTest extends RechercheControllerSimpleActionTestCase {
+class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatAsAdminTest extends RechercheControllerSimpleActionTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -409,6 +426,7 @@ class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatTest extend
 																						 'nombre' => 5,
 																						 'facettes' => [],
 																						 'tags' => []]];
+		Class_Users::getIdentity()->beAdminPortail();
 		$this->dispatch('/recherche/simple', true);
 	}
 
@@ -416,6 +434,12 @@ class RechercheControllerSimpleActionWithConfigWithoutSuggestionAchatTest extend
 	/** @test */
 	public function pageShouldNotContainsLinkToSuggestionAchats() {
 		$this->assertNotXPath('//a[contains(@href, "/abonne/suggestion-achat")]');
+	}
+
+
+	/** @test */
+	public function linkToConfigModulesRechercheShouldHaveActionResultatAction2Simple() {
+		$this->assertXPath('//img[contains(@onclick, "admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple")]');
 	}
 }
 

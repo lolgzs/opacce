@@ -116,6 +116,13 @@ class ModulesControllerConfigRechercheResultatTest extends Admin_AbstractControl
 		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
 		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][@checked="checked"]');
 	}
+
+
+	/** @test */
+	public function withAction2ViewNoticeShouldDisplayConfigurationOfPageNotice() {
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice');
+		$this->assertXPathContentContains('//h1', 'Propriétés d\'affichage des notices');
+	}
 }
 
 ?>

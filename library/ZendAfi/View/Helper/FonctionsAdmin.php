@@ -58,8 +58,7 @@ class ZendAfi_View_Helper_FonctionsAdmin extends ZendAfi_View_Helper_BaseHelper
 //------------------------------------------------------------------------------------------------------
 // Modules des controllers
 //------------------------------------------------------------------------------------------------------ 
-	private function getModuleStandard()
-	{
+	private function getModuleStandard()	{
 		// Parametres
 		extract($this->view->current_module);
 		
