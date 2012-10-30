@@ -71,7 +71,7 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	 * @return mixed
 	 */
 	public static function get($name) {
-		$var = self::getLoader()->find($name);
+		$var = static::getLoader()->find($name);
 		if ($var == null)
 			return null;
 		return $var->getValeur();

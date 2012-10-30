@@ -100,23 +100,25 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	/** @return array */
 	public static function getModules() {
 		if (null === self::$_modules) {
-			self::$_modules = array('NEWS' => new Class_Systeme_ModulesAccueil_News,
-															'CRITIQUES' => new Class_Systeme_ModulesAccueil_Critiques,
-															'CALENDAR' => new Class_Systeme_ModulesAccueil_Calendrier,
-															'RSS' => new Class_Systeme_ModulesAccueil_Rss,
-															'SITO' => new Class_Systeme_ModulesAccueil_Sitotheque,
-															'RECH_SIMPLE' => new Class_Systeme_ModulesAccueil_RechercheSimple,
-															'RECH_GUIDEE' => new Class_Systeme_ModulesAccueil_RechercheGuidee,
-															'TAGS' => new Class_Systeme_ModulesAccueil_Tags,
-															//'CATALOGUE' => new Class_Systeme_ModulesAccueil_Catalogue,
-															'KIOSQUE' => new Class_Systeme_ModulesAccueil_Kiosque,
-															'MENU_VERTICAL' => new Class_Systeme_ModulesAccueil_MenuVertical,
-															'CARTE_ZONES' => new Class_Systeme_ModulesAccueil_CarteZones,
-															'LOGIN' => new Class_Systeme_ModulesAccueil_Login,
-															'CONTENEUR_DEUX_COLONNES' => new Class_Systeme_ModulesAccueil_ConteneurDeuxColonnes,
-															'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
-															'LANGUE' => new Class_Systeme_ModulesAccueil_Langue,
-															'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique);
+			self::$_modules = ['NEWS' => new Class_Systeme_ModulesAccueil_News,
+												 'CRITIQUES' => new Class_Systeme_ModulesAccueil_Critiques,
+												 'CALENDAR' => new Class_Systeme_ModulesAccueil_Calendrier,
+												 'RSS' => new Class_Systeme_ModulesAccueil_Rss,
+												 'SITO' => new Class_Systeme_ModulesAccueil_Sitotheque,
+												 'RECH_SIMPLE' => new Class_Systeme_ModulesAccueil_RechercheSimple,
+												 'RECH_GUIDEE' => new Class_Systeme_ModulesAccueil_RechercheGuidee,
+												 'TAGS' => new Class_Systeme_ModulesAccueil_Tags,
+												 //'CATALOGUE' => new Class_Systeme_ModulesAccueil_Catalogue,
+												 'KIOSQUE' => new Class_Systeme_ModulesAccueil_Kiosque,
+												 'MENU_VERTICAL' => new Class_Systeme_ModulesAccueil_MenuVertical,
+												 'CARTE_ZONES' => new Class_Systeme_ModulesAccueil_CarteZones,
+												 'LOGIN' => new Class_Systeme_ModulesAccueil_Login,
+												 'CONTENEUR_DEUX_COLONNES' => new Class_Systeme_ModulesAccueil_ConteneurDeuxColonnes,
+												 'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
+												 'LANGUE' => new Class_Systeme_ModulesAccueil_Langue,
+												 'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique,
+												 'PRETS' => new Class_Systeme_ModulesAccueil_Prets
+			];
 			}
 
 		return self::$_modules;

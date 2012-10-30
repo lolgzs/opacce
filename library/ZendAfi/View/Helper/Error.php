@@ -32,7 +32,7 @@ class ZendAfi_View_Helper_Error extends Zend_View_Helper_Abstract {
 				<div class="panel">
 				Par courriel (de préférence) : <a href="mailto:hotline@afi-sa.fr">hotline@afi-sa.fr</a><br>
 				Par téléphone : 01.60.17.12.34</div>
-				<a href="javascript:$(\'#error_tech\').toggle();">Voir le détail technique de l\'erreur &gt;&gt;</a>
+				<a href="#" onclick="$(\'#error_tech\').toggle();return false;">Voir le détail technique de l\'erreur &gt;&gt;</a>
 				<div class="panel" id="error_tech" style="display:none;overflow:auto;">
 						<strong>Erreur :</strong> '. $this->view->escape($error_handler->exception->getMessage()) . '<br>
 						<strong>Date :</strong> '. date('c') .'<br>

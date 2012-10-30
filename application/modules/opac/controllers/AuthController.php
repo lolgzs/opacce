@@ -108,7 +108,7 @@ class AuthController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	function boiteloginAction() {
 		$id_module = $this->_getParam('id_module');
-
+		$error = '';
 		$this->view->preferences = Class_Profil::getCurrentProfil()->getModuleAccueilPreferences($id_module);
 
 		if ($this->_request->isPost()) {

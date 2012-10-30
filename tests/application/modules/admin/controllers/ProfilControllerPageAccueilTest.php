@@ -39,18 +39,20 @@ abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_A
 																												 'type_module' => 'CRITIQUES',
 																												 'preferences' => array()),
 
+																						'9' => array('division' => 1,
+																												 'type_module' => 'PRETS',
+																												 'preferences' => array()),
+
+
 																						'666' => array('division' => 1,
 																													 'type_module' => 'WRONG',
 																													 'preferences' => array())));
 
 
-		$this->profil_jeunesse = new Class_Profil();
-		$this->profil_jeunesse
-			->setId(7)
-			->setLibelle('Profil Jeunesse')
-			->setCfgAccueil($cfg_accueil);
+		$this->profil_jeunesse = Class_Profil::newInstanceWithId(7)
+		                         ->setLibelle('Profil Jeunesse')
+														 ->setCfgAccueil($cfg_accueil);
 
-		Class_Profil::getLoader()->cacheInstance($this->profil_jeunesse);
 	}
 }
 
@@ -76,7 +78,18 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_ProfilControll
 
 	/** @test */
 	public function formActionUrlShouldBeOnIdProfilSeven() {
-		$this->assertXPath("//form[contains(@action, 'profil/accueil/id_profil/7')]");
+		$this->assertXPath('//form[contains(@action, "profil/accueil/id_profil/7")]');
+	}
+
+
+	/** @test */
+	public function boitePretsShouldBeAvailable() {
+		$this->assertXPathContentContains('//ul[@id="allItems"]/li[@id="PRETS"]','Prêts');
+	}
+
+	/** @test */
+	public function boitePretsShouldBeInDivisionOne() {
+		$this->assertXPath('//ul[@id="box1"]/li[@id="PRETS"][@id_module="9"]//img[contains(@onclick,"accueil/prets")]');
 	}
 
 
@@ -286,4 +299,51 @@ class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends A
 	}
 }
 
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigPretsTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/prets?config=admin&id_profil=7&type_module=PRETS&id_module=9&proprietes=boite=/titre=Mes prets/',true);
+	}
+
+	/** @test */
+	public function actionShouldBePrets() {
+		$this->assertAction('prets');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModulePret() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Prêts');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesPrets() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes prets"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigEmptyPretTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/prets?config=admin&id_profil=7&type_module=PRETS&id_module=9',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesPrets() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes prêts"]');
+	}
+}
 ?>

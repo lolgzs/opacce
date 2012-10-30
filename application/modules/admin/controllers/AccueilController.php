@@ -136,6 +136,9 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		$this->_simpleAction();
 	}
 
+	public function pretsAction() {
+		$this->_simpleAction();
+	}
 
 	public function bibliothequeNumeriqueAction() {
 		if (1 == $this->_getParam('styles_reload')) {
@@ -302,7 +305,8 @@ class Admin_AccueilController extends Zend_Controller_Action {
 
 	/** @return array */
 	private function _extractProperties() {
-		if (null !== ($props = $this->_getParam("proprietes"))) {
+
+		if (null != ($props = $this->_getParam("proprietes"))) {
 			$props = explode('/', $props);
 			foreach ($props as $prop) {
 				$pos = strpos($prop, '=');

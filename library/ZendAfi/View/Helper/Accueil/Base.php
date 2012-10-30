@@ -229,7 +229,15 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	}
 
 
+	public function isBoiteVisible() {
+		return true;
+	}
+
+
 	public function getBoite() {
+		if (!$this->isBoiteVisible())
+			return '';
+
 		$this->_beforeCache();
 
 		$key = $this->getCacheKey();

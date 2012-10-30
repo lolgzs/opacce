@@ -216,3 +216,4 @@ var openDialogExemplaires = function() {
 
 <span id="bloc_reserver"><a href="#" onclick="openDialogExemplaires();return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Réserver') ?></a></span>
 #+END_SRC
+* Boites

@@ -370,7 +370,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			foreach($groupes as $groupe => $libelle) {
 				if (!array_key_exists($groupe, $box_dispo))
 					$box_dispo[$groupe] = '';
-				$box_dispo[$groupe].='<div><p>'.$libelle.'</p><ul id="allItems" style="height:185px;">';
+				$box_dispo[$groupe].='<div><p>'.$libelle.'</p><ul id="allItems" style="height:300px;">';
 			}
 
 			foreach($liste_module as $type_module => $module) {
