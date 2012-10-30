@@ -104,6 +104,11 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 	}
 
 
+	/** @test */
+	public function titleShouldBeLinkedToAbonnePrets () {
+		$this->assertXPath($this->html,'//h1//a[contains(@href,"/abonne/prets")]',$this->html);
+	}
+	
 
 }
 

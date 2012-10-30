@@ -21,7 +21,9 @@
 class ZendAfi_View_Helper_Accueil_Prets extends ZendAfi_View_Helper_Accueil_Base {
 
 	public function getHTML() {
-    $this->titre = $this->preferences['titre'];
+    $this->titre = $this->view->tagAnchor($this->view->url([ 'controller' => 'abonne',
+																														 'action' => 'prets'
+		]),$this->preferences['titre']);
 		$user = Class_Users::getIdentity();
 		if (!isset($user))
 			return $this->getHtmlArray() ;
