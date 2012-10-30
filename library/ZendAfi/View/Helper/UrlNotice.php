@@ -24,6 +24,10 @@ class ZendAfi_View_Helper_UrlNotice extends Zend_View_Helper_HtmlElement {
 	 * @param mixed $notice array or Class_Notice
 	 */
 	public function urlNotice($notice) {
+		if (!$notice)
+			return $this->view->url(['controller'=>'recherche',
+															 'action' => 'simple']);
+		
 		$options = ['controller' => 'recherche', 
 			          'action' => 'viewnotice'];
 

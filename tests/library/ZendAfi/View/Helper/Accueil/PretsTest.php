@@ -37,25 +37,29 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 		
 
 		$alice = new Class_WebService_SIGB_Emprunt('13', new Class_WebService_SIGB_Exemplaire(456));
-		$alice->getExemplaire()->setTitre('Alice');
-		$alice->parseExtraAttributes(array(
-																			 'Dateretourprevue' => '21/10/2012',
-																			 'Section' => 'Espace jeunesse',
-																			 'Auteur' => 'Lewis Caroll',
+		$alice->getExemplaire()
+					->setTitre('Alice')
+					->setNoticeOPAC(Class_Notice::newInstanceWithId(1234))
+					->setDateRetour('21/10/2100');
+
+
+		$klein = new Class_WebService_SIGB_Emprunt('13', new Class_WebService_SIGB_Exemplaire(458));
+		$klein->getExemplaire()->setTitre('La stratégie du choc');
+		$klein->parseExtraAttributes(array(
+																			 'Dateretourprevue' => '21/10/2000',
+																			 'Section' => 'Essais',
+																			 'Auteur' => 'Naomie Klein',
 																			 'Bibliotheque' => 'Almont',
-																			 'N° de notice' => '5678'));
+																			 'N° de notice' => '5680'));
+
+
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Estelle');
 		$user->setFicheSigb(['fiche'=>$emprunteur]);
 
-		$emprunteur->empruntsAddAll(array( $alice));
+		$emprunteur->empruntsAddAll(array( $klein, $alice));
 		$this->html = $helper->getBoite();
 	}
 	
-
-	/** @test */
-	public function divShouldContainsEstelle () {
-		$this->assertXPathContentContains($this->html,'//div','Estelle');  
-	}
 
 	/** @test  */
 	public function h1ShouldContainsMesPrets () {
@@ -67,6 +71,40 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 	public function listShouldDisplayAliceNotice() {
 		$this->assertXPathContentContains($this->html,'//ul//li','Alice');
 	}
+
+
+	/** @test */
+	public function listShouldDisplayDateRetour () {
+		$this->assertXPathContentContains($this->html,'//ul//li','21/10/2100');
+	}
+
+
+	/** @test */
+	public function dateRetour2000ShouldBeInClassPretEnRetard () {
+		$this->assertXPathContentContains($this->html,'//ul//li[@class="pret_en_retard"]//span[@class="date_retour"]','21/10/2000');
+	}
+
+
+
+	/** @test */
+	public function dateRetour2100ShouldNotBeInClassPretEnRetard () {
+		$this->assertNotXPathContentContains($this->html,'//ul//li[@class="pret_en_retard"]//span[@class="date_retour"]','21/10/2100');
+	}
+
+
+	/** @test */
+	public function titleAliceShouldBeLinkedToNotice () {
+		$this->assertXPath($this->html,'//ul//li//a[contains(@href,"/recherche/viewnotice/clef//id/1234")]',$this->html);
+	}
+
+
+	/** @test */
+	public function kleinShouldBeLinkedToRechercheSimple () {
+		$this->assertXPath($this->html,'//ul//li//a[contains(@href,"/recherche/simple")]',$this->html);
+	}
+
+
+
 }
 
 

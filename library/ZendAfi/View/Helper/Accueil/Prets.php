@@ -26,17 +26,26 @@ class ZendAfi_View_Helper_Accueil_Prets extends ZendAfi_View_Helper_Accueil_Base
 		if (!isset($user))
 			return $this->getHtmlArray() ;
 
-		$listePrets= sprintf('<ul>%s</ul>',
+
+	
+
+		$liste_prets= sprintf('<ul>%s</ul>',
 												 implode('',
 																 array_map(
 																	 function($emprunt) {
-																		 return '<li>'.$emprunt->getTitre().'</li>'; 
+																		 $start_li='<li>';
+																		 if ($emprunt->enRetard())
+																			 $start_li='<li class="pret_en_retard">';
+																		 $date_retour='<span class="date_retour"> ['.$emprunt->getDateRetour().']</span> ';
+																		 $tag_anchor = $this->view->tagAnchor($this->view->urlNotice($emprunt->getNoticeOPAC()),
+																																					$emprunt->getTitre());
+																		 return $start_li.$date_retour.$tag_anchor.'</li>'; 
 																	 },
 																	 $user->getEmprunts())));
 
-		$this->contenu = sprintf('<div id="boite_prets"><div>%s</div>%s</div>',
-														 $user->getNom(),
-														 $listePrets);
+
+		$this->contenu = sprintf('<div class="boite_prets">%s</div>',
+														 $liste_prets);
 
 		return $this->getHtmlArray();
 	}

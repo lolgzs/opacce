@@ -274,34 +274,14 @@ table.calendar_main {margin-left: auto; margin-right: auto}
 }
 
 
-/* Boite à la une */
-
-.boite_a_la_une {
-		overflow:hidden;
+.boite_prets ul, .boite_prets li {
+    list-style: none;
+    padding: 0;
+    margin:0;
+    
 }
-
-.boite_a_la_une .auteur_critique {
-		float: none;
-		display: block;
-
-}
-
-.boite_a_la_une .note_critique + a {
-		display: block;
-
-}
-
-.boite_a_la_une .vignette_notice {
-		border: none;
-		width: auto;
-}
-
-.boite_a_la_une .vignette_notice a + a {
-		display: none;
-}
-
-.boite_a_la_une .vignette_notice img {
-		width: 80px;
+.boite_prets li {
+    margin-bottom: 5px;
 }
 
 .boiteMilieu .contenu {overflow:hidden}

@@ -483,7 +483,7 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 
 	/** @test */
 	public function boiteMesPretsShouldBeVisibleInProfilJeunesse() {
-		$this->assertXPath("//div[@id='boite_prets']");
+		$this->assertXPath("//div[@class='boite_prets']");
 	}
 
 

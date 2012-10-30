@@ -75,6 +75,7 @@ class Class_WebService_SIGB_Exemplaire {
 
 	public function setNotice($notice){
 		$this->notice = $notice;
+		return $this;
 	}
 
 

@@ -96,6 +96,7 @@ class Class_Notice extends Storm_Model_Abstract {
 																					'isbn' => null,
 																					'ean' => null,
 																					'tome_alpha' => '',
+																					'clef_alpha' => '',
 																					'clef_chapeau' => '',
 																					'facettes' => ''];
 
