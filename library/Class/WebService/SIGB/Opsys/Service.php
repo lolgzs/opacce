@@ -127,9 +127,23 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	public function authentifierEmprunteur($user) {
 		$auth = new EmprAuthentifier($this->guid, $user->getLogin(), $user->getPassword());
 		$auth_result = $this->search_client->EmprAuthentifier($auth);
-		return $auth_result
+
+		$emprunteur = $auth_result
 			->createEmprunteur()
 			->setService($this);
+
+		if (!$emprunteur->isValid())
+			return $emprunteur;
+
+		$entite_result = $this->search_client->EmprListerEntite(EmprListerEntite::infos($this->guid));
+		if ($date_fin_abonnement = $entite_result->findAttribute('FinAbo')) {
+			$date_fin_abonnement = implode('-', array_reverse(explode('/', $date_fin_abonnement)));
+			$emprunteur->setEndDate($date_fin_abonnement);
+		}
+
+		return $emprunteur
+			->setNom($entite_result->findAttribute('nom'))
+			->setPrenom($entite_result->findAttribute('prenom'));
 	}
 
 
@@ -1013,6 +1027,10 @@ class EmprListerEntite {
 		$this->Param->IdEntite=$entite;
 	}
 
+	public static function infos($guid){
+		return new self($guid, EUEntiteEmp::ListeInfo);
+	}
+
 	public static function prets($guid){
 		return new self($guid, EUEntiteEmp::ListePret);
 	}
@@ -1042,13 +1060,19 @@ class EUEntiteEmp {
 	const ListeComsurPlace = 'ListeComsurPlace';
 }
 
+
 class EmprListerEntiteResponse {
 	public $EmprListerEntiteResult; // RspEmprListerEntite
 
 	public function getEntites($container_class){
 		return $this->EmprListerEntiteResult->getExemplaires($container_class);
 	}
+
+	public function findAttribute($name) {
+		return $this->EmprListerEntiteResult->findAttribute($name);
+	}
 }
+
 
 class RspEmprListerEntite {
 	public $GUIDSession; // string
@@ -1062,6 +1086,10 @@ class RspEmprListerEntite {
 		if (!isset($this->Entite)) return array();
 		return $this->Entite->getExemplaires($container_class);
 	}
+
+	public function findAttribute($name) {
+		return $this->Entite->findAttribute($name);
+	}
 }
 
 
@@ -1074,12 +1102,19 @@ class EntiteEmp {
 	public $Nombre; // int
 
 
-	protected function findAttribute($name, &$attributes) {
+	protected function _findAttribute($name, &$attributes) {
 		foreach($attributes as $libelle => $value) {
 			if (false !== strpos(strtolower($libelle), strtolower($name)))
 				return $value;
 		}
 		return "";
+	}
+
+
+	public function findAttribute($name) {
+		$ligne = $this->Donnees->Lignes[0];
+		$attributes = array_combine($this->LibelleDonnee->string, $ligne->ValeursDonnees->string);
+		return $this->_findAttribute($name, $attributes);
 	}
 	
 
@@ -1089,12 +1124,12 @@ class EntiteEmp {
 			$attributes = array_combine($this->LibelleDonnee->string, $data->ValeursDonnees->string);
 
 			$exemplaire = new Class_WebService_SIGB_Exemplaire(NULL);
-			$exemplaire->setTitre($this->findAttribute('Titre', $attributes));
+			$exemplaire->setTitre($this->_findAttribute('Titre', $attributes));
 
-			if ($code_barre = $this->findAttribute('code', $attributes))
+			if ($code_barre = $this->_findAttribute('code', $attributes))
 				$exemplaire_params = array('code_barres' => $code_barre);
 			else
-				$exemplaire_params = array('id_origine' => $this->findAttribute('notice', $attributes));
+				$exemplaire_params = array('id_origine' => $this->_findAttribute('notice', $attributes));
 			
 			$exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy($exemplaire_params);
 			$exemplaire->setExemplaireOPAC($exemplaire_opac);

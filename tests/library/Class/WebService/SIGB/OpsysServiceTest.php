@@ -410,10 +410,21 @@ abstract class OpsysServiceWithSessionTestCase extends Storm_Test_ModelTestCase 
 		$auth_response->EmprAuthentifierResult->NombreReservations = 3;
 		$auth_response->EmprAuthentifierResult->NombreRetards = 2;
 
+		$entite_infos_response = new EmprListerEntiteResponse();
+		$entite_infos_response->EmprListerEntiteResult = new RspEmprListerEntite();
+		$entite_infos_response->EmprListerEntiteResult->Entite = new EntiteEmp();
+		$entite_infos_response->EmprListerEntiteResult->Entite->LibelleDonnee = new StdClass();
+		$entite_infos_response->EmprListerEntiteResult->Entite->LibelleDonnee->string = ['Nom', 'Prenom', 'FinAbo'];
+		$entite_infos_response->EmprListerEntiteResult->Entite->Donnees = new StdClass();
+		$entite_infos_response->EmprListerEntiteResult->Entite->Donnees->Lignes = [$donnes_infos = new DonneeEmp()];
+		$donnes_infos->ValeursDonnees = new StdClass();
+		$donnes_infos->ValeursDonnees->string = ['Tin', 'Tin', '10/12/2012'];
+
 		$this->search_client
 			->whenCalled('OuvrirSession')->answers($this->ouvre_session_res)
 			->whenCalled('FermerSession')->answers(null)
-			->whenCalled('EmprAuthentifier')->answers($auth_response);
+			->whenCalled('EmprAuthentifier')->answers($auth_response)
+			->whenCalled('EmprListerEntite')->answers($entite_infos_response);
 
 		$this->opsys = new Class_WebService_SIGB_Opsys_Service($this->search_client, $this->catalog_client);
 	}
@@ -431,8 +442,15 @@ class OpsysServiceEmprAuthentifierErreurTestCreateEmprunteur extends OpsysServic
 		$auth_response_error->ErreurService = new WebSrvErreur();
 		$auth_response_error->ErreurService->CodeErreur = '1';
 
+
+		$entite_infos_response_error = new EmprListerEntiteResponse();
+		$entite_infos_response_error->EmprListerEntiteResult = new RspEmprListerEntite();
+		$entite_infos_response_error->EmprListerEntiteResult->ErreurService = new WebSrvErreur();
+		$entite_infos_response_error->EmprListerEntiteResult->ErreurService->CodeErreur = '1';
+
 		$this->search_client			
-			->whenCalled('EmprAuthentifier')->answers($auth_response_error);
+			->whenCalled('EmprAuthentifier')->answers($auth_response_error)
+			->whenCalled('EmprListerEntite')->answers($entite_infos_response_error);
 
 		$this->emprunteur = $this->opsys->getEmprunteur(
 													Class_Users::getLoader()->newInstance()
@@ -465,6 +483,22 @@ class OpsysServiceEmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithS
 
 	public function testEmprunteurNameIsTintin() {
 		$this->assertEquals('tintin', $this->emprunteur->getName());
+	}
+
+
+	public function testEmprunteurNomIsTin() {
+		$this->assertEquals('Tin', $this->emprunteur->getNom());
+	}
+
+
+	public function testEmprunteurPrenomIsTin() {
+		$this->assertEquals('Tin', $this->emprunteur->getPrenom());
+	}
+
+
+	/** @test */
+	public function emprunteurEndDateShouldBe10_12_2012() {
+		$this->assertEquals('2012-12-10', $this->emprunteur->getEndDate());
 	}
 
 
