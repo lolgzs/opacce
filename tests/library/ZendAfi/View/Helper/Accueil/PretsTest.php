@@ -40,7 +40,7 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 		$alice->getExemplaire()
 					->setTitre('Alice')
 					->setNoticeOPAC(Class_Notice::newInstanceWithId(1234))
-					->setDateRetour('21/10/2100');
+					->setDateRetour('21/10/2021');
 
 
 		$klein = new Class_WebService_SIGB_Emprunt('13', new Class_WebService_SIGB_Exemplaire(458));
@@ -75,7 +75,7 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 
 	/** @test */
 	public function listShouldDisplayDateRetour () {
-		$this->assertXPathContentContains($this->html,'//ul//li','21/10/2100');
+		$this->assertXPathContentContains($this->html,'//ul//li','21/10/2021');
 	}
 
 
@@ -87,8 +87,10 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 
 
 	/** @test */
-	public function dateRetour2100ShouldNotBeInClassPretEnRetard () {
-		$this->assertNotXPathContentContains($this->html,'//ul//li[@class="pret_en_retard"]//span[@class="date_retour"]','21/10/2100');
+	public function dateRetour2021ShouldNotBeInClassPretEnRetard () {
+		$this->assertNotXPathContentContains($this->html,
+																				 '//ul//li[@class="pret_en_retard"]//span[@class="date_retour"]',
+																				 '21/10/2021');
 	}
 
 
