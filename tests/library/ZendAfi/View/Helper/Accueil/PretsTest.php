@@ -49,8 +49,7 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 																			 'Dateretourprevue' => '21/10/2000',
 																			 'Section' => 'Essais',
 																			 'Auteur' => 'Naomie Klein',
-																			 'Bibliotheque' => 'Almont',
-																			 'N° de notice' => '5680'));
+																			 'Bibliotheque' => 'Almont'));
 
 
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Estelle');
