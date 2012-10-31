@@ -49,10 +49,15 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 	public function authenticate() {
 		$this->_authenticated_user = null;
 
-		$user = Class_Users::newInstance()
-			->setLogin($this->_identity)
-			->setPassword($this->_credential)
-			->beAbonneSIGB();
+		$matching_users_in_db = Class_Users::findAllBy(['login' => $this->_identity, 
+																										'role_level' => ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB]);
+		if (1 == count($matching_users_in_db))
+			$user = $matching_users_in_db[0];
+		else
+			$user = Class_Users::newInstance()
+				->setLogin($this->_identity)
+				->setPassword($this->_credential)
+				->beAbonneSIGB();
 
 		$result = $this->authenticateUserFromSIGB($user);
 		if ($result->isValid())

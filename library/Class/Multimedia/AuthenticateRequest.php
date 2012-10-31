@@ -55,9 +55,9 @@ class Class_Multimedia_AuthenticateRequest {
 			return $this->_error('MissingParameter');
 
 		$auth = ZendAfi_Auth::getInstance(); 
-			if (!$auth->authenticateLoginPassword($login, 
-																						$password, 
-																						[$auth->newAuthSIGB(), $auth->newAuthDb()])) {
+		if (!$auth->authenticateLoginPassword($login, 
+																					$password, 
+																					[$auth->newAuthSIGB(), $auth->newAuthDb()])) {
 			if (Class_Users::findFirstBy(['login' => $login]))
 					return $this->_error('PasswordIsWrong');
 			return 	$this->_error('UserNotFound');

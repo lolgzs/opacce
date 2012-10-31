@@ -101,6 +101,7 @@ abstract class AuthCommSigbWithWebServicesAndAbonneZorkTestCase extends AuthComm
 
 
 
+
 class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServicesAndAbonneZorkTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -143,6 +144,52 @@ class AuthCommSigbSuccessfullAuthenticationTest extends AuthCommSigbWithWebServi
 		$this->assertEquals('2015-12-25', $result->DATE_FIN);
 	}
 }
+
+
+
+
+class AuthCommSigbSuccessfullAuthenticationWithExistingUserTest extends AuthCommSigbWithWebServicesAndAbonneZorkTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Users
+			::whenCalled('save')
+			->answers(true)
+			
+			->whenCalled('findAllBy')
+			->with(['login' => 'zork_sigb',
+							'role_level' => ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB])
+			->answers([$this->_zork = Class_Users::newInstanceWithId(4)
+								 ->setDateFin('2010-10-23')
+								 ->setLogin('zork_sigb')
+								 ->setPassword('secret')]);
+		
+		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
+			->setIdentity('zork_sigb')
+			->setCredential('secret');
+
+		$this->_authenticate_result = $this->_adapter->authenticate();
+	}
+	
+
+	/** @test */
+	public function authenticateZorkShouldReturnValidResult() {
+		$this->assertTrue($this->_authenticate_result->isValid());
+	}
+
+	
+	/** @test */
+	public function zorkShouldHaveBeenSaved() {
+		$this->assertEquals($this->_zork, Class_Users::getFirstAttributeForLastCallOn('save'));
+	}
+
+
+	/** @test */
+	public function zorkDateFinShouldBeUpdatedTo2015_12_25() {
+		$this->assertEquals('2015-12-25', $this->_zork->getDateFin());		
+	}
+}
+
 
 
 
