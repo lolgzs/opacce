@@ -63,12 +63,11 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 	public function setUp() {
 		parent::setUp();
 		$this->_auth = Storm_Test_ObjectWrapper::mock()
-			->whenCalled('authenticateLoginPassword')
-			->answers(false)
-			->whenCalled('hasIdentity')
-			->answers(false)
-			->whenCalled('getIdentity')
-			->answers(null);
+			->whenCalled('authenticateLoginPassword')->answers(false)
+			->whenCalled('hasIdentity')->answers(false)
+			->whenCalled('getIdentity')->answers(null)
+			->whenCalled('newAuthSIGB')->answers('auth_sigb')
+			->whenCalled('newAuthDb')->answers('auth_db');
 		
 		ZendAfi_Auth::setInstance($this->_auth);
 	}
@@ -95,7 +94,7 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 	protected function _expectUserToLoad($user) {
 		$this->_auth
 			->whenCalled('authenticateLoginPassword')
-			->with($user->getLogin(), $user->getPassword())
+			->with($user->getLogin(), $user->getPassword(), ['auth_sigb', 'auth_db'])
 			->answers(true)
 			->whenCalled('getIdentity')
 			->answers($user);
