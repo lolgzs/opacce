@@ -140,6 +140,10 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		$this->_simpleAction();
 	}
 
+	public function reservationsAction() {
+		$this->_simpleAction();
+	}
+
 	public function bibliothequeNumeriqueAction() {
 		if (1 == $this->_getParam('styles_reload')) {
 			$this->view->preferences = $this->_request->getPost();

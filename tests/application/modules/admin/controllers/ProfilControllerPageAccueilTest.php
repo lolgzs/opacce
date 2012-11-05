@@ -39,6 +39,10 @@ abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_A
 																												 'type_module' => 'CRITIQUES',
 																												 'preferences' => array()),
 
+																						'8' => array('division' => 1,
+																												 'type_module' => 'RESERVATIONS',
+																												 'preferences' => array()),
+
 																						'9' => array('division' => 1,
 																												 'type_module' => 'PRETS',
 																												 'preferences' => array()),
@@ -90,6 +94,17 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_ProfilControll
 	/** @test */
 	public function boitePretsShouldBeInDivisionOne() {
 		$this->assertXPath('//ul[@id="box1"]/li[@id="PRETS"][@id_module="9"]//img[contains(@onclick,"accueil/prets")]');
+	}
+
+
+	/** @test */
+	public function boiteReservationsShouldBeAvailable() {
+		$this->assertXPathContentContains('//ul[@id="allItems"]/li[@id="RESERVATIONS"]','Réservations',$this->_response->getBody());
+	}
+
+	/** @test */
+	public function boiteReservationsShouldBeInDivisionOne() {
+		$this->assertXPath('//ul[@id="box1"]/li[@id="RESERVATIONS"][@id_module="8"]//img[contains(@onclick,"accueil/reservations")]');
 	}
 
 
@@ -346,4 +361,52 @@ class Admin_ProfilControllerJeunessePageAccueilConfigEmptyPretTest extends Admin
 		$this->assertXPath('//input[@name="titre"][@value="Mes prêts"]');
 	}
 }
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigReservationsTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/reservations?config=admin&id_profil=7&type_module=RESERVATIONS&id_module=8&proprietes=boite=/titre=Mes reservations/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeReservations() {
+		$this->assertAction('reservations');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleReservations() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Réservations');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesReservations() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes reservations"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigEmptyReservationTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/reservations?config=admin&id_profil=7&type_module=RESERVATIONS&id_module=8',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesReservations() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes réservations"]',$this->html);
+	}
+}
+
 ?>

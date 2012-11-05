@@ -117,6 +117,7 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 												 'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
 												 'LANGUE' => new Class_Systeme_ModulesAccueil_Langue,
 												 'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique,
+												 'RESERVATIONS' => new Class_Systeme_ModulesAccueil_Reservations,
 												 'PRETS' => new Class_Systeme_ModulesAccueil_Prets
 			];
 			}

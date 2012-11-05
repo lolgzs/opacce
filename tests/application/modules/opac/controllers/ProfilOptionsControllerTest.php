@@ -272,6 +272,10 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 
 																					 '4' => ['division' => '1',
 																									 'type_module' => 'NEWS'],
+																					 '8' => ['division' => '2',
+																									 'type_module' => 'RESERVATIONS',
+																									 'preferences' => ['titre' => 'Mes réservations']],
+
 																					 '9' => ['division' => '2',
 																									 'type_module' => 'PRETS',
 																									 'preferences' => ['titre' => 'Mes documents']
@@ -484,6 +488,13 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 	/** @test */
 	public function boiteMesPretsShouldBeVisibleInProfilJeunesse() {
 		$this->assertXPath("//div[@class='boite_prets']");
+	}
+
+
+
+	/** @test */
+	public function boiteMesReservationsShouldBeVisibleInProfilJeunesse() {
+		$this->assertXPath("//div[@class='boite_reservations']");
 	}
 
 
