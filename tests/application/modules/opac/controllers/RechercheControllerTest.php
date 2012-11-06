@@ -321,7 +321,7 @@ class RechercheControllerViewNoticeAsAdminTest extends RechercheControllerNotice
 
 	/** @test */
 	public function linkToConfigModulesRechercheShouldHaveActionViewNotice() {
-		$this->assertXPath('//img[contains(@onclick, "admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice")]');
+		$this->assertXPath('//img[contains(@onclick, "admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice&action2=5")]');
 	}
 }
 
