@@ -56,8 +56,9 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 		else
 			$user = Class_Users::newInstance()
 				->setLogin($this->_identity)
-				->setPassword($this->_credential)
 				->beAbonneSIGB();
+
+		$user->setPassword($this->_credential);
 
 		$result = $this->authenticateUserFromSIGB($user);
 		if ($result->isValid())

@@ -162,7 +162,7 @@ class AuthCommSigbSuccessfullAuthenticationWithExistingUserTest extends AuthComm
 			->answers([$this->_zork = Class_Users::newInstanceWithId(4)
 								 ->setDateFin('2010-10-23')
 								 ->setLogin('zork_sigb')
-								 ->setPassword('secret')]);
+								 ->setPassword('xzy')]);
 		
 		$this->_adapter = (new ZendAfi_Auth_Adapter_CommSigb())
 			->setIdentity('zork_sigb')
@@ -187,6 +187,12 @@ class AuthCommSigbSuccessfullAuthenticationWithExistingUserTest extends AuthComm
 	/** @test */
 	public function zorkDateFinShouldBeUpdatedTo2015_12_25() {
 		$this->assertEquals('2015-12-25', $this->_zork->getDateFin());		
+	}
+
+
+	/** @test */
+	public function zorkPasswordShouldBeSecret() {
+		$this->assertEquals('secret', $this->_zork->getPassword());		
 	}
 }
 
