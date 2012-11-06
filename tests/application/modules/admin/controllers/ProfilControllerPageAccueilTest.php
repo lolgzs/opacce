@@ -47,6 +47,18 @@ abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_A
 																												 'type_module' => 'PRETS',
 																												 'preferences' => array()),
 
+																						'10' => array('division' => 1,
+																												 'type_module' => 'NEWSLETTERS',
+																												 'preferences' => array()),
+
+																						'11' => array('division' => 1,
+																												 'type_module' => 'FORMATIONS',
+																												 'preferences' => array()),
+
+																						'12' => array('division' => 1,
+																												 'type_module' => 'MULTIMEDIA',
+																												 'preferences' => array()),
+
 
 																						'666' => array('division' => 1,
 																													 'type_module' => 'WRONG',
@@ -405,8 +417,59 @@ class Admin_ProfilControllerJeunessePageAccueilConfigEmptyReservationTest extend
 
 	/** @test */
 	public function titreInputShouldHaveValueMesReservations() {
-		$this->assertXPath('//input[@name="titre"][@value="Mes réservations"]',$this->html);
+		$this->assertXPath('//input[@name="titre"][@value="Mes réservations"]');
 	}
 }
+
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigNewslettersTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/newsletters?config=admin&id_profil=7&type_module=NEWSLETTERS&id_module=10&proprietes=boite=/titre=Mes newsletters/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeNewsletters() {
+		$this->assertAction('newsletters');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleNewsletters() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Lettres d\'informations',$this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesNewsletters() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes newsletters"]',$this->_response->getBody());
+	}
+
+}
+
+
+
+class Admin_ProfilControllerJeunessePageAccueilConfigEmptyNewsletterTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/newsletters?config=admin&id_profil=7&type_module=NEWSLETTERS&id_module=11',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesNewsletters() {
+		$this->assertXPath('//input[@name="titre"][@value="Lettres d\'informations"]',$this->_response->getBody());
+	}
+}
+
+
+
 
 ?>

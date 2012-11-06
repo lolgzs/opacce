@@ -18,12 +18,13 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class AbonneController extends Zend_Controller_Action {
+class AbonneController extends ZendAfi_Controller_Action {
 	use Trait_Translator;
 
 	protected $_user = null;								// Le user connecté
 
 	public function init()	{
+		parent::init();
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
 		
@@ -89,6 +90,47 @@ class AbonneController extends Zend_Controller_Action {
 
 		$this->_redirect('/abonne/formations');
 	}
+
+
+	public function subscribeNewsletterAction() {
+		$this->_stayOnPage();
+		
+		if (!$newsletter = Class_Newsletter::find((int)$this->_getParam('id'))) {
+			$this->_helper->notify('Newsletter non trouvée');
+			return;
+		}
+
+		
+		$this->_user->addNewsletter($newsletter);
+
+		if ($this->_user->save()) {
+			$this->_helper->notify(sprintf('Vous êtes inscrit à la liste de diffusion: %s',
+																		 $newsletter->getTitre()));
+																		 };
+		
+	}
+
+
+	public function unsubscribeNewsletterAction() {
+	
+		$this->_stayOnPage();
+		if (!$newsletter = Class_Newsletter::find((int)$this->_getParam('id'))) {
+			$this->_helper->notify('Newsletter non trouvée');
+			return;
+		}
+
+		
+		$this->_user->removeNewsletter($newsletter);
+
+		if ($this->_user->save()) {
+			$this->_helper->notify(sprintf('Vous êtes désinscrit de la liste de diffusion: %s',
+																		 $newsletter->getTitre()));
+																		 };
+
+
+
+	}
+
 
 
 	public function detailsessionAction() {
@@ -428,6 +470,35 @@ class AbonneController extends Zend_Controller_Action {
 		$this->view->help = nl2br(Class_AdminVar::get('AIDE_FICHE_ABONNE'));
 	}
 	
+
+	public function newslettersAction() {
+
+		/*		$newsletters = array();
+		
+		$newsletters_id = $this->_request->getParam('subscriptions', array());
+		foreach($newsletters_id as $nl_id)
+		$newsletters []= Class_Newsletter::getLoader()->find($nl_id);
+
+		$this->_user
+		->setNewsletters($newsletters) */
+		
+	}
+	
+
+	public function subscribeAction() {
+
+		/*		$newsletters = array();
+		
+		$newsletters_id = $this->_request->getParam('subscriptions', array());
+		foreach($newsletters_id as $nl_id)
+		$newsletters []= Class_Newsletter::getLoader()->find($nl_id);
+
+		$this->_user
+		->setNewsletters($newsletters) */
+		
+	}
+	
+
 
 	public function authenticateAction() {
 		$this->getHelper('ViewRenderer')->setNoRender();

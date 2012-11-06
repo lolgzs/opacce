@@ -131,5 +131,9 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	 * @param $model Storm_Model_Abstract
 	 */
 	protected function _postEditAction($model) {}
+
+	protected function _stayOnPage() {
+		$this->_redirect($this->_request->getServer('HTTP_REFERER'));
+	}
 }
 ?>

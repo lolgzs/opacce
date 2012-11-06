@@ -274,13 +274,13 @@ table.calendar_main {margin-left: auto; margin-right: auto}
 }
 
 
-.boite_prets ul, .boite_prets li, .boite_reservations ul, .boite_reservations li {
+.boite_prets ul, .boite_prets li, .boite_reservations ul, .boite_reservations li, .boite_newsletters li , .boite_newsletters ul {
     list-style: none;
     padding: 0;
     margin:0;
     
 }
-.boite_prets li, .boite_reservations li {
+.boite_prets li, .boite_reservations li, .boite_newsletters li {
     margin-bottom: 5px;
 }
 

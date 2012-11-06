@@ -434,6 +434,7 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
+
 	/**
 	 * @return array
 	 */
