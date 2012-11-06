@@ -1,73 +1,106 @@
 smalltalk.addPackage('Examples', {});
 smalltalk.addClass('Counter', smalltalk.Widget, ['count', 'header'], 'Examples');
+smalltalk.Counter.comment="This is a trivial Widget example mimicking the classic Counter example in Seaside. \x0aIn order to play with it, just select the doit below and press the Do it button in the far right corner.\x0aThen take a look in the HTML document above the IDE.\x0a\x0a        Counter new appendToJQuery: 'body' asJQuery"
 smalltalk.addMethod(
-unescape('_decrease'),
+"_decrease",
 smalltalk.method({
-selector: unescape('decrease'),
+selector: "decrease",
 category: 'actions',
 fn: function (){
 var self=this;
-(self['@count']=((($receiver = self['@count']).klass === smalltalk.Number) ? $receiver -(1) : smalltalk.send($receiver, "__minus", [(1)])));
-smalltalk.send(self['@header'], "_contents_", [(function(html){return smalltalk.send(html, "_with_", [smalltalk.send(self['@count'], "_asString", [])]);})]);
-return self;},
+self["@count"]=smalltalk.send(self["@count"],"__minus",[(1)]);
+smalltalk.send(self["@header"],"_contents_",[(function(html){
+return smalltalk.send(html,"_with_",[smalltalk.send(self["@count"],"_asString",[])]);
+})]);
+return self},
 args: [],
-source: unescape('decrease%0A%20%20%20%20count%20%3A%3D%20count%20-%201.%0A%20%20%20%20header%20contents%3A%20%5B%3Ahtml%20%7C%20html%20with%3A%20count%20asString%5D'),
-messageSends: [unescape("-"), "contents:", "with:", "asString"],
+source: "decrease\x0a    count := count - 1.\x0a    header contents: [:html | html with: count asString]",
+messageSends: ["-", "contents:", "with:", "asString"],
 referencedClasses: []
 }),
 smalltalk.Counter);
 
 smalltalk.addMethod(
-unescape('_increase'),
+"_increase",
 smalltalk.method({
-selector: unescape('increase'),
+selector: "increase",
 category: 'actions',
 fn: function (){
 var self=this;
-(self['@count']=((($receiver = self['@count']).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));
-smalltalk.send(self['@header'], "_contents_", [(function(html){return smalltalk.send(html, "_with_", [smalltalk.send(self['@count'], "_asString", [])]);})]);
-return self;},
+self["@count"]=smalltalk.send(self["@count"],"__plus",[(1)]);
+smalltalk.send(self["@header"],"_contents_",[(function(html){
+return smalltalk.send(html,"_with_",[smalltalk.send(self["@count"],"_asString",[])]);
+})]);
+return self},
 args: [],
-source: unescape('increase%0A%20%20%20%20count%20%3A%3D%20count%20+%201.%0A%20%20%20%20header%20contents%3A%20%5B%3Ahtml%20%7C%20html%20with%3A%20count%20asString%5D'),
-messageSends: [unescape("+"), "contents:", "with:", "asString"],
+source: "increase\x0a    count := count + 1.\x0a    header contents: [:html | html with: count asString]",
+messageSends: ["+", "contents:", "with:", "asString"],
 referencedClasses: []
 }),
 smalltalk.Counter);
 
 smalltalk.addMethod(
-unescape('_initialize'),
+"_initialize",
 smalltalk.method({
-selector: unescape('initialize'),
+selector: "initialize",
 category: 'initialization',
 fn: function (){
 var self=this;
-smalltalk.send(self, "_initialize", [], smalltalk.Widget);
-(self['@count']=(0));
-return self;},
+smalltalk.send(self,"_initialize",[],smalltalk.Widget);
+self["@count"]=(0);
+return self},
 args: [],
-source: unescape('initialize%0A%20%20%20%20super%20initialize.%0A%20%20%20%20count%20%3A%3D%200'),
+source: "initialize\x0a    super initialize.\x0a    count := 0",
 messageSends: ["initialize"],
 referencedClasses: []
 }),
 smalltalk.Counter);
 
 smalltalk.addMethod(
-unescape('_renderOn_'),
+"_renderOn_",
 smalltalk.method({
-selector: unescape('renderOn%3A'),
+selector: "renderOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
-(self['@header']=(function($rec){smalltalk.send($rec, "_with_", [smalltalk.send(self['@count'], "_asString", [])]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(html, "_h1", [])));
-(function($rec){smalltalk.send($rec, "_with_", [unescape("++")]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_increase", []);})]);})(smalltalk.send(html, "_button", []));
-(function($rec){smalltalk.send($rec, "_with_", [unescape("--")]);return smalltalk.send($rec, "_onClick_", [(function(){return smalltalk.send(self, "_decrease", []);})]);})(smalltalk.send(html, "_button", []));
-return self;},
+var $1,$2,$3,$4,$5,$6;
+$1=smalltalk.send(html,"_h1",[]);
+smalltalk.send($1,"_with_",[smalltalk.send(self["@count"],"_asString",[])]);
+$2=smalltalk.send($1,"_yourself",[]);
+self["@header"]=$2;
+$3=smalltalk.send(html,"_button",[]);
+smalltalk.send($3,"_with_",["++"]);
+$4=smalltalk.send($3,"_onClick_",[(function(){
+return smalltalk.send(self,"_increase",[]);
+})]);
+$5=smalltalk.send(html,"_button",[]);
+smalltalk.send($5,"_with_",["--"]);
+$6=smalltalk.send($5,"_onClick_",[(function(){
+return smalltalk.send(self,"_decrease",[]);
+})]);
+return self},
 args: ["html"],
-source: unescape('renderOn%3A%20html%0A%20%20%20%20header%20%3A%3D%20html%20h1%20%0A%09with%3A%20count%20asString%3B%0A%09yourself.%0A%20%20%20%20html%20button%0A%09with%3A%20%27++%27%3B%0A%09onClick%3A%20%5Bself%20increase%5D.%0A%20%20%20%20html%20button%0A%09with%3A%20%27--%27%3B%0A%09onClick%3A%20%5Bself%20decrease%5D'),
-messageSends: ["with:", "asString", "yourself", "h1", "onClick:", "increase", "button", "decrease"],
+source: "renderOn: html\x0a    header := html h1 \x0a\x09with: count asString;\x0a\x09yourself.\x0a    html button\x0a\x09with: '++';\x0a\x09onClick: [self increase].\x0a    html button\x0a\x09with: '--';\x0a\x09onClick: [self decrease]",
+messageSends: ["with:", "asString", "h1", "yourself", "button", "onClick:", "increase", "decrease"],
 referencedClasses: []
 }),
 smalltalk.Counter);
 
+
+smalltalk.addMethod(
+"_tryExample",
+smalltalk.method({
+selector: "tryExample",
+category: 'example',
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send(self,"_new",[]),"_appendToJQuery_",[smalltalk.send("body","_asJQuery",[])]);
+return self},
+args: [],
+source: "tryExample\x0a\x09\x22In order to play with the Counter, just select the\x0a\x09doit below and press the Do it button. Then take a\x0a\x09look in the HTML document above the IDE.\x22\x0a\x0a\x09\x22Counter tryExample\x22\x0a        self new appendToJQuery: 'body' asJQuery",
+messageSends: ["appendToJQuery:", "asJQuery", "new"],
+referencedClasses: []
+}),
+smalltalk.Counter.klass);
 
 

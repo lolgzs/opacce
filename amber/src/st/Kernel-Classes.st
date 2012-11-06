@@ -29,12 +29,25 @@ allSubclasses
 	^result
 !
 
+allSuperclasses
+	
+    self superclass ifNil: [ ^ #() ].
+    
+	^ (OrderedCollection with: self superclass) 
+    	addAll: self superclass allSuperclasses;
+        yourself
+!
+
 comment
     ^(self basicAt: 'comment') ifNil: ['']
 !
 
 comment: aString
-    self basicAt: 'comment' put: aString
+    self basicAt: 'comment' put: aString.
+    SystemAnnouncer current
+    	announce: (ClassCommentChanged new
+        	theClass: self;
+            yourself)
 !
 
 commentStamp
@@ -47,12 +60,16 @@ commentStamp: aStamp prior: prior
         ^self commentStamp
 !
 
+definition
+	^ ''
+!
+
 instanceVariableNames
 	<return self.iVarNames>
 !
 
-methodAt: aString
-	<return smalltalk.methods(self)[aString]>
+methodAt: aSymbol
+	<return smalltalk.methods(self)[aSymbol._asString()]>
 !
 
 methodDictionary
@@ -66,6 +83,10 @@ methodDictionary
 	return dict>
 !
 
+methods
+	^ self methodDictionary values
+!
+
 methodsFor: aString
 	^ClassCategoryReader new
 	    class: self category: aString;
@@ -75,6 +96,10 @@ methodsFor: aString
 methodsFor: aString stamp: aStamp
 	"Added for compatibility, right now ignores stamp."
 	^self methodsFor: aString
+!
+
+methodsInProtocol: aString
+	^ self methodDictionary values select: [ :each | each protocol = aString ]
 !
 
 name
@@ -107,12 +132,24 @@ prototype
 	<return self.fn.prototype>
 !
 
+selectors
+	^ self methodDictionary keys
+!
+
 subclasses
 	<return smalltalk.subclasses(self)>
 !
 
 superclass
 	<return self.superclass || nil>
+!
+
+theMetaClass
+	^ self class
+!
+
+theNonMetaClass
+	^ self
 !
 
 withAllSubclasses
@@ -122,7 +159,13 @@ withAllSubclasses
 !Behavior methodsFor: 'compiling'!
 
 addCompiledMethod: aMethod
-	<smalltalk.addMethod(aMethod.selector._asSelector(), aMethod, self)>
+	<smalltalk.addMethod(aMethod.selector._asSelector(), aMethod, self)>.
+    
+    SystemAnnouncer current
+   		announce: (MethodAdded new
+        	theClass: self;
+            method: aMethod;
+            yourself)
 !
 
 compile: aString
@@ -130,16 +173,22 @@ compile: aString
 !
 
 compile: aString category: anotherString
-	| method |
-	method := Compiler new load: aString forClass: self.
-	method category: anotherString.
-	self addCompiledMethod: method
+	Compiler new
+		install: aString 
+        forClass: self 
+        category: anotherString
 !
 
 removeCompiledMethod: aMethod
 	<delete self.fn.prototype[aMethod.selector._asSelector()];
 	delete self.fn.prototype.methods[aMethod.selector];
-	smalltalk.init(self);>
+	smalltalk.init(self);>.
+    
+    SystemAnnouncer current
+   		announce: (MethodRemoved new
+        	theClass: self;
+            method: aMethod;
+            yourself)
 ! !
 
 !Behavior methodsFor: 'instance creation'!
@@ -153,6 +202,11 @@ new
 ! !
 
 !Behavior methodsFor: 'testing'!
+
+canUnderstand: aSelector
+	^(self methodDictionary keys includes: aSelector asString) or: [
+		self superclass notNil and: [self superclass canUnderstand: aSelector]]
+!
 
 inheritsFrom: aClass
 	^aClass allSubclasses includes: self
@@ -173,6 +227,24 @@ category
 	^self package ifNil: ['Unclassified'] ifNotNil: [self package name]
 !
 
+definition
+	^ String streamContents: [ :stream |
+		stream 
+	    	nextPutAll: self superclass asString;
+	    	nextPutAll: ' subclass: #';
+	    	nextPutAll: self name;
+	    	nextPutAll: String lf, String tab;
+	    	nextPutAll: 'instanceVariableNames: '''.
+		self instanceVariableNames 
+          	do: [ :each | stream nextPutAll: each ] 
+	    	separatedBy: [ stream nextPutAll: ' ' ].
+		stream
+	    	nextPutAll: '''', String lf, String tab;
+	    	nextPutAll: 'package: ''';
+	    	nextPutAll: self category;
+	    	nextPutAll: '''' ]
+!
+
 package
 	<return self.pkg>
 !
@@ -182,11 +254,7 @@ package: aPackage
 !
 
 rename: aString
-	<
-		smalltalk[aString] = self;
-		delete smalltalk[self.className];
-		self.className = aString;
-	>
+	ClassBuilder new renameClass: self to: aString
 ! !
 
 !Class methodsFor: 'class creation'!
@@ -212,6 +280,12 @@ subclass: aString instanceVariableNames: aString2 package: aString3
 	    superclass: self subclass: aString asString instanceVariableNames: aString2 package: aString3
 ! !
 
+!Class methodsFor: 'converting'!
+
+asJavascript
+	^ 'smalltalk.', self name
+! !
+
 !Class methodsFor: 'printing'!
 
 printString
@@ -235,6 +309,18 @@ Metaclass instances have a single instance, which they hold onto, which is the c
 
 !Metaclass methodsFor: 'accessing'!
 
+definition
+	^ String streamContents: [ :stream |
+		stream 
+	   	 	nextPutAll: self asString;
+	    	nextPutAll: ' class ';
+	    	nextPutAll: 'instanceVariableNames: '''.
+		self instanceVariableNames
+	    	do: [ :each | stream nextPutAll: each ]
+	    	separatedBy: [ stream nextPutAll: ' ' ].
+		stream nextPutAll: '''' ]
+!
+
 instanceClass
 	<return self.instanceClass>
 !
@@ -242,6 +328,20 @@ instanceClass
 instanceVariableNames: aCollection
 	ClassBuilder new
 	    class: self instanceVariableNames: aCollection
+!
+
+theMetaClass
+	^ self
+!
+
+theNonMetaClass
+	^ self instanceClass
+! !
+
+!Metaclass methodsFor: 'converting'!
+
+asJavascript
+	^ 'smalltalk.', self instanceClass name, '.klass'
 ! !
 
 !Metaclass methodsFor: 'printing'!
@@ -269,7 +369,26 @@ Rather than using ClassBuilder directly to compile a class, use `Class >> subcla
 class: aClass instanceVariableNames: aString
 	aClass isMetaclass ifFalse: [self error: aClass name, ' is not a metaclass'].
 	aClass basicAt: 'iVarNames' put: (self instanceVariableNamesFor: aString).
+    
+    SystemAnnouncer current
+    	announce: (ClassDefinitionChanged new
+        	theClass: aClass;
+            yourself).
+    
 	self setupClass: aClass
+!
+
+renameClass: aClass to: aString
+	<
+		smalltalk[aString] = aClass;
+		delete smalltalk[aClass.className];
+		aClass.className = aString;
+	>.
+    
+    SystemAnnouncer current
+    	announce: (ClassRenamed new
+        	theClass: aClass;
+            yourself)
 !
 
 superclass: aClass subclass: aString
@@ -278,10 +397,17 @@ superclass: aClass subclass: aString
 
 superclass: aClass subclass: aString instanceVariableNames: aString2 package: aString3
 	| newClass |
-	newClass := self addSubclassOf: aClass
-				named: aString instanceVariableNames: (self instanceVariableNamesFor: aString2)
-				package: (aString3 ifNil: ['unclassified']).
+	
+    newClass := self addSubclassOf: aClass
+		named: aString instanceVariableNames: (self instanceVariableNamesFor: aString2)
+		package: (aString3 ifNil: ['unclassified']).
 	self setupClass: newClass.
+    
+    SystemAnnouncer current 
+    	announce: (ClassAdded new
+        	theClass: newClass;
+            yourself).
+    
 	^newClass
 ! !
 
@@ -309,12 +435,10 @@ copyClass: aClass named: aString
 	self setupClass: newClass.
 
 	aClass methodDictionary values do: [:each |
-		newClass addCompiledMethod: (Compiler new load: each source forClass: newClass).
-		(newClass methodDictionary at: each selector) category: each category].
+		Compiler new install: each source forClass: newClass category: each category].
 
 	aClass class methodDictionary values do: [:each |
-		newClass class addCompiledMethod: (Compiler new load: each source forClass: newClass class).
-		(newClass class methodDictionary at: each selector) category: each category].
+		Compiler new install: each source forClass: newClass class category: each category].
 
 	self setupClass: newClass.
 	^newClass
@@ -347,7 +471,8 @@ scanFrom: aChunkParser
 	| chunk |
 	[chunk := aChunkParser nextChunk.
 	chunk isEmpty] whileFalse: [
-	    self compileMethod: chunk]
+	    self compileMethod: chunk].
+	Compiler new setupClass: class
 ! !
 
 !ClassCategoryReader methodsFor: 'initialization'!
@@ -360,11 +485,7 @@ initialize
 !ClassCategoryReader methodsFor: 'private'!
 
 compileMethod: aString
-	| method compiler |
-	method := (compiler := Compiler new) load: aString forClass: class.
-	method category: category.
-	class addCompiledMethod: method.
-	compiler setupClass: class.
+	Compiler new install: aString forClass: class category: category
 ! !
 
 Object subclass: #ClassCommentReader

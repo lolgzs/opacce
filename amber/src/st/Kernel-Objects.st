@@ -58,7 +58,13 @@ class
 !
 
 identityHash
-	<return self.identityHash || (self.identityHash = smalltalk.nextId());>
+	<
+	var hash=self.identityHash;
+	if (hash) return hash;
+	hash=smalltalk.nextId();
+	Object.defineProperty(self, 'identityHash', {value:hash});
+	return hash;
+	>
 !
 
 instVarAt: aSymbol
@@ -75,6 +81,10 @@ instVarAt: aSymbol put: anObject
 
 size
 	self error: 'Object not indexable'
+!
+
+value
+	^ self
 !
 
 yourself
@@ -190,6 +200,10 @@ subclassResponsibility
 	self error: 'This method is a responsibility of a subclass'
 !
 
+throw: anObject
+	< throw anObject >
+!
+
 try: aBlock catch: anotherBlock
 	<try{result = aBlock()} catch(e) {result = anotherBlock(e)};
 	return result;>
@@ -215,7 +229,9 @@ perform: aSymbol
 !
 
 perform: aSymbol withArguments: aCollection
-	^self basicPerform: aSymbol asSelector withArguments: aCollection
+	| selector |
+	selector := aSymbol asSelector.
+	<return smalltalk.send(self, selector, aCollection)>
 ! !
 
 !Object methodsFor: 'printing'!
@@ -308,6 +324,10 @@ isSymbol
 
 notNil
 	^self isNil not
+!
+
+respondsTo: aSelector
+	^self class canUnderstand: aSelector
 ! !
 
 !Object class methodsFor: 'initialization'!
@@ -330,6 +350,10 @@ Boolean instances are weither `true` or `false`.!
 = aBoolean
 	aBoolean class = self class ifFalse: [^false].
 	<return Boolean(self == true) == aBoolean>
+!
+
+== aBoolean
+	^self = aBoolean
 ! !
 
 !Boolean methodsFor: 'controlling'!
@@ -434,192 +458,7 @@ day
 !
 
 day: aNumber
-	self day: aNumber
-!
-
-dayOfMonth
-	<return self.getDate()>
-!
-
-dayOfMonth: aNumber
-	<self.setDate(aNumber)>
-!
-
-dayOfWeek
-	<return self.getDay() + 1>
-!
-
-dayOfWeek: aNumber
-	<return self.setDay(aNumber - 1)>
-!
-
-hours
-	<return self.getHours()>
-!
-
-hours: aNumber
-	<self.setHours(aNumber)>
-!
-
-milliseconds
-	<return self.getMilliseconds()>
-!
-
-milliseconds: aNumber
-	<self.setMilliseconds(aNumber)>
-!
-
-minutes
-	<return self.getMinutes()>
-!
-
-minutes: aNumber
-	<self.setMinutes(aNumber)>
-!
-
-month
-	<return self.getMonth() + 1>
-!
-
-month: aNumber
-	<self.setMonth(aNumber - 1)>
-!
-
-seconds
-	<return self.getSeconds()>
-!
-
-seconds: aNumber
-	<self.setSeconds(aNumber)>
-!
-
-time
-	<return self.getTime()>
-!
-
-time: aNumber
-	<self.setTime(aNumber)>
-!
-
-year
-	<return self.getFullYear()>
-!
-
-year: aNumber
-	<self.setFullYear(aNumber)>
-! !
-
-!Date methodsFor: 'arithmetic'!
-
-+ aDate
-	<return self + aDate>
-!
-
-- aDate
-	<return self - aDate>
-! !
-
-!Date methodsFor: 'comparing'!
-
-< aDate
-	<return self < aDate>
-!
-
-<= aDate
-	<return self <= aDate>
-!
-
-> aDate
-	<return self >> aDate>
-!
-
->= aDate
-	<return self >>= aDate>
-! !
-
-!Date methodsFor: 'converting'!
-
-asDateString
-	<return self.toDateString()>
-!
-
-asLocaleString
-	<return self.toLocaleString()>
-!
-
-asMilliseconds
-	^self time
-!
-
-asNumber
-	^self asMilliseconds
-!
-
-asString
-	<return self.toString()>
-!
-
-asTimeString
-	<return self.toTimeString()>
-! !
-
-!Date methodsFor: 'printing'!
-
-printString
-	^self asString
-! !
-
-!Date class methodsFor: 'instance creation'!
-
-fromMilliseconds: aNumber
-	^self new: aNumber
-!
-
-fromSeconds: aNumber
-	^self fromMilliseconds: aNumber * 1000
-!
-
-fromString: aString
-	"Example: Date fromString('2011/04/15 00:00:00')"
-	^self new: aString
-!
-
-millisecondsToRun: aBlock
-	| t |
-	t := Date now.
-	aBlock value.
-	^Date now - t
-!
-
-new: anObject
-	<return new Date(anObject)>
-!
-
-now
-	^self today
-!
-
-today
-	^self new
-! !
-
-Object subclass: #Date
-	instanceVariableNames: ''
-	package: 'Kernel-Objects'!
-!Date commentStamp!
-The Date class is used to work with dates and times. Therefore `Date today` and `Date now` are both valid in
-Amber and answer the same date object.
-
-Date wraps the `Date()` JavaScript constructor, and Smalltalk date objects are JavaScript date objects.!
-
-!Date methodsFor: 'accessing'!
-
-day
-	^self dayOfWeek
-!
-
-day: aNumber
-	self day: aNumber
+	self dayOfWeek: aNumber
 !
 
 dayOfMonth
@@ -921,6 +760,10 @@ identityHash
 	<return self % aNumber>
 !
 
+abs
+	^ <Math.abs(self);>
+!
+
 max: aNumber
 	<return Math.max(self, aNumber);>
 !
@@ -969,6 +812,10 @@ squared
 ! !
 
 !Number methodsFor: 'converting'!
+
+& aNumber
+	<return self & aNumber>
+!
 
 @ aNumber
 	^Point x: self y: aNumber
@@ -1037,6 +884,10 @@ truncated
         ifFalse: [<result = (Math.floor(self * (-1)) * (-1));>].
 
     ^ result
+!
+
+| aNumber
+	<return self | aNumber>
 ! !
 
 !Number methodsFor: 'copying'!
@@ -1219,7 +1070,7 @@ classes
 !
 
 sortedClasses
-	"Answer all classes in the receiver, sorted by superclass/subclasses and by class name for common subclasses (Issue #143)"
+	"Answer all classes in the receiver, sorted by superclass/subclasses and by class name for common subclasses (Issue #143)."
 
 	^self class sortedClasses: self classes
 ! !
@@ -1514,8 +1365,8 @@ It requires the `Compiler` package and the `js/parser.js` parser file in order t
 
 !Smalltalk methodsFor: 'accessing'!
 
-at: aString
-	<return self[aString]>
+at: aSymbol
+	<return self[aSymbol._asString()]>
 !
 
 basicParse: aString
@@ -1544,7 +1395,7 @@ parseError: anException parsing: aString
 	code := String streamContents: [:s |
                   lines withIndexDo: [:l :i |
                      s nextPutAll: i asString, ': ', l, String lf]].
-	^ Error new messageText: ('Parse error on line ' , row , ' column ' , col , ' : ' , message , ' Below is code with line numbers and ===> marker inserted:' , String lf, code)
+	^ ParseError new messageText: ('Parse error on line ' , row , ' column ' , col , ' : ' , message , ' Below is code with line numbers and ===> marker inserted:' , String lf, code)
 !
 
 readJSObject: anObject
@@ -1559,18 +1410,26 @@ reservedWords
 send: aSelector to: anObject arguments: aCollection
 	| selector |
 	selector := aSelector asString asSelector.
-	<self.send(anObject, selector, aCollection)>
+	<return self.send(anObject, selector, aCollection)>
 ! !
 
 !Smalltalk methodsFor: 'classes'!
 
 removeClass: aClass
 	aClass isMetaclass ifTrue: [self error: aClass asString, ' is a Metaclass and cannot be removed!!'].
+    
 	aClass methodDictionary values do: [:each |
 		aClass removeCompiledMethod: each].
+        
 	aClass class methodDictionary values do: [:each |
 		aClass class removeCompiledMethod: each].
-	self basicDelete: aClass name
+        
+	self basicDelete: aClass name.
+    
+    SystemAnnouncer current
+    	announce: (ClassRemoved new
+        	theClass: aClass;
+            yourself)
 ! !
 
 !Smalltalk methodsFor: 'packages'!
@@ -1587,6 +1446,10 @@ packages
 	"Return all Package instances in the system."
 
 	<return self.packages.all()>
+!
+
+pseudoVariableNames
+	^ #('self' 'super' 'nil' 'true' 'false' 'thisContext')
 !
 
 removePackage: packageName

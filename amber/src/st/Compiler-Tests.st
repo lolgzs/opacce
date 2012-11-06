@@ -1,471 +1,375 @@
 Smalltalk current createPackage: 'Compiler-Tests' properties: #{}!
-TestCase subclass: #ImporterTest
-	instanceVariableNames: ''
-	category: 'Compiler-Tests'!
+TestCase subclass: #CodeGeneratorTest
+	instanceVariableNames: 'receiver'
+	package: 'Compiler-Tests'!
 
-!ImporterTest methodsFor: 'private'!
+!CodeGeneratorTest methodsFor: 'accessing'!
 
-chunkString
-
-	^'!!Object methodsFor: ''importer test method''!!
-
-importerTestMethod
-
-	^''success''
-!! !!
-'
+codeGeneratorClass
+	^ CodeGenerator
 !
 
-bigChunkString
-
-	^'Smalltalk current createPackage: ''Cypress-Definitions'' properties: #{}!!
-Object subclass: #CypressSnapshot
-	instanceVariableNames: ''definitions''
-	package: ''Cypress-Definitions''!!
-
-!!CypressSnapshot methodsFor: ''not yet classified''!!
-
-definitions: aDefinitions
-
-	definitions := aDefinitions
-!!
-
-definitions
-
-	^definitions
-!! !!
-
-!!CypressSnapshot class methodsFor: ''not yet classified''!!
-
-definitions: aDefinitions
-
-	^(self new) definitions: aDefinitions
-!! !!
-
-Object subclass: #CypressPackage
-	instanceVariableNames: ''name''
-	package: ''Cypress-Definitions''!!
-
-!!CypressPackage methodsFor: ''not yet classified''!!
-
-= other
-	^ other species = self species and: [other name sameAs: name]
-!!
-
-name
-	^ name
-!!
-
-name: aString
-	name := aString
-!!
-
-snapshot
-	| package definitions name  |
-	package := Package named: self name.
-	definitions := OrderedCollection new.
-	package sortedClasses do: [:cls |
-        	definitions add: cls asCypressClassDefinition.
-                cls methodDictionary values do: [:method |
-			(method category match: ''^\*'') ifFalse: [ 
-				definitions add: method asCypressMethodDefinition ]].
-                cls class methodDictionary values do: [:method |
-			(method category match: ''^\*'') ifFalse: [ 
-				definitions add: method asCypressMethodDefinition ]]].
-	name := package name.
-	Smalltalk current classes, (Smalltalk current classes collect: [:each | each class]) do: [:each |
-		each methodDictionary values do: [:method |
-			method category = (''*'', name) ifTrue: [
-				definitions add: method asCypressMethodDefinition ]]].
-	^ CypressSnapshot definitions: definitions
-!!
-
-printString
-	^super printString, ''('', name, '')''
-!! !!
-
-Object subclass: #CypressDefinition
-	instanceVariableNames: ''''
-	package: ''Cypress-Definitions''!!
-
-!!CypressDefinition methodsFor: ''not yet classified''!!
-
-= aDefinition
-	^(aDefinition isKindOf: CypressDefinition) and: [self isRevisionOf: aDefinition]
-!!
-
-isRevisionOf: aDefinition
-	^ (aDefinition isKindOf: CypressDefinition) and: [aDefinition description = self description]
-!!
-
-description
-	self subclassResponsibility
-!!
-
-isSameRevisionAs: aDefinition
-	^ self = aDefinition
-!! !!
-
-Object subclass: #CypressPatch
-	instanceVariableNames: ''operations''
-	package: ''Cypress-Definitions''!!
-
-!!CypressPatch methodsFor: ''not yet classified''!!
-
-fromBase: baseSnapshot toTarget: targetSnapshot
-	| base target |	
-	operations := OrderedCollection new.
-	base := CypressDefinitionIndex definitions: baseSnapshot definitions.
-	target := CypressDefinitionIndex definitions: targetSnapshot definitions.
-	
-	target definitions do:
-		[:t |
-		base
-			definitionLike: t
-			ifPresent: [:b | (b isSameRevisionAs: t) ifFalse: [operations add: (CypressModification of: b to: t)]]
-			ifAbsent: [operations add: (CypressAddition of: t)]].
-		
-	base definitions do:
-		[:b |
-		target
-			definitionLike: b
-			ifPresent: [:t | ]
-			ifAbsent: [operations add: (CypressRemoval of: b)]]
-!!
-
-operations
-
-	^operations
-!! !!
-
-!!CypressPatch class methodsFor: ''not yet classified''!!
-
-fromBase: baseSnapshot toTarget: targetSnapshot
-	^ (self new)
-		fromBase: baseSnapshot
-		toTarget: targetSnapshot
-!! !!
-
-Object subclass: #CypressDefinitionIndex
-	instanceVariableNames: ''definitionMap''
-	package: ''Cypress-Definitions''!!
-
-!!CypressDefinitionIndex methodsFor: ''not yet classified''!!
-
-add: aDefinition
-	^ self definitionMap at: aDefinition description put: aDefinition
-!!
-
-addAll: aCollection
-	aCollection do: [:ea | self add: ea]
-!!
-
-definitionLike: aDefinition ifPresent: foundBlock ifAbsent: errorBlock
-	| definition |
-	definition := self definitionMap at: aDefinition description ifAbsent: [].
-	^ definition
-		ifNil: errorBlock
-		ifNotNil: [foundBlock value: definition]
-!!
-
-definitions
-	^self definitionMap values
-!!
-
-definitionMap
-	definitionMap ifNil: [ definitionMap := Dictionary new ].
-	^ definitionMap
-!!
-
-remove: aDefinition
-	self definitionMap removeKey: aDefinition description ifAbsent: []
-!! !!
-
-!!CypressDefinitionIndex class methodsFor: ''not yet classified''!!
-
-definitions: aCollection
-	^ self new addAll: aCollection
-!! !!
-
-Object subclass: #CypressPatchOperation
-	instanceVariableNames: ''''
-	package: ''Cypress-Definitions''!!
-
-CypressDefinition subclass: #CypressClassDefinition
-	instanceVariableNames: ''name superclassName category comment instVarNames classInstVarNames''
-	package: ''Cypress-Definitions''!!
-
-!!CypressClassDefinition methodsFor: ''not yet classified''!!
-
-name: aClassName superclassName: aSuperclassName category: aCategory instVarNames: anInstanceVariableNames classInstVarNames: aClassInstanceVariableNames comment: aComment
-
-	name := aClassName.
-	superclassName := aSuperclassName.
-	category := aCategory.
-	instVarNames := anInstanceVariableNames.
-	classInstVarNames := aClassInstanceVariableNames.
-	comment := aComment
-!!
-
-= aDefinition
-	^(super = aDefinition)
-		and: [superclassName = aDefinition superclassName
-		and: [category = aDefinition category
-		and: [instVarNames = aDefinition instVarNames
-		and: [classInstVarNames = aDefinition classInstVarNames
-		and: [comment = aDefinition comment]]]]]
-!!
-
-superclassName
-
-	^superclassName
-!!
-
-name
-
-	^name
-!!
-
-category
-
-	^category
-!!
-
-comment
-
-	^comment
-!!
-
-description
-
-	^ Array with: name
-!!
-
-instVarNames
-
-	^instVarNames
-!!
-
-classInstVarNames
-
-	^classInstVarNames
-!! !!
-
-!!CypressClassDefinition class methodsFor: ''not yet classified''!!
-
-name: aClassName 
-superclassName: aSuperclassName
-category: aCategory
-instVarNames: anInstanceVariableNames
-classInstVarNames: aClassInstanceVariableNames
-comment: aComment
-
-	^(self new) 
-		name: aClassName 
-		superclassName: aSuperclassName
-		category: aCategory
-		instVarNames: anInstanceVariableNames
-		classInstVarNames: aClassInstanceVariableNames
-		comment: aComment
-!! !!
-
-CypressDefinition subclass: #CypressMethodDefinition
-	instanceVariableNames: ''classIsMeta source category selector className''
-	package: ''Cypress-Definitions''!!
-
-!!CypressMethodDefinition methodsFor: ''not yet classified''!!
-
-className: aName classIsMeta: isMetaclass selector: aSelector category: aCategory source: aSource
-
-	className := aName.
-	classIsMeta := isMetaclass.
-	selector := aSelector.
-	category := aCategory.
-	source := aSource.
-!!
-
-= aDefinition
-    ^ super = aDefinition
-        and: [ aDefinition source = self source
-                and: [ aDefinition category = self category ] ]
-!!
-
-source
-
-	^source
-!!
-
-category
-
-	^category
-!!
-
-description
-	^ Array	
-		with: className
-		with: selector
-		with: classIsMeta
-!! !!
-
-!!CypressMethodDefinition class methodsFor: ''not yet classified''!!
-
-className: aName
-classIsMeta: isMetaclass
-selector: aSelector
-category: aCategory
-source: aSource
-
-	^(self new)
-		className: aName
-		classIsMeta: isMetaclass
-		selector: aSelector
-		category: aCategory
-		source: aSource
-!! !!
-
-CypressPatchOperation subclass: #CypressAddition
-	instanceVariableNames: ''definition''
-	package: ''Cypress-Definitions''!!
-
-!!CypressAddition methodsFor: ''not yet classified''!!
-
-definition: aDefinition
-
-	definition := aDefinition
-!! !!
-
-!!CypressAddition class methodsFor: ''not yet classified''!!
-
-of: aDefinition
-	^ self new definition: aDefinition
-!! !!
-
-CypressPatchOperation subclass: #CypressModification
-	instanceVariableNames: ''obsoletion modification''
-	package: ''Cypress-Definitions''!!
-
-!!CypressModification methodsFor: ''not yet classified''!!
-
-base: base target: target
-
-	obsoletion := base.
-	modification := target.
-!! !!
-
-!!CypressModification class methodsFor: ''not yet classified''!!
-
-of: base to: target
-	^ self new base: base target: target
-!! !!
-
-CypressPatchOperation subclass: #CypressRemoval
-	instanceVariableNames: ''definition''
-	package: ''Cypress-Definitions''!!
-
-!!CypressRemoval methodsFor: ''not yet classified''!!
-
-definition: aDefinition
-
-	definition := aDefinition
-!! !!
-
-!!CypressRemoval class methodsFor: ''not yet classified''!!
-
-of: aDefinition
-	^ self new definition: aDefinition
-!! !!
-
-!!Object methodsFor: ''*Cypress-Definitions''!!
-
-species
-
-	^self class
-!! !!
-
-!!Class methodsFor: ''*Cypress-Definitions''!!
-
-asCypressClassDefinition
-	^CypressClassDefinition
-		name: self name
-		superclassName: self superclass name
-		category: self category 
-		instVarNames: self instanceVariableNames
-		classInstVarNames: self class instanceVariableNames
-		comment: self comment
-!! !!
-
-!!CompiledMethod methodsFor: ''*Cypress-Definitions''!!
-
-asCypressMethodDefinition
-
-	^CypressMethodDefinition 
-        	className: self methodClass name
-		classIsMeta: self methodClass isMetaclass
-		selector: self selector
-		category: self category
-		source: self source
-!! !!
-
-!!CharacterArray methodsFor: ''*Cypress-Definitions''!!
-
-sameAs: aString
-
-	^self asUppercase = aString asUppercase
-!! !!
-
-'
+targetClass
+	^ DoIt
 ! !
 
-!ImporterTest methodsFor: 'running'!
+!CodeGeneratorTest methodsFor: 'factory'!
+
+compiler
+	^ Compiler new
+		codeGeneratorClass: self codeGeneratorClass;
+		yourself
+! !
+
+!CodeGeneratorTest methodsFor: 'initialization'!
 
 setUp
-
-	super setUp.
-	self cleanUp
+	receiver := self targetClass new
 !
 
 tearDown
-
-	super tearDown.
-	self cleanUp
-!
-
-cleanUp
-
-	(Object methodDictionary includesKey: #importerTestMethod)
-		ifTrue: [ Object removeCompiledMethod: (Object methodAt: #importerTestMethod)].
+	"receiver := nil"
 ! !
 
-!ImporterTest methodsFor: 'tests'!
+!CodeGeneratorTest methodsFor: 'testing'!
 
-testBigChunkString
-	"importer does not correctly add extension methods.
+should: aString return: anObject
+	| method result |
 
-	 After loading in AmberProjectImporter, the following import fails...get a MNU from `CypressPackage new species`:
-
-    		AmberProjectImporter
-			importSTPackage: 'Cypress-Definitions' 
-			prefix: 'tests/'.
-
-		CypressPackage new species. 
-
-	WARNING this guy isn't cleaned up automatically"
-
-	Importer new import: self bigChunkString readStream.
-	CypressPackage new species.
-!
-
-testChunkString
-
-	Importer new import: self chunkString readStream.
-	self assert: (Object methodDictionary includesKey: 'importerTestMethod').
-	self assert: (Object new importerTestMethod = 'success').
+	method := self compiler install: aString forClass: self targetClass category: 'tests'.
+	result := receiver perform: method selector.
+	self targetClass removeCompiledMethod: method.
+	self assert: anObject equals: result
 ! !
 
-!Object methodsFor: '*Compiler-Tests'!
+!CodeGeneratorTest methodsFor: 'tests'!
 
-importerLoadMethod
+testAssignment
+	self should: 'foo | a | a := true ifTrue: [ 1 ]. ^ a' return: 1.
+	self should: 'foo | a | a := false ifTrue: [ 1 ]. ^ a' return: nil.
 
-	^'success'
+	self should: 'foo | a | ^ a := true ifTrue: [ 1 ]' return: 1
+!
+
+testBlockReturn
+	self should: 'foo ^ #(1 2 3) collect: [ :each | true ifTrue: [ each + 1 ] ]' return: #(2 3 4).
+	self should: 'foo ^ #(1 2 3) collect: [ :each | false ifFalse: [ each + 1 ] ]' return: #(2 3 4).
+	self should: 'foo ^ #(1 2 3) collect: [ :each | each odd ifTrue: [ each + 1 ] ifFalse: [ each - 1 ] ]' return: #(2 1 4).
+!
+
+testCascades
+	
+	self should: 'foo ^ Array new add: 3; add: 4; yourself' return: #(3 4)
+!
+
+testLiterals
+	self should: 'foo ^ 1' return: 1.
+	self should: 'foo ^ ''hello''' return: 'hello'.
+	self should: 'foo ^ #(1 2 3 4)' return: #(1 2 3 4).
+	self should: 'foo ^ {1. [:x | x ] value: 2. 3. [4] value}' return: #(1 2 3 4).
+	self should: 'foo ^ true' return: true.
+	self should: 'foo ^ false' return: false.
+	self should: 'foo ^ #{1->2. 3->4}' return: #{1->2. 3->4}.
+	self should: 'foo ^ #hello' return: #hello.
+	self should: 'foo ^ -123.456' return: -123.456
+!
+
+testLocalReturn
+	self should: 'foo ^ 1' return: 1.
+	self should: 'foo ^ 1 + 1' return: 2.
+	self should: 'foo ' return: receiver.
+	self should: 'foo self asString' return: receiver.
+	self should: 'foo | a b | a := 1. b := 2. ^ a + b' return: 3
+!
+
+testMessageSends
+	self should: 'foo ^ 1 asString' return: '1'.
+
+	self should: 'foo ^ 1 + 1' return: 2.
+	self should: 'foo ^ 1 + 2 * 3' return: 9.
+
+	self should: 'foo ^ 1 to: 3' return: #(1 2 3).
+	self should: 'foo ^ 1 to: 5 by: 2' return: #(1 3 5)
+!
+
+testNestedIfTrue
+	self should: 'foo ^ true ifTrue: [ false ifFalse: [ 1 ] ]' return: 1.
+	self should: 'foo ^ true ifTrue: [ false ifTrue: [ 1 ] ]' return: nil.
+
+	self should: 'foo true ifTrue: [ false ifFalse: [ ^ 1 ] ]' return: 1.
+	self should: 'foo true ifTrue: [ false ifTrue: [ ^ 1 ] ]' return: receiver.
+!
+
+testNonLocalReturn
+	self should: 'foo [ ^ 1 ] value' return: 1.
+	self should: 'foo [ ^ 1 + 1 ] value' return: 2.
+	self should: 'foo | a b | a := 1. b := 2. [ ^ a + b ] value. self halt' return: 3.
+	self should: 'foo [ :x | ^ x + x ] value: 4. ^ 2' return: 8
+!
+
+testifFalse
+	self should: 'foo true ifFalse: [ ^ 1 ]' return: receiver.
+	self should: 'foo false ifFalse: [ ^ 2 ]' return: 2.
+	
+	self should: 'foo ^ true ifFalse: [ 1 ]' return: nil.
+	self should: 'foo ^ false ifFalse: [ 2 ]' return: 2.
+!
+
+testifFalseIfTrue
+	self should: 'foo true ifFalse: [ ^ 1 ] ifTrue: [ ^ 2 ]' return: 2.
+	self should: 'foo false ifFalse: [ ^ 2 ] ifTrue: [ ^1 ]' return: 2.
+	
+	self should: 'foo ^ true ifFalse: [ 1 ] ifTrue: [ 2 ]' return: 2.
+	self should: 'foo ^ false ifFalse: [ 2 ] ifTrue: [ 1 ]' return: 2.
+!
+
+testifNil
+	self should: 'foo ^ 1 ifNil: [ 2 ]' return: 1.
+	self should: 'foo ^ nil ifNil: [ 2 ]' return: 2.
+
+	self should: 'foo 1 ifNil: [ ^ 2 ]' return: receiver.
+	self should: 'foo nil ifNil: [ ^ 2 ]' return: 2.
+!
+
+testifNilIfNotNil
+	self should: 'foo ^ 1 ifNil: [ 2 ] ifNotNil: [ 3 ]' return: 3.
+	self should: 'foo ^ nil ifNil: [ 2 ] ifNotNil: [ 3 ]' return: 2.
+
+	self should: 'foo 1 ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]' return: 3.
+	self should: 'foo nil ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]' return: 2.
+!
+
+testifNotNil
+	self should: 'foo ^ 1 ifNotNil: [ 2 ]' return: 2.
+	self should: 'foo ^ nil ifNotNil: [ 2 ]' return: nil.
+
+	self should: 'foo 1 ifNotNil: [ ^ 2 ]' return: 2.
+	self should: 'foo nil ifNotNil: [ ^ 2 ]' return: receiver.
+!
+
+testifTrue
+	self should: 'foo false ifTrue: [ ^ 1 ]' return: receiver.
+	self should: 'foo true ifTrue: [ ^ 2 ]' return: 2.
+	
+	self should: 'foo ^ false ifTrue: [ 1 ]' return: nil.
+	self should: 'foo ^ true ifTrue: [ 2 ]' return: 2.
+!
+
+testifTrueIfFalse
+	self should: 'foo false ifTrue: [ ^ 1 ] ifFalse: [ ^2 ]' return: 2.
+	self should: 'foo true ifTrue: [ ^ 1 ] ifFalse: [ ^ 2 ]' return: 1.
+	
+	self should: 'foo ^ false ifTrue: [ 2 ] ifFalse: [ 1 ]' return: 1.
+	self should: 'foo ^ true ifTrue: [ 2 ] ifFalse: [ 1 ]' return: 2.
+! !
+
+CodeGeneratorTest subclass: #InliningCodeGeneratorTest
+	instanceVariableNames: ''
+	package: 'Compiler-Tests'!
+
+!InliningCodeGeneratorTest methodsFor: 'accessing'!
+
+codeGeneratorClass
+	^ InliningCodeGenerator
+! !
+
+TestCase subclass: #ScopeVarTest
+	instanceVariableNames: ''
+	package: 'Compiler-Tests'!
+
+!ScopeVarTest methodsFor: 'tests'!
+
+testClassRefVar
+	| node |
+	node := ClassReferenceNode new
+		value: 'Object';
+		yourself.
+	SemanticAnalyzer new visit: node.
+	self assert: node binding isClassRefVar
+!
+
+testInstanceVar
+	| node scope |
+	node := VariableNode new
+		value: 'bzzz';
+		yourself.
+	scope := MethodLexicalScope new.
+	scope addIVar: 'bzzz'.
+	self assert: (scope bindingFor: node) isInstanceVar
+!
+
+testPseudoVar
+	| node pseudoVars |
+	pseudoVars := #('self' 'super' 'true' 'false' 'nil').
+	pseudoVars do: [:each |
+		node := VariableNode new
+		value: each;
+		yourself.
+		self assert: (MethodLexicalScope new bindingFor: node) isPseudoVar ]
+!
+
+testTempVar
+	| node scope |
+	node := VariableNode new
+		value: 'bzzz';
+		yourself.
+	scope := MethodLexicalScope new.
+	scope addTemp: 'bzzz'.
+	self assert: (scope bindingFor: node) isTempVar
+!
+
+testUnknownVar
+	| node |
+	node := VariableNode new
+		value: 'bzzz';
+		yourself.
+	self assert: (MethodLexicalScope new bindingFor: node) isNil
+! !
+
+TestCase subclass: #SemanticAnalyzerTest
+	instanceVariableNames: 'analyzer'
+	package: 'Compiler-Tests'!
+
+!SemanticAnalyzerTest methodsFor: 'running'!
+
+setUp
+	analyzer := SemanticAnalyzer on: Object
+! !
+
+!SemanticAnalyzerTest methodsFor: 'tests'!
+
+testAssignment
+	| src ast |
+
+	src := 'foo self := 1'.
+	ast := smalltalk parse: src.
+	self should: [analyzer visit: ast] raise: InvalidAssignmentError
+!
+
+testNonLocalReturn
+	| src ast |
+
+	src := 'foo | a | a + 1. ^ a'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	self deny: ast scope hasNonLocalReturn
+!
+
+testNonLocalReturn2
+	| src ast |
+
+	src := 'foo | a | a + 1. [ [ ^ a] ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	self assert: ast scope hasNonLocalReturn
+!
+
+testScope
+	| src ast |
+
+	src := 'foo | a | a + 1. [ | b | b := a ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	self deny: ast nodes first nodes last scope == ast scope.
+!
+
+testScope2
+	| src ast |
+
+	src := 'foo | a | a + 1. [ [ | b | b := a ] ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	self deny: ast nodes first nodes last nodes first nodes first scope == ast scope.
+!
+
+testScopeLevel
+	| src ast |
+
+	src := 'foo | a | a + 1. [ [ | b | b := a ] ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	self assert: ast scope scopeLevel = 1.
+	self assert: ast nodes first nodes last nodes first nodes first scope scopeLevel = 3
+!
+
+testUnknownVariables
+	| src ast |
+
+	src := 'foo | a | b + a'.
+	ast := smalltalk parse: src.
+
+	self should: [ analyzer visit: ast ] raise: UnknownVariableError
+!
+
+testUnknownVariablesDefinedInJS
+
+	< var someVariable = 1 >.
+
+	self shouldnt: [ smalltalk parse: 'foo someVariable' ] raise: UnknownVariableError
+!
+
+testUnknownVariablesWithScope
+	| src ast |
+
+	src := 'foo | a b | [ c + 1. [ a + 1. d + 1 ]]'.
+	ast := smalltalk parse: src.
+	
+	self should: [ analyzer visit: ast ] raise: UnknownVariableError
+!
+
+testVariableShadowing
+	| src ast |
+	src := 'foo | a | a + 1'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast
+!
+
+testVariableShadowing2
+	| src ast |
+	src := 'foo | a | a + 1. [ | a | a := 2 ]'.
+	ast := smalltalk parse: src.
+	self should: [analyzer visit: ast] raise: ShadowingVariableError
+!
+
+testVariableShadowing3
+	| src ast |
+	src := 'foo | a | a + 1. [ | b | b := 2 ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast
+!
+
+testVariableShadowing4
+	| src ast |
+	src := 'foo | a | a + 1. [ [ [ | b | b := 2 ] ] ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast
+!
+
+testVariableShadowing5
+	| src ast |
+	src := 'foo | a | a + 1. [ [ [ | a | a := 2 ] ] ]'.
+	ast := smalltalk parse: src.
+	self should: [analyzer visit: ast] raise: ShadowingVariableError
+!
+
+testVariablesLookup
+	| src ast |
+
+	src := 'foo | a | a + 1. [ | b | b := a ]'.
+	ast := smalltalk parse: src.
+	analyzer visit: ast.
+
+	"Binding for `a` in the message send"
+	self assert: ast nodes first nodes first receiver binding isTempVar.
+	self assert: ast nodes first nodes first receiver binding scope == ast scope.
+
+	"Binding for `b`"
+	self assert: ast nodes first nodes last nodes first nodes first left binding isTempVar.
+	self assert: ast nodes first nodes last nodes first nodes first left binding scope == ast nodes first nodes last scope.
 ! !
 

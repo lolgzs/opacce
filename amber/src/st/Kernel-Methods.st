@@ -181,6 +181,10 @@ methodClass
 	^self basicAt: 'methodClass'
 !
 
+protocol
+	^ self category
+!
+
 referencedClasses
 	^self basicAt: 'referencedClasses'
 !
@@ -241,7 +245,7 @@ printString
 !
 
 sendTo: anObject
-	Smalltalk current send: self selector to: anObject arguments: self arguments
+	^ Smalltalk current send: self selector to: anObject arguments: self arguments
 ! !
 
 !Message class methodsFor: 'instance creation'!
@@ -271,6 +275,10 @@ asString
 
 home
 	<return self.homeContext>
+!
+
+pc
+	<return self.pc>
 !
 
 printString
