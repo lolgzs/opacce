@@ -76,7 +76,7 @@ function setupConstants($cfg) {
 	defineConstant('URL_ADMIN_CSS', BASE_URL . '/public/admin/css/');
 	defineConstant('URL_ADMIN_IMG', BASE_URL . '/public/admin/images/');
 	defineConstant('URL_ADMIN_JS', BASE_URL . '/public/admin/js/');
-	defineConstant('JQUERY', URL_ADMIN_JS . 'jquery-1.7.2.min.js');
+	defineConstant('JQUERY', URL_ADMIN_JS . 'jquery-1.8.2.min.js');
 	defineConstant('JQUERYMOBILE_VERSION',  '1.1.0');
 	defineConstant('JQUERYUI', URL_ADMIN_JS . 'jquery_ui/jquery-ui-1.8.16.full.js');
 	
