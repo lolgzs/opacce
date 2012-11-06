@@ -72,6 +72,12 @@ class ZendAfi_Auth extends Zend_Auth {
 		}
 		return false;
 	}
+
+
+	public function logUser($user) {
+		$this->getStorage()->write($user->toStdClass());
+		return $this;
+	}
 }
 
 ?>

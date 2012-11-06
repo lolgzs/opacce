@@ -1006,4 +1006,20 @@ class Class_Users extends Storm_Model_Abstract {
 			->setRoleLevel($role)
 			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole($role));
 	}
+
+
+	
+	/**
+	 * return StdClass
+	 */
+	public function toStdClass() {
+		$result = new StdClass();
+
+		$fields = $this->toArray();
+		foreach($fields as $field => $value) {
+			$prop_name = strtoupper($field);
+			$result->$prop_name = $value;
+		}
+		return $result;
+	}
 }

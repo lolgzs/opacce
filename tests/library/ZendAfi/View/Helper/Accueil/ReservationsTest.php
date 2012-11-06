@@ -30,10 +30,7 @@ class ReservationsTestWithConnectedUser extends ViewHelperTestCase {
 			'division' => '1',
 			'preferences' => [
 			'titre' => 'Mes reservations']]);
-		$account = new StdClass();
-		$account->ID_USER = '123456';
-		ZendAfi_Auth::getInstance()->getStorage()->write($account);
-		$user=Class_Users::newInstanceWithId('123456',['nom'=>'Estelle']);
+
 		$propaganda = new Class_WebService_SIGB_Reservation('13', new Class_WebService_SIGB_Exemplaire(456));
 		$propaganda->getExemplaire()
 					->setTitre('Propaganda')
@@ -48,7 +45,10 @@ class ReservationsTestWithConnectedUser extends ViewHelperTestCase {
 
 		$en_suivant_emma->setEtat('Disponible');
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Estelle');
-		$user->setFicheSigb(['fiche'=>$emprunteur]);
+
+		ZendAfi_Auth::getInstance()->logUser(Class_Users
+																				 ::newInstanceWithId('123456',['nom'=>'Estelle'])
+																				 ->setFicheSigb(['fiche'=>$emprunteur]));
 
 		$emprunteur->reservationsAddAll(array( $propaganda,$en_suivant_emma));
 		$this->html = $helper->getBoite();

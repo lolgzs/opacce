@@ -97,14 +97,7 @@ class ZendAfi_Auth_Adapter_CommSigb implements Zend_Auth_Adapter_Interface {
 	 * @return Std_Class
 	 */
 	public function getResultObject() {
-		$result = new StdClass();
-
-		$fields = $this->_authenticated_user->toArray();
-		foreach($fields as $field => $value) {
-			$prop_name = strtoupper($field);
-			$result->$prop_name = $value;
-		}
-		return $result;
+		return $this->_authenticated_user->toStdClass();
 	}
 }
 

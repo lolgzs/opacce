@@ -30,10 +30,8 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 			'division' => '1',
 			'preferences' => [
 			'titre' => 'Mes documents']]);
-		$account = new StdClass();
-		$account->ID_USER = '123456';
-		ZendAfi_Auth::getInstance()->getStorage()->write($account);
-		$user=Class_Users::newInstanceWithId('123456',['nom'=>'Estelle']);
+
+
 		
 
 		$alice = new Class_WebService_SIGB_Emprunt('13', new Class_WebService_SIGB_Exemplaire(456));
@@ -53,7 +51,10 @@ class PretsTestWithConnectedUser extends ViewHelperTestCase {
 
 
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Estelle');
-		$user->setFicheSigb(['fiche'=>$emprunteur]);
+
+		ZendAfi_Auth::getInstance()->logUser(Class_Users
+																				 ::newInstanceWithId('123456',['nom'=>'Estelle'])
+																				 ->setFicheSigb(['fiche'=>$emprunteur]));
 
 		$emprunteur->empruntsAddAll(array( $klein, $alice));
 		$this->html = $helper->getBoite();
