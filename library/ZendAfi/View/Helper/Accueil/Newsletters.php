@@ -60,7 +60,8 @@ class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accuei
 
 
 	public function isBoiteVisible() {
-		return null !=  Class_Users::getIdentity();
+		return ( Class_Users::hasIdentity() &&
+						 Class_Newsletter::count()>0);
 	}
 
 

@@ -81,6 +81,42 @@ class NewslettersTestWithConnectedUser extends ViewHelperTestCase {
 
 }
 
+class NewslettersTestWithConnectedUserWithoutNewsletters extends ViewHelperTestCase {	
+	public function setUp() {
+		parent::setUp();
+
+		$this->helper = new ZendAfi_View_Helper_Accueil_Newsletters(2, [
+			'type_module'=>'NEWSLETTERS',
+			'division' => '1',
+			'preferences' => [
+			'titre' => 'Newsletters']]);
+
+		$user=Class_Users::newInstanceWithId('123456',['nom'=>'Estelle']);
+		ZendAfi_Auth::getInstance()->logUser($user);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Newsletter') 
+		->whenCalled('findAll')
+		->answers([])
+		->whenCalled('count')
+		->answers(0);
+
+		$this->html = $this->helper->getBoite();
+	}
+	
+
+	/** @test */
+	public function boiteNewslettersShouldNotBeDisplayed () {
+		$this->assertEmpty($this->html);
+	}
+
+
+	/** @test */
+	public function boiteNewslettersShouldNotCacheContents () {
+		$this->assertFalse($this->helper->shouldCacheContent());
+	}
+
+}
+
 
 class NewslettersTestWithNonConnectedUser extends ViewHelperTestCase {	
 	public function setUp() {
