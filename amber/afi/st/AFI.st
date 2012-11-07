@@ -799,7 +799,7 @@ afterPageChange: data
 
 beforePageChange:data
 	self closeDescriptions.
-	self openPageNo: data curr + 1.
+	self openPageNo: (data at: 'curr') + 1.
 	self closeZoom.
 !
 

@@ -1298,12 +1298,12 @@ category: 'callbacks',
 fn: function (data){
 var self=this;
 smalltalk.send(self,"_closeDescriptions",[]);
-smalltalk.send(self,"_openPageNo_",[smalltalk.send(smalltalk.send(data,"_curr",[]),"__plus",[(1)])]);
+smalltalk.send(self,"_openPageNo_",[smalltalk.send(smalltalk.send(data,"_at_",["curr"]),"__plus",[(1)])]);
 smalltalk.send(self,"_closeZoom",[]);
 return self},
 args: ["data"],
-source: "beforePageChange:data\x0a\x09self closeDescriptions.\x0a\x09self openPageNo: data curr + 1.\x0a\x09self closeZoom.",
-messageSends: ["closeDescriptions", "openPageNo:", "+", "curr", "closeZoom"],
+source: "beforePageChange:data\x0a\x09self closeDescriptions.\x0a\x09self openPageNo: (data at: 'curr') + 1.\x0a\x09self closeZoom.",
+messageSends: ["closeDescriptions", "openPageNo:", "+", "at:", "closeZoom"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);

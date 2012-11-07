@@ -911,7 +911,7 @@ selector: "beforePageChange:",
 fn: function (data){
 var self=this;
 smalltalk.send(self,"_closeDescriptions",[]);
-smalltalk.send(self,"_openPageNo_",[smalltalk.send(smalltalk.send(data,"_curr",[]),"__plus",[(1)])]);
+smalltalk.send(self,"_openPageNo_",[smalltalk.send(smalltalk.send(data,"_at_",["curr"]),"__plus",[(1)])]);
 smalltalk.send(self,"_closeZoom",[]);
 return self}
 }),
