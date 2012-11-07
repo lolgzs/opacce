@@ -272,20 +272,18 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 
 																					 '4' => ['division' => '1',
 																									 'type_module' => 'NEWS'],
+
 																					 '8' => ['division' => '2',
 																									 'type_module' => 'RESERVATIONS',
 																									 'preferences' => ['titre' => 'Mes réservations']],
 
 																					 '9' => ['division' => '2',
 																									 'type_module' => 'PRETS',
-																									 'preferences' => ['titre' => 'Mes documents'],
+																									 'preferences' => ['titre' => 'Mes documents']],
 
 																					 '10' => ['division' => '2',
 																									 'type_module' => 'NEWSLETTERS',
-																									 'preferences' => ['titre' => 'Lettres d\'informations']],
-
-
-																					 ]
+																									 'preferences' => ['titre' => 'Lettres d\'informations']]
 		                         ],
 														 'options' => 	[]];
 
@@ -404,8 +402,7 @@ class ProfilOptionsControllerProfilJeunesseViewPageJeuxTest extends ProfilOption
 
 class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase {
 	protected function _loginHook($account) {}
-
-
+	
 	public function setUp() {
 		parent::setUp();
 
@@ -418,7 +415,12 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 																->whenCalled('fileExists')
 																->answers(true));
 
-		$this->dispatch('/opac/');
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Newsletter')
+			->whenCalled('count')->answers(5)
+			->whenCalled('findAll')->answers([Class_Newsletter::newInstanceWithId(23, ['titre' => 'Nouveautés'])]);
+
+
+		$this->dispatch('/opac/', true);
 	}
 
 
