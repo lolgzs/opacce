@@ -307,30 +307,18 @@ renderPagesOn: html
 	]
 ! !
 
-Object subclass: #BibNumAlbum
-	instanceVariableNames: 'container ajax url scriptsRoot bookWidget'
+Widget subclass: #AbstractBookWidget
+	instanceVariableNames: 'book scriptsRoot'
 	package: 'AFI'!
 
-!BibNumAlbum methodsFor: 'accessing'!
+!AbstractBookWidget methodsFor: 'accessor'!
 
-ajax
-	^ ajax ifNil: [ajax := Ajax url: self url]
+book
+	^ book
 !
 
-ajax: anAjax
-	ajax := anAjax
-!
-
-container
-	^ container
-!
-
-container: aJQuery
-	container := aJQuery
-!
-
-pages
-	^ bookWidget book pages
+book: aBook
+	book := aBook
 !
 
 scriptsRoot
@@ -339,350 +327,17 @@ scriptsRoot
 
 scriptsRoot: anUrl
 	scriptsRoot := anUrl
-!
-
-url
-	^ url
-!
-
-url: aString
-	url := aString
 ! !
 
-!BibNumAlbum methodsFor: 'loading'!
-
-load
-	bookWidget := BookWidget new 
-					loader: (BibNumLoader new
-          				              		ajax: self ajax;
-         		            		   		yourself);
-       				        scriptsRoot: self scriptsRoot;
-					appendToJQuery: self container
-! !
-
-!BibNumAlbum class methodsFor: 'instance creation'!
-
-load: anURLForJSON  in: aJQuerySelector
-	^  self new
-		url: anURLForJSON;
-		container: aJQuerySelector asJQuery; 
-		load.
-!
-
-load: anURLForJSON  in: aJQuerySelector scriptsRoot: anURL
-	^  self new
-		url: anURLForJSON;
-		container: aJQuerySelector asJQuery; 
-		scriptsRoot: anURL;
-		load.
-! !
-
-Object subclass: #BibNumLoader
-	instanceVariableNames: 'ajax'
-	package: 'AFI'!
-
-!BibNumLoader methodsFor: 'accessing'!
-
-ajax
-	^ ajax ifNil: [ajax := Ajax new]
-!
-
-ajax: anAjax
-	ajax := anAjax
-! !
-
-!BibNumLoader methodsFor: 'loading'!
-
-abort
-	self ajax abort
-!
-
-buildBookFromJSon: aJSONObjectOrString
-	|book album|
-	album := (aJSONObjectOrString isString 
-					ifTrue: [window JSON parse: aJSONObjectOrString] 
-					ifFalse: [aJSONObjectOrString]) album.
-	book := Book new
-				title: (album at: 'titre');
-				width: (album at: 'width');
-				height: (album at: 'height');
-				downloadUrl: (album at: 'download_url');
-				yourself.
-	album ressources do: [:aRessource| 
-        					book newPage
-                                			title: (aRessource at: 'titre');
-                              				description: (aRessource at: 'description');
-							thumbnailURL: (aRessource at: 'thumbnail');
-                             				fullImageURL: (aRessource at: 'original');
-							foliono: (aRessource at: 'foliono');
-							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail');
-							downloadURL: (aRessource at: 'download')].
-	^ book
-!
-
-loadBookFromJSONOnSuccess: aBlock
-	self ajax
-		onSuccessDo: [:data| |book|
-							book := self buildBookFromJSon: data.
-							aBlock value: book];
-		send.
-! !
-
-BibNumLoader subclass: #SouvignyLoader
-	instanceVariableNames: 'pages links book'
-	package: 'AFI'!
-!SouvignyLoader commentStamp!
-I'm a loader dedicated to the Bible de Souvigny!
-
-!SouvignyLoader methodsFor: 'accessing'!
-
-baseURL
-	^ 'souvigny/B031906101_MS_001/'
-!
-
-book
-	^ book ifNil: [book := self class bookClass new
-                      					width: 390;
-                      					height: 594;
-                      					yourself				]
-!
-
-fullImagesURL
-	^ self baseURL, 'big/'
-!
-
-links
-	^ links ifNil: [links := Dictionary new]
-!
-
-metadataURL
-	^ 'souvigny/souvigny.json'.
-!
-
-parsePageNo: aString
-	^  (aString includesSubString: 'r') 
-			ifTrue: [aString allButLast asNumber * 2]
-			ifFalse: [  (aString includesSubString: 'v') 
-                                 		ifTrue: [aString allButLast asNumber * 2 + 1]
-                                 		ifFalse: [aString] ]
-!
-
-thumbsJSONURL
-	^ 'souvigny/thumbs.json'
-!
-
-thumbsURL
-	^ self baseURL, 'thumbs/'
-! !
-
-!SouvignyLoader methodsFor: 'loading'!
-
-loadBookFromJSONOnSuccess: aBlock
-	(self ajax url: self thumbsJSONURL) 
-		onSuccessDo: [:data|
-                              		self buildBookFromJSON: data.
-                              		self onMetadataLoadedDo: [
-                                          aBlock value: self book]]; 
-		send.
-!
-
-loadBookOnSuccess: aBlock
-	(Ajax url: self thumbsURL) 
-		onSuccessDo: [:data|
-                              		self buildBookFromHTML: data.
-                              		self onMetadataLoadedDo: [
-                                          aBlock value: self book]]; 
-		send.
-!
-
-onMetadataLoadedDo: aBlock
-	(Ajax url: self metadataURL)
-		onSuccessDo: [:data|
-                              		self initMetadata: data.
-                              		aBlock value];
-		send
-! !
-
-!SouvignyLoader methodsFor: 'page creation'!
-
-buildBookFromHTML: aHTMLString
-	|anchors|
-	anchors := (aHTMLString asJQuery find:'li a[href$="jpg"]').
-	anchors each: [:index :element| |fileName|
-                       fileName := (JQuery fromElement: element) attr: 'href'.
-                       self book newPage
-                       			fullImageURL: self fullImagesURL, fileName;
-                       			thumbnailURL: self thumbsURL, fileName.
-        ].
-!
-
-buildBookFromJSON: anArray
-	anArray do: [:fileName|
-                       self book newPage
-                       			fullImageURL: self fullImagesURL, fileName;
-                       			thumbnailURL: self thumbsURL, fileName.
-        ].
-!
-
-initMetadata: anArray
-	anArray do: [:aJSObject| |pageNo page|
-                     pageNo := <aJSObject.pageNo>.
-                     pageNo ifNotNil: [
-                   	page := self book pageAtFolio: pageNo.
-                     	page ifNotNil: [page initMetadata: aJSObject] ].
-        ]
-! !
-
-!SouvignyLoader class methodsFor: 'accessing'!
-
-bookClass
-	^SouvignyBible
-! !
-
-Object subclass: #Book
-	instanceVariableNames: 'pages title width height downloadUrl'
-	package: 'AFI'!
-
-!Book methodsFor: 'accessing'!
-
-downloadUrl
-	^ downloadUrl ifNil: [downloadUrl := '']
-!
-
-downloadUrl: anUrl
-	downloadUrl := anUrl
-!
-
-height
-	^ height ifNil: [height := 400]
-!
-
-height: anInteger
-	height := anInteger
-!
-
-pageAt: aNumber
-	^ self pages at: aNumber
-!
-
-pageAt: aNumber ifAbsent: aBlock
-	^ self pages at: aNumber ifAbsent: aBlock
-!
-
-pageNo: aPage
-	^ self pages indexOf: aPage
-!
-
-pages
-	^ pages ifNil: [pages := Array new]
-!
-
-pagesWithTitle
-	^ self pages reject: [:aPage | aPage title isEmpty]
-!
-
-size
-	^ pages size
-!
-
-title
-	^ title
-!
-
-title: aString
-	title := aString
-!
-
-width
-	^ width ifNil: [width := 300]
-!
-
-width: anInteger
-	width := anInteger
-! !
-
-!Book methodsFor: 'adding'!
-
-addPage: aPage
-	self pages add: aPage.
-	aPage book: self.
-	^ aPage
-!
-
-newPage
-	^ self addPage: (self class pageClass new)
-! !
-
-!Book methodsFor: 'enumerating'!
-
-pageAt: pageNo do: aBlockWithArg
-	|page|
-	page := self pages at: pageNo ifAbsent: [nil].
-        page ifNotNil: [aBlockWithArg value: page].
-!
-
-pagesNo:  anArray do: aBlockWithArg
-	anArray do: [:pageNo|
-                 self pageAt: pageNo do: aBlockWithArg
-         ].
-!
-
-pagesNo: start to: end do: aBlockWithArg
-	start to: end do: [:pageNo|
-                 self pageAt: pageNo do: aBlockWithArg
-         ].
-! !
-
-!Book methodsFor: 'reset'!
-
-reset
-	self pages do: [:aPage| aPage reset]
-! !
-
-!Book class methodsFor: 'accessing'!
-
-pageClass
-	^ Page
-! !
-
-Book subclass: #SouvignyBible
+AbstractBookWidget subclass: #BookMonoWidget
 	instanceVariableNames: ''
 	package: 'AFI'!
 
-!SouvignyBible methodsFor: 'accessing'!
-
-pageAtFolio: aString
-	^ self pages at: (self parseFolioNo: aString) ifAbsent: [nil].
-!
-
-parseFolioNo: aString
-	"Folios are numbered 32r 32v as page 32 recto, page 32 verso. Excepted 3 first folios (6 pages)"
-	^(aString includesSubString: 'r') 
-			ifTrue: [aString allButLast asNumber * 2 + 5]
-			ifFalse: [  (aString includesSubString: 'v') 
-                                 		ifTrue: [aString allButLast asNumber * 2 + 1 + 5]
-                                 		ifFalse: [aString asNumber] ].
-!
-
-title
-	^ 'Bible de Souvigny'
-! !
-
-!SouvignyBible class methodsFor: 'accessing'!
-
-pageClass
-	^ SouvignyPage
-! !
-
-Widget subclass: #BookWidget
-	instanceVariableNames: 'book currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader scriptsRoot bookContainer width rootBrush menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
+AbstractBookWidget subclass: #BookWidget
+	instanceVariableNames: 'currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader bookContainer width rootBrush menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
-
-book
-	^ book
-!
 
 bookletOptions
 	^ HashedCollection new 
@@ -746,14 +401,6 @@ navigatorWidth
 
 rightPage
 	^ book pageAt: currentPageNo ifAbsent: [Page new].
-!
-
-scriptsRoot
-	^ scriptsRoot ifNil: [scriptsRoot := '']
-!
-
-scriptsRoot: anUrl
-	scriptsRoot := anUrl
 !
 
 widgetClass
@@ -1194,6 +841,47 @@ updateFolioNumbers
 	rightFolioBrush contents: self rightPage foliono.
 ! !
 
+!BookWidget methodsFor: 'external libs'!
+
+loadBookletJSThen: aBlock
+	|head|
+	head := 'head' asJQuery.
+	(head find: 'script[src*="booklet"]') length = 0 
+    	ifTrue: [ self renderScriptsOn: (HTMLCanvas onJQuery: head) Then: aBlock]
+        ifFalse: aBlock
+!
+
+renderScriptsOn: html Then: aBlock
+	#( 	'booklet/jquery.booklet.1.2.0.css'
+          	'iviewer/jquery.iviewer.css' ) do: [:anUrl|
+                                                   				html link
+											href: self scriptsRoot, anUrl;
+											type:'text/css';
+											rel:'stylesheet'	].
+	html style
+		type: 'text/css';
+		with: self style.
+
+	(jQuery at: 'ui') ifNil: [ html script
+         				    	type: 'text/javascript';
+                				src: 	'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. 
+                                
+     
+	jQuery ajax: #{	  'dataType' -> 'script'. 
+    								'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').
+                                    'cache' -> true.
+                                    'success' -> aBlock
+                                }.
+
+	#('booklet/jquery.easing.1.3.js'
+        'iviewer/jquery.iviewer.min.js'
+        'iviewer/jquery.mousewheel.min.js'
+       ) do: [:anUrl|   jQuery ajax: #{	'dataType' -> 'script'.
+       															'url' -> (self scriptsRoot, anUrl).
+                                                                'cache' -> true
+                                                                }]
+! !
+
 !BookWidget methodsFor: 'initialize'!
 
 initialize
@@ -1209,21 +897,21 @@ loadBookThenRenderOn: bookBrush
 	book 
 		ifNil: [self loader loadBookFromJSONOnSuccess: renderBlock]
 		ifNotNil: [	book reset.					
-					renderBlock value: book].
+						  renderBlock value: book].
 ! !
 
 !BookWidget methodsFor: 'rendering'!
 
 renderBook: aBook on: aBrush
 	book := aBook.
-
+    
 	aBrush contents: [:html|
 		aBook pages do: [:aPage| 	aPage brush: (html div
         		         								rel: aPage title;
                                  								yourself)  ]	].
 	
 	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
-	(bookContainer asJQuery at: 'booklet') ifNotNil: [ bookContainer asJQuery booklet: (self bookletOptions) ].
+   	self loadBookletJSThen: [ bookContainer asJQuery booklet: (self bookletOptions) ].
 	(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
 	(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
 	
@@ -1260,16 +948,16 @@ renderBookOn: html
 	bookContainer
 	    class: 'book';
             with: [	|bookBrush|
-			leftFolioBrush := html div class: 'b-counter'.
-			rightFolioBrush := html div class: 'b-counter'.
-                   	bookBrush := html div 
-                   		class: 'b-load';
-                   		with: [html div
-                                          	class: 'loading';
-                                          	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
-                   		yourself.
+						leftFolioBrush := html div class: 'b-counter'.
+						rightFolioBrush := html div class: 'b-counter'.
+       	            	bookBrush := html div 
+            	       		class: 'b-load';
+             	      		with: [html div
+                      	                    	class: 'loading';
+                  	                        	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
+                   			yourself.
                    
-                   	self loadBookThenRenderOn: bookBrush]
+                   			self loadBookThenRenderOn: bookBrush]
 !
 
 renderBookTitle
@@ -1297,65 +985,31 @@ renderFullscreenControlsOn: html
 !
 
 renderOn: html
-        self renderDevToolsOn: html.
+     self renderDevToolsOn: html.
 	rootBrush := html root.
 	self renderWidgetOn: html.
-	"window at:'onresize' put: [self reloadWidget]."
 !
 
 renderPageDescriptionOn: html 	
 	pageDescriptionsBrush := html div 
                                                                class: 'page-desc';
-                       						yourself.
-!
-
-renderScripts
-	|head|
-	head := 'head' asJQuery.
-	(head find: 'script[src*="booklet"]') length = 0 ifTrue: [
-		self renderScriptsOn: (HTMLCanvas onJQuery: head).
-          ].
-	isFullscreen 
-		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
-		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
-!
-
-renderScriptsOn: html
-	#( 	'booklet/jquery.booklet.1.2.0.css'
-          	'iviewer/jquery.iviewer.css' ) do: [:anUrl|
-                                                   				html link
-											href: self scriptsRoot, anUrl;
-											type:'text/css';
-											rel:'stylesheet'	].
-	html style
-		type: 'text/css';
-		with: self style.
-
-	(jQuery at: 'ui') ifNil: [ html script
-         				    	type: 'text/javascript';
-                				src: 	'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. 
-
-	#(	'booklet/jquery.easing.1.3.js'
-	  	'booklet/jquery.booklet.1.2.0.min.js' 
-          	'iviewer/jquery.iviewer.min.js'
-          	'iviewer/jquery.mousewheel.min.js'
-         	) do: [:anUrl| 
-                           html script
-                           	type: 'text/javascript';
-                                src: self scriptsRoot, anUrl]
+                       											yourself.
 !
 
 renderWidgetOn: html
 	html div
 		class: self widgetClass; 
 		with: [	self 
-					renderScripts;
-                       			renderFullscreenControlsOn: html;
+                    renderFullscreenControlsOn: html;
 					renderDownloadBookOn: html;
-                  			renderBookMenuOn: html;
-                       			renderZoomControlsOn: html;
-                  			renderBookOn: html;
-					renderPageDescriptionOn: html 	].
+                  	renderBookMenuOn: html;
+                    renderZoomControlsOn: html;
+					renderPageDescriptionOn: html;
+                  	renderBookOn: html 	].
+    
+	isFullscreen 
+		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
+		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
 !
 
 renderZoomControlsOn: html
@@ -1492,6 +1146,381 @@ open
 
 reset
 	^ self new reset.
+! !
+
+Object subclass: #BibNumAlbum
+	instanceVariableNames: 'container ajax url scriptsRoot bookWidget'
+	package: 'AFI'!
+
+!BibNumAlbum methodsFor: 'accessing'!
+
+ajax
+	^ ajax ifNil: [ajax := Ajax url: self url]
+!
+
+ajax: anAjax
+	ajax := anAjax
+!
+
+container
+	^ container
+!
+
+container: aJQuery
+	container := aJQuery
+!
+
+pages
+	^ bookWidget book pages
+!
+
+scriptsRoot
+	^ scriptsRoot ifNil: [scriptsRoot := '']
+!
+
+scriptsRoot: anUrl
+	scriptsRoot := anUrl
+!
+
+url
+	^ url
+!
+
+url: aString
+	url := aString
+! !
+
+!BibNumAlbum methodsFor: 'loading'!
+
+load
+	|loader|
+	loader := BibNumLoader ajax: self ajax.
+    loader loadBookFromJSONOnSuccess: [:aBook :playerClassName| |playerClass|
+    																				playerClass := (smalltalk at: playerClassName) ifNil: [BookWidget].
+    																				bookWidget := playerClass new 
+    																														book: aBook;
+       																						       							scriptsRoot: self scriptsRoot;
+																															appendToJQuery: self container]
+! !
+
+!BibNumAlbum class methodsFor: 'instance creation'!
+
+load: anURLForJSON  in: aJQuerySelector
+	^  self new
+		url: anURLForJSON;
+		container: aJQuerySelector asJQuery; 
+		load.
+!
+
+load: anURLForJSON  in: aJQuerySelector scriptsRoot: anURL
+	^  self new
+		url: anURLForJSON;
+		container: aJQuerySelector asJQuery; 
+		scriptsRoot: anURL;
+		load.
+! !
+
+Object subclass: #BibNumLoader
+	instanceVariableNames: 'ajax'
+	package: 'AFI'!
+
+!BibNumLoader methodsFor: 'accessing'!
+
+ajax
+	^ ajax ifNil: [ajax := Ajax new]
+!
+
+ajax: anAjax
+	ajax := anAjax
+! !
+
+!BibNumLoader methodsFor: 'loading'!
+
+abort
+	self ajax abort
+!
+
+buildBookFromJSon: aJSONObjectOrString
+	|book album|
+	album := (aJSONObjectOrString isString 
+					ifTrue: [window JSON parse: aJSONObjectOrString] 
+					ifFalse: [aJSONObjectOrString]) album.
+	book := Book new
+				title: (album at: 'titre');
+				width: (album at: 'width');
+				height: (album at: 'height');
+				downloadUrl: (album at: 'download_url');
+				yourself.
+	album ressources do: [:aRessource| 
+        					book newPage
+                                			title: (aRessource at: 'titre');
+                              				description: (aRessource at: 'description');
+							thumbnailURL: (aRessource at: 'thumbnail');
+                             				fullImageURL: (aRessource at: 'original');
+							foliono: (aRessource at: 'foliono');
+							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail');
+							downloadURL: (aRessource at: 'download')].
+	^ book
+!
+
+loadBookFromJSONOnSuccess: aBlock
+	self ajax
+		onSuccessDo: [:data| |book|
+									book := self buildBookFromJSon: data.
+									aBlock value: book value: ((data at: 'album') at: 'player') asString];
+		send.
+! !
+
+!BibNumLoader class methodsFor: 'initialize'!
+
+ajax: anAjax
+	^ self new ajax: anAjax
+! !
+
+BibNumLoader subclass: #SouvignyLoader
+	instanceVariableNames: 'pages links book'
+	package: 'AFI'!
+!SouvignyLoader commentStamp!
+I'm a loader dedicated to the Bible de Souvigny!
+
+!SouvignyLoader methodsFor: 'accessing'!
+
+baseURL
+	^ 'souvigny/B031906101_MS_001/'
+!
+
+book
+	^ book ifNil: [book := self class bookClass new
+                      					width: 390;
+                      					height: 594;
+                      					yourself				]
+!
+
+fullImagesURL
+	^ self baseURL, 'big/'
+!
+
+links
+	^ links ifNil: [links := Dictionary new]
+!
+
+metadataURL
+	^ 'souvigny/souvigny.json'.
+!
+
+parsePageNo: aString
+	^  (aString includesSubString: 'r') 
+			ifTrue: [aString allButLast asNumber * 2]
+			ifFalse: [  (aString includesSubString: 'v') 
+                                 		ifTrue: [aString allButLast asNumber * 2 + 1]
+                                 		ifFalse: [aString] ]
+!
+
+thumbsJSONURL
+	^ 'souvigny/thumbs.json'
+!
+
+thumbsURL
+	^ self baseURL, 'thumbs/'
+! !
+
+!SouvignyLoader methodsFor: 'loading'!
+
+loadBookFromJSONOnSuccess: aBlock
+	(self ajax url: self thumbsJSONURL) 
+		onSuccessDo: [:data|
+                              		self buildBookFromJSON: data.
+                              		self onMetadataLoadedDo: [
+                                          aBlock value: self book]]; 
+		send.
+!
+
+loadBookOnSuccess: aBlock
+	(Ajax url: self thumbsURL) 
+		onSuccessDo: [:data|
+                              		self buildBookFromHTML: data.
+                              		self onMetadataLoadedDo: [
+                                          aBlock value: self book]]; 
+		send.
+!
+
+onMetadataLoadedDo: aBlock
+	(Ajax url: self metadataURL)
+		onSuccessDo: [:data|
+                              		self initMetadata: data.
+                              		aBlock value];
+		send
+! !
+
+!SouvignyLoader methodsFor: 'page creation'!
+
+buildBookFromHTML: aHTMLString
+	|anchors|
+	anchors := (aHTMLString asJQuery find:'li a[href$="jpg"]').
+	anchors each: [:index :element| |fileName|
+                       fileName := (JQuery fromElement: element) attr: 'href'.
+                       self book newPage
+                       			fullImageURL: self fullImagesURL, fileName;
+                       			thumbnailURL: self thumbsURL, fileName.
+        ].
+!
+
+buildBookFromJSON: anArray
+	anArray do: [:fileName|
+                       self book newPage
+                       			fullImageURL: self fullImagesURL, fileName;
+                       			thumbnailURL: self thumbsURL, fileName.
+        ].
+!
+
+initMetadata: anArray
+	anArray do: [:aJSObject| |pageNo page|
+                     pageNo := <aJSObject.pageNo>.
+                     pageNo ifNotNil: [
+                   	page := self book pageAtFolio: pageNo.
+                     	page ifNotNil: [page initMetadata: aJSObject] ].
+        ]
+! !
+
+!SouvignyLoader class methodsFor: 'accessing'!
+
+bookClass
+	^SouvignyBible
+! !
+
+Object subclass: #Book
+	instanceVariableNames: 'pages title width height downloadUrl'
+	package: 'AFI'!
+
+!Book methodsFor: 'accessing'!
+
+downloadUrl
+	^ downloadUrl ifNil: [downloadUrl := '']
+!
+
+downloadUrl: anUrl
+	downloadUrl := anUrl
+!
+
+height
+	^ height ifNil: [height := 400]
+!
+
+height: anInteger
+	height := anInteger
+!
+
+pageAt: aNumber
+	^ self pages at: aNumber
+!
+
+pageAt: aNumber ifAbsent: aBlock
+	^ self pages at: aNumber ifAbsent: aBlock
+!
+
+pageNo: aPage
+	^ self pages indexOf: aPage
+!
+
+pages
+	^ pages ifNil: [pages := Array new]
+!
+
+pagesWithTitle
+	^ self pages reject: [:aPage | aPage title isEmpty]
+!
+
+size
+	^ pages size
+!
+
+title
+	^ title
+!
+
+title: aString
+	title := aString
+!
+
+width
+	^ width ifNil: [width := 300]
+!
+
+width: anInteger
+	width := anInteger
+! !
+
+!Book methodsFor: 'adding'!
+
+addPage: aPage
+	self pages add: aPage.
+	aPage book: self.
+	^ aPage
+!
+
+newPage
+	^ self addPage: (self class pageClass new)
+! !
+
+!Book methodsFor: 'enumerating'!
+
+pageAt: pageNo do: aBlockWithArg
+	|page|
+	page := self pages at: pageNo ifAbsent: [nil].
+        page ifNotNil: [aBlockWithArg value: page].
+!
+
+pagesNo:  anArray do: aBlockWithArg
+	anArray do: [:pageNo|
+                 self pageAt: pageNo do: aBlockWithArg
+         ].
+!
+
+pagesNo: start to: end do: aBlockWithArg
+	start to: end do: [:pageNo|
+                 self pageAt: pageNo do: aBlockWithArg
+         ].
+! !
+
+!Book methodsFor: 'reset'!
+
+reset
+	self pages do: [:aPage| aPage reset]
+! !
+
+!Book class methodsFor: 'accessing'!
+
+pageClass
+	^ Page
+! !
+
+Book subclass: #SouvignyBible
+	instanceVariableNames: ''
+	package: 'AFI'!
+
+!SouvignyBible methodsFor: 'accessing'!
+
+pageAtFolio: aString
+	^ self pages at: (self parseFolioNo: aString) ifAbsent: [nil].
+!
+
+parseFolioNo: aString
+	"Folios are numbered 32r 32v as page 32 recto, page 32 verso. Excepted 3 first folios (6 pages)"
+	^(aString includesSubString: 'r') 
+			ifTrue: [aString allButLast asNumber * 2 + 5]
+			ifFalse: [  (aString includesSubString: 'v') 
+                                 		ifTrue: [aString allButLast asNumber * 2 + 1 + 5]
+                                 		ifFalse: [aString asNumber] ].
+!
+
+title
+	^ 'Bible de Souvigny'
+! !
+
+!SouvignyBible class methodsFor: 'accessing'!
+
+pageClass
+	^ SouvignyPage
 ! !
 
 Object subclass: #Cycle

@@ -14,7 +14,7 @@ setUp
 
 	album := BibNumAlbum new 
 		ajax: ajax;
-		container: container
+		container: container.
 !
 
 tearDown
@@ -62,11 +62,28 @@ testAnchorToDownloadPDFShouldNotBePresent
 	self assert: 0 equals: ((container find: 'div.b-download-book a') at: 'size') value
 ! !
 
-BibNumAlbumTestCase subclass: #BibNumAlbumTintinTest
+BibNumAlbumTestCase subclass: #BibNumAlbumTintinTestCase
+	instanceVariableNames: ''
+	package: 'AFI-Tests'!
+
+!BibNumAlbumTintinTestCase methodsFor: 'running'!
+
+setUp
+	super setUp.
+
+	album
+		url: '/bib-numerique/album/id/2.json';
+		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
+		load.
+
+	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
+! !
+
+BibNumAlbumTintinTestCase subclass: #BibNumAlbumTintinBookletTest
 	instanceVariableNames: 'bible album container ajax'
 	package: 'AFI-Tests'!
 
-!BibNumAlbumTintinTest methodsFor: 'json'!
+!BibNumAlbumTintinBookletTest methodsFor: 'json'!
 
 tintinJSON
 	^   '{"album": {	"id":2, 
@@ -99,20 +116,7 @@ tintinJSON
 				} }'.
 ! !
 
-!BibNumAlbumTintinTest methodsFor: 'running'!
-
-setUp
-	super setUp.
-
-	album
-		url: '/bib-numerique/album/id/2.json';
-		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
-		load.
-
-	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
-! !
-
-!BibNumAlbumTintinTest methodsFor: 'tests'!
+!BibNumAlbumTintinBookletTest methodsFor: 'tests'!
 
 testAnchorToDownloadPDFShouldBePresent
 	self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )
@@ -193,6 +197,50 @@ testSecondPageImageFolioNumberShouldBeXX
 testShouldContainsFourPages
 	"2 pages + covers"
 	self assert: 4 equals: (container find: '.b-page') length
+! !
+
+BibNumAlbumTintinTestCase subclass: #BibNumAlbumTintinMonopageTest
+	instanceVariableNames: ''
+	package: 'AFI-Tests'!
+
+!BibNumAlbumTintinMonopageTest methodsFor: 'json'!
+
+tintinJSON
+	^   '{"album": {	"id":2, 
+					"titre":"Tintin et Milou", 
+					"description":"The real story of Tintin",
+					"width": 400,
+					"height": 300,
+					"download_url": "http://localhost/pdf/2",
+                    "player": "BookMonoWidget",
+					"ressources":[ 
+                                                          				{	"id":12,
+                                                          					"titre": "Origins",
+												"foliono": "12R",
+                                                          					"link_to":"",
+                                                          					"description":"Created in 1929 by Herge" ,
+                                                          					"thumbnail":"userfiles/album/2/thumbs/media/1.jpg",
+                                                          					"navigator_thumbnail":"userfiles/album/2/thumbs/media/1_small.jpg",
+                                                          					"original":"bib-numerique/get-resource/id/1.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/1"},
+                                                          
+                                                          				{	"id":13,
+                                                          					"titre": "Haddock",
+												"foliono": "XX",
+                                                          					"link_to":"",
+                                                          					"description":"Captain living in Moulinsard",
+                                                          					"thumbnail":"userfiles/album/2/thumbs/media/2.jpg",
+                                                          					"navigator_thumbnail":"userfiles/album/2/thumbs/media/2_small.jpg",
+                                                          					"original":"bib-numerique/get-resource/id/2.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/2" }                                                        
+                                                          				]
+				} }'.
+! !
+
+!BibNumAlbumTintinMonopageTest methodsFor: 'tests'!
+
+testBookletShouldNotBeLoaded
+	self assert: 0 equals: ( container find: '.bk-widget') length
 ! !
 
 TestCase subclass: #CycleTest
