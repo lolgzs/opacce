@@ -35,7 +35,7 @@ class Class_Indexation
 	{
 		// Lire formes rejetées
 		$this->articles=array("L'","LE ","LA ","LES ","UN ","UNE ");
-		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO","DO","RE","MI","FA","SI","AC","DC","B","C","D","E","F","G","H","I","J","K","M","N","P","Q","R","S","T","V","W","X","Y","Z","L","YU","UT","LI","OC","PI","ZU","WU","TO","OZ","ZZ");
+		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO","DO","RE","MI","FA","SI","AC","DC","XX","B","C","D","E","F","G","H","I","J","K","M","N","P","Q","R","S","T","V","W","X","Y","Z","L","YU","UT","LI","OC","PI","ZU","WU","TO","OZ","ZZ");
 		$this->exclu = array("LES","DES","MES","TES","ENTRE","CHEZ","SES","LEUR","MON","ENTRE","POUR","ELLE","ILS","COMME","DANS","EUX","CEUX","MAIS","MEME","SANS",
 		"TOME","VERS","VOUS","CECI","CES","ETC","PARCE","QUE","QUEL","QUELLE","QUELS","QUELLES","PAS","QUI","QUOI","VOS","AFIN","CECI","CELA","LUI","PAR","PUIS","SOI");
 		
