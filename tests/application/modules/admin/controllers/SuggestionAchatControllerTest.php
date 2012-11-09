@@ -27,19 +27,17 @@ abstract class Admin_SuggestionAchatControllerTestCase extends Admin_AbstractCon
 			->whenCalled('findAllBy')
 			->with(['order' => 'date_creation'])
 			->answers([
-								 Class_SuggestionAchat::newInstanceWithId(2)
-								 ->setDateCreation('2012-03-01')
-								 ->setTitre('Harry Potter')
-								 ->setAuteur('J.K.Rowling')
-								 ->setIsbn('1234567890')
-								 ->setDescriptionUrl('http://harrypotter.fr')
-								 ->setCommentaire('Je veux le lire'),
+				Class_SuggestionAchat::newInstanceWithId(2, ['date_creation' => '2012-03-01',
+																										 'titre' => 'Harry Potter',
+																										 'auteur' => 'J.K.Rowling',
+																										 'isbn' => '1234567890',
+																										 'description_url' => 'http://harrypotter.fr',
+																										 'commentaire' => 'Je veux le lire']),
 
-								 Class_SuggestionAchat::newInstanceWithId(3)
-								 ->setDateCreation('2012-03-02')
-								 ->setTitre('Millenium')
-								 ->setAuteur('Stieg Larsson')
-								 ]);
+				Class_SuggestionAchat::newInstanceWithId(3, ['date_creation' => '2012-03-02',
+																										 'titre' => 'Millenium',
+																										 'auteur' =>'Stieg Larsson'])
+			]);
 	}
 }
 
