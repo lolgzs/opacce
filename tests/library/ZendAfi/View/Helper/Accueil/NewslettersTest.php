@@ -39,10 +39,13 @@ class NewslettersTestWithConnectedUser extends ViewHelperTestCase {
 		$user->setNewsletters([$nouveautes_musique]);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Newsletter') 
-		->whenCalled('findAll')
-		->answers( [ $nouveautes_musique,
-									Class_Newsletter::newInstanceWithId(3,['titre' =>'Animations'])
-		]);
+			->whenCalled('count')
+			->answers(2)
+
+			->whenCalled('findAll')
+			->answers( [ $nouveautes_musique,
+									 Class_Newsletter::newInstanceWithId(3,['titre' =>'Animations'])
+			]);
 
 		$this->html = $helper->getBoite();
 	}
