@@ -516,6 +516,7 @@ class BibNumeriqueAlbumHarlockAsBookletTest extends AbstractBibNumeriqueViewHelp
 																													 array('division' => 1,
 																																 'type_module' => 'BIB_NUMERIQUE',
 																																 'preferences' => $preferences));
+		Class_ScriptLoader::resetInstance();
 		$this->html = $helper->getBoite();
 	}
 
