@@ -558,6 +558,22 @@ referencedClasses: ["PageChangeAnnouncement"]
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_openPage_",
+smalltalk.method({
+selector: "openPage:",
+category: 'callbacks',
+fn: function (aPage){
+var self=this;
+smalltalk.send(self,"_subclassResponsibility",[]);
+return self},
+args: ["aPage"],
+source: "openPage: aPage\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_reloadWidget",
 smalltalk.method({
 selector: "reloadWidget",
@@ -973,17 +989,18 @@ selector: "widgetClass",
 category: 'accessor',
 fn: function (){
 var self=this;
-var $1;
+var $2,$1;
 if(smalltalk.assert(self["@isFullscreen"])){
-$1="fullscreen bk-widget";
+$2=" fullscreen bk-widget";
 } else {
-$1="bk-widget";
+$2=" bk-widget";
 };
+$1=smalltalk.send(smalltalk.send(smalltalk.send(self,"_class",[]),"_name",[]),"__comma",[$2]);
 return $1;
 },
 args: [],
-source: "widgetClass\x0a\x09^ isFullscreen \x0a\x09\x09ifTrue: ['fullscreen bk-widget'] \x0a\x09\x09ifFalse: ['bk-widget']",
-messageSends: ["ifTrue:ifFalse:"],
+source: "widgetClass\x0a\x09^ self class name, (isFullscreen \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09ifTrue: [' fullscreen bk-widget'] \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09ifFalse: [' bk-widget'])",
+messageSends: [",", "ifTrue:ifFalse:", "name", "class"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -1008,7 +1025,41 @@ smalltalk.AbstractBookWidget);
 
 
 
-smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor'], 'AFI');
+smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush'], 'AFI');
+smalltalk.addMethod(
+"_bookStyle",
+smalltalk.method({
+selector: "bookStyle",
+category: 'css',
+fn: function (){
+var self=this;
+return "\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a   ";
+},
+args: [],
+source: "bookStyle\x0a\x09^ '\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a   '",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_openPage_",
+smalltalk.method({
+selector: "openPage:",
+category: 'callbacks',
+fn: function (aPage){
+var self=this;
+smalltalk.send(self["@bookBrush"],"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(html,"_img",[]),"_src_",[smalltalk.send(aPage,"_thumbnailURL",[])]);
+})]);
+return self},
+args: ["aPage"],
+source: "openPage: aPage\x0a\x09bookBrush contents: [:html|  html img src: aPage thumbnailURL]",
+messageSends: ["contents:", "src:", "thumbnailURL", "img"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
 smalltalk.addMethod(
 "_renderBookOn_",
 smalltalk.method({
@@ -1016,11 +1067,12 @@ selector: "renderBookOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
-smalltalk.send(self,"_renderBook_on_",[self["@book"],smalltalk.send(html,"_div",[])]);
+self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
+smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
 return self},
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self renderBook:book on: html div",
-messageSends: ["renderBook:on:", "div"],
+source: "renderBookOn: html\x0a\x09self renderBook:book on: (bookBrush := (html div class: 'pages'))",
+messageSends: ["renderBook:on:", "class:", "div"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1396,22 +1448,6 @@ return self;},
 args: [],
 source: "openDescriptions\x0a\x09pageDescriptionsBrush asJQuery hide.\x0a\x09pageDescriptionsBrush contents: [:html| \x0a               \x09\x09(html div asJQuery) html: self leftPage description.\x0a               \x09\x09(html div asJQuery) html: self rightPage description.\x0a        ].\x0a\x09pageDescriptionsBrush asJQuery fadeIn.",
 messageSends: ["hide", "asJQuery", "contents:", "html:", "div", "description", "leftPage", "rightPage", "fadeIn"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_openPage_",
-smalltalk.method({
-selector: "openPage:",
-category: 'callbacks',
-fn: function (aPage){
-var self=this;
-smalltalk.send(self, "_goToPageNo_", [smalltalk.send(aPage, "_pageNo", [])]);
-return self;},
-args: ["aPage"],
-source: "openPage: aPage\x0a\x09self goToPageNo: aPage pageNo.",
-messageSends: ["goToPageNo:", "pageNo"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);

@@ -403,6 +403,17 @@ return self}
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_openPage_",
+smalltalk.method({
+selector: "openPage:",
+fn: function (aPage){
+var self=this;
+smalltalk.send(self,"_subclassResponsibility",[]);
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_reloadWidget",
 smalltalk.method({
 selector: "reloadWidget",
@@ -732,12 +743,13 @@ smalltalk.method({
 selector: "widgetClass",
 fn: function (){
 var self=this;
-var $1;
+var $2,$1;
 if(smalltalk.assert(self["@isFullscreen"])){
-$1="fullscreen bk-widget";
+$2=" fullscreen bk-widget";
 } else {
-$1="bk-widget";
+$2=" bk-widget";
 };
+$1=smalltalk.send(smalltalk.send(smalltalk.send(self,"_class",[]),"_name",[]),"__comma",[$2]);
 return $1;
 }
 }),
@@ -758,14 +770,39 @@ smalltalk.AbstractBookWidget);
 
 
 
-smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor'], 'AFI');
+smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush'], 'AFI');
+smalltalk.addMethod(
+"_bookStyle",
+smalltalk.method({
+selector: "bookStyle",
+fn: function (){
+var self=this;
+return "\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a   ";
+}
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_openPage_",
+smalltalk.method({
+selector: "openPage:",
+fn: function (aPage){
+var self=this;
+smalltalk.send(self["@bookBrush"],"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(html,"_img",[]),"_src_",[smalltalk.send(aPage,"_thumbnailURL",[])]);
+})]);
+return self}
+}),
+smalltalk.BookMonoWidget);
+
 smalltalk.addMethod(
 "_renderBookOn_",
 smalltalk.method({
 selector: "renderBookOn:",
 fn: function (html){
 var self=this;
-smalltalk.send(self,"_renderBook_on_",[self["@book"],smalltalk.send(html,"_div",[])]);
+self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
+smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
 return self}
 }),
 smalltalk.BookMonoWidget);
@@ -1036,17 +1073,6 @@ var self=this;
 smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_hide", []);
 smalltalk.send(self['@pageDescriptionsBrush'], "_contents_", [(function(html){smalltalk.send(smalltalk.send(smalltalk.send(html, "_div", []), "_asJQuery", []), "_html_", [smalltalk.send(smalltalk.send(self, "_leftPage", []), "_description", [])]);return smalltalk.send(smalltalk.send(smalltalk.send(html, "_div", []), "_asJQuery", []), "_html_", [smalltalk.send(smalltalk.send(self, "_rightPage", []), "_description", [])]);})]);
 smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_fadeIn", []);
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_openPage_",
-smalltalk.method({
-selector: "openPage:",
-fn: function (aPage){
-var self=this;
-smalltalk.send(self, "_goToPageNo_", [smalltalk.send(aPage, "_pageNo", [])]);
 return self;}
 }),
 smalltalk.BookWidget);

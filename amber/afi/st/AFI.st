@@ -346,9 +346,9 @@ scriptsRoot: anUrl
 !
 
 widgetClass
-	^ isFullscreen 
-		ifTrue: ['fullscreen bk-widget'] 
-		ifFalse: ['bk-widget']
+	^ self class name, (isFullscreen 
+											ifTrue: [' fullscreen bk-widget'] 
+											ifFalse: [' bk-widget'])
 ! !
 
 !AbstractBookWidget methodsFor: 'announcements'!
@@ -365,6 +365,10 @@ onPageChangeDo: aBlockWithArg
 ! !
 
 !AbstractBookWidget methodsFor: 'callbacks'!
+
+openPage: aPage
+	self subclassResponsibility
+!
 
 reloadWidget
 	rootBrush contents: [:html| self renderWidgetOn: html].
@@ -738,13 +742,57 @@ isTestCaseInContext: aContext
 ! !
 
 AbstractBookWidget subclass: #BookMonoWidget
-	instanceVariableNames: 'zoomPageAnchor'
+	instanceVariableNames: 'zoomPageAnchor bookBrush'
 	package: 'AFI'!
+
+!BookMonoWidget methodsFor: 'callbacks'!
+
+openPage: aPage
+	bookBrush contents: [:html|  html img src: aPage thumbnailURL]
+! !
+
+!BookMonoWidget methodsFor: 'css'!
+
+bookStyle
+	^ '
+    .pages img {
+    		margin: 10px auto; 
+            display: block
+      }
+      
+       .BookMonoWidget  .b-navigator-thumbnail {
+      		width: 130px;
+      }
+       
+       .BookMonoWidget .b-navigator-thumbnail ul {
+       		float: none;
+            width: 100%;
+       }
+       
+      .BookMonoWidget .b-navigator-thumbnail li {
+      		height: auto;
+            float: none;
+            display: block;
+            margin: 10px auto;
+      }
+      
+      .BookMonoWidget .b-navigator-thumbnail li:hover {
+      	width: auto;
+      }
+      
+      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,
+      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,
+ 	  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,
+      .BookMonoWidget .b-navigator-thumbnail li:hover {
+   			margin: 0px auto;
+      }
+   '
+! !
 
 !BookMonoWidget methodsFor: 'rendering'!
 
 renderBookOn: html
-	self renderBook:book on: html div
+	self renderBook:book on: (bookBrush := (html div class: 'pages'))
 !
 
 renderZoomControlsOn: html
@@ -849,10 +897,6 @@ beforePageChange:data
 
 goToPageNo: pageNo
 	bookContainer asJQuery booklet:  (pageNo ).
-!
-
-openPage: aPage
-	self goToPageNo: aPage pageNo.
 !
 
 openPageNo: anInteger
