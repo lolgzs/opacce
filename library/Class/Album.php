@@ -171,6 +171,14 @@ class Class_Album extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return bool
+	 */
+	public function beMonopage() {
+		return $this->setDisplayOnePage(true);
+	}
+
+
+	/**
 	 * @param Class_Matiere $matiere
 	 * @return Class_Album
 	 */	

@@ -44,41 +44,34 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 	public function setUp() {
 		parent::setUp();
 		
-		$album = Class_Album::newInstanceWithId(999)
+		$album = Class_Album::newInstanceWithId(999,
+																						['titre' => 'Premier volume',
+																						 'description' => "On ne peut que reconnaitre le talent de l'artiste !",
+																						 'thumbnail_width' => 200,
+																						 'thumbnail_left_page_crop_right' => 10,
+																						 'thumbnail_right_page_crop_top' => 5,
+																						 'id_origine' => 'DC23',
+																						 'pdf' => 'volume1.pdf'])
 			->beDiaporama()
-			->setTitre('Premier volume')
-			->setDescription("On ne peut que reconnaitre le talent de l'artiste !")
-			->setCategorie(Class_AlbumCategorie::getLoader()
-										 ->newInstanceWithId(2)
-										 ->setLibelle('Les enluminures')
-										 ->setParentCategorie(Class_AlbumCategorie::getLoader()
-																					->newInstanceWithId(3)
-																					->setLibelle('La bible de souvigny')))
-			->setThumbnailWidth(200)
-			->setThumbnailLeftPageCropRight(10)
-			->setThumbnailRightPageCropTop(5)
-			->setIdOrigine('DC23')
-			->setPdf('volume1.pdf');
+			->setCategorie(Class_AlbumCategorie::newInstanceWithId(2, ['libelle' => 'Les enluminures'])
+										 ->setParentCategorie(Class_AlbumCategorie::newInstanceWithId(3, ['libelle' => 'La bible de souvigny'])));
 
 		$im = new Imagick();
 		$im->newPseudoImage(50, 10, "gradient:red-black");
 		$im->setImageFormat('jpg');
-		$firstRessource = Class_AlbumRessource::getLoader()
-																->newInstanceWithId(1)
-																->setFichier('1.jpg')
-			                          ->setImage($im)
-																->setFolio('1R3')
-			                          ->setAlbum($album);
 
+		$album->setRessources([Class_AlbumRessource::newInstanceWithId(1,
+																																	 ['fichier' => '1.jpg',
+																																		'image' => $im,
+																																		'folio' => '1R3',
+																																		'album' => $album]),
 
-		$album->setRessources(array($firstRessource,
-																Class_AlbumRessource::getLoader()
-																->newInstanceWithId(2)
-																->setFichier('2.jpg')
-																->setAlbum($album)
-																->setTitre('Procedure de numerisation')
-																->setLinkTo('http://wikipedia.org/numerisation')
-																->setDescription('Comment numériser avec joie')));
+													 Class_AlbumRessource::newInstanceWithId(2,
+																																	 ['fichier' => '2.jpg',
+																																		'album' => $album,
+																																		'titre' => 'Procedure de numerisation',
+																																		'link_to' => 'http://wikipedia.org/numerisation',
+																																		'description' => 'Comment numériser avec joie'])]);
 	}
 }
 
@@ -199,6 +192,38 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 		$this->assertContains('/bib-numerique/thumbnail/width/200/crop_top/0/crop_right/10/crop_bottom/0/crop_left/0/id/2',
 													$this->json->album->ressources[1]->thumbnail);
 	}
+}
+
+
+
+
+
+class BibNumeriqueControllerAlbumPremierVolumeDisplayMonopageTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Album::find(999)
+			->setThumbnailCropTop(12)
+			->setThumbnailCropLeft(5)
+			->beMonopage();
+
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
+		$this->json = json_decode($this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function playerShouldBeBookMonoWidget() {
+		$this->assertEquals('BookMonoWidget', $this->json->album->player);
+	}
+
+
+	/** @test */
+	function firstRessourceThumbnailShouldPassResizeParams() {
+		$this->assertContains('/bib-numerique/thumbnail/width/200/crop_top/12/crop_right/0/crop_bottom/0/crop_left/5/id/1',
+													$this->json->album->ressources[0]->thumbnail);
+	}
+
 }
 
 
