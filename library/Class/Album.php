@@ -152,8 +152,21 @@ class Class_Album extends Storm_Model_Abstract {
 																							'thumbnail_right_page_crop_top' => 0,
 																							'thumbnail_right_page_crop_right' => 0,
 																							'thumbnail_right_page_crop_bottom' => 0,
-																							'thumbnail_right_page_crop_left' => 0);
+																							'thumbnail_right_page_crop_left' => 0,
+																							'thumbnail_crop_top' => 0,
+																							'thumbnail_crop_right' => 0,
+																							'thumbnail_crop_bottom' => 0,
+																							'thumbnail_crop_left' => 0,
+																							'display_one_page' => false);
 		return self::$DEFAULT_THUMBNAIL_VALUES;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isMonopage() {
+		return (bool)$this->getDisplayOnePage();
 	}
 
 

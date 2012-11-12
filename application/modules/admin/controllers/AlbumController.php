@@ -68,7 +68,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 		echo json_encode($response);
 		exit;	
-}
+	}
 
 
 	public function importeadAction() {
@@ -483,56 +483,12 @@ class Admin_AlbumController extends Zend_Controller_Action {
 
 
 	/**
-	 * @return Zend_Form
+	 * @return ZendAfi_Form
 	 */
 	public function _thumbnailsForm($album) {
-		if (! ($album->isLivreNumerique() || ($album->isDiaporama()  &&  $album->hasOnlyImages()))) {
+		if (!$form = ZendAfi_Form_Album_DisplayAbstract::forAlbum($album, ['id' => 'thumbnails']))
 			return;
-		}
-
-		$textInputWithLabel = function($label) {
-			return ['element' => 'text',
-							'options' => ['label' => $label,
-														'size' => 3,
-														'validators' => ['int']]];};
-
-
-		$groups = ['thumbnails' => ['legend' => 'Vignettes',
-																'elements' => ['thumbnail_width' => $textInputWithLabel('Largeur')]]];
-
-		if ($album->isLivreNumerique()) {
-			$groups['thumbnails']['elements']['display_one_page'] = ['element' => 'checkbox',
-																															 'options' => ['label' => $this->_('Monopage')]];
-
-			$groups = array_merge($groups, 
-														['thumbnails_left_page' => [
-															'legend' => 'Page de gauche',
-															'elements' => [
-																'thumbnail_left_page_crop_top' => $textInputWithLabel('Rognage haut'),
-																'thumbnail_left_page_crop_right' => $textInputWithLabel('Rognage droit'),
-																'thumbnail_left_page_crop_bottom' => $textInputWithLabel('Rognage bas'),
-																'thumbnail_left_page_crop_left' => $textInputWithLabel('Rognage gauche')]],
-													
-														 'thumbnails_right_page' => [
-															 'legend' => 'Page de droite',
-															 'elements' => [
-																 'thumbnail_right_page_crop_top' => $textInputWithLabel('Rognage haut'),
-																 'thumbnail_right_page_crop_right' => $textInputWithLabel('Rognage droit'),
-																 'thumbnail_right_page_crop_bottom' => $textInputWithLabel('Rognage bas'),
-																 'thumbnail_right_page_crop_left' => $textInputWithLabel('Rognage gauche')]]]);
-		}
-
-		return $this
-			->_thumbnailsFormWithFields($groups)
-			->populate($album->toArray());
-	}
-
-
-	/**
-	 * @return Zend_Form
-	 */
-	public function _thumbnailsFormWithFields($groups) {
-		return (new ZendAfi_Form(['id' => 'thumbnails']))->populateFormFromGroupsDefinitions($groups);
+		return $form->populate($album->toArray());
 	}
 
 

@@ -43,29 +43,25 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 		$this->_category_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie');
 		$this->_album_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album');
 
-		Class_AlbumCategorie::getLoader()
-			->newInstanceWithId(2)
+		Class_AlbumCategorie::newInstanceWithId(2)
 			->setParentId(0)
 			->setLibelle('Favoris')
 			->setSousCategories(array())
 			->setAlbums(array());
 
-		Class_AlbumCategorie::getLoader()
-			->newInstanceWithId(6)
+		Class_AlbumCategorie::newInstanceWithId(6)
 			->setLibelle('Adulte')
 			->setParentId(2)
 			->setSousCategories(array())
 			->setAlbums(array());
 				
-		Class_AlbumCategorie::getLoader()
-			->newInstanceWithId(38)
+		Class_AlbumCategorie::newInstanceWithId(38)
 			->setParentId(0)
 			->setSousCategories(array())
 			->setAlbums(array())
 			->setLibelle('Patrimoine');
 
-		Class_Album::getLoader()
-			->newInstanceWithId(43)
+		Class_Album::newInstanceWithId(43)
 			->setTitre('Mes BD')
 			->setAuteur('Laurent')
 			->setTags('bd;dessin')
@@ -82,8 +78,7 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 			->setCote('MS001')
 			->setVisible(false);
 
-		Class_Album::getLoader()
-			->newInstanceWithId(44)
+		Class_Album::newInstanceWithId(44)
 			->setTitre('Bible Souvigny')
 			->beLivreNumerique()
 			->setThumbnailAttributes(['thumbnail_width' => 350,
@@ -93,8 +88,7 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 																'thumbnail_right_page_crop_left' => 5])
 			->setRessources([]);
 
-	  Class_Album::getLoader()
-			->newInstanceWithId(24)
+	  Class_Album::newInstanceWithId(24)
 			->setTitre('Mes Romans')
 			->setLangue('');
 	}
@@ -1531,8 +1525,7 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 
 	/** @test */
 	public function formThumbnailsShouldHaveCheckboxUncheckedForDisplayOnePage() {
-		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"]');
-		//		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][not(@checked)]');
+		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][not(@checked)]');
 	}
 
 
@@ -1545,6 +1538,34 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 	/** @test */
 	public function bookletShouldBeLoaded() {
 		$this->assertXPathContentContains('//script', 'smalltalk.BibNumAlbum');
+	}
+}
+
+
+
+
+class Admin_AlbumControllerPreviewAlbumMonopageTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Album::newInstanceWithId(56, ['titre' => 'Journal',
+																				'thumbnail_width' => 400,
+																				'thumbnail_crop_left' => 10,
+																				'thumbnail_crop_right' => 5,
+																				'thumbnail_crop_bottom' => 2,
+																				'thumbnail_crop_top' => 5,
+																				'display_one_page' => true,
+																				'ressources' => []])
+			->beLivreNumerique();
+
+
+		$this->dispatch('/admin/album/preview_album/id/56', true);
+	}
+
+
+	/** @test */
+	public function formThumbnailsShouldHaveCheckboxCheckedForDisplayOnePage() {
+		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][@checked="checked"]');
 	}
 }
 
@@ -1579,6 +1600,8 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_Album
 		$this->assertRedirectTo('/admin/album/preview_album/id/44');
 	}
 }
+
+
 
 
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostWrongDataTest extends Admin_AlbumControllerTestCase {
