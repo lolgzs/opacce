@@ -1508,7 +1508,7 @@ class Admin_AlbumControllerPreviewMesBDTest extends Admin_AlbumControllerTestCas
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/admin/album/preview_album/id/44');
+		$this->dispatch('/admin/album/preview_album/id/44', true);
 	}
 
 	/** @test */
@@ -1516,10 +1516,12 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 		$this->assertXPathContentContains('//h1', 'Visualisation de l\'album "Bible Souvigny"');
 	}
 
+
 	/** @test */
 	public function formThumbnailsShouldHaveInputForThumbnailWidth() {
 		$this->assertXPath('//form[@id="thumbnails"]//input[@name="thumbnail_width"][@value="350"]');
 	}
+
 
 	/** @test */
 	public function formThumbnailsShouldHaveInputForThumbnailRightPageCropLeft() {
@@ -1528,15 +1530,25 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 
 
 	/** @test */
+	public function formThumbnailsShouldHaveCheckboxUncheckedForDisplayOnePage() {
+		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"]');
+		//		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][not(@checked)]');
+	}
+
+
+	/** @test */
 	public function pageShouldContainsLinkToEdit() {
 		$this->assertXPath("//a[contains(@href, 'album/edit_album/id/44')]");
 	}
+
 
 	/** @test */
 	public function bookletShouldBeLoaded() {
 		$this->assertXPathContentContains('//script', 'smalltalk.BibNumAlbum');
 	}
 }
+
+
 
 
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_AlbumControllerTestCase {

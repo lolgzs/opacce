@@ -77,4 +77,28 @@ class ZendAfi_Form extends Zend_Form {
 		}
 	}
 
+
+	public function populateFormFromGroupsDefinitions($groups_definitions) {
+		foreach($groups_definitions as $name => $definition)
+			$this
+				->addElementsFromDefinition($definition['elements'])
+				->addDisplayGroup(array_keys($definition['elements']), 
+													$name, 
+													['legend' => $definition['legend']]);
+
+		return $this;
+	}
+
+
+	public function addElementsFromDefinition($element_definitions) {
+		foreach($element_definitions as $name => $definition) {
+			$options = isset($definition['options']) ? $definition['options'] : [];
+			$this->addElement($definition['element'], $name, $options);
+
+			if ($label = $this->getElement($name)->getDecorator('label'))
+				$label->setOption('escape', false);
+		}
+		return $this;
+	}
+
 }

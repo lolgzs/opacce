@@ -67,8 +67,8 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		}
 
 		echo json_encode($response);
-		exit;
-	}
+		exit;	
+}
 
 
 	public function importeadAction() {
@@ -490,27 +490,36 @@ class Admin_AlbumController extends Zend_Controller_Action {
 			return;
 		}
 
-		$groups = array('thumbnails' => array('legend' => 'Vignettes',
-																					'elements' => array('thumbnail_width' => 'Largeur')));
+		$textInputWithLabel = function($label) {
+			return ['element' => 'text',
+							'options' => ['label' => $label,
+														'size' => 3,
+														'validators' => ['int']]];};
+
+
+		$groups = ['thumbnails' => ['legend' => 'Vignettes',
+																'elements' => ['thumbnail_width' => $textInputWithLabel('Largeur')]]];
 
 		if ($album->isLivreNumerique())
+			$groups['thumbnails']['elements']['display_one_page'] = ['element' => 'checkbox',
+																															 'options' => ['label' => $this->_('Monopage')]];
+
 			$groups = array_merge($groups, 
-														array(
-															 'thumbnails_left_page' => array(
-																		 'legend' => 'Page de gauche',
-																		 'elements' => array(
-																					 'thumbnail_left_page_crop_top' => 'Rognage haut',
-																					 'thumbnail_left_page_crop_right' => 'Rognage droit',
-																					 'thumbnail_left_page_crop_bottom' => 'Rognage bas',
-																					 'thumbnail_left_page_crop_left' => 'Rognage gauche')),
+														['thumbnails_left_page' => [
+															'legend' => 'Page de gauche',
+															'elements' => [
+																'thumbnail_left_page_crop_top' => $textInputWithLabel('Rognage haut'),
+																'thumbnail_left_page_crop_right' => $textInputWithLabel('Rognage droit'),
+																'thumbnail_left_page_crop_bottom' => $textInputWithLabel('Rognage bas'),
+																'thumbnail_left_page_crop_left' => $textInputWithLabel('Rognage gauche')]],
 													
-																	'thumbnails_right_page' => array(
-																		  'legend' => 'Page de droite',
-																			'elements' => array(
-																					 'thumbnail_right_page_crop_top' => 'Rognage haut',
-																					 'thumbnail_right_page_crop_right' => 'Rognage droit',
-																					 'thumbnail_right_page_crop_bottom' => 'Rognage bas',
-																					 'thumbnail_right_page_crop_left' => 'Rognage gauche'))));
+														 'thumbnails_right_page' => [
+															 'legend' => 'Page de droite',
+															 'elements' => [
+																 'thumbnail_right_page_crop_top' => $textInputWithLabel('Rognage haut'),
+																 'thumbnail_right_page_crop_right' => $textInputWithLabel('Rognage droit'),
+																 'thumbnail_right_page_crop_bottom' => $textInputWithLabel('Rognage bas'),
+																 'thumbnail_right_page_crop_left' => $textInputWithLabel('Rognage gauche')]]]);
 
 		return $this
 			->_thumbnailsFormWithFields($groups)
@@ -522,18 +531,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 	 * @return Zend_Form
 	 */
 	public function _thumbnailsFormWithFields($groups) {
-		$form = $this->view->newForm(array('id' => 'thumbnails'));
-		
-		foreach ($groups as $id => $group) {
-			foreach($group['elements'] as $field => $label) 
-				$form->addElement('text', $field, array('label' => $label,
-																								'size' => 3,
-																								'validators' => array('int')));
-			$form->addDisplayGroup(array_keys($group['elements']), 
-														 $id,
-														 array('legend' => $group['legend']));
-		}
-		return $form;
+		return (new ZendAfi_Form(['id' => 'thumbnails']))->populateFormFromGroupsDefinitions($groups);
 	}
 
 
