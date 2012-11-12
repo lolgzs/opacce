@@ -599,6 +599,36 @@ zoomControlsStyle
 '
 ! !
 
+!AbstractBookWidget methodsFor: 'descriptions'!
+
+closeDescriptions
+	pageDescriptionsBrush asJQuery fadeOut.
+! !
+
+!AbstractBookWidget methodsFor: 'external libs'!
+
+loadCSS: anUrl  
+      (HTMLCanvas onJQuery: 'head' asJQuery)  link
+																						href: self scriptsRoot, anUrl;
+																						type:'text/css';
+																						rel:'stylesheet'
+!
+
+loadIViewerJS   	
+      self
+      	loadCSS: 'iviewer/jquery.iviewer.css';
+        loadJS: 'iviewer/jquery.iviewer.min.js';
+        loadJS: 'iviewer/jquery.mousewheel.min.js'
+!
+
+loadJS: anUrl
+	 jQuery ajax: #{	
+     		'dataType' -> 'script'.
+       		'url' -> (self scriptsRoot, anUrl).
+            'cache' -> true
+     }
+! !
+
 !AbstractBookWidget methodsFor: 'initialize'!
 
 initialize
@@ -617,8 +647,6 @@ renderBook: aBook on: aBrush
                                  														yourself)  ]	].
 	
 	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
-	(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
-	(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
 	
 	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
 	
@@ -684,6 +712,19 @@ renderOn: html
 	self renderWidgetOn: html.
 !
 
+renderPage: aPage class: aCssClass on: html
+	(html div
+		class: aCssClass;
+		with:[	pageZoomWidget := PageWidget new
+										page: aPage;
+										renderOn: html;
+										onCloseDo: [	self 
+														closeZoom; 
+														openDescriptions];
+                                                                               	yourself 								];
+                asJQuery) fadeIn: 'slow'.
+!
+
 renderPageDescriptionOn: html 	
 	pageDescriptionsBrush := html div 
                                                                class: 'page-desc';
@@ -747,8 +788,33 @@ AbstractBookWidget subclass: #BookMonoWidget
 
 !BookMonoWidget methodsFor: 'callbacks'!
 
+closeZoom
+	'.b-arrow' asJQuery show.
+
+	pageZoomBrush asJQuery 
+		fadeOut: 'slow' do: [
+			pageZoomWidget := nil.
+			pageZoomBrush empty.
+                  
+			zoomPageAnchor 
+				removeClass: 'active';
+				show.
+        ]
+!
+
 openPage: aPage
 	bookBrush contents: [:html|  html img src: aPage thumbnailURL]
+!
+
+zoomPage
+	self closeDescriptions.
+
+	 zoomPageAnchor hide.
+	'.b-arrow' asJQuery hide.
+
+	book pageAt: (self currentPageNo) do: [:aPage| 
+                                           										pageZoomBrush contents: [:html|  self renderPage: aPage class: 'b-left' on: html ].
+																				pageZoomBrush asJQuery show.												 	].
 ! !
 
 !BookMonoWidget methodsFor: 'css'!
@@ -787,19 +853,22 @@ bookStyle
    			margin: 0px auto;
       }
    '
+!
+
+openDescriptions
 ! !
 
 !BookMonoWidget methodsFor: 'rendering'!
 
 renderBookOn: html
+	self loadIViewerJS.
 	self renderBook:book on: (bookBrush := (html div class: 'pages'))
 !
 
 renderZoomControlsOn: html
 	html div
 		class: 'b-zoom-magnify';
-		with: [ 	zoomPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
-                       	zoomPageAnchor hide.
+		with: [ 	zoomPageAnchor := (html a onClick: [self zoomPage]) asJQuery.
                         
                         pageZoomBrush := html div 
 							class: 'b-zoom';
@@ -808,7 +877,7 @@ renderZoomControlsOn: html
 ! !
 
 AbstractBookWidget subclass: #BookWidget
-	instanceVariableNames: 'bookContainer width downloadBrush leftFolioBrush rightFolioBrush announcer zoomLeftPageAnchor zoomRightPageAnchor'
+	instanceVariableNames: 'width leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
@@ -1040,10 +1109,6 @@ bookStyle
 
 !BookWidget methodsFor: 'descriptions'!
 
-closeDescriptions
-	pageDescriptionsBrush asJQuery fadeOut.
-!
-
 openDescriptions
 	pageDescriptionsBrush asJQuery hide.
 	pageDescriptionsBrush contents: [:html| 
@@ -1067,31 +1132,16 @@ loadBookletJSThen: aBlock
 !
 
 renderScriptsOn: html Then: aBlock
-	#( 	'booklet/jquery.booklet.1.2.0.css'
-          	'iviewer/jquery.iviewer.css' ) do: [:anUrl|
-                                                  			 				html link
-																				href: self scriptsRoot, anUrl;
-																				type:'text/css';
-																				rel:'stylesheet'	].
-
-	(jQuery at: 'ui') ifNil: [ html script
-         				    	type: 'text/javascript';
-                				src: 	'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. 
-                                
+	self loadCSS: 'booklet/jquery.booklet.1.2.0.css'.
      
 	jQuery ajax: #{	  'dataType' -> 'script'. 
     								'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').
                                     'cache' -> true.
                                     'success' -> aBlock
                                 }.
-
-	#('booklet/jquery.easing.1.3.js'
-        'iviewer/jquery.iviewer.min.js'
-        'iviewer/jquery.mousewheel.min.js'
-       ) do: [:anUrl|   jQuery ajax: #{	'dataType' -> 'script'.
-       															'url' -> (self scriptsRoot, anUrl).
-                                                                'cache' -> true
-                                                                }]
+                                
+	self loadIViewerJS.
+	self loadJS: 'booklet/jquery.easing.1.3.js'.
 ! !
 
 !BookWidget methodsFor: 'loading'!
@@ -1109,7 +1159,11 @@ loadBookThenRenderOn: bookBrush
 
 renderBook: aBook on: aBrush
 	super renderBook: aBook on: aBrush.
-   	self loadBookletJSThen: [ bookContainer asJQuery booklet: (self bookletOptions) ].
+   	self loadBookletJSThen: [ 
+    		bookContainer asJQuery booklet: (self bookletOptions).
+			(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
+			(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
+     ].
 !
 
 renderBookOn: html
@@ -1200,19 +1254,6 @@ closeZoom
 closeZoomOr: aBlock
 	pageZoomWidget ifNil: aBlock ifNotNil: [ 	self closeZoom. 
                                                 					self openDescriptions]
-!
-
-renderPage: aPage class: aCssClass on: html
-	(html div
-		class: aCssClass;
-		with:[	pageZoomWidget := PageWidget new
-										page: aPage;
-										renderOn: html;
-										onCloseDo: [	self 
-														closeZoom; 
-														openDescriptions];
-                                                                               	yourself 								];
-                asJQuery) fadeIn: 'slow'.
 !
 
 zoomLeftPage

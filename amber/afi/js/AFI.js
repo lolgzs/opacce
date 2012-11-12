@@ -369,6 +369,22 @@ referencedClasses: []
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_closeDescriptions",
+smalltalk.method({
+selector: "closeDescriptions",
+category: 'descriptions',
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send(self["@pageDescriptionsBrush"],"_asJQuery",[]),"_fadeOut",[]);
+return self},
+args: [],
+source: "closeDescriptions\x0a\x09pageDescriptionsBrush asJQuery fadeOut.",
+messageSends: ["fadeOut", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_currentPage",
 smalltalk.method({
 selector: "currentPage",
@@ -508,6 +524,61 @@ referencedClasses: ["TestCase"]
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_loadCSS_",
+smalltalk.method({
+selector: "loadCSS:",
+category: 'external libs',
+fn: function (anUrl){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_onJQuery_",[smalltalk.send("head","_asJQuery",[])]),"_link",[]);
+smalltalk.send($1,"_href_",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",[anUrl])]);
+smalltalk.send($1,"_type_",["text/css"]);
+$2=smalltalk.send($1,"_rel_",["stylesheet"]);
+return self},
+args: ["anUrl"],
+source: "loadCSS: anUrl  \x0a      (HTMLCanvas onJQuery: 'head' asJQuery)  link\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09href: self scriptsRoot, anUrl;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09type:'text/css';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel:'stylesheet'",
+messageSends: ["href:", ",", "scriptsRoot", "link", "onJQuery:", "asJQuery", "type:", "rel:"],
+referencedClasses: ["HTMLCanvas"]
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_loadIViewerJS",
+smalltalk.method({
+selector: "loadIViewerJS",
+category: 'external libs',
+fn: function (){
+var self=this;
+var $1;
+smalltalk.send(self,"_loadCSS_",["iviewer/jquery.iviewer.css"]);
+smalltalk.send(self,"_loadJS_",["iviewer/jquery.iviewer.min.js"]);
+$1=smalltalk.send(self,"_loadJS_",["iviewer/jquery.mousewheel.min.js"]);
+return self},
+args: [],
+source: "loadIViewerJS   \x09\x0a      self\x0a      \x09loadCSS: 'iviewer/jquery.iviewer.css';\x0a        loadJS: 'iviewer/jquery.iviewer.min.js';\x0a        loadJS: 'iviewer/jquery.mousewheel.min.js'",
+messageSends: ["loadCSS:", "loadJS:"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_loadJS_",
+smalltalk.method({
+selector: "loadJS:",
+category: 'external libs',
+fn: function (anUrl){
+var self=this;
+smalltalk.send(jQuery,"_ajax_",[smalltalk.HashedCollection._fromPairs_([smalltalk.send("dataType","__minus_gt",["script"]),smalltalk.send("url","__minus_gt",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",[anUrl])]),smalltalk.send("cache","__minus_gt",[true])])]);
+return self},
+args: ["anUrl"],
+source: "loadJS: anUrl\x0a\x09 jQuery ajax: #{\x09\x0a     \x09\x09'dataType' -> 'script'.\x0a       \x09\x09'url' -> (self scriptsRoot, anUrl).\x0a            'cache' -> true\x0a     }",
+messageSends: ["ajax:", "->", ",", "scriptsRoot"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_loader",
 smalltalk.method({
 selector: "loader",
@@ -612,12 +683,6 @@ $3=smalltalk.send(self,"_isContainerSmall",[]);
 if(smalltalk.assert($3)){
 smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_addClass_",["small"]);
 };
-smalltalk.send(smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_find_",[".b-wrap-left"]),"_click_",[(function(){
-return smalltalk.send(self,"_zoomLeftPage",[]);
-})]);
-smalltalk.send(smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_find_",[".b-wrap-right, .b-page-cover"]),"_click_",[(function(){
-return smalltalk.send(self,"_zoomRightPage",[]);
-})]);
 smalltalk.send(smalltalk.send(self["@book"],"_downloadUrl",[]),"_ifNotEmpty_",[(function(){
 return smalltalk.send(self["@downloadBrush"],"_contents_",[(function(html){
 return smalltalk.send(smalltalk.send(html,"_a",[]),"_href_",[smalltalk.send(aBook,"_downloadUrl",[])]);
@@ -630,8 +695,8 @@ $4;
 };
 return self},
 args: ["aBook", "aBrush"],
-source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].\x0a\x09(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
-messageSends: ["contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "click:", "zoomLeftPage", "find:", "zoomRightPage", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
+source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
+messageSends: ["contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -810,6 +875,39 @@ args: ["html"],
 source: "renderOn: html\x0a     self renderDevToolsOn: html.\x0a        \x0a\x09rootBrush := html root.\x0a        \x0a\x09self renderWidgetOn: html.",
 messageSends: ["renderDevToolsOn:", "root", "renderWidgetOn:"],
 referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderPage_class_on_",
+smalltalk.method({
+selector: "renderPage:class:on:",
+category: 'rendering',
+fn: function (aPage,aCssClass,html){
+var self=this;
+var $1,$2,$3,$4,$5;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",[aCssClass]);
+smalltalk.send($1,"_with_",[(function(){
+$2=smalltalk.send((smalltalk.PageWidget || PageWidget),"_new",[]);
+smalltalk.send($2,"_page_",[aPage]);
+smalltalk.send($2,"_renderOn_",[html]);
+smalltalk.send($2,"_onCloseDo_",[(function(){
+smalltalk.send(self,"_closeZoom",[]);
+$3=smalltalk.send(self,"_openDescriptions",[]);
+return $3;
+})]);
+$4=smalltalk.send($2,"_yourself",[]);
+self["@pageZoomWidget"]=$4;
+return self["@pageZoomWidget"];
+})]);
+$5=smalltalk.send($1,"_asJQuery",[]);
+smalltalk.send($5,"_fadeIn_",["slow"]);
+return self},
+args: ["aPage", "aCssClass", "html"],
+source: "renderPage: aPage class: aCssClass on: html\x0a\x09(html div\x0a\x09\x09class: aCssClass;\x0a\x09\x09with:[\x09pageZoomWidget := PageWidget new\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09page: aPage;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09renderOn: html;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09onCloseDo: [\x09self \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09closeZoom; \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09openDescriptions];\x0a                                                                               \x09yourself \x09\x09\x09\x09\x09\x09\x09\x09];\x0a                asJQuery) fadeIn: 'slow'. ",
+messageSends: ["fadeIn:", "class:", "div", "with:", "page:", "new", "renderOn:", "onCloseDo:", "closeZoom", "openDescriptions", "yourself", "asJQuery"],
+referencedClasses: ["PageWidget"]
 }),
 smalltalk.AbstractBookWidget);
 
@@ -1043,6 +1141,46 @@ referencedClasses: []
 smalltalk.BookMonoWidget);
 
 smalltalk.addMethod(
+"_closeZoom",
+smalltalk.method({
+selector: "closeZoom",
+category: 'callbacks',
+fn: function (){
+var self=this;
+var $1;
+smalltalk.send(smalltalk.send(".b-arrow","_asJQuery",[]),"_show",[]);
+smalltalk.send(smalltalk.send(self["@pageZoomBrush"],"_asJQuery",[]),"_fadeOut_do_",["slow",(function(){
+self["@pageZoomWidget"]=nil;
+self["@pageZoomWidget"];
+smalltalk.send(self["@pageZoomBrush"],"_empty",[]);
+smalltalk.send(self["@zoomPageAnchor"],"_removeClass_",["active"]);
+$1=smalltalk.send(self["@zoomPageAnchor"],"_show",[]);
+return $1;
+})]);
+return self},
+args: [],
+source: "closeZoom\x0a\x09'.b-arrow' asJQuery show.\x0a\x0a\x09pageZoomBrush asJQuery \x0a\x09\x09fadeOut: 'slow' do: [\x0a\x09\x09\x09pageZoomWidget := nil.\x0a\x09\x09\x09pageZoomBrush empty.\x0a                  \x0a\x09\x09\x09zoomPageAnchor \x0a\x09\x09\x09\x09removeClass: 'active';\x0a\x09\x09\x09\x09show.\x0a        ]",
+messageSends: ["show", "asJQuery", "fadeOut:do:", "empty", "removeClass:"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_openDescriptions",
+smalltalk.method({
+selector: "openDescriptions",
+category: 'css',
+fn: function (){
+var self=this;
+return self},
+args: [],
+source: "openDescriptions\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
 "_openPage_",
 smalltalk.method({
 selector: "openPage:",
@@ -1067,12 +1205,13 @@ selector: "renderBookOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
+smalltalk.send(self,"_loadIViewerJS",[]);
 self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
 smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
 return self},
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self renderBook:book on: (bookBrush := (html div class: 'pages'))",
-messageSends: ["renderBook:on:", "class:", "div"],
+source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a\x09self renderBook:book on: (bookBrush := (html div class: 'pages'))",
+messageSends: ["loadIViewerJS", "renderBook:on:", "class:", "div"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1089,10 +1228,9 @@ $1=smalltalk.send(html,"_div",[]);
 smalltalk.send($1,"_class_",["b-zoom-magnify"]);
 $2=smalltalk.send($1,"_with_",[(function(){
 self["@zoomPageAnchor"]=smalltalk.send(smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
-return smalltalk.send(self,"_zoomLeftPage",[]);
+return smalltalk.send(self,"_zoomPage",[]);
 })]),"_asJQuery",[]);
 self["@zoomPageAnchor"];
-smalltalk.send(self["@zoomPageAnchor"],"_hide",[]);
 $3=smalltalk.send(html,"_div",[]);
 smalltalk.send($3,"_class_",["b-zoom"]);
 $4=smalltalk.send($3,"_yourself",[]);
@@ -1101,15 +1239,39 @@ return self["@pageZoomBrush"];
 })]);
 return self},
 args: ["html"],
-source: "renderZoomControlsOn: html\x0a\x09html div\x0a\x09\x09class: 'b-zoom-magnify';\x0a\x09\x09with: [ \x09zoomPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.\x0a                       \x09zoomPageAnchor hide.\x0a                        \x0a                        pageZoomBrush := html div \x0a\x09\x09\x09\x09\x09\x09\x09class: 'b-zoom';\x0a\x09\x09\x09\x09\x09\x09\x09yourself.\x0a                ].",
-messageSends: ["class:", "div", "with:", "asJQuery", "onClick:", "zoomLeftPage", "a", "hide", "yourself"],
+source: "renderZoomControlsOn: html\x0a\x09html div\x0a\x09\x09class: 'b-zoom-magnify';\x0a\x09\x09with: [ \x09zoomPageAnchor := (html a onClick: [self zoomPage]) asJQuery.\x0a                        \x0a                        pageZoomBrush := html div \x0a\x09\x09\x09\x09\x09\x09\x09class: 'b-zoom';\x0a\x09\x09\x09\x09\x09\x09\x09yourself.\x0a                ].",
+messageSends: ["class:", "div", "with:", "asJQuery", "onClick:", "zoomPage", "a", "yourself"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_zoomPage",
+smalltalk.method({
+selector: "zoomPage",
+category: 'callbacks',
+fn: function (){
+var self=this;
+smalltalk.send(self,"_closeDescriptions",[]);
+smalltalk.send(self["@zoomPageAnchor"],"_hide",[]);
+smalltalk.send(smalltalk.send(".b-arrow","_asJQuery",[]),"_hide",[]);
+smalltalk.send(self["@book"],"_pageAt_do_",[smalltalk.send(self,"_currentPageNo",[]),(function(aPage){
+smalltalk.send(self["@pageZoomBrush"],"_contents_",[(function(html){
+return smalltalk.send(self,"_renderPage_class_on_",[aPage,"b-left",html]);
+})]);
+return smalltalk.send(smalltalk.send(self["@pageZoomBrush"],"_asJQuery",[]),"_show",[]);
+})]);
+return self},
+args: [],
+source: "zoomPage\x0a\x09self closeDescriptions.\x0a\x0a\x09 zoomPageAnchor hide.\x0a\x09'.b-arrow' asJQuery hide.\x0a\x0a\x09book pageAt: (self currentPageNo) do: [:aPage| \x0a                                           \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09pageZoomBrush contents: [:html|  self renderPage: aPage class: 'b-left' on: html ].\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09pageZoomBrush asJQuery show.\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09 \x09].",
+messageSends: ["closeDescriptions", "hide", "asJQuery", "pageAt:do:", "currentPageNo", "contents:", "renderPage:class:on:", "show"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['bookContainer', 'width', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -1206,22 +1368,6 @@ return self;},
 args: [],
 source: "clear\x0a\x09'.bk-widget' asJQuery remove.",
 messageSends: ["remove", "asJQuery"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_closeDescriptions",
-smalltalk.method({
-selector: "closeDescriptions",
-category: 'descriptions',
-fn: function (){
-var self=this;
-smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_fadeOut", []);
-return self;},
-args: [],
-source: "closeDescriptions\x0a\x09pageDescriptionsBrush asJQuery fadeOut.",
-messageSends: ["fadeOut", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -1478,12 +1624,18 @@ fn: function (aBook,aBrush){
 var self=this;
 smalltalk.send(self,"_renderBook_on_",[aBook,aBrush],smalltalk.AbstractBookWidget);
 smalltalk.send(self,"_loadBookletJSThen_",[(function(){
-return smalltalk.send(smalltalk.send(self["@bookContainer"],"_asJQuery",[]),"_booklet_",[smalltalk.send(self,"_bookletOptions",[])]);
+smalltalk.send(smalltalk.send(self["@bookContainer"],"_asJQuery",[]),"_booklet_",[smalltalk.send(self,"_bookletOptions",[])]);
+smalltalk.send(smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_find_",[".b-wrap-left"]),"_click_",[(function(){
+return smalltalk.send(self,"_zoomLeftPage",[]);
+})]);
+return smalltalk.send(smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_find_",[".b-wrap-right, .b-page-cover"]),"_click_",[(function(){
+return smalltalk.send(self,"_zoomRightPage",[]);
+})]);
 })]);
 return self},
 args: ["aBook", "aBrush"],
-source: "renderBook: aBook on: aBrush\x0a\x09super renderBook: aBook on: aBrush.\x0a   \x09self loadBookletJSThen: [ bookContainer asJQuery booklet: (self bookletOptions) ].",
-messageSends: ["renderBook:on:", "loadBookletJSThen:", "booklet:", "bookletOptions", "asJQuery"],
+source: "renderBook: aBook on: aBrush\x0a\x09super renderBook: aBook on: aBrush.\x0a   \x09self loadBookletJSThen: [ \x0a    \x09\x09bookContainer asJQuery booklet: (self bookletOptions).\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].\x0a     ].",
+messageSends: ["renderBook:on:", "loadBookletJSThen:", "booklet:", "bookletOptions", "asJQuery", "click:", "zoomLeftPage", "find:", "zoomRightPage"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -1528,53 +1680,20 @@ referencedClasses: []
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderPage_class_on_",
-smalltalk.method({
-selector: "renderPage:class:on:",
-category: 'zoom',
-fn: function (aPage, aCssClass, html){
-var self=this;
-smalltalk.send((function($rec){smalltalk.send($rec, "_class_", [aCssClass]);smalltalk.send($rec, "_with_", [(function(){return self['@pageZoomWidget']=(function($rec){smalltalk.send($rec, "_page_", [aPage]);smalltalk.send($rec, "_renderOn_", [html]);smalltalk.send($rec, "_onCloseDo_", [(function(){return (function($rec){smalltalk.send($rec, "_closeZoom", []);return smalltalk.send($rec, "_openDescriptions", []);})(self);})]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.PageWidget || PageWidget), "_new", []));})]);return smalltalk.send($rec, "_asJQuery", []);})(smalltalk.send(html, "_div", [])), "_fadeIn_", ["slow"]);
-return self;},
-args: ["aPage", "aCssClass", "html"],
-source: "renderPage: aPage class: aCssClass on: html\x0a\x09(html div\x0a\x09\x09class: aCssClass;\x0a\x09\x09with:[\x09pageZoomWidget := PageWidget new\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09page: aPage;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09renderOn: html;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09onCloseDo: [\x09self \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09closeZoom; \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09openDescriptions];\x0a                                                                               \x09yourself \x09\x09\x09\x09\x09\x09\x09\x09];\x0a                asJQuery) fadeIn: 'slow'. ",
-messageSends: ["fadeIn:", "class:", "with:", "page:", "renderOn:", "onCloseDo:", "closeZoom", "openDescriptions", "yourself", "new", "asJQuery", "div"],
-referencedClasses: ["PageWidget"]
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderScriptsOn_Then_",
 smalltalk.method({
 selector: "renderScriptsOn:Then:",
 category: 'external libs',
 fn: function (html,aBlock){
 var self=this;
-var $1,$2,$3,$4,$5;
-smalltalk.send(["booklet/jquery.booklet.1.2.0.css", "iviewer/jquery.iviewer.css"],"_do_",[(function(anUrl){
-$1=smalltalk.send(html,"_link",[]);
-smalltalk.send($1,"_href_",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",[anUrl])]);
-smalltalk.send($1,"_type_",["text/css"]);
-$2=smalltalk.send($1,"_rel_",["stylesheet"]);
-return $2;
-})]);
-$3=smalltalk.send(jQuery,"_at_",["ui"]);
-if(($receiver = $3) == nil || $receiver == undefined){
-$4=smalltalk.send(html,"_script",[]);
-smalltalk.send($4,"_type_",["text/javascript"]);
-$5=smalltalk.send($4,"_src_",["http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"]);
-$5;
-} else {
-$3;
-};
+smalltalk.send(self,"_loadCSS_",["booklet/jquery.booklet.1.2.0.css"]);
 smalltalk.send(jQuery,"_ajax_",[smalltalk.HashedCollection._fromPairs_([smalltalk.send("dataType","__minus_gt",["script"]),smalltalk.send("url","__minus_gt",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",["booklet/jquery.booklet.1.2.0.min.js"])]),smalltalk.send("cache","__minus_gt",[true]),smalltalk.send("success","__minus_gt",[aBlock])])]);
-smalltalk.send(["booklet/jquery.easing.1.3.js", "iviewer/jquery.iviewer.min.js", "iviewer/jquery.mousewheel.min.js"],"_do_",[(function(anUrl){
-return smalltalk.send(jQuery,"_ajax_",[smalltalk.HashedCollection._fromPairs_([smalltalk.send("dataType","__minus_gt",["script"]),smalltalk.send("url","__minus_gt",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",[anUrl])]),smalltalk.send("cache","__minus_gt",[true])])]);
-})]);
+smalltalk.send(self,"_loadIViewerJS",[]);
+smalltalk.send(self,"_loadJS_",["booklet/jquery.easing.1.3.js"]);
 return self},
 args: ["html", "aBlock"],
-source: "renderScriptsOn: html Then: aBlock\x0a\x09#( \x09'booklet/jquery.booklet.1.2.0.css'\x0a          \x09'iviewer/jquery.iviewer.css' ) do: [:anUrl|\x0a                                                  \x09\x09\x09 \x09\x09\x09\x09html link\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09href: self scriptsRoot, anUrl;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09type:'text/css';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel:'stylesheet'\x09].\x0a\x0a\x09(jQuery at: 'ui') ifNil: [ html script\x0a         \x09\x09\x09\x09    \x09type: 'text/javascript';\x0a                \x09\x09\x09\x09src: \x09'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. \x0a                                \x0a     \x0a\x09jQuery ajax: #{\x09  'dataType' -> 'script'. \x0a    \x09\x09\x09\x09\x09\x09\x09\x09'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').\x0a                                    'cache' -> true.\x0a                                    'success' -> aBlock\x0a                                }.\x0a\x0a\x09#('booklet/jquery.easing.1.3.js'\x0a        'iviewer/jquery.iviewer.min.js'\x0a        'iviewer/jquery.mousewheel.min.js'\x0a       ) do: [:anUrl|   jQuery ajax: #{\x09'dataType' -> 'script'.\x0a       \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09'url' -> (self scriptsRoot, anUrl).\x0a                                                                'cache' -> true\x0a                                                                }]",
-messageSends: ["do:", "href:", ",", "scriptsRoot", "link", "type:", "rel:", "ifNil:", "script", "src:", "at:", "ajax:", "->"],
+source: "renderScriptsOn: html Then: aBlock\x0a\x09self loadCSS: 'booklet/jquery.booklet.1.2.0.css'.\x0a     \x0a\x09jQuery ajax: #{\x09  'dataType' -> 'script'. \x0a    \x09\x09\x09\x09\x09\x09\x09\x09'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').\x0a                                    'cache' -> true.\x0a                                    'success' -> aBlock\x0a                                }.\x0a                                \x0a\x09self loadIViewerJS.\x0a\x09self loadJS: 'booklet/jquery.easing.1.3.js'.",
+messageSends: ["loadCSS:", "ajax:", "->", ",", "scriptsRoot", "loadIViewerJS", "loadJS:"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
