@@ -445,6 +445,22 @@ referencedClasses: []
 smalltalk.BibNumAlbumTintinMonopageTest);
 
 smalltalk.addMethod(
+"_testFirstPageImageShouldLinkToOneDotJpg",
+smalltalk.method({
+selector: "testFirstPageImageShouldLinkToOneDotJpg",
+category: 'tests',
+fn: function (){
+var self=this;
+smalltalk.send(self,"_assert_",[smalltalk.send((0),"__lt",[smalltalk.send(smalltalk.send(self["@container"],"_find_",["img[src*=\x22userfiles/album/2/thumbs/media/1.jpg\x22]"]),"_length",[])])]);
+return self},
+args: [],
+source: "testFirstPageImageShouldLinkToOneDotJpg\x0a\x09self assert: 0 < (container find: 'img[src*=\x22userfiles/album/2/thumbs/media/1.jpg\x22]')  length",
+messageSends: ["assert:", "<", "length", "find:"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
 "_tintinJSON",
 smalltalk.method({
 selector: "tintinJSON",

@@ -237,6 +237,10 @@ tintinJSON
 
 testBookletShouldNotBeLoaded
 	self assert: 0 equals: ( container find: '.bk-widget') length
+!
+
+testFirstPageImageShouldLinkToOneDotJpg
+	self assert: 0 < (container find: 'img[src*="userfiles/album/2/thumbs/media/1.jpg"]')  length
 ! !
 
 TestCase subclass: #CycleTest

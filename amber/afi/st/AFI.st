@@ -308,7 +308,7 @@ renderPagesOn: html
 ! !
 
 Widget subclass: #AbstractBookWidget
-	instanceVariableNames: 'book scriptsRoot rootBrush'
+	instanceVariableNames: 'book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush'
 	package: 'AFI'!
 
 !AbstractBookWidget methodsFor: 'accessor'!
@@ -327,9 +327,25 @@ scriptsRoot
 
 scriptsRoot: anUrl
 	scriptsRoot := anUrl
+!
+
+widgetClass
+	^ isFullscreen 
+		ifTrue: ['fullscreen bk-widget'] 
+		ifFalse: ['bk-widget']
 ! !
 
 !AbstractBookWidget methodsFor: 'rendering'!
+
+renderBookMenuOn: html
+	menuJQuery := html div
+		class: 'book-menu';
+		asJQuery.
+!
+
+renderBookOn: html
+	self subclassResponsibility
+!
 
 renderDevToolsOn: html
 	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
@@ -339,10 +355,56 @@ renderDevToolsOn: html
 					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
 !
 
+renderDownloadBookOn: html
+	downloadBrush := html div class: 'b-download-book'
+!
+
+renderFullscreenControlsOn: html
+	html div 
+		class: 'b-zoom-fullscreen';
+		with: [ html a onClick: [self toggleFullscreen] ].
+!
+
 renderOn: html
      self renderDevToolsOn: html.
 	rootBrush := html root.
 	self renderWidgetOn: html.
+!
+
+renderPageDescriptionOn: html 	
+	pageDescriptionsBrush := html div 
+                                                               class: 'page-desc';
+                       											yourself.
+!
+
+renderWidgetOn: html
+	html div
+		class: self widgetClass; 
+		with: [	self 
+                    renderFullscreenControlsOn: html;
+					renderDownloadBookOn: html;
+                  	renderBookMenuOn: html;
+                    renderZoomControlsOn: html;
+					renderPageDescriptionOn: html;
+                  	renderBookOn: html 	].
+    
+	isFullscreen 
+		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
+		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
+!
+
+renderZoomControlsOn: html
+	html div
+		class: 'b-zoom-magnify';
+		with: [ 	zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
+                       		zoomLeftPageAnchor hide.
+                       
+                         	zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.
+                       		zoomRightPageAnchor hide.
+                                pageZoomBrush := html div 
+						class: 'b-zoom';
+						yourself.
+                ].
 ! !
 
 !AbstractBookWidget methodsFor: 'testing'!
@@ -361,13 +423,13 @@ AbstractBookWidget subclass: #BookMonoWidget
 	instanceVariableNames: ''
 	package: 'AFI'!
 
-!BookMonoWidget methodsFor: 'rendering'!
+!BookMonoWidget methodsFor: 'not yet classified'!
 
-renderWidgetOn: html
+renderBookOn: html
 ! !
 
 AbstractBookWidget subclass: #BookWidget
-	instanceVariableNames: 'currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader bookContainer width menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
+	instanceVariableNames: 'currentPageNo loader bookContainer width downloadBrush leftFolioBrush rightFolioBrush announcer'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
@@ -434,12 +496,6 @@ navigatorWidth
 
 rightPage
 	^ book pageAt: currentPageNo ifAbsent: [Page new].
-!
-
-widgetClass
-	^ isFullscreen 
-		ifTrue: ['fullscreen bk-widget'] 
-		ifFalse: ['bk-widget']
 !
 
 width
@@ -951,12 +1007,6 @@ renderBook: aBook on: aBrush
 	isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle]
 !
 
-renderBookMenuOn: html
-	menuJQuery := html div
-		class: 'book-menu';
-		asJQuery.
-!
-
 renderBookNavigator
 	|navigatorDiv|
 	navigatorDiv := ('<div></div>') asJQuery.
@@ -995,52 +1045,6 @@ renderBookTitle
 	|titleDiv|
 	titleDiv := ('<h1 class="title">', book title, ' ( ', book size ,' pages ) </h1>') asJQuery.
 	titleDiv insertBefore: menuJQuery.
-!
-
-renderDownloadBookOn: html
-	downloadBrush := html div class: 'b-download-book'
-!
-
-renderFullscreenControlsOn: html
-	html div 
-		class: 'b-zoom-fullscreen';
-		with: [ html a onClick: [self toggleFullscreen] ].
-!
-
-renderPageDescriptionOn: html 	
-	pageDescriptionsBrush := html div 
-                                                               class: 'page-desc';
-                       											yourself.
-!
-
-renderWidgetOn: html
-	html div
-		class: self widgetClass; 
-		with: [	self 
-                    renderFullscreenControlsOn: html;
-					renderDownloadBookOn: html;
-                  	renderBookMenuOn: html;
-                    renderZoomControlsOn: html;
-					renderPageDescriptionOn: html;
-                  	renderBookOn: html 	].
-    
-	isFullscreen 
-		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
-		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
-!
-
-renderZoomControlsOn: html
-	html div
-		class: 'b-zoom-magnify';
-		with: [ 	zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
-                       		zoomLeftPageAnchor hide.
-                       
-                         	zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.
-                       		zoomRightPageAnchor hide.
-                                pageZoomBrush := html div 
-						class: 'b-zoom';
-						yourself.
-                ].
 ! !
 
 !BookWidget methodsFor: 'show'!

@@ -211,7 +211,7 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush'], 'AFI');
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush'], 'AFI');
 smalltalk.addMethod(
 "_book",
 smalltalk.method({
@@ -268,6 +268,32 @@ return $1;
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_renderBookMenuOn_",
+smalltalk.method({
+selector: "renderBookMenuOn:",
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["book-menu"]);
+$2=smalltalk.send($1,"_asJQuery",[]);
+self["@menuJQuery"]=$2;
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderBookOn_",
+smalltalk.method({
+selector: "renderBookOn:",
+fn: function (html){
+var self=this;
+smalltalk.send(self,"_subclassResponsibility",[]);
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_renderDevToolsOn_",
 smalltalk.method({
 selector: "renderDevToolsOn:",
@@ -294,6 +320,35 @@ return self}
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_renderDownloadBookOn_",
+smalltalk.method({
+selector: "renderDownloadBookOn:",
+fn: function (html){
+var self=this;
+self["@downloadBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["b-download-book"]);
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderFullscreenControlsOn_",
+smalltalk.method({
+selector: "renderFullscreenControlsOn:",
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-zoom-fullscreen"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_toggleFullscreen",[]);
+})]);
+})]);
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
@@ -302,6 +357,78 @@ var self=this;
 smalltalk.send(self,"_renderDevToolsOn_",[html]);
 self["@rootBrush"]=smalltalk.send(html,"_root",[]);
 smalltalk.send(self,"_renderWidgetOn_",[html]);
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderPageDescriptionOn_",
+smalltalk.method({
+selector: "renderPageDescriptionOn:",
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["page-desc"]);
+$2=smalltalk.send($1,"_yourself",[]);
+self["@pageDescriptionsBrush"]=$2;
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderWidgetOn_",
+smalltalk.method({
+selector: "renderWidgetOn:",
+fn: function (html){
+var self=this;
+var $1,$3,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",[smalltalk.send(self,"_widgetClass",[])]);
+$2=smalltalk.send($1,"_with_",[(function(){
+smalltalk.send(self,"_renderFullscreenControlsOn_",[html]);
+smalltalk.send(self,"_renderDownloadBookOn_",[html]);
+smalltalk.send(self,"_renderBookMenuOn_",[html]);
+smalltalk.send(self,"_renderZoomControlsOn_",[html]);
+smalltalk.send(self,"_renderPageDescriptionOn_",[html]);
+$3=smalltalk.send(self,"_renderBookOn_",[html]);
+return $3;
+})]);
+if(smalltalk.assert(self["@isFullscreen"])){
+smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_addClass_",["fullscreen"]);
+} else {
+smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_removeClass_",["fullscreen"]);
+};
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderZoomControlsOn_",
+smalltalk.method({
+selector: "renderZoomControlsOn:",
+fn: function (html){
+var self=this;
+var $1,$3,$4,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-zoom-magnify"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+self["@zoomLeftPageAnchor"]=smalltalk.send(smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomLeftPage",[]);
+})]),"_asJQuery",[]);
+self["@zoomLeftPageAnchor"];
+smalltalk.send(self["@zoomLeftPageAnchor"],"_hide",[]);
+self["@zoomRightPageAnchor"]=smalltalk.send(smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomRightPage",[]);
+})]),"_asJQuery",[]);
+self["@zoomRightPageAnchor"];
+smalltalk.send(self["@zoomRightPageAnchor"],"_hide",[]);
+$3=smalltalk.send(html,"_div",[]);
+smalltalk.send($3,"_class_",["b-zoom"]);
+$4=smalltalk.send($3,"_yourself",[]);
+self["@pageZoomBrush"]=$4;
+return self["@pageZoomBrush"];
+})]);
 return self}
 }),
 smalltalk.AbstractBookWidget);
@@ -335,13 +462,30 @@ return self}
 }),
 smalltalk.AbstractBookWidget);
 
+smalltalk.addMethod(
+"_widgetClass",
+smalltalk.method({
+selector: "widgetClass",
+fn: function (){
+var self=this;
+var $1;
+if(smalltalk.assert(self["@isFullscreen"])){
+$1="fullscreen bk-widget";
+} else {
+$1="bk-widget";
+};
+return $1;
+}
+}),
+smalltalk.AbstractBookWidget);
+
 
 
 smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, [], 'AFI');
 smalltalk.addMethod(
-"_renderWidgetOn_",
+"_renderBookOn_",
 smalltalk.method({
-selector: "renderWidgetOn:",
+selector: "renderBookOn:",
 fn: function (html){
 var self=this;
 return self}
@@ -350,7 +494,7 @@ smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'pageZoomBrush', 'pageZoomWidget', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush', 'loader', 'bookContainer', 'width', 'menuJQuery', 'isFullscreen', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'loader', 'bookContainer', 'width', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -760,17 +904,6 @@ return self}
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderBookMenuOn_",
-smalltalk.method({
-selector: "renderBookMenuOn:",
-fn: function (html){
-var self=this;
-(self['@menuJQuery']=(function($rec){smalltalk.send($rec, "_class_", [unescape("book-menu")]);return smalltalk.send($rec, "_asJQuery", []);})(smalltalk.send(html, "_div", [])));
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderBookNavigator",
 smalltalk.method({
 selector: "renderBookNavigator",
@@ -833,28 +966,6 @@ return self;}
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderDownloadBookOn_",
-smalltalk.method({
-selector: "renderDownloadBookOn:",
-fn: function (html){
-var self=this;
-(self['@downloadBrush']=smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [unescape("b-download-book")]));
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderFullscreenControlsOn_",
-smalltalk.method({
-selector: "renderFullscreenControlsOn:",
-fn: function (html){
-var self=this;
-(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom-fullscreen")]);return smalltalk.send($rec, "_with_", [(function(){return smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_toggleFullscreen", []);})]);})]);})(smalltalk.send(html, "_div", []));
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderPage_class_on_",
 smalltalk.method({
 selector: "renderPage:class:on:",
@@ -862,21 +973,6 @@ fn: function (aPage, aCssClass, html){
 var self=this;
 smalltalk.send((function($rec){smalltalk.send($rec, "_class_", [aCssClass]);smalltalk.send($rec, "_with_", [(function(){return self['@pageZoomWidget']=(function($rec){smalltalk.send($rec, "_page_", [aPage]);smalltalk.send($rec, "_renderOn_", [html]);smalltalk.send($rec, "_onCloseDo_", [(function(){return (function($rec){smalltalk.send($rec, "_closeZoom", []);return smalltalk.send($rec, "_openDescriptions", []);})(self);})]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.PageWidget || PageWidget), "_new", []));})]);return smalltalk.send($rec, "_asJQuery", []);})(smalltalk.send(html, "_div", [])), "_fadeIn_", ["slow"]);
 return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderPageDescriptionOn_",
-smalltalk.method({
-selector: "renderPageDescriptionOn:",
-fn: function (html){
-var self=this;
-var $1,$2;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["page-desc"]);
-$2=smalltalk.send($1,"_yourself",[]);
-self["@pageDescriptionsBrush"]=$2;
-return self}
 }),
 smalltalk.BookWidget);
 
@@ -911,44 +1007,6 @@ smalltalk.send(["booklet/jquery.easing.1.3.js", "iviewer/jquery.iviewer.min.js",
 return smalltalk.send(jQuery,"_ajax_",[smalltalk.HashedCollection._fromPairs_([smalltalk.send("dataType","__minus_gt",["script"]),smalltalk.send("url","__minus_gt",[smalltalk.send(smalltalk.send(self,"_scriptsRoot",[]),"__comma",[anUrl])]),smalltalk.send("cache","__minus_gt",[true])])]);
 })]);
 return self}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderWidgetOn_",
-smalltalk.method({
-selector: "renderWidgetOn:",
-fn: function (html){
-var self=this;
-var $1,$3,$2;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",[smalltalk.send(self,"_widgetClass",[])]);
-$2=smalltalk.send($1,"_with_",[(function(){
-smalltalk.send(self,"_renderFullscreenControlsOn_",[html]);
-smalltalk.send(self,"_renderDownloadBookOn_",[html]);
-smalltalk.send(self,"_renderBookMenuOn_",[html]);
-smalltalk.send(self,"_renderZoomControlsOn_",[html]);
-smalltalk.send(self,"_renderPageDescriptionOn_",[html]);
-$3=smalltalk.send(self,"_renderBookOn_",[html]);
-return $3;
-})]);
-if(smalltalk.assert(self["@isFullscreen"])){
-smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_addClass_",["fullscreen"]);
-} else {
-smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_removeClass_",["fullscreen"]);
-};
-return self}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderZoomControlsOn_",
-smalltalk.method({
-selector: "renderZoomControlsOn:",
-fn: function (html){
-var self=this;
-(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom-magnify")]);return smalltalk.send($rec, "_with_", [(function(){(self['@zoomLeftPageAnchor']=smalltalk.send(smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_zoomLeftPage", []);})]), "_asJQuery", []));smalltalk.send(self['@zoomLeftPageAnchor'], "_hide", []);(self['@zoomRightPageAnchor']=smalltalk.send(smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_zoomRightPage", []);})]), "_asJQuery", []));smalltalk.send(self['@zoomRightPageAnchor'], "_hide", []);return (self['@pageZoomBrush']=(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom")]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(html, "_div", [])));})]);})(smalltalk.send(html, "_div", []));
-return self;}
 }),
 smalltalk.BookWidget);
 
@@ -1017,17 +1075,6 @@ fn: function (){
 var self=this;
 smalltalk.send(self['@leftFolioBrush'], "_contents_", [smalltalk.send(smalltalk.send(self, "_leftPage", []), "_foliono", [])]);
 smalltalk.send(self['@rightFolioBrush'], "_contents_", [smalltalk.send(smalltalk.send(self, "_rightPage", []), "_foliono", [])]);
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_widgetClass",
-smalltalk.method({
-selector: "widgetClass",
-fn: function (){
-var self=this;
-return ((($receiver = self['@isFullscreen']).klass === smalltalk.Boolean) ? ($receiver ? (function(){return unescape("fullscreen%20bk-widget");})() : (function(){return unescape("bk-widget");})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return unescape("fullscreen%20bk-widget");}), (function(){return unescape("bk-widget");})]));
 return self;}
 }),
 smalltalk.BookWidget);

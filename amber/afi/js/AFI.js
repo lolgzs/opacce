@@ -296,7 +296,7 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush'], 'AFI');
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush'], 'AFI');
 smalltalk.addMethod(
 "_book",
 smalltalk.method({
@@ -373,6 +373,42 @@ referencedClasses: ["TestCase"]
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_renderBookMenuOn_",
+smalltalk.method({
+selector: "renderBookMenuOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["book-menu"]);
+$2=smalltalk.send($1,"_asJQuery",[]);
+self["@menuJQuery"]=$2;
+return self},
+args: ["html"],
+source: "renderBookMenuOn: html\x0a\x09menuJQuery := html div\x0a\x09\x09class: 'book-menu';\x0a\x09\x09asJQuery.",
+messageSends: ["class:", "div", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderBookOn_",
+smalltalk.method({
+selector: "renderBookOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+smalltalk.send(self,"_subclassResponsibility",[]);
+return self},
+args: ["html"],
+source: "renderBookOn: html\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_renderDevToolsOn_",
 smalltalk.method({
 selector: "renderDevToolsOn:",
@@ -404,6 +440,45 @@ referencedClasses: ["AFIIDETools", "Smalltalk"]
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_renderDownloadBookOn_",
+smalltalk.method({
+selector: "renderDownloadBookOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+self["@downloadBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["b-download-book"]);
+return self},
+args: ["html"],
+source: "renderDownloadBookOn: html\x0a\x09downloadBrush := html div class: 'b-download-book'",
+messageSends: ["class:", "div"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderFullscreenControlsOn_",
+smalltalk.method({
+selector: "renderFullscreenControlsOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-zoom-fullscreen"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_toggleFullscreen",[]);
+})]);
+})]);
+return self},
+args: ["html"],
+source: "renderFullscreenControlsOn: html\x0a\x09html div \x0a\x09\x09class: 'b-zoom-fullscreen';\x0a\x09\x09with: [ html a onClick: [self toggleFullscreen] ].",
+messageSends: ["class:", "div", "with:", "onClick:", "toggleFullscreen", "a"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
@@ -417,6 +492,93 @@ return self},
 args: ["html"],
 source: "renderOn: html\x0a     self renderDevToolsOn: html.\x0a\x09rootBrush := html root.\x0a\x09self renderWidgetOn: html.",
 messageSends: ["renderDevToolsOn:", "root", "renderWidgetOn:"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderPageDescriptionOn_",
+smalltalk.method({
+selector: "renderPageDescriptionOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["page-desc"]);
+$2=smalltalk.send($1,"_yourself",[]);
+self["@pageDescriptionsBrush"]=$2;
+return self},
+args: ["html"],
+source: "renderPageDescriptionOn: html \x09\x0a\x09pageDescriptionsBrush := html div \x0a                                                               class: 'page-desc';\x0a                       \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself.\x0a                      ",
+messageSends: ["class:", "div", "yourself"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderWidgetOn_",
+smalltalk.method({
+selector: "renderWidgetOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+var $1,$3,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",[smalltalk.send(self,"_widgetClass",[])]);
+$2=smalltalk.send($1,"_with_",[(function(){
+smalltalk.send(self,"_renderFullscreenControlsOn_",[html]);
+smalltalk.send(self,"_renderDownloadBookOn_",[html]);
+smalltalk.send(self,"_renderBookMenuOn_",[html]);
+smalltalk.send(self,"_renderZoomControlsOn_",[html]);
+smalltalk.send(self,"_renderPageDescriptionOn_",[html]);
+$3=smalltalk.send(self,"_renderBookOn_",[html]);
+return $3;
+})]);
+if(smalltalk.assert(self["@isFullscreen"])){
+smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_addClass_",["fullscreen"]);
+} else {
+smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_removeClass_",["fullscreen"]);
+};
+return self},
+args: ["html"],
+source: "renderWidgetOn: html\x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a\x09\x09\x09\x09\x09renderPageDescriptionOn: html;\x0a                  \x09renderBookOn: html \x09].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].",
+messageSends: ["class:", "widgetClass", "div", "with:", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderPageDescriptionOn:", "renderBookOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderZoomControlsOn_",
+smalltalk.method({
+selector: "renderZoomControlsOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+var $1,$3,$4,$2;
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-zoom-magnify"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+self["@zoomLeftPageAnchor"]=smalltalk.send(smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomLeftPage",[]);
+})]),"_asJQuery",[]);
+self["@zoomLeftPageAnchor"];
+smalltalk.send(self["@zoomLeftPageAnchor"],"_hide",[]);
+self["@zoomRightPageAnchor"]=smalltalk.send(smalltalk.send(smalltalk.send(html,"_a",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomRightPage",[]);
+})]),"_asJQuery",[]);
+self["@zoomRightPageAnchor"];
+smalltalk.send(self["@zoomRightPageAnchor"],"_hide",[]);
+$3=smalltalk.send(html,"_div",[]);
+smalltalk.send($3,"_class_",["b-zoom"]);
+$4=smalltalk.send($3,"_yourself",[]);
+self["@pageZoomBrush"]=$4;
+return self["@pageZoomBrush"];
+})]);
+return self},
+args: ["html"],
+source: "renderZoomControlsOn: html\x0a\x09html div\x0a\x09\x09class: 'b-zoom-magnify';\x0a\x09\x09with: [ \x09zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.\x0a                       \x09\x09zoomLeftPageAnchor hide.\x0a                       \x0a                         \x09zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.\x0a                       \x09\x09zoomRightPageAnchor hide.\x0a                                pageZoomBrush := html div \x0a\x09\x09\x09\x09\x09\x09class: 'b-zoom';\x0a\x09\x09\x09\x09\x09\x09yourself.\x0a                ].",
+messageSends: ["class:", "div", "with:", "asJQuery", "onClick:", "zoomLeftPage", "a", "hide", "zoomRightPage", "yourself"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -460,19 +622,41 @@ referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
 
+smalltalk.addMethod(
+"_widgetClass",
+smalltalk.method({
+selector: "widgetClass",
+category: 'accessor',
+fn: function (){
+var self=this;
+var $1;
+if(smalltalk.assert(self["@isFullscreen"])){
+$1="fullscreen bk-widget";
+} else {
+$1="bk-widget";
+};
+return $1;
+},
+args: [],
+source: "widgetClass\x0a\x09^ isFullscreen \x0a\x09\x09ifTrue: ['fullscreen bk-widget'] \x0a\x09\x09ifFalse: ['bk-widget']",
+messageSends: ["ifTrue:ifFalse:"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
 
 
 smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, [], 'AFI');
 smalltalk.addMethod(
-"_renderWidgetOn_",
+"_renderBookOn_",
 smalltalk.method({
-selector: "renderWidgetOn:",
-category: 'rendering',
+selector: "renderBookOn:",
+category: 'not yet classified',
 fn: function (html){
 var self=this;
 return self},
 args: ["html"],
-source: "renderWidgetOn: html\x0a",
+source: "renderBookOn: html",
 messageSends: [],
 referencedClasses: []
 }),
@@ -480,7 +664,7 @@ smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'pageZoomBrush', 'pageZoomWidget', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush', 'loader', 'bookContainer', 'width', 'menuJQuery', 'isFullscreen', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'loader', 'bookContainer', 'width', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -1050,22 +1234,6 @@ referencedClasses: []
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderBookMenuOn_",
-smalltalk.method({
-selector: "renderBookMenuOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-(self['@menuJQuery']=(function($rec){smalltalk.send($rec, "_class_", [unescape("book-menu")]);return smalltalk.send($rec, "_asJQuery", []);})(smalltalk.send(html, "_div", [])));
-return self;},
-args: ["html"],
-source: "renderBookMenuOn: html\x0a\x09menuJQuery := html div\x0a\x09\x09class: 'book-menu';\x0a\x09\x09asJQuery.",
-messageSends: ["class:", "asJQuery", "div"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderBookNavigator",
 smalltalk.method({
 selector: "renderBookNavigator",
@@ -1143,38 +1311,6 @@ referencedClasses: []
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderDownloadBookOn_",
-smalltalk.method({
-selector: "renderDownloadBookOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-(self['@downloadBrush']=smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [unescape("b-download-book")]));
-return self;},
-args: ["html"],
-source: "renderDownloadBookOn: html\x0a\x09downloadBrush := html div class: 'b-download-book'",
-messageSends: ["class:", "div"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderFullscreenControlsOn_",
-smalltalk.method({
-selector: "renderFullscreenControlsOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom-fullscreen")]);return smalltalk.send($rec, "_with_", [(function(){return smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_toggleFullscreen", []);})]);})]);})(smalltalk.send(html, "_div", []));
-return self;},
-args: ["html"],
-source: "renderFullscreenControlsOn: html\x0a\x09html div \x0a\x09\x09class: 'b-zoom-fullscreen';\x0a\x09\x09with: [ html a onClick: [self toggleFullscreen] ].",
-messageSends: ["class:", "with:", "onClick:", "a", "toggleFullscreen", "div"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderPage_class_on_",
 smalltalk.method({
 selector: "renderPage:class:on:",
@@ -1187,26 +1323,6 @@ args: ["aPage", "aCssClass", "html"],
 source: "renderPage: aPage class: aCssClass on: html\x0a\x09(html div\x0a\x09\x09class: aCssClass;\x0a\x09\x09with:[\x09pageZoomWidget := PageWidget new\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09page: aPage;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09renderOn: html;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09onCloseDo: [\x09self \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09closeZoom; \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09openDescriptions];\x0a                                                                               \x09yourself \x09\x09\x09\x09\x09\x09\x09\x09];\x0a                asJQuery) fadeIn: 'slow'. ",
 messageSends: ["fadeIn:", "class:", "with:", "page:", "renderOn:", "onCloseDo:", "closeZoom", "openDescriptions", "yourself", "new", "asJQuery", "div"],
 referencedClasses: ["PageWidget"]
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderPageDescriptionOn_",
-smalltalk.method({
-selector: "renderPageDescriptionOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-var $1,$2;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["page-desc"]);
-$2=smalltalk.send($1,"_yourself",[]);
-self["@pageDescriptionsBrush"]=$2;
-return self},
-args: ["html"],
-source: "renderPageDescriptionOn: html \x09\x0a\x09pageDescriptionsBrush := html div \x0a                                                               class: 'page-desc';\x0a                       \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself.\x0a                      ",
-messageSends: ["class:", "div", "yourself"],
-referencedClasses: []
 }),
 smalltalk.BookWidget);
 
@@ -1245,54 +1361,6 @@ return self},
 args: ["html", "aBlock"],
 source: "renderScriptsOn: html Then: aBlock\x0a\x09#( \x09'booklet/jquery.booklet.1.2.0.css'\x0a          \x09'iviewer/jquery.iviewer.css' ) do: [:anUrl|\x0a                                                   \x09\x09\x09\x09html link\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09href: self scriptsRoot, anUrl;\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09type:'text/css';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel:'stylesheet'\x09].\x0a\x09html style\x0a\x09\x09type: 'text/css';\x0a\x09\x09with: self style.\x0a\x0a\x09(jQuery at: 'ui') ifNil: [ html script\x0a         \x09\x09\x09\x09    \x09type: 'text/javascript';\x0a                \x09\x09\x09\x09src: \x09'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. \x0a                                \x0a     \x0a\x09jQuery ajax: #{\x09  'dataType' -> 'script'. \x0a    \x09\x09\x09\x09\x09\x09\x09\x09'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').\x0a                                    'cache' -> true.\x0a                                    'success' -> aBlock\x0a                                }.\x0a\x0a\x09#('booklet/jquery.easing.1.3.js'\x0a        'iviewer/jquery.iviewer.min.js'\x0a        'iviewer/jquery.mousewheel.min.js'\x0a       ) do: [:anUrl|   jQuery ajax: #{\x09'dataType' -> 'script'.\x0a       \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09'url' -> (self scriptsRoot, anUrl).\x0a                                                                'cache' -> true\x0a                                                                }]",
 messageSends: ["do:", "href:", ",", "scriptsRoot", "link", "type:", "rel:", "style", "with:", "ifNil:", "script", "src:", "at:", "ajax:", "->"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderWidgetOn_",
-smalltalk.method({
-selector: "renderWidgetOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-var $1,$3,$2;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",[smalltalk.send(self,"_widgetClass",[])]);
-$2=smalltalk.send($1,"_with_",[(function(){
-smalltalk.send(self,"_renderFullscreenControlsOn_",[html]);
-smalltalk.send(self,"_renderDownloadBookOn_",[html]);
-smalltalk.send(self,"_renderBookMenuOn_",[html]);
-smalltalk.send(self,"_renderZoomControlsOn_",[html]);
-smalltalk.send(self,"_renderPageDescriptionOn_",[html]);
-$3=smalltalk.send(self,"_renderBookOn_",[html]);
-return $3;
-})]);
-if(smalltalk.assert(self["@isFullscreen"])){
-smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_addClass_",["fullscreen"]);
-} else {
-smalltalk.send(smalltalk.send("body","_asJQuery",[]),"_removeClass_",["fullscreen"]);
-};
-return self},
-args: ["html"],
-source: "renderWidgetOn: html\x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a\x09\x09\x09\x09\x09renderPageDescriptionOn: html;\x0a                  \x09renderBookOn: html \x09].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].",
-messageSends: ["class:", "widgetClass", "div", "with:", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderPageDescriptionOn:", "renderBookOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderZoomControlsOn_",
-smalltalk.method({
-selector: "renderZoomControlsOn:",
-category: 'rendering',
-fn: function (html){
-var self=this;
-(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom-magnify")]);return smalltalk.send($rec, "_with_", [(function(){(self['@zoomLeftPageAnchor']=smalltalk.send(smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_zoomLeftPage", []);})]), "_asJQuery", []));smalltalk.send(self['@zoomLeftPageAnchor'], "_hide", []);(self['@zoomRightPageAnchor']=smalltalk.send(smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_zoomRightPage", []);})]), "_asJQuery", []));smalltalk.send(self['@zoomRightPageAnchor'], "_hide", []);return (self['@pageZoomBrush']=(function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom")]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(html, "_div", [])));})]);})(smalltalk.send(html, "_div", []));
-return self;},
-args: ["html"],
-source: "renderZoomControlsOn: html\x0a\x09html div\x0a\x09\x09class: 'b-zoom-magnify';\x0a\x09\x09with: [ \x09zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.\x0a                       \x09\x09zoomLeftPageAnchor hide.\x0a                       \x0a                         \x09zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.\x0a                       \x09\x09zoomRightPageAnchor hide.\x0a                                pageZoomBrush := html div \x0a\x09\x09\x09\x09\x09\x09class: 'b-zoom';\x0a\x09\x09\x09\x09\x09\x09yourself.\x0a                ].",
-messageSends: ["class:", "with:", "asJQuery", "onClick:", "a", "zoomLeftPage", "hide", "zoomRightPage", "yourself", "div"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -1392,22 +1460,6 @@ return self;},
 args: [],
 source: "updateFolioNumbers\x0a\x09leftFolioBrush contents: self leftPage foliono.\x0a\x09rightFolioBrush contents: self rightPage foliono.",
 messageSends: ["contents:", "foliono", "leftPage", "rightPage"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_widgetClass",
-smalltalk.method({
-selector: "widgetClass",
-category: 'accessing',
-fn: function (){
-var self=this;
-return ((($receiver = self['@isFullscreen']).klass === smalltalk.Boolean) ? ($receiver ? (function(){return unescape("fullscreen%20bk-widget");})() : (function(){return unescape("bk-widget");})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return unescape("fullscreen%20bk-widget");}), (function(){return unescape("bk-widget");})]));
-return self;},
-args: [],
-source: "widgetClass\x0a\x09^ isFullscreen \x0a\x09\x09ifTrue: ['fullscreen bk-widget'] \x0a\x09\x09ifFalse: ['bk-widget']",
-messageSends: ["ifTrue:ifFalse:"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
