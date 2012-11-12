@@ -114,10 +114,8 @@ class ZendAfi_Controller_Action extends Zend_Controller_Action {
 	 */
 	protected function _getForm($model) {
 		if (!$form = $this->_definitions->getForm()) {
-			$form = $this->view->newForm(array('id' => $this->_definitions->getModelName()));
-			$this->_definitions
-				->addFormElements($form)
-				->addDisplayGroups($form);
+			$form = new ZendAfi_Form( ['id' => $this->_definitions->getModelName()] );
+			$form->populateFormFromGroupsDefinitions($this->_definitions->getDisplayGroups());
 		}
 
 		return $form

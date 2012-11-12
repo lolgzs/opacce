@@ -500,7 +500,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 		$groups = ['thumbnails' => ['legend' => 'Vignettes',
 																'elements' => ['thumbnail_width' => $textInputWithLabel('Largeur')]]];
 
-		if ($album->isLivreNumerique())
+		if ($album->isLivreNumerique()) {
 			$groups['thumbnails']['elements']['display_one_page'] = ['element' => 'checkbox',
 																															 'options' => ['label' => $this->_('Monopage')]];
 
@@ -520,6 +520,7 @@ class Admin_AlbumController extends Zend_Controller_Action {
 																 'thumbnail_right_page_crop_right' => $textInputWithLabel('Rognage droit'),
 																 'thumbnail_right_page_crop_bottom' => $textInputWithLabel('Rognage bas'),
 																 'thumbnail_right_page_crop_left' => $textInputWithLabel('Rognage gauche')]]]);
+		}
 
 		return $this
 			->_thumbnailsFormWithFields($groups)

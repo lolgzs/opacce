@@ -157,20 +157,8 @@ class ZendAfi_Controller_Action_RessourceDefinitions {
 	}
 
 
-	public function addDisplayGroups($form) {
-		foreach($this->_definitions['display_groups'] as $name => $definition) 
-			$form->addDisplayGroup(array_keys($definition['elements']), 
-														 $name, 
-														 array('legend' => $definition['legend']));
-	}
-
-
-	public function getFormElementDefinitions() {
-		$definitions = array();
-		foreach($this->_definitions['display_groups'] as $group) 
-			$definitions = array_merge($definitions, $group['elements']);
-
-		return $definitions;
+	public function getDisplayGroups() {
+		return $this->_definitions['display_groups'];
 	}
 
 
