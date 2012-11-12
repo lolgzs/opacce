@@ -80,7 +80,7 @@ setUp
 ! !
 
 BibNumAlbumTintinTestCase subclass: #BibNumAlbumTintinBookletTest
-	instanceVariableNames: 'bible album container ajax'
+	instanceVariableNames: ''
 	package: 'AFI-Tests'!
 
 !BibNumAlbumTintinBookletTest methodsFor: 'json'!
@@ -120,10 +120,6 @@ tintinJSON
 
 testAnchorToDownloadPDFShouldBePresent
 	self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )
-!
-
-testBookletJSShouldBeLoadedOnce
-	self assert: 1 equals: ( 'head' asJQuery find: 'script[src*="booklet.1.2.0.min.js"]') length
 !
 
 testBookletPluginShouldBeLoaded

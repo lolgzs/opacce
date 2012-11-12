@@ -119,7 +119,7 @@ smalltalk.BibNumAlbumTintinTestCase);
 
 
 
-smalltalk.addClass('BibNumAlbumTintinBookletTest', smalltalk.BibNumAlbumTintinTestCase, ['bible', 'album', 'container', 'ajax'], 'AFI-Tests');
+smalltalk.addClass('BibNumAlbumTintinBookletTest', smalltalk.BibNumAlbumTintinTestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
 "_testAnchorToDownloadPDFShouldBePresent",
 smalltalk.method({
@@ -133,23 +133,6 @@ fn: function () {
 args: [],
 source: "testAnchorToDownloadPDFShouldBePresent\x0a\x09self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )",
 messageSends: ["assert:equals:", "attr:", "find:"],
-referencedClasses: []
-}),
-smalltalk.BibNumAlbumTintinBookletTest);
-
-smalltalk.addMethod(
-"_testBookletJSShouldBeLoadedOnce",
-smalltalk.method({
-selector: "testBookletJSShouldBeLoadedOnce",
-category: 'tests',
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_assert_equals_", [1, smalltalk.send(smalltalk.send(smalltalk.send("head", "_asJQuery", []), "_find_", [unescape("script%5Bsrc*%3D%22booklet.1.2.0.min.js%22%5D")]), "_length", [])]);
-    return self;
-},
-args: [],
-source: "testBookletJSShouldBeLoadedOnce\x0a\x09self assert: 1 equals: ( 'head' asJQuery find: 'script[src*=\x22booklet.1.2.0.min.js\x22]') length\x0a\x09",
-messageSends: ["assert:equals:", "length", "find:", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.BibNumAlbumTintinBookletTest);
@@ -415,11 +398,10 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "testShouldContainsFourPages",
 category: 'tests',
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_assert_equals_", [4, smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-page")]), "_length", [])]);
-    return self;
-},
+fn: function (){
+var self=this;
+smalltalk.send(self,"_assert_equals_",[(4),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".b-page"]),"_length",[])]);
+return self},
 args: [],
 source: "testShouldContainsFourPages\x0a\x09\x222 pages + covers\x22\x0a\x09self assert: 4 equals: (container find: '.b-page') length",
 messageSends: ["assert:equals:", "length", "find:"],

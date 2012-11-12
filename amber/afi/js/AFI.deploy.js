@@ -211,7 +211,7 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot'], 'AFI');
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush'], 'AFI');
 smalltalk.addMethod(
 "_book",
 smalltalk.method({
@@ -230,6 +230,78 @@ selector: "book:",
 fn: function (aBook){
 var self=this;
 self["@book"]=aBook;
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_isRunInTestCase",
+smalltalk.method({
+selector: "isRunInTestCase",
+fn: function (){
+var self=this;
+var $1;
+$1=smalltalk.send(self,"_isTestCaseInContext_",[smalltalk.getThisContext()]);
+return $1;
+}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_isTestCaseInContext_",
+smalltalk.method({
+selector: "isTestCaseInContext:",
+fn: function (aContext){
+var self=this;
+var $2,$1;
+$2=smalltalk.send(aContext,"_home",[]);
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=false;
+} else {
+$1=smalltalk.send(smalltalk.send(smalltalk.send(aContext,"_receiver",[]),"_isKindOf_",[(smalltalk.TestCase || TestCase)]),"_or_",[(function(){
+return smalltalk.send(self,"_isTestCaseInContext_",[smalltalk.send(aContext,"_home",[])]);
+})]);
+};
+return $1;
+}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderDevToolsOn_",
+smalltalk.method({
+selector: "renderDevToolsOn:",
+fn: function (html){
+var self=this;
+var $1,$2;
+$1=smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((smalltalk.Smalltalk || Smalltalk),"_current",[]),"_at_",["Browser"]),"_notNil",[]),"_and_",[(function(){
+return smalltalk.send(smalltalk.send(self,"_isRunInTestCase",[]),"_not",[]);
+})]);
+if(smalltalk.assert($1)){
+smalltalk.send((smalltalk.AFIIDETools || AFIIDETools),"_addButton_action_",["Reload booklet",(function(){
+return smalltalk.send(self,"_reloadWidget",[]);
+})]);
+smalltalk.send((smalltalk.AFIIDETools || AFIIDETools),"_addButton_action_",["Inspect booklet",(function(){
+return smalltalk.send(self,"_inspect",[]);
+})]);
+$2=smalltalk.send((smalltalk.AFIIDETools || AFIIDETools),"_addButton_action_",["Toggle fullscreen",(function(){
+return smalltalk.send(self,"_toggleFullscreen",[]);
+})]);
+$2;
+};
+return self}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_renderOn_",
+smalltalk.method({
+selector: "renderOn:",
+fn: function (html){
+var self=this;
+smalltalk.send(self,"_renderDevToolsOn_",[html]);
+self["@rootBrush"]=smalltalk.send(html,"_root",[]);
+smalltalk.send(self,"_renderWidgetOn_",[html]);
 return self}
 }),
 smalltalk.AbstractBookWidget);
@@ -266,9 +338,19 @@ smalltalk.AbstractBookWidget);
 
 
 smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, [], 'AFI');
+smalltalk.addMethod(
+"_renderWidgetOn_",
+smalltalk.method({
+selector: "renderWidgetOn:",
+fn: function (html){
+var self=this;
+return self}
+}),
+smalltalk.BookMonoWidget);
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'pageZoomBrush', 'pageZoomWidget', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush', 'loader', 'bookContainer', 'width', 'rootBrush', 'menuJQuery', 'isFullscreen', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
+
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['currentPageNo', 'pageZoomBrush', 'pageZoomWidget', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'pageDescriptionsBrush', 'loader', 'bookContainer', 'width', 'menuJQuery', 'isFullscreen', 'downloadBrush', 'leftFolioBrush', 'rightFolioBrush', 'announcer'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -498,28 +580,6 @@ return self;}
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_isRunInTestCase",
-smalltalk.method({
-selector: "isRunInTestCase",
-fn: function (){
-var self=this;
-return smalltalk.send(self, "_isTestCaseInContext_", [(smalltalk.getThisContext())]);
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_isTestCaseInContext_",
-smalltalk.method({
-selector: "isTestCaseInContext:",
-fn: function (aContext){
-var self=this;
-return (($receiver = smalltalk.send(aContext, "_home", [])) == nil || $receiver == undefined) ? (function(){return false;})() : (function(){return smalltalk.send(smalltalk.send(smalltalk.send(aContext, "_receiver", []), "_isKindOf_", [(smalltalk.TestCase || TestCase)]), "_or_", [(function(){return smalltalk.send(self, "_isTestCaseInContext_", [smalltalk.send(aContext, "_home", [])]);})]);})();
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_leftPage",
 smalltalk.method({
 selector: "leftPage",
@@ -557,11 +617,9 @@ selector: "loadBookletJSThen:",
 fn: function (aBlock){
 var self=this;
 var $1;
-var head;
-head=smalltalk.send("head","_asJQuery",[]);
-$1=smalltalk.send(smalltalk.send(smalltalk.send(head,"_find_",["script[src*=\x22booklet\x22]"]),"_length",[]),"__eq",[(0)]);
-smalltalk.send($1,"_ifTrue_ifFalse_",[(function(){
-return smalltalk.send(self,"_renderScriptsOn_Then_",[smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_onJQuery_",[head]),aBlock]);
+$1=smalltalk.send(smalltalk.send(window,"_jQuery",[]),"_at_",["booklet"]);
+smalltalk.send($1,"_ifNil_ifNotNil_",[(function(){
+return smalltalk.send(self,"_renderScriptsOn_Then_",[smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_onJQuery_",[smalltalk.send("head","_asJQuery",[])]),aBlock]);
 }),aBlock]);
 return self}
 }),
@@ -775,17 +833,6 @@ return self;}
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
-"_renderDevToolsOn_",
-smalltalk.method({
-selector: "renderDevToolsOn:",
-fn: function (html){
-var self=this;
-((($receiver = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send((smalltalk.Smalltalk || Smalltalk), "_current", []), "_at_", ["Browser"]), "_notNil", []), "_and_", [(function(){return smalltalk.send(smalltalk.send(self, "_isRunInTestCase", []), "_not", []);})])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function($rec){smalltalk.send($rec, "_addButton_action_", ["Reload booklet", (function(){return smalltalk.send(self, "_reloadWidget", []);})]);smalltalk.send($rec, "_addButton_action_", ["Inspect booklet", (function(){return smalltalk.send(self, "_inspect", []);})]);return smalltalk.send($rec, "_addButton_action_", ["Toggle fullscreen", (function(){return smalltalk.send(self, "_toggleFullscreen", []);})]);})((smalltalk.AFIIDETools || AFIIDETools));})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return (function($rec){smalltalk.send($rec, "_addButton_action_", ["Reload booklet", (function(){return smalltalk.send(self, "_reloadWidget", []);})]);smalltalk.send($rec, "_addButton_action_", ["Inspect booklet", (function(){return smalltalk.send(self, "_inspect", []);})]);return smalltalk.send($rec, "_addButton_action_", ["Toggle fullscreen", (function(){return smalltalk.send(self, "_toggleFullscreen", []);})]);})((smalltalk.AFIIDETools || AFIIDETools));})]));
-return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
 "_renderDownloadBookOn_",
 smalltalk.method({
 selector: "renderDownloadBookOn:",
@@ -804,19 +851,6 @@ fn: function (html){
 var self=this;
 (function($rec){smalltalk.send($rec, "_class_", [unescape("b-zoom-fullscreen")]);return smalltalk.send($rec, "_with_", [(function(){return smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [(function(){return smalltalk.send(self, "_toggleFullscreen", []);})]);})]);})(smalltalk.send(html, "_div", []));
 return self;}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_renderOn_",
-smalltalk.method({
-selector: "renderOn:",
-fn: function (html){
-var self=this;
-smalltalk.send(self,"_renderDevToolsOn_",[html]);
-self["@rootBrush"]=smalltalk.send(html,"_root",[]);
-smalltalk.send(self,"_renderWidgetOn_",[html]);
-return self}
 }),
 smalltalk.BookWidget);
 

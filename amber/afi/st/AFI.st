@@ -308,7 +308,7 @@ renderPagesOn: html
 ! !
 
 Widget subclass: #AbstractBookWidget
-	instanceVariableNames: 'book scriptsRoot'
+	instanceVariableNames: 'book scriptsRoot rootBrush'
 	package: 'AFI'!
 
 !AbstractBookWidget methodsFor: 'accessor'!
@@ -329,12 +329,45 @@ scriptsRoot: anUrl
 	scriptsRoot := anUrl
 ! !
 
+!AbstractBookWidget methodsFor: 'rendering'!
+
+renderDevToolsOn: html
+	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
+		 [   AFIIDETools 
+					addButton: 'Reload booklet' action: [ self reloadWidget ];
+					addButton: 'Inspect booklet' action: [ self inspect ];
+					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
+!
+
+renderOn: html
+     self renderDevToolsOn: html.
+	rootBrush := html root.
+	self renderWidgetOn: html.
+! !
+
+!AbstractBookWidget methodsFor: 'testing'!
+
+isRunInTestCase
+	^ self isTestCaseInContext: thisContext
+!
+
+isTestCaseInContext: aContext 
+	^ aContext home 
+		ifNil: [false]
+		ifNotNil: [ (aContext receiver isKindOf: TestCase) or: [ self isTestCaseInContext: aContext home]].
+! !
+
 AbstractBookWidget subclass: #BookMonoWidget
 	instanceVariableNames: ''
 	package: 'AFI'!
 
+!BookMonoWidget methodsFor: 'rendering'!
+
+renderWidgetOn: html
+! !
+
 AbstractBookWidget subclass: #BookWidget
-	instanceVariableNames: 'currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader bookContainer width rootBrush menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
+	instanceVariableNames: 'currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader bookContainer width menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
@@ -844,11 +877,9 @@ updateFolioNumbers
 !BookWidget methodsFor: 'external libs'!
 
 loadBookletJSThen: aBlock
-	|head|
-	head := 'head' asJQuery.
-	(head find: 'script[src*="booklet"]') length = 0 
-    	ifTrue: [ self renderScriptsOn: (HTMLCanvas onJQuery: head) Then: aBlock]
-        ifFalse: aBlock
+	(window jQuery at: 'booklet')
+    	ifNil: [ self renderScriptsOn: (HTMLCanvas onJQuery: 'head' asJQuery) Then: aBlock]
+        ifNotNil: aBlock
 !
 
 renderScriptsOn: html Then: aBlock
@@ -966,14 +997,6 @@ renderBookTitle
 	titleDiv insertBefore: menuJQuery.
 !
 
-renderDevToolsOn: html
-	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
-		 [   AFIIDETools 
-					addButton: 'Reload booklet' action: [ self reloadWidget ];
-					addButton: 'Inspect booklet' action: [ self inspect ];
-					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
-!
-
 renderDownloadBookOn: html
 	downloadBrush := html div class: 'b-download-book'
 !
@@ -982,12 +1005,6 @@ renderFullscreenControlsOn: html
 	html div 
 		class: 'b-zoom-fullscreen';
 		with: [ html a onClick: [self toggleFullscreen] ].
-!
-
-renderOn: html
-     self renderDevToolsOn: html.
-	rootBrush := html root.
-	self renderWidgetOn: html.
 !
 
 renderPageDescriptionOn: html 	
@@ -1058,16 +1075,6 @@ isIE
 
 isJQueryMobile
 	^ (window jQuery at: 'jqmData') isNil not
-!
-
-isRunInTestCase
-	^ self isTestCaseInContext: thisContext
-!
-
-isTestCaseInContext: aContext 
-	^ aContext home 
-		ifNil: [false]
-		ifNotNil: [ (aContext receiver isKindOf: TestCase) or: [ self isTestCaseInContext: aContext home]].
 ! !
 
 !BookWidget methodsFor: 'zoom'!

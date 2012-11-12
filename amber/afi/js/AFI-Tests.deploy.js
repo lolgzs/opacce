@@ -89,7 +89,7 @@ smalltalk.BibNumAlbumTintinTestCase);
 
 
 
-smalltalk.addClass('BibNumAlbumTintinBookletTest', smalltalk.BibNumAlbumTintinTestCase, ['bible', 'album', 'container', 'ajax'], 'AFI-Tests');
+smalltalk.addClass('BibNumAlbumTintinBookletTest', smalltalk.BibNumAlbumTintinTestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
 "_testAnchorToDownloadPDFShouldBePresent",
 smalltalk.method({
@@ -97,18 +97,6 @@ selector: "testAnchorToDownloadPDFShouldBePresent",
 fn: function () {
     var self = this;
     smalltalk.send(self, "_assert_equals_", [unescape("http%3A//localhost/pdf/2"), smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape("div.b-download-book%20a")]), "_attr_", ["href"])]);
-    return self;
-}
-}),
-smalltalk.BibNumAlbumTintinBookletTest);
-
-smalltalk.addMethod(
-"_testBookletJSShouldBeLoadedOnce",
-smalltalk.method({
-selector: "testBookletJSShouldBeLoadedOnce",
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_assert_equals_", [1, smalltalk.send(smalltalk.send(smalltalk.send("head", "_asJQuery", []), "_find_", [unescape("script%5Bsrc*%3D%22booklet.1.2.0.min.js%22%5D")]), "_length", [])]);
     return self;
 }
 }),
@@ -299,11 +287,10 @@ smalltalk.addMethod(
 "_testShouldContainsFourPages",
 smalltalk.method({
 selector: "testShouldContainsFourPages",
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_assert_equals_", [4, smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-page")]), "_length", [])]);
-    return self;
-}
+fn: function (){
+var self=this;
+smalltalk.send(self,"_assert_equals_",[(4),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".b-page"]),"_length",[])]);
+return self}
 }),
 smalltalk.BibNumAlbumTintinBookletTest);
 
