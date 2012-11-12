@@ -435,10 +435,10 @@ selector: "testBookletShouldNotBeLoaded",
 category: 'tests',
 fn: function (){
 var self=this;
-smalltalk.send(self,"_assert_equals_",[(0),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".bk-widget"]),"_length",[])]);
+smalltalk.send(self,"_assert_equals_",[(0),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".b-load"]),"_length",[])]);
 return self},
 args: [],
-source: "testBookletShouldNotBeLoaded\x0a\x09self assert: 0 equals: ( container find: '.bk-widget') length\x0a\x09",
+source: "testBookletShouldNotBeLoaded\x0a\x09self assert: 0 equals: ( container find: '.b-load') length\x0a\x09",
 messageSends: ["assert:equals:", "length", "find:"],
 referencedClasses: []
 }),

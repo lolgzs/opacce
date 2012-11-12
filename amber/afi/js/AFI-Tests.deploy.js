@@ -314,7 +314,7 @@ smalltalk.method({
 selector: "testBookletShouldNotBeLoaded",
 fn: function (){
 var self=this;
-smalltalk.send(self,"_assert_equals_",[(0),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".bk-widget"]),"_length",[])]);
+smalltalk.send(self,"_assert_equals_",[(0),smalltalk.send(smalltalk.send(self["@container"],"_find_",[".b-load"]),"_length",[])]);
 return self}
 }),
 smalltalk.BibNumAlbumTintinMonopageTest);

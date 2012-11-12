@@ -236,7 +236,7 @@ tintinJSON
 !BibNumAlbumTintinMonopageTest methodsFor: 'tests'!
 
 testBookletShouldNotBeLoaded
-	self assert: 0 equals: ( container find: '.bk-widget') length
+	self assert: 0 equals: ( container find: '.b-load') length
 !
 
 testFirstPageImageShouldLinkToOneDotJpg
