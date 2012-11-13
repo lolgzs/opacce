@@ -31,17 +31,15 @@ class ZendAfi_View_Helper_Abonne_Multimedia extends ZendAfi_View_Helper_Abonne_A
 																		$this->view->_("Réserver un poste multimédia"));
 		$html .= '<ul>';
 		foreach ($user->getFutureMultimediaHolds() as $hold) {
-			$device = $hold->getDevice();
-			$location = $device->getGroup()->getLocation();
 			$html .= sprintf('<li><a href="%s">%s, %s %s, %s</li>', 
 											 $this->view->url(['controller' => 'abonne',
 																				 'action' => 'multimedia-hold-view',
 																				 'id' => $hold->getId()],
 																				null,	true),
-											 $device->getLibelle() . ' - ' . $device->getOs(),
+											 $hold->getLibelleDevice() . ' - ' . $hold->getOs(),
 											 strftime('le %d %B %Y à %Hh%M', $hold->getStart()),
 											 sprintf('pour %smn', (($hold->getEnd() - $hold->getStart()) / 60)),
-											 $location->getLibelleBib());
+											 $hold->getLibelleBib());
 		}
 
 		$html .= '</ul>';

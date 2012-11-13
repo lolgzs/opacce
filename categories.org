@@ -60,7 +60,7 @@ cf [[file:application/modules/opac/controllers/AbonneController.php::and%20null%
 
 ** Test controller push
 #+BEGIN_SRC lisp
-	(async-shell-command "curl -d \"json=[{\\\"libelle\\\":\\\"default\\\",\\\"id\\\":\\\"1\\\",\\\"site\\\":{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"lognes\\\",\\\"admin_url\\\":\\\"192.168.1.82\\\"},\\\"postes\\\":[{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"ANACTU10\\\",\\\"os\\\":\\\"Windows 7\\\",\\\"maintenance\\\":\\\"0\\\"},{\\\"id\\\":\\\"2\\\",\\\"libelle\\\":\\\"ANACTU12\\\",\\\"os\\\":\\\"Windows XP\\\",\\\"maintenance\\\":\\\"0\\\"}]}]\" http://localhost/afi-opac3/push/multimedia/config?XDEBUG_SESSION_START=1" )
+	(async-shell-command "curl -d \"json=[{\\\"libelle\\\":\\\"default\\\",\\\"id\\\":\\\"1\\\",\\\"site\\\":{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"lognes\\\",\\\"admin_url\\\":\\\"192.168.1.82\\\"},\\\"postes\\\":[{\\\"id\\\":\\\"1\\\",\\\"libelle\\\":\\\"ANACTU10\\\",\\\"os\\\":\\\"Windows 7\\\",\\\"maintenance\\\":\\\"0\\\"},{\\\"id\\\":\\\"2\\\",\\\"libelle\\\":\\\"ANACTU12\\\",\\\"os\\\":\\\"Windows XP\\\",\\\"maintenance\\\":\\\"0\\\"}]}]\" http://localhost:8081/afi-opac3/push/multimedia/config?XDEBUG_SESSION_START=1" )
 #+END_SRC
 * Bib numérique
 	[[file:public/opac/css/global.css::/**%20bib%20numerique%20*/][CSS Bib num]]

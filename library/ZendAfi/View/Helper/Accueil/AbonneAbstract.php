@@ -29,7 +29,9 @@ abstract class ZendAfi_View_Helper_Accueil_AbonneAbstract extends ZendAfi_View_H
 		if (!$this->_abonne = Class_Users::getIdentity())
 			return $this->getHtmlArray() ;
 
-		$this->contenu = sprintf('<div class="boite_%s"><ul>%s</ul></div>',$this->_boite_id,$this->getContenu());
+		$this->contenu = sprintf('<div class="boite_%s"><ul>%s</ul></div>',
+														 $this->_boite_id,
+														 $this->getContenu());
 		return $this->getHtmlArray();
 	}
 

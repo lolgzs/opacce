@@ -23,12 +23,34 @@ class ZendAfi_View_Helper_Accueil_Multimedia extends ZendAfi_View_Helper_Accueil
 	protected $_boite_id = 'multimedia';
 
 	public function getModels() {
-    return [];
+    return $this->_abonne->getFutureMultimediaHolds();
 	}
 
+
+	public function getContenu() {
+		return parent::getContenu().sprintf(
+			'<div><a href="%s">%s</a></div>',
+			$this->view->url(['controller' => 'abonne',
+												'action' => $this->_titre_action],
+											 null, true),
+			$this->view->_('Réserver un poste multimedia'));
+	}
+
+
 	public function renderModel($reservation) {
-		return '';
-		
+		return sprintf('<li><a href="%s">[%s] %s</a></li>',
+									 $this->view->url(['controller' => 'abonne',
+																		 'action' => 'multimedia-hold-view',
+																		 'id' => $reservation->getId()],
+																		null,true),
+									 $reservation->getLibelleBib(),
+									 strftime('%d/%m/%Y %Hh%M', $reservation->getStart()));
+
+	}
+
+
+	public function isBoiteVisible() {
+		return (parent::isBoiteVisible() && Class_AdminVar::isMultimediaEnabled());
 	}
 
 
