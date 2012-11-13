@@ -441,6 +441,8 @@ class BibNumeriqueAlbumTeaserTest extends AbstractBibNumeriqueViewHelperWithAlbu
 
 	/** @test */
 	function pageShouldContainsCodeToLoadPrettyPhoto() {
+		$this->_buildHelperLimitedTo(2);
+		$this->_helper->getBoite();
 		$this->assertXPath(Class_ScriptLoader::getInstance()->html(),
 											 '//script[contains(@src,"prettyPhoto")]');
 	}
