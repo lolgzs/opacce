@@ -45,7 +45,7 @@ class Admin_AccueilController extends Zend_Controller_Action {
 			$this->profil = Class_Profil::getCurrentProfil();
 
 		$user = Class_Users::getIdentity();
-
+ 
 		if (($user->getRoleLevel() < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
 				|| ($user->isAdminBib() && ($user->getIdSite() !== $this->profil->getIdSite()))) {
 			 $this->_redirect('admin/index');
@@ -141,6 +141,10 @@ class Admin_AccueilController extends Zend_Controller_Action {
 	}
 
 	public function reservationsAction() {
+		$this->_simpleAction();
+	}
+
+	public function multimediaAction() {
 		$this->_simpleAction();
 	}
 

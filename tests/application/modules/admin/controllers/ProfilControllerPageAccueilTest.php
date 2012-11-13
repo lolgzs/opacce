@@ -20,7 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_AbstractControllerTestCase {
+abstract class Admin_ProfilControllerPageAccueilJeunesseTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -73,7 +73,7 @@ abstract class Admin_ProfilControllerJeunessePageAccueilTestCase extends Admin_A
 }
 
 
-class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -286,7 +286,7 @@ class ProfilControllerPageAccueilWithTelephonePackMobileTest extends Admin_Abstr
 
 
 
-class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -328,7 +328,7 @@ class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends A
 
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigPretsTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigPretsTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 	public function setup() {
 		parent::setup();
 		$this->dispatch('admin/accueil/prets?config=admin&id_profil=7&type_module=PRETS&id_module=9&proprietes=boite=/titre=Mes prets/',true);
@@ -360,7 +360,7 @@ class Admin_ProfilControllerJeunessePageAccueilConfigPretsTest extends Admin_Pro
 
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigEmptyPretTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyPretTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 
 	public function setup() {
 		parent::setup();
@@ -375,7 +375,7 @@ class Admin_ProfilControllerJeunessePageAccueilConfigEmptyPretTest extends Admin
 }
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigReservationsTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigReservationsTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 	public function setup() {
 		parent::setup();
 		$this->dispatch('admin/accueil/reservations?config=admin&id_profil=7&type_module=RESERVATIONS&id_module=8&proprietes=boite=/titre=Mes reservations/',true);
@@ -407,7 +407,7 @@ class Admin_ProfilControllerJeunessePageAccueilConfigReservationsTest extends Ad
 
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigEmptyReservationTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyReservationTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 
 	public function setup() {
 		parent::setup();
@@ -423,7 +423,7 @@ class Admin_ProfilControllerJeunessePageAccueilConfigEmptyReservationTest extend
 
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigNewslettersTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigNewslettersTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 	public function setup() {
 		parent::setup();
 		$this->dispatch('admin/accueil/newsletters?config=admin&id_profil=7&type_module=NEWSLETTERS&id_module=10&proprietes=boite=/titre=Mes newsletters/',true);
@@ -455,7 +455,7 @@ class Admin_ProfilControllerJeunessePageAccueilConfigNewslettersTest extends Adm
 
 
 
-class Admin_ProfilControllerJeunessePageAccueilConfigEmptyNewsletterTest extends Admin_ProfilControllerJeunessePageAccueilTestCase {
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyNewsletterTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
 
 	public function setup() {
 		parent::setup();
@@ -466,6 +466,53 @@ class Admin_ProfilControllerJeunessePageAccueilConfigEmptyNewsletterTest extends
 	/** @test */
 	public function titreInputShouldHaveValueMesNewsletters() {
 		$this->assertXPath('//input[@name="titre"][@value="Lettres d\'informations"]',$this->_response->getBody());
+	}
+}
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigMultimediaTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/multimedia?config=admin&id_profil=7&type_module=MULTIMEDIA&id_module=8&proprietes=boite=/titre=Postes multimedia/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeMultimedia() {
+		$this->assertAction('multimedia');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleMultimedia() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Postes Multimédia');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesMultimedia() {
+		$this->assertXPath('//input[@name="titre"][@value="Postes multimedia"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyMultimediaTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/multimedia?config=admin&id_profil=7&type_module=MULTIMEDIA&id_module=11',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValuePostesMultimedia() {
+		$this->assertXPath('//input[@name="titre"][@value="Postes multimédia"]');
 	}
 }
 

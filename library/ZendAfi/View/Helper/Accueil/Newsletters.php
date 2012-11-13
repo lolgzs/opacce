@@ -31,26 +31,8 @@ class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accuei
 													 implode('',
 																	 array_map(
 																		 function($newsletter) {
-																		 $start_li='<li>';
-																		 $titre = $newsletter->getTitre();
-																		 
-																		 $button_subscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																																																	'action' => 'subscribe-newsletter',
-																																																 'id' => $newsletter->getId()]),
-																																								$this->view->_("S'inscrire"));
-
-																		 $button_unsubscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																																																		'action' => 'unsubscribe-newsletter',
-																																																		'id' => $newsletter->getId()]),
-																																								$this->view->_('Se désinscrire'));
-																		 $user = Class_Users::getIdentity();			
-																		 foreach( $user->getNewsletters() as $user_newsletter ) {
-																			 if ($newsletter->getId() == $user_newsletter->getId()) 
-																				 return  $start_li.$titre.' '.$button_unsubscribe.'</li>';
-																		 }
-
-																		 return $start_li.$titre.' '.$button_subscribe.'</li>';
-																	 },
+																			 return $this->_writeNewsletterLine($newsletter);
+																		 },
 																		 Class_Newsletter::getLoader()->findAll())));
 		
 		$this->contenu = sprintf('<div class="boite_newsletters">%s</div>',$newsletters); 
@@ -58,6 +40,28 @@ class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accuei
 		return $this->getHtmlArray();
 	}
 
+
+	protected function _writeNewsletterLine($newsletter) {
+		$start_li='<li>';
+		$titre = $newsletter->getTitre();
+		
+		$button_subscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
+																																 'action' => 'subscribe-newsletter',
+																																 'id' => $newsletter->getId()]),
+																							 $this->view->_("S'inscrire"));
+		
+		$button_unsubscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
+																																	 'action' => 'unsubscribe-newsletter',
+																																	 'id' => $newsletter->getId()]),
+																								 $this->view->_('Se désinscrire'));
+		$user = Class_Users::getIdentity();			
+		foreach( $user->getNewsletters() as $user_newsletter ) {
+			if ($newsletter->getId() == $user_newsletter->getId()) 
+				return  $start_li.$titre.' '.$button_unsubscribe.'</li>';
+		}
+		
+		return $start_li.$titre.' '.$button_subscribe.'</li>';
+	}
 
 	public function isBoiteVisible() {
 		return ( Class_Users::hasIdentity() &&

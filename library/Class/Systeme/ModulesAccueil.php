@@ -119,9 +119,9 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 												 'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique,
 												 'RESERVATIONS' => new Class_Systeme_ModulesAccueil_Reservations,
 												 'PRETS' => new Class_Systeme_ModulesAccueil_Prets,
-												 'NEWSLETTERS' => new Class_Systeme_ModulesAccueil_Newsletters
+												 'NEWSLETTERS' => new Class_Systeme_ModulesAccueil_Newsletters,
 												 //	 'FORMATIONS' => new Class_Systeme_ModulesAccueil_Formations,
-												 //												 'MULTIMEDIA' => new Class_Systeme_ModulesAccueil_Multimedia
+												 'MULTIMEDIA' => new Class_Systeme_ModulesAccueil_Multimedia
 
 
 			];

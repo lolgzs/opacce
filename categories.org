@@ -218,6 +218,9 @@ var openDialogExemplaires = function() {
 #+END_SRC
 * Boites
 ** Affichage "propriétés de la boite"
+[[file:tests/application/modules/opac/controllers/ProfilOptionsControllerTest.php::/**%20@test%20*/][test visibilité de la boite]]
+[[file:tests/application/modules/admin/controllers/ProfilControllerPageAccueilTest.php::class%20Admin_ProfilControllerJeunessePageAccueilConfigReservationsTest%20extends%20Admin_ProfilControllerJeunessePageAccueilTestCase%20{][test dans profil]]
+[[file:library/Class/Systeme/ModulesAccueil/Newsletters.php::protected%20$_popupHeight%20%3D%20400%3B][Ajout du module]]
 [[file:application/modules/admin/controllers/AccueilController.php::public%20function%20reservationsAction()%20{][Action Mes reservations]]
 [[file:application/modules/admin/views/scripts/accueil/reservations.phtml][Html de la boite propriete]]
 [[file:library/Class/Systeme/ModulesAccueil.php::'NEWSLETTERS'%20%3D>%20new%20Class_Systeme_ModulesAccueil_Newsletters,][Ajout de la boite dans le drag-drop]]

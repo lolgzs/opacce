@@ -283,7 +283,11 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 
 																					 '10' => ['division' => '2',
 																									 'type_module' => 'NEWSLETTERS',
-																									 'preferences' => ['titre' => 'Lettres d\'informations']]
+																									 'preferences' => ['titre' => 'Lettres d\'informations']],
+																					 '11' => ['division' => '2',
+																									 'type_module' => 'MULTIMEDIA',
+																									 'preferences' => ['titre' => 'Postes multimédia']]
+
 		                         ],
 														 'options' => 	[]];
 
@@ -503,6 +507,13 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 	/** @test */
 	public function boiteMesReservationsShouldBeVisibleInProfilJeunesse() {
 		$this->assertXPath("//div[@class='boite_reservations']");
+	}
+
+
+
+	/** @test */
+	public function boitePosteMultimediaShouldBeVisibleInProfilJeunesse() {
+		$this->assertXPath("//div[@class='boite_multimedia']");
 	}
 
 
