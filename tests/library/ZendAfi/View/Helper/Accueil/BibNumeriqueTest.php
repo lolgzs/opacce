@@ -315,7 +315,7 @@ class BibNumeriqueCollectionEnluminuresTest extends BibNumeriqueViewCollectionTe
 abstract class AbstractBibNumeriqueViewHelperWithAlbumHarlockTestCase extends ViewHelperTestCase {
 	public function setUp() {
 		parent::setUp();
-
+		Class_ScriptLoader::resetInstance();
 		$harlock = Class_Album::getLoader()
 			->newInstanceWithId(99)
 			->setTitre('Harlock');

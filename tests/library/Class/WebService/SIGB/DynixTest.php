@@ -55,7 +55,7 @@ abstract class DynixTestCase extends Storm_Test_ModelTestCase {
 
 		$this->_mock_web_client = Storm_Test_ObjectWrapper::mock();
 
-
+		Class_WebService_SIGB_Dynix::setService(null);
 		$this->_service = Class_WebService_SIGB_Dynix
 			::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/',
 																															 'client_id' => 'SymWS'])

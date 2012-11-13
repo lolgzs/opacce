@@ -18,44 +18,29 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accueil_Base {
+class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accueil_AbonneAbstract  {
+	protected $_titre_action = 'newsletters';
+	protected $_boite_id = 'newsletters';
 
-	public function getHTML() {
-    $this->titre = $this->view->tagAnchor($this->view->url([ 'controller' => 'abonne',
-																														 'action' => 'newsletters'
-		]),$this->preferences['titre']);
-		$user = Class_Users::getIdentity();
-		if (!isset($user))
-			return $this->getHtmlArray() ;
-		$newsletters = sprintf('<ul>%s</ul>',
-													 implode('',
-																	 array_map(
-																		 function($newsletter) {
-																			 return $this->_writeNewsletterLine($newsletter);
-																		 },
-																		 Class_Newsletter::getLoader()->findAll())));
-		
-		$this->contenu = sprintf('<div class="boite_newsletters">%s</div>',$newsletters); 
-
-		return $this->getHtmlArray();
+	public function getModels() {
+		return Class_Newsletter::findAll();
 	}
 
-
-	protected function _writeNewsletterLine($newsletter) {
+	public function renderModel($newsletter) {
 		$start_li='<li>';
 		$titre = $newsletter->getTitre();
 		
-		$button_subscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																																 'action' => 'subscribe-newsletter',
-																																 'id' => $newsletter->getId()]),
+		$button_subscribe = $this->view->tagAnchor(['controller' => 'abonne',
+																								'action' => 'subscribe-newsletter',
+																								'id' => $newsletter->getId()],
 																							 $this->view->_("S'inscrire"));
 		
-		$button_unsubscribe = $this->view->tagAnchor($this->view->url(['controller' => 'abonne',
-																																	 'action' => 'unsubscribe-newsletter',
-																																	 'id' => $newsletter->getId()]),
+		$button_unsubscribe = $this->view->tagAnchor(['controller' => 'abonne',
+																									'action' => 'unsubscribe-newsletter',
+																									'id' => $newsletter->getId()],
 																								 $this->view->_('Se désinscrire'));
-		$user = Class_Users::getIdentity();			
-		foreach( $user->getNewsletters() as $user_newsletter ) {
+
+		foreach( $this->_abonne->getNewsletters() as $user_newsletter ) {
 			if ($newsletter->getId() == $user_newsletter->getId()) 
 				return  $start_li.$titre.' '.$button_unsubscribe.'</li>';
 		}
@@ -64,15 +49,9 @@ class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accuei
 	}
 
 	public function isBoiteVisible() {
-		return ( Class_Users::hasIdentity() &&
+		return ( parent::isBoiteVisible()&&
 						 Class_Newsletter::count()>0);
 	}
-
-
-	public function shouldCacheContent() {
-		return false;
-	}
-	
 }
 
 ?>

@@ -18,26 +18,20 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ZendAfi_View_Helper_Accueil_Multimedia extends ZendAfi_View_Helper_Accueil_Base {
+class ZendAfi_View_Helper_Accueil_Multimedia extends ZendAfi_View_Helper_Accueil_AbonneAbstract  {
+	protected $_titre_action = 'multimedia-hold-location';
+	protected $_boite_id = 'multimedia';
 
-	public function getHTML() {
-    
-		$this->contenu = sprintf('<div class="boite_multimedia">%s</div>',''); 
+	public function getModels() {
+    return [];
+	}
 
-		return $this->getHtmlArray();
+	public function renderModel($reservation) {
+		return '';
+		
 	}
 
 
-
-	public function isBoiteVisible() {
-		return ( Class_Users::hasIdentity());
-	}
-
-
-	public function shouldCacheContent() {
-		return false;
-	}
-	
 }
 
 ?>

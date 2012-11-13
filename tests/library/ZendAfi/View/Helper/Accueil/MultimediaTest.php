@@ -18,24 +18,30 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class ZendAfi_View_Helper_Accueil_Prets extends ZendAfi_View_Helper_Accueil_AbonneAbstract  {
-	protected $_titre_action = 'prets';
-	protected $_boite_id = 'prets';
+require_once 'library/ZendAfi/View/Helper/ViewHelperTestCase.php';
 
-	public function getModels() {
-		return $this->_abonne->getEmprunts();
+
+class MultimediaTestWithConnectedUser extends ViewHelperTestCase {	
+
+	public function setUp() {
+		parent::setUp();
+
+		$helper = new ZendAfi_View_Helper_Accueil_Multimedia(2, [
+			'type_module'=>'MULTIMEDIA',
+			'division' => '1',
+			'preferences' => [
+			'titre' => 'Postes multimedia']]);
+
+		ZendAfi_Auth::getInstance()->logUser(Class_Users::newInstanceWithId('123456',['nom'=>'Estelle']));
+
+		$this->html = $helper->getBoite();
 	}
 
-	public function renderModel($emprunt) {
-		$start_li='<li>';
-		if ($emprunt->enRetard())
-			$start_li='<li class="pret_en_retard">';
-		$date_retour='<span class="date_retour"> ['.$emprunt->getDateRetour().']</span> ';
-		$tag_anchor = $this->view->tagAnchor($this->view->urlNotice($emprunt->getNoticeOPAC()),
-																				 $emprunt->getTitre());
-		return $start_li.$date_retour.$tag_anchor.'</li>'; 
+	/** @test */
+	public function titreShouldLinkToActionMultimediaLocation() {
+		$this->assertXPath($this->html,'//h1//a[contains(@href,"/abonne/multimedia-hold-location")]',$this->html);
 		
 	}
-}
 
-?>
+
+}

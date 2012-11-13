@@ -57,7 +57,7 @@ abstract class BiblixNetTestCase extends Storm_Test_ModelTestCase {
 		parent::setUp();
 
 		$this->_mock_web_client = Storm_Test_ObjectWrapper::mock();
-
+		Class_WebService_SIGB_BiblixNet::setService(null);
 		$this->_service = Class_WebService_SIGB_BiblixNet
 			::getService(array('url_serveur' => 'http://mediathequewormhout.biblixnet.com/exporte_afi/'))
 			->setWebClient($this->_mock_web_client);
