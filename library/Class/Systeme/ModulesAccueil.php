@@ -26,14 +26,16 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	const GROUP_INFO = 'INFO';
 	const GROUP_RECH = 'RECH';
 	const GROUP_SITE = 'SITE';
+	const GROUP_ABONNE = 'ABONNE';
 
 	/**
 	 * @var array
 	 */
 	protected $_groupes = array(
-		self::GROUP_INFO => "Modules d'informations",
-		self::GROUP_RECH => "Modules de recherches",
-		self::GROUP_SITE => "Modules niveau site"
+		self::GROUP_INFO => "Informations",
+		self::GROUP_RECH => "Recherches",
+		self::GROUP_SITE => "Site",
+		self::GROUP_ABONNE => "Abonnés"
 	);
 
 	/**

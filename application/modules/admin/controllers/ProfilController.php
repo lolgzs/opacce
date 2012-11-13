@@ -388,6 +388,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			$this->view->module_info = $box_dispo["INFO"];
 			$this->view->module_rech = $box_dispo["RECH"];
 			$this->view->module_site = $box_dispo["SITE"];
+			$this->view->module_abonne = $box_dispo["ABONNE"];
 			$this->view->box1 = $box[1];
 			$this->view->box2 = $box[2];
 			$this->view->box3 = $box[3];

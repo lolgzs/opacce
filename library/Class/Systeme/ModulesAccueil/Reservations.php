@@ -20,7 +20,7 @@
  */
 class Class_Systeme_ModulesAccueil_Reservations extends Class_Systeme_ModulesAccueil_Null{
 	/** @var string */
-	protected $_group = Class_Systeme_ModulesAccueil::GROUP_INFO;
+	protected $_group = Class_Systeme_ModulesAccueil::GROUP_ABONNE;
 	
 	/** @var string */
 	protected $_libelle = 'Réservations';
