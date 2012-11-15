@@ -24,7 +24,23 @@ class ZendAfi_View_Helper_TagModelTable extends Zend_View_Helper_HtmlElement {
 	/** @var int */
 	protected $_cols_count = 0;
 
+
+	/**
+		 Exemple:
+
+		 echo $this->tagModelTable($this->relations, 
+													
+													[$this->_('Libellé'), $this->_('De A à B'), $this->_('De B à A')],
+
+													['libelle', 'from_source', 'from_target'],
+
+													[ ['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+														['action' => 'delete', 'content' => $this->boutonIco('type=del')] ],
+
+														'relations');
+	*/
 	public function tagModelTable($models, $cols, $attribs, $actions, $id, $group_by = null, $callbacks = []) {
+
 		$this->_hasActions = 0 < count($actions);
 		$this->_cols_count = count($attribs) + ($this->_hasActions ? 1 : 0);
 		

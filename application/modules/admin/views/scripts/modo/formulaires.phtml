@@ -1,0 +1,13 @@
+<h1><?php echo $this->_('Modération des formulaires');?></h1>
+
+<?php 
+
+$data_names = Class_Formulaire::mergeDataNames($this->formulaires);
+
+echo $this->tagModelTable(
+	$this->formulaires,
+	$data_names,
+	$data_names,
+	[],
+	'formulaires');
+?>

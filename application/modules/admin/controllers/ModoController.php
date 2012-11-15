@@ -951,4 +951,9 @@ class Admin_ModoController extends Zend_Controller_Action {
 		}
 		$this->_redirect('admin/modo/alert');
   }
+
+
+	public function formulairesAction() {
+		$this->view->formulaires = Class_Formulaire::findAll();
+	}
 }

@@ -60,9 +60,7 @@ class Multimedia_DeviceLoader extends Storm_Model_Loader {
 
 
 class Class_Multimedia_Device extends Storm_Model_Abstract {
-	/** @var Class_TimeSource */
-	protected static $_time_source;
-		
+	use Trait_TimeSource;
 	protected $_loader_class = 'Multimedia_DeviceLoader';
 	protected $_table_name = 'multimedia_device';
 	protected $_belongs_to = ['group' => ['model' => 'Class_Multimedia_DeviceGroup',
@@ -72,28 +70,6 @@ class Class_Multimedia_Device extends Storm_Model_Abstract {
 																			'role' => 'device',
 																			'order' => 'start',
 																			'dependents' => 'delete']];
-	
-	/**
-	 * @category testing
-	 * @return int
-	 */
-	public function getCurrentTime() {
-		return self::getTimeSource()->time();
-	}
-
-
-	/** @return Class_TimeSource */
-	public static function getTimeSource() {
-		if (null == self::$_time_source)
-			self::$_time_source = new Class_TimeSource();
-		return self::$_time_source;
-	}
-
-
-	/** @param $time_source Class_TimeSource */
-	public static function setTimeSource($time_source) {
-		self::$_time_source = $time_source;
-	}
 
 
 	/**

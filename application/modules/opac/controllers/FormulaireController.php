@@ -18,24 +18,14 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-
-class TimeSourceForTest extends Class_TimeSource {
-	protected $_time;
-
-	/**
-	 * @param $time timestamp
-	 */
-	public function setTime($time) {
-		$this->_time = $time;
-		return $this;
+class FormulaireController extends ZendAfi_Controller_Action {
+	public function addAction() {
+		$formulaire = new Class_Formulaire();
+		$formulaire
+		->setData(serialize($this->_request->getPost()))
+		->save();
 	}
 
-	/**
-	 * @return timestamp
-	 */
-	public function time() {
-		return $this->_time;
-	}
 }
 
 ?>

@@ -19,22 +19,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class TimeSourceForTest extends Class_TimeSource {
-	protected $_time;
+trait Trait_TimeSource {
+	/** @var Class_TimeSource */
+	protected static $_time_source;
+		
 
 	/**
-	 * @param $time timestamp
+	 * @category testing
+	 * @return int
 	 */
-	public function setTime($time) {
-		$this->_time = $time;
-		return $this;
+	public function getCurrentTime() {
+		return self::getTimeSource()->time();
 	}
 
-	/**
-	 * @return timestamp
-	 */
-	public function time() {
-		return $this->_time;
+
+	/** @return Class_TimeSource */
+	public static function getTimeSource() {
+		if (null == self::$_time_source)
+			self::$_time_source = new Class_TimeSource();
+		return self::$_time_source;
+	}
+
+
+	/** @param $time_source Class_TimeSource */
+	public static function setTimeSource($time_source) {
+		self::$_time_source = $time_source;
 	}
 }
 
