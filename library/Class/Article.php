@@ -708,6 +708,7 @@ class Class_Article extends Storm_Model_Abstract {
 		return (trim($head_and_content[0]));
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -719,6 +720,35 @@ class Class_Article extends Storm_Model_Abstract {
 
 		return $content;
 	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getContenu() {
+		$contenu = parent::_get('contenu');
+
+		if (preg_match('/(<form[^>]+)action=[\"\']http/', $contenu))
+			return $contenu;
+
+		$replaced_form = preg_replace(['/(<form[^>]+)action=[\"\'][^\"\']+\"? /',
+																	 '/(<form )/'],
+																	['$1 ', 
+																	 '$1action="'.BASE_URL.'/formulaire/add" '],
+																	$contenu);
+
+		$typesubmit = 'type=[\'\"]submit[\'\"]';
+		$namesubmit = 'name=[\"\'][^\"\']+[\'\"]';
+		$otherattributes = '[^>]+';
+		$inputtag = '<input';
+		return preg_replace(['/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')'.$namesubmit.'/',
+												 '/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.')'.$typesubmit.'/'], 
+												['$1$2type="submit"',
+												 '$1$2type="submit"'],
+												$replaced_form);
+												
+	}
+
 
 	/**
 	 * @return string
