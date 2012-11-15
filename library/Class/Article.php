@@ -737,14 +737,16 @@ class Class_Article extends Storm_Model_Abstract {
 																	 '$1action="'.BASE_URL.'/formulaire/add" '],
 																	$contenu);
 
-		$typesubmit = 'type=[\'\"]submit[\'\"]';
+		$typesubmit = 'type=[\'\"](?:submit|button)[\'\"]';
 		$namesubmit = 'name=[\"\'][^\"\']+[\'\"]';
 		$otherattributes = '[^>]+';
 		$inputtag = '<input';
-		return preg_replace(['/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')'.$namesubmit.'/',
-												 '/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.')'.$typesubmit.'/'], 
-												['$1$2type="submit"',
-												 '$1$2type="submit"'],
+		return preg_replace([ '/('.$inputtag.$otherattributes.')('.$typesubmit.$otherattributes.')'.$namesubmit.'/',
+													'/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.$typesubmit.')/',
+													'/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')\/>/' ],
+												[ '$1$2',
+													'$1$2',
+													'$1$2type="submit"/>'],
 												$replaced_form);
 												
 	}

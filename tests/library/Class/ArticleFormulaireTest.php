@@ -34,7 +34,8 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 
   </form>
   <form method="POST">
-  	<input type="submit"/>
+  
+    <input type="button" value="likebutton" />
   </form>
   ']);
 	}
@@ -55,7 +56,7 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
  
 	/** @test */
 	public function formSubmitButtonShouldHaveNoName() {
-		$this->assertContains('<input  type="submit" value="click !"',
+		$this->assertContains('<input   value="click !" type="submit"/>',
 													$this->_article->getContenu());
 	}
 
@@ -82,8 +83,14 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 	}
 
 
-
+	/** @test */
+	public function formTypeButtonShouldBeTransformedToSubmit() {
+		$this->assertContains('<input  value="likebutton" type="submit"/>',
+													$this->_article->getContenu());
+	}
 }
+
+
 class ArticleFormulaireExternalTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
