@@ -26,7 +26,7 @@ class MultimediaTestWithConnectedUser extends ViewHelperTestCase {
 
 	public function setUp() {
 		parent::setUp();
-
+		Class_AdminVar::newInstanceWithId('MULTIMEDIA_KEY',['valeur'=>'81b3ab7b0b9a621afb6044a9c2f48ed2']);
 		$this->_helper = new ZendAfi_View_Helper_Accueil_Multimedia(2, [
 			'type_module'=>'MULTIMEDIA',
 			'division' => '1',

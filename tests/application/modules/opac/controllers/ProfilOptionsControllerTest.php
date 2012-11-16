@@ -409,7 +409,7 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 	
 	public function setUp() {
 		parent::setUp();
-
+		Class_AdminVar::newInstanceWithId('MULTIMEDIA_KEY',['valeur'=>'81b3ab7b0b9a621afb6044a9c2f48ed2']);
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_TypeDoc')
 			->whenCalled('findUsedTypeDocIds')
 			->answers([1, 2, 4]);
