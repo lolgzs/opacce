@@ -37,7 +37,7 @@ class ZendAfi_View_Helper_RenderAlbum extends Zend_View_Helper_HtmlElement {
 			return $this->view->tagSlideshow($album);
 
 		if ($album->isDiaporama())
-			return $this->view->osmPlayer($album);
+			return $this->view->album_OsmPlayer($album);
 
 		if ($album->isGallica())
 			return  $this->view->gallicaPlayer($album);

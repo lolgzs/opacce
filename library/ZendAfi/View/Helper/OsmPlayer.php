@@ -20,10 +20,24 @@
  */
 
 class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
-	public function osmPlayer($album) {
-		$loader = Class_ScriptLoader::getInstance();
-		$div_id = 'osmplayer'.$album->getId();
+	/**
+	 * Exemple:
+	 * $this->osmPlayer("audio.mytag", ['width' => '100%', 'height' => '200px']);
+	 * Voir: http://mediafront.org/osmplayer/index.html
+	 */
+	public function osmPlayer($selector, $options) {
+		$options = array_merge($options,
+													 ['swfplayer' => URL_ADMIN_JS.'osmplayer/minplayer/flash/minplayer.swf',
+														'logo' => URL_ADMIN_JS.'osmplayer/logo.png']);
 
+		$this->loadJS()->addJQueryReady(sprintf('$("%s").osmplayer(%s)',
+																						$selector,
+																						json_encode($options)));
+	}
+
+
+	public function loadJS() {
+		$loader = Class_ScriptLoader::getInstance();
 		foreach(['compatibility', 'flags', 'async', 'plugin', 'display'] as $js)
 			$loader->addAdminScript('osmplayer/minplayer/src/minplayer.'.$js);
 
@@ -45,37 +59,6 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 		foreach(['controller', 'pager', 'playLoader', 'playlist', 'teaser'] as $template)
 			$loader->addAdminScript('osmplayer/templates/default/js/osmplayer.'.$template.'.default.js');
 
-
-		$xspf_url = $this->view->url(['module' => 'opac', 
-																	'controller' => 'bib-numerique',
-																	'action' => 'album-xspf-playlist', 
-																	'id' => $album->getId()]);
-
-		$podcast_url = $this->view->url(['module' => 'opac', 
-																		 'controller' => 'bib-numerique',
-																		 'action' => 'album-rss-feed', 
-																		 'id' => $album->getId()]);
-
-
-		$loader
-			->addStyleSheet(URL_ADMIN_JS.'osmplayer/templates/default/css/osmplayer_default.css')
-			->addJQueryReady(sprintf('$("#%s").osmplayer(%s)',
-															 $div_id,
-															 json_encode(['playlist' => $xspf_url.'.xml',
-																						'height' => '500px',
-																						'swfplayer' => URL_ADMIN_JS.'osmplayer/minplayer/flash/minplayer.swf',
-																						'logo' => URL_ADMIN_JS.'osmplayer/logo.png'])
-															 ));
-		return '<ul>'
-			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($xspf_url.'.xspf'), 
-																		 $this->view->_('Téléchargez la playlist (VLC, WinAmp)'),
-																		 ['data-ajax' => 'false']).'</li>'
-			.'<li>'.$this->view->tagAnchor($this->view->absoluteUrl($podcast_url.'.xml'), 
-																		 $this->view->_('Podcastez l\'album (iTunes, Lecteur RSS)'),
-																		 ['data-ajax' => 'false']).'</li>'
-			.'</ul>'
-			.'<div id="'.$div_id.'"></div>';
+		return $loader->addStyleSheet(URL_ADMIN_JS.'osmplayer/templates/default/css/osmplayer_default.css');
 	}
 }
-
-?>
