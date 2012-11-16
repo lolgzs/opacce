@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class FormulaireControllerPostActionTest extends Admin_AbstractControllerTestCase {
-  public function setUp() {
-    parent::setUp();
+abstract class FormulaireControllerPostActionTestCase extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
 		->whenCalled('save')
@@ -34,6 +34,23 @@ class FormulaireControllerPostActionTest extends Admin_AbstractControllerTestCas
 		$timesource = new TimeSourceForTest();
 		$timesource->setTime(strtotime('2012-10-23 12:32:00'));
 		Class_Formulaire::setTimeSource($timesource);
+	}
+}
+
+
+
+
+class FormulaireControllerPostActionTest extends FormulaireControllerPostActionTestCase {
+	protected $_user;
+
+  public function setUp() {
+    parent::setUp();
+
+		$user = Class_Users::newInstanceWithId(23, ['nom' => 'Mas', 
+																								'prenom' => 'Fanto', 
+																								'login' => 'fantomas']);
+		ZendAfi_Auth::getInstance()->logUser($user);
+
 
     $this->postDispatch('/formulaire/add', 
 												['nom' => 'Tinguette' ,
@@ -62,6 +79,40 @@ class FormulaireControllerPostActionTest extends Admin_AbstractControllerTestCas
 																	 'prenom' => 'Quentin']),
 																	$this->new_formulaire->getData());
 	}
+
+	/** @test */
+	public function saveFormulaireShouldSaveUserIdIfConnected() {
+		$this->assertEquals(23, $this->new_formulaire->getIdUser());
+		
+	}
+
+}
+
+
+
+
+class FormulaireControllerWithoutConnectedUserPostActionTest extends FormulaireControllerPostActionTestCase {
+
+  public function setUp() {
+    parent::setUp();
+
+		ZendAfi_Auth::getInstance()->clearIdentity();
+
+    $this->postDispatch('/formulaire/add', 
+												['nom' => 'Tinguette' ,
+												 'prenom' => 'Quentin' ]
+												,true);
+
+		$this->new_formulaire = Class_Formulaire::find(2);
+
+	}
+
+	/** @test */
+	public function saveFormulaireShouldNotHaveAnyUsers() {
+		$this->assertEmpty($this->new_formulaire->getUser());
+		
+	}
+
 }
 
 ?>
