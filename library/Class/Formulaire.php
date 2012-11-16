@@ -24,7 +24,10 @@ class Class_Formulaire extends Storm_Model_Abstract {
 
 	protected	$_table_name='formulaires';
 	protected $_belongs_to =  ['user' => ['model' => 'Class_Users',
-																				'referenced_in' => 'id_user']];
+																				'referenced_in' => 'id_user'],
+
+														 'article' => ['model' => 'Class_Article',
+																					 'referenced_in' => 'id_article']];
 
 	protected $_default_attribute_values = ['data' => 'a:0:{}'];
 

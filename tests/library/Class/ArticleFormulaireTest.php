@@ -42,14 +42,14 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function formIdFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add" id="idform"', 
+			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" id="idform"', 
 														$this->_article->getContenu());
 	}
 
 
 	/** @test */
 	public function emptyFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add" method="POST">', 
+			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST">', 
 														$this->_article->getContenu());
 	}
 

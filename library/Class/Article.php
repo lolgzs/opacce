@@ -394,7 +394,12 @@ class Class_Article extends Storm_Model_Abstract {
 													'avis_users' => ['model' => 'Class_Avis',
 																					 'role' => 'article',
 																					 'dependents' => 'delete',
-																					 'order' => 'date_avis desc']];
+																					 'order' => 'date_avis desc'],
+
+													'formulaires' => ['model' => 'Class_Formulaire',
+																						'role' => 'article',
+																						'order' => 'date_creation desc']
+	];
 
 	protected $_belongs_to = ['categorie' => ['model' => 'Class_ArticleCategorie',
 																						'referenced_in' => 'id_cat'],
@@ -734,7 +739,7 @@ class Class_Article extends Storm_Model_Abstract {
 		$replaced_form = preg_replace(['/(<form[^>]+)action=[\"\'][^\"\']+\"? /',
 																	 '/(<form )/'],
 																	['$1 ', 
-																	 '$1action="'.BASE_URL.'/formulaire/add" '],
+																	 '$1action="'.BASE_URL.'/formulaire/add/id_article/'.$this->getId().'" '],
 																	$contenu);
 
 		$typesubmit = 'type=[\'\"](?:submit|button)[\'\"]';

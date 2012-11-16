@@ -23,6 +23,9 @@ abstract class FormulaireControllerPostActionTestCase extends Admin_AbstractCont
 	public function setUp() {
 		parent::setUp();
 
+
+		Class_Article::newInstanceWithId(45, ['titre' => 'Contactez nous']);
+
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
 		->whenCalled('save')
 		->willDo(function ($formulaire) {
@@ -52,7 +55,7 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 		ZendAfi_Auth::getInstance()->logUser($user);
 
 
-    $this->postDispatch('/formulaire/add', 
+    $this->postDispatch('/formulaire/add/id_article/45', 
 												['nom' => 'Tinguette' ,
 												 'prenom' => 'Quentin' ]
 												,true);
@@ -80,12 +83,17 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 																	$this->new_formulaire->getData());
 	}
 
+
 	/** @test */
 	public function saveFormulaireShouldSaveUserIdIfConnected() {
 		$this->assertEquals(23, $this->new_formulaire->getIdUser());
-		
 	}
 
+
+	/** @test */
+	public function articleShouldBeContactezNous() {
+		$this->assertEquals('Contactez nous', $this->new_formulaire->getArticle()->getTitre());
+	}
 }
 
 

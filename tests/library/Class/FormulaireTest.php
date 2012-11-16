@@ -24,7 +24,7 @@ class FormulaireTest extends Storm_Test_ModelTestCase {
 		parent::setUp();
 		$this->_fantomas = Class_Users::newInstanceWithId(23, ['login' => 'fantomas']);
 		$this->_formulaire = Class_Formulaire::newInstanceWithId(2, ['id_user' => 23]);
-
+		$this->_article = Class_Article::newInstanceWithId(88, []);
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
 		->whenCalled('findAllBy')
 		->answers([$this->_formulaire]);
@@ -43,4 +43,13 @@ class FormulaireTest extends Storm_Test_ModelTestCase {
 		$this->assertEquals([$this->_formulaire], 
 												$this->_fantomas->getFormulaires());
 	}
+
+
+	/** @test */
+	public function articleShouldHaveOneFormulaire() {
+		$this->assertEquals([$this->_formulaire], 
+												$this->_article->getFormulaires());
+	}
+
+
 }

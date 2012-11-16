@@ -21,8 +21,9 @@
 class FormulaireController extends ZendAfi_Controller_Action {
 	public function addAction() {
 		$formulaire = new Class_Formulaire();
-		$formulaire->setData(serialize(	 $this->_request->getPost()))
+		$formulaire->setData(serialize($this->_request->getPost()))
 							 ->setUser(Class_Users::getIdentity())
+							 ->setIdArticle($this->_request->getParam('id_article'))
 							 ->save();
 	}
 
