@@ -39,8 +39,7 @@ class ModoControllerFormulaireForArticleListTest extends Admin_AbstractControlle
 			Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
 																																	 'prenom' => 'Nono',
 																																	 'age' => 12])]) 
-		])
-		->beStrict();
+		]);
 
 
     $this->dispatch('admin/modo/formulaires/id_article/12', true);

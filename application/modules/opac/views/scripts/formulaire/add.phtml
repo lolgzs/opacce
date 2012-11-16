@@ -1,0 +1,14 @@
+<?php
+echo ('Merci. Le formulaire a bien été enregistré :');
+
+echo '<br/><ul>';
+
+foreach ($this->datas as $key => $value) {
+	echo "<li>";
+	if (isset($key)) echo $key;
+	echo " : ";
+	if (isset($value)) echo $value;
+	echo " <br/> ";
+}
+?>
+</ul>

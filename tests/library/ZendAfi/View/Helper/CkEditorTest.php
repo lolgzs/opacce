@@ -28,7 +28,8 @@ class CkEditorWithFormulaireEnabledTest extends ViewHelperTestCase {
 			parent::setUp();
 			$this->_helper = new ZendAfi_View_Helper_CkEditor();
 			$this->_helper->setView(new ZendAfi_Controller_Action_Helper_View());
-			define('URL_CSS','');
+			if (!defined('URL_CSS')) 
+				define('URL_CSS','');
 			Class_AdminVar::newInstanceWithId('CMS_FORMULAIRES')->setValeur(1);
 			$this->_html=$this->_helper->ckeditor('','','');
 		}
@@ -49,7 +50,9 @@ class CkEditorWithFormulaireDisabledTest extends ViewHelperTestCase {
 			parent::setUp();
 			$this->_helper = new ZendAfi_View_Helper_CkEditor();
 			$this->_helper->setView(new ZendAfi_Controller_Action_Helper_View());
-			define('URL_CSS','');
+			if (!defined('URL_CSS')) 
+				define('URL_CSS','');
+
 			Class_AdminVar::newInstanceWithId('CMS_FORMULAIRES')->setValeur(0);
 			$this->_html=$this->_helper->ckeditor('','','');
 		}

@@ -61,7 +61,7 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 												,true);
 
 		$this->new_formulaire = Class_Formulaire::find(2);
-	}
+ 	}
 
 	
 	/** @test */
@@ -94,6 +94,18 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 	public function articleShouldBeContactezNous() {
 		$this->assertEquals('Contactez nous', $this->new_formulaire->getArticle()->getTitre());
 	}
+
+	/** @test */
+	public function postFormulaireShouldReturnMessage() {
+		$this->assertXpathContentContains('//div','Merci.',true );
+	}
+
+
+	/** @test */
+	public function postFormulaireShouldReturnPostValues() {
+		$this->assertXpathContentContains('//div','Tinguette',true );
+	}
+
 }
 
 

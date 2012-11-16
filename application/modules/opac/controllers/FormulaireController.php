@@ -25,6 +25,7 @@ class FormulaireController extends ZendAfi_Controller_Action {
 							 ->setUser(Class_Users::getIdentity())
 							 ->setIdArticle($this->_request->getParam('id_article'))
 							 ->save();
+		$this->view->datas = unserialize($formulaire->getData());
 	}
 
 }

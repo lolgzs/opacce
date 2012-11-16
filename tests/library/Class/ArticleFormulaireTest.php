@@ -116,3 +116,4 @@ class ArticleFormulaireExternalTest extends Storm_Test_ModelTestCase {
 	}
 
 }
+
