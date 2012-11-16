@@ -141,40 +141,46 @@ class Class_Users extends Storm_Model_Abstract {
 	protected $_table_name = 'bib_admin_users';
 	protected $_table_primary = 'ID_USER';
   protected $_loader_class = 'UsersLoader';
-	protected $_has_many = array('subscriptions' => array('model' => 'Class_NewsletterSubscription',
-																												'role' => 'user',
-																												'dependents' => 'delete'),
+	protected $_has_many = [
+		'subscriptions' => ['model' => 'Class_NewsletterSubscription',
+												'role' => 'user',
+												'dependents' => 'delete'],
 
-															 'newsletters' => array('through' => 'subscriptions'),
+		'newsletters' => ['through' => 'subscriptions'],
 
-															 'avis' => array('model' => 'Class_AvisNotice',
-																							 'role' => 'user',
-																							 'order' => 'date_avis desc'),
+		'avis' => ['model' => 'Class_AvisNotice',
+							 'role' => 'user',
+							 'order' => 'date_avis desc'],
 
-															 'avis_articles' => array('model' => 'Class_Avis',
-																												'role' => 'auteur',
-																												'order' => 'date_avis desc'),
+		'avis_articles' => ['model' => 'Class_Avis',
+												'role' => 'auteur',
+												'order' => 'date_avis desc'],
 
-															 'paniers' => array('model' => 'Class_PanierNotice',
-																									'role' => 'user'),
+		'paniers' => ['model' => 'Class_PanierNotice',
+									'role' => 'user'],
 
-															 'session_formation_inscriptions' => array('model' => 'Class_SessionFormationInscription',
-																																				 'role' => 'stagiaire'),
+		'session_formation_inscriptions' => ['model' => 'Class_SessionFormationInscription',
+																				 'role' => 'stagiaire'],
 
-															 'session_formations' => array('through' => 'session_formation_inscriptions'),
+		'session_formations' => ['through' => 'session_formation_inscriptions'],
 
-															 'formations' => array('through' => 'session_formation_inscriptions'),
+		'formations' => ['through' => 'session_formation_inscriptions'],
 
-															 'session_formation_interventions' => array('model' => 'Class_SessionFormationIntervention',
-																																					'role' => 'intervenant'),
+		'session_formation_interventions' => ['model' => 'Class_SessionFormationIntervention',
+																					'role' => 'intervenant'],
 
-															 'session_interventions' => array('through' => 'session_formation_interventions'),
+		'session_interventions' => ['through' => 'session_formation_interventions'],
 
-															 'user_group_memberships' => array('model' => 'Class_UserGroupMembership',
-																																 'role' => 'user'),
+		'user_group_memberships' => ['model' => 'Class_UserGroupMembership',
+																 'role' => 'user'],
 
-															 'user_groups' => array('through' => 'user_group_memberships')
-															 );
+		'user_groups' => ['through' => 'user_group_memberships'],
+
+		'formulaires' => ['model' => 'Class_Formulaire',
+											'role' => 'user',
+											'order' => 'date_creation desc'],
+
+	];
 
 
 	protected $_belongs_to = array('bib' => array('model' => 'Class_Bib',

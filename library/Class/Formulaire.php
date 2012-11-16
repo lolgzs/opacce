@@ -22,10 +22,13 @@
 class Class_Formulaire extends Storm_Model_Abstract {
 	use Trait_TimeSource;
 
-	protected $_datas;
 	protected	$_table_name='formulaires';
-	protected $_default_attribute_values = ['data' => ''];
+	protected $_belongs_to =  ['user' => ['model' => 'Class_Users',
+																				'referenced_in' => 'id_user']];
 
+	protected $_default_attribute_values = ['data' => 'a:0:{}'];
+
+	protected $_datas;
 	public static function mergeDataNames($formulaires) {
 		$names = [];
 		foreach($formulaires as $formulaire) {
