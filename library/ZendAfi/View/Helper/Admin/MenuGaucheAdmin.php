@@ -44,8 +44,9 @@ class ZendAfi_View_Helper_Admin_MenuGaucheAdmin extends ZendAfi_View_Helper_Base
 		$nb_moderations = $modstats['avis_notices']['count']
 		+ $modstats['avis_articles']['count']
 		+ $modstats['tags_notices']['count']
-		+ $modstats['suggestions_achat']['count']
-		+ $modstats['formulaires']['count'];
+		+ $modstats['suggestions_achat']['count'];
+
+		$nb_moderations+=isset($modstats['formulaires'])?$modstats['formulaires']['count']:0 ;
 
 
 		$acl_all = array('super_admin', 'admin_bib', 'admin_portail', 'modo_bib', 'modo_portail');

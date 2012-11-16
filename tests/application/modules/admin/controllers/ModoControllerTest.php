@@ -62,11 +62,6 @@ class ModoControllerIndexActionTest extends Admin_AbstractControllerTestCase {
 	}
 
 
-	/** @test */
-	public function linkToModerateFormulairesShouldBePresent() {
-		$this->assertXPath('//a[contains(@href, "/admin/modo/formulaires")]');
-	}
-
 }
 
 

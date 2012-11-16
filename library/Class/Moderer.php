@@ -114,10 +114,13 @@ class Class_Moderer {
 					            'suggestions_achat' => ['label' => $translate->_('Suggestions d\'achat'),
 										                          'url' => BASE_URL . '/admin/modo/suggestion-achat',
 												                      'count' => Class_SuggestionAchat::count()],
-					            'formulaires' => ['label' => $translate->_('Formulaires'),
-										                          'url' => BASE_URL . '/admin/modo/formulaires',
-												                      'count' => Class_SuggestionAchat::count()]
 			               ];
+			if (Class_AdminVar::isCmsFormulairesEnabled()) {
+				$moderations['formulaires'] =['label' => $translate->_('Formulaires'),
+																			'url' => BASE_URL . '/admin/modo/formulaires',
+																			'count' => Class_Formulaire::count()];
+			}
+
 			$this->_moderation_stats = $moderations;
 		}
 

@@ -108,5 +108,35 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 }
 
+
+class ModoControllerFormulaireIndexWithOptionActivatedTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::newInstanceWithId('CMS_FORMULAIRES')->setValeur(1);
+		$this->dispatch('admin/modo/', true);
+	}
+
+	/** @test */
+	public function linkToModerateFormulairesShouldBePresent() {
+		$this->assertXPath('//a[contains(@href, "/admin/modo/formulaires")]');
+	}
+
+}
+
+
+class ModoControllerFormulaireIndexWithOptionDesactivatedTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::newInstanceWithId('CMS_FORMULAIRES')->setValeur(0);
+		$this->dispatch('admin/modo/', true);
+	}
+
+	/** @test */
+	public function linkToModerateFormulairesShouldNotBePresent() {
+		$this->assertNotXPath('//a[contains(@href, "/admin/modo/formulaires")]');
+	}
+
+}
+
 ?>
 
