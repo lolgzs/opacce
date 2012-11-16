@@ -19,12 +19,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase {
+class ModoControllerFormulaireForArticleListTest extends Admin_AbstractControllerTestCase {
   public function setUp() {
     parent::setUp();
+		$article = Class_Article::newInstanceWithId(12, ['titre' => 'Inscrivez vous au Hackaton']);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
-		->whenCalled('findAll')
+		->whenCalled('findAllBy')
+		->with([ 'role' => 'article',
+						 'model' => $article,
+						 'order' => 'date_creation desc'])
 		->answers([
 			Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
 																																	 'prenom' => 'Quentine'])]),
@@ -35,10 +39,11 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 			Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
 																																	 'prenom' => 'Nono',
 																																	 'age' => 12])]) 
-		]);
+		])
+		->beStrict();
 
 
-    $this->dispatch('admin/modo/formulaires', true);
+    $this->dispatch('admin/modo/formulaires/id_article/12', true);
   }
 
 
@@ -72,6 +77,34 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 	public function aTDShouldContainsPrenomMireille() {
 		$this->assertXPathContentContains('//td', 'Mireille',$this->_response->getBody());
 	}
+
+}
+
+class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase {
+  public function setUp() {
+    parent::setUp();
+		$hackaton =		Class_Article::newInstanceWithId(4, ['titre' => 'Inscrivez vous au Hackaton']);
+		$preinscription =Class_Article::newInstanceWithId(2, ['titre' => 'Formulaire de préinscription']);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+		->whenCalled('findAll')
+		->with('select id_article,titre from cms_article where id_article in (select distinct id_article from formulaires)')
+		->answers([
+			$hackaton,
+			$preinscription
+		]);
+
+
+
+    $this->dispatch('admin/modo/formulaires/', true);
+  }
+
+
+	/** @test */
+	public function liShouldContainsLinkToFormulaireForHackaton() {
+		$this->assertXPathContentContains('//li/a[contains(@href,"formulaires/id_article/4")]', 'Inscrivez vous au Hackaton',$this->_response->getBody());
+	}
+
 
 }
 

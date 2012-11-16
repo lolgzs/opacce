@@ -1,0 +1,8 @@
+<?php
+echo '<ul>';
+foreach ($this->articles as $article) {
+echo '<li>
+<a href="formulaires/id_article/'.$article->getId().'">'.$article->getTitre().'</a>';
+}
+echo '</ul>';
+?>

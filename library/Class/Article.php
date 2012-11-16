@@ -361,6 +361,11 @@ class ArticleLoader extends Storm_Model_Loader {
 	public function filterByLocaleAndWorkflow($articles) {
 		return Class_Article::filterByLocaleAndWorkflow($articles);
 	}
+
+	public function articlesWithFormulaire() {
+		return Class_Article::findAll('select id_article,titre from cms_article where id_article in (select distinct id_article from formulaires)');
+	}
+
 }
 
 
