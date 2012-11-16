@@ -17,7 +17,12 @@ $menus = [["icon" => "article.png",
 	        ["icon" => "traductions_16.png",
 					 "label" => "Suggestions d'achat",
 					 "url" => "/admin/modo/suggestion-achat",
-					 "count" => $modstats['suggestions_achat']['count']]];
+					 "count" => $modstats['suggestions_achat']['count']],
+					["icon" => "traductions_16.png",
+					 "label" => "Formulaires",
+					 "url" => "/admin/modo/formulaires",
+					 "count" => $modstats['formulaires']['count']]
+];
 ?>
 <div class="menu"><?php echo $this->getHelper('MenuHorizontalAdmin')->generateMenu($menus);?></div>
 

@@ -40,7 +40,24 @@ class ZendAfi_View_Helper_CkEditor extends ZendAfi_View_Helper_BaseHelper
 		$config['imagesPath'] = URL_ADMIN_IMG."ckeditor_templates/";
 		$config['templates_files'] = array(URL_ADMIN_JS."ckeditor_templates.js");
 		$config['contentsCss'] = array(URL_CSS."global.css");
-		
+
+		$config['toolbar_Full'] = [
+			['Preview', 'Templates', 'Source','Maximize'],
+			['Cut','Copy','Paste'],
+			['Undo','Redo','-','SelectAll','RemoveFormat'],
+			['Link','Unlink','Anchor'],
+			['Image','Flash','Table','HorizontalRule'],
+			'/',
+			['Styles','FontSize','TextColor','BGColor'],
+			['Bold','Italic','Underline','Strike'],
+			['NumberedList','BulletedList','-','Outdent','Indent'],
+			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+		];
+
+		if (Class_AdminVar::isCmsFormulairesEnabled()) {
+			$config['toolbar_Full'][]=['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'];
+		}
+
 		$oCKeditor = new CKeditor(CKBASEURL);
 		$oCKeditor->returnOutput = true;
 		return $oCKeditor->editor($editorId, $initial, $config);

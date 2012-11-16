@@ -113,6 +113,9 @@ class Class_Moderer {
 												                         'count' => fetchOne('select count(*) from bib_admin_users_non_valid')],
 					            'suggestions_achat' => ['label' => $translate->_('Suggestions d\'achat'),
 										                          'url' => BASE_URL . '/admin/modo/suggestion-achat',
+												                      'count' => Class_SuggestionAchat::count()],
+					            'formulaires' => ['label' => $translate->_('Formulaires'),
+										                          'url' => BASE_URL . '/admin/modo/formulaires',
 												                      'count' => Class_SuggestionAchat::count()]
 			               ];
 			$this->_moderation_stats = $moderations;

@@ -226,3 +226,9 @@ var openDialogExemplaires = function() {
 [[file:library/Class/Systeme/ModulesAccueil.php::'NEWSLETTERS'%20%3D>%20new%20Class_Systeme_ModulesAccueil_Newsletters,][Ajout de la boite dans le drag-drop]]
 
 **
+* Variables 
+[[file:library/Class/AdminVar.php::'CMS_FORMULAIRES'][Ajout variable]]
+[[file:application/modules/admin/controllers/IndexController.php::'CSS_EDITOR'%20%3D>%20'Activation%20de%20l\'editeur%20CSS.%200%20%3D%20inactif,%201%20%3D%20actif'][Configuration de la variable]]
+
+[[file:library/Class/Moderer.php::'count'%20%3D>%20Class_SuggestionAchat::count()%5D][moderation]]
+[[file:library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php::$nb_moderations%20%3D%20$modstats%5B'avis_notices'%5D%5B'count'%5D][affichage menu gauche]]

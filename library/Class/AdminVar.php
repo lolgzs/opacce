@@ -62,7 +62,8 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'ARTE_VOD_SSO_KEY',
 		'BABELTHEQUE_JS',
 		'MULTIMEDIA_KEY',
-		'CSS_EDITOR'
+		'CSS_EDITOR',
+		'CMS_FORMULAIRES'
 	);
 
 
@@ -228,6 +229,12 @@ class Class_AdminVar extends Storm_Model_Abstract {
 	/** @return bool */
 	public static function isCssEditorEnabled() {
 		return self::isModuleEnabled('CSS_EDITOR');
+	}
+
+
+	/** @return bool */
+	public static function isCmsFormulairesEnabled() {
+		return self::isModuleEnabled('CMS_FORMULAIRES');
 	}
 
 
