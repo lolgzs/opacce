@@ -978,6 +978,14 @@ class Admin_ModoController extends Zend_Controller_Action {
 	}
 
 
+	public function validateFormulaireAction() {
+		$formulaire_to_validate = Class_Formulaire::find($this->_getParam('id'));
+		$formulaire_to_validate->beValidated()->save();
+		$this->_helper->notify($this->_('Formulaire validé'));
+		$this->_redirect('admin/modo/formulaires/id_article/'.$formulaire_to_validate->getIdArticle());
+	}
+
+
 	public function exportCsvFormulaireAction() {
 		$this->getHelper('ViewRenderer')->setNoRender();
 

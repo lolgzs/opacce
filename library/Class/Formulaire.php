@@ -69,7 +69,8 @@ class Class_Formulaire extends Storm_Model_Abstract {
 
 
 	public function beforeSave() {
-		$this->setDateCreation(date('Y-m-d H:i:s', self::getTimeSource()->time()));
+		if ($this->isNew())
+			$this->setDateCreation(date('Y-m-d H:i:s', self::getTimeSource()->time()));
 	}
 
 
@@ -94,5 +95,15 @@ class Class_Formulaire extends Storm_Model_Abstract {
 				return $this->callGetterByAttributeName($attribute);
 			},
 			$attributes);
+	}
+
+
+	public function isValidated() {
+		return true == $this->getValidated();
+	}
+
+
+	public function beValidated() {
+		return $this->setValidated(true);
 	}
 }

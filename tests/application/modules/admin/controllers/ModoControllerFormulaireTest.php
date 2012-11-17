@@ -29,6 +29,9 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 			->whenCalled('delete')
 			->answers(true)
 
+			->whenCalled('save')
+			->answers(true)
+
 			->whenCalled('findAllBy')
 			->with([ 'role' => 'article',
 							 'model' => $article,
@@ -37,7 +40,8 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 				Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
 																																		 'prenom' => 'Quentine']),
 																								'date_creation' => '2012-12-05 12:00:23',
-																								'article' => $article]),
+																								'article' => $article,
+																								'validated' => true]),
 
 				Class_Formulaire::newInstanceWithId(5, ['data' => serialize(['nom' => 'Bougie',
 																																		 'Prenom' => 'Mireille']),
@@ -100,6 +104,12 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 
 
 	/** @test */
+	public function formulaireQuentineShouldNotHaveLinkToValidate() {
+		$this->assertNotXPath('//a[contains(@href, "validate-formulaire/id_article/12/id/3")]');
+	}
+
+
+	/** @test */
 	public function mireilleRowShouldContainsUserZork() {
 		$this->assertXPathContentContains('//tr[2]//td', 'zork');
 	}
@@ -124,9 +134,50 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 
 
 	/** @test */
+	public function aTDShouldContainsActionToValidateFormulaireMireille() {
+		$this->assertXPath('//tr[2]//td/a[contains(@href, "admin/modo/validate-formulaire/id_article/12/id/5")]');
+	}
+
+
+	/** @test */
 	public function linkToExportCsvShouldBePresent() {
 		$this->assertXPathContentContains('//a[contains(@href, "admin/modo/export-csv-formulaire/id_article/12")]', 
 																			'Export CSV');
+	}
+}
+
+
+
+
+class ModoControllerFormulaireForArticleValidateFormulaireMireilleTest extends ModoControllerFormulaireForArticleTestCase {
+  public function setUp() {
+    parent::setUp();
+
+    $this->dispatch('admin/modo/validate-formulaire/id_article/12/id/5', true);
+  }
+
+
+	/** @test */
+	public function formulaireShouldBeValidated() {
+		$this->assertTrue(Class_Formulaire::find(5)->isValidated());
+	}
+
+
+	/** @test */
+	public function formulaireShouldHaveBeenSaved() {
+		$this->assertEquals(5, Class_Formulaire::getFirstAttributeForLastCallOn('save')->getId());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToFormulairesIdArticle12() {
+		$this->assertRedirectTo('/admin/modo/formulaires/id_article/12');
+	}
+
+
+	/** @test */
+	public function dateCreationShouldNotChange() {
+		$this->assertEquals('2012-12-06 10:00:01', Class_Formulaire::find(5)->getDateCreation());
 	}
 }
 

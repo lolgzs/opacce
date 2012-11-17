@@ -28,7 +28,15 @@ echo $this->tagModelTable(
 		$data_names
 	),
 
-	[ ['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')] ],
+	[ ['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')],
+		function($model) {
+				return $model->isValidated() 
+					? ''
+					: $this->tagAnchor(['action' => 'validate-formulaire',
+															'id' => $model->getId()],
+														 $this->boutonIco('type=validate'));
+		},
+	],
 
 	'formulaires',
 
