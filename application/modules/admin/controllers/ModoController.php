@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_ModoController extends Zend_Controller_Action {
+	use Trait_Translator;
+
 	private $_count = 10;
 
 	public function indexAction()	{
@@ -959,10 +961,19 @@ class Admin_ModoController extends Zend_Controller_Action {
 		if ($article) 
 			$this->view->subview = $this->view->partial('modo/formulaires.phtml',
 																									['formulaires' => $article->getFormulaires()]);
-		else 
+		else
 			$this->view->subview = $this->view->partial('modo/articlesformulaires.phtml',
 																									['articles' => Class_Article::articlesWithFormulaire()]);
+
 		$this->_forward('index');
+	}
+
+
+	public function deleteFormulaireAction() {
+		$formulaire_to_delete = Class_Formulaire::find($this->_getParam('id'));
+		$formulaire_to_delete->delete();
+		$this->_helper->notify($this->_('Formulaire supprimé'));
+		$this->_redirect('admin/modo/formulaires/id_article/'.$formulaire_to_delete->getIdArticle());
 	}
 
 }

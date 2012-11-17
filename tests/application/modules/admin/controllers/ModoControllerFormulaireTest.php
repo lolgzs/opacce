@@ -19,36 +19,49 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ModoControllerFormulaireForArticleListTest extends Admin_AbstractControllerTestCase {
-  public function setUp() {
-    parent::setUp();
+abstract class ModoControllerFormulaireForArticleTestCase extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
 		$article = Class_Article::newInstanceWithId(12, ['titre' => 'Inscrivez vous au Hackaton']);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
-		->whenCalled('findAllBy')
-		->with([ 'role' => 'article',
-						 'model' => $article,
-						 'order' => 'date_creation desc'])
-		->answers([
-			Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
-																																	 'prenom' => 'Quentine'])]),
+			->whenCalled('delete')
+			->answers(true)
 
-			Class_Formulaire::newInstanceWithId(5, ['data' => serialize(['nom' => 'Bougie',
-																																	 'Prenom' => 'Mireille'])]),
+			->whenCalled('findAllBy')
+			->with([ 'role' => 'article',
+							 'model' => $article,
+							 'order' => 'date_creation desc'])
+			->answers([
+				Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
+																																		 'prenom' => 'Quentine']),
+																								'article' => $article]),
 
-			Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
-																																	 'prenom' => 'Nono',
-																																	 'age' => 12])]) 
-		]);
+				Class_Formulaire::newInstanceWithId(5, ['data' => serialize(['nom' => 'Bougie',
+																																		 'Prenom' => 'Mireille']),
+																								'article' => $article]),
 
+				Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
+																																		 'prenom' => 'Nono',
+																																		 'age' => 12]),
+																								'article' => $article])
+			]);
+	}
+}
+
+
+
+
+class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulaireForArticleTestCase {
+  public function setUp() {
+    parent::setUp();
 
     $this->dispatch('admin/modo/formulaires/id_article/12', true);
   }
 
 
-  /** 
-   * @test
-   */
+  /** @test */
   public function h1ShouldContainsFormulaires() {
     $this->assertXPathContentContains('//h1', 'Modération des formulaires');
 	}
@@ -68,16 +81,47 @@ class ModoControllerFormulaireForArticleListTest extends Admin_AbstractControlle
 
 	/** @test */
 	public function aLastTDShouldContainsAge12() {
-		$this->assertXPathContentContains('//td', '12',$this->_response->getBody());
+		$this->assertXPathContentContains('//td', '12');
 	}
 
 
 	/** @test */
 	public function aTDShouldContainsPrenomMireille() {
-		$this->assertXPathContentContains('//td', 'Mireille',$this->_response->getBody());
+		$this->assertXPathContentContains('//td', 'Mireille');
 	}
 
+
+	/** @test */
+	public function aTDShouldContainsActionToDeleteFormulaireMireille() {
+		$this->assertXPath('//td/a[contains(@href, "admin/modo/delete-formulaire/id_article/12/id/5")]');
+	}
 }
+
+
+
+
+class ModoControllerFormulaireForArticleDeleteTest extends ModoControllerFormulaireForArticleTestCase {
+  public function setUp() {
+    parent::setUp();
+
+    $this->dispatch('admin/modo/delete-formulaire/id_article/12/id/5', true);
+  }
+
+	
+	/** @test */
+	public function formulaireShouldHaveBeenDeleted() {
+		$this->assertEquals(5, Class_Formulaire::getFirstAttributeForLastCallOn('delete')->getId());
+	}
+
+
+	/** @test */
+	public function responsShouldRedirectToFormulairesIdArticle12() {
+		$this->assertRedirectTo('/admin/modo/formulaires/id_article/12');
+	}
+}
+
+
+
 
 class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase {
   public function setUp() {
@@ -101,11 +145,11 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForHackaton() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"formulaires/id_article/4")]', 'Inscrivez vous au Hackaton',$this->_response->getBody());
+		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton',$this->_response->getBody());
 	}
-
-
 }
+
+
 
 
 class ModoControllerFormulaireIndexWithOptionActivatedTest extends Admin_AbstractControllerTestCase {
@@ -115,12 +159,14 @@ class ModoControllerFormulaireIndexWithOptionActivatedTest extends Admin_Abstrac
 		$this->dispatch('admin/modo/', true);
 	}
 
+
 	/** @test */
 	public function linkToModerateFormulairesShouldBePresent() {
 		$this->assertXPath('//a[contains(@href, "/admin/modo/formulaires")]');
 	}
-
 }
+
+
 
 
 class ModoControllerFormulaireIndexWithOptionDesactivatedTest extends Admin_AbstractControllerTestCase {
@@ -130,11 +176,11 @@ class ModoControllerFormulaireIndexWithOptionDesactivatedTest extends Admin_Abst
 		$this->dispatch('admin/modo/', true);
 	}
 
+
 	/** @test */
 	public function linkToModerateFormulairesShouldNotBePresent() {
 		$this->assertNotXPath('//a[contains(@href, "/admin/modo/formulaires")]');
 	}
-
 }
 
 ?>
