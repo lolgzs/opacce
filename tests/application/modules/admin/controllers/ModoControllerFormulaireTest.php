@@ -40,7 +40,12 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 
 				Class_Formulaire::newInstanceWithId(5, ['data' => serialize(['nom' => 'Bougie',
 																																		 'Prenom' => 'Mireille']),
-																								'article' => $article]),
+																								'article' => $article,
+																								'user' => Class_Users::newInstanceWithId(34, 
+																																												 [
+																																													 'login' => 'zork',
+																																													 'bib' => Class_Bib::newInstanceWithId(4, ['libelle' => 'Annecy'])
+																																												 ])]),
 
 				Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
 																																		 'prenom' => 'Nono',
@@ -87,13 +92,25 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 
 	/** @test */
 	public function aTDShouldContainsPrenomMireille() {
-		$this->assertXPathContentContains('//td', 'Mireille');
+		$this->assertXPathContentContains('//tr[2]//td', 'Mireille');
+	}
+
+
+	/** @test */
+	public function mireilleRowShouldContainsUserZork() {
+		$this->assertXPathContentContains('//tr[2]//td', 'zork');
+	}
+
+
+	/** @test */
+	public function mireilleRowShouldContainsBibAnnecy () {
+		$this->assertXPathContentContains('//tr[2]//td', 'Annecy');
 	}
 
 
 	/** @test */
 	public function aTDShouldContainsActionToDeleteFormulaireMireille() {
-		$this->assertXPath('//td/a[contains(@href, "admin/modo/delete-formulaire/id_article/12/id/5")]');
+		$this->assertXPath('//tr[2]//td/a[contains(@href, "admin/modo/delete-formulaire/id_article/12/id/5")]');
 	}
 }
 

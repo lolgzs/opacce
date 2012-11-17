@@ -6,8 +6,8 @@ $data_names = Class_Formulaire::mergeDataNames($this->formulaires);
 
 echo $this->tagModelTable(
 	$this->formulaires,
-	$data_names,
-	$data_names,
+	array_merge([$this->_('Posté par'), $this->_('Bibliothèque')], $data_names),
+	array_merge(['compte', 'libelle_bib'], $data_names),
 	[['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')]],
 	'formulaires');
 ?>

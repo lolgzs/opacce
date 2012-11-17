@@ -70,4 +70,19 @@ class Class_Formulaire extends Storm_Model_Abstract {
 		$this->setDateCreation(date('Y-m-d H:i:s', self::getTimeSource()->time()));
 	}
 
+
+	public function getCompte() {
+		if ($this->hasUser())
+			return $this->getUser()->getNomComplet();
+		return '';
+	}
+
+
+	public function getLibelleBib() {
+		if ($user = $this->getUser())
+			return $user->getLibelleBib();
+
+		return '';
+	}
+
 }
