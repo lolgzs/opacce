@@ -6,8 +6,29 @@ $data_names = Class_Formulaire::mergeDataNames($this->formulaires);
 
 echo $this->tagModelTable(
 	$this->formulaires,
-	array_merge([$this->_('Posté par'), $this->_('Bibliothèque')], $data_names),
-	array_merge(['compte', 'libelle_bib'], $data_names),
-	[['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')]],
-	'formulaires');
+	array_merge([$this->_('Date'), $this->_('Posté par'), $this->_('Bibliothèque')], $data_names),
+
+	array_merge(
+		[
+			'date_creation',
+			'compte', 
+			'libelle_bib'
+		], 
+		$data_names
+	),
+
+	[ ['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')] ],
+
+	'formulaires',
+
+	null,
+
+
+	[
+		'date_creation' => function($model) {
+			return $this->humanDate($model->getDateCreation(), 'dd/MM/yyyy');
+		}
+	]
+
+);
 ?>

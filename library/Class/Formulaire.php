@@ -85,4 +85,9 @@ class Class_Formulaire extends Storm_Model_Abstract {
 		return '';
 	}
 
+
+	public function getShortDateCreation() {
+		return explode(' ', $this->getDateCreation())[0];
+	}
+
 }

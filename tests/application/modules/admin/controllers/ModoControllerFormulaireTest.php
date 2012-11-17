@@ -36,10 +36,12 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 			->answers([
 				Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
 																																		 'prenom' => 'Quentine']),
+																								'date_creation' => '2012-12-05 12:00:23',
 																								'article' => $article]),
 
 				Class_Formulaire::newInstanceWithId(5, ['data' => serialize(['nom' => 'Bougie',
 																																		 'Prenom' => 'Mireille']),
+																								'date_creation' => '2012-12-06 10:00:01',
 																								'article' => $article,
 																								'user' => Class_Users::newInstanceWithId(34, 
 																																												 [
@@ -50,6 +52,7 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 				Class_Formulaire::newInstanceWithId(6, ['data' => serialize(['name' => 'Lefort',
 																																		 'prenom' => 'Nono',
 																																		 'age' => 12]),
+																								'date_creation' => '2012-11-06 17:00:01',
 																								'article' => $article])
 			]);
 	}
@@ -105,6 +108,12 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 	/** @test */
 	public function mireilleRowShouldContainsBibAnnecy () {
 		$this->assertXPathContentContains('//tr[2]//td', 'Annecy');
+	}
+
+
+	/** @test */
+	public function mireilleRowShouldContainsDate06_12_2012 () {
+		$this->assertXPathContentContains('//tr[2]//td', '06/12/2012', $this->_response->getBody());
 	}
 
 
