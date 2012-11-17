@@ -36,6 +36,7 @@ abstract class ModoControllerFormulaireForArticleTestCase extends Admin_Abstract
 			->with([ 'role' => 'article',
 							 'model' => $article,
 							 'order' => 'date_creation desc'])
+
 			->answers([
 				Class_Formulaire::newInstanceWithId(3, ['data' => serialize(['nom' => 'Tinguette',
 																																		 'prenom' => 'Quentine']),
@@ -265,9 +266,26 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 			->answers(2)
 
 			->whenCalled('countBy')
+			->with(['model' => $hackaton,
+							'role' => 'article',
+							'scope' => ['validated' => false]])
+			->answers(2)
+
+			->whenCalled('countBy')
 			->with(['model' => $preinscription,
 							'role' => 'article'])
-			->answers(4);
+			->answers(4)
+
+			->whenCalled('countBy')
+			->with(['model' => $preinscription,
+							'role' => 'article',
+							'scope' => ['validated' => false]])
+			->answers(1)
+
+			->whenCalled('countNotValidated')
+			->answers(3)
+
+			->beStrict();
 
     $this->dispatch('admin/modo/formulaires/', true);
   }
@@ -275,13 +293,13 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForHackaton() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton [2]', $this->_response->getBody());
+		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton [2/2]', $this->_response->getBody());
 	}
 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForPreinscription() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [4]');
+		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [1/4]');
 	}
 }
 
@@ -292,13 +310,19 @@ class ModoControllerFormulaireIndexWithOptionActivatedTest extends Admin_Abstrac
 	public function setUp() {
 		parent::setUp();
 		Class_AdminVar::newInstanceWithId('CMS_FORMULAIRES')->setValeur(1);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
+			->whenCalled('countBy')
+			->with(['validated' => false])
+			->answers(2);
+
 		$this->dispatch('admin/modo/', true);
 	}
 
 
 	/** @test */
 	public function linkToModerateFormulairesShouldBePresent() {
-		$this->assertXPath('//a[contains(@href, "/admin/modo/formulaires")]');
+		$this->assertXPathContentContains('//a[contains(@href, "/admin/modo/formulaires")]/following-sibling::span', '2');
 	}
 }
 

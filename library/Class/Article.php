@@ -403,7 +403,11 @@ class Class_Article extends Storm_Model_Abstract {
 
 													'formulaires' => ['model' => 'Class_Formulaire',
 																						'role' => 'article',
-																						'order' => 'date_creation desc']
+																						'order' => 'date_creation desc'],
+
+													'formulaires_to_validate' => ['model' => 'Class_Formulaire',
+																												'role' => 'article',
+																												'scope' => ['validated' => false]]
 	];
 
 	protected $_belongs_to = ['categorie' => ['model' => 'Class_ArticleCategorie',

@@ -19,9 +19,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+class FormulaireLoader extends Storm_Model_Loader {
+	public function countNotValidated() {
+		return Class_Formulaire::countBy(['validated' => false]);
+	}
+}
+
+
+
+
 class Class_Formulaire extends Storm_Model_Abstract {
 	use Trait_TimeSource;
-
+	protected $_loader_class = 'FormulaireLoader';
 	protected	$_table_name='formulaires';
 	protected $_belongs_to =  ['user' => ['model' => 'Class_Users',
 																				'referenced_in' => 'id_user'],

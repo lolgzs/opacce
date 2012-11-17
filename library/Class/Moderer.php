@@ -118,7 +118,7 @@ class Class_Moderer {
 			if (Class_AdminVar::isCmsFormulairesEnabled()) {
 				$moderations['formulaires'] =['label' => $translate->_('Formulaires'),
 																			'url' => BASE_URL . '/admin/modo/formulaires',
-																			'count' => Class_Formulaire::count()];
+																			'count' => Class_Formulaire::countNotValidated()];
 			}
 
 			$this->_moderation_stats = $moderations;

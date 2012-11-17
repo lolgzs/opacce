@@ -1,7 +1,7 @@
 <?php
 echo '<ul>';
 foreach ($this->articles as $article) {
-	echo sprintf('<li><a href="%s">%s [%d]</a></li>',
+	echo sprintf('<li><a href="%s">%s [%d/%d]</a></li>',
 							 $this->url(['module' => 'admin',
 													 'controller' => 'modo',
 													 'action' => 'formulaires',
@@ -9,6 +9,7 @@ foreach ($this->articles as $article) {
 													null,
 													true),
 							 $article->getTitre(),
+							 $article->numberOfFormulairesToValidate(),
 							 $article->numberOfFormulaires());
 }
 echo '</ul>';
