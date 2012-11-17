@@ -24,7 +24,7 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_article = Class_Article::newInstanceWithId(2,['titre' => 'Contactez-nous !',
-																				'contenu' => '<form id="idform" action="form" method="post" name="form" target="_blank">
+																				'contenu' => '<form id="idform" action=\'form\' method="post" name="form" target="_blank">
 	<p>		Donnee 1 :<br /><input name="champs texte" type="text" value="champtxt" />
   <input value="champ2"  name=\'champs texte\' type="text"/></p>
 	<p>	&nbsp;</p>
@@ -33,32 +33,32 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 	<input type="submit" value="send" name="send"/>
 
   </form>
-  <form method="POST">
+  POST<form method="POST">
   
     <input type="button" value="likebutton" />
   </form>
-  <form>
+  EMPTY<form>
   </form>
   ']);
 	}
 
 	/** @test */
 	public function formIdFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" id="idform"', 
+			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST" id="idform"     name="form" target="_blank', 
 														$this->_article->getContenu());
 	}
 
 
 	/** @test */
 	public function formWithMethodPostActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST">', 
+			$this->assertContains('POST<form   action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST" >', 
 														$this->_article->getContenu());
 	}
 
 
 	/** @test */
 	public function emptyFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" >', 
+			$this->assertContains('EMPTY<form action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST" >', 
 														$this->_article->getContenu());
 	}
 
