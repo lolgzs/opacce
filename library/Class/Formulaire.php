@@ -30,8 +30,9 @@ class Class_Formulaire extends Storm_Model_Abstract {
 																					 'referenced_in' => 'id_article']];
 
 	protected $_default_attribute_values = ['data' => 'a:0:{}'];
-
 	protected $_datas;
+
+
 	public static function mergeDataNames($formulaires) {
 		$names = [];
 		foreach($formulaires as $formulaire) {
@@ -41,8 +42,9 @@ class Class_Formulaire extends Storm_Model_Abstract {
 		return array_unique($names);
 	}
 
+
 	public function getDataNames() {
-		return array_keys($this->getDatas());
+		return array_keys(array_change_key_case($this->getDatas()));
 		
 	}
 
@@ -86,8 +88,11 @@ class Class_Formulaire extends Storm_Model_Abstract {
 	}
 
 
-	public function getShortDateCreation() {
-		return explode(' ', $this->getDateCreation())[0];
+	public function attributeValues($attributes) {
+		return array_map(
+			function($attribute) {
+				return $this->callGetterByAttributeName($attribute);
+			},
+			$attributes);
 	}
-
 }

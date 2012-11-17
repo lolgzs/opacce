@@ -977,4 +977,20 @@ class Admin_ModoController extends Zend_Controller_Action {
 		$this->_redirect('admin/modo/formulaires/id_article/'.$formulaire_to_delete->getIdArticle());
 	}
 
+
+	public function exportCsvFormulaireAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+
+		$article = Class_Article::find((int)$this->_getParam('id_article'));
+		$csv = $this->view->article_FormulairesCsvVisitor($article);
+
+		$response = $this->_response;
+		$response->clearAllHeaders();
+		$filename='formulaire_'.$article->getId().'.csv';
+
+		$response->setHeader('Content-Type', 'text/csv; name="'.$filename.'"', true);
+		$response->setHeader('Content-Disposition', 'attachment; filename="'.$filename.'"', true);
+		$response->setBody($csv);
+	}
+
 }

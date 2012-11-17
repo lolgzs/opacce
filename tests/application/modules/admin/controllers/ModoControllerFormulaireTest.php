@@ -121,6 +121,13 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 	public function aTDShouldContainsActionToDeleteFormulaireMireille() {
 		$this->assertXPath('//tr[2]//td/a[contains(@href, "admin/modo/delete-formulaire/id_article/12/id/5")]');
 	}
+
+
+	/** @test */
+	public function linkToExportCsvShouldBePresent() {
+		$this->assertXPathContentContains('//a[contains(@href, "admin/modo/export-csv-formulaire/id_article/12")]', 
+																			'Export CSV');
+	}
 }
 
 
@@ -143,6 +150,43 @@ class ModoControllerFormulaireForArticleDeleteTest extends ModoControllerFormula
 	/** @test */
 	public function responsShouldRedirectToFormulairesIdArticle12() {
 		$this->assertRedirectTo('/admin/modo/formulaires/id_article/12');
+	}
+}
+
+
+
+
+class ModoControllerFormulaireExportCSVForArticlTest extends ModoControllerFormulaireForArticleTestCase {
+  public function setUp() {
+    parent::setUp();
+
+    $this->dispatch('admin/modo/export-csv-formulaire/id_article/12', true);
+  }
+
+	
+	/** @test */
+	public function secondFormulaireShouldBeCSV() {
+		$this->assertContains('"2012-12-06 10:00:01",zork,Annecy,Bougie,Mireille',
+													$this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function csvShouldContainsAttributeNames() {
+		$this->assertContains('date_creation,compte,libelle_bib,nom,prenom,name,age',
+													$this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function headerShouldContainsFileAttachment() {
+		$this->assertHeaderContains('Content-Disposition', 'attachment; filename="formulaire_12.csv"');
+	}
+
+
+	/** @test */
+	public function headerShouldContainsContentTypeCSV() {
+		$this->assertHeaderContains('Content-Type', 'text/csv; name="formulaire_12.csv"');
 	}
 }
 
