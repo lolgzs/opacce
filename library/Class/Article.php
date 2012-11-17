@@ -742,9 +742,9 @@ class Class_Article extends Storm_Model_Abstract {
 			return $contenu;
 
 		$replaced_form = preg_replace(['/(<form[^>]+)action=[\"\'][^\"\']+\"? /',
-																	 '/(<form )/'],
+																	 '/(<form *)/'],
 																	['$1 ', 
-																	 '$1action="'.BASE_URL.'/formulaire/add/id_article/'.$this->getId().'" '],
+																	 '$1 action="'.BASE_URL.'/formulaire/add/id_article/'.$this->getId().'" '],
 																	$contenu);
 
 		$typesubmit = 'type=[\'\"](?:submit|button)[\'\"]';

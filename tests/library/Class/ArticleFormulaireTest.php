@@ -37,19 +37,28 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
   
     <input type="button" value="likebutton" />
   </form>
+  <form>
+  </form>
   ']);
 	}
 
 	/** @test */
 	public function formIdFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" id="idform"', 
+			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" id="idform"', 
+														$this->_article->getContenu());
+	}
+
+
+	/** @test */
+	public function formWithMethodPostActionShouldBeFormulaireAdd() {
+			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST">', 
 														$this->_article->getContenu());
 	}
 
 
 	/** @test */
 	public function emptyFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST">', 
+			$this->assertContains('<form action="'.BASE_URL.'/formulaire/add/id_article/2" >', 
 														$this->_article->getContenu());
 	}
 
