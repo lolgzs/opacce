@@ -939,3 +939,9 @@ div[id^="liste_picto_genre_"]  {
 .subview table#formulaires td:first-child {
 		border: none;
 }
+
+
+img.article_edit {
+		vertical-align: middle;
+		margin-left: 5px;
+}

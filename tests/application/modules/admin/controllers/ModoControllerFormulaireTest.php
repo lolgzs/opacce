@@ -293,13 +293,19 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForHackaton() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton [2/2]', $this->_response->getBody());
+		$this->assertXPathContentContains('//li[1]/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton [2/2]', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function liShouldContainsLinkToEditFormulaireHackaton() {
+		$this->assertXPath('//li[1]/a[contains(@href,"admin/cms/newsedit/id/4")]');
 	}
 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForPreinscription() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [1/4]');
+		$this->assertXPathContentContains('//li[2]/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [1/4]');
 	}
 }
 
