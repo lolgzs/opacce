@@ -960,7 +960,8 @@ class Admin_ModoController extends Zend_Controller_Action {
 
 		if ($article) 
 			$this->view->subview = $this->view->partial('modo/formulaires.phtml',
-																									['formulaires' => $article->getFormulaires()]);
+																									['formulaires' => $article->getFormulaires(),
+																									 'article' => $article]);
 		else
 			$this->view->subview = $this->view->partial('modo/articlesformulaires.phtml',
 																									['articles' => Class_Article::articlesWithFormulaire()]);

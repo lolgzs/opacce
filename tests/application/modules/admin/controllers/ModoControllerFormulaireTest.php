@@ -67,8 +67,8 @@ class ModoControllerFormulaireForArticleListTest extends ModoControllerFormulair
 
 
   /** @test */
-  public function h1ShouldContainsFormulaires() {
-    $this->assertXPathContentContains('//h1', 'Modération des formulaires');
+  public function h1ShouldContainsFormulairesAndArticleTitle() {
+    $this->assertXPathContentContains('//h1', 'Modération des formulaires: Inscrivez vous au Hackaton');
 	}
 
 
@@ -144,17 +144,26 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
   public function setUp() {
     parent::setUp();
 		$hackaton =		Class_Article::newInstanceWithId(4, ['titre' => 'Inscrivez vous au Hackaton']);
-		$preinscription =Class_Article::newInstanceWithId(2, ['titre' => 'Formulaire de préinscription']);
+		$preinscription = Class_Article::newInstanceWithId(2, ['titre' => 'Formulaire de préinscription']);
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
-		->whenCalled('findAll')
-		->with('select id_article,titre from cms_article where id_article in (select distinct id_article from formulaires)')
-		->answers([
-			$hackaton,
-			$preinscription
-		]);
+			->whenCalled('findAll')
+			->with('select id_article,titre from cms_article where id_article in (select distinct id_article from formulaires)')
+			->answers([
+				$hackaton,
+				$preinscription
+			]);
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formulaire')
+			->whenCalled('countBy')
+			->with(['model' => $hackaton,
+							'role' => 'article'])
+			->answers(2)
 
+			->whenCalled('countBy')
+			->with(['model' => $preinscription,
+							'role' => 'article'])
+			->answers(4);
 
     $this->dispatch('admin/modo/formulaires/', true);
   }
@@ -162,7 +171,13 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForHackaton() {
-		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton',$this->_response->getBody());
+		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/4")]', 'Inscrivez vous au Hackaton [2]', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function liShouldContainsLinkToFormulaireForPreinscription() {
+		$this->assertXPathContentContains('//li/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [4]');
 	}
 }
 

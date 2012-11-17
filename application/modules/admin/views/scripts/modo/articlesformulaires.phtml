@@ -1,14 +1,15 @@
 <?php
 echo '<ul>';
 foreach ($this->articles as $article) {
-	echo sprintf('<li><a href="%s">%s</a></li>',
+	echo sprintf('<li><a href="%s">%s [%d]</a></li>',
 							 $this->url(['module' => 'admin',
 													 'controller' => 'modo',
 													 'action' => 'formulaires',
 													 'id_article' => $article->getId()],
 													null,
 													true),
-							 $article->getTitre());
+							 $article->getTitre(),
+							 $article->numberOfFormulaires());
 }
 echo '</ul>';
 ?>
