@@ -20,12 +20,16 @@
  */
 class FormulaireController extends ZendAfi_Controller_Action {
 	public function addAction() {
+		$article = Class_Article::find($this->_getParam('id_article'));
+
 		$formulaire = new Class_Formulaire();
 		$formulaire->setData(serialize($this->_request->getPost()))
 							 ->setUser(Class_Users::getIdentity())
-							 ->setIdArticle($this->_request->getParam('id_article'))
+							 ->setArticle($article)
 							 ->save();
-		$this->view->datas = unserialize($formulaire->getData());
+
+		$this->view->datas = $formulaire->getDatas();
+		$this->view->article = $article;
 	}
 
 }

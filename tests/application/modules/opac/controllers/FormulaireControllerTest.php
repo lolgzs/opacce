@@ -95,6 +95,13 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 		$this->assertEquals('Contactez nous', $this->new_formulaire->getArticle()->getTitre());
 	}
 
+
+	/** @test */
+	public function articleTitreContactezNousShouldBeDisplayed() {
+		$this->assertXPathContentContains('//h1', 'Contactez nous');
+	}
+
+
 	/** @test */
 	public function postFormulaireShouldReturnMessage() {
 		$this->assertXpathContentContains('//div','Merci.',true );
@@ -105,7 +112,6 @@ class FormulaireControllerPostActionTest extends FormulaireControllerPostActionT
 	public function postFormulaireShouldReturnPostValues() {
 		$this->assertXpathContentContains('//div','Tinguette',true );
 	}
-
 }
 
 
