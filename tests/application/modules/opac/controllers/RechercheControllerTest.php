@@ -138,7 +138,7 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 
 	/** @test */
 	public function javascriptShouldOpenFirstBlocDetails() {
-		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_0\",'1-234-56789-0','detail',0,'',0)", $this->_response->getBody());
+		$this->assertXPathContentContains('//script', "infos_bloc(\"bloc_345_0\",'1-234-56789-0','detail',0,'',0)");
 	}
 
 
@@ -168,7 +168,7 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 
 	/** @test */
 	public function frbrOngletShouldHaveIdSet345_onglet_3() {
-		$this->assertXPathContentContains('//div[@id="set345_onglet_3"][@class="titre_onglet"]', 'frbr', $this->_response->getBody());
+		$this->assertXPathContentContains('//div[@id="set345_onglet_3"][@class="titre_onglet"]', 'frbr');
 	}
 
 	/** @test */
@@ -176,6 +176,11 @@ class RechercheControllerViewNoticeWithPreferencesTest extends RechercheControll
 		$this->assertNotXPathContentContains('//script', "infos_onglet('set345_onglet_1')");
 	}
 
+
+	/** @test */
+	public function linkReserverShouldBeDisplayed() {
+		$this->assertXPathContentContains('//a[@class="reserver"]', 'Réserver');
+	}
 }
 
 

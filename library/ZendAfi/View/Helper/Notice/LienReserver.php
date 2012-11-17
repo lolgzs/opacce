@@ -73,7 +73,7 @@ class ZendAfi_View_Helper_Notice_LienReserver extends Zend_View_Helper_HtmlEleme
 			$this->_script_added = true;
 		}
 
-		return '<a href="#" onclick="openDialogExemplaires('.$id_notice.', $(this));return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;'.$this->view->_('Réserver').'</a>';
+		return '<a class="reserver" href="#" onclick="openDialogExemplaires('.$id_notice.', $(this));return false">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;'.$this->view->_('Réserver').'</a>';
 	}
 }
 
