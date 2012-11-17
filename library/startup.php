@@ -77,7 +77,7 @@ function setupConstants($cfg) {
 	defineConstant('URL_ADMIN_IMG', BASE_URL . '/public/admin/images/');
 	defineConstant('URL_ADMIN_JS', BASE_URL . '/public/admin/js/');
 	defineConstant('JQUERY', URL_ADMIN_JS . 'jquery-1.8.2.min.js');
-	defineConstant('JQUERYMOBILE_VERSION',  '1.1.0');
+	defineConstant('JQUERYMOBILE_VERSION',  '1.2.0');
 	defineConstant('JQUERYUI', URL_ADMIN_JS . 'jquery_ui/jquery-ui-1.9.1.full.js');
 	
 	// il y a des autre define URL dans ZendAfi_Controller_Plugin_DefineURLs
