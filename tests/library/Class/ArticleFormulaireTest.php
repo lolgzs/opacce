@@ -19,12 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-
 class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->_article = Class_Article::newInstanceWithId(2,['titre' => 'Contactez-nous !',
-																				'contenu' => '<form id="idform" action=\'form\' method="post" name="form" target="_blank">
+																				'contenu' => '<FORM id="idform" action=\'form\' method="post" name="form" target="_blank">
 	<p>		Donnee 1 :<br /><input name="champs texte" type="text" value="champtxt" />
   <input value="champ2"  name=\'champs texte\' type="text"/></p>
 	<p>	&nbsp;</p>
@@ -44,7 +43,7 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function formIdFormActionShouldBeFormulaireAdd() {
-			$this->assertContains('<form  action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST" id="idform"     name="form" target="_blank', 
+			$this->assertContains('<FORM  action="'.BASE_URL.'/formulaire/add/id_article/2" method="POST" id="idform"     name="form" target="_blank', 
 														$this->_article->getContenu());
 	}
 
@@ -68,7 +67,6 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 		$this->assertContains('<input   value="click !" type="submit"/>',
 													$this->_article->getContenu());
 	}
-
 
 
 	/** @test */
@@ -98,6 +96,8 @@ class ArticleFormulaireInternalTest extends Storm_Test_ModelTestCase {
 													$this->_article->getContenu());
 	}
 }
+
+
 
 
 class ArticleFormulaireExternalTest extends Storm_Test_ModelTestCase {

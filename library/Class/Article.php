@@ -741,12 +741,12 @@ class Class_Article extends Storm_Model_Abstract {
 		$quote = '[\"\']';
 		$no_quotes = '[^\"\']+';
 		$quoted_value = $quote.$no_quotes.$quote;
-		if (preg_match('/(<form[^>]+)action='.$quote.'http/', $contenu))
+		if (preg_match('/(<form[^>]+)action='.$quote.'http/i', $contenu))
 			return $contenu;
 
-		$replaced_form = preg_replace(['/(<form[^>]+)action='.$quoted_value.'/',
-																	 '/(<form[^>]+)method='.$quoted_value.'/',
-																	 '/(<form *)/'],
+		$replaced_form = preg_replace(['/(<form[^>]+)action='.$quoted_value.'/i',
+																	 '/(<form[^>]+)method='.$quoted_value.'/i',
+																	 '/(<form *)/i'],
 																	['$1 ', 
 																	 '$1 ',
 																	 '$1 action="'.BASE_URL.'/formulaire/add/id_article/'.$this->getId().'" method="POST" '],
@@ -756,9 +756,9 @@ class Class_Article extends Storm_Model_Abstract {
 		$namesubmit = 'name='.$quoted_value;
 		$otherattributes = '[^>]+';
 		$inputtag = '<input';
-		return preg_replace([ '/('.$inputtag.$otherattributes.')('.$typesubmit.$otherattributes.')'.$namesubmit.'/',
-													'/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.$typesubmit.')/',
-													'/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')\/>/' ],
+		return preg_replace([ '/('.$inputtag.$otherattributes.')('.$typesubmit.$otherattributes.')'.$namesubmit.'/i',
+													'/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.$typesubmit.')/i',
+													'/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')\/>/i' ],
 												[ '$1$2',
 													'$1$2',
 													'$1$2type="submit"/>'],
