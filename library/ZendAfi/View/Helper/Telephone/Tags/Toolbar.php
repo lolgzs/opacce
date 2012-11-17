@@ -21,7 +21,7 @@
 
 
 class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
-	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
+	public function ToolBar()	{
 		$html = '<div data-role="footer" data-theme="c">';
 		$html .= '<div data-role="navbar"><ul>';
 		$html .= sprintf('<li><a href="%s"  data-icon="home" rel="external" data-ajax="false" data-iconpos="notext">%s</a></li>',
