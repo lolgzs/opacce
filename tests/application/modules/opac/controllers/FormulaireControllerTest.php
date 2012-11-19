@@ -124,7 +124,7 @@ class FormulaireControllerWithoutConnectedUserPostActionTest extends FormulaireC
 
 		ZendAfi_Auth::getInstance()->clearIdentity();
 
-    $this->postDispatch('/formulaire/add', 
+    $this->postDispatch('/formulaire/add/id_article/45', 
 												['nom' => 'Tinguette' ,
 												 'prenom' => 'Quentin' ]
 												,true);
