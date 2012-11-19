@@ -952,6 +952,8 @@ div[id^="liste_picto_genre_"]  {
     z-index: 3;
     right: 0px;
     vertical-align: middle;
+    text-align: center;
+    width: 55px;
 }
 
 img.article_edit {
