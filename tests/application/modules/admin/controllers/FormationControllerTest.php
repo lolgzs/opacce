@@ -1228,7 +1228,7 @@ class Admin_FormationControllerInscriptionsSessionMarsJavaRechercheAmaTest exten
 						 "inner join user_group_memberships on user_group_memberships.user_id = bib_admin_users.id_user ".
 						 "inner join user_groups on user_group_memberships.user_group_id = user_groups.id  ".
 						 "where (user_groups.rights_token & 1 = 1) and ".
-						 "(nom like '%ama%' or prenom like '%ama%' or login like '%ama%') ".
+						 "(nom like 'ama%' or login like 'ama%') ".
 						 "order by nom, prenom, login limit 500")
 			->answers(array($this->_amadou, $this->_amandine, $this->_patrick));
 

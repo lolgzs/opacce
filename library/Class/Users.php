@@ -35,10 +35,10 @@ class UsersLoader extends Storm_Model_Loader {
 			$sql_template .= 'where ';
 
 		$sql_template .=
-				'(nom like \'%2$s\' or prenom like \'%2$s\' or login like \'%2$s\') '.
+				'(nom like \'%2$s\' or login like \'%2$s\') '.
 				'order by nom, prenom, login limit '.$limit;
 
-		$like = '%'.strtolower($search).'%';
+		$like = strtolower($search).'%';
 
 		$all_users = Class_Users::findAll(sprintf($sql_template, $by_right, $like));
 

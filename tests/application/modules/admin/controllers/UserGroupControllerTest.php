@@ -366,7 +366,7 @@ class Admin_UserGroupControllerEditMembersGroupStagiairesTest extends Admin_User
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('findAll')
 			->with("select bib_admin_users.* from bib_admin_users ".
-						 "where (nom like '%spid%' or prenom like '%spid%' or login like '%spid%') ".
+						 "where (nom like 'spid%' or login like 'spid%') ".
  						 "order by nom, prenom, login limit 500")
 			->answers(array($this->_spiderman));
 
