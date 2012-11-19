@@ -12,7 +12,7 @@ echo sprintf('<a style="float:right;margin:4px 0px" href="%s"><img style="vertic
 <h1><?php echo $this->_('Modération des formulaires: '.$this->article->getTitre());?></h1>
 
 <?php 
-
+echo '<div  class="table_scroll">';
 $data_names = Class_Formulaire::mergeDataNames($this->formulaires);
 
 echo $this->tagModelTable(
@@ -50,4 +50,6 @@ echo $this->tagModelTable(
 	]
 
 );
+
+echo '</div>';
 ?>

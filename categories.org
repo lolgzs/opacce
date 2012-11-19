@@ -236,3 +236,8 @@ var openDialogExemplaires = function() {
 
 * Clear identity
 	ZendAfi_Auth::getInstance()->clearIdentity();
+
+
+* CSV changement de caractere de split
+[[file:library/ZendAfi/View/Helper/Article/FormulairesCsvVisitor.php][file:~/afi/afi-opac3/library/ZendAfi/View/Helper/Article/FormulairesCsvVisitor.php]]
+

@@ -29,10 +29,10 @@ class ZendAfi_View_Helper_Article_FormulairesCsvVisitor extends Zend_View_Helper
 		$filename = PATH_TEMP.'formulaires.csv';
 		$fp_csv = fopen($filename, 'w');
 
-		fputcsv($fp_csv, $attributes);
+		fputcsv($fp_csv, $attributes,';');
 
 		foreach($formulaires as $formulaire)
-			fputcsv($fp_csv, $formulaire->attributeValues($attributes));
+		fputcsv($fp_csv, $formulaire->attributeValues($attributes),';');
 
 		fclose($fp_csv);
 

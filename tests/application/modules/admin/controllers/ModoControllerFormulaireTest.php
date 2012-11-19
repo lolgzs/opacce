@@ -218,14 +218,14 @@ class ModoControllerFormulaireExportCSVForArticlTest extends ModoControllerFormu
 	
 	/** @test */
 	public function secondFormulaireShouldBeCSV() {
-		$this->assertContains('"2012-12-06 10:00:01",zork,Annecy,Bougie,Mireille',
+		$this->assertContains('"2012-12-06 10:00:01";zork;Annecy;Bougie;Mireille',
 													$this->_response->getBody());
 	}
 
 
 	/** @test */
 	public function csvShouldContainsAttributeNames() {
-		$this->assertContains('date_creation,compte,libelle_bib,nom,prenom,name,age',
+		$this->assertContains('date_creation;compte;libelle_bib;nom;prenom;name;age',
 													$this->_response->getBody());
 	}
 

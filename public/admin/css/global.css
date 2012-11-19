@@ -929,19 +929,43 @@ div[id^="liste_picto_genre_"]  {
 }
 
 
-
 .subview table#formulaires td {
 		border-left: 1px solid gray;
 		padding-left: 2px;
+		white-space: nowrap;
+		padding: 5px;
 }
 
 
-.subview table#formulaires td:first-child {
+
+.subview table#formulaires tr:hover {
+		background-color: yellow;
+}
+
+
+.subview table#formulaires td:first-child  {
 		border: none;
 }
 
+.subview table#formulaires th:last-child, .subview table#formulaires td:last-child {
+    position: absolute;
+    z-index: 3;
+    right: 0px;
+    vertical-align: middle;
+}
 
 img.article_edit {
 		vertical-align: middle;
 		margin-left: 5px;
+}
+
+
+.subview {
+
+    position: relative;
+}
+
+.table_scroll {
+    margin-right: 50px;
+    overflow: auto;
 }
