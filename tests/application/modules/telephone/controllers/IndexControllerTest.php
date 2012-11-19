@@ -249,7 +249,7 @@ class IndexControllerTelephoneSimulationWithModulesTest extends AbstractIndexCon
 
 	/** @test */
 	function titreBoiteNewsShouldBeConcert() {
-		$this->assertXPathContentContains('//div[@class="titre"]', 'Concerts');
+		$this->assertXPathContentContains('//div[@class="titre"]', 'Concerts',$this->_response->getBody());
 	}
 
 

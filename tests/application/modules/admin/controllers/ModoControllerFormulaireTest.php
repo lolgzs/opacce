@@ -305,7 +305,7 @@ class ModoControllerFormulaireListTest extends Admin_AbstractControllerTestCase 
 
 	/** @test */
 	public function liShouldContainsLinkToFormulaireForPreinscription() {
-		$this->assertXPathContentContains('//li[2]/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [1/4]');
+		$this->assertXPathContentContains('//li[2]/a[contains(@href,"admin/modo/formulaires/id_article/2")]', 'Formulaire de préinscription [1/4]',$this->_response->getBody());
 	}
 }
 

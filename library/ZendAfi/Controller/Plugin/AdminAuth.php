@@ -51,56 +51,45 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 				->getPlugin('Zend_Controller_Plugin_ErrorHandler')
 				->setErrorHandlerModule('admin');
 
-			$acl = new ZendAfi_Acl_AdminControllerRoles();
-	    // Un user est connecté
-	    if ($user = Class_Users::getIdentity())	{
-				$resource = $controller;
-				$role = $user->getRole();
-
-
-
-				// si la resource n'existe pas dans ZendAfi_Acl_AdminControllerRoles
-				if (!$acl->has($resource)) $resource = null;
-				
-
-				// Test du role et redirection vers opac si pas autorisé
-				if (!$acl->isAllowed($role, $resource))
-				{
-	        $module = 'opac';
-					$controller = 'index';
-					$action = 'index';
-				}
-			}
-			// User non connecté on redirige vers le login
-			else
-			{ 
-				$module = 'admin';
+			if (!$user = Class_Users::getIdentity()) {
 				$controller = 'auth';
 				$action = 'login';
-			}
-		}
-		
-		// Entree dans opac on teste si le site a été désactivé
-		else 
-		{		
-			if (Class_AdminVar::get("SITE_OK") == "0" and $module == 'opac')
-			{
+			} else if (!$this->userCanAccessAdminPage($user)) {
 				$module = 'opac';
+				$controller = 'index';
+				$action = 'index';
+			}
+		} else 	{		
+		// Entree dans opac on teste si le site a été désactivé
+			if (Class_AdminVar::get("SITE_OK") == "0" and $module == 'opac')	{
 				$controller = 'index';
 				$action = 'sitedown';
 			}
 
-			if ((!$user = Class_Users::getIdentity()) && $controller = "abonne") {
+			if ((!$user = Class_Users::getIdentity()) && ($controller == "abonne")) {
 				$controller = 'auth';
 				$action = 'login';
 			}
-				
 		}
 		
 		// Parametres du controller
 		$request->setModuleName($module);
 		$request->setControllerName($controller);
 		$request->setActionName($action);
+	}
+
+
+	protected function userCanAccessAdminPage($user) {
+		$acl = new ZendAfi_Acl_AdminControllerRoles();
+		$resource = $this->_request->getControllerName();
+		$role = $user->getRole();
+
+		// si la resource n'existe pas dans ZendAfi_Acl_AdminControllerRoles
+		if (!$acl->has($resource)) $resource = null;
+				
+		// Test du role et redirection vers opac si pas autorisé
+		xdebug_break();
+		return $acl->isAllowed($role, $resource);
 	}
 }
 
