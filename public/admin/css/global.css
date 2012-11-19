@@ -931,15 +931,18 @@ div[id^="liste_picto_genre_"]  {
 
 .subview table#formulaires td {
 		border-left: 1px solid gray;
-		padding-left: 2px;
 		white-space: nowrap;
 		padding: 5px;
 }
 
 
+.subview table#formulaires th {
+		white-space: nowrap;
+		padding: 5px;
+}
 
 .subview table#formulaires tr:hover {
-		background-color: yellow;
+    background-color: rgba(194, 221, 230, 0.4);
 }
 
 
@@ -952,7 +955,7 @@ div[id^="liste_picto_genre_"]  {
     z-index: 3;
     right: 0px;
     vertical-align: middle;
-    text-align: center;
+    text-align: left;
     width: 55px;
 }
 
