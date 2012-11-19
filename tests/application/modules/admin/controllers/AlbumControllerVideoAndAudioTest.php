@@ -54,7 +54,7 @@ class Admin_AlbumControllerVideoAndAudioTest extends Admin_AlbumControllerTestCa
 	public function osmPlayerJsShouldBeLoaded() {
 		$this->_xpath->assertXpath(
 			Class_ScriptLoader::getInstance()->html(),
-			'//script[contains(@src, "admin/js/osmplayer/src/osmplayer.js")]');		
+			'//script[contains(@src, "admin/js/osmplayer/osmplayer.full.min.js")]');		
 	}
 
 

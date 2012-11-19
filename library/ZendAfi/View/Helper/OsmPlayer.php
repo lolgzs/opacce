@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+
 class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 	/**
 	 * Exemple:
@@ -30,13 +31,22 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 													 ['swfplayer' => URL_ADMIN_JS.'osmplayer/minplayer/flash/minplayer.swf',
 														'logo' => URL_ADMIN_JS.'osmplayer/logo.png']);
 
-		$this->loadJS()->addJQueryReady(sprintf('$("%s").osmplayer(%s)',
-																						$selector,
-																						json_encode($options)));
+		$this
+			->loadJSProd()
+			->addStyleSheet(URL_ADMIN_JS.'osmplayer/templates/default/css/osmplayer_default.css')
+			->addJQueryReady(sprintf('$("%s").osmplayer(%s)',
+															 $selector,
+															 json_encode($options)));
 	}
 
 
-	public function loadJS() {
+	public function loadJSProd() {
+		return Class_ScriptLoader::getInstance()->addAdminScript('osmplayer/osmplayer.full.min.js');
+	}
+
+
+	/** @codeCoverageIgnore */
+	public function loadJSDev() {
 		$loader = Class_ScriptLoader::getInstance();
 		foreach(['compatibility', 'flags', 'async', 'plugin', 'display'] as $js)
 			$loader->addAdminScript('osmplayer/minplayer/src/minplayer.'.$js);
@@ -59,6 +69,6 @@ class ZendAfi_View_Helper_OsmPlayer extends Zend_View_Helper_HtmlElement {
 		foreach(['controller', 'pager', 'playLoader', 'playlist', 'teaser'] as $template)
 			$loader->addAdminScript('osmplayer/templates/default/js/osmplayer.'.$template.'.default.js');
 
-		return $loader->addStyleSheet(URL_ADMIN_JS.'osmplayer/templates/default/css/osmplayer_default.css');
+		return $loader;
 	}
 }
