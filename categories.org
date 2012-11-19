@@ -232,3 +232,7 @@ var openDialogExemplaires = function() {
 
 [[file:library/Class/Moderer.php::'count'%20%3D>%20Class_SuggestionAchat::count()%5D][moderation]]
 [[file:library/ZendAfi/View/Helper/Admin/MenuGaucheAdmin.php::$nb_moderations%20%3D%20$modstats%5B'avis_notices'%5D%5B'count'%5D][affichage menu gauche]]
+
+
+* Clear identity
+	ZendAfi_Auth::getInstance()->clearIdentity();

@@ -25,13 +25,11 @@ class AbonneController extends ZendAfi_Controller_Action {
 
 	public function init()	{
 		parent::init();
+
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
-		
-		if (!$this->_user = Class_Users::getLoader()->getIdentity()) {
-			$this->_redirect('auth/login');
-			return;
-		}	
+
+		$this->_user = Class_Users::getLoader()->getIdentity();
 			
 		$this->clearEmprunteurCache();
 	}

@@ -89,6 +89,12 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 				$controller = 'index';
 				$action = 'sitedown';
 			}
+
+			if ((!$user = Class_Users::getIdentity()) && $controller = "abonne") {
+				$controller = 'auth';
+				$action = 'login';
+			}
+				
 		}
 		
 		// Parametres du controller

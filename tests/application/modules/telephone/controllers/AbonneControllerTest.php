@@ -64,6 +64,24 @@ abstract class AbonneControllerTelephoneTestCase extends TelephoneAbstractContro
 
 
 
+class AbonneControllerTelephoneIndexNotConnectedTest extends AbonneControllerTelephoneTestCase {
+	public function setUp() {
+		parent::setUp();
+		ZendAfi_Auth::getInstance()->clearIdentity();
+		$this->dispatch('abonne', true);
+	}
+
+
+
+	/** @test */
+	public function controllerShouldBeAuth() {
+		$this->assertController('auth');
+		$this->assertAction('login');
+	}
+}
+
+
+
 
 class AbonneControllerTelephoneFicheTest extends AbonneControllerTelephoneTestCase {
 	public function setUp() {
