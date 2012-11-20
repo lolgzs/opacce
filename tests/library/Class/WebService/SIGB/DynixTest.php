@@ -95,8 +95,8 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 
 
 	/** @test */
-	public function getExemplairesShouldReturnAnArrayWithSizeThree() {
-		$this->assertEquals(3, count($this->_notice->getExemplaires()));
+	public function getExemplairesShouldReturnAnArrayWithSizeFour() {
+		$this->assertEquals(4, count($this->_notice->getExemplaires()));
 	}
 
 
@@ -154,6 +154,24 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 	public function thirdExemplaireDisponibiliteShouldBeDisponible() {
 		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_LIBRE,
 												$this->_notice->exemplaireAt(2)->getDisponibilite());
+	}	
+
+	/** @test */
+	public function thirdExemplaireShouldBeVisibleOPAC() {
+		$this->assertTrue($this->_notice->exemplaireAt(2)->isVisibleOPAC());
+	}	
+
+
+	/** @test */
+	public function fourthExemplaireDisponibiliteShouldBeDiscard() {
+		$this->assertEquals('Retiré',
+												$this->_notice->exemplaireAt(3)->getDisponibilite());
+	}	
+
+
+	/** @test */
+	public function fourthExemplaireDisponibiliteShouldNotBeVisibleOPAC() {
+		$this->assertFalse($this->_notice->exemplaireAt(3)->isVisibleOPAC());
 	}	
 }
 

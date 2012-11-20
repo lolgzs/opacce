@@ -78,6 +78,21 @@ class DynixFixtures {
 				<fixedTimeBooking>false</fixedTimeBooking>
 			</ItemInfo>
 		</CallInfo>
+		<CallInfo>
+			<libraryID>CRETMAC</libraryID>
+			<classificationID>ASIS</classificationID>
+			<callNumber>BD LAR</callNumber>
+			<numberOfCopies>1</numberOfCopies>
+			<ItemInfo>
+				<itemID>00580777</itemID>
+				<itemTypeID>1IMP</itemTypeID>
+				<currentLocationID>DISCARD</currentLocationID>
+				<homeLocationID>11ABD</homeLocationID>
+				<chargeable>true</chargeable>
+				<fixedTimeBooking>false</fixedTimeBooking>
+			</ItemInfo>
+		</CallInfo>
+
 	</TitleInfo>
 </LookupTitleInfoResponse>';
 	}
