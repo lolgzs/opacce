@@ -88,7 +88,6 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		if (!$acl->has($resource)) $resource = null;
 				
 		// Test du role et redirection vers opac si pas autorisé
-		xdebug_break();
 		return $acl->isAllowed($role, $resource);
 	}
 }
