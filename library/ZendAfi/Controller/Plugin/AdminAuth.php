@@ -66,7 +66,7 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 				$action = 'sitedown';
 			}
 
-			if ((!$user = Class_Users::getIdentity()) && ($controller == "abonne")) {
+			if ((!$user = Class_Users::getIdentity()) && ($controller == "abonne" && $action !== "authenticate")) {
 				$controller = 'auth';
 				$action = 'login';
 			}

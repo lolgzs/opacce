@@ -62,6 +62,7 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 
 	public function setUp() {
 		parent::setUp();
+
 		$this->_auth = Storm_Test_ObjectWrapper::mock()
 			->whenCalled('authenticateLoginPassword')->answers(false)
 			->whenCalled('hasIdentity')->answers(false)
@@ -95,9 +96,13 @@ abstract class AbonneControllerMultimediaAuthenticateTestCase extends AbstractCo
 		$this->_auth
 			->whenCalled('authenticateLoginPassword')
 			->with($user->getLogin(), $user->getPassword(), ['auth_sigb', 'auth_db'])
-			->answers(true)
-			->whenCalled('getIdentity')
-			->answers($user);
+			->willDo(
+				function() use ($user) {
+					$this->_auth
+						->whenCalled('getIdentity')
+						->answers($user);
+					return true;
+				});
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('findFirstBy')
@@ -145,6 +150,14 @@ class AbonneControllerMultimediaAuthenticateValidationTest extends AbonneControl
 	public function responseShouldNotBeARedirect() {
 		$json = $this->getJson('/abonne/authenticate/login/any/password/any');
 		$this->assertNotRedirect();
+	}
+
+
+	/** @test */
+	public function controllerActionShouldBeAbonneAuthenticate() {
+		$this->getJson('/abonne/authenticate/login/any/password/any');
+		$this->assertController('abonne');
+		$this->assertAction('authenticate');
 	}
 
 
