@@ -41,7 +41,7 @@ class ZendAfi_View_Helper_AudioJsPlayerTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function audioJSShouldBeCreated() {
-		$this->assertContains('audiojs.createAll()', 		
+		$this->assertContains('audiojs.createAll', Class_ScriptLoader::getInstance()->html());
 	}
 }
 
