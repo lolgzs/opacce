@@ -39,13 +39,7 @@ class ZendAfi_View_Helper_Admin_TreeSelect extends ZendAfi_View_Helper_BaseHelpe
 
 	function setHeader(){
 		$this->view->headScript()
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.effects.core.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.core.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.widget.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.mouse.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.button.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.sortable.min.js')
-			->appendFile(URL_ADMIN_JS.'jquery_ui/jquery.ui.accordion.min.js')
+			->appendFile(JQUERYUI)
 			->appendFile(URL_ADMIN_JS.'treeselect/data_selector.js')
 			->appendFile(URL_ADMIN_JS.'treeselect/treeselect.js');
 		$this->view->headLink()
