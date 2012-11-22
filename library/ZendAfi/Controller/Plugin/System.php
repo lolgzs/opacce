@@ -21,18 +21,23 @@
 
 class ZendAfi_Controller_Plugin_System extends Zend_Controller_Plugin_Abstract {
 	function postDispatch(Zend_Controller_Request_Abstract $request) {
-		if (!defined('SLOW_REQUEST_LOG') || !defined('SLOW_REQUEST_TIME_LIMIT_SEC'))
+		if (!defined('SLOW_REQUEST_LOG') 
+				|| !defined('SLOW_REQUEST_SYSTEM_TIME_LIMIT_SEC') 
+				|| !defined('SLOW_REQUEST_USER_TIME_LIMIT_SEC'))
 			return;
 
 		$data = getrusage();
 		$user_time_sec = $data['ru_utime.tv_sec'];
-		if ($user_time_sec <= SLOW_REQUEST_TIME_LIMIT_SEC) return;
+		$system_time_sec = $data['ru_stime.tv_sec'];
+		if ($user_time_sec <= SLOW_REQUEST_USER_TIME_LIMIT_SEC  
+				&& $system_time_sec <= SLOW_REQUEST_SYSTEM_TIME_LIMIT_SEC) return;
 
 		$writer = new Zend_Log_Writer_Stream(SLOW_REQUEST_LOG);
 		$logger = new Zend_Log($writer);
 		
-		$logger->info(sprintf('%02ds  %s',
+		$logger->info(sprintf('user: %02ds system: %02ds  %s',
 													$user_time_sec,							
+													$system_time_sec,
 													$request->getRequestUri()));
 	}
 }
