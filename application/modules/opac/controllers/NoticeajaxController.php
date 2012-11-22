@@ -254,12 +254,24 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function morceauxAction() {
+		// lire notice et controle type de doc
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
-
+		if($notice['type_doc'] !=3) return false;
+		
+		// dans la notice
+		$morceaux=$this->notice->getMorceaux();
+		$source=$morceaux['source'];
+		
+		
+		//tracedebug($morceaux,true);
+		
 		// Chez amazon
-		$source = "Amazon";
-		$amazon = new Class_WebService_AmazonSonores();
-		$morceaux = $amazon->rend_notice_ean($notice["ean"]);
+		if (!$morceaux["nb_resultats"]) 
+		{
+			$source = "Amazon";
+			$amazon = new Class_WebService_AmazonSonores();
+			//$morceaux = $amazon->rend_notice_ean($notice["ean"]);
+		}
 
 		// Chez LastFm
 		if (!$morceaux["nb_resultats"]) 
@@ -269,9 +281,11 @@ class NoticeAjaxController extends Zend_Controller_Action {
 			$morceaux=$last_fm->getMorceaux($notice["T"],$notice["A"]);
 			$morceaux["id_notice"]=$notice["id_notice"];
 		}
-		$morceaux["auteur"]=$notice["A"];
+		$morceaux["auteur"]=$notice["A"];	
+		Class_ScriptLoader::getInstance()->loadJQuery();
+		$this->view->audioJsPlayer();
 		$html=$this->notice_html->getMorceaux($morceaux,$source);
-		$this->_sendResponse($html);
+		$this->_sendResponse(Class_ScriptLoader::getInstance()->html().$html);
 	}
 
 
