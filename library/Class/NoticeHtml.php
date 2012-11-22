@@ -566,6 +566,8 @@ class Class_NoticeHtml {
 	{
 		$ix= new Class_Indexation();
 		$html=$this->haut_onglet;
+		$audio_js_player = new ZendAfi_View_Helper_AudioJsPlayer();
+
 		if(!$notice["morceaux"]) return $html.$this->getNonTrouve();
 		$html.='<table width="100%">';
 		$html.=sprintf('<tr><td class="notice_info_titre" align="left" colspan="4">%s : %s</td></tr>',
@@ -617,13 +619,9 @@ class Class_NoticeHtml {
 												 "afficher_media('".$id_div."','close','')",
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
+			
 					if (isset($morceau["url_ecoute"]))
-					{
-						$id_morceau="morceau_".$plage;
-						$img_ecoute='<div id="'.$id_morceau.'">';
-						$img_ecoute.='<audio src="'.$morceau["url_ecoute"].'" controls="controls">';
-						$img_ecoute.='</div>';
-					}
+						$img_ecoute .= $audio_js_player->audioJsPlayer($morceau["url_ecoute"]);
 				}
 
 				// Html

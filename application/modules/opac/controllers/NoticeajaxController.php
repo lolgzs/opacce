@@ -282,8 +282,6 @@ class NoticeAjaxController extends Zend_Controller_Action {
 			$morceaux["id_notice"]=$notice["id_notice"];
 		}
 		$morceaux["auteur"]=$notice["A"];	
-		Class_ScriptLoader::getInstance()->loadJQuery();
-		$this->view->audioJsPlayer();
 		$html=$this->notice_html->getMorceaux($morceaux,$source);
 		$this->_sendResponse(Class_ScriptLoader::getInstance()->html().$html);
 	}

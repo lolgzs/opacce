@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Test 1 - audio.js</title>
+    <style>
+      p { clear: both; }
+    </style>
+    <script src="../audiojs/audio.js"></script>
+    <script>
+      audiojs.events.ready(function() {
+        var as = audiojs.createAll();
+      });
+    </script>
+		<link rel="stylesheet" type="text/css" href="../audiojs/style-light.css">
+  </head>
+  <body>
+    <h1>audiojs.createAll()</h1>
+    <p>Load from remote URL</p>
+    <audio controls="controls">
+      <source src="http://s3.amazonaws.com/audiojs/02-juicy-r.mp3">
+    </audio>
+  </body>
+</html>

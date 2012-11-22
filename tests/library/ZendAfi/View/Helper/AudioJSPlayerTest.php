@@ -19,17 +19,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class ZendAfi_View_Helper_AudioJsPlayerTest extends PHPUnit_Framework_TestCase {
+class ZendAfi_View_Helper_AudioJsPlayerTest extends ViewHelperTestCase {
 	/**
 	 * @var ZendAfi_View_Helper_AudioJsPlayer
 	 */
 	private $_helper;
+	private $_html;
 
-	protected function setUp() {
+	public function setUp() {
 		Class_ScriptLoader::resetInstance();
 		$this->_helper = new ZendAfi_View_Helper_AudioJsPlayer();
 		$this->_helper->setView(new Zend_View());
-		$this->_helper->audioJsPlayer();
+		$this->_html = $this->_helper->audioJsPlayer('http://alter-l/si-veriash.mp3');
 	}
 
 	/** @test */
@@ -42,6 +43,12 @@ class ZendAfi_View_Helper_AudioJsPlayerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function audioJSShouldBeCreated() {
 		$this->assertContains('audiojs.createAll', Class_ScriptLoader::getInstance()->html());
+	}
+
+
+	/** @test */
+	public function audioTagShouldContainsSrc() {
+		$this->assertXPath($this->_html, '//audio/source[@src="http://alter-l/si-veriash.mp3"]', $this->_html);
 	}
 }
 
