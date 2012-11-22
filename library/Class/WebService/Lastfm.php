@@ -110,8 +110,7 @@ class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 			$pos=strPos($data,">",$pos)+1;
 			$posfin=strPos($data,"</td>",$pos);
 			$lig=trim(substr($data,$pos,($posfin-$pos)));
-			if(strlen($lig)>10)$url_ecoute=true;
-			else $url_ecoute="";
+
 			// Morceau
 			$pos=strPos($data,'subjectCell',$pos);
 			if(!$pos) break;
@@ -122,14 +121,6 @@ class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 			$piste++;
 			$track=trim(str_replace('">', '', substr($lig,($pos+1))));
 			$album["morceaux"][$volume][$piste]["titre"]=strip_tags(str_replace('</a>','',$track));
-			// Calcul url ecoute
-			if($url_ecoute == true)
-			{
-				$track=str_replace(" ","+",$album["morceaux"][$volume][$piste]["titre"]);
-				$auteur=str_replace(" ","+",$auteur);
-				$rep=urlencode("'");
-				//$album["morceaux"][$volume][$piste]["url_ecoute"]=str_replace("'",$rep,$track . ";" .$auteur);
-			}
 			$data=substr($data,$posfin);
 		}
 		$album["nb_resultats"]=$piste;
@@ -272,3 +263,5 @@ class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 		return true;
 	}
 }
+
+?>

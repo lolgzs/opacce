@@ -199,3 +199,5 @@ class Class_Xml {
 		return true;
 	}
 }
+
+?>

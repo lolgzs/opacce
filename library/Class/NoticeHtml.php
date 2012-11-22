@@ -589,7 +589,6 @@ class Class_NoticeHtml {
 				if($notice["asin"]) 
 				{
 					$id_div=$notice["asin"]."_".$volume."_".$plage;
-					$player=$morceau["url_ecoute"];
 					$js_video="chercher_videos('".$id_div."','".addslashes($notice["auteur"])."','".addslashes($morceau["titre"])."')";
 					$img_video=sprintf('<img src="%s" border="0" onclick="%s" style="cursor:pointer" title="%s" alt="%s" />',
 														 URL_IMG.'bouton/voir_video.gif',
@@ -602,7 +601,6 @@ class Class_NoticeHtml {
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
 
-					//$img_ecoute='<img src="'.URL_IMG.'bouton/ecouter.gif" border="0" onclick="afficher_media(\''.$id_div.'\',\''.$player.'\',\'real_audio\')" style="cursor:pointer" title="Ecouter un extrait">';
 				}
 				// autres
 				else
@@ -619,7 +617,7 @@ class Class_NoticeHtml {
 												 "afficher_media('".$id_div."','close','')",
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
-					if($morceau["url_ecoute"])
+					if (isset($morceau["url_ecoute"]))
 					{
 						$id_morceau="morceau_".$plage;
 						$img_ecoute='<div id="'.$id_morceau.'">';

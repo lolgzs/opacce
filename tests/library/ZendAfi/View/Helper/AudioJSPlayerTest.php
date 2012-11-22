@@ -34,7 +34,7 @@ class ZendAfi_View_Helper_AudioJsPlayerTest extends PHPUnit_Framework_TestCase {
 
 	/** @test */
 	public function scriptLoaderShouldContainsAudioJS() {
-		$this->assertContains('<script src="'.BASE_URL.'/public/admin/js/audiojs/audiojs/audiomin.js?', 
+		$this->assertContains('<script src="'.BASE_URL.'/public/admin/js/audiojs/audiojs/audio.min.js?', 
 													Class_ScriptLoader::getInstance()->html());
 	}
 

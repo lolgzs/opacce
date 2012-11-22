@@ -36,4 +36,3 @@ abstract class Class_WebService_Abstract {
 }
 
 ?>
-

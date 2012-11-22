@@ -75,13 +75,6 @@ class LastfmFixParserErrorTest extends LastfmParserTestCase {
 
 
 	/** @test */
-	public function firstMorceauUrlShouldBeLaChapelleDeGuillaumeTell() {
-		$this->assertEquals('No.+1.+La+chapelle+de+Guillaume+Tell+(The+Chapel+of+William+Tell);Franz+Liszt',
-												$this->_album['morceaux'][1][1]['url_ecoute']);
-	}
-
-
-	/** @test */
 	public function lastMorceauShouldHaveTitleSursumCorda() {
 		$this->assertEquals('No. 7. Sursum corda (Lift up Your Hearts)',
 												$this->_album['morceaux'][1][26]['titre']);
@@ -115,13 +108,6 @@ class LastfmParserTest extends LastfmParserTestCase {
 	public function fourthMorceauShouldHaveTitleSonnet47() {
 		$this->assertEquals('No. 4. Sonetto 47 del Petrarca (Sonnet 47 of Petrarch)',
 												$this->_album['morceaux'][1][4]['titre']);
-	}
-
-
-	/** @test */
-	public function fourthMorceauUrlShouldBeSonnet47() {
-		$this->assertEquals('No.+4.+Sonetto+47+del+Petrarca+(Sonnet+47+of+Petrarch);Franz+Liszt',
-												$this->_album['morceaux'][1][4]['url_ecoute']);
 	}
 
 
