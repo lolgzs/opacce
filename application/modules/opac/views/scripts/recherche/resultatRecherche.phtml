@@ -50,6 +50,7 @@ print($this->texte_selection);
 $this->closeBoite();
 
 extract($this->resultat);
+if (!isset($tags)) $tags=[];
 ?>
 
 <div style="width:100%" class="conteneur_simple">
