@@ -584,6 +584,7 @@ class Class_NoticeHtml {
 			forEach($vol as $morceau)
 			{
 				$plage++;
+				$img_ecoute="";
 				// Amazon
 				if($notice["asin"]) 
 				{
@@ -603,8 +604,8 @@ class Class_NoticeHtml {
 
 					//$img_ecoute='<img src="'.URL_IMG.'bouton/ecouter.gif" border="0" onclick="afficher_media(\''.$id_div.'\',\''.$player.'\',\'real_audio\')" style="cursor:pointer" title="Ecouter un extrait">';
 				}
-				// Last.fm
-				else 
+				// autres
+				else
 				{
 					$id_div=$notice["id_notice"]."_".$volume."_".$plage;
 					$js_video="chercher_videos('".$id_div."','".addslashes($notice["auteur"])."','".addslashes($morceau["titre"])."')";
@@ -618,11 +619,17 @@ class Class_NoticeHtml {
 												 "afficher_media('".$id_div."','close','')",
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
-					//if($morceau["url_ecoute"])$img_ecoute='<img src="'.URL_IMG.'bouton/ecouter.gif" border="0" onclick="afficher_media(\''.$id_div.'\',\''.$morceau["url_ecoute"].'\',\'last_fm\')" style="cursor:pointer" title="Ecouter un extrait">';
-					//else $img_ecoute="&nbsp;";
+					if($morceau["url_ecoute"])
+					{
+						$id_morceau="morceau_".$plage;
+						$img_ecoute='<div id="'.$id_morceau.'">';
+						$img_ecoute.='<audio src="'.$morceau["url_ecoute"].'" controls="controls">';
+						$img_ecoute.='</div>';
+					}
 				}
+
 				// Html
-				$img_ecoute="&nbsp;";
+				if(!$img_ecoute) $img_ecoute="&nbsp;";
 				$html.='<tr><td class="notice_info_ligne" align="left" width="100%">'.$plage.' : '.$morceau["titre"].'</td><td style="text-align:center">'.$img_ecoute.'</td><td>'.$img_video.'</td><td>'.$close.'</td></tr>';
 				$html.='<tr><td colspan="4" style="text-align:center"><div id="'.$id_div.'" rel="video" style="display:none;"></div></td>';
 				$html.='</tr>';

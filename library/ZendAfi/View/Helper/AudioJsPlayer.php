@@ -27,9 +27,12 @@ class ZendAfi_View_Helper_AudioJsPlayer extends Zend_View_Helper_HtmlElement {
 	 * Voir: http://kolber.github.com/audiojs/
 	 */
 	public function audioJsPlayer() {
+		$options = ['swfLocation' => URL_ADMIN_JS.'audiojs/audiojs/audiojs.swf',
+								'imageLocation' => URL_ADMIN_JS.'audiojs/audiojs/player-graphics.gif'];
 		return Class_ScriptLoader::getInstance()
-			->addAdminScript('audiojs/audiojs/audiomin.js')
-			->addJQueryReady('audiojs.events.ready(function() {audiojs.createAll();})');
+			->addAdminScript('audiojs/audiojs/audio.min.js')
+			->addInlineScript(sprintf('audiojs.events.ready(function() {audiojs.createAll(%s);})', 
+																json_encode($options)));
 	}
 }
 

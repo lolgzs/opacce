@@ -686,6 +686,71 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 // ----------------------------------------------------------------
+// Morceaux de docs sonores
+// ----------------------------------------------------------------
+	public function getMorceaux()
+	{
+		// detecter gam
+		$data=$this->get_subfield('801', 'b');
+		foreach($data as $champ)
+		{
+			if(strtoupper($champ)== "GAM")
+			{
+				$ret=$this->getMorceauxGam();
+				$ret['source']="GAM Annecy";
+				return $ret;
+			}
+		}
+		
+		// rien trouvé
+		return array('nb_resultats'=>0);
+	}
+
+// ----------------------------------------------------------------
+// Morceaux de docs sonores GAM
+// ----------------------------------------------------------------
+	private function getMorceauxGam()
+	{
+		// lire les zones
+		$data464=$this->get_subfield('464','t');
+		if(!count($data464)) $data464=$this->get_subfield('464','a');
+		if(!count($data464)) return array('nb_resultats'=>0);
+		$data=$this->get_subfield('958');
+		if(count($data))
+		{
+			foreach($data as $bloc)
+			{
+				$data958[]=$this->getValeursBloc($bloc);
+			}
+		}
+		else $data958=false;
+		
+		// fabrication du resultat
+		$volume=1;
+		$piste=0;
+		foreach($data464 as $titre)
+		{
+			$piste++;
+			$ret['nb_resultats']=$piste;
+			$ret["morceaux"][$volume][$piste]["titre"]=$titre;
+			
+			// url ecoute
+			if(!$data958) continue;
+			foreach($data958 as $data)
+			{
+				if(trim($titre)==trim($data[1]))
+				{
+					$ret["morceaux"][$volume][$piste]["url_ecoute"]=$data[0];
+					break;
+				}
+			}
+		}
+		
+		// retour
+		return $ret;
+	}
+	
+// ----------------------------------------------------------------
 // Complément du titre (1er seulement)
 // ----------------------------------------------------------------
 	public function getComplementTitre()

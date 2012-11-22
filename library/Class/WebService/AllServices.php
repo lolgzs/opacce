@@ -43,8 +43,7 @@ class Class_WebService_AllServices {
 				(
 					"valeurs" => array("ean" => "0794881405923","asin" => "B00005BH6V","volume" => "1","track" => "1"),
 					"services" => array("rend_notice_ean(@ean)"
-												,"getImages(@ean)"
-												,"get_url_ecoute(@asin,@volume,@track)")
+												,"getImages(@ean)")
 				),
 			"AmazonVideo" => array
 				(

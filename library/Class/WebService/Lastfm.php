@@ -128,7 +128,7 @@ class Class_WebService_Lastfm  extends Class_WebService_Abstract {
 				$track=str_replace(" ","+",$album["morceaux"][$volume][$piste]["titre"]);
 				$auteur=str_replace(" ","+",$auteur);
 				$rep=urlencode("'");
-				$album["morceaux"][$volume][$piste]["url_ecoute"]=str_replace("'",$rep,$track . ";" .$auteur);
+				//$album["morceaux"][$volume][$piste]["url_ecoute"]=str_replace("'",$rep,$track . ";" .$auteur);
 			}
 			$data=substr($data,$posfin);
 		}

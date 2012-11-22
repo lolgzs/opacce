@@ -79,7 +79,7 @@ class Class_WebService_AmazonSonores extends Class_WebService_Amazon
 					{
 						$piste++;
 						$ret["morceaux"][$volume][$piste]["titre"]=$this->xml->get_value($node_piste);
-						$ret["morceaux"][$volume][$piste]["url_ecoute"]=$this->get_url_ecoute($ret["asin"],$volume,$piste);
+						//$ret["morceaux"][$volume][$piste]["url_ecoute"]=$this->get_url_ecoute($ret["asin"],$volume,$piste);
 						$node_piste=$this->xml->get_sibling($node_piste);
 					}
 					$disc=$this->xml->get_sibling($disc);
@@ -116,14 +116,14 @@ class Class_WebService_AmazonSonores extends Class_WebService_Amazon
 	}
 	
 //------------------------------------------------------------------------------------------------------
-// Rend l'url pour ecouter les morceaux
+// Rend l'url pour ecouter les morceaux (OBSOLETE)
 //------------------------------------------------------------------------------------------------------
 	function get_url_ecoute($asin,$volume,$track)
 	{
-		$volume=str_repeat("0",3-strlen($volume)).$volume;
-		$track=str_repeat("0",3-strlen($track)).$track;
-		$url="http://www.amazon.fr/gp/music/clipserve/".$asin.$volume.$track."/1/ref=mu_sam_ra".$volume."_".$track;
-		return $url;
+		//$volume=str_repeat("0",3-strlen($volume)).$volume;
+		//$track=str_repeat("0",3-strlen($track)).$track;
+		//$url="http://www.amazon.fr/gp/music/clipserve/".$asin.$volume.$track."/1/ref=mu_sam_ra".$volume."_".$track;
+		return false;
 	}
 	
 	//------------------------------------------------------------------------------------------------------
