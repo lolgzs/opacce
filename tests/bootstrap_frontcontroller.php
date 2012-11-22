@@ -34,7 +34,8 @@ $controller = Zend_Controller_Front::getInstance()
 	->registerPlugin(new ZendAfi_Controller_Plugin_SetupLocale())
 	->registerPlugin(new ZendAfi_Controller_Plugin_DefineURLs())
 	->registerPlugin(new ZendAfi_Controller_Plugin_InitModule())
-	->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib());
+	->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib())
+	->registerPlugin(new ZendAfi_Controller_Plugin_System());
 
 $_SESSION["selection_bib"]=array("message" => 'selection bib sucks',
 																 "nb_notices" => 12345,

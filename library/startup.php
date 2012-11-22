@@ -261,6 +261,7 @@ function setupFrontController() {
 		->registerPlugin(new ZendAfi_Controller_Plugin_DefineURLs())
 		->registerPlugin(new ZendAfi_Controller_Plugin_InitModule())
 		->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib())
+		->registerPlugin(new ZendAfi_Controller_Plugin_System())
 		->setParam('useDefaultControllerAlways', true);
 
 	return setupRoutes($front_controller);
