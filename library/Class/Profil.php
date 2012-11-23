@@ -1325,4 +1325,14 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $this->_get('header_css');
 		return '';
 	}
+
+
+	/** @return array la liste des zones titre a afficher dans le resultat de recherche */
+	public function getZonesTitre() {
+		$cfg = $this->getCfgModulesAsArray();
+		if (!isset($cfg['recherche']['resultatsimple']['zones_titre']))
+			return [];
+
+		return explode(';', $cfg['recherche']['resultatsimple']['zones_titre']);
+	}
 }

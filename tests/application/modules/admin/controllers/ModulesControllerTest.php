@@ -111,17 +111,42 @@ class ModulesControllerConfigRechercheResultatTest extends Admin_AbstractControl
 
 
 	/** @test */
-	public function checkboxSuggestionAchatShouldBeUncheckedIfPrefencesSuggestionEqualsZero() {
-		Class_Profil::getCurrentProfil()->setCfgModules(['recherche' => ['simple' => ['suggestion_achat' => 0]]]);
+	public function withAction2ViewNoticeShouldDisplayConfigurationOfPageNotice() {
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice');
+		$this->assertXPathContentContains('//h1', 'Propriétés d\'affichage des notices');
+	}
+}
+
+
+
+
+class ModulesControllerConfigRechercheResultatWithPreferencesTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$_SESSION["recherche"] = array("mode" => '');
+		Class_Profil::getCurrentProfil()
+			->setCfgModules(['recherche' => ['resultatsimple' => ['suggestion_achat' => 0,
+																														'zones_titre' => '200$e;200$f']]]);
 		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
-		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][@checked="checked"]');
+
+	}
+	
+
+	/** @test */
+	public function checkboxSuggestionAchatShouldBeUncheckedIfPrefencesSuggestionEqualsZero() {
+		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][not(@checked)]');
 	}
 
 
 	/** @test */
-	public function withAction2ViewNoticeShouldDisplayConfigurationOfPageNotice() {
-		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice');
-		$this->assertXPathContentContains('//h1', 'Propriétés d\'affichage des notices');
+	public function inputZonesTitreShouldContainsZones200EandF() {
+		$this->assertXPath('//input[@name="zones_titre"][@value="200$e;200$f"]');
+	}
+
+
+	/** @test */
+	public function profilZonesTitreShouldReturnArrayWithZones() {
+		$this->assertEquals(['200$e', '200$f'], Class_Profil::getCurrentProfil()->getZonesTitre());
 	}
 }
 

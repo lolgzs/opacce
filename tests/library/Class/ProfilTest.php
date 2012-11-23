@@ -44,6 +44,11 @@ class ProfilVideTest extends ModelTestCase {
 	public function getModuleAccueilPreferencesShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->profil_vide->getModuleAccueilPreferences(1));
 	}
+
+	/** @test */
+	public function profilZonesTitreShouldReturnEmptyArray() {
+		$this->assertEquals([], Class_Profil::getCurrentProfil()->getZonesTitre());
+	}
 }
 
 
