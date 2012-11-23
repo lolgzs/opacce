@@ -193,9 +193,9 @@ class DynixFixtures {
 		<ns3:pieces>1</ns3:pieces>
 		<ns3:title>Chico &amp; Rita [Images animées]</ns3:title>
 		<ns3:author>Trueba, Fernando</ns3:author>
-		<ns3:checkoutLibraryID>CRETMAC</ns3:checkoutLibraryID>
+		<ns3:checkoutLibraryID>CRETDOY</ns3:checkoutLibraryID>
 		<ns3:checkoutLibraryDescription>Créteil : Maison des Arts</ns3:checkoutLibraryDescription>
-		<ns3:itemLibraryID>CRETDOY</ns3:itemLibraryID>
+		<ns3:itemLibraryID>CRETMAC</ns3:itemLibraryID>
 		<ns3:itemLibraryDescription>Créteil : Doyen</ns3:itemLibraryDescription>
 		<ns3:itemTypeID>1VIDEOF</ns3:itemTypeID>
 		<ns3:itemTypeDescription>Vidéos de fiction</ns3:itemTypeDescription>	
@@ -273,7 +273,7 @@ class DynixFixtures {
 		<ns3:author>Stupeflip</ns3:author>
 		<ns3:itemLibraryID>ALFMEDA</ns3:itemLibraryID>
 		<ns3:itemLibraryDescription>Alfortville : Pôle culturel</ns3:itemLibraryDescription>
-		<ns3:pickupLibraryID>CRETMAC</ns3:pickupLibraryID>
+		<ns3:pickupLibraryID>CRETMEC</ns3:pickupLibraryID>
 		<ns3:pickupLibraryDescription>Créteil : Maison des Arts</ns3:pickupLibraryDescription>
 		<ns3:placedDate>2012-09-28</ns3:placedDate>
 		<ns3:reserve>false</ns3:reserve>

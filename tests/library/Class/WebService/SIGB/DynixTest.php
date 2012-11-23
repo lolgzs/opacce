@@ -60,6 +60,21 @@ abstract class DynixTestCase extends Storm_Test_ModelTestCase {
 			::getService(['url_serveur' => 'http://www.infocom94.fr:8080/capcvm/',
 																															 'client_id' => 'SymWS'])
 			->setWebClient($this->_mock_web_client);
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findFirstBy')
+			->answers(null)
+
+			->whenCalled('findFirstBy')
+			->with(['code' => 'CRETDOY'])
+			->answers(Class_CodifAnnexe::newInstanceWithId(16, ['libelle' => 'Créteil: Doyen',
+																													'code' => 'CRETDOY']))
+
+			->whenCalled('findFirstBy')
+			->with(['code' => 'CRETMEC'])
+			->answers(Class_CodifAnnexe::newInstanceWithId(10, ['libelle' => 'Créteil: Croix des Mèches',
+																													'code' => 'CRETMEC']));
 	}
 }
 
@@ -256,6 +271,12 @@ class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 
 
 	/** @test */
+	public function firstEmpruntBibliothequeShouldBeCreteilDoyen() {
+		$this->assertEquals('Créteil: Doyen', $this->_manu->getEmpruntAt(0)->getBibliotheque());
+	}
+
+
+	/** @test */
 	public function firstEmpruntIdShouldBe00406882() {
 		$this->assertEquals('00406882', $this->_manu->getEmpruntAt(0)->getId());
 	}
@@ -276,6 +297,12 @@ class DynixGetEmprunteurManuLarcinetTest extends DynixTestCase {
 	/** @test */
 	public function firstReservationCodeBarreShouldBe00577705() {
 		$this->assertEquals('00577705', $this->_manu->getReservationAt(0)->getCodeBarre());		
+	}
+
+
+	/** @test */
+	public function firstReservationBibliothequeShouldBeCreteilMeches() {
+		$this->assertEquals('Créteil: Croix des Mèches', $this->_manu->getReservationAt(0)->getBibliotheque());
 	}
 
 

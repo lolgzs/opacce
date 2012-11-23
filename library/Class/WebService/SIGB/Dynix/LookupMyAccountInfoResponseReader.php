@@ -101,4 +101,16 @@ class Class_WebService_SIGB_Dynix_LookupMyAccountInfoResponseReader {
 	public function endHoldKey($data) {
 		$this->_current_operation->setId($data);
 	}
+
+
+	public function endCheckoutLibraryId($data) {
+		if ($annexe = Class_CodifAnnexe::findFirstBy(['code' => $data]))
+			$this->_current_operation->setBibliotheque($annexe->getLibelle());
+	}
+
+
+	public function endPickupLibraryID($data) {
+		if ($annexe = Class_CodifAnnexe::findFirstBy(['code' => $data]))
+			$this->_current_operation->setBibliotheque($annexe->getLibelle());
+	}
 }
