@@ -46,8 +46,8 @@ class ProfilVideTest extends ModelTestCase {
 	}
 
 	/** @test */
-	public function profilZonesTitreShouldReturnEmptyArray() {
-		$this->assertEquals([], Class_Profil::getCurrentProfil()->getZonesTitre());
+	public function profilZonesTitreShouldReturn200_E_H_I() {
+		$this->assertEquals(['200$e', '200$h', '200$i'], Class_Profil::getCurrentProfil()->getZonesTitre());
 	}
 }
 

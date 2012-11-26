@@ -248,7 +248,7 @@ class Class_Systeme_ModulesAppli extends Class_Systeme_ModulesAbstract {
 				$ret["tags_position"] = 2;								 // Position 2=sous les facettes 1=sous la liste
 				$ret["tags_message"] = "Elargir la recherche...";			// Message au dessus de la boite
 				$ret["suggestion_achat"] = 1;          // Afficher le lien "Suggérer un achat"
-				$ret["zones_titre"] = '200$e';          // Liste des zones de titre à afficher dans le résultat: exemple: 200$e;400$t
+				$ret["zones_titre"] = '200$e;200$h;200$i';          // Liste des zones de titre à afficher dans le résultat: exemple: 200$e;400$t
 
 				break;
 			case "viewnotice":

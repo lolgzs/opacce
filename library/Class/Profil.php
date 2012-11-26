@@ -1330,9 +1330,11 @@ class Class_Profil extends Storm_Model_Abstract {
 	/** @return array la liste des zones titre a afficher dans le resultat de recherche */
 	public function getZonesTitre() {
 		$cfg = $this->getCfgModulesAsArray();
-		if (!isset($cfg['recherche']['resultatsimple']['zones_titre']))
-			return [];
+		
+		$zones = isset($cfg['recherche']['resultatsimple']['zones_titre']) 
+			? $cfg['recherche']['resultatsimple']['zones_titre']
+			: (new Class_Systeme_ModulesAppli())->getValeursParDefaut('recherche', 'resultat')['zones_titre'];
 
-		return explode(';', $cfg['recherche']['resultatsimple']['zones_titre']);
+		return explode(';', $zones);
 	}
 }
