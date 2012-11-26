@@ -686,6 +686,26 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 // ----------------------------------------------------------------
+// Titre + sous-titre paramétré pour affichage des listes
+// ----------------------------------------------------------------
+	public function getTitreEtSousTitre($type_doc,$tome)
+	{
+		$zones=Class_Profil::getCurrentProfil()->getZonesTitre();
+		//tracedebug($zones,true);
+		$titre=$this->getTitrePrincipal($type_doc, $tome);
+		if(count($zones))
+		{
+			foreach($zones as $zone)
+			{
+				$data=$this->get_subfield(substr($zone,0,3), substr($zone,4,1));
+				if(!count($data)) continue;
+				$titre.=' : '.$this->filtreTitre($data[0]);
+			}
+		}
+		return $titre;
+	}
+	
+// ----------------------------------------------------------------
 // Morceaux de docs sonores
 // ----------------------------------------------------------------
 	public function getMorceaux()

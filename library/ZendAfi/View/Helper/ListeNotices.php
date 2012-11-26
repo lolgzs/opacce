@@ -197,11 +197,11 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 		$html = '';
 		foreach($data as $notice)
 		{
+			$cls_notice=new Class_Notice();
+			$cls_notice->getNotice($notice["id_notice"]);
 			// calcul url en fonction du type de doc
 			if($notice["type_doc"]>7 and $notice["type_doc"]<11)
 			{
-				$cls_notice=new Class_Notice();
-				$cls_notice->getNotice($notice["id_notice"]);
 				$id_ressource=$cls_notice->getChamp856b();
 				switch($notice["type_doc"])
 				{
@@ -218,7 +218,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$html.='<div class="liste_vignette"><table width="100%" cellspacing="0" border="0">';
 
 			// Image
-			$notice["titre_principal"]=$notice["T"];
+			$notice["titre_principal"]=$cls_notice->getTitreEtSousTitre($notice["type_doc"],$notice["tome_alpha"]); //$notice["T"];
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			$html.=sprintf('<tr><td class="%s" width="100px" style="vertical-align:top"><a href="%s"><img src="%s" border="0" width="90px" alt="%s" title="%s"/></a></td>',
@@ -232,7 +232,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$html.='<td class="'. $style_css .'" style="text-align:left;vertical-align:top;width:100%">';
 			$html.='<div style="float:right; width:auto">'.$this->view->notice_LienReserver($notice["id_notice"]).'</div>';
 			$html.='<a href="'.$url_notice.'">';
-			$html.=$notice["T"].BR.$notice["A"];
+			$html.=$notice["titre_principal"].BR.$notice["A"];
 			$html.='</a>';
 			// Type de document
 			$html.=BR.'<table cellspacing="0" style="border-color:#bfbfbf;border-left:none;border-right:none;border-bottom:none;border-top:1px solid;width:100%;margin-top:5px">';
