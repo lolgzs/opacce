@@ -702,10 +702,95 @@ class Class_Notice extends Storm_Model_Abstract {
 			}
 		}
 		
-		// rien trouvé
-		return array('nb_resultats'=>0);
+		// get zone 464
+		$data464=$this->get_subfield('464');
+		if(!count($data464)) return array('nb_resultats'=>0);
+		
+		// test si titre en 464$t ou 464$a
+		$data=$this->decoupe_bloc_champ($data464[0]);
+		foreach($data as $champ)
+		{
+			if($champ['code']=='t')
+			{
+				$ret=$this->getMorceaux464_t($data464);
+				return $ret;
+				break;
+			}
+		}
+		$ret=$this->getMorceaux464_a($data464);
+		return $ret;
 	}
 
+// ----------------------------------------------------------------
+// Morceaux de docs sonores titres en 464$t
+// ----------------------------------------------------------------
+	private function getMorceaux464_t($data)
+	{
+		$volume=0;
+		$piste=0;
+		foreach($data as $champs)
+		{
+			$champ=$this->decoupe_bloc_champ($champs);
+			$titre=$auteur_nom=$auteur_prenom=$duree=$volume='';
+			foreach($champ as $sous_champ)
+			{
+				switch($sous_champ['code'])
+				{
+					case 't' : $titre=$sous_champ['valeur']; break;
+					case 'd' : $duree=$sous_champ['valeur']; break;
+					case 'a' : $auteur_nom=$sous_champ['valeur']; break;
+					case 'b' : $auteur_prenom=$sous_champ['valeur']; break;
+					case 'v' : $volume=$sous_champ['valeur']; break;
+				}
+			}
+			if(!$titre) continue;
+			if($auteur_prenom) $auteur_nom=$auteur_prenom.' '.$auteur_nom;
+			if($auteur_nom) $titre.=' / '.$auteur_nom;
+			if($duree) $titre.=' '.$duree;
+			$piste++;
+			if(!$volume) $volume=1;
+			$ret['nb_resultats']=$piste;
+			if($volume > $ret['nombre_volumes']) $ret['nombre_volumes']=$volume;
+			$ret["morceaux"][$volume][$piste]['titre']=$titre;
+		}
+		return $ret;
+	}
+	
+// ----------------------------------------------------------------
+// Morceaux de docs sonores titres en 464$a
+// ----------------------------------------------------------------
+	private function getMorceaux464_a($data)
+	{
+		$volume=0;
+		$piste=0;
+		foreach($data as $champs)
+		{
+			$champ=$this->decoupe_bloc_champ($champs);
+			$titre=$auteur_nom=$auteur_prenom=$duree=$volume='';
+			foreach($champ as $sous_champ)
+			{
+				switch($sous_champ['code'])
+				{
+					case 'a' : $titre=$sous_champ['valeur']; break;
+					case 'd' : $duree=$sous_champ['valeur']; break;
+					case 'f' : $auteur_nom=$sous_champ['valeur']; break;
+					case 'g' : $auteur_prenom=$sous_champ['valeur']; break;
+					case 'v' : $volume=$sous_champ['valeur']; break;
+				}
+			}
+			if(!$titre) continue;
+			if($auteur_prenom) $auteur_nom=$auteur_prenom.' '.$auteur_nom;
+			if($auteur_nom) $titre.=' / '.$auteur_nom;
+			if($duree) $titre.=' '.$duree;
+			$piste++;
+			if(!$volume) $volume=1;
+			$ret['nb_resultats']=$piste;
+			if($volume > $ret['nombre_volumes']) $ret['nombre_volumes']=$volume;
+			$ret["morceaux"][$volume][$piste]['titre']=$titre;
+		}
+		return $ret;
+	}
+	
 // ----------------------------------------------------------------
 // Morceaux de docs sonores GAM
 // ----------------------------------------------------------------

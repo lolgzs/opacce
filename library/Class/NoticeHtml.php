@@ -570,7 +570,7 @@ class Class_NoticeHtml {
 
 		if(!$notice["morceaux"]) return $html.$this->getNonTrouve();
 		$html.='<table width="100%">';
-		$html.=sprintf('<tr><td class="notice_info_titre" align="left" colspan="4">%s : %s</td></tr>',
+		if($source) $html.=sprintf('<tr><td class="notice_info_titre" align="left" colspan="4">%s : %s</td></tr>',
 									 $this->_translate->_('Source'),
 									 $source);
 		$volume=0;	
@@ -620,8 +620,7 @@ class Class_NoticeHtml {
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
 			
-					if (isset($morceau["url_ecoute"]))
-						$img_ecoute .= $audio_js_player->audioJsPlayer($morceau["url_ecoute"]);
+					if (isset($morceau["url_ecoute"])) $img_ecoute .= $audio_js_player->audioJsPlayer($morceau["url_ecoute"]);
 				}
 
 				// Html
