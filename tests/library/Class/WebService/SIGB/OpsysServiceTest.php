@@ -467,6 +467,29 @@ class OpsysServiceEmprAuthentifierErreurTestCreateEmprunteur extends OpsysServic
 
 
 
+class OpsysServiceEmprAuthentifierNoCommunicationTest extends OpsysServiceWithSessionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->search_client			
+			->whenCalled('EmprAuthentifier')
+			->willDo(function() {throw new SoapFault('Communication', 'error');});
+
+		$this->emprunteur = $this->opsys->getEmprunteur(
+													Class_Users::getLoader()->newInstance()
+														->setLogin('tintin')
+														->setPassword('1234'));
+	}
+
+
+	public function testEmprunteurIsNotValid() {
+		$this->assertFalse($this->emprunteur->isValid());
+	}
+}
+
+
+
+
 class OpsysServiceEmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();

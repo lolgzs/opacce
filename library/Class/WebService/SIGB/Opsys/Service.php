@@ -126,7 +126,12 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	 */
 	public function authentifierEmprunteur($user) {
 		$auth = new EmprAuthentifier($this->guid, $user->getLogin(), $user->getPassword());
-		$auth_result = $this->search_client->EmprAuthentifier($auth);
+
+		try {
+			$auth_result = $this->search_client->EmprAuthentifier($auth);
+		} catch (Exception $e) {
+			return Class_WebService_SIGB_Emprunteur::nullInstance();
+		}
 
 		$emprunteur = $auth_result
 			->createEmprunteur()
