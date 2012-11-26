@@ -270,7 +270,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 		{
 			$source = "Amazon";
 			$amazon = new Class_WebService_AmazonSonores();
-			//$morceaux = $amazon->rend_notice_ean($notice["ean"]);
+			$morceaux = $amazon->rend_notice_ean($notice["ean"]);
 		}
 
 		// Chez LastFm
@@ -279,8 +279,9 @@ class NoticeAjaxController extends Zend_Controller_Action {
 			$source="Last.fm";
 			$last_fm=new Class_WebService_Lastfm();
 			$morceaux=$last_fm->getMorceaux($notice["T"],$notice["A"]);
-			$morceaux["id_notice"]=$notice["id_notice"];
 		}
+		$morceaux["id_notice"]=$notice["id_notice"];
+		if (!$morceaux["nb_resultats"]) $source=""; 
 		$morceaux["auteur"]=$notice["A"];	
 		$html=$this->notice_html->getMorceaux($morceaux,$source);
 		$this->_sendResponse(Class_ScriptLoader::getInstance()->html().$html);
