@@ -187,8 +187,7 @@ class OAIControllerGetRecordValidParamsTest extends OAIControllerGetRecordTestCa
 	public function headerShouldContainRecordIdentifier() {
 		$this->_xpath->assertXPathContentContains($this->_xml,
 																							self::OAI_RECORD_PATH . self::OAI_HEADER_PATH . 'oai:identifier',
-																							sprintf('http://localhost%s/recherche/viewnotice/clef/harrypotter-sorciers',
-																											BASE_URL));
+																							'oai:localhost:harrypotter-sorciers');
 	}
 
 

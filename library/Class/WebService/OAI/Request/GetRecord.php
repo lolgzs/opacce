@@ -46,7 +46,7 @@ class Class_WebService_OAI_Request_GetRecord {
 		if (!$this->_identifier)
 			return $builder->error(array('code' => 'badArgument'), 'Missing identifier');
 		
-		$parts = explode('/', $this->_identifier);
+		$parts = explode(':', $this->_identifier);
 		$this->_notice = Class_Notice::getLoader()->getNoticeByClefAlpha(end($parts));
 
 		if (!$this->_notice) 

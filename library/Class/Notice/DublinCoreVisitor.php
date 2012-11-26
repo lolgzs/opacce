@@ -48,8 +48,8 @@ class Class_Notice_DublinCoreVisitor {
 
 
 	public function visitClefAlpha($clef) {
-		$this->_identifier = sprintf('http://%s%s/recherche/viewnotice/clef/%s',
-																 $_SERVER['SERVER_NAME'], BASE_URL, $clef);
+		$this->_identifier = sprintf('oai:%s:%s',
+																 $_SERVER['SERVER_NAME'], $clef);
 	}
 
 

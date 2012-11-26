@@ -79,7 +79,7 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 		$this->_xpath->assertXPathContentContains(
 				$xml,
 				'//oai_dc:dc/dc:identifier',
-				sprintf('http://localhost%s/recherche/viewnotice/clef/harrypotter-sorciers',
+				sprintf('oai:localhost:harrypotter-sorciers',
 								BASE_URL)
 		);
 	}
@@ -261,8 +261,8 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 	public function identifierShouldBeSouvignyBible11eme() {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:identifier',
-																							sprintf('http://moulins.fr%s/recherche/viewnotice/clef/souvigny-bible-11eme',
-																											BASE_URL));
+																							'oai:moulins.fr:souvigny-bible-11eme'
+																							);
 	}
 
 
