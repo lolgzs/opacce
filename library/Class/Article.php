@@ -595,12 +595,22 @@ class Class_Article extends Storm_Model_Abstract {
 			->setContenu($original->getContenu());
 	}
 
+
+
+	/**
+   * Surcharge la methode storm pour raisons de performances
+	 * @return bool
+	 */
+	public function hasArticleOriginal() {
+		return null !== $this->_get('article_original');
+  }
+
+
 	/**
 	 * @return bool
 	 */
 	public function isTraduction() {
-		$is_trad = $this->hasArticleOriginal();
-		return $is_trad;
+		return $this->hasArticleOriginal();
 	}
 
 	/**

@@ -74,6 +74,11 @@ class Class_Profil extends Storm_Model_Abstract {
   protected static $_current_profil;
   protected static $DEFAULT_VALUES, $CFG_SITE_KEYS, $FORWARDED_ATTRIBUTES;
 
+	// cache des attributs pour raison de performances
+	protected $_has_parent_profil;
+	protected $_cfg_site_array;
+	protected $_should_forward_attributes = [];
+
 	/**
 	 * liste des bannieres
 	 * @var array
@@ -262,10 +267,22 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return bool
 	 */
 	public function shouldForwardAttributeToParent($field) {
-		return
-			in_array($field, self::getAttributesForwardedToParent())
-			and $this->hasParentProfil();
+		if (!isset($this->_should_forward_attributes[$field]))
+			$this->_should_forward_attributes[$field] = in_array($field, self::getAttributesForwardedToParent()) && $this->hasParentProfil();
+		return $this->_should_forward_attributes[$field];
 	}
+
+
+	/**
+	 * Surcharge la methode storm pour raisons de performances
+	 * @return bool
+	 */
+	public function hasParentProfil() {
+		if (!isset($this->_has_parent_profil))
+			$this->_has_parent_profil = (null != $this->_get('parent_profil'));
+		return $this->_has_parent_profil;
+	}
+
 
 	/**
 	 * @param Class_I18nTranslator $translator
@@ -558,7 +575,9 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getCfgSiteAsArray() {
-		return $this->_getCfgAsArrayNamed('Site');
+		if (!isset($this->_cfg_site_array))
+			$this->_cfg_site_array = $this->_getCfgAsArrayNamed('Site');
+		return $this->_cfg_site_array;
 	}
 
 
@@ -674,7 +693,9 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return Class_Profil
 	 */
 	public function setCfgSite($string_or_array) {
-		return $this->_setCfgNamed('cfg_site', $string_or_array);
+		$this->_setCfgNamed('cfg_site', $string_or_array);
+		$this->_cfg_site_array = null;
+		return $this;
 	}
 
 
