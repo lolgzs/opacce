@@ -28,8 +28,10 @@ if (!function_exists('xdebug_break')) {
 function setupOpac() {
 	Zend_Loader::registerAutoload();
 
-	$cfg = loadConfig();
+
 	setupConstants($cfg);
+	require_once('requires.php');
+	$cfg = loadConfig();
 	setupSession($cfg);
 	setupLanguage();
 	setupDatabase($cfg);
