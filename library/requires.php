@@ -1,29 +1,29 @@
 <?php
 
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Controller/Action/Helper/ViewRenderer.php');
+require_once(ZEND_FRAMEWORK_PATH.'Controller/Action/Helper/ViewRenderer.php');
 
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Db/Adapter/Mysqli.php');
+require_once(ZEND_FRAMEWORK_PATH.'Db/Adapter/Mysqli.php');
 
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Session/Namespace.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Http/Client/Adapter/Proxy.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Translate/Adapter/Gettext.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Mail.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Db/Table.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Db/Table/Row.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Controller/Action/HelperBroker.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Mail/Transport/Smtp.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Config/Ini.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Http/Client.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Db/Table/Rowset.php');
+require_once(ZEND_FRAMEWORK_PATH.'Session/Namespace.php');
+require_once(ZEND_FRAMEWORK_PATH.'Http/Client/Adapter/Proxy.php');
+require_once(ZEND_FRAMEWORK_PATH.'Translate/Adapter/Gettext.php');
+require_once(ZEND_FRAMEWORK_PATH.'Mail.php');
+require_once(ZEND_FRAMEWORK_PATH.'Db/Table.php');
+require_once(ZEND_FRAMEWORK_PATH.'Db/Table/Row.php');
+require_once(ZEND_FRAMEWORK_PATH.'Controller/Action/HelperBroker.php');
+require_once(ZEND_FRAMEWORK_PATH.'Mail/Transport/Smtp.php');
+require_once(ZEND_FRAMEWORK_PATH.'Config/Ini.php');
+require_once(ZEND_FRAMEWORK_PATH.'Http/Client.php');
+require_once(ZEND_FRAMEWORK_PATH.'Db/Table/Rowset.php');
 
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Filter.php');
+require_once(ZEND_FRAMEWORK_PATH.'Filter.php');
 
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Validate/Abstract.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Auth/Storage/Session.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Translate.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Controller/Action/Helper/FlashMessenger.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Registry.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Locale.php');
+require_once(ZEND_FRAMEWORK_PATH.'Validate/Abstract.php');
+require_once(ZEND_FRAMEWORK_PATH.'Auth/Storage/Session.php');
+require_once(ZEND_FRAMEWORK_PATH.'Translate.php');
+require_once(ZEND_FRAMEWORK_PATH.'Controller/Action/Helper/FlashMessenger.php');
+require_once(ZEND_FRAMEWORK_PATH.'Registry.php');
+require_once(ZEND_FRAMEWORK_PATH.'Locale.php');
 require_once(ROOT_PATH.'library/Storm/Model/Abstract.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Action/Helper/ViewRenderer.php');
 require_once(ROOT_PATH.'library/ZendAfi/Auth.php');
@@ -35,17 +35,17 @@ require_once(ROOT_PATH.'library/ZendAfi/Translate.php');
 require_once(ROOT_PATH.'library/Class/Profil.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Action/Helper/View.php');
 require_once(ROOT_PATH.'library/Class/Systeme/ModulesAppli.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Db.php');
+require_once(ZEND_FRAMEWORK_PATH.'Db.php');
 require_once(ROOT_PATH.'library/Class/Systeme/Sql.php');
 require_once(ROOT_PATH.'library/Trait/Translator.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Cache.php');
+require_once(ZEND_FRAMEWORK_PATH.'Cache.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/AdminAuth.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/SetupLocale.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/DefineURLs.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/InitModule.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/SelectionBib.php');
 require_once(ROOT_PATH.'library/ZendAfi/Controller/Plugin/System.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/Auth.php');
+require_once(ZEND_FRAMEWORK_PATH.'Auth.php');
 require_once(ROOT_PATH.'library/Storm/Model/Loader.php');
 
 require_once(ROOT_PATH.'library/Storm/Model/Table.php');
@@ -67,7 +67,7 @@ require_once(ROOT_PATH.'library/Class/Dewey.php');
 require_once(ROOT_PATH.'library/Class/ListeNotices.php');
 require_once(ROOT_PATH.'library/Class/Notice.php');
 require_once(ROOT_PATH.'library/Class/NoticeUnimarc.php');
-require_once(ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/View/Helper/HtmlElement.php');
+require_once(ZEND_FRAMEWORK_PATH.'View/Helper/HtmlElement.php');
 require_once(ROOT_PATH.'library/ZendAfi/View/Helper/BaseHelper.php');
 
 require_once(ROOT_PATH.'library/Class/Systeme/ModulesAccueil.php');

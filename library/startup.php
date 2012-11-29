@@ -55,6 +55,7 @@ function defineConstant($name, $value) {
 function setupConstants($cfg) {
 	defineConstant('VERSION_PERGAME','V-05.37 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
 	defineConstant('ROOT_PATH',  './');
+	defineConstant('ZEND_FRAMEWORK_PATH',  ROOT_PATH.'../ZendFramework-1.6.2/');
 
 	defineConstant('MODULEDIRECTORY','./application/modules');
 	defineConstant('LANG_DIR', './library/translation/');
