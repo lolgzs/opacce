@@ -90,21 +90,21 @@ class Class_NoticeUnimarc {
 
 		// guide interne : valeurs par défaut si création
 		$rl = intval(substr($this->guide, 0 , 5));			// record length : pos.1-4
-		$rs = substr($this->guide, 5, 1);								// record status : pos.5
-		$dt = substr($this->guide, 6, 1);								// document type : pos.6	
-		$bl = substr($this->guide, 7, 1);								// bibliographic level : pos.7
-		$hl = intval(substr($this->guide, 8, 1));				// hierarchical level : pos.8
-		$pos9 = substr($this->guide, 9, 1);							// pos.9 undefined, contains a blank
-		$il = intval(substr($this->guide, 10, 1));			// indicator length : pos.10 (2)
-		$sl = intval(substr($this->guide, 11, 1));			// subfield identifier length : pos.11 (2)	
+		$rs = $this->guide[5];								// record status : pos.5
+		$dt = $this->guide[6];								// document type : pos.6	
+		$bl = $this->guide[7];								// bibliographic level : pos.7
+		$hl = intval($this->guide[8]);				// hierarchical level : pos.8
+		$pos9 = $this->guide[9];							// pos.9 undefined, contains a blank
+		$il = intval($this->guide[10]);			// indicator length : pos.10 (2)
+		$sl = intval($this->guide[11]);			// subfield identifier length : pos.11 (2)	
 		$ba = intval(substr($this->guide, 12, 5));			// base adress : pos.12-16	
-		$el = substr($this->guide, 17, 1);							// encoding level : pos.17
-		$ru = substr($this->guide, 18, 1);							// record update : pos.18
-		$pos19 = substr($this->guide, 19, 1);						// pos.19 : undefined, contains a blank
-		$dm1 = intval(substr($this->guide, 20, 1));			// Length of 'Length of field' (pos.20, 4 in UNIMARC) 
-		$dm2 = intval(substr($this->guide, 21, 1));			// Length of 'Starting character position' (pos.21, 5 in UNIMARC)
-		$dm3 = intval(substr($this->guide, 22, 1));			// Length of implementationdefined portion (pos.22, 0 in UNIMARC)
-		$pos23 = substr($this->guide, 23, 1);						// POS.23 : undefined, contains a blank
+		$el = $this->guide[17];							// encoding level : pos.17
+		$ru = $this->guide[18];							// record update : pos.18
+		$pos19 = $this->guide[19];						// pos.19 : undefined, contains a blank
+		$dm1 = intval($this->guide[20]);			// Length of 'Length of field' (pos.20, 4 in UNIMARC) 
+		$dm2 = intval($this->guide[21]);			// Length of 'Starting character position' (pos.21, 5 in UNIMARC)
+		$dm3 = intval($this->guide[22]);			// Length of implementationdefined portion (pos.22, 0 in UNIMARC)
+		$pos23 = $this->guide[23];						// POS.23 : undefined, contains a blank
 
 		$this->inner_guide = array(
 															 'rl' =>  $rl ? $rl : 0,
@@ -189,8 +189,10 @@ class Class_NoticeUnimarc {
 			return $result;
 
 		$contents = array();
-		for ($i = 0; $i < sizeof($this->inner_data); $i++) {
-			if (func_get_arg(0) == $this->inner_data[$i]['label'])
+		$inner_data_size = sizeof($this->inner_data);
+		$inner_data_label = func_get_arg(0);
+		for ($i = 0; $i < $inner_data_size; $i++) {
+			if ($inner_data_label == $this->inner_data[$i]['label'])
 				$contents[] = $this->inner_data[$i]['content'];
 		}
 
