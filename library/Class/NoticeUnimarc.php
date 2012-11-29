@@ -443,29 +443,25 @@ class Class_NoticeUnimarc {
 // ---------------------------------------------------
 
 	function update() {
-
 		// supprime les lignes vides d'inner_data
-		for($i=0; $i < sizeof($this->inner_data); $i++) 
-		{	
-			if(empty($this->inner_data[$i]['label']) || empty($this->inner_data[$i]['content'])) 
-			{
+		$inner_data_count = sizeof($this->inner_data);
+		$this->inner_directory = array();
+
+		for($i=0; $i < $inner_data_count; $i++) {	
+			if(empty($this->inner_data[$i]['label']) || empty($this->inner_data[$i]['content'])) {
 				array_splice($this->inner_data, $i, 1);
 				$i--; 
 			}
-			elseif($this->type_accents > 0) $this->inner_data[$i]['content']=$this->decode_accents($this->inner_data[$i]['content']);
-		}
-		$this->type_accents =0;
+			elseif ($this->type_accents > 0) $this->inner_data[$i]['content']=$this->decode_accents($this->inner_data[$i]['content']);
 
-		$inner_data_count = sizeof($this->inner_data);
-		// reconstitution inner_directory
-		$this->inner_directory = array();
-		for($i = 0; $i < $inner_data_count; $i++){
 			$this->inner_directory[$i] = array(
 				'label' => $this->inner_data[$i]['label'],
 				'length' => strlen($this->inner_data[$i]['content']),
 				'adress' => 0
 			);
-		} 
+		}
+		$this->type_accents =0;
+
 
 		// mise à jour des offset et du répertoire 'réel'
 		$this->inner_directory[0]['length']-=1;
