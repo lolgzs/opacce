@@ -29,7 +29,7 @@ function setupOpac() {
 	Zend_Loader::registerAutoload();
 
 
-	setupConstants($cfg);
+	setupConstants();
 	require_once('requires.php');
 	$cfg = loadConfig();
 	setupSession($cfg);
@@ -52,10 +52,10 @@ function defineConstant($name, $value) {
 
 
 
-function setupConstants($cfg) {
+function setupConstants() {
 	defineConstant('VERSION_PERGAME','V-05.37 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
 	defineConstant('ROOT_PATH',  './');
-	defineConstant('ZEND_FRAMEWORK_PATH',  ROOT_PATH.'../ZendFramework-1.6.2/');
+	defineConstant('ZEND_FRAMEWORK_PATH',  ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/');
 
 	defineConstant('MODULEDIRECTORY','./application/modules');
 	defineConstant('LANG_DIR', './library/translation/');
