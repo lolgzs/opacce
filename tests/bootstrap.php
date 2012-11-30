@@ -56,7 +56,10 @@ $cfg = new Zend_Config(Zend_Registry::get('cfg')->toArray(), true);
 $cfg->amber = new Zend_Config(array('deploy' => false));
 
 Zend_Registry::set('cfg', $cfg);
-Zend_Registry::get('translate')->setLocale('fr');
+$translate = Zend_Registry::get('translate');
+$translate->setLocale('fr');
+$translate->addTranslation(LANG_DIR.'ro.mo', 'ro');
+$translate->addTranslation(LANG_DIR.'en.mo', 'en');
 
 $_SERVER['SERVER_NAME'] = 'localhost';
 

@@ -33,8 +33,8 @@ function setupOpac() {
 	require_once('requires.php');
 	$cfg = loadConfig();
 	setupSession($cfg);
-	setupLanguage();
 	setupDatabase($cfg);
+	setupLanguage();
 	setupDevOptions($cfg);
 	setupControllerActionHelper();
 	setupHTTPClient($cfg);
@@ -168,7 +168,7 @@ function setupLanguage() {
 	Zend_Registry::set('locale', new Zend_Locale());
 
 	$translate = new ZendAfi_Translate('gettext', LANG_DIR.'fr.mo', 'fr');
-	foreach (array('en', 'ro') as $language)
+	foreach (Class_AdminVar::getLanguesWithoutDefault() as $language)
 		$translate->addTranslation(LANG_DIR.$language.'.mo', $language);
 	Zend_Registry::set('translate', $translate);
 
