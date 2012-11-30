@@ -446,6 +446,7 @@ class Class_NoticeUnimarc {
 		// supprime les lignes vides d'inner_data
 		$inner_data_count = sizeof($this->inner_data);
 		$this->inner_directory = array();
+    $this->data = '';
 
 		for($i=0; $i < $inner_data_count; $i++) {	
 			if(empty($this->inner_data[$i]['label']) || empty($this->inner_data[$i]['content'])) {
@@ -459,14 +460,16 @@ class Class_NoticeUnimarc {
 				'length' => strlen($this->inner_data[$i]['content']),
 				'adress' => 0
 			);
+
+      $this->data .= $this->inner_data[$i]['content'];
 		}
+		$this->data .= $this->record_end;
 		$this->type_accents =0;
 
 
 		// mise à jour des offset et du répertoire 'réel'
 		$this->inner_directory[0]['length']-=1;
-		for($i = 1; $i < $inner_data_count; $i++)
-		{
+		for($i = 1; $i < $inner_data_count; $i++)	{
 			$this->inner_directory[$i]['adress'] = $this->inner_directory[$i - 1]['length'] + $this->inner_directory[$i - 1]['adress'];
 		}
 
@@ -474,17 +477,11 @@ class Class_NoticeUnimarc {
 		$this->directory = ''; 
 		$inner_directory_size = sizeof($this->inner_directory);
 		for($i=0; $i <  $inner_directory_size; $i++) {
-			$this->directory .= sprintf('%03d', $this->inner_directory[$i]['label']);
-			$this->directory .= sprintf('%0'.$this->inner_guide['dm1'].'d', $this->inner_directory[$i]['length']);
-			$this->directory .= sprintf('%0'.$this->inner_guide['dm2'].'d', $this->inner_directory[$i]['adress']);
-		} 
-
-		// mise à jour du contenu
-		$this->data = '';
-		for($i=0; $i < $inner_data_count; $i++) {
-			$this->data .= $this->inner_data[$i]['content'];
+      $this->directory .= sprintf('%03d%0'.$this->inner_guide['dm1'].'d'.'%0'.$this->inner_guide['dm2'].'d', 
+                                  $this->inner_directory[$i]['label'],
+                                  $this->inner_directory[$i]['length'],
+                                  $this->inner_directory[$i]['adress']);
 		}
-		$this->data .= $this->record_end;
 
 		// mise à jour du guide
 		## adresse de base.
