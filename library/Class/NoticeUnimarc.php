@@ -450,11 +450,10 @@ class Class_NoticeUnimarc {
 
 	function update() {
 		// supprime les lignes vides d'inner_data
-		$inner_data_count = sizeof($this->inner_data);
 		$this->inner_directory = array();
     $this->data = '';
 
-		for($i=0; $i < $inner_data_count; $i++) {	
+		for($i=0; $i < sizeof($this->inner_data); $i++) {	
 			if(empty($this->inner_data[$i]['label']) || empty($this->inner_data[$i]['content'])) {
 				array_splice($this->inner_data, $i, 1);
 				$i--; 
@@ -474,6 +473,7 @@ class Class_NoticeUnimarc {
 
 
 		// mise à jour des offset et du répertoire 'réel'
+		$inner_data_count = sizeof($this->inner_data);
 		$this->inner_directory[0]['length']-=1;
 		for($i = 1; $i < $inner_data_count; $i++)	{
 			$this->inner_directory[$i]['adress'] = $this->inner_directory[$i - 1]['length'] + $this->inner_directory[$i - 1]['adress'];
@@ -482,8 +482,9 @@ class Class_NoticeUnimarc {
 		// mise à jour du répertoire
 		$this->directory = ''; 
 		$inner_directory_size = sizeof($this->inner_directory);
+		$template_string_directory = '%03d%0'.$this->inner_guide['dm1'].'d'.'%0'.$this->inner_guide['dm2'].'d';
 		for($i=0; $i <  $inner_directory_size; $i++) {
-      $this->directory .= sprintf('%03d%0'.$this->inner_guide['dm1'].'d'.'%0'.$this->inner_guide['dm2'].'d', 
+      $this->directory .= sprintf($template_string_directory, 
                                   $this->inner_directory[$i]['label'],
                                   $this->inner_directory[$i]['length'],
                                   $this->inner_directory[$i]['adress']);
