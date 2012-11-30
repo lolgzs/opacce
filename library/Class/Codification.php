@@ -22,8 +22,8 @@
 // OPAC3 : Codifications
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_Codification
-{
+class Class_Codification {
+	protected static $_nom_champs, $_nom_onglets;
 
 //------------------------------------------------------------------------------------------------------
 // Liste des types de documents 
@@ -94,53 +94,68 @@ class Class_Codification
 			}
 		}
 	}
+
+
+	static function genereNomsChamps () {
+		if (isset(self::$_nom_champs))
+			return;
+
+		$translate = Zend_Registry::get('translate');
+		self::$_nom_champs = array(
+			"A" => array($translate->_("Auteur"),				$translate->_( "Auteur(s)")),
+			"B" => array($translate->_("Bibliothèque"),	$translate->_("Bibliothèque(s)")),
+			"C" => array($translate->_("Collection"),		$translate->_("Collection(s)")),
+			"D" => array($translate->_("Dewey"),				$translate->_("Dewey")),
+			"E" => array($translate->_("Editeur"),			$translate->_("Editeur(s)")),
+			"F" => array($translate->_("Centre d'intérêt"),$translate->_("Centre(s) d'intérêt")),
+			"G" => array($translate->_("Genre"),				$translate->_("Genre")),
+			"I" => array($translate->_("Identifiant"),	$translate->_("Identifiant")),
+			"K" => array($translate->_("Collation"),		$translate->_("Collation")),
+			"L" => array($translate->_("Langue"),				$translate->_("Langue(s)")),
+			"M" => array($translate->_("Sujet"),				$translate->_("Sujet(s)")),
+			"N" => array($translate->_("Année"),				$translate->_("Année")),
+			"O" => array($translate->_("Notes"),				$translate->_("Notes")),
+			"P" => array($translate->_("Pcdm4"),				$translate->_("Pcdm4")),
+			"R" => array($translate->_("Résumé"),				$translate->_("Résumé")),
+			"S" => array($translate->_("Section"),			$translate->_("Section")),
+			"T" => array($translate->_("Titre"),				$translate->_("Titre(s)")),
+			"t" => array($translate->_("Type de document"),				$translate->_("Types de documents")),
+			"Y" => array($translate->_("Site"),					$translate->_("Site")),
+			"Z" => array($translate->_("Tag"),					$translate->_("Tag(s)")),
+			"8" => array($translate->_("Lien internet"),$translate->_("Liens internet")));
+
+		$l=getVar("PCDM4_LIB"); if(trim($l)) {self::$_nom_champs["P"][0]=$l; self::$_nom_champs["P"][1]=$l; }
+		$l=getVar("DEWEY_LIB"); if(trim($l)) {self::$_nom_champs["D"][0]=$l; self::$_nom_champs["D"][1]=$l; }
+	}
+
 //------------------------------------------------------------------------------------------------------
 // Retourne un nom de champ a partir d'1 type ou d'1 facette
 //------------------------------------------------------------------------------------------------------
-	static function getNomChamp($code,$pluriel=0)
-	{
-		$translate = Zend_Registry::get('translate');
-		$type=$code[0];
-		$libs=array(
-								"A" => array($translate->_("Auteur"),				$translate->_( "Auteur(s)")),
-								"B" => array($translate->_("Bibliothèque"),	$translate->_("Bibliothèque(s)")),
-								"C" => array($translate->_("Collection"),		$translate->_("Collection(s)")),
-								"D" => array($translate->_("Dewey"),				$translate->_("Dewey")),
-								"E" => array($translate->_("Editeur"),			$translate->_("Editeur(s)")),
-								"F" => array($translate->_("Centre d'intérêt"),$translate->_("Centre(s) d'intérêt")),
-								"G" => array($translate->_("Genre"),				$translate->_("Genre")),
-								"I" => array($translate->_("Identifiant"),	$translate->_("Identifiant")),
-								"K" => array($translate->_("Collation"),		$translate->_("Collation")),
-								"L" => array($translate->_("Langue"),				$translate->_("Langue(s)")),
-								"M" => array($translate->_("Sujet"),				$translate->_("Sujet(s)")),
-								"N" => array($translate->_("Année"),				$translate->_("Année")),
-								"O" => array($translate->_("Notes"),				$translate->_("Notes")),
-								"P" => array($translate->_("Pcdm4"),				$translate->_("Pcdm4")),
-								"R" => array($translate->_("Résumé"),				$translate->_("Résumé")),
-								"S" => array($translate->_("Section"),			$translate->_("Section")),
-								"T" => array($translate->_("Titre"),				$translate->_("Titre(s)")),
-								"t" => array($translate->_("Type de document"),				$translate->_("Types de documents")),
-								"Y" => array($translate->_("Site"),					$translate->_("Site")),
-								"Z" => array($translate->_("Tag"),					$translate->_("Tag(s)")),
-								"8" => array($translate->_("Lien internet"),$translate->_("Liens internet")));
-		$l=getVar("PCDM4_LIB"); if(trim($l)) {$libs["P"][0]=$l; $libs["P"][1]=$l; }
-		$l=getVar("DEWEY_LIB"); if(trim($l)) {$libs["D"][0]=$l; $libs["D"][1]=$l; }
+	static function getNomChamp($code,$pluriel=0)	{
+		if (!$type=$code[0])
+			return '';
+
+		self::genereNomsChamps();
+
 		if($code=="tous")	{ 
-			foreach($libs as $key => $valeur) $lib[$key]=$valeur[0];
+			foreach(self::$_nom_champs as $key => $valeur) 
+				$lib[$key]=$valeur[0];
 			return $lib;
 		}
 
-		if (!isset($libs[$type]))
-			return '';
-		
-		return $libs[$type][$pluriel];	
+		return isset(self::$_nom_champs[$type][$pluriel]) ? self::$_nom_champs[$type][$pluriel] : '';	
 	}
+
 //------------------------------------------------------------------------------------------------------
 // Retourne un nom d'onglet pour les notices
 //------------------------------------------------------------------------------------------------------
-	static function getNomOnglet($onglet)	{
-			$translate = Zend_Registry::get('translate');
-			$libs=array(
+
+	static function genereNomsOnglets () {
+		if (isset(self::$_nom_onglets))
+			return;
+
+		$translate = Zend_Registry::get('translate');
+		self::$_nom_onglets = array(
 								"detail" => $translate->_("Description du document"),
 								"avis" => $translate->_("Critiques"),
 								"exemplaires" => $translate->_("Exemplaires"),
@@ -156,7 +171,11 @@ class Class_Codification
 								"resnumeriques" => $translate->_("Ressources numériques"),
 								"babeltheque" => $translate->_('Babelthèque'),
 								'frbr' => $translate->_('Notices liées'));
-		if($onglet) return $libs[$onglet];
-		else return $libs;
+	}
+
+
+	static function getNomOnglet($onglet)	{
+		self::genereNomsOnglets();
+		return $onglet ? self::$_nom_onglets[$onglet] : self::$_nom_onglets;
 	}
 }
