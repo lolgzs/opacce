@@ -131,11 +131,15 @@ class Class_NoticeUnimarc {
 
 		$tmp_dir = explode('|', chunk_split($this->directory, $m, '|'));
 		$tmp_dir_count = count($tmp_dir);
+
+		$dm1 = $this->inner_guide['dm1'];
+		$dm2 = $this->inner_guide['dm2'];
+		$adress_length = 3 + $dm1;
 		for ($i = 0; $i < $tmp_dir_count; $i++) {
 			if ($tmp_dir[$i]) {
 				$this->inner_directory[$i] = array('label' => substr($tmp_dir[$i], 0, 3),
-																					 'length' => intval(substr($tmp_dir[$i], 3, $this->inner_guide['dm1'])),
-																					 'adress' => intval(substr($tmp_dir[$i], 3 + $this->inner_guide['dm1'], $this->inner_guide['dm2'])));
+																					 'length' => intval(substr($tmp_dir[$i], 3, $dm1)),
+																					 'adress' => intval(substr($tmp_dir[$i], $adress_length, $dm2)));
 			}
 		}
 
@@ -145,10 +149,11 @@ class Class_NoticeUnimarc {
 								strlen($this->full_record) - $this->inner_guide['ba']);
 
 		if ($m) {
+			$ba = $this->inner_guide['ba'];
 			foreach($this->inner_directory as $cle => $valeur) {
 				$this->inner_data[$cle] = array('label' => $this->inner_directory[$cle]['label'],
 																				'content' => substr($this->full_record,
-																														$this->inner_guide['ba'] + $valeur['adress'],
+																														$ba + $valeur['adress'],
 																														$valeur['length']));
 			}
 		} else {

@@ -89,7 +89,8 @@ class Class_Notice extends Storm_Model_Abstract {
 		$_resume,
 		$_matieres,
 		$_editeur,
-		$_langueCodes;
+		$_langueCodes,
+		$_first_exemplaire;
 
 	protected $_default_attribute_values = ['type_doc' => 0,
 																					'annee' => null,
@@ -154,9 +155,9 @@ class Class_Notice extends Storm_Model_Abstract {
 	 * @return Class_Exemplaire
 	 */
 	public function getFirstExemplaire() {
-		if (!$this->hasExemplaires())
-			return null;
-		return array_first($this->getExemplaires());
+		return isset($this->_first_exemplaire) 
+			? $this->_first_exemplaire
+			: $this->_first_exemplaire = Class_Exemplaire::findFirstBy(['id_notice' => $this->getId()]);
 	}
 
 

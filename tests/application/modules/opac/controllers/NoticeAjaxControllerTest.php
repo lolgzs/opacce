@@ -185,9 +185,14 @@ class NoticeAjaxControllerResumeAlbumTest extends AbstractControllerTestCase {
 		$this->_notice = Class_Notice::getLoader()
 			->newInstanceWithId(123)
 			->beLivreNumerique()
-			->setExemplaires(array(Class_Exemplaire::getLoader()
+			->setExemplaires(array($exemplaire = Class_Exemplaire::getLoader()
 														 ->newInstanceWithId(34)
 														 ->setIdOrigine(2)));
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+			->with(['id_notice' => 123])
+			->answers($exemplaire);
 
 		Class_Album::getLoader()
 			->newInstanceWithId(2)

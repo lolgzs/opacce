@@ -237,9 +237,16 @@ class DublinCoreVisitorSouvignyTest extends DublinCoreVisitorTestCase {
 			->setDateMaj('2012-04-23')
 			->setUrlVignette('http://server.fr/vignette.png')
 			->setIsbn('')
-			->setExemplaires([Class_Exemplaire::newInstanceWithId(22, ['id_origine' => 33])])
+			->setExemplaires([$exemplaire = Class_Exemplaire::newInstanceWithId(22, ['id_origine' => 33])])
 			->setEan('4719-5120-0288-9')
 			->beLivreNumerique();
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+			->with(['id_notice' => 5])
+			->answers($exemplaire);
+
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_TypeDoc')
 			->whenCalled('find')
