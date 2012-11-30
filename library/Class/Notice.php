@@ -102,6 +102,19 @@ class Class_Notice extends Storm_Model_Abstract {
 																					'facettes' => ''];
 
 
+	public function __construct() {
+		$this->_notice_unimarc = new Class_NoticeUnimarc();		
+	}
+
+
+	public function initializeAttributes($datas) {
+		parent::initializeAttributes($datas);
+		if (isset($datas['unimarc']))
+			$this->_notice_unimarc->setNotice($datas['unimarc']);
+		return $this;
+	}
+
+
 	public function getAvisByUser($user)	{
 		return Class_AvisNotice::getLoader()
 			->findAllBy(['clef_oeuvre' => $this->getClefOeuvre(),
@@ -293,14 +306,18 @@ class Class_Notice extends Storm_Model_Abstract {
 	// délégation des appels notice unimarc (Class_Notice n'hérite plus NoticeUnimarc)
 	// ----------------------------------------------------------------
 	public function __call($method, $args) {
-		$unimarc = $this->getNoticeUnimarc();
-		if (method_exists($unimarc, $method)) {
-			if (!$unimarc->hasNotice() && array_key_exists('unimarc', $this->_attributes))
-				$unimarc->setNotice($this->_attributes['unimarc']);
-			return call_user_func_array(array($unimarc, $method), $args);
+		if (method_exists($this->_notice_unimarc, $method)) {
+			if (!$this->_notice_unimarc->hasNotice() && isset($this->_attributes['unimarc']))
+				$this->_notice_unimarc->setNotice($this->_attributes['unimarc']);
+			return call_user_func_array(array($this->_notice_unimarc, $method), $args);
 		}
 
 		return parent::__call($method, $args);
+	}
+
+
+	public function get_subfield() {
+		return call_user_func_array([$this->_notice_unimarc, 'get_subfield'], func_get_args());
 	}
 
 
@@ -1490,8 +1507,6 @@ class Class_Notice extends Storm_Model_Abstract {
 	 * @return Class_NoticeUnimarc
 	 */
   public function getNoticeUnimarc() {
-		if (null == $this->_notice_unimarc)
-			$this->_notice_unimarc = new Class_NoticeUnimarc();
 		return $this->_notice_unimarc;
 	}
 }
