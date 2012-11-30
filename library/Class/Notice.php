@@ -292,11 +292,11 @@ class Class_Notice extends Storm_Model_Abstract {
 	// délégation des appels notice unimarc (Class_Notice n'hérite plus NoticeUnimarc)
 	// ----------------------------------------------------------------
 	public function __call($method, $args) {
-		if (method_exists($this->getNoticeUnimarc(), $method)) {
-			if (!$this->getNoticeUnimarc()->hasNotice()
-				  and array_key_exists('unimarc', $this->_attributes))
-				$this->getNoticeUnimarc()->setNotice($this->_attributes['unimarc']);
-			return call_user_func_array(array($this->getNoticeUnimarc(), $method), $args);
+		$unimarc = $this->getNoticeUnimarc();
+		if (method_exists($unimarc, $method)) {
+			if (!$unimarc->hasNotice() && array_key_exists('unimarc', $this->_attributes))
+				$unimarc->setNotice($this->_attributes['unimarc']);
+			return call_user_func_array(array($unimarc, $method), $args);
 		}
 
 		return parent::__call($method, $args);
@@ -326,39 +326,36 @@ class Class_Notice extends Storm_Model_Abstract {
 			return null;
 
 		// Lire la notice
-		$req = "select type_doc,facettes,isbn,ean,annee,tome_alpha,clef_alpha,unimarc from notices where id_notice=$id_notice";
-		$data = fetchEnreg($req);
-		if (!$data["unimarc"])
-			return false;
-
-		$this->getNoticeUnimarc()->setNotice($data["unimarc"], 0);
+		$notice_instance = self::getLoader()->find($id_notice);
+		if (!$unimarc = $notice_instance->getUnimarc())
+			return [];
 
 		// Champs de base
 		$notice["id_notice"] = $id_notice;
-		$notice["facettes"] = $data["facettes"];
-		$notice["isbn"] = $data["isbn"];
-		$notice["ean"] = $data["ean"];
-		$notice["type_doc"] = $data["type_doc"];
-		$notice["tome_alpha"] = $data["tome_alpha"];
-		$notice["N"] = $data["annee"];
-		$notice["clef_alpha"] = $data["clef_alpha"];
+		$notice["facettes"] = $notice_instance->getFacettes();
+		$notice["isbn"] = $notice_instance->getIsbn();
+		$notice["ean"] =  $notice_instance->getEan();
+		$notice["type_doc"] = $notice_instance->getTypeDoc();
+		$notice["tome_alpha"] = $notice_instance->getTomeAlpha();
+		$notice["N"] = $notice_instance->getAnnee();
+		$notice["clef_alpha"] = $notice_instance->getClefAlpha();
 
 		// Id service (isbn ou ean)
-		$notice["id_service"] = ($data["isbn"]) ? str_replace("-", "", $data["isbn"]) : $data["ean"];
+		$notice["id_service"] = ($notice["isbn"]) ? str_replace("-", "", $notice["isbn"]) : $notice["ean"];
 
 		// Champs demandés
 		if ($champs) {
 			for ($i = 0; $i < strlen($champs); $i++) {
 				switch ($champs[$i]) {
-					case "T": $notice["T"] = $this->getTitrePrincipal($notice["type_doc"], $notice["tome_alpha"]); break;
-					case "A": $notice["A"] = $this->getAuteurPrincipal(); break;
-					case "E": $notice["E"] = $this->getEditeur(); break;
-					case "F": $notice["F"] = $this->getCentreInteret(); break;
-					case "C": $notice["C"] = $this->getCollection(true); break;
-					case "O": $notice["O"] = $this->getNotes(); break;
-					case "R": $notice["R"] = $this->getResume(); break;
-					case "U": $notice["U"] = $data["unimarc"]; break;
-					case "G": $notice["G"] = $this->getChampNotice("G", $notice["facettes"]); break;
+					case "T": $notice["T"] = $notice_instance->getTitrePrincipal($notice["type_doc"], $notice["tome_alpha"]); break;
+					case "A": $notice["A"] = $notice_instance->getAuteurPrincipal(); break;
+					case "E": $notice["E"] = $notice_instance->getEditeur(); break;
+					case "F": $notice["F"] = $notice_instance->getCentreInteret(); break;
+					case "C": $notice["C"] = $notice_instance->getCollection(true); break;
+					case "O": $notice["O"] = $notice_instance->getNotes(); break;
+					case "R": $notice["R"] = $notice_instance->getResume(); break;
+					case "U": $notice["U"] = $unimarc; break;
+					case "G": $notice["G"] = $notice_instance->getChampNotice("G", $notice["facettes"]); break;
 				}
 			}
 		}

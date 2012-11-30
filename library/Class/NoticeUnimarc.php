@@ -130,7 +130,8 @@ class Class_NoticeUnimarc {
 		$this->directory = substr($this->full_record,	24,	$this->inner_guide['ba'] - 25);
 
 		$tmp_dir = explode('|', chunk_split($this->directory, $m, '|'));
-		for ($i = 0; $i < count($tmp_dir); $i++) {
+		$tmp_dir_count = count($tmp_dir);
+		for ($i = 0; $i < $tmp_dir_count; $i++) {
 			if ($tmp_dir[$i]) {
 				$this->inner_directory[$i] = array('label' => substr($tmp_dir[$i], 0, 3),
 																					 'length' => intval(substr($tmp_dir[$i], 3, $this->inner_guide['dm1'])),
@@ -144,7 +145,7 @@ class Class_NoticeUnimarc {
 								strlen($this->full_record) - $this->inner_guide['ba']);
 
 		if ($m) {
-			while (list($cle, $valeur) = each($this->inner_directory)) {
+			foreach($this->inner_directory as $cle => $valeur) {
 				$this->inner_data[$cle] = array('label' => $this->inner_directory[$cle]['label'],
 																				'content' => substr($this->full_record,
 																														$this->inner_guide['ba'] + $valeur['adress'],
@@ -490,22 +491,22 @@ class Class_NoticeUnimarc {
 		$this->inner_guide['rl'] = 24 + strlen($this->directory) + strlen($this->data);
 
 
-		$this->guide = sprintf('%05d', $this->inner_guide['rl']);
-		$this->guide .= $this->inner_guide['rs'];
-		$this->guide .= $this->inner_guide['dt'];
-		$this->guide .= $this->inner_guide['bl'];
-		$this->guide .= $this->inner_guide['hl'];
-		$this->guide .= $this->inner_guide['pos9'];
-		$this->guide .= $this->inner_guide['il'];
-		$this->guide .= $this->inner_guide['sl'];
-		$this->guide .= sprintf('%05d', $this->inner_guide['ba']);
-		$this->guide .= $this->inner_guide['el'];
-		$this->guide .= $this->inner_guide['ru'];
-		$this->guide .= $this->inner_guide['pos19'];
-		$this->guide .= $this->inner_guide['dm1'];
-		$this->guide .= $this->inner_guide['dm2'];
-		$this->guide .= $this->inner_guide['dm3'];
-		$this->guide .= $this->inner_guide['pos23'];
+		$this->guide = sprintf('%05d', $this->inner_guide['rl'])
+		.$this->inner_guide['rs']
+		.$this->inner_guide['dt']
+		.$this->inner_guide['bl']
+		.$this->inner_guide['hl']
+		.$this->inner_guide['pos9']
+		.$this->inner_guide['il']
+		.$this->inner_guide['sl']
+		.sprintf('%05d', $this->inner_guide['ba'])
+		.$this->inner_guide['el']
+		.$this->inner_guide['ru']
+		.$this->inner_guide['pos19']
+		.$this->inner_guide['dm1']
+		.$this->inner_guide['dm2']
+		.$this->inner_guide['dm3']
+		.$this->inner_guide['pos23'];
 
 		// constitution du nouvel enregistrement
 		$this->full_record = $this->guide.$this->directory.$this->data;

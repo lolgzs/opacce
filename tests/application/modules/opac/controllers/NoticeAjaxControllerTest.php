@@ -94,18 +94,15 @@ class NoticeAjaxControllerNonRegressionTest extends AbstractControllerTestCase {
 			->with("select id_notice from notices where MATCH(titres,auteurs,editeur,collection,matieres,dewey) AGAINST('') and id_notice !=197143 Limit 0,10", false)
 			->answers(array(array('id_notice' => 1)));
 
-		$mock_sql
-			->whenCalled('fetchEnreg')
-			->with("select type_doc,facettes,isbn,ean,annee,tome_alpha,clef_alpha,unimarc from notices where id_notice=1", false)
-			->answers(array('id_notice' => 1,
-											'facettes' => '',
-											'isbn' => '',
-											'ean' => '',
-											'type_doc' => 1,
-											'tome_alpha' => '',
-											'clef_alpha' => 'SOULEYMANE',
-											'unimarc' => "01328ngm0 2200265   450 0010007000001000041000071010013000481020007000611150025000682000071000932100022001642150053001863000035002393000045002743300454003193450027007735100018008006060027008186060039008457000042008847020043009267020033009697020032010028010028010342247456  a20021213i20041975u  y0frey0103    ba0 abamjfre  aFR  ac086baz|zba    zz  c1 aLa jeune fillebDVDdDen MusofSouleymane Cisse, réal., scénario  cPathédcop. 2004  a1 DVD vidéo monoface zone 2 (1 h 26 min)ccoul.  aDate de sortie du film : 1975.  aFilm en bambara sous-titré en français  aSékou est renvoyé de l'usine parce qu'il a osé demander une augmentation. Chômeur, il sort avec Ténin, une jeune fille muette ; il ignore qu'elle est la fille de son ancien patron. Ténin, qui sera violée par Sékou lors d'une sortie entre jeunes, se retrouve enceinte et subit la colère de ses parents. Elle se trouve alors confrontée brutalement à la morale de sa famille et à la lâcheté de Sékou, qui refuse de reconnaiîre l'enfant.  b3388334509824d14.00 ?1 aDen Musozbam| 31070135aCinémayMali| 32243367aCinéma30076549yAfrique 131070144aCissébSouleymane43704690 132247457aCoulibalibDounamba Dani4590 132247458aDiabatebFanta4590 132247459aDiarrabOumou4590 0aFRbBNc20011120gAFNOR",
-											'annee' => '2000'));
+
+		Class_Notice::newInstanceWithId(1, ['facettes' => '',
+																				'isbn' => '',
+																				'ean' => '',
+																				'type_doc' => 1,
+																				'tome_alpha' => '',
+																				'clef_alpha' => 'SOULEYMANE',
+																				'unimarc' => "01328ngm0 2200265   450 0010007000001000041000071010013000481020007000611150025000682000071000932100022001642150053001863000035002393000045002743300454003193450027007735100018008006060027008186060039008457000042008847020043009267020033009697020032010028010028010342247456  a20021213i20041975u  y0frey0103    ba0 abamjfre  aFR  ac086baz|zba    zz  c1 aLa jeune fillebDVDdDen MusofSouleymane Cisse, réal., scénario  cPathédcop. 2004  a1 DVD vidéo monoface zone 2 (1 h 26 min)ccoul.  aDate de sortie du film : 1975.  aFilm en bambara sous-titré en français  aSékou est renvoyé de l'usine parce qu'il a osé demander une augmentation. Chômeur, il sort avec Ténin, une jeune fille muette ; il ignore qu'elle est la fille de son ancien patron. Ténin, qui sera violée par Sékou lors d'une sortie entre jeunes, se retrouve enceinte et subit la colère de ses parents. Elle se trouve alors confrontée brutalement à la morale de sa famille et à la lâcheté de Sékou, qui refuse de reconnaiîre l'enfant.  b3388334509824d14.00 ?1 aDen Musozbam| 31070135aCinémayMali| 32243367aCinéma30076549yAfrique 131070144aCissébSouleymane43704690 132247457aCoulibalibDounamba Dani4590 132247458aDiabatebFanta4590 132247459aDiarrabOumou4590 0aFRbBNc20011120gAFNOR",
+																				'annee' => '2000']);
 
 
 		$mock_sql
@@ -117,10 +114,12 @@ class NoticeAjaxControllerNonRegressionTest extends AbstractControllerTestCase {
 		$mock_sql->beStrict();
 
 		$this->dispatch('/opac/noticeajax/similaires?isbn=&onglet=set197143_onglet_0&page=0&id_notice=197143');
-		$this->assertXPathContentContains('//td', utf8_encode('Auteur : Souleymane Cissé'));
+		$this->assertXPathContentContains('//td', utf8_encode('Auteur : Souleymane Cissé'), $this->_response->getBody());
 		$this->assertContains("images/supports", $this->_response->getBody());
 	}
 }
+
+
 
 
 class NoticeAjaxControllerResNumeriquesTest extends AbstractControllerTestCase {

@@ -29,7 +29,7 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 			->whenCalled('save')
 			->answers(true);
 
-		$this->types_docs = Class_TypeDoc::getLoader()->findAll();
+		$this->types_docs = Class_TypeDoc::getLoader()->reset()->findAll();
 	}
 
 

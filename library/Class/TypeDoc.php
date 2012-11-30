@@ -20,6 +20,8 @@
  */
 
 class TypeDocLoader {
+	protected $_all_instances;
+
 	public function newInstance() {
 		return new Class_TypeDoc();
 	}
@@ -38,7 +40,16 @@ class TypeDocLoader {
 	}
 
 
+	public function reset() {
+		$this->_all_instances = null;
+		return $this;
+	}
+
+
 	public function findAll() {
+		if (isset($this->_all_instances))
+			return $this->_all_instances;
+
 		$types_docs = Class_CosmoVar::getLoader()->find('types_docs');
 
 		$lines = explode("\r\n", $types_docs->getListe());
@@ -55,7 +66,7 @@ class TypeDocLoader {
 				$instances[$id] = Class_TypeDoc::newWithLabel($label)->setId($id);
 		}
 		
-		return $instances;
+		return $this->_all_instances = $instances;
 	}
 
 
@@ -106,6 +117,7 @@ class TypeDocLoader {
 
 
 	protected function _saveSerialized($serialized) {
+		$this->reset();
 		return Class_CosmoVar::getLoader()
 			->find('types_docs')
 			->setListe(implode("\r\n", $serialized))

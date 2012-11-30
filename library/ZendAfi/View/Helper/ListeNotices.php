@@ -195,10 +195,8 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 
 		$lig=0;
 		$html = '';
-		foreach($data as $notice)
-		{
-			$cls_notice=new Class_Notice();
-			$cls_notice->getNotice($notice["id_notice"]);
+		foreach($data as $notice)	{
+			$cls_notice = Class_Notice::find($notice["id_notice"]);
 			// calcul url en fonction du type de doc
 			if($notice["type_doc"]>7 and $notice["type_doc"]<11)
 			{
