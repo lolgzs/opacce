@@ -497,6 +497,9 @@ class RechercheControllerPostReservationAction extends AbstractControllerTestCas
 
 		Class_Bib::getLoader()->newInstanceWithId(4)->setLibelle('Astrolabe');
 
+		Class_Notice::newInstanceWithId(4,
+																		['unimarc' => "01570nam0 2200325   450 0010007000000100033000070200017000400210027000571000041000841010008001251020007001331050018001401060006001582000106001642100075002702150044003452250023003893000125004123000020005373000137005573300265006943450018009594100051009775120027010286060033010556060060010886760012011487000045011608010039012052218529  a2-86642-370-4bbr.d8,95 EUR  aFRb00347575  aFRbDLE-20031204-51138  a20031107d2003    m  h0frey0103    ba| afre  aFR  ay   z   000y|  ar1 aCinéma d'animationbTexte impriméedessin animé, marionnettes, images de synthèsefBernard Génin  a[Paris]c\"Cahiers du cinéma\"cSCEREN-CNDPdcop. 2003gimpr. en Italie  a95 p.cill., couv. ill. en coul.d19 cm2 aLes petits cahiers  aLa couv. porte en plus : \"du crayon à l'ordinateur, pour ou contre Disney, Europe-Japon : le dessin animé aujourd'hui\"  aBibliogr. p. 93  aSCEREN = Services, cultures, éditions, ressources pour l'éducation nationale. CNDP = Centre national de documentation pédagogique  aPrésente un historique du cinéma d'animation, un survol des différentes productions nationales à travers le monde (Etats-Unis, Japon, France, Canada), les techniques du volume animé, l'image de synthèse, mais aussi l'oeuvre de Disney et le film d'auteur.  b9782866423704 032525826tLes Petits cahiers (Paris)x1633-90531 aLe cinéma d'animation| 31053394aAnimation (cinéma)| 31031625aDessins animés32195497xHistoire et critique  a791.431 |32547161aGéninbBernardf1946-....4070 0aFRbBNFc20031107gAFNOR2intermrc"]);
+
 		$this->postDispatch('/recherche/reservation',
 												array('id_notice' => 4,
 															'id_bib' => 4,

@@ -344,8 +344,7 @@ class Class_Notice extends Storm_Model_Abstract {
 			return null;
 
 		// Lire la notice
-		$notice_instance = self::getLoader()->find($id_notice);
-		if (!$unimarc = $notice_instance->getUnimarc())
+		if (!$notice_instance = self::getLoader()->find($id_notice))
 			return [];
 
 		// Champs de base
