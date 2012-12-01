@@ -27,8 +27,6 @@ if (!function_exists('xdebug_break')) {
 
 function setupOpac() {
 	Zend_Loader::registerAutoload();
-
-
 	setupConstants();
 	require_once('requires.php');
 	$cfg = loadConfig();
@@ -168,8 +166,11 @@ function setupLanguage() {
 	Zend_Registry::set('locale', new Zend_Locale());
 
 	$translate = new ZendAfi_Translate('gettext', LANG_DIR.'fr.mo', 'fr');
-	foreach (Class_AdminVar::getLanguesWithoutDefault() as $language)
-		$translate->addTranslation(LANG_DIR.$language.'.mo', $language);
+	foreach (Class_AdminVar::getLanguesWithoutDefault() as $language) {
+		$filename = LANG_DIR.$language.'.mo';
+		if (file_exists($filename))
+			$translate->addTranslation($filename, $language);
+	}
 	Zend_Registry::set('translate', $translate);
 
 	Zend_Validate_Abstract::setDefaultTranslator($translate);
