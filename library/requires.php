@@ -1,6 +1,9 @@
 <?php
 
+require_once(ZEND_FRAMEWORK_PATH.'Controller/Action/Helper/Abstract.php');
+require_once(ZEND_FRAMEWORK_PATH.'View.php');
 require_once(ZEND_FRAMEWORK_PATH.'Controller/Action/Helper/ViewRenderer.php');
+require_once(ZEND_FRAMEWORK_PATH.'Log/Writer/Stream.php');
 
 require_once(ZEND_FRAMEWORK_PATH.'Db/Adapter/Mysqli.php');
 
@@ -105,5 +108,10 @@ require_once(ROOT_PATH.'library/Class/Article.php');
 require_once(ROOT_PATH.'library/ZendAfi/View/Helper/Accueil/Tags.php');
 require_once(ROOT_PATH.'library/ZendAfi/View/Helper/Accueil/AbonneAbstract.php');
 require_once(ROOT_PATH.'library/Class/FileWriter.php');
+
+
+require_once(ROOT_PATH.'library/ZendAfi/View/Helper/Portail.php');
+require_once(ROOT_PATH.'library/ZendAfi/View/Helper/Division.php');
+require_once(ROOT_PATH.'library/ZendAfi/View/Helper/BoitesBanniere.php');
 
 ?>
