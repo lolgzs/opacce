@@ -766,7 +766,7 @@ class NoticeFille {
 	public function getEmplacement() {
 		if (!$code = $this->getData('Emplacement'))
 			return '';
-		if (!$emplacement = Class_CodifEmplacement::findFirstBy(['regles' => '995$u='.$code]))
+		if (!$emplacement = Class_CodifEmplacement::findFirstBy(['where' => 'regles like "%='.$code.'"']))
 			return '';
 		return $emplacement->getId();
 	}

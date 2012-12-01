@@ -864,7 +864,7 @@ class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framew
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifEmplacement')
 			->whenCalled('findFirstBy')
-			->with(['regles' => '995$u=RES'])
+			->with(['where' => 'regles like "%=RES"'])
 			->answers($emplacement_reserve);
 
 
