@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_Accueil_Newsletters extends ZendAfi_View_Helper_Accueil_AbonneAbstract  {
-	protected $_titre_action = 'newsletters';
 	protected $_boite_id = 'newsletters';
 
 	public function getModels() {

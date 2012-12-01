@@ -37,9 +37,11 @@ abstract class ZendAfi_View_Helper_Accueil_AbonneAbstract extends ZendAfi_View_H
 
 
 	public function getTitre(){
-		  return $this->view->tagAnchor([ 'controller' => 'abonne',
-																			'action' => $this->_titre_action],
-																		$this->preferences['titre']);
+		return $this->_titre_action 
+			? $this->view->tagAnchor([ 'controller' => 'abonne',
+																 'action' => $this->_titre_action],
+															 $this->preferences['titre'])
+			: $this->preferences['titre'];
 	}
 
 

@@ -56,6 +56,12 @@ class NewslettersTestWithConnectedUser extends ViewHelperTestCase {
 		$this->assertXPathContentContains($this->html,'//h1','Newsletters');
 	}
 
+
+	/** @test  */
+	public function h1ShouldNotLinkToAnyAction () {
+		$this->assertNotXPath($this->html, '//h1/a');
+	}
+
 	
 	/** @test */
 	public function listShouldDisplayNouveautesMusique() {
