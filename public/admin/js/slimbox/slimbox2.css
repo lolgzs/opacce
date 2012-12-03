@@ -7,7 +7,7 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #AAAAAA;
+	background-color: #000;
 	cursor: pointer;
 }
 
@@ -56,20 +56,18 @@
 
 #lbBottom {
 	font-family: Verdana, Arial, Geneva, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: 10px;
 	color: #666;
 	line-height: 1.4em;
 	text-align: left;
 	border: 10px solid #fff;
-	border-top:1px solid #999999;
-	/*border-top-style: none; */
-	padding-top:3px;
+	border-top-style: none;
 }
 
 #lbCloseLink {
 	display: block;
 	float: right;
-	width: 80px;
+	width: 66px;
 	height: 22px;
 	background: transparent url(closelabel.gif) no-repeat center;
 	margin: 5px 0;
@@ -77,7 +75,7 @@
 }
 
 #lbCaption, #lbNumber {
-	margin-right: 90px;
+	margin-right: 71px;
 }
 
 #lbCaption {
