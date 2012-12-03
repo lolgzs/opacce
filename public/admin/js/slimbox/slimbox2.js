@@ -108,7 +108,8 @@
 
 		var links = this;
 
-		return links.unbind("click").click(function() {
+		return links.unbind("click").click(function(event) {
+			event.stopImmediatePropagation();
 			// Build the list of images that will be displayed
 			var link = this, startIndex = 0, filteredLinks, i = 0, length;
 			filteredLinks = $.grep(links, function(el, i) {
