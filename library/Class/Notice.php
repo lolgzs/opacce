@@ -1032,6 +1032,14 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 
 
+
+	protected function getNatureDocs() {
+		xdebug_break();
+		return $this->get_subfield('200','b');
+		
+	}
+
+
 	/**
 	 * @param $data array
 	 * @param $indexation Class_Indexation
@@ -1441,6 +1449,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		$visitor->visitEditeur($this->getEditeurAvecVille());
 		$visitor->visitLangues($this->getLangueCodes());
 		$visitor->visitTypeDoc($this->getTypeDoc());
+		$visitor->visitNatureDoc($this->getNatureDocs());
 		if ($this->hasVignette())
 			$visitor->visitVignette($this->getUrlVignette());
 		$visitor->visitIsbn($this->getIsbn());

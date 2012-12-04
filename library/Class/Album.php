@@ -114,7 +114,8 @@ class Class_Album extends Storm_Model_Abstract {
 																							 'cote' => '',
 																							 'notes' => '',
 		                                           'visible' => true,
-	                                             'droits' => '');
+	                                             'droits' => '',
+																							 'nature_doc' => '');
 
 	/** @var Class_Upload */
 	protected $_uploadHandler;
@@ -1056,6 +1057,13 @@ class Class_Album extends Storm_Model_Abstract {
 	 */
 	public function getNatureDocIds() {
 		return explode(';', $this->getNatureDoc());
+	}
+
+
+	public function setNatureDocIds($ids) {
+		if (!is_array($ids)) 
+			$ids=[];
+		return $this->setNatureDoc(implode(';', $ids));
 	}
 
 

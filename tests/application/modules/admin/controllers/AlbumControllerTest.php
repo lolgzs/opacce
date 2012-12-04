@@ -678,7 +678,8 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 
 		$data = ['titre' => 'Renaissance',
 						 'sous_titre' => 'Ze Renaissance',
-			       'description' => 'Oeuvres majeures sous François 1er'];
+			       'description' => 'Oeuvres majeures sous François 1er',
+						 'nature_doc_ids' => [2,3]];
 
 		$this
 			->getRequest()
@@ -739,6 +740,12 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 	/** @test */
 	public function categoryShouldBePatrimoine() {
 		$this->assertEquals('Patrimoine', $this->new_album->getCategorie()->getLibelle());
+	}
+
+
+	/** @test */
+	public function natureDocShouldBe2SemiColon3() {
+		$this->assertEquals('2;3', $this->new_album->getNatureDoc());
 	}
 }
 
@@ -1014,7 +1021,7 @@ class Admin_AlbumControllerPostEditAlbumMesBDTest extends Admin_AlbumControllerT
 													 'tmp_name' => '', 
 													 'error' => 4);
 
-		$this->dispatch('/admin/album/edit_album/id/43');
+		$this->dispatch('/admin/album/edit_album/id/43',true);
 
 		$this->bd = Class_Album::getLoader()->find(43);
 	}
@@ -1072,6 +1079,7 @@ class Admin_AlbumControllerPostEditAlbumMesBDTest extends Admin_AlbumControllerT
 
 	/** @test */
 	function deweyShouldContainsFifteen() {
+
 		$this->assertEquals('15', $this->bd->getDewey());
 	}
 

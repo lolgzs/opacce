@@ -144,6 +144,15 @@ class Class_Notice_DublinCoreVisitor {
 	}
 
 
+	public function visitNatureDoc($libelles) {
+		foreach ($libelles as $libelle) {
+			$lang = Class_NatureDoc::langForLabel($libelle);
+			$this->_xml .= $this->_builder->type(['xml:lang' => $lang],
+																					 $this->cdata($libelle));
+		}
+	}
+
+
 	public function visitFormats($datas) {
 		if (!is_array($datas) || empty($datas))
 			return;

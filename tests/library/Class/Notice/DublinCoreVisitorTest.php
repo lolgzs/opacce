@@ -27,6 +27,10 @@ abstract class DublinCoreVisitorTestCase extends Storm_Test_ModelTestCase {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOaiDc();
 		$this->_dublin_core_visitor = new Class_Notice_DublinCoreVisitor();
+
+		Class_CosmoVar::newInstanceWithId('nature_docs', 
+																			['liste' =>  "1:Collection\r\n20:Manuscrit"]);
+
 	}
 }
 
@@ -56,6 +60,8 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 				->subfieldWillReturn(['702'], [' 1aCoutonbPatrick'])
 				->subfieldWillReturn(['210', 'c'], ['Bloomsbury Publishing'])
 				->subfieldWillReturn(['210', 'a'], ['Londres'])
+				->subfieldWillReturn(['200', 'b'], ['Manuscrit',
+																						'Collection'])
 				->subfieldWillReturn(['801', 'b'], ['Castagnera'])
 				->subfieldWillReturn(['852', 'k'], ['LV/R ROW']));
 		$this->_dublin_core_visitor->visit($potter);
@@ -225,6 +231,26 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 																							'//oai_dc:dc/dc:source',
 																							'Castagnera, LV/R ROW');
 	}
+
+
+	/** @test */
+	public function shouldHaveTypeManuscrit() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:type[@xml:lang="fre"]',
+																							'Manuscrit');
+	}
+
+
+
+	/** @test */
+	public function shouldHaveTypeCollection() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:type[@xml:lang="eng"]',
+																							'Collection');
+	}
+
+
+
 }
 
 

@@ -20,6 +20,11 @@
  */
 
 class Class_Xml_Builder {
+	/**
+	 * exemple:
+	 *		$builder->request(array('id' => 'myzork'), 'Zork')
+	 *    '<request id="myzork">Zork</request>'
+	 */
 	public function __call($method, $arguments) {
 		if (0 == count($arguments))
 			return $this->_tag($method, '');

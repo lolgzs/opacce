@@ -20,6 +20,15 @@
  */
 
 class Class_NatureDoc {
+	/** Les types de 1 à 12 correspondent au vocabulaire DCMI 
+	 * http://dublincore.org/documents/dcmi-type-vocabulary/#H7
+	 */
+	public static function langForLabel($libelle) {
+		$label_ids=array_flip(self::allByIdLabel());
+		return isset($label_ids[$libelle]) && $label_ids[$libelle] > 12 ? 'fre' : 'eng';
+	}
+
+
 	public static function allByIdLabel() {
 		$nature_docs = [];
 		$lines = explode("\r\n", 

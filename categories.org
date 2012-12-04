@@ -241,3 +241,7 @@ var openDialogExemplaires = function() {
 * CSV changement de caractere de split
 [[file:library/ZendAfi/View/Helper/Article/FormulairesCsvVisitor.php][file:~/afi/afi-opac3/library/ZendAfi/View/Helper/Article/FormulairesCsvVisitor.php]]
 
+
+
+* Dublin core OAI
+http://localhost:8081/afi-opac3/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai::VERSAILLESALBERTSAMAIN--ALBERTSAMAIN----102
