@@ -27,9 +27,10 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 	public function setUp() {
 		parent::setUp();
 
-		Class_CosmoVar::getLoader()
-			->newInstanceWithId('types_docs')
-			->setListe("1:cd\r\n200:non identifié\r\n201:livres\r\n202:bd");
+		Class_CosmoVar::newInstanceWithId('types_docs', 
+																			['liste' =>  "1:cd\r\n200:non identifié\r\n201:livres\r\n202:bd"]);
+		Class_CosmoVar::newInstanceWithId('nature_docs', 
+																			['liste' =>  "1:Collection\r\n2:Manuscrits\r\n3:Image"]);
 
 		$langue_loader = Class_CodifLangue::getLoader();
 		$cus = $langue_loader->newInstanceWithId('cus')->setLibelle('couchitique');
@@ -76,7 +77,8 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 			->setPdf('souvigny.pdf')
 			->setProvenance('Prieuré, Souvigny')
 			->setCote('MS001')
-			->setVisible(false);
+			->setVisible(false)
+			->setNatureDoc('1;3');
 
 		Class_Album::newInstanceWithId(44)
 			->setTitre('Bible Souvigny')
@@ -909,6 +911,15 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@selected='selected'][@value='101']", 
 																			'Diaporama',
 																			$this->_response->getBody());
+	}
+
+
+
+	/** @test */
+	function formShouldHaveCheckboxesForTypeNatureDocsSelection() {
+		$this->assertXPath("//label[contains(text(), 'Collection')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='1'][@checked='checked']");
+		$this->assertXPath("//label[contains(text(), 'Manuscrits')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='2'][not(@checked)]");
+		 $this->assertXPath("//label[contains(text(), 'Image')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='3'][@checked='checked']");
 	}
 
 

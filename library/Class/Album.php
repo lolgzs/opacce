@@ -1046,7 +1046,16 @@ class Class_Album extends Storm_Model_Abstract {
 		unset($attributes['notes']);
 		return array_merge($attributes,
 											 $this->getDefaultThumbnailValues(),
-											 $this->getThumbnailAttributes());
+											 $this->getThumbnailAttributes(),
+											 ['nature_doc_ids' => $this->getNatureDocIds()]);
+	}
+
+	
+	/** 
+	 * @return array
+	 */
+	public function getNatureDocIds() {
+		return explode(';', $this->getNatureDoc());
 	}
 
 

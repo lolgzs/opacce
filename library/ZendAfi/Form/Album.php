@@ -53,6 +53,7 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 												 'provenance',
 												 'id_langue',
 												 'type_doc_id',
+												 'nature_doc_ids',
 												 'cote',
 												 'matiere',
 												 'dewey',
@@ -116,6 +117,9 @@ class ZendAfi_Form_Album extends ZendAfi_Form {
 
 			->addElement('select', 'type_doc_id', ['label' => 'Type de document', 
 					                                   'multioptions' => Class_TypeDoc::allByIdLabelForAlbum()])
+
+			->addElement('multiCheckbox', 'nature_doc_ids', ['label' => 'Nature de document', 
+					                                   'multioptions' => Class_NatureDoc::allByIdLabel()])
 
 			->addElement('listeSuggestion', 'matiere',
 									 ['label' => 'Matières / sujets',
