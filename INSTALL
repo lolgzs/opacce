@@ -1,31 +1,89 @@
-How to setup AFI-OPAC
+Ubuntu / Debian
 
-IMPORTANT: must be accessible from / directory actually. For development we use http://localhost/afi-opac3
+* Paquets nécessaires:
 
-- copy index.php.default to index.php.
-- copy config.ini.default to config.ini, then configure according to your settings.
-- touch local.php for custom configuration.
+  apt-get install php5 php5-gd php5-imagick php5-xdebug php-pear php5-mysql apache2 mysql-server libapache2-mod-php5 subversion
 
 
-== Zend Framework ==
+* Configuration PEAR:
 
-- download and extract Zend Framework 1.6.2: http://framework.zend.com/releases/ZendFramework-1.6.2/ZendFramework-1.6.2.tar.gz
-- in index.php and tests/bootstrap.php setup Zend Framework path according your install
+  pear config-set auto_discover 1
+  pear install pear.phpunit.de/PHPUnit
 
 
-If you use PHP 5.3, you must patch ZendFramework-1.6.2/library/Zend/Db/Statement/Mysqli.php, l.200:
+* Récupération des sources
 
-        // send $params as input parameters to the statement
-        if ($params) {
-            array_unshift($params, str_repeat('s', count($params)));
+  svn checkout http://afi-forge.afi-sa.fr/svn/opacce/trunk afi-opac
+	svn checkout http://afi-forge.afi-sa.fr/svn/opacce/ZendFramework-1.6.2
+  svn checkout http://afi-forge.afi-sa.fr/svn/cosmo/trunk cosmogramme
 
-						$stmtParams = array();
-            foreach ($params as $k => &$value) {
-                $stmtParams[$k] = &$value;
-            }
-            call_user_func_array(
-                array($this->_stmt, 'bind_param'),
-                $stmtParams);
-        }
+
+* Configuration Apache / PHP:
+
+	Activez les modules:
+
+	  a2enmod headers rewrite php5
+
+	Dans /etc/php5/apache2/php.ini, configurer les variables suivantes:
+
+	  post_max_filesize = 10M
+		upload_max_filesize = 10M
+		error_reporting  =  E_ALL & ~E_NOTICE & ~E_DEPRECATED
+
+Dans la conf Apache, supprimer l'option Indexes (listing des fichiers) et autoriser les .htaccess: 
+
+        <Directory /var/www/>
+                Options FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+
+* Droits sur le répertoire temporaire
+  
+  chmod 777 afi-opac/temp
+  
+* Configuration MySQL
+  
+Mosudodifier /etc/mysql/my.cnf et ajouter dans la section [mysqld]:
+
+  #forcer l'indexation fulltext à partir de 2 lettres
+  ft_min_word_len = 2  
+  Redémarrer mysql.
+
+Se connecter à mysql et importer le schema
+
+mysql -uroot -ppass
+mysql> create database opac;
+mysql> connect opac;
+mysql> source afi-opac/scripts/opac2.sql;
+
+
+* Configuration Cosmogramme
+
+	Dans le répertoire cosmogramme, copiez config.ref.php vers config.php et configurez.
+
+	Connectez vous avec le compte admin/achanger et exécutez la mise à niveau de la base de données
+
+
+* Configuration OPAC
+	
+	Dans le répertoire afi-opac, copiez et configurez
+
+	config.ini.default -> config.ini
+	index.php.default -> index.php.default
+	touch local.php
+
+
+* Se connecter à l'OPAC:
+	
+	Utiliser le compte admin/achanger
+
+
+* Pour lancer les tests de l'OPAC:
+
+	cd afi-opac/tests/
+	phpunit
 
 
