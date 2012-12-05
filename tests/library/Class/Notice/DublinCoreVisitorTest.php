@@ -40,7 +40,7 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->_summary = 'Apres la mort < tragique de Lily et James Potter, Harry est recueilli par sa tante Petunia, la soeur de Lily et son oncle Vernon. Son oncle et sa tante, possedant une haine feroce envers les parents d\'Harry, le maltraitent et laissent leur fils Dudley l\'humilier. Harry ne sait rien sur ses parents. On lui a toujours dit qu\'ils etaient morts dans un accident de voiture.';
+		$this->_summary = 'Apres la mort < tragique de Lily et <span>James Potter</span>, Harry est recueilli par sa tante Petunia, la soeur de Lily et son oncle Vernon. Son oncle et sa tante, possedant une haine feroce envers les parents d\'Harry, le maltraitent et laissent leur fils Dudley l\'humilier. Harry ne sait rien sur ses parents. On lui a toujours dit qu\'ils etaient morts dans un accident de voiture.';
 
 		$potter = Class_Notice::newInstanceWithId(4)
 			->setClefAlpha('harrypotter-sorciers')
@@ -132,10 +132,10 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 
 
 	/** @test */
-	public function descriptionShouldBeApresLaMortTragiqueEtc() {
+	public function descriptionShouldBeApresLaMortTragiqueEtcWithoutTags() {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:description',
-																							$this->_summary);
+																							'tragique de Lily et James Potter');
 	}
 
 

@@ -97,7 +97,7 @@ class Class_Notice_DublinCoreVisitor {
 
 	public function visitResume($resume) {
 		if ($resume) 
-			$this->_xml .= $this->_builder->description($this->cdata($resume));
+			$this->_xml .= $this->_builder->description($this->cdata(strip_tags($resume)));
 	}
 
 
