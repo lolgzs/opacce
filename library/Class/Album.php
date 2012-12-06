@@ -1056,7 +1056,7 @@ class Class_Album extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getNatureDocIds() {
-		return explode(';', $this->getNatureDoc());
+		return array_filter(explode(';', $this->getNatureDoc()));
 	}
 
 

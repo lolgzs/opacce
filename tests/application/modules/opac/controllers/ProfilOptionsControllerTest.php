@@ -261,6 +261,12 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 	public function setUp() {
 		parent::setUp();
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findAllBy')
+			->with(['invisible' => 0, 'order' => 'libelle'])
+			->answers([Class_CodifAnnexe::newInstanceWithId(3, ['code' => 'ARC', 'libelle' => 'Archives'])]);
+
+
 		$cfg_accueil_jeunesse = ['modules' => ['1' => ['division' => '4',
 																									 'type_module' => 'RECH_SIMPLE',
 																									 'preferences' => ['recherche_avancee' => "on",
@@ -284,6 +290,7 @@ abstract class ProfilOptionsControllerProfilJeunesseWithPagesJeuxMusiqueTestCase
 																					 '10' => ['division' => '2',
 																									 'type_module' => 'NEWSLETTERS',
 																									 'preferences' => ['titre' => 'Lettres d\'informations']],
+
 																					 '11' => ['division' => '2',
 																									 'type_module' => 'MULTIMEDIA',
 																									 'preferences' => ['titre' => 'Postes multimédia']]
@@ -480,7 +487,8 @@ class ProfilOptionsControllerViewProfilJeunesseAccueilTest extends ProfilOptions
 
 	/** @test */
 	public function comboRechSimpleSelectAnnexeBeVisible() {
-		$this->assertXPath('//form[@class="rechSimpleForm"]//select[@name="annexe"]');
+		$this->assertXPathContentContains('//form[@class="rechSimpleForm"]//select[@name="annexe"]//option[@value="ARC"]', 
+																			'Archives');
 	}
 
 

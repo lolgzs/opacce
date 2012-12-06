@@ -159,7 +159,9 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 				 'cote' => '',
 				 'editeur' => '',
 				 'visible' => true,
-				 'droits' => ''],
+				 'droits' => '',
+				 'nature_doc' => '',
+				 'nature_doc_ids' => []],
 				$this->_album->toArray());
 	}
 

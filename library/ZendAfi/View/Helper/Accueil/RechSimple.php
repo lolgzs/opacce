@@ -52,6 +52,7 @@ class ZendAfi_View_Helper_Accueil_RechSimple extends ZendAfi_View_Helper_Accueil
 			$this->contenu.= sprintf('<div style="margin-top:5px"><label for="select_type_doc">%s</label>%s</div>',
 															 $this->translate()->_('Type de document'),
 															 $this->getComboTypesDocs());
+
 		if($this->preferences["select_annexe"] and $this->division!="2")
 		{
 			$this->contenu.='<div style="margin-top:5px">'.$this->translate()->_('Site').'</div>';
@@ -101,21 +102,21 @@ class ZendAfi_View_Helper_Accueil_RechSimple extends ZendAfi_View_Helper_Accueil
 //---------------------------------------------------------------------
 	public function getComboAnnexes()	{
     $combo = '';
-		$annexes=fetchAll("select code,libelle from codif_annexe where invisible=0 order by libelle");
-		if($annexes)
-		{
-			$data=array(""=>"tous");
-			foreach($annexes as $annexe)
-			{
-				$data[$annexe["code"]]=$annexe["libelle"];
-			}
-			$combo='<select name="annexe">';
-			foreach($data as $key=>$valeur)
-			{
-				$combo.='<option value="'.$key.'">'.stripSlashes($valeur).'</option>';
-			}
-			$combo.='</select>';
+		$annexes = Class_CodifAnnexe::findAllBy(['invisible' => 0, 'order' => 'libelle']);
+		if (empty($annexes))
+      return $combo;
+
+		$data=array(""=>"tous");
+		foreach($annexes as $annexe) {
+			$data[$annexe->getCode()]=$annexe->getLibelle();
 		}
+
+		$combo='<select name="annexe">';
+		foreach($data as $key=>$valeur)	{
+			$combo.='<option value="'.$key.'">'.stripSlashes($valeur).'</option>';
+		}
+		$combo.='</select>';
+
 		return $combo;
 	}
 }

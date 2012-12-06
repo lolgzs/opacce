@@ -25,7 +25,11 @@ abstract class TelephoneAbstractControllerTestCase extends AbstractControllerTes
 	public function setUp() {
 		parent::setUp();
 		$_SERVER['HTTP_USER_AGENT'] = 'iPhone';
-		Class_Profil::getCurrentProfil()->beTelephone();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('findFirstBy')
+			->with(['BROWSER' => 'telephone'])
+			->answers(Class_Profil::getCurrentProfil()->beTelephone());
 	}
 
 	public function tearDown() {
