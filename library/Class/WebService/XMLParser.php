@@ -30,7 +30,7 @@ class Class_WebService_XMLParser {
 	 * @return Class_WebService_XMLParser
 	 */
 	public static function newInstance() {
-		return new self();
+		return new static();
 	}
 
 

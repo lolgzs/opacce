@@ -33,25 +33,25 @@ class Class_WebService_SIGB_Koha_PatronInfoReader extends Class_WebService_SIGB_
 
 	public function endDate_Due($data) {
 		$date = implode('/', array_reverse(explode('-', $data)));
-		$this->_getCurrentOperation()->getExemplaire()->setDateRetour($date);
+		$this->_current_operation->getExemplaire()->setDateRetour($date);
 	}
 
 
 	public function endBarcode($code) {
-		$this->_getCurrentOperation()->getExemplaire()->setCodeBarre($code);
+		$this->_current_operation->getExemplaire()->setCodeBarre($code);
 	}
 
 
 	public function endItemNumber($id) {
 		if ($this->_xml_parser->inParents('loan'))
-			$this->_getCurrentOperation()->setId($id);
-		$this->_getCurrentOperation()->getExemplaire()->setId($id);
+			$this->_current_operation->setId($id);
+		$this->_current_operation->getExemplaire()->setId($id);
 	}
 
 
 	public function endBiblioNumber($id) {
 		if ($this->_xml_parser->inParents('hold'))
-			$this->_getCurrentOperation()->setId($id);
+			$this->_current_operation->setId($id);
 	}
 }
 

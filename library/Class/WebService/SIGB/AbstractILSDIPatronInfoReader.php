@@ -19,6 +19,35 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+
+class Speedy_XMLParser extends Class_WebService_XMLParser {
+	public function tagWithoutNamespace($tag) {return $tag;}
+
+	public function startElement($parser, $tag, $attributes) {
+		$this->_parents[] = strtolower($tag); 
+
+		$this->_current_data = null;
+
+		$method_name = 'start'.$tag ;
+		if (method_exists($this->_element_handler, $method_name)) {
+			$this->_element_handler->$method_name($attributes) ;
+		}
+	}
+
+
+	public function endElement($parser, $tag) {
+		$method_name = 'end'.$tag;
+
+		if (method_exists($this->_element_handler, $method_name))  {
+			$this->_element_handler->$method_name($this->_current_data);
+		}
+		array_pop($this->_parents) ;
+	}
+}
+
+
+
+
 abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	/** @var Class_WebService_SIGB_Emprunteur */
 	protected $_emprunteur;
@@ -31,6 +60,11 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 
 	/** @var Class_WebService_SIGB_ExemplaireOperation */
 	protected $_currentLoan;
+
+	protected $_current_operation;
+
+	/** @var array */
+	protected $_loans = [];
 
 
 
@@ -57,7 +91,7 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	 * @return Class_WebService_SIGB_*_PatronInfoReader
 	 */
 	public function parseXML($xml) {
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance()
+		$this->_xml_parser = Speedy_XMLParser::newInstance()
 														->setElementHandler($this);
 
 		$this->_xml_parser->parse($xml);
@@ -86,7 +120,7 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	 * @param array $attributes
 	 */
 	public function startLoan($attributes) {
-		$this->_currentLoan = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire();
+		$this->_current_operation = $this->_currentLoan = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire();
 	}
 
 
@@ -94,7 +128,15 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	 * @param string $data
 	 */
 	public function endLoan($data) {
-		$this->getEmprunteur()->empruntsAdd($this->_currentLoan);
+		$this->_loans []= $this->_currentLoan;
+	}
+
+
+	/**
+	 * @param string $data
+	 */
+	public function endLoans($data) {
+		$this->getEmprunteur()->empruntsAddAll($this->_loans);
 	}
 
 
@@ -102,7 +144,7 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	 * @param array $attributes
 	 */
 	public function startHold($attributes) {
-		$this->_currentHold = Class_WebService_SIGB_Reservation::newInstanceWithEmptyExemplaire();
+		$this->_current_operation = $this->_currentHold = Class_WebService_SIGB_Reservation::newInstanceWithEmptyExemplaire();
 	}
 
 
@@ -116,12 +158,12 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 
 	public function endTitle($titre) {
 		if ($this->_xml_parser->inParents('loan') or $this->_xml_parser->inParents('hold'))
-			$this->_getCurrentOperation()->getExemplaire()->setTitre($titre);
+			$this->_current_operation->getExemplaire()->setTitre($titre);
 	}
 
 
 	public function endAuthor($author) {
-		$this->_getCurrentOperation()->getExemplaire()->setAuteur($author);
+		$this->_current_operation->getExemplaire()->setAuteur($author);
 	}
 
 
@@ -129,19 +171,12 @@ abstract class Class_WebService_SIGB_AbstractILSDIPatronInfoReader {
 	 * @param string $data
 	 */
 	public function endPriority($data) {
-		$this->_getCurrentOperation()->setRang($data);
+		$this->_current_operation->setRang($data);
 	}
 
 
-	/**
-	 * @return Class_WebService_SIGB_ExemplaireOperation
-	 */
-	protected function _getCurrentOperation() {
-		if ($this->_xml_parser->inParents('loan'))
-			return $this->_currentLoan;
-
-		if ($this->_xml_parser->inParents('hold'))
-			return $this->_currentHold;
+	public function _getCurrentOperation() {
+		return $this->_current_operation;
 	}
 }
 

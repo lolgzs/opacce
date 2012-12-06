@@ -99,8 +99,8 @@ class ZendAfi_View_Helper_Accueil_RechSimple extends ZendAfi_View_Helper_Accueil
 //---------------------------------------------------------------------
 // Combo des annexes
 //---------------------------------------------------------------------
-	public function getComboAnnexes()
-	{
+	public function getComboAnnexes()	{
+    $combo = '';
 		$annexes=fetchAll("select code,libelle from codif_annexe where invisible=0 order by libelle");
 		if($annexes)
 		{
