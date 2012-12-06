@@ -126,7 +126,7 @@ function loadConfig() {
 
 function setupCache($cfg) {
 	$frontendOptions = array(
-													 'lifetime' => 900, // durée du cache: 15mn
+													 'lifetime' => 3600, // durée du cache: 1h
 													 'automatic_serialization' => false,
 													 'caching' => true);
 													 //													 'caching' => $cfg->get('caching'));
