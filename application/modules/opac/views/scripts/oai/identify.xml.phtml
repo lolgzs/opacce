@@ -4,6 +4,7 @@
 				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 	<responseDate><?php echo date('c');?></responseDate>
 	<?php echo $this->request->renderOn($this->builder); ?>
+	<?php echo ($this->error) ? $this->error : '';?>
 	<Identify>
 		<repositoryName><![CDATA[<?php echo $this->repositoryName;?>]]></repositoryName>
 		<baseURL><?php echo $this->baseUrl; ?></baseURL>

@@ -115,7 +115,8 @@ class OaiController extends Zend_Controller_Action {
 		$request = new Class_WebService_OAI_Request_Identify($this->_request->getParams(), 
 																												 $baseUrl);
 		$this->view->request = $request;
-		$this->view->builder = new Class_Xml_Builder();
+		$this->view->builder = $builder = new Class_Xml_Builder();
+		$this->view->error = $request->getErrorOn($builder);
 
 		$this->view->repositoryName = $_SERVER['SERVER_NAME'] . ' Oai repository';
 		$this->view->baseUrl = $baseUrl;
