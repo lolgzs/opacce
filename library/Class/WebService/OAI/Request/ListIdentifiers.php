@@ -54,7 +54,11 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			$this->_set = $token->getParam('set');
 			$this->_from = $token->getParam('from');
 			$this->_until = $token->getParam('until');
-			$this->_metadataPrefix=$token->getParam('metadataPrefix');
+			
+			if ($this->_metadataPrefix)
+				$this->_metadataPrefix=null;
+			else 
+				$this->_metadataPrefix=$token->getParam('metadataPrefix');
 		}
 
 		$this->_catalogue = $this->getCatalogueFromSetSpec($this->_set);
