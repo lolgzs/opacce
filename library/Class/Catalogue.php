@@ -59,7 +59,7 @@ class CatalogueLoader extends Storm_Model_Loader {
 			$conditions[] = $fromUntil;
 
 		if ($catalogue->isMatchingAllNotices())
-			return isset($fromUntil) ? $fromUntil : '1=1';
+			return $fromUntil ? $fromUntil : '1=1';
 
 
 		if ($facets = $this->facetsClauseFor($catalogue))
