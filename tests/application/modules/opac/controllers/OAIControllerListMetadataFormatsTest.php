@@ -32,7 +32,7 @@ abstract class OAIControllerListMetadataFormatsTestCase extends AbstractControll
 
 
 
-class OAIControllerListMetadataFormatsValidTest extends OAIControllerListMetadataFormatsTest {
+class OAIControllerListMetadataFormatsValidTest extends OAIControllerListMetadataFormatsTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/opac/oai/request?verb=ListMetadataFormats');
@@ -89,12 +89,18 @@ class OAIControllerListMetadataFormatsValidTest extends OAIControllerListMetadat
 										$position, $name);
 		$this->_xpath->assertXpathContentContains($this->_response->getBody(), $path,	$content);
 	}
+
+
+	/** @test */
+	public function shouldReturnErrorIdDoesNotExist() {
+		$this->_xpath->assertNotXPath($this->_response->getBody(),	 '//oai:error');
+	}
 }
 
 
 
 
-class OAIControllerListMetadataFormatsTest extends OAIControllerListMetadataFormatsTestCase {
+class OAIControllerListMetadataFormatsErrorsTest extends OAIControllerListMetadataFormatsTestCase {
 	/** @test */
 	public function withWrongIdentifierShouldReturnErrorIdDoesNotExist() {
 		$this->dispatch('/opac/oai/request?verb=ListMetadataFormats&identifier=really_wrong_id', true);

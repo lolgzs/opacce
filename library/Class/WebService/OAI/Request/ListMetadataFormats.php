@@ -30,7 +30,7 @@ class Class_WebService_OAI_Request_ListMetadataFormats {
 
 
 	public function getErrorOn($builder) {
-		if (!Class_Notice::getNoticeByOAIIdentifier($this->_identifier))
+		if ($this->_identifier && !Class_Notice::getNoticeByOAIIdentifier($this->_identifier))
 			return $builder->error(['code' => 'idDoesNotExist']);
 	}
 
