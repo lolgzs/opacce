@@ -29,6 +29,12 @@ class Class_WebService_OAI_Request_ListMetadataFormats {
 	}
 
 
+	public function getErrorOn($builder) {
+		if (!Class_Notice::getNoticeByOAIIdentifier($this->_identifier))
+			return $builder->error(['code' => 'idDoesNotExist']);
+	}
+
+
 	public function renderOn($builder) {
 		$attributes = array('verb' => 'ListMetadataFormats');
 		if ($this->_identifier)

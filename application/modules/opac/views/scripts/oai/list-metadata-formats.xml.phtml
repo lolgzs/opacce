@@ -4,11 +4,16 @@
 				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 	<responseDate><?php echo date('c');?></responseDate>
 	<?php echo $this->request->renderOn($this->builder); ?>
-	<ListMetadataFormats>
-		<metadataFormat>
-			<metadataPrefix>oai_dc</metadataPrefix>
-			<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
-			<metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
-		</metadataFormat>
-	</ListMetadataFormats>
+  <?php 
+  if ($this->error) 
+		echo $this->error;
+  else { ?>
+		<ListMetadataFormats>
+			<metadataFormat>
+				<metadataPrefix>oai_dc</metadataPrefix>
+				<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+				<metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
+			</metadataFormat>
+		</ListMetadataFormats>
+  <?php } ?>
 </OAI-PMH>

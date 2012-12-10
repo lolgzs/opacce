@@ -43,6 +43,12 @@ class NoticeLoader extends Storm_Model_Loader
 	}
 
 
+	public function getNoticeByOAIIdentifier($identifier) {
+		$parts = explode(':', $identifier);
+		return Class_Notice::getLoader()->getNoticeByClefAlpha(end($parts));
+	}
+
+
 	public function getNoticeByClefAlpha($clef) {
 		return Class_Notice::findFirstBy(['clef_alpha' => $clef]);
 	}

@@ -90,7 +90,7 @@ class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTes
 			->with('harrypotter-sorciers')
 			->answers(null);
 
-		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers');
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers', true);
 		$this->_xml = $this->_response->getBody();
 	}
 
@@ -156,7 +156,7 @@ class OAIControllerGetRecordValidParamsTest extends OAIControllerGetRecordTestCa
 								  ->setTitrePrincipal('Harry Potter a l\'ecole des sorciers')
 								  ->setDateMaj('2001-12-14 11:39:44'));
 
-		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers');
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers', true);
 		$this->_xml = $this->_response->getBody();
 	}
 

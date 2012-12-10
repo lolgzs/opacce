@@ -20,12 +20,21 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
+abstract class OAIControllerListMetadataFormatsTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
 		parent::setUp();
 		$this->_xpath = TestXPathFactory::newOai();
+	}
+}
+
+
+
+
+class OAIControllerListMetadataFormatsValidTest extends OAIControllerListMetadataFormatsTest {
+	public function setUp() {
+		parent::setUp();
 		$this->dispatch('/opac/oai/request?verb=ListMetadataFormats');
 	}
 
@@ -79,6 +88,18 @@ class OAIControllerListMetadataFormatsTest extends AbstractControllerTestCase {
 		$path = sprintf('//oai:ListMetadataFormats/oai:metadataFormat[%s]/oai:%s',
 										$position, $name);
 		$this->_xpath->assertXpathContentContains($this->_response->getBody(), $path,	$content);
+	}
+}
+
+
+
+
+class OAIControllerListMetadataFormatsTest extends OAIControllerListMetadataFormatsTestCase {
+	/** @test */
+	public function withWrongIdentifierShouldReturnErrorIdDoesNotExist() {
+		$this->dispatch('/opac/oai/request?verb=ListMetadataFormats&identifier=really_wrong_id', true);
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//oai:error[@code="idDoesNotExist"]');
 	}
 }
 ?>
