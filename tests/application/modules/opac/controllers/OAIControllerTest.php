@@ -110,6 +110,7 @@ class OAIControllerRequestWithoutOAIEnabledTest extends AbstractControllerTestCa
 
 
 
+
 class OaiControllerListSetsRequestTest extends OaiControllerRequestTestCase {
 	protected $_xpath;
 	 

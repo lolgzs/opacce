@@ -96,6 +96,8 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			$this->_catalogue->setUntil(substr($this->_until, 0, 10));
 
 		$this->_notices = $this->_catalogue->getNotices($page_number, self::IDENTIFIERS_BY_PAGE);
+		if (empty($this->_notices))
+			return $builder->error(array('code' => 'noRecordsMatch'));
 	}
 
 

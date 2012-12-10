@@ -167,6 +167,8 @@ class OAIControllerListIdentifiersValidTest extends AbstractControllerTestCase {
 }
 
 
+
+
 class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTestCase {
 	protected $_xpath;
 	protected $_xml;
@@ -223,6 +225,8 @@ class OAIControllerListIdentifiersWithPaginatorTest extends AbstractControllerTe
 		$this->assertTrue($this->_cache->methodHasBeenCalled('save'));
 	}
 }
+
+
 
 
 class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTestCase {
@@ -293,6 +297,51 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork&resumptionToken=Zork');
 		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="badResumptionToken"]');
+	}
+}
+
+
+
+
+class OAIControllerListIdentifiersWithoutDataFoundTest extends AbstractControllerTestCase {
+	protected $_xpath;
+	protected $_xml;
+	protected $_cache;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_xpath = TestXPathFactory::newOai();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('countNoticesFor')
+			->answers(10)
+
+			->whenCalled('findAllBy')
+			->with(array('oai_spec' => 'zork'))
+			->answers([Class_Catalogue::getLoader()->newInstanceWithId(2)])
+
+			->whenCalled('loadNoticesFor')
+			->answers([]);
+
+		$this->_cache = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('save')
+			->answers(true);
+
+		Class_WebService_OAI_ResumptionToken::defaultCache($this->_cache);
+
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=zork');
+		$this->_xml = $this->_response->getBody();
+	}
+
+
+	public function tearDown() {
+		Class_WebService_OAI_ResumptionToken::defaultCache(null);
+		parent::tearDown();
+	}
+
+	
+	/** @test */
+	public function responseShouldCountainsErrorNoRecordMatch() {
+		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="noRecordsMatch"]');
 	}
 }
 ?>
