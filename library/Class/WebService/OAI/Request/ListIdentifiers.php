@@ -35,7 +35,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 	
 	public function __construct($params, $baseUrl) {
 		$this->_baseUrl = $baseUrl;
-		$this->_params = array_merge(array('metadataPrefix' => 'oai_dc',
+		$this->_params = array_merge(array('metadataPrefix' => null,
 																			 'set' => null,
 																			 'from' => null,
 																			 'until' => null,
@@ -75,10 +75,15 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 
 	public function getErrorOn($builder) {
+
 		$answer = '';
+
+		if (null == $this->_metadataPrefix)
+			$answer.=$builder->error(array('code' => 'badArgument'), 'Set not found');
 
 		if ('oai_dc' != $this->_metadataPrefix) 
 			$answer .= $builder->error(array('code' => 'cannotDisseminateFormat'));
+
 
 		if ($this->_set && !$this->_catalogue)
 			$answer .= $builder->error(array('code' => 'badArgument'), 'Set not found');
@@ -86,7 +91,7 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 		if ($this->_until && $this->_from) {
 			if (strlen($this->_until) != strlen($this->_from))
-				return $builder->error(array('code' => 'badArgument'), 'Set not found');
+				return $builder->error(array('code' => 'badArgument'), 'from granularity != until granularity');
 		}
 
 		$token = null;

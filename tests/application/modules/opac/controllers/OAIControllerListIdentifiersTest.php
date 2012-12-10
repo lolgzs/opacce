@@ -315,6 +315,14 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:error[@code="badArgument"]');
 	}
+
+	/** @test */
+	public function withListIdentifiersWithoutMetadataPrefixResponseShouldResponseBadArgument() {
+		$this->dispatch('opac/oai/request?verb=ListIdentifiers');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//oai:error[@code="badArgument"]');
+		
+	}
 }
 
 
