@@ -70,19 +70,24 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 
 	public function getErrorOn($builder) {
+		$answer = '';
+
 		if ('oai_dc' != $this->_metadataPrefix) 
-			return $builder->error(array('code' => 'cannotDisseminateFormat'));
+			$answer .= $builder->error(array('code' => 'cannotDisseminateFormat'));
 
 		if ($this->_set && !$this->_catalogue)
-			return $builder->error(array('code' => 'badArgument'), 'Set not found');
-
-		if (0 == ($count = $this->_catalogue->getNoticesCount()))
-			return $builder->error(array('code' => 'noRecordsMatch'));
+			$answer .= $builder->error(array('code' => 'badArgument'), 'Set not found');
 
 		$token = null;
 		if ($this->_resumptionToken 
 				&& !($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken)))
-			return $builder->error(array('code' => 'badResumptionToken'));
+			$answer .= $builder->error(array('code' => 'badResumptionToken'));
+
+		if ($answer) 
+			return $answer;
+
+		if (0 == ($count = $this->_catalogue->getNoticesCount()))
+			return $builder->error(array('code' => 'noRecordsMatch'));
 
 		$page_number = 1;
 		if (null != $token) {

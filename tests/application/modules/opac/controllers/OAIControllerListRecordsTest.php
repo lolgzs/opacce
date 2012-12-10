@@ -20,7 +20,7 @@
  */
 require_once 'AbstractControllerTestCase.php';
 
-class OAIControllerListRecordsInZorkSetTest extends AbstractControllerTestCase {
+abstract class OAIControllerListRecordsInZorkSetTestCase extends AbstractControllerTestCase {
 	protected $_xpath;
 
 	public function setUp() {
@@ -49,6 +49,15 @@ class OAIControllerListRecordsInZorkSetTest extends AbstractControllerTestCase {
 											->newInstanceWithId(4)
 											->setClefAlpha('harrypotter-azkaban')
 											->setDateMaj('2012-04-03 11:42:42')));
+	}
+}
+
+
+
+
+class OAIControllerListRecordsInZorkSetTest extends OAIControllerListRecordsInZorkSetTestCase {
+	public function setUp() {
+		parent::setUp();
 		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=zork');
 	}
 
@@ -96,6 +105,31 @@ class OAIControllerListRecordsInZorkSetTest extends AbstractControllerTestCase {
 		$path = sprintf('//oai:ListRecords/oai:record[%s]/oai:header/oai:%s', 
 										$position, $header);
 		$this->_xpath->assertXPathContentContains($this->_response->getBody(), $path, $content);
+	}
+}
+
+
+
+
+class OAIControllerListRecordsInZorkSetWithBadResumptionTokenTest extends OAIControllerListRecordsInZorkSetTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$cache = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('load')
+			->answers(false);
+		Class_WebService_OAI_ResumptionToken::defaultCache($cache);
+
+		Class_Catalogue::whenCalled('countNoticesFor')->answers(0);
+
+		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=zork&resumptionToken=junktoken');
+	}
+
+
+	/** @test */
+	public function withUnknownResumptionTokenErrorCodeShouldBeBadResumptionToken() {
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//oai:error[@code="badResumptionToken"]');
 	}
 }
 
