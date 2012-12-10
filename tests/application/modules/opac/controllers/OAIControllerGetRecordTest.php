@@ -34,6 +34,8 @@ abstract class OAIControllerGetRecordTestCase extends AbstractControllerTestCase
 }
 
 
+
+
 class OAIControllerGetRecordNoIdentifierTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -55,6 +57,8 @@ class OAIControllerGetRecordNoIdentifierTest extends OAIControllerGetRecordTestC
 															 '//oai:error[@code="badArgument"]');
 	}
 }
+
+
 
 
 class OAIControllerGetRecordNoMetadataPrefixTest extends OAIControllerGetRecordTestCase {
@@ -81,6 +85,7 @@ class OAIControllerGetRecordNoMetadataPrefixTest extends OAIControllerGetRecordT
 
 
 
+
 class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -90,7 +95,7 @@ class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTes
 			->with('harrypotter-sorciers')
 			->answers(null);
 
-		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers', true);
+		$this->dispatch('/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=harrypotter-sorciers\"id', true);
 		$this->_xml = $this->_response->getBody();
 	}
 
@@ -98,7 +103,7 @@ class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTes
 	/** @test */
 	public function requestVerbShouldBeGetRecord() {
 		$this->_xpath->assertXpath($this->_xml,
-															 '//oai:request[@verb="GetRecord"][@identifier="harrypotter-sorciers"][@metadataPrefix="oai_dc"]');
+															 '//oai:request[@verb="GetRecord"][contains(@identifier, "harrypotter-sorciers")][@metadataPrefix="oai_dc"]');
 	}
 
 
@@ -108,6 +113,8 @@ class OAIControllerGetRecordNotFoundParamsTest extends OAIControllerGetRecordTes
 															 '//oai:error[@code="idDoesNotExist"]');
 	}
 }
+
+
 
 
 class OAIControllerGetRecordNotSupportedPrefixTest extends OAIControllerGetRecordTestCase {
@@ -141,6 +148,8 @@ class OAIControllerGetRecordNotSupportedPrefixTest extends OAIControllerGetRecor
 															 '//oai:error[@code="cannotDisseminateFormat"]');
 	}
 }
+
+
 
 
 class OAIControllerGetRecordValidParamsTest extends OAIControllerGetRecordTestCase {
@@ -212,5 +221,4 @@ class OAIControllerGetRecordValidParamsTest extends OAIControllerGetRecordTestCa
 																		self::OAI_RECORD_PATH . 'oai:metadata',
 																		1);
 	}
-
 }

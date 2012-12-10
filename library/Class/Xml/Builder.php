@@ -54,7 +54,7 @@ class Class_Xml_Builder {
 	public function attributesToString($attributes) {
 		$attribs = '';
 		foreach ($attributes as $k => $v)
-			$attribs .= ' ' . $k . '="' . $v . '"';
+			$attribs .= ' ' . $k . '="' . htmlentities($v, ENT_COMPAT|ENT_XML1) . '"';
 		return $attribs;
 	}
 
