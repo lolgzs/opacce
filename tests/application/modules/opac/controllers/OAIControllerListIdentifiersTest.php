@@ -323,6 +323,29 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 															 '//oai:error[@code="badArgument"]');
 		
 	}
+
+
+	/** @test */
+	public function withFromAndUntilWithBadFormatShouldResponse() {
+		$this->dispatch('opac/oai/request?verb=ListIdentifiers');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//oai:error[@code="badArgument"]');
+		
+	}
+
+	/** @test */
+	public function withUntilBeforeFromResponseShouldResponseNoRecordsMatch() {
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&from=2000-01-01&until=1999-01-01');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//oai:error[@code="noRecordsMatch"]');
+	}
+
+	/** @test */
+	public function withUntilFromGranularityHoursShouldAnswerBadArgument() {
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&from=2000-01-01T00:00:00Z', true);
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//oai:error[@code="badArgument"]');
+	}
 }
 
 

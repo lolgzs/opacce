@@ -56,18 +56,14 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			$this->_until = $token->getParam('until');
 		}
 
-		$this->checkUntilAndFromValidity();
 		$this->_catalogue = $this->getCatalogueFromSetSpec($this->_set);
 	}
 
 
-  public function checkUntilAndFromValidity() {
-		if ($this->_until && !strtotime($this->_until))
-			$this->_until = null;
-		if ($this->_from && !strtotime($this->_from))
-			$this->_from = null;
-
+	public function isDateValid($value) {
+		return empty($value) || preg_match('/^\d{4}-\d{2}-\d{2}$/', $value );
 	}
+
 
 	public function getNotices() {
 		return $this->_notices;
@@ -75,7 +71,6 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 
 	public function getErrorOn($builder) {
-
 		$answer = '';
 
 		if (null == $this->_metadataPrefix)
@@ -88,10 +83,18 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		if ($this->_set && !$this->_catalogue)
 			$answer .= $builder->error(array('code' => 'badArgument'), 'Set not found');
 
+		if (! ($this->isDateValid($this->_from) && $this->isDateValid($this->_until))) {
+			$this->_from = $this->_until = null;
+			return $builder->error(array('code' => 'badArgument'), 'date invalid');
+		}
+
 
 		if ($this->_until && $this->_from) {
 			if (strlen($this->_until) != strlen($this->_from))
 				return $builder->error(array('code' => 'badArgument'), 'from granularity != until granularity');
+			
+			if (strtotime($this->_from)>(strtotime($this->_until)))
+				return $builder->error(array('code' => 'noRecordsMatch'));
 		}
 
 		$token = null;
