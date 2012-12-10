@@ -62,6 +62,7 @@ class OaiController extends Zend_Controller_Action {
 
 
 	public function listIdentifiersAction() {
+		xdebug_break();
 		$this->getHelper('ViewRenderer')->setLayoutScript('empty.phtml');
 		$request = new Class_WebService_OAI_Request_ListIdentifiers($this->_request->getParams(), 
 																																$this->buildBaseUrl());

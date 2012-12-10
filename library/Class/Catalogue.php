@@ -54,10 +54,14 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 
 	public function clausesFor($catalogue) {
-		if ($catalogue->isMatchingAllNotices())
-			return '1=1';
-
 		$conditions = array();
+		if ($fromUntil = $this->fromUntilClauseFor($catalogue))
+			$conditions[] = $fromUntil;
+
+		if ($catalogue->isMatchingAllNotices())
+			return isset($fromUntil) ? $fromUntil : '1=1';
+
+
 		if ($facets = $this->facetsClauseFor($catalogue))
 			$conditions[] = $facets;
 		
@@ -73,8 +77,6 @@ class CatalogueLoader extends Storm_Model_Loader {
 		if ($new = $this->nouveauteClauseFor($catalogue))
 			$conditions[] = $new;
 
-		if ($fromUntil = $this->fromUntilClauseFor($catalogue))
-			$conditions[] = $fromUntil;
 
 		if (0 == count($conditions))
 			return '';
@@ -172,6 +174,7 @@ class CatalogueLoader extends Storm_Model_Loader {
 
 	public function fromUntilClauseFor($catalogue) {
 		$clauses = array();
+
 		if ($start = $catalogue->getFrom()) 
 			$clauses[] = "left(date_maj, 10) >= '" . $start . "'";
 

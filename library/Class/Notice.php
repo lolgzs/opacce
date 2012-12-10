@@ -1040,7 +1040,6 @@ class Class_Notice extends Storm_Model_Abstract {
 
 
 	protected function getNatureDocs() {
-		xdebug_break();
 		return $this->get_subfield('200','b');
 		
 	}

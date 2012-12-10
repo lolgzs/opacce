@@ -392,4 +392,36 @@ class OAIControllerListIdentifiersWithoutDataFoundTest extends AbstractControlle
 		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="noRecordsMatch"]');
 	}
 }
+
+
+
+
+class OAIControllerListIdentifiersWithUntilParamTest extends AbstractControllerTestCase {
+	protected $_xpath;
+	protected $_xml;
+	protected $_cache;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_xpath = TestXPathFactory::newOai();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Catalogue')
+			->whenCalled('countNoticesFor')
+			->answers(1000);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Notice')
+			->whenCalled('findAllBy')
+			->with(['limitPage' => [1, 100],
+							'where' => 'left(date_maj, 10) <= \'2012-01-01\''])
+			->answers([])
+			->beStrict();
+
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&until=2012-01-01', true);
+		$this->_xml = $this->_response->getBody();
+	}
+
+	/** @test */
+	public function responseShouldCountainsErrorNoRecordMatch() {
+		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="noRecordsMatch"]');
+	}
+}
 ?>

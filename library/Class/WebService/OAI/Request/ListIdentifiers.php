@@ -100,10 +100,16 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		$token = null;
 		if ($this->_resumptionToken 
 				&& !($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken)))
-			$answer .= $builder->error(array('code' => 'badResumptionToken'));
+			return $builder->error(array('code' => 'badResumptionToken'));
 
 		if ($answer) 
 			return $answer;
+
+		if ($this->_from) 
+			$this->_catalogue->setFrom(substr($this->_from, 0, 10));
+
+		if ($this->_until) 
+			$this->_catalogue->setUntil(substr($this->_until, 0, 10));
 
 		if (0 == ($count = $this->_catalogue->getNoticesCount()))
 			return $builder->error(array('code' => 'noRecordsMatch'));
@@ -118,11 +124,6 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 		if ($this->_token)
 			$this->_token->save();
-		
-		if ($this->_from) 
-			$this->_catalogue->setFrom(substr($this->_from, 0, 10));
-		if ($this->_until) 
-			$this->_catalogue->setUntil(substr($this->_until, 0, 10));
 
 		$this->_notices = $this->_catalogue->getNotices($page_number, self::IDENTIFIERS_BY_PAGE);
 		if (empty($this->_notices))
