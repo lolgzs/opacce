@@ -55,14 +55,19 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 			$this->_from = $token->getParam('from');
 			$this->_until = $token->getParam('until');
 		}
-		if (!strtotime($this->_until))
-				$this->_until = null;
-		if (!strtotime($this->_from))
-			$this->_from = null;
 
+		$this->checkUntilAndFromValidity();
 		$this->_catalogue = $this->getCatalogueFromSetSpec($this->_set);
 	}
 
+
+  public function checkUntilAndFromValidity() {
+		if ($this->_until && !strtotime($this->_until))
+			$this->_until = null;
+		if ($this->_from && !strtotime($this->_from))
+			$this->_from = null;
+
+	}
 
 	public function getNotices() {
 		return $this->_notices;
@@ -77,6 +82,12 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 
 		if ($this->_set && !$this->_catalogue)
 			$answer .= $builder->error(array('code' => 'badArgument'), 'Set not found');
+
+
+		if ($this->_until && $this->_from) {
+			if (strlen($this->_until) != strlen($this->_from))
+				return $builder->error(array('code' => 'badArgument'), 'Set not found');
+		}
 
 		$token = null;
 		if ($this->_resumptionToken 
