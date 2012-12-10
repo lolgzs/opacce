@@ -98,6 +98,11 @@ class DynixFixtures {
 	}
 
 
+	public static function xmlWithCurrentLocationId() {
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><LookupTitleInfoResponse xmlns="http://schemas.sirsidynix.com/symws/standard"><TitleInfo><titleID>379804</titleID><TitleAvailabilityInfo><totalCopiesAvailable>1</totalCopiesAvailable><libraryWithAvailableCopies>Créteil : Réserve</libraryWithAvailableCopies><totalResvCopiesAvailable>0</totalResvCopiesAvailable><locationOfFirstAvailableItem>INPROCESS</locationOfFirstAvailableItem><holdable>false</holdable><bookable>false</bookable></TitleAvailabilityInfo><CallInfo><libraryID>CRETRES</libraryID><classificationID>ASIS</classificationID><callNumber>R TIT</callNumber><numberOfCopies>1</numberOfCopies><ItemInfo><itemID>00000001</itemID><itemTypeID>1IMP</itemTypeID><currentLocationID>INPROCESS</currentLocationID><homeLocationID>INPROCESS</homeLocationID><reshelvingLocationID>INPROCESS</reshelvingLocationID><chargeable>true</chargeable><fixedTimeBooking>false</fixedTimeBooking></ItemInfo></CallInfo></TitleInfo></LookupTitleInfoResponse>';
+
+
+	}
 	public static function xmlLookupTitleInfoHarryPotter() {
 		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <LookupTitleInfoResponse xmlns="http://schemas.sirsidynix.com/symws/standard">

@@ -80,7 +80,28 @@ abstract class DynixTestCase extends Storm_Test_ModelTestCase {
 
 
 
+class DynixCurrentLocationId extends DynixTestCase {
+	protected $_notice;
+	public function setUp() {
+		parent::setUp();
 
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://www.infocom94.fr:8080/capcvm/rest/standard/lookupTitleInfo?clientID=SymWS&titleID=379804&includeItemInfo=true&includeAvailabilityInfo=true')
+			->answers(DynixFixtures::xmlWithCurrentLocationId())
+			->beStrict();
+
+		$this->_notice = $this->_service->getNotice('379804');
+	}
+
+	/** @test */
+	public function firstExemplaireDisponibiliteShouldBeInProgress() {
+		$this->assertEquals('En traitement',
+												$this->_notice->exemplaireAt(0)->getDisponibilite());
+	}	
+
+
+}
 class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 	protected $_notice;
 
@@ -166,8 +187,8 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 
 
 	/** @test */
-	public function thirdExemplaireDisponibiliteShouldBeDisponible() {
-		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_LIBRE,
+	public function thirdExemplaireDisponibiliteShouldNotBeDisponible() {
+		$this->assertEquals('Indisponible',
 												$this->_notice->exemplaireAt(2)->getDisponibilite());
 	}	
 
