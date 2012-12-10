@@ -57,19 +57,38 @@ abstract class OAIControllerRequestTestCase extends AbstractControllerTestCase {
 
 
 class OAIControllerIndentifyRequestTest extends OaiControllerRequestTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=Identify', true);		
+	}
+
+
 	/** @test */
-	public function shouldReturnIdentifyResponseWithoutError() {
-		$this->dispatch('/opac/oai/request?verb=Identify', true);
+	public function shouldReturnIdentifyResponse() {
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:request[@verb="Identify"]');
+	}
+
+
+	/** @test */
+	public function responseShouldNotHaveError() {
 		$this->_xpath->assertNotXPath($this->_response->getBody(), 
 																	'//oai:error');
+	}
+}
+
+
+
+
+class OAIControllerIndentifyRequestWithIllegalParameterTest extends OaiControllerRequestTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/oai/request?verb=Identify&test=test', true);
 	}
 
 
 	/** @test */
 	public function shouldReturnErrorBadArgumentWithIllegalParameter() {
-		$this->dispatch('/opac/oai/request?verb=Identify&test=test', true);
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:error[@code="badArgument"]');
 	}

@@ -99,23 +99,4 @@ class OAIControllerListRecordsInZorkSetTest extends AbstractControllerTestCase {
 	}
 }
 
-
-class OAIControllerListRecordsWithoutSetTest extends AbstractControllerTestCase {
-	protected $_xpath;
-	protected $_xml;
-
-	public function setUp() {
-		parent::setUp();
-		$this->_xpath = TestXPathFactory::newOaiDc();
-		$this->dispatch('/opac/oai/request?verb=ListRecords&metadataPrefix=oai_dc');
-		$this->_xml = $this->_response->getBody();
-	}
-
-
-	/** @test */
-	public function shouldHaveNoRecordsError() {
-		$this->_xpath->assertXPath($this->_xml, '//oai:error[@code="noRecordsMatch"]');
-	}
-}
-
 ?>
