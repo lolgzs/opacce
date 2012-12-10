@@ -298,6 +298,16 @@ class OAIControllerListIdentifiersInvalidParamsTest extends AbstractControllerTe
 		$this->_xpath->assertXPath($this->_response->getBody(),
 															 '//oai:error[@code="badResumptionToken"]');
 	}
+
+	/** @test */
+	public function withBadFromAndUntilResponseShouldNotContainsAttributes() {
+		$this->dispatch('/opac/oai/request?verb=ListIdentifiers&metadataPrefix=oai_dc&set=really_wrong_set&from=some_random_date&until=some_random_date');
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+																	'//oai:request[not(@from)][not(@until)]');
+		
+	}
+
+
 }
 
 

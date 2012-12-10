@@ -48,12 +48,17 @@ class Class_WebService_OAI_Request_ListIdentifiers {
 		$this->_until = $this->_params['until'];
 
 		$this->_resumptionToken = $this->_params['resumptionToken'];
+
 		if ($this->_resumptionToken 
 				&& ($token = Class_WebService_OAI_ResumptionToken::find($this->_resumptionToken))) {
 			$this->_set = $token->getParam('set');
 			$this->_from = $token->getParam('from');
 			$this->_until = $token->getParam('until');
 		}
+		if (!strtotime($this->_until))
+				$this->_until = null;
+		if (!strtotime($this->_from))
+			$this->_from = null;
 
 		$this->_catalogue = $this->getCatalogueFromSetSpec($this->_set);
 	}
