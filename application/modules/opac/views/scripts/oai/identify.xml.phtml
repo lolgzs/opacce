@@ -3,9 +3,15 @@
 				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 	<responseDate><?php echo date('c');?></responseDate>
-	<?php echo $this->request->renderOn($this->builder); ?>
-	<?php echo ($this->error) ? $this->error : '';?>
-	<Identify>
+
+	<?php 
+    echo $this->request->renderOn($this->builder);
+    if ($this->error)
+			echo $this->error;
+		else {
+
+		?>	
+			<Identify>
 		<repositoryName><![CDATA[<?php echo $this->repositoryName;?>]]></repositoryName>
 		<baseURL><?php echo $this->baseUrl; ?></baseURL>
 		<protocolVersion>2.0</protocolVersion>
@@ -14,4 +20,5 @@
     <deletedRecord>no</deletedRecord>
     <granularity>YYYY-MM-DD</granularity>
 	</Identify>
+<?php } ?>
 </OAI-PMH>

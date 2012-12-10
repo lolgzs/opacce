@@ -92,6 +92,14 @@ class OAIControllerIndentifyRequestWithIllegalParameterTest extends OaiControlle
 		$this->_xpath->assertXPath($this->_response->getBody(), 
 															 '//oai:error[@code="badArgument"]');
 	}
+
+
+	/** @test */
+	public function shouldNotReturnIdentify() {
+		$this->_xpath->assertNotXPath($this->_response->getBody(), 
+															 '//oai:Identify');
+	}
+
 }
 
 
