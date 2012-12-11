@@ -214,6 +214,15 @@ class MicrobibFixtures {
 		<code_barre>1805660020</code_barre>
 		<posee_le>2012-02-28</posee_le>
 		<expire_le/>
+		<disponible>false</disponible>
+	</Liste_Reservations>
+	<Liste_Reservations>
+		<titre>COMMUNAUTÉ DE L\'ANNEAU : LE SEIGNEUR DES ANNEAUX 1 (LA)</titre>
+		<auteur>JACKSON PETER</auteur>
+		<code_barre>0183050194</code_barre>
+		<posee_le>2012-12-11</posee_le>
+		<expire_le/>
+		<disponible>true</disponible>
 	</Liste_Reservations>
 </abonne>';
 	}

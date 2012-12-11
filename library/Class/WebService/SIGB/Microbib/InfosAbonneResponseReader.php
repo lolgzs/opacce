@@ -101,6 +101,11 @@ class Class_WebService_SIGB_Microbib_InfosAbonneResponseReader {
 	public function endAuteur($data) {
 		$this->_current_operation->setAuteur($data);
 	}
+
+
+	public function endDisponible($data) {
+		$this->_current_operation->setEtat($data == 'true' ? 'Disponible' : 'Réservé');
+	}
 }
 
 ?>

@@ -208,14 +208,26 @@ class MicrobibServiceTestInfosAbonne extends MicrobibServiceTestCase {
 
 
 	/** @test */
-	public function emprunteurShouldHaveOneReservation() {
-		$this->assertEquals(1, count($this->emprunteur->getReservations()));
+	public function emprunteurShouldHaveTwoReservations() {
+		$this->assertEquals(2, count($this->emprunteur->getReservations()));
 	}
 
 
 	/** @test */
 	public function firstReservationAuteurShouldBeBIGART() {
 		$this->assertEquals('BIGART T.P.', array_first($this->emprunteur->getReservations())->getAuteur());
+	}
+
+
+	/** @test */
+	public function firstReservationEtatShouldBeReserve() {
+		$this->assertEquals('Réservé', array_first($this->emprunteur->getReservations())->getEtat());
+	}
+
+
+	/** @test */
+	public function secondReservationEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', array_last($this->emprunteur->getReservations())->getEtat());
 	}
 }
 
