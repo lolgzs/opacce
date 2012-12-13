@@ -137,6 +137,15 @@ class MicrobibServiceTestInfosExemplaires5204 extends MicrobibServiceTestCase {
 	public function secondExemplaireDateRetourShouldBe31_03_2012($exemplaire) {
 		$this->assertEquals('31/03/2012', $exemplaire->getDateRetour());
 	}
+
+
+	/** @test */
+	public function thirdExemplaireDisponibiliteShouldBeNonPretable() {
+		$exemplaire = $this->notice->getExemplaires()[2];
+		$this->assertEquals('Inaccessible au prêt', $exemplaire->getDisponibilite());
+		return $exemplaire;
+	}
+
 }
 
 

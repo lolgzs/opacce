@@ -63,6 +63,13 @@ class Class_WebService_SIGB_Microbib_InfosExemplairesResponseReader extends Clas
 
 		$this->_current_exemplaire->setDateRetour(implode('/', array_reverse(explode('-', $data))));
 	}
+
+
+	public function endPretable($data) {
+		if ($data == 'false')
+			$this->_current_exemplaire->setDisponibiliteLabel('Inaccessible au prêt');
+	}
+
 }
 
 
