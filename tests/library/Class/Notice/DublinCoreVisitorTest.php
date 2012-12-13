@@ -61,7 +61,8 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 				->subfieldWillReturn(['210', 'c'], ['Bloomsbury Publishing'])
 				->subfieldWillReturn(['210', 'a'], ['Londres'])
 				->subfieldWillReturn(['200', 'b'], ['Manuscrit',
-																						'Collection'])
+																						'Collection',
+																						'Parchemin'])
 				->subfieldWillReturn(['801', 'b'], ['Castagnera'])
 				->subfieldWillReturn(['852', 'k'], ['LV/R ROW']));
 		$this->_dublin_core_visitor->visit($potter);
@@ -238,6 +239,15 @@ class DublinCoreVisitorPotterTest extends DublinCoreVisitorTestCase {
 		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
 																							'//oai_dc:dc/dc:type[@xml:lang="fre"]',
 																							'Manuscrit');
+	}
+
+
+
+	/** @test */
+	public function shouldHaveTypeParchemin() {
+		$this->_xpath->assertXPathContentContains($this->_dublin_core_visitor->xml(),
+																							'//oai_dc:dc/dc:type[@xml:lang="fre"]',
+																							'Parchemin');
 	}
 
 

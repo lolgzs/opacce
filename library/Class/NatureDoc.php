@@ -25,7 +25,7 @@ class Class_NatureDoc {
 	 */
 	public static function langForLabel($libelle) {
 		$label_ids=array_flip(self::allByIdLabel());
-		return isset($label_ids[$libelle]) && $label_ids[$libelle] > 12 ? 'fre' : 'eng';
+		return isset($label_ids[$libelle]) && $label_ids[$libelle] <= 12 ? 'eng' : 'fre';
 	}
 
 
