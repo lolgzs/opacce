@@ -89,6 +89,9 @@ class Class_WebService_SIGB_Orphee_GetLstRsvResponseReader extends Class_WebServ
 	}
 
 
+	public function endRang($data) {
+		$this->_current_reservation->setRang(trim($data));
+	}
 }
 
 ?>

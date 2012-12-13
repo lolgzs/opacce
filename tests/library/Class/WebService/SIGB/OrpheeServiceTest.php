@@ -870,6 +870,15 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 	}
 
 
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
+	public function secondReservationRangShouldBeTwo($reservation) {	
+		$this->assertEquals(2, array_at(1, $this->emprunteur->getReservations())->getRang());
+	}
+
+
 	/** @test */
 	public function thirdReservationShouldNotBeEmpty() {
 		$reservation = array_at(2, $this->emprunteur->getReservations());

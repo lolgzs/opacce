@@ -365,7 +365,7 @@ renouvellement -->
       <sit><![CDATA[en attente]]></sit> 
       <date_crea><![CDATA[09/06/2008]]></date_crea>
       <date_fin></date_fin> 
-      <rang>1</rang> 
+      <rang>2</rang> 
     </document> 
     <document> 
       <cb></cb> 
