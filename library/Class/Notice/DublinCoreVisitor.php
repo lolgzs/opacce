@@ -42,14 +42,18 @@ class Class_Notice_DublinCoreVisitor {
 
 	public function xml() {
 		return $this->_builder->oai_dc(
-			$this->_builder->identifier($this->_identifier)
+			$this->_builder->identifier($this->_url_identifier)
 			. $this->_xml);
 	}
 
 
 	public function visitClefAlpha($clef) {
+
 		$this->_identifier = sprintf('oai:%s:%s',
 																 $_SERVER['SERVER_NAME'], $clef);
+		$this->_url_identifier = sprintf('http://%s%s/recherche/viewnotice/clef/%s',
+																 $_SERVER['SERVER_NAME'], BASE_URL, $clef);
+
 	}
 
 
