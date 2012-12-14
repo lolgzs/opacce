@@ -65,7 +65,8 @@
 			counterText: "Image {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
 			closeKeys: [27, 88, 67],		// Array of keycodes to close Slimbox, default: Esc (27), 'x' (88), 'c' (67)
 			previousKeys: [37, 80],			// Array of keycodes to navigate to the previous image, default: Left arrow (37), 'p' (80)
-			nextKeys: [39, 78]			// Array of keycodes to navigate to the next image, default: Right arrow (39), 'n' (78)
+			nextKeys: [39, 78],			// Array of keycodes to navigate to the next image, default: Right arrow (39), 'n' (78)
+			onClose: function() {}  //close callback
 		}, _options);
 
 		// The function is called for a single image, with URL and Title as first two arguments
@@ -237,7 +238,7 @@
 			$(center).hide();
 			$(overlay).stop().fadeOut(options.overlayFadeDuration, setup);
 		}
-
+		options.onClose();
 		return false;
 	}
 
