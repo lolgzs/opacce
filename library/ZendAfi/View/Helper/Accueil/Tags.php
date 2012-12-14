@@ -109,7 +109,7 @@ class ZendAfi_View_Helper_Accueil_Tags extends ZendAfi_View_Helper_Accueil_Base 
 				$facettes['T'][$type]++ : 
 				$facettes['T'][$type] = 1;
 
-			$items = explode(" ", trim($notice['facettes']));
+			$items = array_filter(explode(" ", trim($notice['facettes'])));
 			foreach ($items as $item) {
 				$type = substr($item, 0, 1);
 				if (!array_key_exists($type, $facettes))
