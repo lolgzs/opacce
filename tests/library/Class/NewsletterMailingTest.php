@@ -62,6 +62,13 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 			->setMail('mduchamp@hotmail.com');
 
 
+		$this->zork = new Class_Users();
+		$this->zork
+			->setPrenom('')
+			->setNom('Zork')
+			->setMail('zork');
+
+
 		$this->animations = new Class_Newsletter();
 		$this->animations
 			->setTitre('Animations du mois')
@@ -71,6 +78,7 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 			->setIdPanier(null)
 			->addUser($this->rdubois)
 			->addUser($this->mduchamp)
+			->addUser($this->zork)
 			->setExpediteur(null);
 
 		$this->mock_transport = new MockMailTransport();
@@ -102,6 +110,13 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 		$this->assertContains('mduchamp@hotmail.com',
 													$this->mail->getRecipients());
 	}
+
+
+	public function testBccShouldNotIncludeZork() {
+		$this->assertNotContains('zork',
+													$this->mail->getRecipients());
+	}
+
 
 	public function testToIsAdminPortail() {
 		$this->assertContains('flo@astrolabe.fr',

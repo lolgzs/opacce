@@ -31,6 +31,13 @@ class ZendAfi_Mail extends Zend_Mail {
 			parent::addTo($recipient, $name);
 		return $this;
 	}
+
+
+	public function addBcc($email) {
+		$validator = new Zend_Validate_EmailAddress();
+		if ($validator->isValid($email))
+			parent::addBcc($email);
+	}
 }
 
 ?>
