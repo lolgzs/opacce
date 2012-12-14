@@ -97,17 +97,17 @@ class Class_NoticeUnimarc {
 		// récupération du répertoire
 		$m = 3 + $dm1 + $dm2;
 		$directory = substr($this->full_record,	24,	$ba - 25);
-		$tmp_dir = explode('|', chunk_split($directory, $m, '|'));
-		$tmp_dir_count = count($tmp_dir);
+		$tmp_dir = array_filter(explode('|', chunk_split($directory, $m, '|')));
 
 		$adress_length = 3 + $dm1;
-		for ($i = 0; $i < $tmp_dir_count; $i++) {
-			if ($tmp_dir[$i]) {
-				$this->inner_data[$i] = array('label' => substr($tmp_dir[$i], 0, 3),
-																			'content' => substr($this->full_record,
-																													$ba + (int)substr($tmp_dir[$i], $adress_length, $dm2),
-																													(int)substr($tmp_dir[$i], 3, $dm1)));
-			}
+		foreach ($tmp_dir as $i => $dir) {
+			$label = substr($dir, 0, 3);
+			if (!isset($this->inner_data[$label]))
+				$this->inner_data[$label] = [];
+
+			$this->inner_data[$label][] = substr($this->full_record,
+																					 $ba + (int)substr($dir, $adress_length, $dm2),
+																					 (int)substr($dir, 3, $dm1));
 		}
 	}
 	
@@ -121,40 +121,25 @@ class Class_NoticeUnimarc {
 	 * Puis liste de sous-champs sinon renvoit le bloc entier
 	 */
 	public function get_subfield() {
-		$result = array();
-
-		// premier param obligatoire
-		$args_count = func_num_args();
-		if (!$args_count) 
+		$result = [];
+		
+		if (!$args = func_get_args()) 
 			return $result;
 
-		$contents = array();
-		$inner_data_size = sizeof($this->inner_data);
-		$inner_data_label = func_get_arg(0);
-		for ($i = 0; $i < $inner_data_size; $i++) {
-			if ($inner_data_label == $this->inner_data[$i]['label'])
-				$contents[] = $this->inner_data[$i]['content'];
-		}
+		$inner_data_label = $args[0];
+		$subfields = array_slice($args, 1);
 
-		if (0 == count($contents))
+		if (!isset($this->inner_data[$inner_data_label]))
 			return $result;
 
-		$subfields = array();
-		if (2 == $args_count) {
-			$subfields[] = func_get_arg(1);
-		} else {
-			for ($j = 1; $j < $args_count; $j++)
-				$subfields[] = func_get_arg($j);
-		}
-
-		foreach ($contents as $content)
+    foreach($this->inner_data[$inner_data_label] as $content)
 			$this->_getSubfieldInContent($content, $subfields, $result);
-
+		
 		return $result;
 	}
 
 
-	protected function _getSubfieldInContent($content, $subfields, &$result) {
+	protected function _getSubfieldInContent($content, &$subfields, &$result) {
 		if (0 == count($subfields)) {
 			$result[] = preg_replace('/' . $this->rgx_field_end .'/', '', $content);
 			return;
