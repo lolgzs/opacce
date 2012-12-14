@@ -173,7 +173,7 @@ class DecodageUnimarcLittleSenegalTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class UnimarcLindaLemayBlesseTest extends PHPUnit_Framework_TestCase {
+class DecodageUnimarcLindaLemayBlesseTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->blessee = new Class_Notice();
 		$this->blessee->setUnimarc("01433nje0 22004331  450 00100080000001000250000807100310003310000410006410500910010520000490019621000230024521500200026830000240028830000350031233500770034746400160042446400320044046400290047246400310050146400180053246400150055046400360056546400300060146400240063146400180065546400320067346400160070546400150072146400150073646400170075146400230076846400260079146400340081746400260085167600060087768600140088370000370089793400650093400123297  a0825646794607d22,2300a2564679460bWarner2WARNER  a20101125             1frea01      ba  1[2010-11-25-00.00.00.000000][2010-11-25-00.00.00.000000][2010-11-25-00.00.00.000000][]1 aBlesséefLynda Lemay AbDC : Disque Compact  cWarner Musicd2010  a1 DC11elivret  aTextes des chansons  aContient une plage multimédia  ahttp://www.gamannecy.com/images/pochettes/201007/0825646794607_thumb.jpg1 aBlesséev11 aDebout sur les pissenlisv11 aJ'ai rencontré Mariev11 aLes Mûres Introductionv11 aLes Mûresv11 aJumellev11 aGros colons - gros blaireauxv11 aCa valait des millionsv11 aJe t'aime encorev11 aUn Golfeurv11 aMes plus belles vacancesv11 aAncêtrev11 aCharlotv11 aPoissonv11 aUne Mèrev11 aFarce d'oreillev11 aMa chaise en rotinv11 aUn Verre de n'importe quoiv11 aEntre deux paradisv1  10  a0 LEM 99710aLemaybLyndagAlto, Contralto5A  a<0><99><7><Créé par import UNIMARC le 25-11-2010><LEM><><>");
@@ -199,8 +199,19 @@ class UnimarcLindaLemayBlesseTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('  ahttp://www.gamannecy.com/images/pochettes/201007/0825646794607_thumb.jpg'),
 												$this->blessee->getUnimarcZone('335'));
 	}
+}
 
 
+
+class DecodageUnimarcFromMarc21Test extends PHPUnit_Framework_TestCase {
+	public function setUp() {
+		$this->marc21 = new Class_Notice();
+		$this->marc21->setUnimarc("01642cam0 22004691i 450 001000700000005004100007010000900048011000900057071002400066101001300090200006700103205002300170210002700193215005400220225004500274225002100319300001800340300002700358300002000385300002000405330002200425432002500447461003400472461005100506464002900557500002400586510001900610510002200629517003000651600004100681601002600722605002500748606005800773607006000831700004000891702002900931710003000960711003600990741002401026741003401050996008801084379804120913n                      000 0 eng u01aisbn01aissn01a6146486480 ;blabel01afreceng01atitre propre :esous-titre.h56.ititre premierbenr /fauteur01amention d'Ã©dition01aparis :ccapcvm,d201301a55 p. :ccouv. ill. en coul. ;d23 cm +e1 livret01aautre collection .psous-collection;v3301acollection ;v5601abibliographie01aenregistrement Ã  lyon01anote gÃ©nÃ©rale01apour les jeunes01aanalyse, rÃ©sumÃ©01aprÃ©decesseurttitre01tTitre gÃ©nÃ©ral ;vvoldtitre01ttitre general ;v NÀ 56 sep 2012.dautre titre01adÃ©pouillement de titres01atitre uniformelfr.01atitre original01avariante de titre01aautre titrehNÀ 50.vTome01avedette personney1900-1990.zrÃ©al.01avedette collectivitÃ©01atitre uniforme.lfr.01avedette matiÃ¨rexsous-vedettey1900-1945zEtats-Unis01aVedette matiÃ¨re gÃ©ographiquexsous vedettey1900-194501aauteur, prÃ©nomd(1900-1990).edir.01aauteur secondaire.eill.01aauteur collectif.g ville01aauteur secondaire collectivitÃ©01atitre uniformelfr.01avedette secondaire exposition01aR TITwASISc1i0000000lINPROCESSmCRETRESpE5.00rYsYt1IMPu13/9/2012xROMzADU");
+	}
+	
+	public function testTitreChapeauIsTitrePropre() {
+		$this->assertEquals(['Titre général', 'titre general'], $this->marc21->get_subfield('461', 't'));
+	}
 }
 
 
