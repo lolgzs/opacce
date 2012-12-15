@@ -33,6 +33,7 @@ class Telephone_KiosqueTest extends ViewHelperTestCase {
 										'type_module' => 'KIOSQUE',
 										'preferences' => $options);
 		$this->helper = new ZendAfi_View_Helper_Telephone_Kiosque(2, $params);
+		$_SERVER["REQUEST_URI"] = BASE_URL;
 		$this->html = $this->helper->getBoite();
 		$this->scriptLoader = Class_ScriptLoader::getInstance();
 	}

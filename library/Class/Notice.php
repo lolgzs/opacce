@@ -676,32 +676,28 @@ class Class_Notice extends Storm_Model_Abstract {
 
 
 	public function getTitrePrincipal($type_doc = false, $tome = false) {
-		if (!isset($this->_titre_principal)) {
-			// 200$a
-			$titre = '';
-			if ($titres = $this->get_subfield('200', 'a'))
-				$titre = trim($titres[0]);
+		// 200$a
+		$titre = '';
+		if ($titres = $this->get_subfield('200', 'a'))
+			$titre = trim($titres[0]);
 
-			// Périodique on cherche le chapeau et le n°
-			if ($data = $this->get_subfield("461", "t")) {
-				$chapeau = trim($data[0]);
-				if ($chapeau) {
-					if ($titre == $chapeau) $titre = "";
-					if ($tome) $chapeau .= " n° " . $tome;
-					if ($titre) $titre = $chapeau . BR . $titre;
-					else $titre = $chapeau;
-				}
+		// Périodique on cherche le chapeau et le n°
+		if ($data = $this->get_subfield("461", "t")) {
+			$chapeau = trim($data[0]);
+			if ($chapeau) {
+				if ($titre == $chapeau) $titre = "";
+				if ($tome) $chapeau .= " n° " . $this->getTomeAlpha();
+				if ($titre) $titre = $chapeau . BR . $titre;
+				else $titre = $chapeau;
 			}
-
-			$titre = $this->filtreTitre($titre);
-			$this->_titre_principal = $titre;
 		}
-		return $this->_titre_principal;
+
+		return $this->filtreTitre($titre);
 	}
 
-	public function setTitrePrincipal($titre)
-	{
-		$this->_titre_principal = $titre;
+
+	public function setTitrePrincipal($titre)	{
+		$this->_notice_unimarc->set_subfield('200', 'a', $titre);
 		return $this;
 	}
 

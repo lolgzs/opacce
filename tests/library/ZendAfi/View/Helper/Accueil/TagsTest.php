@@ -21,23 +21,27 @@
 require_once 'library/ZendAfi/View/Helper/ViewHelperTestCase.php';
 
 class TagsTest extends ViewHelperTestCase {
+	protected $_old_sql;
+
 	public function setUp() {
 		parent::setUp();
+		$this->_old_sql = Zend_Registry::get('sql');
+		
+		$notice_enreg = array('type_doc' => 1,
+													'facettes' => 'A777',
+													'id_notice' => 34,
+													'editeur' => '',
+													'annee' => '',
+													'date_creation' => '',
+													'clef_oeuvre' => '');
+
+		Class_Notice::newInstanceWithId(34, $notice_enreg);
+
 		Zend_Registry::set('sql', 
 											 Storm_Test_ObjectWrapper::mock()
 											 ->whenCalled('fetchAll')
-											 ->answers(array(array('type_doc' => 1,
-																						 'facettes' => 'A777',
-																						 'id_notice' => 34,
-																						 'editeur' => '',
-																						 'annee' => '',
-																						 'date_creation' => '',
-																						 'clef_oeuvre' => '')))
+											 ->answers(array($notice_enreg))
 											 
-											 ->whenCalled('fetchEnreg')
-											 ->answers(array('unimarc' => '',
-																			 'type_doc' => 1))
-
 											 ->whenCalled('fetchOne')
 											 ->answers('Terry Pratchett'));
 
@@ -54,6 +58,12 @@ class TagsTest extends ViewHelperTestCase {
 		$this->assertXPathContentContains($this->_html, 
 																			'//a[contains(@href, "recherche/rebond")]', 
 																			'Terry Pratchett');
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('sql', $this->_old_sql);
+		parent::tearDown();
 	}
 
 }

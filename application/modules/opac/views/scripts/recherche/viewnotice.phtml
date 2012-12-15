@@ -39,7 +39,7 @@ $script_loader = Class_ScriptLoader::getInstance()
 					<div>
             <h1 style="margin:0px; white-space:normal">
                <?php 
-	                echo $this->notice->getTitrePrincipal();
+	                echo $this->notice->getTitrePrincipal(true, true);
                   echo $this->readSpeaker('recherche', 
 																					'readnotice', 
 																					["id" => $this->notice->getId()]);	 

@@ -112,6 +112,10 @@ class Class_NoticeUnimarc {
 	}
 	
 
+	public function set_subfield($zone, $sous_zone, $valeur) {
+		$this->inner_data[$zone] = [$this->rgx_subfield_begin.$sous_zone.$valeur.$this->rgx_field_end];
+	}
+
 // ---------------------------------------------------
 // 		récupération d'un ou plusieurs sous-champ(s)
 // ---------------------------------------------------

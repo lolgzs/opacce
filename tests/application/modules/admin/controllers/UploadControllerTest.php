@@ -269,8 +269,8 @@ class UploadControllerVignetteNoticeActionPostValidUrlForPeriodiqueTest extends 
 		parent::setUp();
 
 		$this->_notice
-			->setTypeDoc(Class_TypeDoc::PERIODIQUE)
 			->setTitrePrincipal("Science et vie")
+			->setTypeDoc(Class_TypeDoc::PERIODIQUE)
 			->setAuteurPrincipal('')
 			->setTomeAlpha('1118')
 			->setClefChapeau('SCIENCE VIE');
