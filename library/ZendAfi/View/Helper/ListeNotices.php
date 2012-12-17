@@ -216,7 +216,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 			$html.='<div class="liste_vignette"><table width="100%" cellspacing="0" border="0">';
 
 			// Image
-			$notice["titre_principal"]=$cls_notice->getTitreEtSousTitre($notice["type_doc"],$notice["tome_alpha"]); //$notice["T"];
+			$notice["titre_principal"]=$cls_notice->getTitreEtSousTitre();
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			$html.=sprintf('<tr><td class="%s" width="100px" style="vertical-align:top"><a href="%s"><img src="%s" border="0" width="90px" alt="%s" title="%s"/></a></td>',

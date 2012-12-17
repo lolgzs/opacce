@@ -456,29 +456,32 @@ class Class_Notice extends Storm_Model_Abstract {
 	public function getTousChamps($id_notice) {
 		// Lire la notice de base
 		$notice = $this->getNotice($id_notice, "N");
-		if (!$notice)
-			return false;
+		if (!$notice) return false;
 
 		// Champs
 		$champs = "TAKEFCNMDGPILOR8";
-		for ($i = 0; $i < strlen($champs); $i++) {
+		for ($i = 0; $i < strlen($champs); $i++) 
+		{
 			$clef = $champs[$i];
 			$rubrique = Class_Codification::getNomChamp($clef, 1);
-			if ($clef == "N") {
-				$notice["entete"][$rubrique] = $notice["N"];
-			} elseif ($clef == "I") {
-				if ($notice["isbn"])
-					$notice["entete"]["Isbn"] = $notice["isbn"];
-				else
-					$notice["entete"]["Ean"] = $notice["ean"];
-			} elseif ($clef == "A") {
-				$notice["entete"][$rubrique] = $this->getAuteurs(false, true);
-			} elseif ($clef == "L") {
-				$notice["entete"][$rubrique] = $this->getLangues();
-			} else {
-				$notice["entete"][$rubrique] = $this->getChampNotice($clef, $notice["facettes"]);
+			if ($clef == "N") $notice["entete"][$rubrique] = $notice["N"];
+			elseif ($clef == "I")
+			{
+				if ($notice["isbn"]) $notice["entete"]["Isbn"] = $notice["isbn"];
+				else $notice["entete"]["Ean"] = $notice["ean"];
 			}
+			elseif ($clef == "A") $notice["entete"][$rubrique] = $this->getAuteurs(false, true);
+			elseif ($clef == "L") $notice["entete"][$rubrique] = $this->getLangues();
+			elseif ($clef == "E")
+			{
+				$notice["entete"]["Edition"] = $this->getMentionEdition();
+				$notice["entete"][$rubrique] = $this->getEditeurAvecVille();
+			}
+			else $notice["entete"][$rubrique] = $this->getChampNotice($clef, $notice["facettes"]);
 		}
+		
+		// champs supplémentaires
+		$notice["entete"]["Test champ sup"] = $this->getMentionEdition();
 		return $notice;
 	}
 
@@ -681,14 +684,18 @@ class Class_Notice extends Storm_Model_Abstract {
 		if ($titres = $this->get_subfield('200', 'a'))
 			$titre = trim($titres[0]);
 
-		// Périodique on cherche le chapeau et le n°
-		if ($data = $this->get_subfield("461", "t")) {
-			$chapeau = trim($data[0]);
-			if ($chapeau) {
-				if ($titre == $chapeau) $titre = "";
-				if ($tome) $chapeau .= " n° " . $this->getTomeAlpha();
-				if ($titre) $titre = $chapeau . BR . $titre;
-				else $titre = $chapeau;
+			// On cherche le chapeau et le n°
+			if ($data = $this->get_subfield("461", "t")) {
+				$chapeau = trim($data[0]);
+				if ($chapeau) 
+				{
+					if ($titre == $chapeau) $titre = "";
+					$data=$this->get_subfield('461','v');
+					$tome=$data[0];
+					if ($tome) $chapeau .= " n° " . $tome;
+					if ($titre) $titre = $chapeau . BR . $titre;
+					else $titre = $chapeau;
+				}
 			}
 		}
 
@@ -704,11 +711,11 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 // Titre + sous-titre paramétré pour affichage des listes
 // ----------------------------------------------------------------
-	public function getTitreEtSousTitre($type_doc,$tome)
+	public function getTitreEtSousTitre()
 	{
+		unset ($this->_titre_principal);
 		$zones=Class_Profil::getCurrentProfil()->getZonesTitre();
-		//tracedebug($zones,true);
-		$titre=$this->getTitrePrincipal($type_doc, $tome);
+		$titre=$this->getTitrePrincipal();
 		if(count($zones))
 		{
 			foreach($zones as $zone)
@@ -880,6 +887,16 @@ class Class_Notice extends Storm_Model_Abstract {
 		$titre = $this->filtreTitre($titre[0]);
 		return trim($titre);
 	}
+	
+// ----------------------------------------------------------------
+// Mention d'edition
+// ----------------------------------------------------------------
+	public function getMentionEdition()
+	{
+		$titre = $this->get_subfield("205", "a");
+		$titre = $this->filtreTitre($titre[0]);
+		return trim($titre);
+	}
 
 
 	/**
@@ -903,7 +920,7 @@ class Class_Notice extends Storm_Model_Abstract {
 
 		$titres = [];
 		foreach ($zones as $elem) {
-			$zone = strLeft($elem, 3);
+			$zone = substr($elem,0,3);
 			$champ = strRight($elem, 1);
 			$data = $this->get_subfield($zone);
 			foreach ($data as $items) {
