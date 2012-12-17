@@ -697,8 +697,6 @@ class Class_Notice extends Storm_Model_Abstract {
 					else $titre = $chapeau;
 				}
 			}
-		}
-
 		return $this->filtreTitre($titre);
 	}
 
