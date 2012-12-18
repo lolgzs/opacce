@@ -6,11 +6,11 @@ Object subclass: #HLCodeModel
 !HLCodeModel methodsFor: 'accessing'!
 
 announcer
-	^ announcer ifNil: [ self initializeAnnouncer ]
+	^ announcer ifNil: [ announcer := Announcer new ]
 !
 
 environment
-	^ environment ifNil: [ self initializeEnvironment]
+	^ environment ifNil: [ HLManager current environment ]
 !
 
 environment: anEnvironment
@@ -18,7 +18,7 @@ environment: anEnvironment
 !
 
 receiver
-	^ receiver
+	^ receiver ifNil: [ receiver := self defaultReceiver ]
 !
 
 receiver: anObject
@@ -36,18 +36,10 @@ subscribe: aWidget
 	aWidget subscribeTo: self announcer
 ! !
 
-!HLCodeModel methodsFor: 'initialization'!
+!HLCodeModel methodsFor: 'defaults'!
 
-initializeAnnouncer
-	^ announcer := Announcer new
-!
-
-initializeEnvironment
-	^ environment := Smalltalk current
-!
-
-initializeReceiver
-	^receiver := DoIt new
+defaultReceiver
+	^ DoIt new
 ! !
 
 !HLCodeModel class methodsFor: 'actions'!
@@ -69,6 +61,14 @@ announcer
 	^ self model announcer
 !
 
+contents
+	^ editor getValue
+!
+
+contents: aString
+	editor setValue: aString
+!
+
 currentLine
     ^editor getLine: (editor getCursor line)
 !
@@ -80,12 +80,12 @@ currentLineOrSelection
 !
 
 model
-
-	^ model
+	^ model ifNil: [ 
+    	self model: HLCodeModel new.
+		model ]
 !
 
 model: aModel
-
 	model := aModel
 !
 
@@ -115,25 +115,12 @@ selectionStart
 
 selectionStart: anInteger
    code element selectionStart: anInteger
-!
-
-val
-	^ code getValue
-!
-
-val: aString
-    code setValue: aString
-!
-
-wrapper
-
-	^ wrapper
 ! !
 
 !HLCodeWidget methodsFor: 'actions'!
 
 clear
-      self val: ''
+      self contents: ''
 !
 
 doIt
@@ -174,7 +161,7 @@ makeInspectorOn: anObject
 
 observeWrapper
 
-    wrapper onKeyDown: [:e | self onKeyDown: e]
+    wrapper onKeyDown: [ :e | self onKeyDown: e ]
 !
 
 print: aString
@@ -252,66 +239,42 @@ onPrintIt
 
 !HLCodeWidget methodsFor: 'rendering'!
 
-renderOn: html
-    wrapper := html div class: 'code'.
-    self observeWrapper
-    wrapper with: [code := html textarea].
+renderContentOn: html
+    code := html textarea.
     self setEditorOn: code element.
+    
+    self observeWrapper
 ! !
 
 HLWidget subclass: #HLWorkspace
-	instanceVariableNames: 'model code'
+	instanceVariableNames: 'model codeWidget'
 	package: 'Helios-Workspace'!
 
 !HLWorkspace methodsFor: 'accessing'!
 
-code
-
-	^ code ifNil:[self initializeCode]
+codeWidget
+	^ codeWidget ifNil: [
+		codeWidget := HLCodeWidget new
+    		model: self model code;
+        	yourself ]
 !
 
 model
-
-	^ model ifNil:[self initializeModel]
+	^ model ifNil: [ 
+    	self model: HLWorkspaceModel new.
+		model ]
 !
 
 model: aModel
-
 	model := aModel.
      
-    self code model: aModel code.
-    self observeCode.
+    self codeWidget model: aModel code.
+    self observeCodeWidget.
 ! !
 
 !HLWorkspace methodsFor: 'actions'!
 
-ensureModel
-	"Sends the #model: initialization message if needed."
-
-	model ifNil:[
-		self model: self model]
-!
-
-makeCode
-
-	^ HLCodeWidget new
-    	model: model code;
-        yourself
-!
-
-observeCode
-! !
-
-!HLWorkspace methodsFor: 'initialization'!
-
-initializeCode
-
-	^ code := self makeCode.
-!
-
-initializeModel
-
-	^ model := HLWorkspaceModel new
+observeCodeWidget
 ! !
 
 !HLWorkspace methodsFor: 'reactions'!
@@ -328,10 +291,7 @@ onPrintIt
 !HLWorkspace methodsFor: 'rendering'!
 
 renderContentOn: html
-
-	self ensureModel.
-    
-	html with: self code
+	html with: self codeWidget
 ! !
 
 !HLWorkspace class methodsFor: 'accessing'!
@@ -357,12 +317,12 @@ Object subclass: #HLWorkspaceModel
 !HLWorkspaceModel methodsFor: 'accessing'!
 
 announcer
-	^ announcer ifNil: [ self initializeAnnouncer ]
+	^ announcer ifNil: [ announcer := Announcer new ]
 !
 
 code
 	"Answers the code model working for this workspace model"
-	^ code ifNil:[self initializeCode]
+	^ code ifNil:[ HLCodeModel on: self environment ]
 !
 
 environment
@@ -371,23 +331,6 @@ environment
 
 environment: anEnvironment
 	environment := anEnvironment
-! !
-
-!HLWorkspaceModel methodsFor: 'actions'!
-
-subscribe: aWidget
-	aWidget subscribeTo: self announcer
-! !
-
-!HLWorkspaceModel methodsFor: 'initialization'!
-
-initializeAnnouncer
-	^ announcer := Announcer new
-!
-
-initializeCode
-
-	^ code := HLCodeModel on: self environment
 ! !
 
 !HLWorkspaceModel methodsFor: 'reactions'!

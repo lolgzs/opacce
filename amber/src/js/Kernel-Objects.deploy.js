@@ -2171,6 +2171,46 @@ fn: function () {
 smalltalk.Number.klass);
 
 
+smalltalk.addClass('Organizer', smalltalk.Object, [], 'Kernel-Objects');
+smalltalk.addMethod(
+"_addElement_",
+smalltalk.method({
+selector: "addElement:",
+fn: function (anObject) {
+    var self = this;
+    self.addElement(anObject);
+    return self;
+}
+}),
+smalltalk.Organizer);
+
+smalltalk.addMethod(
+"_elements",
+smalltalk.method({
+selector: "elements",
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(self, "_basicAt_", ["elements"]), "_copy", []);
+    return $1;
+}
+}),
+smalltalk.Organizer);
+
+smalltalk.addMethod(
+"_removeElement_",
+smalltalk.method({
+selector: "removeElement:",
+fn: function (anObject) {
+    var self = this;
+    self.removeElement(anObject);
+    return self;
+}
+}),
+smalltalk.Organizer);
+
+
+
 smalltalk.addClass('Package', smalltalk.Object, ['commitPathJs', 'commitPathSt'], 'Kernel-Objects');
 smalltalk.addMethod(
 "_classes",
@@ -2179,7 +2219,7 @@ selector: "classes",
 fn: function () {
     var self = this;
     var $1;
-    $1 = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.Smalltalk || Smalltalk, "_current", []), "_classes", []), "_select_", [function (c) {return smalltalk.send(smalltalk.send(c, "_package", []), "__eq_eq", [self]);}]);
+    $1 = smalltalk.send(smalltalk.send(self, "_organization", []), "_elements", []);
     return $1;
 }
 }),
@@ -2315,6 +2355,19 @@ fn: function (aString) {
     var self = this;
     self.pkgName = aString;
     return self;
+}
+}),
+smalltalk.Package);
+
+smalltalk.addMethod(
+"_organization",
+smalltalk.method({
+selector: "organization",
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(self, "_basicAt_", ["organization"]);
+    return $1;
 }
 }),
 smalltalk.Package);
@@ -2810,11 +2863,11 @@ smalltalk.addMethod(
 "_at_",
 smalltalk.method({
 selector: "at:",
-fn: function (aSymbol){
-var self=this;
-return self[aSymbol._asString()];
-;
-return self}
+fn: function (aSymbol) {
+    var self = this;
+    return self[aSymbol._asString()];
+    return self;
+}
 }),
 smalltalk.Smalltalk);
 
@@ -2864,6 +2917,18 @@ fn: function (packageName, aDict) {
     object = {};
     smalltalk.send(aDict, "_keysAndValuesDo_", [function (key, value) {return object[key] = value;}]);
     return smalltalk.addPackage(packageName, object);
+    return self;
+}
+}),
+smalltalk.Smalltalk);
+
+smalltalk.addMethod(
+"_deleteClass_",
+smalltalk.method({
+selector: "deleteClass:",
+fn: function (aClass) {
+    var self = this;
+    self.removeClass(aClass);
     return self;
 }
 }),
@@ -2963,9 +3028,9 @@ smalltalk.addMethod(
 "_pseudoVariableNames",
 smalltalk.method({
 selector: "pseudoVariableNames",
-fn: function (){
-var self=this;
-return ["self", "super", "nil", "true", "false", "thisContext"];
+fn: function () {
+    var self = this;
+    return ["self", "super", "nil", "true", "false", "thisContext"];
 }
 }),
 smalltalk.Smalltalk);
@@ -2986,25 +3051,22 @@ smalltalk.addMethod(
 "_removeClass_",
 smalltalk.method({
 selector: "removeClass:",
-fn: function (aClass){
-var self=this;
-var $1,$2,$3;
-$1=smalltalk.send(aClass,"_isMetaclass",[]);
-if(smalltalk.assert($1)){
-smalltalk.send(self,"_error_",[smalltalk.send(smalltalk.send(aClass,"_asString",[]),"__comma",[" is a Metaclass and cannot be removed!"])]);
-};
-smalltalk.send(smalltalk.send(smalltalk.send(aClass,"_methodDictionary",[]),"_values",[]),"_do_",[(function(each){
-return smalltalk.send(aClass,"_removeCompiledMethod_",[each]);
-})]);
-smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(aClass,"_class",[]),"_methodDictionary",[]),"_values",[]),"_do_",[(function(each){
-return smalltalk.send(smalltalk.send(aClass,"_class",[]),"_removeCompiledMethod_",[each]);
-})]);
-smalltalk.send(self,"_basicDelete_",[smalltalk.send(aClass,"_name",[])]);
-$2=smalltalk.send((smalltalk.ClassRemoved || ClassRemoved),"_new",[]);
-smalltalk.send($2,"_theClass_",[aClass]);
-$3=smalltalk.send($2,"_yourself",[]);
-smalltalk.send(smalltalk.send((smalltalk.SystemAnnouncer || SystemAnnouncer),"_current",[]),"_announce_",[$3]);
-return self}
+fn: function (aClass) {
+    var self = this;
+    var $1, $2, $3;
+    $1 = smalltalk.send(aClass, "_isMetaclass", []);
+    if (smalltalk.assert($1)) {
+        smalltalk.send(self, "_error_", [smalltalk.send(smalltalk.send(aClass, "_asString", []), "__comma", [" is a Metaclass and cannot be removed!"])]);
+    }
+    smalltalk.send(smalltalk.send(smalltalk.send(aClass, "_methodDictionary", []), "_values", []), "_do_", [function (each) {return smalltalk.send(aClass, "_removeCompiledMethod_", [each]);}]);
+    smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(aClass, "_class", []), "_methodDictionary", []), "_values", []), "_do_", [function (each) {return smalltalk.send(smalltalk.send(aClass, "_class", []), "_removeCompiledMethod_", [each]);}]);
+    smalltalk.send(self, "_deleteClass_", [aClass]);
+    $2 = smalltalk.send(smalltalk.ClassRemoved || ClassRemoved, "_new", []);
+    smalltalk.send($2, "_theClass_", [aClass]);
+    $3 = smalltalk.send($2, "_yourself", []);
+    smalltalk.send(smalltalk.send(smalltalk.SystemAnnouncer || SystemAnnouncer, "_current", []), "_announce_", [$3]);
+    return self;
+}
 }),
 smalltalk.Smalltalk);
 

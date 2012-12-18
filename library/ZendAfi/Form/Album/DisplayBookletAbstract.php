@@ -21,7 +21,6 @@
 
 abstract class ZendAfi_Form_Album_DisplayBookletAbstract extends ZendAfi_Form_Album_DisplayThumbnails {
 	public function getGroupDefinitions() {
-		Class_ScriptLoader::getInstance()->addInlineStyle('#fieldset-book {display:none}');
 		return array_merge(
 			parent::getGroupDefinitions(),
 			['book' => [

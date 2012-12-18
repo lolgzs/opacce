@@ -147,7 +147,6 @@ function Smalltalk(){
 		var that = setupClass(meta.instanceClass, spec);
 		that.className = spec.className;
 		meta.className = spec.className + ' class';
-        that.organization = new SmalltalkOrganizer();
 		if(spec.superclass) {
 			that.superclass = spec.superclass;
 			meta.superclass = spec.superclass.klass;
@@ -157,7 +156,6 @@ function Smalltalk(){
 	
 	function metaclass() {
 		var meta = setupClass(new SmalltalkMetaclass(), {})
-        meta.organization = new SmalltalkOrganizer();
 		meta.instanceClass = new meta.fn;
 		return meta;
 	}
@@ -169,6 +167,7 @@ function Smalltalk(){
 			value: function() { return 'Smalltalk ' + this.className; }, 
             configurable: true // no writable - in par with ES6 methods
 		});
+        that.organization = new SmalltalkOrganizer();
 		that.pkg = spec.pkg;
 		Object.defineProperties(that.fn.prototype, {
 			methods: { value: {}, enumerable: false, configurable: true, writable: true },
@@ -370,15 +369,18 @@ function Smalltalk(){
 
     st.removeMethod = function(method) {
         var protocol = method.category;
-        var shouldDeleteProtocol;
         var klass = method.methodClass;
+		var methods = klass.fn.prototype.methods;
 
-        delete klass.fn.prototype[method.selector._asSelector()];
-	    delete klass.fn.prototype.methods[method.selector];
+		delete klass.fn.prototype[method.selector._asSelector()];
+		delete methods[method.selector];
 
-        for(var i=0; i<klass.fn.prototype.methods; i++) {
-            if(klass.fn.prototype.methods[i].category == protocol) {
-                shouldDeleteProtocol = true;
+		var selectors = Object.keys(methods);
+		var shouldDeleteProtocol = true;
+		for(var i= 0, l = selectors.length; i<l; i++) {
+            if(methods[selectors[i]].category === protocol) {
+                shouldDeleteProtocol = false;
+				break;
             };
         };
         if(shouldDeleteProtocol) {
@@ -581,12 +583,6 @@ function SmalltalkMethodContext(receiver, selector, method, temps, home) {
 	this.method      = method;
 	this.temps       = temps || {};
 	this.homeContext = home;
-
-    this.resume = function() {
-        //Brutally set the receiver as thisContext, then re-enter the function
-        smalltalk.thisContext = this;
-        return this.method.apply(receiver, temps);
-    };
 };
 
 SmalltalkMethodContext.prototype.copy = function() {
@@ -599,6 +595,12 @@ SmalltalkMethodContext.prototype.copy = function() {
 		this.temps, 
 		home
 	);
+};
+
+SmalltalkMethodContext.prototype.resume = function() {
+    //Brutally set the receiver as thisContext, then re-enter the function
+    smalltalk.thisContext = this;
+    return this.method.apply(receiver, temps);
 };
 
 /* Global Smalltalk objects. */
