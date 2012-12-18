@@ -695,7 +695,7 @@ loadBook
 !AbstractBookWidget methodsFor: 'rendering'!
 
 renderBook: aBook on: aBrush	
-    book := aBook.
+    book := aBook reset.
     
 	aBrush contents: [:html|
 		aBook pages do: [:aPage| 	aPage brush: (html div

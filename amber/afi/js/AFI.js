@@ -721,25 +721,36 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderBook:on:",
 category: 'rendering',
-fn: function (aBook, aBrush) {
-    var self = this;
-    var $1, $2, $3, $4;
-    self['@book'] = aBook;
-    smalltalk.send(aBrush, "_contents_", [function (html) {return smalltalk.send(smalltalk.send(aBook, "_pages", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_div", []);smalltalk.send($1, "_rel_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_yourself", []);return smalltalk.send(aPage, "_brush_", [$2]);}]);}]);
-    $3 = smalltalk.send(self, "_isContainerSmall", []);
-    if (smalltalk.assert($3)) {
-        smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_addClass_", ["small"]);
-    }
-    smalltalk.send(smalltalk.send(self['@book'], "_downloadUrl", []), "_ifNotEmpty_", [function () {return smalltalk.send(self['@downloadBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(html, "_a", []), "_href_", [smalltalk.send(aBook, "_downloadUrl", [])]);}]);}]);
-    if (smalltalk.assert(self['@isFullscreen'])) {
-        smalltalk.send(self, "_renderBookNavigator", []);
-        $4 = smalltalk.send(self, "_renderBookTitle", []);
-    }
-    return self;
-},
+fn: function (aBook,aBrush){
+var self=this;
+var $1,$2,$3,$4;
+self["@book"]=smalltalk.send(aBook,"_reset",[]);
+smalltalk.send(aBrush,"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_rel_",[smalltalk.send(aPage,"_title",[])]);
+$2=smalltalk.send($1,"_yourself",[]);
+return smalltalk.send(aPage,"_brush_",[$2]);
+})]);
+})]);
+$3=smalltalk.send(self,"_isContainerSmall",[]);
+if(smalltalk.assert($3)){
+smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_addClass_",["small"]);
+};
+smalltalk.send(smalltalk.send(self["@book"],"_downloadUrl",[]),"_ifNotEmpty_",[(function(){
+return smalltalk.send(self["@downloadBrush"],"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(html,"_a",[]),"_href_",[smalltalk.send(aBook,"_downloadUrl",[])]);
+})]);
+})]);
+if(smalltalk.assert(self["@isFullscreen"])){
+smalltalk.send(self,"_renderBookNavigator",[]);
+$4=smalltalk.send(self,"_renderBookTitle",[]);
+$4;
+};
+return self},
 args: ["aBook", "aBrush"],
-source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
-messageSends: ["contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
+source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook reset.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
+messageSends: ["reset", "contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);

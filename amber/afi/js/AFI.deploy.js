@@ -525,22 +525,33 @@ smalltalk.addMethod(
 "_renderBook_on_",
 smalltalk.method({
 selector: "renderBook:on:",
-fn: function (aBook, aBrush) {
-    var self = this;
-    var $1, $2, $3, $4;
-    self['@book'] = aBook;
-    smalltalk.send(aBrush, "_contents_", [function (html) {return smalltalk.send(smalltalk.send(aBook, "_pages", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_div", []);smalltalk.send($1, "_rel_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_yourself", []);return smalltalk.send(aPage, "_brush_", [$2]);}]);}]);
-    $3 = smalltalk.send(self, "_isContainerSmall", []);
-    if (smalltalk.assert($3)) {
-        smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_addClass_", ["small"]);
-    }
-    smalltalk.send(smalltalk.send(self['@book'], "_downloadUrl", []), "_ifNotEmpty_", [function () {return smalltalk.send(self['@downloadBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(html, "_a", []), "_href_", [smalltalk.send(aBook, "_downloadUrl", [])]);}]);}]);
-    if (smalltalk.assert(self['@isFullscreen'])) {
-        smalltalk.send(self, "_renderBookNavigator", []);
-        $4 = smalltalk.send(self, "_renderBookTitle", []);
-    }
-    return self;
-}
+fn: function (aBook,aBrush){
+var self=this;
+var $1,$2,$3,$4;
+self["@book"]=smalltalk.send(aBook,"_reset",[]);
+smalltalk.send(aBrush,"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_rel_",[smalltalk.send(aPage,"_title",[])]);
+$2=smalltalk.send($1,"_yourself",[]);
+return smalltalk.send(aPage,"_brush_",[$2]);
+})]);
+})]);
+$3=smalltalk.send(self,"_isContainerSmall",[]);
+if(smalltalk.assert($3)){
+smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_addClass_",["small"]);
+};
+smalltalk.send(smalltalk.send(self["@book"],"_downloadUrl",[]),"_ifNotEmpty_",[(function(){
+return smalltalk.send(self["@downloadBrush"],"_contents_",[(function(html){
+return smalltalk.send(smalltalk.send(html,"_a",[]),"_href_",[smalltalk.send(aBook,"_downloadUrl",[])]);
+})]);
+})]);
+if(smalltalk.assert(self["@isFullscreen"])){
+smalltalk.send(self,"_renderBookNavigator",[]);
+$4=smalltalk.send(self,"_renderBookTitle",[]);
+$4;
+};
+return self}
 }),
 smalltalk.AbstractBookWidget);
 
