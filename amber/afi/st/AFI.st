@@ -329,6 +329,10 @@ currentPageNo
 	^ currentPageNo ifNil: [currentPageNo := 1]
 !
 
+height
+	^ ((book height * self width / book width) / 2) rounded
+!
+
 loader
 	^ loader
 !
@@ -349,6 +353,16 @@ widgetClass
 	^ self class name, (isFullscreen 
 											ifTrue: [' fullscreen bk-widget'] 
 											ifFalse: [' bk-widget'])
+!
+
+width
+	^ (isFullscreen 
+			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
+			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
+!
+
+zoomControlWidth
+	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
 ! !
 
 !AbstractBookWidget methodsFor: 'announcements'!
@@ -382,7 +396,43 @@ toggleFullscreen
 !AbstractBookWidget methodsFor: 'css'!
 
 bookStyle
-	^ ''
+	^ '
+    
+			.bk-widget  .b-arrow div {
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				-o-transition: all 0.3s;
+			}
+
+			.bk-widget  .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}
+
+			.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}
+
+			.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }
+
+			.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}
+
+			.bk-widget .b-counter + .b-counter {float: right;}
+
+			.small>.bk-widget  .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}
+
+			.small>.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }
+
+			.small>.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }
+
+			.small>.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}
+
+			.small>.bk-widget  .b-arrow-prev { left: -25px }
+		
+			.small>.bk-widget  .b-arrow-next { right: -25px }
+
+			.small>.bk-widget  .b-arrow { width: 25px }
+
+			.small>.bk-widget  .b-arrow  div { top: 36% }
+		
+
+	
+'
 !
 
 fullScreenStyle
@@ -792,7 +842,7 @@ isTestCaseInContext: aContext
 ! !
 
 AbstractBookWidget subclass: #BookMonoWidget
-	instanceVariableNames: 'zoomPageAnchor bookBrush'
+	instanceVariableNames: 'zoomPageAnchor bookBrush currentPage'
 	package: 'AFI'!
 
 !BookMonoWidget methodsFor: 'callbacks'!
@@ -809,6 +859,16 @@ closeZoom
 				removeClass: 'active';
 				show.
         ]
+!
+
+goToNextPage
+	currentPage := currentPage nextPage.
+    self renderCurrentPage.
+!
+
+goToPreviousPage
+	currentPage := currentPage previousPage.
+    self renderCurrentPage.
 !
 
 openPage: aPage
@@ -829,7 +889,8 @@ zoomPage
 !BookMonoWidget methodsFor: 'css'!
 
 bookStyle
-	^ '
+	^ super bookStyle,
+    '
     .pages img {
     		margin: 10px auto; 
             display: block
@@ -861,6 +922,18 @@ bookStyle
       .BookMonoWidget .b-navigator-thumbnail li:hover {
    			margin: 0px auto;
       }
+     .bk-widget  .b-arrow-prev div{
+    height: 170px;
+    float: left;
+    top: 25%;
+    width: 74px;
+    }
+     .bk-widget  .b-arrow-next div{
+    height: 170px;
+    float: right;
+    top: 25%;
+    width: 74px;
+    }
    '
 !
 
@@ -870,12 +943,26 @@ openDescriptions
 !BookMonoWidget methodsFor: 'rendering'!
 
 loadBook
-	self renderBook:book on: bookBrush
+	self renderBook:book on: bookBrush.
+    currentPage:=book pages first.
+self renderCurrentPage.
 !
 
 renderBookOn: html
 	self loadIViewerJS.
-	bookBrush := (html div class: 'pages')
+    html div 
+    		class: 'b-arrow-prev';
+            with: [html div onClick: [self goToPreviousPage]].
+	html div 
+    		class: 'b-arrow-next';
+             with: [html div onClick: [self goToNextPage]].
+	
+bookBrush := (html div class: 'pages').
+!
+
+renderCurrentPage
+  (bookBrush asJQuery find: 'img' ) hide.
+	currentPage renderWidth: (self width / 2) rounded height: self height.
 !
 
 renderZoomControlsOn: html
@@ -927,10 +1014,6 @@ bookletOptions
                                yourself
 !
 
-height
-	^ ((book height * self width / book width) / 2) rounded
-!
-
 leftPage
 	^ book pageAt: (currentPageNo - 1) ifAbsent: [Page new].
 !
@@ -945,16 +1028,6 @@ navigatorWidth
 
 rightPage
 	^ book pageAt: currentPageNo ifAbsent: [Page new].
-!
-
-width
-	^ (isFullscreen 
-			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
-			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
-!
-
-zoomControlWidth
-	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
 ! !
 
 !BookWidget methodsFor: 'announcements'!
@@ -1079,38 +1152,6 @@ bookStyle
 			.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }
 
 			.bk-widget button {float: left}
-
-			.bk-widget .booklet .b-arrow div {
-				-webkit-transition: all 0.3s;
-				-moz-transition: all 0.3s;
-				-o-transition: all 0.3s;
-			}
-
-			.bk-widget .booklet .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}
-
-			.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}
-
-			.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }
-
-			.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}
-
-			.bk-widget .b-counter + .b-counter {float: right;}
-
-			.small>.bk-widget .booklet .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}
-
-			.small>.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }
-
-			.small>.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }
-
-			.small>.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}
-
-			.small>.bk-widget .booklet .b-arrow-prev { left: -25px }
-		
-			.small>.bk-widget .booklet .b-arrow-next { right: -25px }
-
-			.small>.bk-widget .booklet .b-arrow { width: 25px }
-
-			.small>.bk-widget .booklet .b-arrow  div { top: 36% }
 
 			.clear { 
 				clear: both;
@@ -1747,7 +1788,7 @@ filter: aJQueryList withInput: aJQueryInput
 ! !
 
 Object subclass: #Page
-	instanceVariableNames: 'brush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book downloadURL'
+	instanceVariableNames: 'brush imgBrush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book downloadURL'
 	package: 'AFI'!
 
 !Page methodsFor: 'accessing'!
@@ -1813,8 +1854,16 @@ navigatorThumbnailURL: aString
 	navigatorThumbnailURL := aString
 !
 
+nextPage
+	^book pages at: self pageNo+1 ifAbsent: [self]
+!
+
 pageNo
 	^ book pageNo: self
+!
+
+previousPage
+	^book pages at: self pageNo-1 ifAbsent: [self]
 !
 
 thumbnailURL
@@ -1853,12 +1902,13 @@ render
 
 renderWidth: width height: height
 	self isRendered ifFalse: [
-          	rendered := true.
-		brush contents: [:html| html img
+        rendered := true.
+		brush contents: [:html| imgBrush := html img
                                  				width:  width;
                                  				height:  height;
                                  				src: thumbnailURL].
-          ].
+       ].
+      imgBrush asJQuery show
 ! !
 
 !Page methodsFor: 'reset'!

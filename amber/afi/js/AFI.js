@@ -374,11 +374,13 @@ selector: "bookStyle",
 category: 'css',
 fn: function () {
     var self = this;
-    return "";
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send("\n    \n\t\t\t.bk-widget  .b-arrow div {\n\t\t\t\t-webkit-transition: all 0.3s;\n\t\t\t\t-moz-transition: all 0.3s;\n\t\t\t\t-o-transition: all 0.3s;\n\t\t\t}\n\n\t\t\t.bk-widget  .b-arrow-next div { background-image:url(", "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-next_black.png);}\n\n\t\t\t.bk-widget  .b-arrow-next:hover div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-next.png);}\n\n\t\t\t.bk-widget  .b-arrow-prev div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-prev_black.png); }\n\n\t\t\t.bk-widget  .b-arrow-prev:hover div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-prev.png);}\n\n\t\t\t.bk-widget .b-counter + .b-counter {float: right;}\n\n\t\t\t.small>.bk-widget  .b-arrow-next div {background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-next_black-small.png);}\n\n\t\t\t.small>.bk-widget  .b-arrow-next:hover div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-next-small.png); }\n\n\t\t\t.small>.bk-widget  .b-arrow-prev div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-prev_black-small.png); }\n\n\t\t\t.small>.bk-widget  .b-arrow-prev:hover div { background-image:url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["booklet/images/arrow-prev-small.png);}\n\n\t\t\t.small>.bk-widget  .b-arrow-prev { left: -25px }\n\t\t\n\t\t\t.small>.bk-widget  .b-arrow-next { right: -25px }\n\n\t\t\t.small>.bk-widget  .b-arrow { width: 25px }\n\n\t\t\t.small>.bk-widget  .b-arrow  div { top: 36% }\n\t\t\n\n\t\n"]);
+    return $1;
 },
 args: [],
-source: "bookStyle\x0a\x09^ ''",
-messageSends: [],
+source: "bookStyle\x0a\x09^ '\x0a    \x0a\x09\x09\x09.bk-widget  .b-arrow div {\x0a\x09\x09\x09\x09-webkit-transition: all 0.3s;\x0a\x09\x09\x09\x09-moz-transition: all 0.3s;\x0a\x09\x09\x09\x09-o-transition: all 0.3s;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget  .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}\x0a\x0a\x09\x09\x09.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}\x0a\x0a\x09\x09\x09.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }\x0a\x0a\x09\x09\x09.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}\x0a\x0a\x09\x09\x09.bk-widget .b-counter + .b-counter {float: right;}\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-prev { left: -25px }\x0a\x09\x09\x0a\x09\x09\x09.small>.bk-widget  .b-arrow-next { right: -25px }\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow { width: 25px }\x0a\x0a\x09\x09\x09.small>.bk-widget  .b-arrow  div { top: 36% }\x0a\x09\x09\x0a\x0a\x09\x0a'",
+messageSends: [",", "scriptsRoot"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -456,6 +458,24 @@ fn: function () {
 args: [],
 source: "fullScreenStyle\x0a\x09^ '\x0a\x09body.fullscreen {\x0a\x09\x09overflow: hidden;\x0a\x09}\x0a\x0a\x0a\x09.fullscreen.bk-widget {\x0a\x09\x09position: fixed;\x0a\x09\x09width: 100%;\x0a\x09\x09height: 100%;\x0a\x09\x09z-index: 200;\x0a\x09\x09top: 0;\x0a\x09\x09left: 0;\x0a\x09\x09overflow-y: auto;\x0a\x09}\x0a\x0a\x09.fullscreen.bk-widget .b-menu {\x0a\x09\x09height: 0px;\x0a\x09}\x0a\x0a\x09.fullscreen.bk-widget,\x0a\x09.fullscreen.bk-widget .b-menu .b-selector,\x0a\x09.fullscreen.bk-widget .b-menu .b-selector ul,\x0a\x09.fullscreen.bk-widget .b-counter {\x09\x0a\x09\x09color: white;\x0a\x09\x09background-color: black;\x0a\x09}\x0a\x0a\x09.fullscreen .b-zoom-fullscreen {\x0a\x09\x09position: absolute;\x0a\x09\x09right: 0px;\x0a\x09}\x0a\x0a\x09.fullscreen.bk-widget .b-download-book a {\x0a\x09\x09position: absolute;\x0a\x09\x09right: 60px;\x0a\x09}\x0a\x0a\x09.fullscreen .b-zoom-fullscreen a {\x0a\x09\x09background: url(', self scriptsRoot, 'images/unexpand_black.png) no-repeat;\x0a\x09}\x0a\x0a\x09.fullscreen .b-zoom-fullscreen a:hover {\x0a\x09\x09background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;\x0a\x09}\x0a\x0a\x09.fullscreen h1.title {\x0a\x09\x09font-size: 2em;\x0a\x09\x09color: white;\x0a\x09\x09border-bottom: 0px;\x0a\x09\x09margin: 5px 0px 0px 0px;\x0a\x09\x09text-align: center;\x0a\x09}\x0a\x0a\x09.fullscreen \x0a'",
 messageSends: [",", "scriptsRoot"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_height",
+smalltalk.method({
+selector: "height",
+category: 'accessor',
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(self['@book'], "_height", []), "__star", [smalltalk.send(self, "_width", [])]), "__slash", [smalltalk.send(self['@book'], "_width", [])]), "__slash", [2]), "_rounded", []);
+    return $1;
+},
+args: [],
+source: "height\x0a\x09^ ((book height * self width / book width) / 2) rounded",
+messageSends: ["rounded", "/", "width", "*", "height"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -1075,6 +1095,52 @@ referencedClasses: []
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_width",
+smalltalk.method({
+selector: "width",
+category: 'accessor',
+fn: function () {
+    var self = this;
+    var $2, $1;
+    if (smalltalk.assert(self['@isFullscreen'])) {
+        $2 = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_width", []), "__minus", [smalltalk.send(2, "__star", [smalltalk.send(self, "_navigatorWidth", [])])]), "_min_", [900]);
+    } else {
+        $2 = smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_width", []);
+    }
+    $1 = smalltalk.send($2, "__minus", [smalltalk.send(2, "__star", [smalltalk.send(self, "_zoomControlWidth", [])])]);
+    return $1;
+},
+args: [],
+source: "width\x0a\x09^ (isFullscreen \x0a\x09\x09\x09ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] \x0a\x09\x09\x09ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)",
+messageSends: ["-", "*", "zoomControlWidth", "ifTrue:ifFalse:", "min:", "navigatorWidth", "width", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
+"_zoomControlWidth",
+smalltalk.method({
+selector: "zoomControlWidth",
+category: 'accessor',
+fn: function () {
+    var self = this;
+    var $2, $1;
+    $2 = smalltalk.send(self, "_isContainerSmall", []);
+    if (smalltalk.assert($2)) {
+        $1 = 30;
+    } else {
+        $1 = 85;
+    }
+    return $1;
+},
+args: [],
+source: "zoomControlWidth\x0a\x09^  self isContainerSmall ifTrue: [30] ifFalse: [85].",
+messageSends: ["ifTrue:ifFalse:", "isContainerSmall"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_zoomControlsStyle",
 smalltalk.method({
 selector: "zoomControlsStyle",
@@ -1094,7 +1160,7 @@ smalltalk.AbstractBookWidget);
 
 
 
-smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush'], 'AFI');
+smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush', 'currentPage'], 'AFI');
 smalltalk.addMethod(
 "_bookStyle",
 smalltalk.method({
@@ -1102,11 +1168,13 @@ selector: "bookStyle",
 category: 'css',
 fn: function () {
     var self = this;
-    return "\n    .pages img {\n    \t\tmargin: 10px auto; \n            display: block\n      }\n      \n       .BookMonoWidget  .b-navigator-thumbnail {\n      \t\twidth: 130px;\n      }\n       \n       .BookMonoWidget .b-navigator-thumbnail ul {\n       \t\tfloat: none;\n            width: 100%;\n       }\n       \n      .BookMonoWidget .b-navigator-thumbnail li {\n      \t\theight: auto;\n            float: none;\n            display: block;\n            margin: 10px auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n      \twidth: auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\n \t  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n   \t\t\tmargin: 0px auto;\n      }\n   ";
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(self, "_bookStyle", [], smalltalk.AbstractBookWidget), "__comma", ["\n    .pages img {\n    \t\tmargin: 10px auto; \n            display: block\n      }\n      \n       .BookMonoWidget  .b-navigator-thumbnail {\n      \t\twidth: 130px;\n      }\n       \n       .BookMonoWidget .b-navigator-thumbnail ul {\n       \t\tfloat: none;\n            width: 100%;\n       }\n       \n      .BookMonoWidget .b-navigator-thumbnail li {\n      \t\theight: auto;\n            float: none;\n            display: block;\n            margin: 10px auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n      \twidth: auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\n \t  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n   \t\t\tmargin: 0px auto;\n      }\n     .bk-widget  .b-arrow-prev div{\n    height: 170px;\n    float: left;\n    top: 25%;\n    width: 74px;\n    }\n     .bk-widget  .b-arrow-next div{\n    height: 170px;\n    float: right;\n    top: 25%;\n    width: 74px;\n    }\n   "]);
+    return $1;
 },
 args: [],
-source: "bookStyle\x0a\x09^ '\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a   '",
-messageSends: [],
+source: "bookStyle\x0a\x09^ super bookStyle,\x0a    '\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a     .bk-widget  .b-arrow-prev div{\x0a    height: 170px;\x0a    float: left;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a     .bk-widget  .b-arrow-next div{\x0a    height: 170px;\x0a    float: right;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a   '",
+messageSends: [",", "bookStyle"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1131,6 +1199,42 @@ referencedClasses: []
 smalltalk.BookMonoWidget);
 
 smalltalk.addMethod(
+"_goToNextPage",
+smalltalk.method({
+selector: "goToNextPage",
+category: 'callbacks',
+fn: function () {
+    var self = this;
+    self['@currentPage'] = smalltalk.send(self['@currentPage'], "_nextPage", []);
+    smalltalk.send(self, "_renderCurrentPage", []);
+    return self;
+},
+args: [],
+source: "goToNextPage\x0a\x09currentPage := currentPage nextPage.\x0a    self renderCurrentPage.",
+messageSends: ["nextPage", "renderCurrentPage"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_goToPreviousPage",
+smalltalk.method({
+selector: "goToPreviousPage",
+category: 'callbacks',
+fn: function () {
+    var self = this;
+    self['@currentPage'] = smalltalk.send(self['@currentPage'], "_previousPage", []);
+    smalltalk.send(self, "_renderCurrentPage", []);
+    return self;
+},
+args: [],
+source: "goToPreviousPage\x0a\x09currentPage := currentPage previousPage.\x0a    self renderCurrentPage.\x0a    ",
+messageSends: ["previousPage", "renderCurrentPage"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
 "_loadBook",
 smalltalk.method({
 selector: "loadBook",
@@ -1138,11 +1242,13 @@ category: 'rendering',
 fn: function () {
     var self = this;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+    smalltalk.send(self, "_renderCurrentPage", []);
     return self;
 },
 args: [],
-source: "loadBook\x0a\x09self renderBook:book on: bookBrush",
-messageSends: ["renderBook:on:"],
+source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage:=book pages first.\x0aself renderCurrentPage.",
+messageSends: ["renderBook:on:", "first", "pages", "renderCurrentPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1187,13 +1293,38 @@ selector: "renderBookOn:",
 category: 'rendering',
 fn: function (html) {
     var self = this;
+    var $1, $2, $3, $4;
     smalltalk.send(self, "_loadIViewerJS", []);
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["b-arrow-prev"]);
+    $2 = smalltalk.send($1, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToPreviousPage", []);}]);}]);
+    $3 = smalltalk.send(html, "_div", []);
+    smalltalk.send($3, "_class_", ["b-arrow-next"]);
+    $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
     self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
     return self;
 },
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a\x09bookBrush := (html div class: 'pages')",
-messageSends: ["loadIViewerJS", "class:", "div"],
+source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0abookBrush := (html div class: 'pages').\x0a    ",
+messageSends: ["loadIViewerJS", "class:", "div", "with:", "onClick:", "goToPreviousPage", "goToNextPage"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_renderCurrentPage",
+smalltalk.method({
+selector: "renderCurrentPage",
+category: 'rendering',
+fn: function () {
+    var self = this;
+    smalltalk.send(smalltalk.send(smalltalk.send(self['@bookBrush'], "_asJQuery", []), "_find_", ["img"]), "_hide", []);
+    smalltalk.send(self['@currentPage'], "_renderWidth_height_", [smalltalk.send(smalltalk.send(smalltalk.send(self, "_width", []), "__slash", [2]), "_rounded", []), smalltalk.send(self, "_height", [])]);
+    return self;
+},
+args: [],
+source: "renderCurrentPage\x0a  (bookBrush asJQuery find: 'img' ) hide.\x0a\x09currentPage renderWidth: (self width / 2) rounded height: self height.\x0a    ",
+messageSends: ["hide", "find:", "asJQuery", "renderWidth:height:", "rounded", "/", "width", "height"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1303,11 +1434,12 @@ selector: "bookStyle",
 category: 'css',
 fn: function () {
     var self = this;
-    return smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(unescape("%0A%09%09%09.bk-widget%20.booklet%20%7B%20margin-bottom%3A%2020px%09%7D%09%09%09%0A%0A%09%09%09.bib-num-album%20%7B%20%20padding%3A%2010px%20%7D%0A%0A%09%09%09.bk-widget%20.b-counter%20%7B%0A%09%09%09%20%20margin-bottom%3A%20-20px%3B%0A%09%09%09%20%20margin-top%3A%2020px%3B%0A%09%09%09%20%20width%3A%20140px%3B%0A%09%09%09%20%20text-align%3A%20left%3B%0A%09%09%09%20%20bottom%3A%200px%3B%0A%09%09%09%20%20background-color%3A%20transparent%3B%0A%09%09%09%20%20font-weight%3A%20bold%3B%0A%09%09%09%20%20font-size%3A%201.1em%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-counter%20+%20.b-counter%20%7B%0A%09%09%09%20%20right%3A%200px%3B%0A%09%09%09%20%20text-align%3A%20right%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.loading%20%7B%20%20text-align%3Acenter%09%7D%0A%09%09%09%0A%09%09%09.bk-widget%20.booklet%20.b-wrap-right%20%7B%0A%09%09%09%20%20background-color%3A%20transparent%3B%0A%09%09%09%20%20padding%3A%200px%3B%20%21important%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-wrap-left%20%7B%0A%09%09%09%20%20background-color%3A%20transparent%3B%0A%09%09%09%20%20padding%3A%200px%3B%20%21important%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-page-cover%20%7B%20%20background-color%3A%20transparent%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20%7B%0A%09%09%09%20%20font-size%3A%201.4em%3B%0A%09%09%09%20%20font-weight%3A%20bold%3B%0A%09%09%09%20%20width%3A%20820px%3B%0A%09%09%09%20%20margin%3A%200%20auto%3B%0A%09%09%09%20%20height%3A%2060px%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20%7B%0A%09%09%09%20%20width%3A%20600px%3B%0A%09%09%09%20%20text-align%3A%20left%3B%0A%09%09%09%20%20height%3A%2060px%3B%0A%09%09%09%20%20float%3Anone%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20.b-current%20%7B%0A%09%09%09%20%20height%3A%20auto%3B%0A%09%09%09%20%20text-align%3A%20left%3B%0A%09%09%09%20%20background%3A%20url%28"), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/menu_off.png%29%20no-repeat%2015px%20center%3B%0A%09%09%09%20%20padding-left%3A%2045px%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%3Ahover%20.b-current%20%7B%0A%09%09%09%20%20background-image%3A%20url%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("images/menu_on.png%29%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20%7B%20color%3A%20black%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20a%20%7B%20color%3A%20inherit%3B%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%3Ahover%20%7Bcolor%3A%20black%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%3Ahover%20ul%20%7B%20box-shadow%3A%202px%202px%2040px%20rgba%282%2C2%2C0%2C0.8%29%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20ul%20%7B%0A%09%09%09%20%20width%3A%20584px%3B%0A%09%09%09%20%20top%3A%20auto%3B%0A%09%09%09%20%20max-height%3A%20600px%3B%0A%09%09%09%20%20overflow-y%3A%20auto%20%21important%3B%0A%09%09%09%20%20background-color%3A%20white%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20ul%20li%20%7B%20font-size%3A%201.2em%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20ul%20li%20a%20%7B%20height%3A%20auto%3B%20%7D%0A%0A%09%09%09.bk-widget%20.b-menu%20.b-selector%20ul%20li%20a%20.b-text%20%7B%20float%3A%20none%3B%20%7D%0A%0A%09%09%09.bk-widget%20button%20%7Bfloat%3A%20left%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-arrow%20div%20%7B%0A%09%09%09%09-webkit-transition%3A%20all%200.3s%3B%0A%09%09%09%09-moz-transition%3A%20all%200.3s%3B%0A%09%09%09%09-o-transition%3A%20all%200.3s%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-arrow-next%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-next_black.png%29%3B%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-arrow-next%3Ahover%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-next.png%29%3B%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-arrow-prev%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-prev_black.png%29%3B%20%7D%0A%0A%09%09%09.bk-widget%20.booklet%20.b-arrow-prev%3Ahover%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-prev.png%29%3B%7D%0A%0A%09%09%09.bk-widget%20.b-counter%20+%20.b-counter%20%7Bfloat%3A%20right%3B%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-next%20div%20%7Bbackground-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-next_black-small.png%29%3B%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-next%3Ahover%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-next-small.png%29%3B%20%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-prev%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-prev_black-small.png%29%3B%20%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-prev%3Ahover%20div%20%7B%20background-image%3Aurl%28")]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", [unescape("booklet/images/arrow-prev-small.png%29%3B%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-prev%20%7B%20left%3A%20-25px%20%7D%0A%09%09%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow-next%20%7B%20right%3A%20-25px%20%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow%20%7B%20width%3A%2025px%20%7D%0A%0A%09%09%09.small%3E.bk-widget%20.booklet%20.b-arrow%20%20div%20%7B%20top%3A%2036%25%20%7D%0A%0A%09%09%09.clear%20%7B%20%0A%09%09%09%09clear%3A%20both%3B%0A%09%09%09%09height%3A%200px%20%21important%3B%0A%09%09%09%7D%0A%0A%09%09%09.bk-widget%20.b-wrap%20%7B%0A%09%09%09%09cursor%3A%20-moz-zoom-in%3B%0A%09%09%09%09cursor%3A%20-webkit-zoom-in%3B%0A%09%09%09%7D%0A")]);
-    return self;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send("\n\t\t\t.bk-widget .booklet { margin-bottom: 20px\t}\t\t\t\n\n\t\t\t.bib-num-album {  padding: 10px }\n\n\t\t\t.bk-widget .b-counter {\n\t\t\t  margin-bottom: -20px;\n\t\t\t  margin-top: 20px;\n\t\t\t  width: 140px;\n\t\t\t  text-align: left;\n\t\t\t  bottom: 0px;\n\t\t\t  background-color: transparent;\n\t\t\t  font-weight: bold;\n\t\t\t  font-size: 1.1em;\n\t\t\t}\n\n\t\t\t.bk-widget .b-counter + .b-counter {\n\t\t\t  right: 0px;\n\t\t\t  text-align: right;\n\t\t\t}\n\n\t\t\t.bk-widget .loading {  text-align:center\t}\n\t\t\t\n\t\t\t.bk-widget .booklet .b-wrap-right {\n\t\t\t  background-color: transparent;\n\t\t\t  padding: 0px; !important;\n\t\t\t}\n\n\t\t\t.bk-widget .booklet .b-wrap-left {\n\t\t\t  background-color: transparent;\n\t\t\t  padding: 0px; !important;\n\t\t\t}\n\n\t\t\t.bk-widget .booklet .b-page-cover {  background-color: transparent; }\n\n\t\t\t.bk-widget .b-menu {\n\t\t\t  font-size: 1.4em;\n\t\t\t  font-weight: bold;\n\t\t\t  width: 820px;\n\t\t\t  margin: 0 auto;\n\t\t\t  height: 60px;\n\t\t\t}\n\n\t\t\t.bk-widget .b-menu .b-selector {\n\t\t\t  width: 600px;\n\t\t\t  text-align: left;\n\t\t\t  height: 60px;\n\t\t\t  float:none;\n\t\t\t}\n\n\t\t\t.bk-widget .b-menu .b-selector .b-current {\n\t\t\t  height: auto;\n\t\t\t  text-align: left;\n\t\t\t  background: url(", "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["images/menu_off.png) no-repeat 15px center;\n\t\t\t  padding-left: 45px;\n\t\t\t}\n\n\t\t\t.bk-widget .b-menu .b-selector:hover .b-current {\n\t\t\t  background-image: url("]), "__comma", [smalltalk.send(self, "_scriptsRoot", [])]), "__comma", ["images/menu_on.png);\n\t\t\t}\n\n\t\t\t.bk-widget .b-menu .b-selector { color: black; }\n\n\t\t\t.bk-widget .b-menu .b-selector a { color: inherit;}\n\n\t\t\t.bk-widget .b-menu .b-selector:hover {color: black; }\n\n\t\t\t.bk-widget .b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }\n\n\t\t\t.bk-widget .b-menu .b-selector ul {\n\t\t\t  width: 584px;\n\t\t\t  top: auto;\n\t\t\t  max-height: 600px;\n\t\t\t  overflow-y: auto !important;\n\t\t\t  background-color: white;\n\t\t\t}\n\n\t\t\t.bk-widget .b-menu .b-selector ul li { font-size: 1.2em; }\n\n\t\t\t.bk-widget .b-menu .b-selector ul li a { height: auto; }\n\n\t\t\t.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }\n\n\t\t\t.bk-widget button {float: left}\n\n\t\t\t.clear { \n\t\t\t\tclear: both;\n\t\t\t\theight: 0px !important;\n\t\t\t}\n\n\t\t\t.bk-widget .b-wrap {\n\t\t\t\tcursor: -moz-zoom-in;\n\t\t\t\tcursor: -webkit-zoom-in;\n\t\t\t}\n"]);
+    return $1;
 },
 args: [],
-source: "bookStyle\x0a\x09^ '\x0a\x09\x09\x09.bk-widget .booklet { margin-bottom: 20px\x09}\x09\x09\x09\x0a\x0a\x09\x09\x09.bib-num-album {  padding: 10px }\x0a\x0a\x09\x09\x09.bk-widget .b-counter {\x0a\x09\x09\x09  margin-bottom: -20px;\x0a\x09\x09\x09  margin-top: 20px;\x0a\x09\x09\x09  width: 140px;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  bottom: 0px;\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  font-weight: bold;\x0a\x09\x09\x09  font-size: 1.1em;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-counter + .b-counter {\x0a\x09\x09\x09  right: 0px;\x0a\x09\x09\x09  text-align: right;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .loading {  text-align:center\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.bk-widget .booklet .b-wrap-right {\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  padding: 0px; !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-wrap-left {\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  padding: 0px; !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-page-cover {  background-color: transparent; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu {\x0a\x09\x09\x09  font-size: 1.4em;\x0a\x09\x09\x09  font-weight: bold;\x0a\x09\x09\x09  width: 820px;\x0a\x09\x09\x09  margin: 0 auto;\x0a\x09\x09\x09  height: 60px;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector {\x0a\x09\x09\x09  width: 600px;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  height: 60px;\x0a\x09\x09\x09  float:none;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector .b-current {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  background: url(', self scriptsRoot, 'images/menu_off.png) no-repeat 15px center;\x0a\x09\x09\x09  padding-left: 45px;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover .b-current {\x0a\x09\x09\x09  background-image: url(', self scriptsRoot, 'images/menu_on.png);\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector { color: black; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector a { color: inherit;}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover {color: black; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul {\x0a\x09\x09\x09  width: 584px;\x0a\x09\x09\x09  top: auto;\x0a\x09\x09\x09  max-height: 600px;\x0a\x09\x09\x09  overflow-y: auto !important;\x0a\x09\x09\x09  background-color: white;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li { font-size: 1.2em; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li a { height: auto; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }\x0a\x0a\x09\x09\x09.bk-widget button {float: left}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-arrow div {\x0a\x09\x09\x09\x09-webkit-transition: all 0.3s;\x0a\x09\x09\x09\x09-moz-transition: all 0.3s;\x0a\x09\x09\x09\x09-o-transition: all 0.3s;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}\x0a\x0a\x09\x09\x09.bk-widget .b-counter + .b-counter {float: right;}\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-prev { left: -25px }\x0a\x09\x09\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow-next { right: -25px }\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow { width: 25px }\x0a\x0a\x09\x09\x09.small>.bk-widget .booklet .b-arrow  div { top: 36% }\x0a\x0a\x09\x09\x09.clear { \x0a\x09\x09\x09\x09clear: both;\x0a\x09\x09\x09\x09height: 0px !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-wrap {\x0a\x09\x09\x09\x09cursor: -moz-zoom-in;\x0a\x09\x09\x09\x09cursor: -webkit-zoom-in;\x0a\x09\x09\x09}\x0a'",
+source: "bookStyle\x0a\x09^ '\x0a\x09\x09\x09.bk-widget .booklet { margin-bottom: 20px\x09}\x09\x09\x09\x0a\x0a\x09\x09\x09.bib-num-album {  padding: 10px }\x0a\x0a\x09\x09\x09.bk-widget .b-counter {\x0a\x09\x09\x09  margin-bottom: -20px;\x0a\x09\x09\x09  margin-top: 20px;\x0a\x09\x09\x09  width: 140px;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  bottom: 0px;\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  font-weight: bold;\x0a\x09\x09\x09  font-size: 1.1em;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-counter + .b-counter {\x0a\x09\x09\x09  right: 0px;\x0a\x09\x09\x09  text-align: right;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .loading {  text-align:center\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.bk-widget .booklet .b-wrap-right {\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  padding: 0px; !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-wrap-left {\x0a\x09\x09\x09  background-color: transparent;\x0a\x09\x09\x09  padding: 0px; !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .booklet .b-page-cover {  background-color: transparent; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu {\x0a\x09\x09\x09  font-size: 1.4em;\x0a\x09\x09\x09  font-weight: bold;\x0a\x09\x09\x09  width: 820px;\x0a\x09\x09\x09  margin: 0 auto;\x0a\x09\x09\x09  height: 60px;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector {\x0a\x09\x09\x09  width: 600px;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  height: 60px;\x0a\x09\x09\x09  float:none;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector .b-current {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  text-align: left;\x0a\x09\x09\x09  background: url(', self scriptsRoot, 'images/menu_off.png) no-repeat 15px center;\x0a\x09\x09\x09  padding-left: 45px;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover .b-current {\x0a\x09\x09\x09  background-image: url(', self scriptsRoot, 'images/menu_on.png);\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector { color: black; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector a { color: inherit;}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover {color: black; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul {\x0a\x09\x09\x09  width: 584px;\x0a\x09\x09\x09  top: auto;\x0a\x09\x09\x09  max-height: 600px;\x0a\x09\x09\x09  overflow-y: auto !important;\x0a\x09\x09\x09  background-color: white;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li { font-size: 1.2em; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li a { height: auto; }\x0a\x0a\x09\x09\x09.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }\x0a\x0a\x09\x09\x09.bk-widget button {float: left}\x0a\x0a\x09\x09\x09.clear { \x0a\x09\x09\x09\x09clear: both;\x0a\x09\x09\x09\x09height: 0px !important;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.bk-widget .b-wrap {\x0a\x09\x09\x09\x09cursor: -moz-zoom-in;\x0a\x09\x09\x09\x09cursor: -webkit-zoom-in;\x0a\x09\x09\x09}\x0a'",
 messageSends: [",", "scriptsRoot"],
 referencedClasses: []
 }),
@@ -1395,23 +1527,6 @@ fn: function (pageNo) {
 args: ["pageNo"],
 source: "goToPageNo: pageNo\x0a\x09bookContainer asJQuery booklet:  (pageNo ).",
 messageSends: ["booklet:", "asJQuery"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_height",
-smalltalk.method({
-selector: "height",
-category: 'accessing',
-fn: function () {
-    var self = this;
-    return smalltalk.send(($receiver = ($receiver = ($receiver = smalltalk.send(self['@book'], "_height", [])).klass === smalltalk.Number ? $receiver * smalltalk.send(self, "_width", []) : smalltalk.send($receiver, "__star", [smalltalk.send(self, "_width", [])])).klass === smalltalk.Number ? $receiver / smalltalk.send(self['@book'], "_width", []) : smalltalk.send($receiver, "__slash", [smalltalk.send(self['@book'], "_width", [])])).klass === smalltalk.Number ? $receiver / 2 : smalltalk.send($receiver, "__slash", [2]), "_rounded", []);
-    return self;
-},
-args: [],
-source: "height\x0a\x09^ ((book height * self width / book width) / 2) rounded",
-messageSends: ["rounded", "/", "*", "height", "width"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -1778,40 +1893,6 @@ fn: function () {
 args: [],
 source: "updateFolioNumbers\x0a\x09leftFolioBrush contents: self leftPage foliono.\x0a\x09rightFolioBrush contents: self rightPage foliono.",
 messageSends: ["contents:", "foliono", "leftPage", "rightPage"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_width",
-smalltalk.method({
-selector: "width",
-category: 'accessing',
-fn: function () {
-    var self = this;
-    return ($receiver = ($receiver = self['@isFullscreen']).klass === smalltalk.Boolean ? $receiver ? function () {return smalltalk.send(($receiver = smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_width", [])).klass === smalltalk.Number ? $receiver - 2 * smalltalk.send(self, "_navigatorWidth", []) : smalltalk.send($receiver, "__minus", [2 * smalltalk.send(self, "_navigatorWidth", [])]), "_min_", [900]);}() : function () {return smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_width", []);}() : smalltalk.send($receiver, "_ifTrue_ifFalse_", [function () {return smalltalk.send(($receiver = smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_width", [])).klass === smalltalk.Number ? $receiver - 2 * smalltalk.send(self, "_navigatorWidth", []) : smalltalk.send($receiver, "__minus", [2 * smalltalk.send(self, "_navigatorWidth", [])]), "_min_", [900]);}, function () {return smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_width", []);}])).klass === smalltalk.Number ? $receiver - 2 * smalltalk.send(self, "_zoomControlWidth", []) : smalltalk.send($receiver, "__minus", [2 * smalltalk.send(self, "_zoomControlWidth", [])]);
-    return self;
-},
-args: [],
-source: "width\x0a\x09^ (isFullscreen \x0a\x09\x09\x09ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] \x0a\x09\x09\x09ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)",
-messageSends: ["-", "ifTrue:ifFalse:", "min:", "width", "asJQuery", "*", "navigatorWidth", "zoomControlWidth"],
-referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_zoomControlWidth",
-smalltalk.method({
-selector: "zoomControlWidth",
-category: 'accessing',
-fn: function () {
-    var self = this;
-    return ($receiver = smalltalk.send(self, "_isContainerSmall", [])).klass === smalltalk.Boolean ? $receiver ? function () {return 30;}() : function () {return 85;}() : smalltalk.send($receiver, "_ifTrue_ifFalse_", [function () {return 30;}, function () {return 85;}]);
-    return self;
-},
-args: [],
-source: "zoomControlWidth\x0a\x09^  self isContainerSmall ifTrue: [30] ifFalse: [85].",
-messageSends: ["ifTrue:ifFalse:", "isContainerSmall"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -3065,7 +3146,7 @@ referencedClasses: []
 smalltalk.ListFilter.klass);
 
 
-smalltalk.addClass('Page', smalltalk.Object, ['brush', 'fullImageURL', 'thumbnailURL', 'description', 'title', 'rendered', 'foliono', 'navigatorThumbnailURL', 'book', 'downloadURL'], 'AFI');
+smalltalk.addClass('Page', smalltalk.Object, ['brush', 'imgBrush', 'fullImageURL', 'thumbnailURL', 'description', 'title', 'rendered', 'foliono', 'navigatorThumbnailURL', 'book', 'downloadURL'], 'AFI');
 smalltalk.addMethod(
 "_book",
 smalltalk.method({
@@ -3342,6 +3423,24 @@ referencedClasses: []
 smalltalk.Page);
 
 smalltalk.addMethod(
+"_nextPage",
+smalltalk.method({
+selector: "nextPage",
+category: 'accessing',
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_at_ifAbsent_", [smalltalk.send(smalltalk.send(self, "_pageNo", []), "__plus", [1]), function () {return self;}]);
+    return $1;
+},
+args: [],
+source: "nextPage\x0a\x09^book pages at: self pageNo+1 ifAbsent: [self]",
+messageSends: ["at:ifAbsent:", "+", "pageNo", "pages"],
+referencedClasses: []
+}),
+smalltalk.Page);
+
+smalltalk.addMethod(
 "_pageNo",
 smalltalk.method({
 selector: "pageNo",
@@ -3354,6 +3453,24 @@ fn: function () {
 args: [],
 source: "pageNo\x0a\x09^ book pageNo: self",
 messageSends: ["pageNo:"],
+referencedClasses: []
+}),
+smalltalk.Page);
+
+smalltalk.addMethod(
+"_previousPage",
+smalltalk.method({
+selector: "previousPage",
+category: 'accessing',
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_at_ifAbsent_", [smalltalk.send(smalltalk.send(self, "_pageNo", []), "__minus", [1]), function () {return self;}]);
+    return $1;
+},
+args: [],
+source: "previousPage\x0a\x09^book pages at: self pageNo-1 ifAbsent: [self]",
+messageSends: ["at:ifAbsent:", "-", "pageNo", "pages"],
 referencedClasses: []
 }),
 smalltalk.Page);
@@ -3399,12 +3516,19 @@ selector: "renderWidth:height:",
 category: 'rendering',
 fn: function (width, height) {
     var self = this;
-    ($receiver = smalltalk.send(self, "_isRendered", [])).klass === smalltalk.Boolean ? !$receiver ? function () {self['@rendered'] = true;return smalltalk.send(self['@brush'], "_contents_", [function (html) {return function ($rec) {smalltalk.send($rec, "_width_", [width]);smalltalk.send($rec, "_height_", [height]);return smalltalk.send($rec, "_src_", [self['@thumbnailURL']]);}(smalltalk.send(html, "_img", []));}]);}() : nil : smalltalk.send($receiver, "_ifFalse_", [function () {self['@rendered'] = true;return smalltalk.send(self['@brush'], "_contents_", [function (html) {return function ($rec) {smalltalk.send($rec, "_width_", [width]);smalltalk.send($rec, "_height_", [height]);return smalltalk.send($rec, "_src_", [self['@thumbnailURL']]);}(smalltalk.send(html, "_img", []));}]);}]);
+    var $1, $2, $3;
+    $1 = smalltalk.send(self, "_isRendered", []);
+    if (!smalltalk.assert($1)) {
+        self['@rendered'] = true;
+        self['@rendered'];
+        smalltalk.send(self['@brush'], "_contents_", [function (html) {$2 = smalltalk.send(html, "_img", []);smalltalk.send($2, "_width_", [width]);smalltalk.send($2, "_height_", [height]);$3 = smalltalk.send($2, "_src_", [self['@thumbnailURL']]);self['@imgBrush'] = $3;return self['@imgBrush'];}]);
+    }
+    smalltalk.send(smalltalk.send(self['@imgBrush'], "_asJQuery", []), "_show", []);
     return self;
 },
 args: ["width", "height"],
-source: "renderWidth: width height: height\x0a\x09self isRendered ifFalse: [\x0a          \x09rendered := true.\x0a\x09\x09brush contents: [:html| html img\x0a                                 \x09\x09\x09\x09width:  width;\x0a                                 \x09\x09\x09\x09height:  height;\x0a                                 \x09\x09\x09\x09src: thumbnailURL].\x0a          ].",
-messageSends: ["ifFalse:", "isRendered", "contents:", "width:", "height:", "src:", "img"],
+source: "renderWidth: width height: height\x0a\x09self isRendered ifFalse: [\x0a        rendered := true.\x0a\x09\x09brush contents: [:html| imgBrush := html img\x0a                                 \x09\x09\x09\x09width:  width;\x0a                                 \x09\x09\x09\x09height:  height;\x0a                                 \x09\x09\x09\x09src: thumbnailURL].\x0a       ].\x0a      imgBrush asJQuery show",
+messageSends: ["ifFalse:", "contents:", "width:", "img", "height:", "src:", "isRendered", "show", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.Page);
