@@ -636,6 +636,12 @@ initialize
 	isFullscreen := false.
 ! !
 
+!AbstractBookWidget methodsFor: 'loading'!
+
+loadBook
+	self subclassResponsibility
+! !
+
 !AbstractBookWidget methodsFor: 'rendering'!
 
 renderBook: aBook on: aBrush	
@@ -745,11 +751,14 @@ renderWidgetOn: html
                   	renderBookMenuOn: html;
                     renderZoomControlsOn: html;
                   	renderBookOn: html;
-					renderPageDescriptionOn: html].
+                    renderPageDescriptionOn: html
+					].
     
 	isFullscreen 
 		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
 		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
+        
+    self loadBook.
 !
 
 renderZoomControlsOn: html
@@ -860,9 +869,13 @@ openDescriptions
 
 !BookMonoWidget methodsFor: 'rendering'!
 
+loadBook
+	self renderBook:book on: bookBrush
+!
+
 renderBookOn: html
 	self loadIViewerJS.
-	self renderBook:book on: (bookBrush := (html div class: 'pages'))
+	bookBrush := (html div class: 'pages')
 !
 
 renderZoomControlsOn: html
@@ -877,7 +890,7 @@ renderZoomControlsOn: html
 ! !
 
 AbstractBookWidget subclass: #BookWidget
-	instanceVariableNames: 'width leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor'
+	instanceVariableNames: 'width bookBrush leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
@@ -1161,6 +1174,10 @@ loadBookThenRenderOn: bookBrush
 
 !BookWidget methodsFor: 'rendering'!
 
+loadBook
+	self loadBookThenRenderOn: bookBrush
+!
+
 renderBook: aBook on: aBrush
 	super renderBook: aBook on: aBrush.
    	self loadBookletJSThen: [ 
@@ -1174,7 +1191,7 @@ renderBookOn: html
 	bookContainer := html div.
 	bookContainer
 	    class: 'book';
-            with: [	|bookBrush|
+            with: [
 						leftFolioBrush := html div class: 'b-counter'.
 						rightFolioBrush := html div class: 'b-counter'.
        	            	bookBrush := html div 
@@ -1183,8 +1200,7 @@ renderBookOn: html
                       	                    	class: 'loading';
                   	                        	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
                    			yourself.
-                   
-                   			self loadBookThenRenderOn: bookBrush]
+                   ]
 !
 
 renderZoomControlsOn: html

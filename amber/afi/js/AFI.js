@@ -538,6 +538,23 @@ referencedClasses: ["TestCase"]
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+category: 'loading',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_subclassResponsibility", []);
+    return self;
+},
+args: [],
+source: "loadBook\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_loadCSS_",
 smalltalk.method({
 selector: "loadCSS:",
@@ -928,11 +945,12 @@ fn: function (html) {
     } else {
         smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_removeClass_", ["fullscreen"]);
     }
+    smalltalk.send(self, "_loadBook", []);
     return self;
 },
 args: ["html"],
-source: "renderWidgetOn: html\x0a\x09html style\x0a\x09\x09type: 'text/css';\x0a\x09\x09with: self style.\x0a        \x0a        \x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a                  \x09renderBookOn: html;\x0a\x09\x09\x09\x09\x09renderPageDescriptionOn: html].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].",
-messageSends: ["type:", "style", "with:", "class:", "widgetClass", "div", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderBookOn:", "renderPageDescriptionOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:"],
+source: "renderWidgetOn: html\x0a\x09html style\x0a\x09\x09type: 'text/css';\x0a\x09\x09with: self style.\x0a        \x0a        \x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a                  \x09renderBookOn: html;\x0a                    renderPageDescriptionOn: html\x0a\x09\x09\x09\x09\x09].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].\x0a        \x0a    self loadBook.",
+messageSends: ["type:", "style", "with:", "class:", "widgetClass", "div", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderBookOn:", "renderPageDescriptionOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:", "loadBook"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -1113,6 +1131,23 @@ referencedClasses: []
 smalltalk.BookMonoWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+category: 'rendering',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    return self;
+},
+args: [],
+source: "loadBook\x0a\x09self renderBook:book on: bookBrush",
+messageSends: ["renderBook:on:"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
 "_openDescriptions",
 smalltalk.method({
 selector: "openDescriptions",
@@ -1154,12 +1189,11 @@ fn: function (html) {
     var self = this;
     smalltalk.send(self, "_loadIViewerJS", []);
     self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
-    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
     return self;
 },
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a\x09self renderBook:book on: (bookBrush := (html div class: 'pages'))",
-messageSends: ["loadIViewerJS", "renderBook:on:", "class:", "div"],
+source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a\x09bookBrush := (html div class: 'pages')",
+messageSends: ["loadIViewerJS", "class:", "div"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1206,7 +1240,7 @@ smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'bookBrush', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -1453,6 +1487,23 @@ referencedClasses: []
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+category: 'rendering',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_loadBookThenRenderOn_", [self['@bookBrush']]);
+    return self;
+},
+args: [],
+source: "loadBook\x0a\x09self loadBookThenRenderOn: bookBrush",
+messageSends: ["loadBookThenRenderOn:"],
+referencedClasses: []
+}),
+smalltalk.BookWidget);
+
+smalltalk.addMethod(
 "_loadBookThenRenderOn_",
 smalltalk.method({
 selector: "loadBookThenRenderOn:",
@@ -1612,12 +1663,12 @@ fn: function (html) {
     var $2, $3, $4, $5, $1;
     self['@bookContainer'] = smalltalk.send(html, "_div", []);
     smalltalk.send(self['@bookContainer'], "_class_", ["book"]);
-    $1 = smalltalk.send(self['@bookContainer'], "_with_", [function () {var bookBrush;self['@leftFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@leftFolioBrush'];self['@rightFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@rightFolioBrush'];$2 = smalltalk.send(html, "_div", []);smalltalk.send($2, "_class_", ["b-load"]);smalltalk.send($2, "_with_", [function () {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_class_", ["loading"]);$4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(smalltalk.send(self, "_scriptsRoot", []), "__comma", ["images/ajax-loader.gif"])]);}]);return $4;}]);$5 = smalltalk.send($2, "_yourself", []);bookBrush = $5;return smalltalk.send(self, "_loadBookThenRenderOn_", [bookBrush]);}]);
+    $1 = smalltalk.send(self['@bookContainer'], "_with_", [function () {self['@leftFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@leftFolioBrush'];self['@rightFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@rightFolioBrush'];$2 = smalltalk.send(html, "_div", []);smalltalk.send($2, "_class_", ["b-load"]);smalltalk.send($2, "_with_", [function () {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_class_", ["loading"]);$4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(smalltalk.send(self, "_scriptsRoot", []), "__comma", ["images/ajax-loader.gif"])]);}]);return $4;}]);$5 = smalltalk.send($2, "_yourself", []);self['@bookBrush'] = $5;return self['@bookBrush'];}]);
     return self;
 },
 args: ["html"],
-source: "renderBookOn: html\x0a\x09bookContainer := html div.\x0a\x09bookContainer\x0a\x09    class: 'book';\x0a            with: [\x09|bookBrush|\x0a\x09\x09\x09\x09\x09\x09leftFolioBrush := html div class: 'b-counter'.\x0a\x09\x09\x09\x09\x09\x09rightFolioBrush := html div class: 'b-counter'.\x0a       \x09            \x09bookBrush := html div \x0a            \x09       \x09\x09class: 'b-load';\x0a             \x09      \x09\x09with: [html div\x0a                      \x09                    \x09class: 'loading';\x0a                  \x09                        \x09with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];\x0a                   \x09\x09\x09yourself.\x0a                   \x0a                   \x09\x09\x09self loadBookThenRenderOn: bookBrush]",
-messageSends: ["div", "class:", "with:", "src:", ",", "scriptsRoot", "img", "yourself", "loadBookThenRenderOn:"],
+source: "renderBookOn: html\x0a\x09bookContainer := html div.\x0a\x09bookContainer\x0a\x09    class: 'book';\x0a            with: [\x0a\x09\x09\x09\x09\x09\x09leftFolioBrush := html div class: 'b-counter'.\x0a\x09\x09\x09\x09\x09\x09rightFolioBrush := html div class: 'b-counter'.\x0a       \x09            \x09bookBrush := html div \x0a            \x09       \x09\x09class: 'b-load';\x0a             \x09      \x09\x09with: [html div\x0a                      \x09                    \x09class: 'loading';\x0a                  \x09                        \x09with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];\x0a                   \x09\x09\x09yourself.\x0a                   ]",
+messageSends: ["div", "class:", "with:", "src:", ",", "scriptsRoot", "img", "yourself"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);

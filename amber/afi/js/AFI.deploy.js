@@ -393,6 +393,18 @@ fn: function (aContext) {
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_subclassResponsibility", []);
+    return self;
+}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_loadCSS_",
 smalltalk.method({
 selector: "loadCSS:",
@@ -687,6 +699,7 @@ fn: function (html) {
     } else {
         smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_removeClass_", ["fullscreen"]);
     }
+    smalltalk.send(self, "_loadBook", []);
     return self;
 }
 }),
@@ -823,6 +836,18 @@ fn: function () {
 smalltalk.BookMonoWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    return self;
+}
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
 "_openDescriptions",
 smalltalk.method({
 selector: "openDescriptions",
@@ -853,7 +878,6 @@ fn: function (html) {
     var self = this;
     smalltalk.send(self, "_loadIViewerJS", []);
     self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
-    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
     return self;
 }
 }),
@@ -891,7 +915,7 @@ smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'bookBrush', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -1068,6 +1092,18 @@ fn: function () {
 smalltalk.BookWidget);
 
 smalltalk.addMethod(
+"_loadBook",
+smalltalk.method({
+selector: "loadBook",
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_loadBookThenRenderOn_", [self['@bookBrush']]);
+    return self;
+}
+}),
+smalltalk.BookWidget);
+
+smalltalk.addMethod(
 "_loadBookThenRenderOn_",
 smalltalk.method({
 selector: "loadBookThenRenderOn:",
@@ -1186,7 +1222,7 @@ fn: function (html) {
     var $2, $3, $4, $5, $1;
     self['@bookContainer'] = smalltalk.send(html, "_div", []);
     smalltalk.send(self['@bookContainer'], "_class_", ["book"]);
-    $1 = smalltalk.send(self['@bookContainer'], "_with_", [function () {var bookBrush;self['@leftFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@leftFolioBrush'];self['@rightFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@rightFolioBrush'];$2 = smalltalk.send(html, "_div", []);smalltalk.send($2, "_class_", ["b-load"]);smalltalk.send($2, "_with_", [function () {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_class_", ["loading"]);$4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(smalltalk.send(self, "_scriptsRoot", []), "__comma", ["images/ajax-loader.gif"])]);}]);return $4;}]);$5 = smalltalk.send($2, "_yourself", []);bookBrush = $5;return smalltalk.send(self, "_loadBookThenRenderOn_", [bookBrush]);}]);
+    $1 = smalltalk.send(self['@bookContainer'], "_with_", [function () {self['@leftFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@leftFolioBrush'];self['@rightFolioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);self['@rightFolioBrush'];$2 = smalltalk.send(html, "_div", []);smalltalk.send($2, "_class_", ["b-load"]);smalltalk.send($2, "_with_", [function () {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_class_", ["loading"]);$4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(smalltalk.send(self, "_scriptsRoot", []), "__comma", ["images/ajax-loader.gif"])]);}]);return $4;}]);$5 = smalltalk.send($2, "_yourself", []);self['@bookBrush'] = $5;return self['@bookBrush'];}]);
     return self;
 }
 }),
