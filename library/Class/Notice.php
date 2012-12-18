@@ -469,6 +469,8 @@ class Class_Notice extends Storm_Model_Abstract {
 			{
 				if ($notice["isbn"]) $notice["entete"]["Isbn"] = $notice["isbn"];
 				else $notice["entete"]["Ean"] = $notice["ean"];
+				$notice["entete"]["issn"] = $this->getIssn();
+				$notice["entete"]["Label"] = $this->getLabelSonore();
 			}
 			elseif ($clef == "A") $notice["entete"][$rubrique] = $this->getAuteurs(false, true);
 			elseif ($clef == "L") $notice["entete"][$rubrique] = $this->getLangues();
@@ -481,7 +483,6 @@ class Class_Notice extends Storm_Model_Abstract {
 		}
 		
 		// champs supplémentaires
-		$notice["entete"]["Test champ sup"] = $this->getMentionEdition();
 		return $notice;
 	}
 
@@ -727,6 +728,23 @@ class Class_Notice extends Storm_Model_Abstract {
 	}
 	
 // ----------------------------------------------------------------
+// Label docs sonores
+// ----------------------------------------------------------------
+	public function getLabelSonore()
+	{
+		$bloc=$this->get_subfield('071');
+		if(!count($bloc)) return;
+		$data=$this->decoupe_bloc_champ($bloc[0]);
+		foreach($data as $champ)
+		{
+			if($champ['code']=='a') $num=$this->filtreTitre($champ['valeur']);
+			if($champ['code']=='b') $label=$this->filtreTitre($champ['valeur']);
+		}
+		$ret=$label."; ".$num;
+		return $num;
+	}
+	
+// ----------------------------------------------------------------
 // Morceaux de docs sonores
 // ----------------------------------------------------------------
 	public function getMorceaux()
@@ -884,6 +902,15 @@ class Class_Notice extends Storm_Model_Abstract {
 		$titre = $this->get_subfield("200", "e");
 		$titre = $this->filtreTitre($titre[0]);
 		return trim($titre);
+	}
+	
+// ----------------------------------------------------------------
+// ISSN
+// ----------------------------------------------------------------
+	public function getIssn()
+	{
+		$issn = $this->get_subfield("011", "a");
+		return trim($issn[0]);
 	}
 	
 // ----------------------------------------------------------------
@@ -1355,6 +1382,9 @@ class Class_Notice extends Storm_Model_Abstract {
 							$collation.=$item["valeur"];
 						}
 			}
+			$collation=str_replace("+ ;","+",$collation);
+			$collation=str_replace("; ;",";",$collation);
+			$collation=str_replace(": ;",":",$collation);
 			$this->_collation = $collation;
 		}
 		return $this->_collation;
