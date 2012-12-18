@@ -968,6 +968,10 @@ goToPageNo: pageNo
 	bookContainer asJQuery booklet:  (pageNo ).
 !
 
+openPage: aPage
+	self goToPageNo: aPage pageNo
+!
+
 openPageNo: anInteger
 	currentPageNo := anInteger.
 	book 
