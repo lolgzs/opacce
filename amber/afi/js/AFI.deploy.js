@@ -681,7 +681,7 @@ fn: function (html) {
     $2 = smalltalk.send($1, "_with_", [smalltalk.send(self, "_style", [])]);
     $3 = smalltalk.send(html, "_div", []);
     smalltalk.send($3, "_class_", [smalltalk.send(self, "_widgetClass", [])]);
-    $4 = smalltalk.send($3, "_with_", [function () {smalltalk.send(self, "_renderFullscreenControlsOn_", [html]);smalltalk.send(self, "_renderDownloadBookOn_", [html]);smalltalk.send(self, "_renderBookMenuOn_", [html]);smalltalk.send(self, "_renderZoomControlsOn_", [html]);smalltalk.send(self, "_renderPageDescriptionOn_", [html]);$5 = smalltalk.send(self, "_renderBookOn_", [html]);return $5;}]);
+    $4 = smalltalk.send($3, "_with_", [function () {smalltalk.send(self, "_renderFullscreenControlsOn_", [html]);smalltalk.send(self, "_renderDownloadBookOn_", [html]);smalltalk.send(self, "_renderBookMenuOn_", [html]);smalltalk.send(self, "_renderZoomControlsOn_", [html]);smalltalk.send(self, "_renderBookOn_", [html]);$5 = smalltalk.send(self, "_renderPageDescriptionOn_", [html]);return $5;}]);
     if (smalltalk.assert(self['@isFullscreen'])) {
         smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_addClass_", ["fullscreen"]);
     } else {

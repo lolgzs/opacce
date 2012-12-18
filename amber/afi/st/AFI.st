@@ -744,8 +744,8 @@ renderWidgetOn: html
 					renderDownloadBookOn: html;
                   	renderBookMenuOn: html;
                     renderZoomControlsOn: html;
-					renderPageDescriptionOn: html;
-                  	renderBookOn: html 	].
+                  	renderBookOn: html;
+					renderPageDescriptionOn: html].
     
 	isFullscreen 
 		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 

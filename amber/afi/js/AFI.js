@@ -922,7 +922,7 @@ fn: function (html) {
     $2 = smalltalk.send($1, "_with_", [smalltalk.send(self, "_style", [])]);
     $3 = smalltalk.send(html, "_div", []);
     smalltalk.send($3, "_class_", [smalltalk.send(self, "_widgetClass", [])]);
-    $4 = smalltalk.send($3, "_with_", [function () {smalltalk.send(self, "_renderFullscreenControlsOn_", [html]);smalltalk.send(self, "_renderDownloadBookOn_", [html]);smalltalk.send(self, "_renderBookMenuOn_", [html]);smalltalk.send(self, "_renderZoomControlsOn_", [html]);smalltalk.send(self, "_renderPageDescriptionOn_", [html]);$5 = smalltalk.send(self, "_renderBookOn_", [html]);return $5;}]);
+    $4 = smalltalk.send($3, "_with_", [function () {smalltalk.send(self, "_renderFullscreenControlsOn_", [html]);smalltalk.send(self, "_renderDownloadBookOn_", [html]);smalltalk.send(self, "_renderBookMenuOn_", [html]);smalltalk.send(self, "_renderZoomControlsOn_", [html]);smalltalk.send(self, "_renderBookOn_", [html]);$5 = smalltalk.send(self, "_renderPageDescriptionOn_", [html]);return $5;}]);
     if (smalltalk.assert(self['@isFullscreen'])) {
         smalltalk.send(smalltalk.send("body", "_asJQuery", []), "_addClass_", ["fullscreen"]);
     } else {
@@ -931,8 +931,8 @@ fn: function (html) {
     return self;
 },
 args: ["html"],
-source: "renderWidgetOn: html\x0a\x09html style\x0a\x09\x09type: 'text/css';\x0a\x09\x09with: self style.\x0a        \x0a        \x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a\x09\x09\x09\x09\x09renderPageDescriptionOn: html;\x0a                  \x09renderBookOn: html \x09].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].",
-messageSends: ["type:", "style", "with:", "class:", "widgetClass", "div", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderPageDescriptionOn:", "renderBookOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:"],
+source: "renderWidgetOn: html\x0a\x09html style\x0a\x09\x09type: 'text/css';\x0a\x09\x09with: self style.\x0a        \x0a        \x0a\x09html div\x0a\x09\x09class: self widgetClass; \x0a\x09\x09with: [\x09self \x0a                    renderFullscreenControlsOn: html;\x0a\x09\x09\x09\x09\x09renderDownloadBookOn: html;\x0a                  \x09renderBookMenuOn: html;\x0a                    renderZoomControlsOn: html;\x0a                  \x09renderBookOn: html;\x0a\x09\x09\x09\x09\x09renderPageDescriptionOn: html].\x0a    \x0a\x09isFullscreen \x0a\x09\x09ifTrue: ['body' asJQuery addClass: 'fullscreen'] \x0a\x09\x09ifFalse: ['body' asJQuery removeClass: 'fullscreen'].",
+messageSends: ["type:", "style", "with:", "class:", "widgetClass", "div", "renderFullscreenControlsOn:", "renderDownloadBookOn:", "renderBookMenuOn:", "renderZoomControlsOn:", "renderBookOn:", "renderPageDescriptionOn:", "ifTrue:ifFalse:", "addClass:", "asJQuery", "removeClass:"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
