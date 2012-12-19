@@ -333,7 +333,11 @@ function reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe)
 		$(oImg).attr('src',saveImg);
 
 		if (data.indexOf('http') == 0)
-			showPopWin(data, 500, 345, null);
+			showPopWin(data, 500, 345, 
+								 function(event, ui) {
+									 if (undefined == event.srcElement)
+										 reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe);
+								 });
 		else 
 			alert(data);
 	});
