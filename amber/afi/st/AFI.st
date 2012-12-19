@@ -341,6 +341,10 @@ loader: aBibNumLoader
 	loader := aBibNumLoader
 !
 
+navigatorWidth
+	^ AbstractBookNavigatorWidget width
+!
+
 scriptsRoot
 	^ scriptsRoot ifNil: [scriptsRoot := '']
 !
@@ -385,6 +389,7 @@ openPage: aPage
 !
 
 reloadWidget
+	book reset.
 	rootBrush contents: [:html| self renderWidgetOn: html].
 !
 
@@ -695,7 +700,7 @@ loadBook
 !AbstractBookWidget methodsFor: 'rendering'!
 
 renderBook: aBook on: aBrush	
-    book := aBook reset.
+    book := aBook.
     
 	aBrush contents: [:html|
 		aBook pages do: [:aPage| 	aPage brush: (html div
@@ -945,7 +950,7 @@ openDescriptions
 loadBook
 	self renderBook:book on: bookBrush.
     currentPage:=book pages first.
-self renderCurrentPage.
+	self renderCurrentPage.
 !
 
 renderBookOn: html
@@ -1020,10 +1025,6 @@ leftPage
 
 loader
 	^ loader ifNil: [loader := SouvignyLoader new]
-!
-
-navigatorWidth
-	^ AbstractBookNavigatorWidget width
 !
 
 rightPage

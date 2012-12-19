@@ -486,6 +486,19 @@ fn: function (aBibNumLoader) {
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_navigatorWidth",
+smalltalk.method({
+selector: "navigatorWidth",
+fn: function (){
+var self=this;
+var $1;
+$1=smalltalk.send((smalltalk.AbstractBookNavigatorWidget || AbstractBookNavigatorWidget),"_width",[]);
+return $1;
+}
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_onPageChangeDo_",
 smalltalk.method({
 selector: "onPageChangeDo:",
@@ -513,11 +526,13 @@ smalltalk.addMethod(
 "_reloadWidget",
 smalltalk.method({
 selector: "reloadWidget",
-fn: function () {
-    var self = this;
-    smalltalk.send(self['@rootBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderWidgetOn_", [html]);}]);
-    return self;
-}
+fn: function (){
+var self=this;
+smalltalk.send(self["@book"],"_reset",[]);
+smalltalk.send(self["@rootBrush"],"_contents_",[(function(html){
+return smalltalk.send(self,"_renderWidgetOn_",[html]);
+})]);
+return self}
 }),
 smalltalk.AbstractBookWidget);
 
@@ -528,7 +543,7 @@ selector: "renderBook:on:",
 fn: function (aBook,aBrush){
 var self=this;
 var $1,$2,$3,$4;
-self["@book"]=smalltalk.send(aBook,"_reset",[]);
+self["@book"]=aBook;
 smalltalk.send(aBrush,"_contents_",[(function(html){
 return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
 $1=smalltalk.send(html,"_div",[]);
@@ -929,13 +944,12 @@ smalltalk.addMethod(
 "_loadBook",
 smalltalk.method({
 selector: "loadBook",
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
-    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
-    smalltalk.send(self, "_renderCurrentPage", []);
-    return self;
-}
+fn: function (){
+var self=this;
+smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
+self["@currentPage"]=smalltalk.send(smalltalk.send(self["@book"],"_pages",[]),"_first",[]);
+smalltalk.send(self,"_renderCurrentPage",[]);
+return self}
 }),
 smalltalk.BookMonoWidget);
 
@@ -1244,19 +1258,6 @@ selector: "loader",
 fn: function () {
     var self = this;
     return ($receiver = self['@loader']) == nil || $receiver == undefined ? function () {return self['@loader'] = smalltalk.send(smalltalk.SouvignyLoader || SouvignyLoader, "_new", []);}() : $receiver;
-    return self;
-}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_navigatorWidth",
-smalltalk.method({
-selector: "navigatorWidth",
-fn: function () {
-    var self = this;
-    return smalltalk.send(smalltalk.AbstractBookNavigatorWidget ||
-        AbstractBookNavigatorWidget, "_width", []);
     return self;
 }
 }),

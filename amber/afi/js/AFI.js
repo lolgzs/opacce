@@ -666,6 +666,24 @@ referencedClasses: []
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
+"_navigatorWidth",
+smalltalk.method({
+selector: "navigatorWidth",
+category: 'accessor',
+fn: function (){
+var self=this;
+var $1;
+$1=smalltalk.send((smalltalk.AbstractBookNavigatorWidget || AbstractBookNavigatorWidget),"_width",[]);
+return $1;
+},
+args: [],
+source: "navigatorWidth\x0a\x09^ AbstractBookNavigatorWidget width",
+messageSends: ["width"],
+referencedClasses: ["AbstractBookNavigatorWidget"]
+}),
+smalltalk.AbstractBookWidget);
+
+smalltalk.addMethod(
 "_onPageChangeDo_",
 smalltalk.method({
 selector: "onPageChangeDo:",
@@ -704,14 +722,16 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "reloadWidget",
 category: 'callbacks',
-fn: function () {
-    var self = this;
-    smalltalk.send(self['@rootBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderWidgetOn_", [html]);}]);
-    return self;
-},
+fn: function (){
+var self=this;
+smalltalk.send(self["@book"],"_reset",[]);
+smalltalk.send(self["@rootBrush"],"_contents_",[(function(html){
+return smalltalk.send(self,"_renderWidgetOn_",[html]);
+})]);
+return self},
 args: [],
-source: "reloadWidget\x0a\x09rootBrush contents: [:html| self renderWidgetOn: html].",
-messageSends: ["contents:", "renderWidgetOn:"],
+source: "reloadWidget\x0a\x09book reset.\x0a\x09rootBrush contents: [:html| self renderWidgetOn: html].",
+messageSends: ["reset", "contents:", "renderWidgetOn:"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -724,7 +744,7 @@ category: 'rendering',
 fn: function (aBook,aBrush){
 var self=this;
 var $1,$2,$3,$4;
-self["@book"]=smalltalk.send(aBook,"_reset",[]);
+self["@book"]=aBook;
 smalltalk.send(aBrush,"_contents_",[(function(html){
 return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
 $1=smalltalk.send(html,"_div",[]);
@@ -749,8 +769,8 @@ $4;
 };
 return self},
 args: ["aBook", "aBrush"],
-source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook reset.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
-messageSends: ["reset", "contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
+source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
+messageSends: ["contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
 referencedClasses: []
 }),
 smalltalk.AbstractBookWidget);
@@ -1250,15 +1270,14 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "loadBook",
 category: 'rendering',
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
-    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
-    smalltalk.send(self, "_renderCurrentPage", []);
-    return self;
-},
+fn: function (){
+var self=this;
+smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
+self["@currentPage"]=smalltalk.send(smalltalk.send(self["@book"],"_pages",[]),"_first",[]);
+smalltalk.send(self,"_renderCurrentPage",[]);
+return self},
 args: [],
-source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage:=book pages first.\x0aself renderCurrentPage.",
+source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage:=book pages first.\x0a\x09self renderCurrentPage.",
 messageSends: ["renderBook:on:", "first", "pages", "renderCurrentPage"],
 referencedClasses: []
 }),
@@ -1686,24 +1705,6 @@ args: [],
 source: "loader\x0a\x09^ loader ifNil: [loader := SouvignyLoader new]",
 messageSends: ["ifNil:", "new"],
 referencedClasses: []
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_navigatorWidth",
-smalltalk.method({
-selector: "navigatorWidth",
-category: 'accessing',
-fn: function () {
-    var self = this;
-    return smalltalk.send(smalltalk.AbstractBookNavigatorWidget ||
-        AbstractBookNavigatorWidget, "_width", []);
-    return self;
-},
-args: [],
-source: "navigatorWidth\x0a\x09^ AbstractBookNavigatorWidget width",
-messageSends: ["width"],
-referencedClasses: ["AbstractBookNavigatorWidget"]
 }),
 smalltalk.BookWidget);
 
