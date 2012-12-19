@@ -203,6 +203,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function bandeannonceAction() {
+		session_write_close();
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		if($this->service_afi > "")
 		{
@@ -218,6 +219,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function photosAction() {
+		session_write_close();
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		
 		// Docs sonores : lastFm
@@ -232,6 +234,7 @@ class NoticeAjaxController extends Zend_Controller_Action {
 	
 
 	public function bibliographieAction() {
+		session_write_close();
 		$notice=$this->notice->getNotice($this->id_notice,"TA");
 		
 		// Docs sonores : lastFm
