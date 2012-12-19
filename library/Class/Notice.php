@@ -480,12 +480,22 @@ class Class_Notice extends Storm_Model_Abstract {
 				$notice["entete"][$rubrique] = $this->getEditeurAvecVille();
 			}
 			else $notice["entete"][$rubrique] = $this->getChampNotice($clef, $notice["facettes"]);
+			if($clef=='T') $notice["entete"]["Description"]=$this->get200b();
 		}
 		
 		// champs supplémentaires
 		return $notice;
 	}
 
+// ----------------------------------------------------------------
+// Champ 200$b
+// ----------------------------------------------------------------
+	public function get200b()
+	{
+		$data = $this->get_subfield("200", "b");
+		return $this->filtreTitre($data[0]);
+	}
+	
 // ----------------------------------------------------------------
 // Renvoie la clef chapeau et le no de partie
 // ----------------------------------------------------------------
@@ -687,7 +697,7 @@ class Class_Notice extends Storm_Model_Abstract {
 
 			// On cherche le chapeau et le n°
 			if ($data = $this->get_subfield("461", "t")) {
-				$chapeau = trim($data[0]);
+				$chapeau = $this->filtreTitre($data[0]);
 				if ($chapeau) 
 				{
 					if ($titre == $chapeau) $titre = "";
@@ -740,8 +750,8 @@ class Class_Notice extends Storm_Model_Abstract {
 			if($champ['code']=='a') $num=$this->filtreTitre($champ['valeur']);
 			if($champ['code']=='b') $label=$this->filtreTitre($champ['valeur']);
 		}
-		$ret=$label."; ".$num;
-		return $num;
+		$ret=$label." ; ".$num;
+		return $ret;
 	}
 	
 // ----------------------------------------------------------------
@@ -985,7 +995,7 @@ class Class_Notice extends Storm_Model_Abstract {
 		}
 		
 		$titre = str_replace("#BR#",BR, $titre);
-		return $titre;
+		return trim($titre);
 	}
 
 	
@@ -1201,7 +1211,7 @@ class Class_Notice extends Storm_Model_Abstract {
 	public function getEditeurAvecVille() {
 		$editeur = $this->getEditeur();
 		if ($data = $this->get_subfield('210', 'a'))
-			$editeur .= ' (' . trim($data[0]) . ')';
+			$editeur .= ' (' . $this->filtreTitre($data[0]) . ')';
 		return $editeur;
 	}
 
@@ -1344,7 +1354,7 @@ class Class_Notice extends Storm_Model_Abstract {
 // ----------------------------------------------------------------
 	public function getNotes()
 	{
-		$zones = array('200b', '300a', '303a', '304a', '305a', '306a', '307a', '308a', '310a', '312a', '313a', '314a', '316a', '317a', '320a', '321a', '323a', '334abcd', '337a', '345a');
+		$zones = array('300a', '303a', '304a', '305a', '306a', '307a', '308a', '310a', '312a', '313a', '314a', '316a', '317a', '320a', '321a', '323a', '334abcd', '337a', '345a');
 		$notes = array();
 
 		foreach ($zones as $elem)
