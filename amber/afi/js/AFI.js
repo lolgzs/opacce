@@ -310,7 +310,26 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['announcer', 'currentPageNo', 'book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader'], 'AFI');
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['announcer', 'currentPageNo', 'book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader', 'folioBrush'], 'AFI');
+smalltalk.addMethod(
+"_afterPageChange_",
+smalltalk.method({
+selector: "afterPageChange:",
+category: 'announcements',
+fn: function (data) {
+    var self = this;
+    smalltalk.send(self, "_updateFolioNumbers", []);
+    smalltalk.send(self, "_openDescriptions", []);
+    smalltalk.send(self, "_announcePageChange_", [smalltalk.send(self, "_currentPage", [])]);
+    return self;
+},
+args: ["data"],
+source: "afterPageChange: data\x0a\x09self updateFolioNumbers.\x0a\x09self openDescriptions.\x0a\x09self announcePageChange: self currentPage.",
+messageSends: ["updateFolioNumbers", "openDescriptions", "announcePageChange:", "currentPage"],
+referencedClasses: []
+}),
+smalltalk.AbstractBookWidget);
+
 smalltalk.addMethod(
 "_announcer",
 smalltalk.method({
@@ -1262,13 +1281,18 @@ category: 'rendering',
 fn: function () {
     var self = this;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
-    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+    if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
+        self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+        self['@currentPage'];
+    } else {
+        self['@currentPage'];
+    }
     smalltalk.send(self, "_renderCurrentPage", []);
     return self;
 },
 args: [],
-source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage:=book pages first.\x0a\x09self renderCurrentPage.",
-messageSends: ["renderBook:on:", "first", "pages", "renderCurrentPage"],
+source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage ifNil: [\x0a      \x09currentPage:= book pages first \x0a\x09].\x0a\x09self renderCurrentPage.",
+messageSends: ["renderBook:on:", "ifNil:", "first", "pages", "renderCurrentPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1280,11 +1304,15 @@ selector: "openDescriptions",
 category: 'css',
 fn: function () {
     var self = this;
+    smalltalk.send(console, "_log_", ["open description"]);
+    smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_hide", []);
+    smalltalk.send(self['@pageDescriptionsBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(smalltalk.send(html, "_div", []), "_asJQuery", []), "_html_", [smalltalk.send(self['@currentPage'], "_description", [])]);}]);
+    smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_fadeIn", []);
     return self;
 },
 args: [],
-source: "openDescriptions\x0a\x09",
-messageSends: [],
+source: "openDescriptions\x0a\x09console log:'open description'.\x0a\x09pageDescriptionsBrush asJQuery hide.\x0a\x09pageDescriptionsBrush contents: [:html| \x0a               \x09\x09(html div asJQuery) html: currentPage description.\x0a        ].\x0a\x09pageDescriptionsBrush asJQuery fadeIn. ",
+messageSends: ["log:", "hide", "asJQuery", "contents:", "html:", "description", "div", "fadeIn"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1323,10 +1351,11 @@ fn: function (html) {
     $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
     self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
     smalltalk.send(self['@bookBrush'], "_onClick_", [function () {return smalltalk.send(self, "_zoomPage", []);}]);
+    self['@folioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);
     return self;
 },
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0a\x09bookBrush := (html div class: 'pages').\x0a\x09bookBrush onClick: [self zoomPage].\x0a    ",
+source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0a\x09bookBrush := (html div class: 'pages').\x0a\x09bookBrush onClick: [self zoomPage].\x0a    folioBrush := html div class:'b-counter'.\x0a    ",
 messageSends: ["loadIViewerJS", "class:", "div", "with:", "onClick:", "goToPreviousPage", "goToNextPage", "zoomPage"],
 referencedClasses: []
 }),
@@ -1341,11 +1370,13 @@ fn: function () {
     var self = this;
     smalltalk.send(smalltalk.send(smalltalk.send(self['@bookBrush'], "_asJQuery", []), "_find_", ["img"]), "_hide", []);
     smalltalk.send(self['@currentPage'], "_renderWidth_height_", [smalltalk.send(smalltalk.send(smalltalk.send(self, "_width", []), "__slash", [2]), "_rounded", []), smalltalk.send(self, "_height", [])]);
+    smalltalk.send(self, "_openDescriptions", []);
+    smalltalk.send(self, "_updateFolioNumbers", []);
     return self;
 },
 args: [],
-source: "renderCurrentPage\x0a  (bookBrush asJQuery find: 'img' ) hide.\x0a\x09currentPage renderWidth: (self width / 2) rounded height: self height.\x0a    ",
-messageSends: ["hide", "find:", "asJQuery", "renderWidth:height:", "rounded", "/", "width", "height"],
+source: "renderCurrentPage\x0a  (bookBrush asJQuery find: 'img' ) hide.\x0a\x09currentPage renderWidth: (self width / 2) rounded height: self height.\x0a    self openDescriptions.\x0a    self  updateFolioNumbers.\x0a",
+messageSends: ["hide", "find:", "asJQuery", "renderWidth:height:", "rounded", "/", "width", "height", "openDescriptions", "updateFolioNumbers"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1366,6 +1397,23 @@ fn: function (html) {
 args: ["html"],
 source: "renderZoomControlsOn: html\x0a\x09html div\x0a\x09\x09class: 'b-zoom-magnify';\x0a\x09\x09with: [ \x09zoomPageAnchor := (html a onClick: [self zoomPage]) asJQuery.\x0a                        \x0a                        pageZoomBrush := html div \x0a\x09\x09\x09\x09\x09\x09\x09class: 'b-zoom';\x0a\x09\x09\x09\x09\x09\x09\x09yourself.\x0a                ].",
 messageSends: ["class:", "div", "with:", "asJQuery", "onClick:", "zoomPage", "a", "yourself"],
+referencedClasses: []
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_updateFolioNumbers",
+smalltalk.method({
+selector: "updateFolioNumbers",
+category: 'rendering',
+fn: function () {
+    var self = this;
+    smalltalk.send(self['@folioBrush'], "_contents_", [smalltalk.send(self['@currentPage'], "_foliono", [])]);
+    return self;
+},
+args: [],
+source: "updateFolioNumbers\x0a folioBrush contents: currentPage foliono.",
+messageSends: ["contents:", "foliono"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -3866,10 +3914,10 @@ selector: "style",
 category: 'css',
 fn: function () {
     var self = this;
-    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 104px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
+    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 114px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
 },
 args: [],
-source: "style\x0a\x09^ '\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 104px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a'",
+source: "style\x0a\x09^ '\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 114px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a'",
 messageSends: [],
 referencedClasses: []
 }),

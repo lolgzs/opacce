@@ -27,12 +27,13 @@ class Admin_AmberController extends Zend_Controller_Action {
 
 
 	protected function _writeContents($commit_path, $contents) {
-		self::getFileWriter()->putContents($commit_path, $contents);
+		if (self::getFileWriter()->putContents($commit_path, $contents)==0)
+			$this->getResponse()->setHttpResponseCode(500);
+
 	}
 
 
 	protected function commitTo($commit_subpath) {
-		xdebug_break();
 		if (Class_ScriptLoader::getInstance()->isAmberModeDeploy())
 			return $this;
 

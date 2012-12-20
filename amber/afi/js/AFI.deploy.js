@@ -225,7 +225,21 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['announcer', 'currentPageNo', 'book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader'], 'AFI');
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['announcer', 'currentPageNo', 'book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader', 'folioBrush'], 'AFI');
+smalltalk.addMethod(
+"_afterPageChange_",
+smalltalk.method({
+selector: "afterPageChange:",
+fn: function (data) {
+    var self = this;
+    smalltalk.send(self, "_updateFolioNumbers", []);
+    smalltalk.send(self, "_openDescriptions", []);
+    smalltalk.send(self, "_announcePageChange_", [smalltalk.send(self, "_currentPage", [])]);
+    return self;
+}
+}),
+smalltalk.AbstractBookWidget);
+
 smalltalk.addMethod(
 "_announcer",
 smalltalk.method({
@@ -936,7 +950,12 @@ selector: "loadBook",
 fn: function () {
     var self = this;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
-    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+    if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
+        self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+        self['@currentPage'];
+    } else {
+        self['@currentPage'];
+    }
     smalltalk.send(self, "_renderCurrentPage", []);
     return self;
 }
@@ -949,6 +968,10 @@ smalltalk.method({
 selector: "openDescriptions",
 fn: function () {
     var self = this;
+    smalltalk.send(console, "_log_", ["open description"]);
+    smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_hide", []);
+    smalltalk.send(self['@pageDescriptionsBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(smalltalk.send(html, "_div", []), "_asJQuery", []), "_html_", [smalltalk.send(self['@currentPage'], "_description", [])]);}]);
+    smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_fadeIn", []);
     return self;
 }
 }),
@@ -982,6 +1005,7 @@ fn: function (html) {
     $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
     self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
     smalltalk.send(self['@bookBrush'], "_onClick_", [function () {return smalltalk.send(self, "_zoomPage", []);}]);
+    self['@folioBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["b-counter"]);
     return self;
 }
 }),
@@ -995,6 +1019,8 @@ fn: function () {
     var self = this;
     smalltalk.send(smalltalk.send(smalltalk.send(self['@bookBrush'], "_asJQuery", []), "_find_", ["img"]), "_hide", []);
     smalltalk.send(self['@currentPage'], "_renderWidth_height_", [smalltalk.send(smalltalk.send(smalltalk.send(self, "_width", []), "__slash", [2]), "_rounded", []), smalltalk.send(self, "_height", [])]);
+    smalltalk.send(self, "_openDescriptions", []);
+    smalltalk.send(self, "_updateFolioNumbers", []);
     return self;
 }
 }),
@@ -1010,6 +1036,18 @@ fn: function (html) {
     $1 = smalltalk.send(html, "_div", []);
     smalltalk.send($1, "_class_", ["b-zoom-magnify"]);
     $2 = smalltalk.send($1, "_with_", [function () {self['@zoomPageAnchor'] = smalltalk.send(smalltalk.send(smalltalk.send(html, "_a", []), "_onClick_", [function () {return smalltalk.send(self, "_zoomPage", []);}]), "_asJQuery", []);self['@zoomPageAnchor'];$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_class_", ["b-zoom"]);$4 = smalltalk.send($3, "_yourself", []);self['@pageZoomBrush'] = $4;return self['@pageZoomBrush'];}]);
+    return self;
+}
+}),
+smalltalk.BookMonoWidget);
+
+smalltalk.addMethod(
+"_updateFolioNumbers",
+smalltalk.method({
+selector: "updateFolioNumbers",
+fn: function () {
+    var self = this;
+    smalltalk.send(self['@folioBrush'], "_contents_", [smalltalk.send(self['@currentPage'], "_foliono", [])]);
     return self;
 }
 }),
@@ -2823,7 +2861,7 @@ smalltalk.method({
 selector: "style",
 fn: function () {
     var self = this;
-    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 104px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
+    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 114px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
 }
 }),
 smalltalk.PageWidget);

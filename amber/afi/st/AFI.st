@@ -308,7 +308,7 @@ renderPagesOn: html
 ! !
 
 Widget subclass: #AbstractBookWidget
-	instanceVariableNames: 'announcer currentPageNo book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader'
+	instanceVariableNames: 'announcer currentPageNo book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
 	package: 'AFI'!
 
 !AbstractBookWidget methodsFor: 'accessor'!
@@ -370,6 +370,12 @@ zoomControlWidth
 ! !
 
 !AbstractBookWidget methodsFor: 'announcements'!
+
+afterPageChange: data
+	self updateFolioNumbers.
+	self openDescriptions.
+	self announcePageChange: self currentPage.
+!
 
 announcer
 	^ announcer ifNil: [announcer := Announcer new]
@@ -943,13 +949,21 @@ bookStyle
 !
 
 openDescriptions
+	console log:'open description'.
+	pageDescriptionsBrush asJQuery hide.
+	pageDescriptionsBrush contents: [:html| 
+               		(html div asJQuery) html: currentPage description.
+        ].
+	pageDescriptionsBrush asJQuery fadeIn.
 ! !
 
 !BookMonoWidget methodsFor: 'rendering'!
 
 loadBook
 	self renderBook:book on: bookBrush.
-    currentPage:=book pages first.
+    currentPage ifNil: [
+      	currentPage:= book pages first 
+	].
 	self renderCurrentPage.
 !
 
@@ -964,11 +978,14 @@ renderBookOn: html
 	
 	bookBrush := (html div class: 'pages').
 	bookBrush onClick: [self zoomPage].
+    folioBrush := html div class:'b-counter'.
 !
 
 renderCurrentPage
   (bookBrush asJQuery find: 'img' ) hide.
 	currentPage renderWidth: (self width / 2) rounded height: self height.
+    self openDescriptions.
+    self  updateFolioNumbers.
 !
 
 renderZoomControlsOn: html
@@ -980,6 +997,10 @@ renderZoomControlsOn: html
 							class: 'b-zoom';
 							yourself.
                 ].
+!
+
+updateFolioNumbers
+ folioBrush contents: currentPage foliono.
 ! !
 
 AbstractBookWidget subclass: #BookWidget
@@ -2026,7 +2047,7 @@ style
 			  *position: relative;
 			  z-index: 1;
 			  text-align: center;
-			  width: 104px;
+			  width: 114px;
               right: 0px;
 			}
             
