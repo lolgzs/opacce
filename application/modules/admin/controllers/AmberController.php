@@ -32,6 +32,7 @@ class Admin_AmberController extends Zend_Controller_Action {
 
 
 	protected function commitTo($commit_subpath) {
+		xdebug_break();
 		if (Class_ScriptLoader::getInstance()->isAmberModeDeploy())
 			return $this;
 

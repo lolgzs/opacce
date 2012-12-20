@@ -670,11 +670,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "navigatorWidth",
 category: 'accessor',
-fn: function (){
-var self=this;
-var $1;
-$1=smalltalk.send((smalltalk.AbstractBookNavigatorWidget || AbstractBookNavigatorWidget),"_width",[]);
-return $1;
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.AbstractBookNavigatorWidget ||
+        AbstractBookNavigatorWidget, "_width", []);
+    return $1;
 },
 args: [],
 source: "navigatorWidth\x0a\x09^ AbstractBookNavigatorWidget width",
@@ -722,13 +723,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "reloadWidget",
 category: 'callbacks',
-fn: function (){
-var self=this;
-smalltalk.send(self["@book"],"_reset",[]);
-smalltalk.send(self["@rootBrush"],"_contents_",[(function(html){
-return smalltalk.send(self,"_renderWidgetOn_",[html]);
-})]);
-return self},
+fn: function () {
+    var self = this;
+    smalltalk.send(self['@book'], "_reset", []);
+    smalltalk.send(self['@rootBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderWidgetOn_", [html]);}]);
+    return self;
+},
 args: [],
 source: "reloadWidget\x0a\x09book reset.\x0a\x09rootBrush contents: [:html| self renderWidgetOn: html].",
 messageSends: ["reset", "contents:", "renderWidgetOn:"],
@@ -741,33 +741,22 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderBook:on:",
 category: 'rendering',
-fn: function (aBook,aBrush){
-var self=this;
-var $1,$2,$3,$4;
-self["@book"]=aBook;
-smalltalk.send(aBrush,"_contents_",[(function(html){
-return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_rel_",[smalltalk.send(aPage,"_title",[])]);
-$2=smalltalk.send($1,"_yourself",[]);
-return smalltalk.send(aPage,"_brush_",[$2]);
-})]);
-})]);
-$3=smalltalk.send(self,"_isContainerSmall",[]);
-if(smalltalk.assert($3)){
-smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_addClass_",["small"]);
-};
-smalltalk.send(smalltalk.send(self["@book"],"_downloadUrl",[]),"_ifNotEmpty_",[(function(){
-return smalltalk.send(self["@downloadBrush"],"_contents_",[(function(html){
-return smalltalk.send(smalltalk.send(html,"_a",[]),"_href_",[smalltalk.send(aBook,"_downloadUrl",[])]);
-})]);
-})]);
-if(smalltalk.assert(self["@isFullscreen"])){
-smalltalk.send(self,"_renderBookNavigator",[]);
-$4=smalltalk.send(self,"_renderBookTitle",[]);
-$4;
-};
-return self},
+fn: function (aBook, aBrush) {
+    var self = this;
+    var $1, $2, $3, $4;
+    self['@book'] = aBook;
+    smalltalk.send(aBrush, "_contents_", [function (html) {return smalltalk.send(smalltalk.send(aBook, "_pages", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_div", []);smalltalk.send($1, "_rel_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_yourself", []);return smalltalk.send(aPage, "_brush_", [$2]);}]);}]);
+    $3 = smalltalk.send(self, "_isContainerSmall", []);
+    if (smalltalk.assert($3)) {
+        smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_addClass_", ["small"]);
+    }
+    smalltalk.send(smalltalk.send(self['@book'], "_downloadUrl", []), "_ifNotEmpty_", [function () {return smalltalk.send(self['@downloadBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(html, "_a", []), "_href_", [smalltalk.send(aBook, "_downloadUrl", [])]);}]);}]);
+    if (smalltalk.assert(self['@isFullscreen'])) {
+        smalltalk.send(self, "_renderBookNavigator", []);
+        $4 = smalltalk.send(self, "_renderBookTitle", []);
+    }
+    return self;
+},
 args: ["aBook", "aBrush"],
 source: "renderBook: aBook on: aBrush\x09\x0a    book := aBook.\x0a    \x0a\x09aBrush contents: [:html|\x0a\x09\x09aBook pages do: [:aPage| \x09aPage brush: (html div\x0a        \x09\x09         \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09rel: aPage title;\x0a                                 \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09yourself)  ]\x09].\x0a\x09\x0a\x09self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].\x0a\x09\x0a\x09book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].\x0a\x09\x0a\x09isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].\x0a    \x0a    ",
 messageSends: ["contents:", "do:", "brush:", "rel:", "title", "div", "yourself", "pages", "ifTrue:", "addClass:", "asJQuery", "isContainerSmall", "ifNotEmpty:", "href:", "downloadUrl", "a", "renderBookNavigator", "renderBookTitle"],
@@ -1270,12 +1259,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "loadBook",
 category: 'rendering',
-fn: function (){
-var self=this;
-smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
-self["@currentPage"]=smalltalk.send(smalltalk.send(self["@book"],"_pages",[]),"_first",[]);
-smalltalk.send(self,"_renderCurrentPage",[]);
-return self},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+    smalltalk.send(self, "_renderCurrentPage", []);
+    return self;
+},
 args: [],
 source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage:=book pages first.\x0a\x09self renderCurrentPage.",
 messageSends: ["renderBook:on:", "first", "pages", "renderCurrentPage"],
@@ -1321,29 +1311,20 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderBookOn:",
 category: 'rendering',
-fn: function (html){
-var self=this;
-var $1,$2,$3,$4;
-smalltalk.send(self,"_loadIViewerJS",[]);
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["b-arrow-prev"]);
-$2=smalltalk.send($1,"_with_",[(function(){
-return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
-return smalltalk.send(self,"_goToPreviousPage",[]);
-})]);
-})]);
-$3=smalltalk.send(html,"_div",[]);
-smalltalk.send($3,"_class_",["b-arrow-next"]);
-$4=smalltalk.send($3,"_with_",[(function(){
-return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
-return smalltalk.send(self,"_goToNextPage",[]);
-})]);
-})]);
-self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
-smalltalk.send(self["@bookBrush"],"_onClick_",[(function(){
-return smalltalk.send(self,"_zoomPage",[]);
-})]);
-return self},
+fn: function (html) {
+    var self = this;
+    var $1, $2, $3, $4;
+    smalltalk.send(self, "_loadIViewerJS", []);
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["b-arrow-prev"]);
+    $2 = smalltalk.send($1, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToPreviousPage", []);}]);}]);
+    $3 = smalltalk.send(html, "_div", []);
+    smalltalk.send($3, "_class_", ["b-arrow-next"]);
+    $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
+    self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
+    smalltalk.send(self['@bookBrush'], "_onClick_", [function () {return smalltalk.send(self, "_zoomPage", []);}]);
+    return self;
+},
 args: ["html"],
 source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0a\x09bookBrush := (html div class: 'pages').\x0a\x09bookBrush onClick: [self zoomPage].\x0a    ",
 messageSends: ["loadIViewerJS", "class:", "div", "with:", "onClick:", "goToPreviousPage", "goToNextPage", "zoomPage"],
@@ -1399,12 +1380,13 @@ fn: function () {
     smalltalk.send(self, "_closeDescriptions", []);
     smalltalk.send(self['@zoomPageAnchor'], "_hide", []);
     smalltalk.send(smalltalk.send(".b-arrow", "_asJQuery", []), "_hide", []);
-    smalltalk.send(self['@book'], "_pageAt_do_", [smalltalk.send(self, "_currentPageNo", []), function (aPage) {smalltalk.send(self['@pageZoomBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderPage_class_on_", [aPage, "b-left", html]);}]);return smalltalk.send(smalltalk.send(self['@pageZoomBrush'], "_asJQuery", []), "_show", []);}]);
+    smalltalk.send(self['@pageZoomBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderPage_class_on_", [self['@currentPage'], "b-left", html]);}]);
+    smalltalk.send(smalltalk.send(self['@pageZoomBrush'], "_asJQuery", []), "_show", []);
     return self;
 },
 args: [],
-source: "zoomPage\x0a\x09self closeDescriptions.\x0a\x0a\x09 zoomPageAnchor hide.\x0a\x09'.b-arrow' asJQuery hide.\x0a\x0a\x09book pageAt: (self currentPageNo) do: [:aPage| \x0a                                           \x09\x09\x09\x09\x09\x09\x09\x09\x09\x09pageZoomBrush contents: [:html|  self renderPage: aPage class: 'b-left' on: html ].\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09pageZoomBrush asJQuery show.\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09 \x09].",
-messageSends: ["closeDescriptions", "hide", "asJQuery", "pageAt:do:", "currentPageNo", "contents:", "renderPage:class:on:", "show"],
+source: "zoomPage\x0a\x09self closeDescriptions.\x0a\x0a\x09 zoomPageAnchor hide.\x0a\x09'.b-arrow' asJQuery hide.\x0a\x0a\x0a\x09pageZoomBrush contents: [:html|  self renderPage: currentPage class: 'b-left' on: html ].\x0a\x09pageZoomBrush asJQuery show.\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09",
+messageSends: ["closeDescriptions", "hide", "asJQuery", "contents:", "renderPage:class:on:", "show"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -3802,42 +3784,15 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderControlsOn:",
 category: 'rendering',
-fn: function (html){
-var self=this;
-var $1,$3,$4,$2;
-var addControl;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["controls"]);
-$2=smalltalk.send($1,"_with_",[(function(){
-addControl=(function(name,helpText){
-$3=smalltalk.send(html,"_div",[]);
-smalltalk.send($3,"_with_",[(function(){
-smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",[smalltalk.send(smalltalk.send("iviewer_zoom_","__comma",[name]),"__comma",[" iviewer_common iviewer_button"])]);
-return smalltalk.send(html,"_div_",[helpText]);
-})]);
-$4=smalltalk.send($3,"_yourself",[]);
-return $4;
-});
-addControl;
-self["@closeControl"]=smalltalk.send(addControl,"_value_value_",["close","Fermer"]);
-self["@closeControl"];
-smalltalk.send(self["@closeControl"],"_onClick_",[(function(){
-return smalltalk.send(self,"_close",[]);
-})]);
-self["@inControl"]=smalltalk.send(addControl,"_value_value_",["in","Agrandir"]);
-self["@inControl"];
-self["@outControl"]=smalltalk.send(addControl,"_value_value_",["out","Réduire"]);
-self["@outControl"];
-self["@zeroControl"]=smalltalk.send(addControl,"_value_value_",["zero","Taille originale"]);
-self["@zeroControl"];
-self["@fitControl"]=smalltalk.send(addControl,"_value_value_",["fit","Taille adaptée"]);
-self["@fitControl"];
-self["@rotateRightControl"]=smalltalk.send(addControl,"_value_value_",["rotate_right","Tourner"]);
-self["@rotateRightControl"];
-self["@downloadImageControl"]=smalltalk.send(addControl,"_value_value_",["download_image","Télécharger"]);
-return self["@downloadImageControl"];
-})]);
-return self},
+fn: function (html) {
+    var self = this;
+    var $1, $3, $4, $2;
+    var addControl;
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["controls"]);
+    $2 = smalltalk.send($1, "_with_", [function () {addControl = function (name, helpText) {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_with_", [function () {smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [smalltalk.send(smalltalk.send("iviewer_zoom_", "__comma", [name]), "__comma", [" iviewer_common iviewer_button"])]);return smalltalk.send(html, "_div_", [helpText]);}]);$4 = smalltalk.send($3, "_yourself", []);return $4;};addControl;self['@closeControl'] = smalltalk.send(addControl, "_value_value_", ["close", "Fermer"]);self['@closeControl'];smalltalk.send(self['@closeControl'], "_onClick_", [function () {return smalltalk.send(self, "_close", []);}]);self['@inControl'] = smalltalk.send(addControl, "_value_value_", ["in", "Agrandir"]);self['@inControl'];self['@outControl'] = smalltalk.send(addControl, "_value_value_", ["out", "R\xE9duire"]);self['@outControl'];self['@zeroControl'] = smalltalk.send(addControl, "_value_value_", ["zero", "Taille originale"]);self['@zeroControl'];self['@fitControl'] = smalltalk.send(addControl, "_value_value_", ["fit", "Taille adapt\xE9e"]);self['@fitControl'];self['@rotateRightControl'] = smalltalk.send(addControl, "_value_value_", ["rotate_right", "Tourner"]);self['@rotateRightControl'];self['@downloadImageControl'] = smalltalk.send(addControl, "_value_value_", ["download_image", "T\xE9l\xE9charger"]);return self['@downloadImageControl'];}]);
+    return self;
+},
 args: ["html"],
 source: "renderControlsOn: html\x0a\x09|addControl|\x0a\x09html div \x0a\x09\x09class: 'controls';\x0a\x09\x09with: [\x0a          \x09\x09addControl :=  [:name :helpText| html div \x0a                \x09\x09\x09\x09\x09\x09\x09\x09with: [ html div  class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button'.\x0a                                               \x09\x09\x09\x09html div: helpText];\x0a                               \x09\x09\x09\x09\x09yourself].\x0a                  \x09closeControl := addControl value: 'close' value: 'Fermer'.\x0a                  \x09closeControl onClick: [self close].\x0a               \x09\x09inControl := addControl value: 'in' value: 'Agrandir'.\x0a          \x09\x09\x09outControl := addControl value: 'out' value: 'Réduire'.\x0a          \x09\x09\x09zeroControl := addControl value: 'zero' value: 'Taille originale'.\x0a          \x09\x09\x09fitControl := addControl value: 'fit' value: 'Taille adaptée'.\x0a          \x09\x09\x09rotateRightControl := addControl value: 'rotate_right' value: 'Tourner'.\x0a          \x09\x09\x09downloadImageControl := addControl value: 'download_image' value: 'Télécharger'.\x0a        ].",
 messageSends: ["class:", "div", "with:", ",", "div:", "yourself", "value:value:", "onClick:", "close"],
@@ -3850,36 +3805,33 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
 category: 'rendering',
-fn: function (html){
-var self=this;
-var $1,$2,$3,$4,$5,$6;
-var iViewer;
-smalltalk.send(html,"_style_",[smalltalk.send(self,"_style",[])]);
-smalltalk.send(self,"_renderControlsOn_",[html]);
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["iviewer"]);
-$2=smalltalk.send($1,"_asJQuery",[]);
-iViewer=$2;
-smalltalk.send(smalltalk.send(self["@page"],"_description",[]),"_ifNotEmpty_",[(function(){
-return smalltalk.send(iViewer,"_addClass_",["iviewer_with_text"]);
-})]);
-$3=smalltalk.send((smalltalk.HashedCollection || HashedCollection),"_new",[]);
-smalltalk.send($3,"_at_put_",["src",smalltalk.send(self["@page"],"_fullImageURL",[])]);
-smalltalk.send($3,"_at_put_",["zoom","fit"]);
-smalltalk.send($3,"_at_put_",["zoom_min",(10)]);
-smalltalk.send($3,"_at_put_",["zoom_max",(400)]);
-smalltalk.send($3,"_at_put_",["ui_disabled",true]);
-smalltalk.send($3,"_at_put_",["initCallback",(function(aViewer){
-return smalltalk.send(self,"_initIViewer_",[aViewer]);
-})]);
-$4=smalltalk.send($3,"_yourself",[]);
-smalltalk.send(iViewer,"_iviewer_",[$4]);
-$5=smalltalk.send(html,"_div",[]);
-smalltalk.send($5,"_class_",["page-desc"]);
-$6=smalltalk.send($5,"_asJQuery",[]);
-smalltalk.send($6,"_html_",[smalltalk.send(self["@page"],"_description",[])]);
-smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["clear"]);
-return self},
+fn: function (html) {
+    var self = this;
+    var $1, $2, $3, $4, $5, $6;
+    var iViewer;
+    smalltalk.send(html, "_style_", [smalltalk.send(self, "_style", [])]);
+    smalltalk.send(self, "_renderControlsOn_", [html]);
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["iviewer"]);
+    $2 = smalltalk.send($1, "_asJQuery", []);
+    iViewer = $2;
+    smalltalk.send(smalltalk.send(self['@page'], "_description", []), "_ifNotEmpty_", [function () {return smalltalk.send(iViewer, "_addClass_", ["iviewer_with_text"]);}]);
+    $3 = smalltalk.send(smalltalk.HashedCollection || HashedCollection, "_new", []);
+    smalltalk.send($3, "_at_put_", ["src", smalltalk.send(self['@page'], "_fullImageURL", [])]);
+    smalltalk.send($3, "_at_put_", ["zoom", "fit"]);
+    smalltalk.send($3, "_at_put_", ["zoom_min", 10]);
+    smalltalk.send($3, "_at_put_", ["zoom_max", 400]);
+    smalltalk.send($3, "_at_put_", ["ui_disabled", true]);
+    smalltalk.send($3, "_at_put_", ["initCallback", function (aViewer) {return smalltalk.send(self, "_initIViewer_", [aViewer]);}]);
+    $4 = smalltalk.send($3, "_yourself", []);
+    smalltalk.send(iViewer, "_iviewer_", [$4]);
+    $5 = smalltalk.send(html, "_div", []);
+    smalltalk.send($5, "_class_", ["page-desc"]);
+    $6 = smalltalk.send($5, "_asJQuery", []);
+    smalltalk.send($6, "_html_", [smalltalk.send(self['@page'], "_description", [])]);
+    smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["clear"]);
+    return self;
+},
 args: ["html"],
 source: "renderOn: html\x0a\x09|iViewer|\x0a\x09html style: self style.\x0a\x09self renderControlsOn: html.\x0a\x09iViewer := html div \x0a\x09\x09class: 'iviewer';\x0a\x09\x09asJQuery.\x0a\x09\x0a\x09page description ifNotEmpty: [iViewer addClass: 'iviewer_with_text'].\x0a\x0a\x09iViewer iviewer: (HashedCollection new\x0a                                               \x09\x09\x09at: 'src' put: page fullImageURL;\x0a                              \x09\x09\x09\x09\x09\x09\x09at: 'zoom' put: 'fit';\x0a                         \x09\x09\x09\x09\x09\x09\x09\x09at: 'zoom_min' put: 10;\x0a                        \x09\x09\x09\x09\x09\x09\x09\x09at: 'zoom_max' put: 400;\x0a\x09                     \x09\x09\x09\x09\x09\x09\x09\x09at: 'ui_disabled' put: true;\x0a        \x09              \x09\x09\x09\x09\x09\x09\x09\x09at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];\x0a                              \x09\x09\x09\x09\x09\x09\x09yourself).\x0a\x0a        (html div class: 'page-desc';  asJQuery) html: page description.\x0a\x09html div class: 'clear'.",
 messageSends: ["style:", "style", "renderControlsOn:", "class:", "div", "asJQuery", "ifNotEmpty:", "addClass:", "description", "iviewer:", "at:put:", "fullImageURL", "new", "initIViewer:", "yourself", "html:"],
@@ -3912,9 +3864,9 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "style",
 category: 'css',
-fn: function (){
-var self=this;
-return "\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 104px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a";
+fn: function () {
+    var self = this;
+    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 104px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
 },
 args: [],
 source: "style\x0a\x09^ '\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 104px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a'",

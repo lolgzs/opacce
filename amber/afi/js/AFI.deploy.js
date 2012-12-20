@@ -489,11 +489,12 @@ smalltalk.addMethod(
 "_navigatorWidth",
 smalltalk.method({
 selector: "navigatorWidth",
-fn: function (){
-var self=this;
-var $1;
-$1=smalltalk.send((smalltalk.AbstractBookNavigatorWidget || AbstractBookNavigatorWidget),"_width",[]);
-return $1;
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.AbstractBookNavigatorWidget ||
+        AbstractBookNavigatorWidget, "_width", []);
+    return $1;
 }
 }),
 smalltalk.AbstractBookWidget);
@@ -526,13 +527,12 @@ smalltalk.addMethod(
 "_reloadWidget",
 smalltalk.method({
 selector: "reloadWidget",
-fn: function (){
-var self=this;
-smalltalk.send(self["@book"],"_reset",[]);
-smalltalk.send(self["@rootBrush"],"_contents_",[(function(html){
-return smalltalk.send(self,"_renderWidgetOn_",[html]);
-})]);
-return self}
+fn: function () {
+    var self = this;
+    smalltalk.send(self['@book'], "_reset", []);
+    smalltalk.send(self['@rootBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderWidgetOn_", [html]);}]);
+    return self;
+}
 }),
 smalltalk.AbstractBookWidget);
 
@@ -540,33 +540,22 @@ smalltalk.addMethod(
 "_renderBook_on_",
 smalltalk.method({
 selector: "renderBook:on:",
-fn: function (aBook,aBrush){
-var self=this;
-var $1,$2,$3,$4;
-self["@book"]=aBook;
-smalltalk.send(aBrush,"_contents_",[(function(html){
-return smalltalk.send(smalltalk.send(aBook,"_pages",[]),"_do_",[(function(aPage){
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_rel_",[smalltalk.send(aPage,"_title",[])]);
-$2=smalltalk.send($1,"_yourself",[]);
-return smalltalk.send(aPage,"_brush_",[$2]);
-})]);
-})]);
-$3=smalltalk.send(self,"_isContainerSmall",[]);
-if(smalltalk.assert($3)){
-smalltalk.send(smalltalk.send(self["@rootBrush"],"_asJQuery",[]),"_addClass_",["small"]);
-};
-smalltalk.send(smalltalk.send(self["@book"],"_downloadUrl",[]),"_ifNotEmpty_",[(function(){
-return smalltalk.send(self["@downloadBrush"],"_contents_",[(function(html){
-return smalltalk.send(smalltalk.send(html,"_a",[]),"_href_",[smalltalk.send(aBook,"_downloadUrl",[])]);
-})]);
-})]);
-if(smalltalk.assert(self["@isFullscreen"])){
-smalltalk.send(self,"_renderBookNavigator",[]);
-$4=smalltalk.send(self,"_renderBookTitle",[]);
-$4;
-};
-return self}
+fn: function (aBook, aBrush) {
+    var self = this;
+    var $1, $2, $3, $4;
+    self['@book'] = aBook;
+    smalltalk.send(aBrush, "_contents_", [function (html) {return smalltalk.send(smalltalk.send(aBook, "_pages", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_div", []);smalltalk.send($1, "_rel_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_yourself", []);return smalltalk.send(aPage, "_brush_", [$2]);}]);}]);
+    $3 = smalltalk.send(self, "_isContainerSmall", []);
+    if (smalltalk.assert($3)) {
+        smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_addClass_", ["small"]);
+    }
+    smalltalk.send(smalltalk.send(self['@book'], "_downloadUrl", []), "_ifNotEmpty_", [function () {return smalltalk.send(self['@downloadBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(html, "_a", []), "_href_", [smalltalk.send(aBook, "_downloadUrl", [])]);}]);}]);
+    if (smalltalk.assert(self['@isFullscreen'])) {
+        smalltalk.send(self, "_renderBookNavigator", []);
+        $4 = smalltalk.send(self, "_renderBookTitle", []);
+    }
+    return self;
+}
 }),
 smalltalk.AbstractBookWidget);
 
@@ -944,12 +933,13 @@ smalltalk.addMethod(
 "_loadBook",
 smalltalk.method({
 selector: "loadBook",
-fn: function (){
-var self=this;
-smalltalk.send(self,"_renderBook_on_",[self["@book"],self["@bookBrush"]]);
-self["@currentPage"]=smalltalk.send(smalltalk.send(self["@book"],"_pages",[]),"_first",[]);
-smalltalk.send(self,"_renderCurrentPage",[]);
-return self}
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
+    smalltalk.send(self, "_renderCurrentPage", []);
+    return self;
+}
 }),
 smalltalk.BookMonoWidget);
 
@@ -980,29 +970,20 @@ smalltalk.addMethod(
 "_renderBookOn_",
 smalltalk.method({
 selector: "renderBookOn:",
-fn: function (html){
-var self=this;
-var $1,$2,$3,$4;
-smalltalk.send(self,"_loadIViewerJS",[]);
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["b-arrow-prev"]);
-$2=smalltalk.send($1,"_with_",[(function(){
-return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
-return smalltalk.send(self,"_goToPreviousPage",[]);
-})]);
-})]);
-$3=smalltalk.send(html,"_div",[]);
-smalltalk.send($3,"_class_",["b-arrow-next"]);
-$4=smalltalk.send($3,"_with_",[(function(){
-return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
-return smalltalk.send(self,"_goToNextPage",[]);
-})]);
-})]);
-self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
-smalltalk.send(self["@bookBrush"],"_onClick_",[(function(){
-return smalltalk.send(self,"_zoomPage",[]);
-})]);
-return self}
+fn: function (html) {
+    var self = this;
+    var $1, $2, $3, $4;
+    smalltalk.send(self, "_loadIViewerJS", []);
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["b-arrow-prev"]);
+    $2 = smalltalk.send($1, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToPreviousPage", []);}]);}]);
+    $3 = smalltalk.send(html, "_div", []);
+    smalltalk.send($3, "_class_", ["b-arrow-next"]);
+    $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
+    self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
+    smalltalk.send(self['@bookBrush'], "_onClick_", [function () {return smalltalk.send(self, "_zoomPage", []);}]);
+    return self;
+}
 }),
 smalltalk.BookMonoWidget);
 
@@ -1043,7 +1024,8 @@ fn: function () {
     smalltalk.send(self, "_closeDescriptions", []);
     smalltalk.send(self['@zoomPageAnchor'], "_hide", []);
     smalltalk.send(smalltalk.send(".b-arrow", "_asJQuery", []), "_hide", []);
-    smalltalk.send(self['@book'], "_pageAt_do_", [smalltalk.send(self, "_currentPageNo", []), function (aPage) {smalltalk.send(self['@pageZoomBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderPage_class_on_", [aPage, "b-left", html]);}]);return smalltalk.send(smalltalk.send(self['@pageZoomBrush'], "_asJQuery", []), "_show", []);}]);
+    smalltalk.send(self['@pageZoomBrush'], "_contents_", [function (html) {return smalltalk.send(self, "_renderPage_class_on_", [self['@currentPage'], "b-left", html]);}]);
+    smalltalk.send(smalltalk.send(self['@pageZoomBrush'], "_asJQuery", []), "_show", []);
     return self;
 }
 }),
@@ -2774,42 +2756,15 @@ smalltalk.addMethod(
 "_renderControlsOn_",
 smalltalk.method({
 selector: "renderControlsOn:",
-fn: function (html){
-var self=this;
-var $1,$3,$4,$2;
-var addControl;
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["controls"]);
-$2=smalltalk.send($1,"_with_",[(function(){
-addControl=(function(name,helpText){
-$3=smalltalk.send(html,"_div",[]);
-smalltalk.send($3,"_with_",[(function(){
-smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",[smalltalk.send(smalltalk.send("iviewer_zoom_","__comma",[name]),"__comma",[" iviewer_common iviewer_button"])]);
-return smalltalk.send(html,"_div_",[helpText]);
-})]);
-$4=smalltalk.send($3,"_yourself",[]);
-return $4;
-});
-addControl;
-self["@closeControl"]=smalltalk.send(addControl,"_value_value_",["close","Fermer"]);
-self["@closeControl"];
-smalltalk.send(self["@closeControl"],"_onClick_",[(function(){
-return smalltalk.send(self,"_close",[]);
-})]);
-self["@inControl"]=smalltalk.send(addControl,"_value_value_",["in","Agrandir"]);
-self["@inControl"];
-self["@outControl"]=smalltalk.send(addControl,"_value_value_",["out","Réduire"]);
-self["@outControl"];
-self["@zeroControl"]=smalltalk.send(addControl,"_value_value_",["zero","Taille originale"]);
-self["@zeroControl"];
-self["@fitControl"]=smalltalk.send(addControl,"_value_value_",["fit","Taille adaptée"]);
-self["@fitControl"];
-self["@rotateRightControl"]=smalltalk.send(addControl,"_value_value_",["rotate_right","Tourner"]);
-self["@rotateRightControl"];
-self["@downloadImageControl"]=smalltalk.send(addControl,"_value_value_",["download_image","Télécharger"]);
-return self["@downloadImageControl"];
-})]);
-return self}
+fn: function (html) {
+    var self = this;
+    var $1, $3, $4, $2;
+    var addControl;
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["controls"]);
+    $2 = smalltalk.send($1, "_with_", [function () {addControl = function (name, helpText) {$3 = smalltalk.send(html, "_div", []);smalltalk.send($3, "_with_", [function () {smalltalk.send(smalltalk.send(html, "_div", []), "_class_", [smalltalk.send(smalltalk.send("iviewer_zoom_", "__comma", [name]), "__comma", [" iviewer_common iviewer_button"])]);return smalltalk.send(html, "_div_", [helpText]);}]);$4 = smalltalk.send($3, "_yourself", []);return $4;};addControl;self['@closeControl'] = smalltalk.send(addControl, "_value_value_", ["close", "Fermer"]);self['@closeControl'];smalltalk.send(self['@closeControl'], "_onClick_", [function () {return smalltalk.send(self, "_close", []);}]);self['@inControl'] = smalltalk.send(addControl, "_value_value_", ["in", "Agrandir"]);self['@inControl'];self['@outControl'] = smalltalk.send(addControl, "_value_value_", ["out", "R\xE9duire"]);self['@outControl'];self['@zeroControl'] = smalltalk.send(addControl, "_value_value_", ["zero", "Taille originale"]);self['@zeroControl'];self['@fitControl'] = smalltalk.send(addControl, "_value_value_", ["fit", "Taille adapt\xE9e"]);self['@fitControl'];self['@rotateRightControl'] = smalltalk.send(addControl, "_value_value_", ["rotate_right", "Tourner"]);self['@rotateRightControl'];self['@downloadImageControl'] = smalltalk.send(addControl, "_value_value_", ["download_image", "T\xE9l\xE9charger"]);return self['@downloadImageControl'];}]);
+    return self;
+}
 }),
 smalltalk.PageWidget);
 
@@ -2817,36 +2772,33 @@ smalltalk.addMethod(
 "_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
-fn: function (html){
-var self=this;
-var $1,$2,$3,$4,$5,$6;
-var iViewer;
-smalltalk.send(html,"_style_",[smalltalk.send(self,"_style",[])]);
-smalltalk.send(self,"_renderControlsOn_",[html]);
-$1=smalltalk.send(html,"_div",[]);
-smalltalk.send($1,"_class_",["iviewer"]);
-$2=smalltalk.send($1,"_asJQuery",[]);
-iViewer=$2;
-smalltalk.send(smalltalk.send(self["@page"],"_description",[]),"_ifNotEmpty_",[(function(){
-return smalltalk.send(iViewer,"_addClass_",["iviewer_with_text"]);
-})]);
-$3=smalltalk.send((smalltalk.HashedCollection || HashedCollection),"_new",[]);
-smalltalk.send($3,"_at_put_",["src",smalltalk.send(self["@page"],"_fullImageURL",[])]);
-smalltalk.send($3,"_at_put_",["zoom","fit"]);
-smalltalk.send($3,"_at_put_",["zoom_min",(10)]);
-smalltalk.send($3,"_at_put_",["zoom_max",(400)]);
-smalltalk.send($3,"_at_put_",["ui_disabled",true]);
-smalltalk.send($3,"_at_put_",["initCallback",(function(aViewer){
-return smalltalk.send(self,"_initIViewer_",[aViewer]);
-})]);
-$4=smalltalk.send($3,"_yourself",[]);
-smalltalk.send(iViewer,"_iviewer_",[$4]);
-$5=smalltalk.send(html,"_div",[]);
-smalltalk.send($5,"_class_",["page-desc"]);
-$6=smalltalk.send($5,"_asJQuery",[]);
-smalltalk.send($6,"_html_",[smalltalk.send(self["@page"],"_description",[])]);
-smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["clear"]);
-return self}
+fn: function (html) {
+    var self = this;
+    var $1, $2, $3, $4, $5, $6;
+    var iViewer;
+    smalltalk.send(html, "_style_", [smalltalk.send(self, "_style", [])]);
+    smalltalk.send(self, "_renderControlsOn_", [html]);
+    $1 = smalltalk.send(html, "_div", []);
+    smalltalk.send($1, "_class_", ["iviewer"]);
+    $2 = smalltalk.send($1, "_asJQuery", []);
+    iViewer = $2;
+    smalltalk.send(smalltalk.send(self['@page'], "_description", []), "_ifNotEmpty_", [function () {return smalltalk.send(iViewer, "_addClass_", ["iviewer_with_text"]);}]);
+    $3 = smalltalk.send(smalltalk.HashedCollection || HashedCollection, "_new", []);
+    smalltalk.send($3, "_at_put_", ["src", smalltalk.send(self['@page'], "_fullImageURL", [])]);
+    smalltalk.send($3, "_at_put_", ["zoom", "fit"]);
+    smalltalk.send($3, "_at_put_", ["zoom_min", 10]);
+    smalltalk.send($3, "_at_put_", ["zoom_max", 400]);
+    smalltalk.send($3, "_at_put_", ["ui_disabled", true]);
+    smalltalk.send($3, "_at_put_", ["initCallback", function (aViewer) {return smalltalk.send(self, "_initIViewer_", [aViewer]);}]);
+    $4 = smalltalk.send($3, "_yourself", []);
+    smalltalk.send(iViewer, "_iviewer_", [$4]);
+    $5 = smalltalk.send(html, "_div", []);
+    smalltalk.send($5, "_class_", ["page-desc"]);
+    $6 = smalltalk.send($5, "_asJQuery", []);
+    smalltalk.send($6, "_html_", [smalltalk.send(self['@page'], "_description", [])]);
+    smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["clear"]);
+    return self;
+}
 }),
 smalltalk.PageWidget);
 
@@ -2869,9 +2821,9 @@ smalltalk.addMethod(
 "_style",
 smalltalk.method({
 selector: "style",
-fn: function (){
-var self=this;
-return "\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 104px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a";
+fn: function () {
+    var self = this;
+    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 104px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
 }
 }),
 smalltalk.PageWidget);

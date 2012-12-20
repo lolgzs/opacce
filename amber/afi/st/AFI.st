@@ -886,9 +886,9 @@ zoomPage
 	 zoomPageAnchor hide.
 	'.b-arrow' asJQuery hide.
 
-	book pageAt: (self currentPageNo) do: [:aPage| 
-                                           										pageZoomBrush contents: [:html|  self renderPage: aPage class: 'b-left' on: html ].
-																				pageZoomBrush asJQuery show.												 	].
+
+	pageZoomBrush contents: [:html|  self renderPage: currentPage class: 'b-left' on: html ].
+	pageZoomBrush asJQuery show.
 ! !
 
 !BookMonoWidget methodsFor: 'css'!
