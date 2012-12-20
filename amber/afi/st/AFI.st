@@ -1,13 +1,9 @@
 Smalltalk current createPackage: 'AFI' properties: #{}!
 Widget subclass: #AbstractBookNavigatorWidget
-	instanceVariableNames: 'book announcer'
+	instanceVariableNames: 'book'
 	package: 'AFI'!
 
 !AbstractBookNavigatorWidget methodsFor: 'accessing'!
-
-announcer
-	^ announcer ifNil: [announcer := Announcer new]
-!
 
 book: aBook
 	book := aBook.
@@ -56,16 +52,11 @@ width
 highlightPage: aPage
 ! !
 
-!AbstractBookNavigatorWidget methodsFor: 'announcement'!
-
-announcePageChange: aPage
-	self announcer announce: (PageChangeAnnouncement page: aPage)
-! !
-
 !AbstractBookNavigatorWidget methodsFor: 'rendering'!
 
 renderOn: html
-	self subclassResponsibility
+	self renderWidgetOn: html.
+    self highlightPage: book currentPage.
 ! !
 
 !AbstractBookNavigatorWidget class methodsFor: 'accessing'!
@@ -129,7 +120,15 @@ highlightPage: aPage
 
 !BookBookmarkNavigatorWidget methodsFor: 'rendering'!
 
-renderOn: html
+renderPagesOn: html
+	book pagesWithTitle do: [:aPage|
+		html li
+			with: aPage title;
+			onClick: [book currentPage: aPage]
+	]
+!
+
+renderWidgetOn: html
 	html style: self style.
 	html div 
 		class: 'b-navigator-bookmark b-navigator';
@@ -141,28 +140,19 @@ renderOn: html
 
 			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
 		]
-!
-
-renderPagesOn: html
-	book pagesWithTitle do: [:aPage|
-		html li
-			with: aPage title;
-			onClick: [book currentPage: aPage]
-	]
 ! !
 
 AbstractBookNavigatorWidget subclass: #BookMenuWidget
-	instanceVariableNames: 'book'
+	instanceVariableNames: 'book pageTitleBrush'
 	package: 'AFI'!
 
 !BookMenuWidget methodsFor: 'not yet classified'!
 
-book: aBook
-	book := aBook
-!
-
-renderOn: html
-	html ul with: [ self renderPagesOn: html ]
+highlightPage: aPage
+	|chaptersBefore|
+    chaptersBefore := (book pagesWithTitle select: [:aPageWithTitle | aPageWithTitle pageNo <= aPage pageNo]).
+  
+	pageTitleBrush contents: (chaptersBefore ifEmpty: [book title] ifNotEmpty: [chaptersBefore last title]).
 !
 
 renderPagesOn: html
@@ -171,6 +161,11 @@ renderPagesOn: html
 			with: aPage title;
 			onClick: [book currentPage: aPage]
 	]
+!
+
+renderWidgetOn: html
+	pageTitleBrush:=html span.
+	html ul with: [ self renderPagesOn: html ]
 ! !
 
 AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
@@ -294,7 +289,20 @@ style
 
 !BookThumbnailNavigatorWidget methodsFor: 'rendering'!
 
-renderOn: html
+renderPagesOn: html
+	|cycle|
+	cycle := Cycle with: #('odd' 'even').
+
+	book pages do: [:aPage|
+		html li
+			class: cycle next;
+			with: [ 	html div: [	html div: aPage foliono.
+						 	html img src: aPage navigatorThumbnailURL] ];
+			onClick: [book currentPage: aPage]
+	]
+!
+
+renderWidgetOn: html
 	html style: self style.
 	html div 
 		class: 'b-navigator-thumbnail  b-navigator';
@@ -307,19 +315,6 @@ renderOn: html
 								asJQuery.
 
 			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
-	]
-!
-
-renderPagesOn: html
-	|cycle|
-	cycle := Cycle with: #('odd' 'even').
-
-	book pages do: [:aPage|
-		html li
-			class: cycle next;
-			with: [ 	html div: [	html div: aPage foliono.
-						 	html img src: aPage navigatorThumbnailURL] ];
-			onClick: [book currentPage: aPage]
 	]
 ! !
 
@@ -733,7 +728,6 @@ renderBookNavigator
 		navigator := aNavigatorClass new
 						book: book;
 						appendToJQuery: navigatorDiv;
-						highlightPage: self currentPage;
 						yourself.
 		
 	]
@@ -1987,6 +1981,10 @@ reset
 ! !
 
 !Page methodsFor: 'testing'!
+
+ifTitleDo: aBlockClosure
+	self title='' ifFalse:  aBlockClosure.
+!
 
 isRendered
 	^ rendered ifNil: [rendered := false]

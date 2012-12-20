@@ -566,6 +566,30 @@ return self}
 smalltalk.CollectionTest);
 
 smalltalk.addMethod(
+"_testIfEmptyifNotEmpty",
+smalltalk.method({
+selector: "testIfEmptyifNotEmpty",
+fn: function (){
+var self=this;
+var empty;
+var nonEmpty;
+empty=[];
+nonEmpty=[(1), (2), (3)];
+smalltalk.send(self,"_assert_",[smalltalk.send(empty,"_ifEmpty_ifNotEmpty_",[(function(){
+return true;
+}),(function(){
+return false;
+})])]);
+smalltalk.send(self,"_assert_",[smalltalk.send(nonEmpty,"_ifEmpty_ifNotEmpty_",[(function(){
+return false;
+}),(function(){
+return true;
+})])]);
+return self}
+}),
+smalltalk.CollectionTest);
+
+smalltalk.addMethod(
 "_testIsEmpty",
 smalltalk.method({
 selector: "testIsEmpty",

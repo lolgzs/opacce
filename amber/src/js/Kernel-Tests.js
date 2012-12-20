@@ -716,6 +716,35 @@ referencedClasses: ["OrderedCollection"]
 smalltalk.CollectionTest);
 
 smalltalk.addMethod(
+"_testIfEmptyifNotEmpty",
+smalltalk.method({
+selector: "testIfEmptyifNotEmpty",
+category: 'tests',
+fn: function (){
+var self=this;
+var empty;
+var nonEmpty;
+empty=[];
+nonEmpty=[(1), (2), (3)];
+smalltalk.send(self,"_assert_",[smalltalk.send(empty,"_ifEmpty_ifNotEmpty_",[(function(){
+return true;
+}),(function(){
+return false;
+})])]);
+smalltalk.send(self,"_assert_",[smalltalk.send(nonEmpty,"_ifEmpty_ifNotEmpty_",[(function(){
+return false;
+}),(function(){
+return true;
+})])]);
+return self},
+args: [],
+source: "testIfEmptyifNotEmpty\x0a\x09|empty nonEmpty|\x0a\x09empty := #().\x0a    nonEmpty := #(1 2 3).\x0a\x09self assert: (empty ifEmpty: [true] ifNotEmpty: [false]).\x0a\x09self assert: (nonEmpty ifEmpty: [false] ifNotEmpty: [true]).\x0a\x09",
+messageSends: ["assert:", "ifEmpty:ifNotEmpty:"],
+referencedClasses: []
+}),
+smalltalk.CollectionTest);
+
+smalltalk.addMethod(
 "_testIsEmpty",
 smalltalk.method({
 selector: "testIsEmpty",

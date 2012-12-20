@@ -270,6 +270,14 @@ testDo
 		as: newCollection
 !
 
+testIfEmptyifNotEmpty
+	|empty nonEmpty|
+	empty := #().
+    nonEmpty := #(1 2 3).
+	self assert: (empty ifEmpty: [true] ifNotEmpty: [false]).
+	self assert: (nonEmpty ifEmpty: [false] ifNotEmpty: [true]).
+!
+
 testIsEmpty
 	self assert: self collectionClass new isEmpty.
 	self deny: self collection isEmpty
