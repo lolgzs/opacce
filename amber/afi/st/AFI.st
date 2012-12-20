@@ -962,7 +962,8 @@ renderBookOn: html
     		class: 'b-arrow-next';
              with: [html div onClick: [self goToNextPage]].
 	
-bookBrush := (html div class: 'pages').
+	bookBrush := (html div class: 'pages').
+	bookBrush onClick: [self zoomPage].
 !
 
 renderCurrentPage

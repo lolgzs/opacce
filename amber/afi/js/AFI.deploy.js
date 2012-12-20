@@ -980,19 +980,29 @@ smalltalk.addMethod(
 "_renderBookOn_",
 smalltalk.method({
 selector: "renderBookOn:",
-fn: function (html) {
-    var self = this;
-    var $1, $2, $3, $4;
-    smalltalk.send(self, "_loadIViewerJS", []);
-    $1 = smalltalk.send(html, "_div", []);
-    smalltalk.send($1, "_class_", ["b-arrow-prev"]);
-    $2 = smalltalk.send($1, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToPreviousPage", []);}]);}]);
-    $3 = smalltalk.send(html, "_div", []);
-    smalltalk.send($3, "_class_", ["b-arrow-next"]);
-    $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
-    self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
-    return self;
-}
+fn: function (html){
+var self=this;
+var $1,$2,$3,$4;
+smalltalk.send(self,"_loadIViewerJS",[]);
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-arrow-prev"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_goToPreviousPage",[]);
+})]);
+})]);
+$3=smalltalk.send(html,"_div",[]);
+smalltalk.send($3,"_class_",["b-arrow-next"]);
+$4=smalltalk.send($3,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_goToNextPage",[]);
+})]);
+})]);
+self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
+smalltalk.send(self["@bookBrush"],"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomPage",[]);
+})]);
+return self}
 }),
 smalltalk.BookMonoWidget);
 

@@ -1321,22 +1321,32 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderBookOn:",
 category: 'rendering',
-fn: function (html) {
-    var self = this;
-    var $1, $2, $3, $4;
-    smalltalk.send(self, "_loadIViewerJS", []);
-    $1 = smalltalk.send(html, "_div", []);
-    smalltalk.send($1, "_class_", ["b-arrow-prev"]);
-    $2 = smalltalk.send($1, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToPreviousPage", []);}]);}]);
-    $3 = smalltalk.send(html, "_div", []);
-    smalltalk.send($3, "_class_", ["b-arrow-next"]);
-    $4 = smalltalk.send($3, "_with_", [function () {return smalltalk.send(smalltalk.send(html, "_div", []), "_onClick_", [function () {return smalltalk.send(self, "_goToNextPage", []);}]);}]);
-    self['@bookBrush'] = smalltalk.send(smalltalk.send(html, "_div", []), "_class_", ["pages"]);
-    return self;
-},
+fn: function (html){
+var self=this;
+var $1,$2,$3,$4;
+smalltalk.send(self,"_loadIViewerJS",[]);
+$1=smalltalk.send(html,"_div",[]);
+smalltalk.send($1,"_class_",["b-arrow-prev"]);
+$2=smalltalk.send($1,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_goToPreviousPage",[]);
+})]);
+})]);
+$3=smalltalk.send(html,"_div",[]);
+smalltalk.send($3,"_class_",["b-arrow-next"]);
+$4=smalltalk.send($3,"_with_",[(function(){
+return smalltalk.send(smalltalk.send(html,"_div",[]),"_onClick_",[(function(){
+return smalltalk.send(self,"_goToNextPage",[]);
+})]);
+})]);
+self["@bookBrush"]=smalltalk.send(smalltalk.send(html,"_div",[]),"_class_",["pages"]);
+smalltalk.send(self["@bookBrush"],"_onClick_",[(function(){
+return smalltalk.send(self,"_zoomPage",[]);
+})]);
+return self},
 args: ["html"],
-source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0abookBrush := (html div class: 'pages').\x0a    ",
-messageSends: ["loadIViewerJS", "class:", "div", "with:", "onClick:", "goToPreviousPage", "goToNextPage"],
+source: "renderBookOn: html\x0a\x09self loadIViewerJS.\x0a    html div \x0a    \x09\x09class: 'b-arrow-prev';\x0a            with: [html div onClick: [self goToPreviousPage]].\x0a\x09html div \x0a    \x09\x09class: 'b-arrow-next';\x0a             with: [html div onClick: [self goToNextPage]].\x0a\x09\x0a\x09bookBrush := (html div class: 'pages').\x0a\x09bookBrush onClick: [self zoomPage].\x0a    ",
+messageSends: ["loadIViewerJS", "class:", "div", "with:", "onClick:", "goToPreviousPage", "goToNextPage", "zoomPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
