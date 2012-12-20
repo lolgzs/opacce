@@ -31,6 +31,7 @@ selector: "book:",
 fn: function (aBook) {
     var self = this;
     self['@book'] = aBook;
+    smalltalk.send(self['@book'], "_onPageChangeDo_", [function (aPage) {return smalltalk.send(self, "_highlightPage_", [aPage]);}]);
     return self;
 }
 }),
@@ -42,18 +43,6 @@ smalltalk.method({
 selector: "highlightPage:",
 fn: function (aPage) {
     var self = this;
-    return self;
-}
-}),
-smalltalk.AbstractBookNavigatorWidget);
-
-smalltalk.addMethod(
-"_onPageChangeDo_",
-smalltalk.method({
-selector: "onPageChangeDo:",
-fn: function (aBlockWithArg) {
-    var self = this;
-    smalltalk.send(smalltalk.send(self, "_announcer", []), "_on_do_", [smalltalk.PageChangeAnnouncement || PageChangeAnnouncement, function (aPageChangeAnnouncement) {return smalltalk.send(aBlockWithArg, "_value_", [smalltalk.send(aPageChangeAnnouncement, "_page", [])]);}]);
     return self;
 }
 }),
@@ -145,7 +134,8 @@ smalltalk.method({
 selector: "renderPagesOn:",
 fn: function (html) {
     var self = this;
-    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {return function ($rec) {smalltalk.send($rec, "_with_", [smalltalk.send(aPage, "_title", [])]);return smalltalk.send($rec, "_onClick_", [function () {return smalltalk.send(self, "_announcePageChange_", [aPage]);}]);}(smalltalk.send(html, "_li", []));}]);
+    var $1, $2;
+    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_with_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self['@book'], "_currentPage_", [aPage]);}]);return $2;}]);
     return self;
 }
 }),
@@ -197,7 +187,7 @@ selector: "renderPagesOn:",
 fn: function (html) {
     var self = this;
     var $1, $2;
-    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_with_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self, "_announcePageChange_", [aPage]);}]);return $2;}]);
+    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_with_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self['@book'], "_currentPage_", [aPage]);}]);return $2;}]);
     return self;
 }
 }),
@@ -212,13 +202,13 @@ smalltalk.method({
 selector: "highlightPage:",
 fn: function (aPage) {
     var self = this;
-    var thumbnail = nil;
-    var listItemIndex = nil;
-    listItemIndex = smalltalk.send(0, "_max_", [($receiver = smalltalk.send(aPage, "_pageNo", [])).klass === smalltalk.Number ? $receiver - 2 : smalltalk.send($receiver, "__minus", [2])]);
+    var thumbnail;
+    var listItemIndex;
+    listItemIndex = smalltalk.send(0, "_max_", [smalltalk.send(smalltalk.send(aPage, "_pageNo", []), "__minus", [2])]);
     thumbnail = smalltalk.send(smalltalk.send(self['@bookmarkList'], "_find_", ["li"]), "_get_", [listItemIndex]);
-    smalltalk.send(self['@bookmarkList'], "_scrollTop_", [($receiver = smalltalk.send(thumbnail, "_offsetTop", [])).klass === smalltalk.Number ? $receiver - (($receiver = smalltalk.send(self['@bookmarkList'], "_height", [])).klass === smalltalk.Number ? $receiver / 2 : smalltalk.send($receiver, "__slash", [2])) : smalltalk.send($receiver, "__minus", [($receiver = smalltalk.send(self['@bookmarkList'], "_height", [])).klass === smalltalk.Number ? $receiver / 2 : smalltalk.send($receiver, "__slash", [2])])]);
+    smalltalk.send(self['@bookmarkList'], "_scrollTop_", [smalltalk.send(smalltalk.send(thumbnail, "_offsetTop", []), "__minus", [smalltalk.send(smalltalk.send(self['@bookmarkList'], "_height", []), "__slash", [2])])]);
     smalltalk.send(smalltalk.send(self['@bookmarkList'], "_find_", ["li"]), "_removeClass_", ["selected"]);
-    smalltalk.send(smalltalk.send(typeof window == "undefined" ? nil : window, "_jQuery_", [thumbnail]), "_addClass_", ["selected"]);
+    smalltalk.send(smalltalk.send(window, "_jQuery_", [thumbnail]), "_addClass_", ["selected"]);
     return self;
 }
 }),
@@ -243,9 +233,10 @@ smalltalk.method({
 selector: "renderPagesOn:",
 fn: function (html) {
     var self = this;
-    var cycle = nil;
+    var $1, $2;
+    var cycle;
     cycle = smalltalk.send(smalltalk.Cycle || Cycle, "_with_", [["odd", "even"]]);
-    smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_do_", [function (aPage) {return function ($rec) {smalltalk.send($rec, "_class_", [smalltalk.send(cycle, "_next", [])]);smalltalk.send($rec, "_with_", [function () {return smalltalk.send(html, "_div_", [function () {smalltalk.send(html, "_div_", [smalltalk.send(aPage, "_foliono", [])]);return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(aPage, "_navigatorThumbnailURL", [])]);}]);}]);return smalltalk.send($rec, "_onClick_", [function () {return smalltalk.send(self, "_announcePageChange_", [aPage]);}]);}(smalltalk.send(html, "_li", []));}]);
+    smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_class_", [smalltalk.send(cycle, "_next", [])]);smalltalk.send($1, "_with_", [function () {return smalltalk.send(html, "_div_", [function () {smalltalk.send(html, "_div_", [smalltalk.send(aPage, "_foliono", [])]);return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(aPage, "_navigatorThumbnailURL", [])]);}]);}]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self['@book'], "_currentPage_", [aPage]);}]);return $2;}]);
     return self;
 }
 }),
@@ -265,39 +256,7 @@ smalltalk.BookThumbnailNavigatorWidget);
 
 
 
-smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['announcer', 'currentPageNo', 'book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader', 'folioBrush'], 'AFI');
-smalltalk.addMethod(
-"_afterPageChange_",
-smalltalk.method({
-selector: "afterPageChange:",
-fn: function (data) {
-    var self = this;
-    smalltalk.send(self, "_updateFolioNumbers", []);
-    smalltalk.send(self, "_openDescriptions", []);
-    smalltalk.send(self, "_announcePageChange_", [smalltalk.send(self, "_currentPage", [])]);
-    return self;
-}
-}),
-smalltalk.AbstractBookWidget);
-
-smalltalk.addMethod(
-"_announcer",
-smalltalk.method({
-selector: "announcer",
-fn: function () {
-    var self = this;
-    var $1;
-    if (($receiver = self['@announcer']) == nil || $receiver == undefined) {
-        self['@announcer'] = smalltalk.send(smalltalk.Announcer || Announcer, "_new", []);
-        $1 = self['@announcer'];
-    } else {
-        $1 = self['@announcer'];
-    }
-    return $1;
-}
-}),
-smalltalk.AbstractBookWidget);
-
+smalltalk.addClass('AbstractBookWidget', smalltalk.Widget, ['book', 'scriptsRoot', 'rootBrush', 'isFullscreen', 'downloadBrush', 'menuJQuery', 'pageZoomWidget', 'pageZoomBrush', 'pageDescriptionsBrush', 'bookContainer', 'loader', 'folioBrush'], 'AFI');
 smalltalk.addMethod(
 "_book",
 smalltalk.method({
@@ -353,7 +312,7 @@ selector: "currentPage",
 fn: function () {
     var self = this;
     var $1;
-    $1 = smalltalk.send(self['@book'], "_pageAt_ifAbsent_", [smalltalk.send(self, "_currentPageNo", []), function () {return smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_last", []);}]);
+    $1 = smalltalk.send(self['@book'], "_currentPage", []);
     return $1;
 }
 }),
@@ -366,13 +325,7 @@ selector: "currentPageNo",
 fn: function () {
     var self = this;
     var $1;
-    if (($receiver = self['@currentPageNo']) == nil ||
-        $receiver == undefined) {
-        self['@currentPageNo'] = 1;
-        $1 = self['@currentPageNo'];
-    } else {
-        $1 = self['@currentPageNo'];
-    }
+    $1 = smalltalk.send(self['@book'], "_currentPageNo", []);
     return $1;
 }
 }),
@@ -554,18 +507,6 @@ fn: function () {
 smalltalk.AbstractBookWidget);
 
 smalltalk.addMethod(
-"_onPageChangeDo_",
-smalltalk.method({
-selector: "onPageChangeDo:",
-fn: function (aBlockWithArg) {
-    var self = this;
-    smalltalk.send(smalltalk.send(self, "_announcer", []), "_on_do_", [smalltalk.PageChangeAnnouncement || PageChangeAnnouncement, function (aPageChangeAnnouncement) {return smalltalk.send(aBlockWithArg, "_value_", [smalltalk.send(aPageChangeAnnouncement, "_page", [])]);}]);
-    return self;
-}
-}),
-smalltalk.AbstractBookWidget);
-
-smalltalk.addMethod(
 "_openPage_",
 smalltalk.method({
 selector: "openPage:",
@@ -641,7 +582,7 @@ fn: function () {
     smalltalk.send(navigatorDiv, "_insertAfter_", [self['@menuJQuery']]);
     smalltalk.send([smalltalk.BookBookmarkNavigatorWidget ||
         BookBookmarkNavigatorWidget, smalltalk.BookThumbnailNavigatorWidget ||
-        BookThumbnailNavigatorWidget], "_do_", [function (aNavigatorClass) {var navigator;$1 = smalltalk.send(aNavigatorClass, "_new", []);smalltalk.send($1, "_book_", [self['@book']]);smalltalk.send($1, "_appendToJQuery_", [navigatorDiv]);smalltalk.send($1, "_onPageChangeDo_", [function (aPage) {return smalltalk.send(self, "_openPage_", [aPage]);}]);smalltalk.send($1, "_highlightPage_", [smalltalk.send(self, "_currentPage", [])]);$2 = smalltalk.send($1, "_yourself", []);navigator = $2;return smalltalk.send(self, "_onPageChangeDo_", [function (aPage) {return smalltalk.send(navigator, "_highlightPage_", [aPage]);}]);}]);
+        BookThumbnailNavigatorWidget], "_do_", [function (aNavigatorClass) {var navigator;$1 = smalltalk.send(aNavigatorClass, "_new", []);smalltalk.send($1, "_book_", [self['@book']]);smalltalk.send($1, "_appendToJQuery_", [navigatorDiv]);smalltalk.send($1, "_highlightPage_", [smalltalk.send(self, "_currentPage", [])]);$2 = smalltalk.send($1, "_yourself", []);navigator = $2;return navigator;}]);
     return self;
 }
 }),
@@ -991,10 +932,10 @@ fn: function () {
     var self = this;
     var $1, $2;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    smalltalk.send(self['@book'], "_onPageChangeDo_", [function (aPage) {self['@currentPage'] = aPage;self['@currentPage'];return smalltalk.send(self, "_renderCurrentPage", []);}]);
     $1 = smalltalk.send(smalltalk.BookMenuWidget || BookMenuWidget, "_new", []);
     smalltalk.send($1, "_book_", [self['@book']]);
-    smalltalk.send($1, "_appendToJQuery_", [self['@menuJQuery']]);
-    $2 = smalltalk.send($1, "_onPageChangeDo_", [function (aPage) {self['@currentPage'] = aPage;self['@currentPage'];return smalltalk.send(self, "_renderCurrentPage", []);}]);
+    $2 = smalltalk.send($1, "_appendToJQuery_", [self['@menuJQuery']]);
     if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
         self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
         self['@currentPage'];
@@ -1013,7 +954,6 @@ smalltalk.method({
 selector: "openDescriptions",
 fn: function () {
     var self = this;
-    smalltalk.send(console, "_log_", ["open description"]);
     smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_hide", []);
     smalltalk.send(self['@pageDescriptionsBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(smalltalk.send(html, "_div", []), "_asJQuery", []), "_html_", [smalltalk.send(self['@currentPage'], "_description", [])]);}]);
     smalltalk.send(smalltalk.send(self['@pageDescriptionsBrush'], "_asJQuery", []), "_fadeIn", []);
@@ -1123,21 +1063,9 @@ smalltalk.method({
 selector: "afterPageChange:",
 fn: function (data) {
     var self = this;
+    smalltalk.send(self['@book'], "_currentPageNo_", [smalltalk.send(smalltalk.send(data, "_curr", []), "__plus", [1])]);
     smalltalk.send(self, "_updateFolioNumbers", []);
     smalltalk.send(self, "_openDescriptions", []);
-    smalltalk.send(self, "_announcePageChange_", [smalltalk.send(self, "_currentPage", [])]);
-    return self;
-}
-}),
-smalltalk.BookWidget);
-
-smalltalk.addMethod(
-"_announcePageChange_",
-smalltalk.method({
-selector: "announcePageChange:",
-fn: function (aPage) {
-    var self = this;
-    smalltalk.send(smalltalk.send(self, "_announcer", []), "_announce_", [smalltalk.send(smalltalk.PageChangeAnnouncement || PageChangeAnnouncement, "_page_", [aPage])]);
     return self;
 }
 }),
@@ -1384,7 +1312,7 @@ selector: "renderBook:on:",
 fn: function (aBook, aBrush) {
     var self = this;
     smalltalk.send(self, "_renderBook_on_", [aBook, aBrush], smalltalk.AbstractBookWidget);
-    smalltalk.send(self, "_loadBookletJSThen_", [function () {smalltalk.send(smalltalk.send(self['@bookContainer'], "_asJQuery", []), "_booklet_", [smalltalk.send(self, "_bookletOptions", [])]);smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-left"]), "_click_", [function () {return smalltalk.send(self, "_zoomLeftPage", []);}]);return smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-right, .b-page-cover"]), "_click_", [function () {return smalltalk.send(self, "_zoomRightPage", []);}]);}]);
+    smalltalk.send(self, "_loadBookletJSThen_", [function () {smalltalk.send(smalltalk.send(self['@bookContainer'], "_asJQuery", []), "_booklet_", [smalltalk.send(self, "_bookletOptions", [])]);if (($receiver = self['@book']) == nil || $receiver == undefined) {self['@book'];} else {smalltalk.send(self['@book'], "_onPageChangeDo_", [function (aPage) {return smalltalk.send(self, "_openPage_", [aPage]);}]);}smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-left"]), "_click_", [function () {return smalltalk.send(self, "_zoomLeftPage", []);}]);return smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-right, .b-page-cover"]), "_click_", [function () {return smalltalk.send(self, "_zoomRightPage", []);}]);}]);
     return self;
 }
 }),
@@ -1969,7 +1897,7 @@ fn: function () {
 smalltalk.SouvignyLoader.klass);
 
 
-smalltalk.addClass('Book', smalltalk.Object, ['pages', 'title', 'width', 'height', 'downloadUrl'], 'AFI');
+smalltalk.addClass('Book', smalltalk.Object, ['pages', 'title', 'width', 'height', 'downloadUrl', 'announcer', 'currentPage'], 'AFI');
 smalltalk.addMethod(
 "_addPage_",
 smalltalk.method({
@@ -1979,6 +1907,92 @@ fn: function (aPage) {
     smalltalk.send(smalltalk.send(self, "_pages", []), "_add_", [aPage]);
     smalltalk.send(aPage, "_book_", [self]);
     return aPage;
+    return self;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_announcePageChange_",
+smalltalk.method({
+selector: "announcePageChange:",
+fn: function (aPage) {
+    var self = this;
+    smalltalk.send(smalltalk.send(self, "_announcer", []), "_announce_", [smalltalk.send(smalltalk.PageChangeAnnouncement || PageChangeAnnouncement, "_page_", [aPage])]);
+    return self;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_announcer",
+smalltalk.method({
+selector: "announcer",
+fn: function () {
+    var self = this;
+    var $1;
+    if (($receiver = self['@announcer']) == nil || $receiver == undefined) {
+        self['@announcer'] = smalltalk.send(smalltalk.Announcer || Announcer, "_new", []);
+        $1 = self['@announcer'];
+    } else {
+        $1 = self['@announcer'];
+    }
+    return $1;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_currentPage",
+smalltalk.method({
+selector: "currentPage",
+fn: function () {
+    var self = this;
+    var $1;
+    if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
+        self['@currentPage'] = smalltalk.send(smalltalk.send(self, "_pages", []), "_first", []);
+        $1 = self['@currentPage'];
+    } else {
+        $1 = self['@currentPage'];
+    }
+    return $1;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_currentPage_",
+smalltalk.method({
+selector: "currentPage:",
+fn: function (aPage) {
+    var self = this;
+    self['@currentPage'] = aPage;
+    smalltalk.send(self, "_announcePageChange_", [aPage]);
+    return self;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_currentPageNo",
+smalltalk.method({
+selector: "currentPageNo",
+fn: function () {
+    var self = this;
+    var $1;
+    $1 = smalltalk.send(smalltalk.send(self, "_currentPage", []), "_pageNo", []);
+    return $1;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_currentPageNo_",
+smalltalk.method({
+selector: "currentPageNo:",
+fn: function (anInteger) {
+    var self = this;
+    smalltalk.send(self, "_currentPage_", [smalltalk.send(smalltalk.send(self, "_pages", []), "_at_ifAbsent_", [anInteger, function () {return smalltalk.send(smalltalk.send(self, "_pages", []), "_last", []);}])]);
     return self;
 }
 }),
@@ -2045,6 +2059,18 @@ fn: function () {
 smalltalk.Book);
 
 smalltalk.addMethod(
+"_onPageChangeDo_",
+smalltalk.method({
+selector: "onPageChangeDo:",
+fn: function (aBlockWithArg) {
+    var self = this;
+    smalltalk.send(smalltalk.send(self, "_announcer", []), "_on_do_", [smalltalk.PageChangeAnnouncement || PageChangeAnnouncement, function (aPageChangeAnnouncement) {return smalltalk.send(aBlockWithArg, "_value_", [smalltalk.send(aPageChangeAnnouncement, "_page", [])]);}]);
+    return self;
+}
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
 "_pageAt_",
 smalltalk.method({
 selector: "pageAt:",
@@ -2100,8 +2126,14 @@ smalltalk.method({
 selector: "pages",
 fn: function () {
     var self = this;
-    return ($receiver = self['@pages']) == nil || $receiver == undefined ? function () {return self['@pages'] = smalltalk.send(smalltalk.Array || Array, "_new", []);}() : $receiver;
-    return self;
+    var $1;
+    if (($receiver = self['@pages']) == nil || $receiver == undefined) {
+        self['@pages'] = smalltalk.send(smalltalk.Array || Array, "_new", []);
+        $1 = self['@pages'];
+    } else {
+        $1 = self['@pages'];
+    }
+    return $1;
 }
 }),
 smalltalk.Book);

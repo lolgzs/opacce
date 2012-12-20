@@ -10,7 +10,8 @@ announcer
 !
 
 book: aBook
-	book := aBook
+	book := aBook.
+    book onPageChangeDo: [:aPage|  self highlightPage: aPage].
 !
 
 style
@@ -59,13 +60,6 @@ highlightPage: aPage
 
 announcePageChange: aPage
 	self announcer announce: (PageChangeAnnouncement page: aPage)
-!
-
-onPageChangeDo: aBlockWithArg
-	self announcer 
-		on: PageChangeAnnouncement 
-		do: [:aPageChangeAnnouncement| 
-			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !AbstractBookNavigatorWidget methodsFor: 'rendering'!
@@ -153,7 +147,7 @@ renderPagesOn: html
 	book pagesWithTitle do: [:aPage|
 		html li
 			with: aPage title;
-			onClick: [self announcePageChange: aPage]
+			onClick: [book currentPage: aPage]
 	]
 ! !
 
@@ -175,7 +169,7 @@ renderPagesOn: html
 	book pagesWithTitle do: [:aPage|
 		html li
 			with: aPage title;
-			onClick: [self announcePageChange: aPage]
+			onClick: [book currentPage: aPage]
 	]
 ! !
 
@@ -187,8 +181,8 @@ AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
 
 highlightPage: aPage
 	|thumbnail listItemIndex|
-        listItemIndex := 0 max: (aPage pageNo - 2).
-        thumbnail := (bookmarkList find: 'li') get: listItemIndex.
+    listItemIndex := 0 max: (aPage pageNo - 2).
+    thumbnail := (bookmarkList find: 'li') get: listItemIndex.
 	bookmarkList scrollTop: (thumbnail offsetTop - (bookmarkList height / 2)).
 	(bookmarkList find: 'li') removeClass: 'selected'.
 	(window jQuery: thumbnail) addClass: 'selected'.
@@ -324,13 +318,13 @@ renderPagesOn: html
 		html li
 			class: cycle next;
 			with: [ 	html div: [	html div: aPage foliono.
-						 		html img src: aPage navigatorThumbnailURL] ];
-			onClick: [self announcePageChange: aPage]
+						 	html img src: aPage navigatorThumbnailURL] ];
+			onClick: [book currentPage: aPage]
 	]
 ! !
 
 Widget subclass: #AbstractBookWidget
-	instanceVariableNames: 'announcer currentPageNo book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
+	instanceVariableNames: 'book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
 	package: 'AFI'!
 
 !AbstractBookWidget methodsFor: 'accessor'!
@@ -340,15 +334,15 @@ book
 !
 
 book: aBook
-	book := aBook
+	book := aBook.
 !
 
 currentPage
-	^ book pageAt: self currentPageNo ifAbsent: [book pages last]
+	^ book currentPage.
 !
 
 currentPageNo
-	^ currentPageNo ifNil: [currentPageNo := 1]
+	^book currentPageNo.
 !
 
 height
@@ -389,25 +383,6 @@ width
 
 zoomControlWidth
 	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
-! !
-
-!AbstractBookWidget methodsFor: 'announcements'!
-
-afterPageChange: data
-	self updateFolioNumbers.
-	self openDescriptions.
-	self announcePageChange: self currentPage.
-!
-
-announcer
-	^ announcer ifNil: [announcer := Announcer new]
-!
-
-onPageChangeDo: aBlockWithArg
-	self announcer 
-		on: PageChangeAnnouncement 
-		do: [:aPageChangeAnnouncement| 
-			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !AbstractBookWidget methodsFor: 'callbacks'!
@@ -754,14 +729,13 @@ renderBookNavigator
 	navigatorDiv insertAfter: menuJQuery.
 
 	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
+    
 		navigator := aNavigatorClass new
 						book: book;
 						appendToJQuery: navigatorDiv;
-						onPageChangeDo: [:aPage| self openPage: aPage];
 						highlightPage: self currentPage;
 						yourself.
-
-		self onPageChangeDo: [:aPage|  navigator highlightPage: aPage].
+		
 	]
 !
 
@@ -971,7 +945,6 @@ bookStyle
 !
 
 openDescriptions
-	console log:'open description'.
 	pageDescriptionsBrush asJQuery hide.
 	pageDescriptionsBrush contents: [:html| 
                		(html div asJQuery) html: currentPage description.
@@ -983,12 +956,12 @@ openDescriptions
 
 loadBook
 	self renderBook:book on: bookBrush.
-    
+	book    onPageChangeDo: [:aPage| 	currentPage := aPage.
+															self renderCurrentPage]. 
     BookMenuWidget new
     	book: book;
-    	appendToJQuery: menuJQuery;
-        onPageChangeDo: [:aPage| 	currentPage := aPage.
-															self renderCurrentPage].
+    	appendToJQuery: menuJQuery.
+       
         
     currentPage ifNil: [
       	currentPage:= book pages first 
@@ -1082,18 +1055,12 @@ rightPage
 	^ book pageAt: currentPageNo ifAbsent: [Page new].
 ! !
 
-!BookWidget methodsFor: 'announcements'!
-
-announcePageChange: aPage
-	self announcer announce: (PageChangeAnnouncement page: aPage)
-! !
-
 !BookWidget methodsFor: 'callbacks'!
 
 afterPageChange: data
+	book currentPageNo: data curr+1.
 	self updateFolioNumbers.
 	self openDescriptions.
-	self announcePageChange: self currentPage.
 !
 
 beforePageChange:data
@@ -1275,6 +1242,7 @@ renderBook: aBook on: aBrush
 	super renderBook: aBook on: aBrush.
    	self loadBookletJSThen: [ 
     		bookContainer asJQuery booklet: (self bookletOptions).
+            book ifNotNil: [book onPageChangeDo:[:aPage | self openPage: aPage]].
 			(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
 			(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
      ].
@@ -1646,10 +1614,23 @@ bookClass
 ! !
 
 Object subclass: #Book
-	instanceVariableNames: 'pages title width height downloadUrl'
+	instanceVariableNames: 'pages title width height downloadUrl announcer currentPage'
 	package: 'AFI'!
 
 !Book methodsFor: 'accessing'!
+
+currentPage
+	^ currentPage ifNil: [currentPage:= self pages first]
+!
+
+currentPage: aPage
+	currentPage:=aPage.
+    self announcePageChange: aPage.
+!
+
+currentPageNo: anInteger
+	self currentPage: (self pages at: anInteger ifAbsent: [self pages last])
+!
 
 downloadUrl
 	^ downloadUrl ifNil: [downloadUrl := '']
@@ -1715,8 +1696,29 @@ addPage: aPage
 	^ aPage
 !
 
+currentPageNo
+	^ self currentPage pageNo.
+!
+
 newPage
 	^ self addPage: (self class pageClass new)
+! !
+
+!Book methodsFor: 'announcing'!
+
+announcePageChange: aPage
+	self announcer announce: (PageChangeAnnouncement page: aPage)
+!
+
+announcer
+	^ announcer ifNil: [announcer := Announcer new]
+!
+
+onPageChangeDo: aBlockWithArg
+	self announcer 
+		on: PageChangeAnnouncement 
+		do: [:aPageChangeAnnouncement| 
+			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !Book methodsFor: 'enumerating'!
