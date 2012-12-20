@@ -230,6 +230,61 @@ smalltalk.BookBookmarkNavigatorWidget);
 
 
 
+smalltalk.addClass('BookMenuWidget', smalltalk.AbstractBookNavigatorWidget, ['book'], 'AFI');
+smalltalk.addMethod(
+"_book_",
+smalltalk.method({
+selector: "book:",
+category: 'not yet classified',
+fn: function (aBook) {
+    var self = this;
+    self['@book'] = aBook;
+    return self;
+},
+args: ["aBook"],
+source: "book: aBook\x0a\x09book := aBook",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BookMenuWidget);
+
+smalltalk.addMethod(
+"_renderOn_",
+smalltalk.method({
+selector: "renderOn:",
+category: 'not yet classified',
+fn: function (html) {
+    var self = this;
+    smalltalk.send(smalltalk.send(html, "_ul", []), "_with_", [function () {return smalltalk.send(self, "_renderPagesOn_", [html]);}]);
+    return self;
+},
+args: ["html"],
+source: "renderOn: html\x0a\x09html ul with: [ self renderPagesOn: html ]",
+messageSends: ["with:", "renderPagesOn:", "ul"],
+referencedClasses: []
+}),
+smalltalk.BookMenuWidget);
+
+smalltalk.addMethod(
+"_renderPagesOn_",
+smalltalk.method({
+selector: "renderPagesOn:",
+category: 'not yet classified',
+fn: function (html) {
+    var self = this;
+    var $1, $2;
+    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_with_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self, "_announcePageChange_", [aPage]);}]);return $2;}]);
+    return self;
+},
+args: ["html"],
+source: "renderPagesOn: html\x0a\x09book pagesWithTitle do: [:aPage|\x0a\x09\x09html li\x0a\x09\x09\x09with: aPage title;\x0a\x09\x09\x09onClick: [self announcePageChange: aPage]\x0a\x09]",
+messageSends: ["do:", "with:", "title", "li", "onClick:", "announcePageChange:", "pagesWithTitle"],
+referencedClasses: []
+}),
+smalltalk.BookMenuWidget);
+
+
+
 smalltalk.addClass('BookThumbnailNavigatorWidget', smalltalk.AbstractBookNavigatorWidget, ['bookmarkList'], 'AFI');
 smalltalk.addMethod(
 "_highlightPage_",
@@ -1280,7 +1335,12 @@ selector: "loadBook",
 category: 'rendering',
 fn: function () {
     var self = this;
+    var $1, $2;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    $1 = smalltalk.send(smalltalk.BookMenuWidget || BookMenuWidget, "_new", []);
+    smalltalk.send($1, "_book_", [self['@book']]);
+    smalltalk.send($1, "_appendToJQuery_", [self['@menuJQuery']]);
+    $2 = smalltalk.send($1, "_onPageChangeDo_", [function (aPage) {self['@currentPage'] = aPage;self['@currentPage'];return smalltalk.send(self, "_renderCurrentPage", []);}]);
     if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
         self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
         self['@currentPage'];
@@ -1291,9 +1351,9 @@ fn: function () {
     return self;
 },
 args: [],
-source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    currentPage ifNil: [\x0a      \x09currentPage:= book pages first \x0a\x09].\x0a\x09self renderCurrentPage.",
-messageSends: ["renderBook:on:", "ifNil:", "first", "pages", "renderCurrentPage"],
-referencedClasses: []
+source: "loadBook\x0a\x09self renderBook:book on: bookBrush.\x0a    \x0a    BookMenuWidget new\x0a    \x09book: book;\x0a    \x09appendToJQuery: menuJQuery;\x0a        onPageChangeDo: [:aPage| \x09currentPage := aPage.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self renderCurrentPage].\x0a        \x0a    currentPage ifNil: [\x0a      \x09currentPage:= book pages first \x0a\x09].\x0a\x09self renderCurrentPage.",
+messageSends: ["renderBook:on:", "book:", "new", "appendToJQuery:", "onPageChangeDo:", "renderCurrentPage", "ifNil:", "first", "pages"],
+referencedClasses: ["BookMenuWidget"]
 }),
 smalltalk.BookMonoWidget);
 

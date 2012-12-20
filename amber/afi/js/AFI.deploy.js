@@ -165,6 +165,46 @@ smalltalk.BookBookmarkNavigatorWidget);
 
 
 
+smalltalk.addClass('BookMenuWidget', smalltalk.AbstractBookNavigatorWidget, ['book'], 'AFI');
+smalltalk.addMethod(
+"_book_",
+smalltalk.method({
+selector: "book:",
+fn: function (aBook) {
+    var self = this;
+    self['@book'] = aBook;
+    return self;
+}
+}),
+smalltalk.BookMenuWidget);
+
+smalltalk.addMethod(
+"_renderOn_",
+smalltalk.method({
+selector: "renderOn:",
+fn: function (html) {
+    var self = this;
+    smalltalk.send(smalltalk.send(html, "_ul", []), "_with_", [function () {return smalltalk.send(self, "_renderPagesOn_", [html]);}]);
+    return self;
+}
+}),
+smalltalk.BookMenuWidget);
+
+smalltalk.addMethod(
+"_renderPagesOn_",
+smalltalk.method({
+selector: "renderPagesOn:",
+fn: function (html) {
+    var self = this;
+    var $1, $2;
+    smalltalk.send(smalltalk.send(self['@book'], "_pagesWithTitle", []), "_do_", [function (aPage) {$1 = smalltalk.send(html, "_li", []);smalltalk.send($1, "_with_", [smalltalk.send(aPage, "_title", [])]);$2 = smalltalk.send($1, "_onClick_", [function () {return smalltalk.send(self, "_announcePageChange_", [aPage]);}]);return $2;}]);
+    return self;
+}
+}),
+smalltalk.BookMenuWidget);
+
+
+
 smalltalk.addClass('BookThumbnailNavigatorWidget', smalltalk.AbstractBookNavigatorWidget, ['bookmarkList'], 'AFI');
 smalltalk.addMethod(
 "_highlightPage_",
@@ -949,7 +989,12 @@ smalltalk.method({
 selector: "loadBook",
 fn: function () {
     var self = this;
+    var $1, $2;
     smalltalk.send(self, "_renderBook_on_", [self['@book'], self['@bookBrush']]);
+    $1 = smalltalk.send(smalltalk.BookMenuWidget || BookMenuWidget, "_new", []);
+    smalltalk.send($1, "_book_", [self['@book']]);
+    smalltalk.send($1, "_appendToJQuery_", [self['@menuJQuery']]);
+    $2 = smalltalk.send($1, "_onPageChangeDo_", [function (aPage) {self['@currentPage'] = aPage;self['@currentPage'];return smalltalk.send(self, "_renderCurrentPage", []);}]);
     if (($receiver = self['@currentPage']) == nil || $receiver == undefined) {
         self['@currentPage'] = smalltalk.send(smalltalk.send(self['@book'], "_pages", []), "_first", []);
         self['@currentPage'];

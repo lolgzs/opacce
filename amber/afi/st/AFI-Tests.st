@@ -14,6 +14,7 @@ setUp
 
 	album := BibNumAlbum new 
 		ajax: ajax;
+		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
 		container: container.
 !
 
@@ -73,7 +74,6 @@ setUp
 
 	album
 		url: '/bib-numerique/album/id/2.json';
-		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
 		load.
 
 	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
@@ -212,7 +212,7 @@ tintinJSON
 					"ressources":[ 
                                                           				{	"id":12,
                                                           					"titre": "Origins",
-												"foliono": "12R",
+																			"foliono": "12R",
                                                           					"link_to":"",
                                                           					"description":"Created in 1929 by Herge" ,
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/1.jpg",
@@ -222,7 +222,7 @@ tintinJSON
                                                           
                                                           				{	"id":13,
                                                           					"titre": "Haddock",
-												"foliono": "XX",
+																			"foliono": "XX",
                                                           					"link_to":"",
                                                           					"description":"Captain living in Moulinsard",
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/2.jpg",
@@ -234,6 +234,14 @@ tintinJSON
 ! !
 
 !BibNumAlbumTintinMonopageTest methodsFor: 'tests'!
+
+testBookMenuShouldContainsLIWithHaddock
+	self assert: 0 < (container find: '.book-menu ul li:contains("Haddock")')  length
+!
+
+testBookMenuShouldContainsLIWithOrigins
+	self assert: 0 < (container find: '.book-menu li:contains("Origins")')  length
+!
 
 testBookletShouldNotBeLoaded
 	self assert: 0 equals: ( container find: '.b-load') length

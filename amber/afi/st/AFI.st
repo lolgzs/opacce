@@ -157,6 +157,28 @@ renderPagesOn: html
 	]
 ! !
 
+AbstractBookNavigatorWidget subclass: #BookMenuWidget
+	instanceVariableNames: 'book'
+	package: 'AFI'!
+
+!BookMenuWidget methodsFor: 'not yet classified'!
+
+book: aBook
+	book := aBook
+!
+
+renderOn: html
+	html ul with: [ self renderPagesOn: html ]
+!
+
+renderPagesOn: html
+	book pagesWithTitle do: [:aPage|
+		html li
+			with: aPage title;
+			onClick: [self announcePageChange: aPage]
+	]
+! !
+
 AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
 	instanceVariableNames: 'bookmarkList'
 	package: 'AFI'!
@@ -961,6 +983,13 @@ openDescriptions
 
 loadBook
 	self renderBook:book on: bookBrush.
+    
+    BookMenuWidget new
+    	book: book;
+    	appendToJQuery: menuJQuery;
+        onPageChangeDo: [:aPage| 	currentPage := aPage.
+															self renderCurrentPage].
+        
     currentPage ifNil: [
       	currentPage:= book pages first 
 	].

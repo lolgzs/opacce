@@ -13,6 +13,7 @@ fn: function () {
     self['@container'] = smalltalk.send(smalltalk.send("<div></div>", "_asJQuery", []), "_width_", [500]);
     $1 = smalltalk.send(smalltalk.BibNumAlbum || BibNumAlbum, "_new", []);
     smalltalk.send($1, "_ajax_", [self['@ajax']]);
+    smalltalk.send($1, "_scriptsRoot_", ["http://localhost/afi-opac3/amber/afi/souvigny/"]);
     $2 = smalltalk.send($1, "_container_", [self['@container']]);
     self['@album'] = $2;
     return self;
@@ -85,7 +86,6 @@ fn: function () {
     var $1;
     smalltalk.send(self, "_setUp", [], smalltalk.BibNumAlbumTestCase);
     smalltalk.send(self['@album'], "_url_", ["/bib-numerique/album/id/2.json"]);
-    smalltalk.send(self['@album'], "_scriptsRoot_", ["http://localhost/afi-opac3/amber/afi/souvigny/"]);
     $1 = smalltalk.send(self['@album'], "_load", []);
     smalltalk.send(smalltalk.send(smalltalk.send(self['@ajax'], "_options", []), "_at_", ["success"]), "_value_", [smalltalk.send(jQuery, "_parseJSON_", [smalltalk.send(self, "_tintinJSON", [])])]);
     return self;
@@ -322,6 +322,30 @@ smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addClass('BibNumAlbumTintinMonopageTest', smalltalk.BibNumAlbumTintinTestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
+"_testBookMenuShouldContainsLIWithHaddock",
+smalltalk.method({
+selector: "testBookMenuShouldContainsLIWithHaddock",
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_", [smalltalk.send(0, "__lt", [smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book-menu ul li:contains(\"Haddock\")"]), "_length", [])])]);
+    return self;
+}
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
+"_testBookMenuShouldContainsLIWithOrigins",
+smalltalk.method({
+selector: "testBookMenuShouldContainsLIWithOrigins",
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_", [smalltalk.send(0, "__lt", [smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book-menu li:contains(\"Origins\")"]), "_length", [])])]);
+    return self;
+}
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
 "_testBookletShouldNotBeLoaded",
 smalltalk.method({
 selector: "testBookletShouldNotBeLoaded",
@@ -351,7 +375,7 @@ smalltalk.method({
 selector: "tintinJSON",
 fn: function () {
     var self = this;
-    return "{\"album\": {\t\"id\":2, \n\t\t\t\t\t\"titre\":\"Tintin et Milou\", \n\t\t\t\t\t\"description\":\"The real story of Tintin\",\n\t\t\t\t\t\"width\": 400,\n\t\t\t\t\t\"height\": 300,\n\t\t\t\t\t\"download_url\": \"http://localhost/pdf/2\",\n                    \"player\": \"BookMonoWidget\",\n\t\t\t\t\t\"ressources\":[ \n                                                          \t\t\t\t{\t\"id\":12,\n                                                          \t\t\t\t\t\"titre\": \"Origins\",\n\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"12R\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Created in 1929 by Herge\" ,\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/1.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/1_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/1.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/1\"},\n                                                          \n                                                          \t\t\t\t{\t\"id\":13,\n                                                          \t\t\t\t\t\"titre\": \"Haddock\",\n\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"XX\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Captain living in Moulinsard\",\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/2.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/2_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/2.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/2\" }                                                        \n                                                          \t\t\t\t]\n\t\t\t\t} }";
+    return "{\"album\": {\t\"id\":2, \n\t\t\t\t\t\"titre\":\"Tintin et Milou\", \n\t\t\t\t\t\"description\":\"The real story of Tintin\",\n\t\t\t\t\t\"width\": 400,\n\t\t\t\t\t\"height\": 300,\n\t\t\t\t\t\"download_url\": \"http://localhost/pdf/2\",\n                    \"player\": \"BookMonoWidget\",\n\t\t\t\t\t\"ressources\":[ \n                                                          \t\t\t\t{\t\"id\":12,\n                                                          \t\t\t\t\t\"titre\": \"Origins\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"12R\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Created in 1929 by Herge\" ,\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/1.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/1_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/1.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/1\"},\n                                                          \n                                                          \t\t\t\t{\t\"id\":13,\n                                                          \t\t\t\t\t\"titre\": \"Haddock\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"XX\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Captain living in Moulinsard\",\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/2.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/2_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/2.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/2\" }                                                        \n                                                          \t\t\t\t]\n\t\t\t\t} }";
 }
 }),
 smalltalk.BibNumAlbumTintinMonopageTest);
