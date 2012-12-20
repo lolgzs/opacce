@@ -2026,9 +2026,30 @@ style
 			  *position: relative;
 			  z-index: 1;
 			  text-align: center;
-			  width: 42px;
-                          right: 0px;
+			  width: 104px;
+              right: 0px;
 			}
+            
+            .b-zoom .controls>div {
+            	height: 28px;
+                border-radius: 5px;
+            }
+            
+             .b-zoom .controls>div:hover {
+             		background-color: rgba(250,250,250, 0.8);
+                    cursor: pointer;
+            }
+            
+            
+             .b-zoom .controls  .iviewer_button {
+             	margin: 0px 8px 0px 0px;
+                float: left;
+             }
+             
+             .b-zoom .controls  .iviewer_button + div{
+             	margin-top: 4px;
+                text-align: left;
+             }
 '
 ! !
 
@@ -2039,18 +2060,18 @@ renderControlsOn: html
 	html div 
 		class: 'controls';
 		with: [
-          		addControl :=  [:name| html div 
-                                			class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button';
-                               				yourself].
-                  	closeControl := addControl value: 'close'.
+          		addControl :=  [:name :helpText| html div 
+                								with: [ html div  class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button'.
+                                               				html div: helpText];
+                               					yourself].
+                  	closeControl := addControl value: 'close' value: 'Fermer'.
                   	closeControl onClick: [self close].
-               		inControl := addControl value: 'in'.
-          		outControl := addControl value: 'out'.
-          		zeroControl := addControl value: 'zero'.
-          		fitControl := addControl value: 'fit'.
-          		statusControl := addControl value: 'status'.
-          		rotateRightControl := addControl value: 'rotate_right'.
-          		downloadImageControl := addControl value: 'download_image'.
+               		inControl := addControl value: 'in' value: 'Agrandir'.
+          			outControl := addControl value: 'out' value: 'Réduire'.
+          			zeroControl := addControl value: 'zero' value: 'Taille originale'.
+          			fitControl := addControl value: 'fit' value: 'Taille adaptée'.
+          			rotateRightControl := addControl value: 'rotate_right' value: 'Tourner'.
+          			downloadImageControl := addControl value: 'download_image' value: 'Télécharger'.
         ].
 !
 
@@ -2066,13 +2087,12 @@ renderOn: html
 
 	iViewer iviewer: (HashedCollection new
                                                			at: 'src' put: page fullImageURL;
-                              					at: 'zoom' put: 'fit';
-                         					at: 'zoom_min' put: 10;
-                        					at: 'zoom_max' put: 400;
-	                     					at: 'ui_disabled' put: true;
-        	              					at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
-                            					at: 'onZoom' put: [:aString| self updateZoomStatus: aString];
-                              					yourself).
+                              							at: 'zoom' put: 'fit';
+                         								at: 'zoom_min' put: 10;
+                        								at: 'zoom_max' put: 400;
+	                     								at: 'ui_disabled' put: true;
+        	              								at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
+                              							yourself).
 
         (html div class: 'page-desc';  asJQuery) html: page description.
 	html div class: 'clear'.
