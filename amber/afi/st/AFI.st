@@ -849,7 +849,7 @@ isTestCaseInContext: aContext
 ! !
 
 AbstractBookWidget subclass: #BookMonoWidget
-	instanceVariableNames: 'zoomPageAnchor bookBrush currentPage'
+	instanceVariableNames: 'zoomPageAnchor bookBrush'
 	package: 'AFI'!
 
 !BookMonoWidget methodsFor: 'callbacks'!
@@ -869,17 +869,15 @@ closeZoom
 !
 
 goToNextPage
-	currentPage := currentPage nextPage.
-    self renderCurrentPage.
+	book nextPage
 !
 
 goToPreviousPage
-	currentPage := currentPage previousPage.
-    self renderCurrentPage.
+	book previousPage
 !
 
 openPage: aPage
-	bookBrush contents: [:html|  html img src: aPage thumbnailURL]
+	self renderCurrentPage
 !
 
 zoomPage
@@ -940,6 +938,11 @@ bookStyle
     float: right;
     top: 25%;
     width: 74px;
+    }
+    
+    
+	.bk-widget .b-navigator-thumbnail li.selected + li.odd img {
+    	opacity: 0.6;
     }
    '
 !
@@ -1006,7 +1009,7 @@ updateFolioNumbers
 ! !
 
 AbstractBookWidget subclass: #BookWidget
-	instanceVariableNames: 'width bookBrush leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor'
+	instanceVariableNames: 'width bookBrush leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor afterPageChange'
 	package: 'AFI'!
 
 !BookWidget methodsFor: 'accessing'!
@@ -1037,8 +1040,8 @@ bookletOptions
 			       at: 'closedBackChapter' put: 'Fin';
 			       at: 'previousPageTitle' put: 'Précédent';
 			       at: 'nextPageTitle' put: 'Suivant';
-			       at: 'before' put: [:data| self beforePageChange:data]; 
-                               at: 'after' put: [:data|  self afterPageChange: data];
+			       at: 'before' put: [:data| self beforePageChange:data];
+                   at: 'after' put: [:data|  self afterPageChange: data];
 			       at: 'hash' put: self isJQueryMobile not;
                                yourself
 !
@@ -1058,9 +1061,7 @@ rightPage
 !BookWidget methodsFor: 'callbacks'!
 
 afterPageChange: data
-	book currentPageNo: data curr+1.
-	self updateFolioNumbers.
-	self openDescriptions.
+	afterPageChange ifNotNil: [afterPageChange value: data].
 !
 
 beforePageChange:data
@@ -1241,8 +1242,12 @@ loadBook
 renderBook: aBook on: aBrush
 	super renderBook: aBook on: aBrush.
    	self loadBookletJSThen: [ 
-    		bookContainer asJQuery booklet: (self bookletOptions).
-            book ifNotNil: [book onPageChangeDo:[:aPage | self openPage: aPage]].
+    		afterPageChange := nil.
+    		bookContainer asJQuery 	booklet: (self bookletOptions).
+            afterPageChange := [:data| 
+													book currentPageNo: data curr+1.
+													self updateFolioNumbers.
+													self openDescriptions. ].
 			(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
 			(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
      ].
@@ -1739,6 +1744,16 @@ pagesNo: start to: end do: aBlockWithArg
 	start to: end do: [:pageNo|
                  self pageAt: pageNo do: aBlockWithArg
          ].
+! !
+
+!Book methodsFor: 'navigating'!
+
+nextPage
+	self currentPage: self currentPage nextPage
+!
+
+previousPage
+	self currentPage: self currentPage previousPage
 ! !
 
 !Book methodsFor: 'reset'!

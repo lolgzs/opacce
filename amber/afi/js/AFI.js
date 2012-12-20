@@ -1175,7 +1175,7 @@ smalltalk.AbstractBookWidget);
 
 
 
-smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush', 'currentPage'], 'AFI');
+smalltalk.addClass('BookMonoWidget', smalltalk.AbstractBookWidget, ['zoomPageAnchor', 'bookBrush'], 'AFI');
 smalltalk.addMethod(
 "_bookStyle",
 smalltalk.method({
@@ -1184,11 +1184,11 @@ category: 'css',
 fn: function () {
     var self = this;
     var $1;
-    $1 = smalltalk.send(smalltalk.send(self, "_bookStyle", [], smalltalk.AbstractBookWidget), "__comma", ["\n    .pages img {\n    \t\tmargin: 10px auto; \n            display: block\n      }\n      \n       .BookMonoWidget  .b-navigator-thumbnail {\n      \t\twidth: 130px;\n      }\n       \n       .BookMonoWidget .b-navigator-thumbnail ul {\n       \t\tfloat: none;\n            width: 100%;\n       }\n       \n      .BookMonoWidget .b-navigator-thumbnail li {\n      \t\theight: auto;\n            float: none;\n            display: block;\n            margin: 10px auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n      \twidth: auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\n \t  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n   \t\t\tmargin: 0px auto;\n      }\n     .bk-widget  .b-arrow-prev div{\n    height: 170px;\n    float: left;\n    top: 25%;\n    width: 74px;\n    }\n     .bk-widget  .b-arrow-next div{\n    height: 170px;\n    float: right;\n    top: 25%;\n    width: 74px;\n    }\n   "]);
+    $1 = smalltalk.send(smalltalk.send(self, "_bookStyle", [], smalltalk.AbstractBookWidget), "__comma", ["\n    .pages img {\n    \t\tmargin: 10px auto; \n            display: block\n      }\n      \n       .BookMonoWidget  .b-navigator-thumbnail {\n      \t\twidth: 130px;\n      }\n       \n       .BookMonoWidget .b-navigator-thumbnail ul {\n       \t\tfloat: none;\n            width: 100%;\n       }\n       \n      .BookMonoWidget .b-navigator-thumbnail li {\n      \t\theight: auto;\n            float: none;\n            display: block;\n            margin: 10px auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n      \twidth: auto;\n      }\n      \n      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\n \t  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\n      .BookMonoWidget .b-navigator-thumbnail li:hover {\n   \t\t\tmargin: 0px auto;\n      }\n     .bk-widget  .b-arrow-prev div{\n    height: 170px;\n    float: left;\n    top: 25%;\n    width: 74px;\n    }\n     .bk-widget  .b-arrow-next div{\n    height: 170px;\n    float: right;\n    top: 25%;\n    width: 74px;\n    }\n    \n    \n\t.bk-widget .b-navigator-thumbnail li.selected + li.odd img {\n    \topacity: 0.6;\n    }\n   "]);
     return $1;
 },
 args: [],
-source: "bookStyle\x0a\x09^ super bookStyle,\x0a    '\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a     .bk-widget  .b-arrow-prev div{\x0a    height: 170px;\x0a    float: left;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a     .bk-widget  .b-arrow-next div{\x0a    height: 170px;\x0a    float: right;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a   '",
+source: "bookStyle\x0a\x09^ super bookStyle,\x0a    '\x0a    .pages img {\x0a    \x09\x09margin: 10px auto; \x0a            display: block\x0a      }\x0a      \x0a       .BookMonoWidget  .b-navigator-thumbnail {\x0a      \x09\x09width: 130px;\x0a      }\x0a       \x0a       .BookMonoWidget .b-navigator-thumbnail ul {\x0a       \x09\x09float: none;\x0a            width: 100%;\x0a       }\x0a       \x0a      .BookMonoWidget .b-navigator-thumbnail li {\x0a      \x09\x09height: auto;\x0a            float: none;\x0a            display: block;\x0a            margin: 10px auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a      \x09width: auto;\x0a      }\x0a      \x0a      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,\x0a \x09  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,\x0a      .BookMonoWidget .b-navigator-thumbnail li:hover {\x0a   \x09\x09\x09margin: 0px auto;\x0a      }\x0a     .bk-widget  .b-arrow-prev div{\x0a    height: 170px;\x0a    float: left;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a     .bk-widget  .b-arrow-next div{\x0a    height: 170px;\x0a    float: right;\x0a    top: 25%;\x0a    width: 74px;\x0a    }\x0a    \x0a    \x0a\x09.bk-widget .b-navigator-thumbnail li.selected + li.odd img {\x0a    \x09opacity: 0.6;\x0a    }\x0a   '",
 messageSends: [",", "bookStyle"],
 referencedClasses: []
 }),
@@ -1220,13 +1220,12 @@ selector: "goToNextPage",
 category: 'callbacks',
 fn: function () {
     var self = this;
-    self['@currentPage'] = smalltalk.send(self['@currentPage'], "_nextPage", []);
-    smalltalk.send(self, "_renderCurrentPage", []);
+    smalltalk.send(self['@book'], "_nextPage", []);
     return self;
 },
 args: [],
-source: "goToNextPage\x0a\x09currentPage := currentPage nextPage.\x0a    self renderCurrentPage.",
-messageSends: ["nextPage", "renderCurrentPage"],
+source: "goToNextPage\x0a\x09book nextPage",
+messageSends: ["nextPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1238,13 +1237,12 @@ selector: "goToPreviousPage",
 category: 'callbacks',
 fn: function () {
     var self = this;
-    self['@currentPage'] = smalltalk.send(self['@currentPage'], "_previousPage", []);
-    smalltalk.send(self, "_renderCurrentPage", []);
+    smalltalk.send(self['@book'], "_previousPage", []);
     return self;
 },
 args: [],
-source: "goToPreviousPage\x0a\x09currentPage := currentPage previousPage.\x0a    self renderCurrentPage.\x0a    ",
-messageSends: ["previousPage", "renderCurrentPage"],
+source: "goToPreviousPage\x0a\x09book previousPage",
+messageSends: ["previousPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1304,12 +1302,12 @@ selector: "openPage:",
 category: 'callbacks',
 fn: function (aPage) {
     var self = this;
-    smalltalk.send(self['@bookBrush'], "_contents_", [function (html) {return smalltalk.send(smalltalk.send(html, "_img", []), "_src_", [smalltalk.send(aPage, "_thumbnailURL", [])]);}]);
+    smalltalk.send(self, "_renderCurrentPage", []);
     return self;
 },
 args: ["aPage"],
-source: "openPage: aPage\x0a\x09bookBrush contents: [:html|  html img src: aPage thumbnailURL]",
-messageSends: ["contents:", "src:", "thumbnailURL", "img"],
+source: "openPage: aPage\x0a\x09self renderCurrentPage",
+messageSends: ["renderCurrentPage"],
 referencedClasses: []
 }),
 smalltalk.BookMonoWidget);
@@ -1421,7 +1419,7 @@ smalltalk.BookMonoWidget);
 
 
 
-smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'bookBrush', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor'], 'AFI');
+smalltalk.addClass('BookWidget', smalltalk.AbstractBookWidget, ['width', 'bookBrush', 'leftFolioBrush', 'rightFolioBrush', 'zoomLeftPageAnchor', 'zoomRightPageAnchor', 'afterPageChange'], 'AFI');
 smalltalk.addMethod(
 "_afterPageChange_",
 smalltalk.method({
@@ -1429,14 +1427,17 @@ selector: "afterPageChange:",
 category: 'callbacks',
 fn: function (data) {
     var self = this;
-    smalltalk.send(self['@book'], "_currentPageNo_", [smalltalk.send(smalltalk.send(data, "_curr", []), "__plus", [1])]);
-    smalltalk.send(self, "_updateFolioNumbers", []);
-    smalltalk.send(self, "_openDescriptions", []);
+    if (($receiver = self['@afterPageChange']) == nil ||
+        $receiver == undefined) {
+        self['@afterPageChange'];
+    } else {
+        smalltalk.send(self['@afterPageChange'], "_value_", [data]);
+    }
     return self;
 },
 args: ["data"],
-source: "afterPageChange: data\x0a\x09book currentPageNo: data curr+1.\x0a\x09self updateFolioNumbers.\x0a\x09self openDescriptions.\x0a",
-messageSends: ["currentPageNo:", "+", "curr", "updateFolioNumbers", "openDescriptions"],
+source: "afterPageChange: data\x0a\x09afterPageChange ifNotNil: [afterPageChange value: data].\x0a",
+messageSends: ["ifNotNil:", "value:"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -1485,12 +1486,42 @@ selector: "bookletOptions",
 category: 'accessing',
 fn: function () {
     var self = this;
-    return function ($rec) {smalltalk.send($rec, "_at_put_", ["pageSelector", false]);smalltalk.send($rec, "_at_put_", ["chapterSelector", smalltalk.send(self['@isFullscreen'], "_not", [])]);smalltalk.send($rec, "_at_put_", ["menu", self['@menuJQuery']]);smalltalk.send($rec, "_at_put_", ["tabs", false]);smalltalk.send($rec, "_at_put_", ["keyboard", false]);smalltalk.send($rec, "_at_put_", ["arrows", true]);smalltalk.send($rec, "_at_put_", ["closed", true]);smalltalk.send($rec, "_at_put_", ["covers", true]);smalltalk.send($rec, "_at_put_", ["autoCenter", true]);smalltalk.send($rec, "_at_put_", ["pagePadding", 0]);smalltalk.send($rec, "_at_put_", ["shadows", true]);smalltalk.send($rec, "_at_put_", ["width", smalltalk.send(self, "_width", [])]);smalltalk.send($rec, "_at_put_", ["height", smalltalk.send(self, "_height", [])]);smalltalk.send($rec, "_at_put_", ["manual", false]);smalltalk.send($rec, "_at_put_", ["pageNumbers", false]);smalltalk.send($rec, "_at_put_", ["overlays", false]);smalltalk.send($rec, "_at_put_", ["hovers", false]);smalltalk.send($rec, "_at_put_", ["arrowsHide", false]);smalltalk.send($rec, "_at_put_", ["closedFrontTitle", smalltalk.send(self['@book'], "_title", [])]);smalltalk.send($rec, "_at_put_", ["closedFrontChapter", smalltalk.send(self['@book'], "_title", [])]);smalltalk.send($rec, "_at_put_", ["closedBackTitle", "Fin"]);smalltalk.send($rec, "_at_put_", ["closedBackChapter", "Fin"]);smalltalk.send($rec, "_at_put_", ["previousPageTitle", unescape("Pr%E9c%E9dent")]);smalltalk.send($rec, "_at_put_", ["nextPageTitle", "Suivant"]);smalltalk.send($rec, "_at_put_", ["before", function (data) {return smalltalk.send(self, "_beforePageChange_", [data]);}]);smalltalk.send($rec, "_at_put_", ["after", function (data) {return smalltalk.send(self, "_afterPageChange_", [data]);}]);smalltalk.send($rec, "_at_put_", ["hash", smalltalk.send(smalltalk.send(self, "_isJQueryMobile", []), "_not", [])]);return smalltalk.send($rec, "_yourself", []);}(smalltalk.send(smalltalk.HashedCollection || HashedCollection, "_new", []));
-    return self;
+    var $2, $3, $1;
+    $2 = smalltalk.send(smalltalk.HashedCollection || HashedCollection, "_new", []);
+    smalltalk.send($2, "_at_put_", ["pageSelector", false]);
+    smalltalk.send($2, "_at_put_", ["chapterSelector", smalltalk.send(self['@isFullscreen'], "_not", [])]);
+    smalltalk.send($2, "_at_put_", ["menu", self['@menuJQuery']]);
+    smalltalk.send($2, "_at_put_", ["tabs", false]);
+    smalltalk.send($2, "_at_put_", ["keyboard", false]);
+    smalltalk.send($2, "_at_put_", ["arrows", true]);
+    smalltalk.send($2, "_at_put_", ["closed", true]);
+    smalltalk.send($2, "_at_put_", ["covers", true]);
+    smalltalk.send($2, "_at_put_", ["autoCenter", true]);
+    smalltalk.send($2, "_at_put_", ["pagePadding", 0]);
+    smalltalk.send($2, "_at_put_", ["shadows", true]);
+    smalltalk.send($2, "_at_put_", ["width", smalltalk.send(self, "_width", [])]);
+    smalltalk.send($2, "_at_put_", ["height", smalltalk.send(self, "_height", [])]);
+    smalltalk.send($2, "_at_put_", ["manual", false]);
+    smalltalk.send($2, "_at_put_", ["pageNumbers", false]);
+    smalltalk.send($2, "_at_put_", ["overlays", false]);
+    smalltalk.send($2, "_at_put_", ["hovers", false]);
+    smalltalk.send($2, "_at_put_", ["arrowsHide", false]);
+    smalltalk.send($2, "_at_put_", ["closedFrontTitle", smalltalk.send(self['@book'], "_title", [])]);
+    smalltalk.send($2, "_at_put_", ["closedFrontChapter", smalltalk.send(self['@book'], "_title", [])]);
+    smalltalk.send($2, "_at_put_", ["closedBackTitle", "Fin"]);
+    smalltalk.send($2, "_at_put_", ["closedBackChapter", "Fin"]);
+    smalltalk.send($2, "_at_put_", ["previousPageTitle", "Pr\xE9c\xE9dent"]);
+    smalltalk.send($2, "_at_put_", ["nextPageTitle", "Suivant"]);
+    smalltalk.send($2, "_at_put_", ["before", function (data) {return smalltalk.send(self, "_beforePageChange_", [data]);}]);
+    smalltalk.send($2, "_at_put_", ["after", function (data) {return smalltalk.send(self, "_afterPageChange_", [data]);}]);
+    smalltalk.send($2, "_at_put_", ["hash", smalltalk.send(smalltalk.send(self, "_isJQueryMobile", []), "_not", [])]);
+    $3 = smalltalk.send($2, "_yourself", []);
+    $1 = $3;
+    return $1;
 },
 args: [],
-source: "bookletOptions\x0a\x09^ HashedCollection new \x0a                               at: 'pageSelector' put:false; \x0a                               at: 'chapterSelector' put: isFullscreen not; \x0a                               at: 'menu' put: menuJQuery;\x0a                               at: 'tabs' put: false;\x0a                               at: 'keyboard' put: false;\x0a                               at: 'arrows' put: true;\x0a                               at: 'closed' put: true;\x0a                               at: 'covers' put: true;\x0a                               at: 'autoCenter' put: true;\x0a                               at: 'pagePadding' put: 0;\x0a                               at: 'shadows' put: true;\x0a\x09\x09\x09       at: 'width' put: self width;\x0a\x09\x09\x09       at: 'height' put: self height;\x0a                               at: 'manual' put: false;\x0a\x09\x09\x09       at: 'pageNumbers' put: false;\x0a                               at: 'overlays' put: false;\x0a                               at: 'hovers' put: false;\x0a\x09\x09\x09       at: 'arrowsHide' put: false;\x0a\x09\x09\x09       at: 'closedFrontTitle' put: book title;\x0a\x09\x09\x09       at: 'closedFrontChapter' put: book title;\x0a\x09\x09\x09       at: 'closedBackTitle' put: 'Fin';\x0a\x09\x09\x09       at: 'closedBackChapter' put: 'Fin';\x0a\x09\x09\x09       at: 'previousPageTitle' put: 'Précédent';\x0a\x09\x09\x09       at: 'nextPageTitle' put: 'Suivant';\x0a\x09\x09\x09       at: 'before' put: [:data| self beforePageChange:data]; \x0a                               at: 'after' put: [:data|  self afterPageChange: data];\x0a\x09\x09\x09       at: 'hash' put: self isJQueryMobile not;\x0a                               yourself",
-messageSends: ["at:put:", "not", "width", "height", "title", "beforePageChange:", "afterPageChange:", "isJQueryMobile", "yourself", "new"],
+source: "bookletOptions\x0a\x09^ HashedCollection new \x0a                               at: 'pageSelector' put:false; \x0a                               at: 'chapterSelector' put: isFullscreen not; \x0a                               at: 'menu' put: menuJQuery;\x0a                               at: 'tabs' put: false;\x0a                               at: 'keyboard' put: false;\x0a                               at: 'arrows' put: true;\x0a                               at: 'closed' put: true;\x0a                               at: 'covers' put: true;\x0a                               at: 'autoCenter' put: true;\x0a                               at: 'pagePadding' put: 0;\x0a                               at: 'shadows' put: true;\x0a\x09\x09\x09       at: 'width' put: self width;\x0a\x09\x09\x09       at: 'height' put: self height;\x0a                               at: 'manual' put: false;\x0a\x09\x09\x09       at: 'pageNumbers' put: false;\x0a                               at: 'overlays' put: false;\x0a                               at: 'hovers' put: false;\x0a\x09\x09\x09       at: 'arrowsHide' put: false;\x0a\x09\x09\x09       at: 'closedFrontTitle' put: book title;\x0a\x09\x09\x09       at: 'closedFrontChapter' put: book title;\x0a\x09\x09\x09       at: 'closedBackTitle' put: 'Fin';\x0a\x09\x09\x09       at: 'closedBackChapter' put: 'Fin';\x0a\x09\x09\x09       at: 'previousPageTitle' put: 'Précédent';\x0a\x09\x09\x09       at: 'nextPageTitle' put: 'Suivant';\x0a\x09\x09\x09       at: 'before' put: [:data| self beforePageChange:data];\x0a                   at: 'after' put: [:data|  self afterPageChange: data];\x0a\x09\x09\x09       at: 'hash' put: self isJQueryMobile not;\x0a                               yourself",
+messageSends: ["at:put:", "new", "not", "width", "height", "title", "beforePageChange:", "afterPageChange:", "isJQueryMobile", "yourself"],
 referencedClasses: ["HashedCollection"]
 }),
 smalltalk.BookWidget);
@@ -1773,12 +1804,12 @@ category: 'rendering',
 fn: function (aBook, aBrush) {
     var self = this;
     smalltalk.send(self, "_renderBook_on_", [aBook, aBrush], smalltalk.AbstractBookWidget);
-    smalltalk.send(self, "_loadBookletJSThen_", [function () {smalltalk.send(smalltalk.send(self['@bookContainer'], "_asJQuery", []), "_booklet_", [smalltalk.send(self, "_bookletOptions", [])]);if (($receiver = self['@book']) == nil || $receiver == undefined) {self['@book'];} else {smalltalk.send(self['@book'], "_onPageChangeDo_", [function (aPage) {return smalltalk.send(self, "_openPage_", [aPage]);}]);}smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-left"]), "_click_", [function () {return smalltalk.send(self, "_zoomLeftPage", []);}]);return smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-right, .b-page-cover"]), "_click_", [function () {return smalltalk.send(self, "_zoomRightPage", []);}]);}]);
+    smalltalk.send(self, "_loadBookletJSThen_", [function () {self['@afterPageChange'] = nil;self['@afterPageChange'];smalltalk.send(smalltalk.send(self['@bookContainer'], "_asJQuery", []), "_booklet_", [smalltalk.send(self, "_bookletOptions", [])]);self['@afterPageChange'] = function (data) {smalltalk.send(self['@book'], "_currentPageNo_", [smalltalk.send(smalltalk.send(data, "_curr", []), "__plus", [1])]);smalltalk.send(self, "_updateFolioNumbers", []);return smalltalk.send(self, "_openDescriptions", []);};self['@afterPageChange'];smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-left"]), "_click_", [function () {return smalltalk.send(self, "_zoomLeftPage", []);}]);return smalltalk.send(smalltalk.send(smalltalk.send(self['@rootBrush'], "_asJQuery", []), "_find_", [".b-wrap-right, .b-page-cover"]), "_click_", [function () {return smalltalk.send(self, "_zoomRightPage", []);}]);}]);
     return self;
 },
 args: ["aBook", "aBrush"],
-source: "renderBook: aBook on: aBrush\x0a\x09super renderBook: aBook on: aBrush.\x0a   \x09self loadBookletJSThen: [ \x0a    \x09\x09bookContainer asJQuery booklet: (self bookletOptions).\x0a            book ifNotNil: [book onPageChangeDo:[:aPage | self openPage: aPage]].\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].\x0a     ].",
-messageSends: ["renderBook:on:", "loadBookletJSThen:", "booklet:", "bookletOptions", "asJQuery", "ifNotNil:", "onPageChangeDo:", "openPage:", "click:", "zoomLeftPage", "find:", "zoomRightPage"],
+source: "renderBook: aBook on: aBrush\x0a\x09super renderBook: aBook on: aBrush.\x0a   \x09self loadBookletJSThen: [ \x0a    \x09\x09afterPageChange := nil.\x0a    \x09\x09bookContainer asJQuery \x09booklet: (self bookletOptions).\x0a            afterPageChange := [:data| \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09book currentPageNo: data curr+1.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self updateFolioNumbers.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self openDescriptions. ].\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].\x0a\x09\x09\x09(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].\x0a     ].",
+messageSends: ["renderBook:on:", "loadBookletJSThen:", "booklet:", "bookletOptions", "asJQuery", "currentPageNo:", "+", "curr", "updateFolioNumbers", "openDescriptions", "click:", "zoomLeftPage", "find:", "zoomRightPage"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -2810,6 +2841,23 @@ referencedClasses: []
 smalltalk.Book);
 
 smalltalk.addMethod(
+"_nextPage",
+smalltalk.method({
+selector: "nextPage",
+category: 'navigating',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_currentPage_", [smalltalk.send(smalltalk.send(self, "_currentPage", []), "_nextPage", [])]);
+    return self;
+},
+args: [],
+source: "nextPage\x0a\x09self currentPage: self currentPage nextPage",
+messageSends: ["currentPage:", "nextPage", "currentPage"],
+referencedClasses: []
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
 "_onPageChangeDo_",
 smalltalk.method({
 selector: "onPageChangeDo:",
@@ -2966,6 +3014,23 @@ fn: function () {
 args: [],
 source: "pagesWithTitle\x0a\x09^ self pages reject: [:aPage | aPage title isEmpty] ",
 messageSends: ["reject:", "pages", "isEmpty", "title"],
+referencedClasses: []
+}),
+smalltalk.Book);
+
+smalltalk.addMethod(
+"_previousPage",
+smalltalk.method({
+selector: "previousPage",
+category: 'navigating',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_currentPage_", [smalltalk.send(smalltalk.send(self, "_currentPage", []), "_previousPage", [])]);
+    return self;
+},
+args: [],
+source: "previousPage\x0a\x09self currentPage: self currentPage previousPage",
+messageSends: ["currentPage:", "previousPage", "currentPage"],
 referencedClasses: []
 }),
 smalltalk.Book);
