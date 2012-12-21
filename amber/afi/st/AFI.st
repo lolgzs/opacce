@@ -570,7 +570,7 @@ fullScreenStyle
 		font-size: 2em;
 		color: white;
 		border-bottom: 0px;
-		margin: 5px 0px 0px 0px;
+		margin: 5px 0px 30px 0px;
 		text-align: center;
 	}
 
@@ -962,7 +962,7 @@ zoomPage
 	'.b-arrow' asJQuery hide.
 
 
-	pageZoomBrush contents: [:html|  self renderPage: currentPage class: 'b-left' on: html ].
+	pageZoomBrush contents: [:html|  self renderPage: book currentPage class: 'b-left' on: html ].
 	pageZoomBrush asJQuery show.
 ! !
 
@@ -971,61 +971,100 @@ zoomPage
 bookStyle
 	^ super bookStyle,
     '
-    .pages img {
-    		margin: 10px auto; 
-            display: block
-      }
-      
-       .BookMonoWidget  .b-navigator-thumbnail {
-      		width: 130px;
-      }
-       
-       .BookMonoWidget .b-navigator-thumbnail ul {
-       		float: none;
-            width: 100%;
-       }
-       
-      .BookMonoWidget .b-navigator-thumbnail li {
-      		height: auto;
-            float: none;
-            display: block;
-            margin: 10px auto;
-      }
-      
-      .BookMonoWidget .b-navigator-thumbnail li:hover {
-      	width: auto;
-      }
-      
-      .BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,
-      .BookMonoWidget .b-navigator-thumbnail li.even:hover>div,
- 	  .BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,
-      .BookMonoWidget .b-navigator-thumbnail li:hover {
-   			margin: 0px auto;
-      }
-     .bk-widget  .b-arrow-prev div{
+.pages img {
+    margin: 10px auto; 
+    display: block;
+    cursor: pointer;
+	cursor: -moz-zoom-in;
+	cursor: -webkit-zoom-in;
+}
+
+.b-zoom-magnify {
+	position: absolute;
+}
+
+.BookMonoWidget  .b-navigator-thumbnail {
+    width: 130px;
+}
+
+.BookMonoWidget .b-navigator-thumbnail ul {
+    float: none;
+    width: 100%;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li {
+    height: auto;
+    float: none;
+    display: block;
+    margin: 10px auto;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li:hover {
+    width: auto;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,
+.BookMonoWidget .b-navigator-thumbnail li.even:hover>div,
+.BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,
+.BookMonoWidget .b-navigator-thumbnail li:hover {
+   	margin: 0px auto;
+}
+
+
+.BookMonoWidget {
+	font-weight: bold;
+    text-align: center;
+}
+
+.BookMonoWidget .book {
+	position: relative;
+}
+
+
+.bk-widget  .b-arrow-prev,
+.bk-widget  .b-arrow-next {
+	position: absolute;
+    height: 100%;
+    width: 74px;
+}
+
+.bk-widget  .b-arrow-prev { left: 80px; }
+
+.bk-widget  .b-arrow-next { right: 80px; }
+
+.bk-widget  .b-arrow-prev div,
+.bk-widget  .b-arrow-next div{
     height: 170px;
-    float: left;
     top: 25%;
     width: 74px;
-    }
-     .bk-widget  .b-arrow-next div{
-    height: 170px;
-    float: right;
-    top: 25%;
-    width: 74px;
-    }
-    
-    
-	.bk-widget .b-navigator-thumbnail li.selected + li.odd img {
-    	opacity: 0.6;
-    }
+    position: absolute;
+}
+
+.bk-widget .b-navigator-thumbnail li.selected + li.odd img {
+    opacity: 0.6;
+}
+
    '
+!
+
+fullScreenStyle
+	^ super fullScreenStyle, '
+    
+    .fullscreen .book {
+    	margin: 0px 100px;
+    }
+    
+    .fullscreen .b-zoom-magnify {
+    	left: 200px;
+    }
+    
+    '
 !
 
 openDescriptions
 	pageDescriptionsBrush asJQuery hide.
 	pageDescriptionsBrush contents: [:html| 
-               		(html div asJQuery) html: currentPage description.
+               		(html div asJQuery) html: book currentPage description.
         ].
 	pageDescriptionsBrush asJQuery fadeIn.
 ! !
@@ -1045,14 +1084,20 @@ loadBook
 
 renderBookOn: html
 	self loadIViewerJS.
-    html div 
-    		class: 'b-arrow-prev';
-            with: [html div onClick: [self goToPreviousPage]].
-	html div 
-    		class: 'b-arrow-next';
-             with: [html div onClick: [self goToNextPage]].
+    html div
+    	class: 'book';
+    	with: [
+   			 html div 
+   		 		class: 'b-arrow-prev';
+        	    with: [html div onClick: [self goToPreviousPage]].
+         
+			html div 
+    			class: 'b-arrow-next';
+             	with: [html div onClick: [self goToNextPage]].
 	
-	bookBrush := (html div class: 'pages').
+			bookBrush := (html div class: 'pages').
+    ].
+  
 	bookBrush onClick: [self zoomPage].
     folioBrush := html div class:'b-counter'.
 !
