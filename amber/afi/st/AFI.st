@@ -10,6 +10,17 @@ book: aBook
     book onPageChangeDo: [:aPage|  self highlightPage: aPage].
 !
 
+width
+	^ self class width
+! !
+
+!AbstractBookNavigatorWidget methodsFor: 'actions'!
+
+highlightPage: aPage
+! !
+
+!AbstractBookNavigatorWidget methodsFor: 'css'!
+
 style
 	^ '
 
@@ -41,20 +52,12 @@ style
 	margin: 0px;
 }
 '
-!
-
-width
-	^ self class width
-! !
-
-!AbstractBookNavigatorWidget methodsFor: 'actions'!
-
-highlightPage: aPage
 ! !
 
 !AbstractBookNavigatorWidget methodsFor: 'rendering'!
 
 renderOn: html
+	html style: self style.
 	self renderWidgetOn: html.
     self highlightPage: book currentPage.
 ! !
@@ -129,7 +132,6 @@ renderPagesOn: html
 !
 
 renderWidgetOn: html
-	html style: self style.
 	html div 
 		class: 'b-navigator-bookmark b-navigator';
 		with: [ |bookmarkSearchInput |
@@ -146,26 +148,106 @@ AbstractBookNavigatorWidget subclass: #BookMenuWidget
 	instanceVariableNames: 'book pageTitleBrush'
 	package: 'AFI'!
 
-!BookMenuWidget methodsFor: 'not yet classified'!
+!BookMenuWidget methodsFor: 'callback'!
 
 highlightPage: aPage
 	|chaptersBefore|
     chaptersBefore := (book pagesWithTitle select: [:aPageWithTitle | aPageWithTitle pageNo <= aPage pageNo]).
   
 	pageTitleBrush contents: (chaptersBefore ifEmpty: [book title] ifNotEmpty: [chaptersBefore last title]).
-!
+! !
+
+!BookMenuWidget methodsFor: 'css'!
+
+style
+	^ '
+.b-menu {
+		font-size: 1.4em;
+		font-weight: bold;
+		width: 500px;
+		height: 60px;
+        z-index: 100;
+        position: relative;
+}
+
+.b-menu .b-selector {
+		width: 600px;
+		text-align: left;
+		height: 60px;
+		float:none;
+}
+
+.b-menu .b-selector .b-current {
+		height: auto;
+		text-align: left;
+		background: url(', StaticRessources default scriptsRoot, 'images/menu_off.png) no-repeat 15px center;
+		padding-left: 45px;
+        line-height: 28px;
+}
+
+.b-menu .b-selector:hover .b-current {
+		background-image: url(', StaticRessources default scriptsRoot, 'images/menu_on.png);
+}
+
+.b-menu .b-selector { color: black; }
+
+.b-menu .b-selector a { color: inherit;}
+
+.b-menu .b-selector:hover {color: black; }
+
+.b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }
+
+.b-menu .b-selector ul {
+		width: 584px;
+		top: auto;
+		max-height: 600px;
+		overflow-y: auto !!important;
+		background-color: white;
+}
+
+.b-menu .b-selector ul li { font-size: 1.2em; }
+
+.b-menu .b-selector ul li a { height: auto; }
+
+.b-menu .b-selector ul li a .b-text { float: none; }
+
+'
+! !
+
+!BookMenuWidget methodsFor: 'rendering'!
 
 renderPagesOn: html
 	book pagesWithTitle do: [:aPage|
-		html li
-			with: aPage title;
-			onClick: [book currentPage: aPage]
+		html li with: [
+          		html a
+					with: aPage title;
+					onClick: [book currentPage: aPage];
+                    href: '#/page/', aPage pageNo.
+  		]
 	]
 !
 
 renderWidgetOn: html
-	pageTitleBrush:=html span.
-	html ul with: [ self renderPagesOn: html ]
+	| selectorBrush menuJQuery menuFullHeight|
+	html div
+    	class: 'b-menu';
+        with: [
+          	selectorBrush := html div
+            	class: 'b-selector';
+                with: [
+						pageTitleBrush:=html div class: 'b-current'.
+						menuJQuery := (html ul with: [ self renderPagesOn: html ])  asJQuery.
+  				]
+       ].
+     
+    menuFullHeight := menuJQuery height.
+    menuJQuery height: 0.
+    
+    selectorBrush asJQuery click: [
+        menuJQuery height = 0 
+        	ifTrue: [ menuJQuery stop animate: #{'height' -> menuFullHeight. 'paddingBottom' -> 30} speed: 500 ]
+          	ifFalse: [menuJQuery stop animate: #{'height' -> 0. 'paddingBottom' -> 0} speed: 500 ]
+	]
 ! !
 
 AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
@@ -303,7 +385,6 @@ renderPagesOn: html
 !
 
 renderWidgetOn: html
-	html style: self style.
 	html div 
 		class: 'b-navigator-thumbnail  b-navigator';
 		with: [ |bookmarkSearchInput|
@@ -319,7 +400,7 @@ renderWidgetOn: html
 ! !
 
 Widget subclass: #AbstractBookWidget
-	instanceVariableNames: 'book scriptsRoot rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
+	instanceVariableNames: 'book rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
 	package: 'AFI'!
 
 !AbstractBookWidget methodsFor: 'accessor'!
@@ -357,11 +438,11 @@ navigatorWidth
 !
 
 scriptsRoot
-	^ scriptsRoot ifNil: [scriptsRoot := '']
+	^ StaticRessources default scriptsRoot
 !
 
 scriptsRoot: anUrl
-	scriptsRoot := anUrl
+		StaticRessources default scriptsRoot: anUrl
 !
 
 widgetClass
@@ -953,16 +1034,12 @@ openDescriptions
 
 loadBook
 	self renderBook:book on: bookBrush.
-	book    onPageChangeDo: [:aPage| 	currentPage := aPage.
-															self renderCurrentPage]. 
-    BookMenuWidget new
-    	book: book;
-    	appendToJQuery: menuJQuery.
+	book  onPageChangeDo: [:aPage| self renderCurrentPage]. 
+                                                            
+  isFullscreen ifFalse: [BookMenuWidget new
+    												book: book;
+    												appendToJQuery: menuJQuery].
        
-        
-    currentPage ifNil: [
-      	currentPage:= book pages first 
-	].
 	self renderCurrentPage.
 !
 
@@ -982,7 +1059,7 @@ renderBookOn: html
 
 renderCurrentPage
   (bookBrush asJQuery find: 'img' ) hide.
-	currentPage renderWidth: (self width / 2) rounded height: self height.
+	book currentPage renderWidth: (self width / 2) rounded height: self height.
     self openDescriptions.
     self  updateFolioNumbers.
 !
@@ -999,7 +1076,7 @@ renderZoomControlsOn: html
 !
 
 updateFolioNumbers
- folioBrush contents: currentPage foliono.
+ folioBrush contents: book currentPage foliono.
 ! !
 
 AbstractBookWidget subclass: #BookWidget
@@ -2161,5 +2238,27 @@ renderOn: html
 
         (html div class: 'page-desc';  asJQuery) html: page description.
 	html div class: 'clear'.
+! !
+
+Object subclass: #StaticRessources
+	instanceVariableNames: 'scriptsRoot'
+	package: 'AFI'!
+
+!StaticRessources methodsFor: 'accessing'!
+
+scriptsRoot
+	^ scriptsRoot ifNil: [scriptsRoot := '']
+!
+
+scriptsRoot: anUrl
+	scriptsRoot := anUrl
+! !
+
+StaticRessources class instanceVariableNames: 'default'!
+
+!StaticRessources class methodsFor: 'initialize'!
+
+default
+	^ default ifNil: [default := self new]
 ! !
 
