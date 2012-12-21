@@ -689,6 +689,7 @@ form#sendparams dd {float: left}
 
 .treeView .tree div.ui-accordion-content {
     min-height: 200px;
+		overflow: auto;
 }
 
 
