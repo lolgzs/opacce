@@ -42,7 +42,7 @@ class DecodageUnimarcDVDLaJeuneFilleTest extends PHPUnit_Framework_TestCase {
 
 
 	public function testNotesSizeIsTwo() {
-		$this->assertEquals(3, count($this->dvd_jeune_fille->getNotes()));
+		$this->assertEquals(2, count($this->dvd_jeune_fille->getNotes()));
 	}
 
 	public function testNotesContainsDateDeSortie1975() {
@@ -164,8 +164,7 @@ class DecodageUnimarcLittleSenegalTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotes() {
-		$this->assertEquals(array('DVD',
-															"Version originale franco-anglaise, Version française, avec sous-titrage en français, anglais, allemand",
+		$this->assertEquals(array("Version originale franco-anglaise, Version française, avec sous-titrage en français, anglais, allemand",
 															'Bonus : court-métrage "Peut-être la mer" (14 min), bande-annonce',
 															'Date de sortie du film : 2001'),
 												$this->little_senegal->getNotes());
