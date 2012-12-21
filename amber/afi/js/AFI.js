@@ -1745,14 +1745,16 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "loadBook",
 category: 'rendering',
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_loadBookThenRenderOn_", [self['@bookBrush']]);
-    return self;
-},
+fn: function (){
+var self=this;
+smalltalk.send(self,"_loadBookThenRenderOn_",[self["@bookBrush"]]);
+smalltalk.send(self["@book"],"_onPageChangeDo_",[(function(aPage){
+return smalltalk.send(self,"_openPage_",[aPage]);
+})]);
+return self},
 args: [],
-source: "loadBook\x0a\x09self loadBookThenRenderOn: bookBrush",
-messageSends: ["loadBookThenRenderOn:"],
+source: "loadBook\x0a\x09self loadBookThenRenderOn: bookBrush.\x0a\x09book  onPageChangeDo: [:aPage| self openPage: aPage]. ",
+messageSends: ["loadBookThenRenderOn:", "onPageChangeDo:", "openPage:"],
 referencedClasses: []
 }),
 smalltalk.BookWidget);
@@ -4173,12 +4175,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "style",
 category: 'css',
-fn: function () {
-    var self = this;
-    return "\t.b-zoom .controls {\n\t\t\t  height: auto;\n\t\t\t  padding: 4px;\n\t\t\t  margin: 0 4px;\n\t\t\t  background-color: rgb(200,200,200);\n\t\t\t  background-color: rgba(200,200,200,0.8);\n\t\t\t  overflow: hidden;\n\t\t\t  float: right;\n\t\t\t  position: absolute;\n\t\t\t  *position: relative;\n\t\t\t  z-index: 1;\n\t\t\t  text-align: center;\n\t\t\t  width: 114px;\n              right: 0px;\n\t\t\t}\n            \n            .b-zoom .controls>div {\n            \theight: 28px;\n                border-radius: 5px;\n            }\n            \n             .b-zoom .controls>div:hover {\n             \t\tbackground-color: rgba(250,250,250, 0.8);\n                    cursor: pointer;\n            }\n            \n            \n             .b-zoom .controls  .iviewer_button {\n             \tmargin: 0px 8px 0px 0px;\n                float: left;\n             }\n             \n             .b-zoom .controls  .iviewer_button + div{\n             \tmargin-top: 4px;\n                text-align: left;\n             }\n";
+fn: function (){
+var self=this;
+return "\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a                float: left;\x0a                margin-right: 35px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                padding-right: 8px;\x0a                text-align: left;\x0a                float: left;\x0a             }\x0a";
 },
 args: [],
-source: "style\x0a\x09^ '\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  float: right;\x0a\x09\x09\x09  position: absolute;\x0a\x09\x09\x09  *position: relative;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09  width: 114px;\x0a              right: 0px;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                text-align: left;\x0a             }\x0a'",
+source: "style\x0a\x09^ '\x09.b-zoom .controls {\x0a\x09\x09\x09  height: auto;\x0a\x09\x09\x09  padding: 4px;\x0a\x09\x09\x09  margin: 0 4px;\x0a\x09\x09\x09  background-color: rgb(200,200,200);\x0a\x09\x09\x09  background-color: rgba(200,200,200,0.8);\x0a\x09\x09\x09  overflow: hidden;\x0a\x09\x09\x09  z-index: 1;\x0a\x09\x09\x09  text-align: center;\x0a\x09\x09\x09}\x0a            \x0a            .b-zoom .controls>div {\x0a            \x09height: 28px;\x0a                border-radius: 5px;\x0a                float: left;\x0a                margin-right: 35px;\x0a            }\x0a            \x0a             .b-zoom .controls>div:hover {\x0a             \x09\x09background-color: rgba(250,250,250, 0.8);\x0a                    cursor: pointer;\x0a            }\x0a            \x0a            \x0a             .b-zoom .controls  .iviewer_button {\x0a             \x09margin: 0px 8px 0px 0px;\x0a                float: left;\x0a             }\x0a             \x0a             .b-zoom .controls  .iviewer_button + div{\x0a             \x09margin-top: 4px;\x0a                padding-right: 8px;\x0a                text-align: left;\x0a                float: left;\x0a             }\x0a'",
 messageSends: [],
 referencedClasses: []
 }),

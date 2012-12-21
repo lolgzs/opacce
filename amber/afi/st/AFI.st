@@ -1352,7 +1352,8 @@ loadBookThenRenderOn: bookBrush
 !BookWidget methodsFor: 'rendering'!
 
 loadBook
-	self loadBookThenRenderOn: bookBrush
+	self loadBookThenRenderOn: bookBrush.
+	book  onPageChangeDo: [:aPage| self openPage: aPage].
 !
 
 renderBook: aBook on: aBrush
@@ -2208,18 +2209,15 @@ style
 			  background-color: rgb(200,200,200);
 			  background-color: rgba(200,200,200,0.8);
 			  overflow: hidden;
-			  float: right;
-			  position: absolute;
-			  *position: relative;
 			  z-index: 1;
 			  text-align: center;
-			  width: 114px;
-              right: 0px;
 			}
             
             .b-zoom .controls>div {
             	height: 28px;
                 border-radius: 5px;
+                float: left;
+                margin-right: 35px;
             }
             
              .b-zoom .controls>div:hover {
@@ -2235,7 +2233,9 @@ style
              
              .b-zoom .controls  .iviewer_button + div{
              	margin-top: 4px;
+                padding-right: 8px;
                 text-align: left;
+                float: left;
              }
 '
 ! !
