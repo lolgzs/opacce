@@ -137,6 +137,11 @@ class Class_Ouverture extends Storm_Model_Abstract {
 	}
 
 
+	public function setJourSemaine($dow) {
+		return parent::setJourSemaine($dow == 0 ? 7 : $dow);
+	}
+
+
 	/**
 	 * Retourne la prochaine fermeture: soit fin de matinée, soit fin d'après-midi selon l'heure
 	 * et si journée continue ou non

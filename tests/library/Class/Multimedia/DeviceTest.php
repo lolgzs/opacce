@@ -252,7 +252,6 @@ abstract class Multimedia_DeviceCurrentHoldForUserWithoutHoldAndMaxSlotsAfterNex
 										 ->setBib($this->_bib_antibes)
 										 ->setJourSemaine(date('w'))
 										 ->setHoraires(['08:00', '12:00', '14:00', '23:00']));
-
 		$this->_nextStartTime = $this->getNextStartTime();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Multimedia_DeviceHold')
