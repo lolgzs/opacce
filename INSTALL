@@ -1,11 +1,12 @@
-Ubuntu / Debian
+Sauf indiqué, cette procédure prends en compte par défault les distributions Ubuntu / Debian
 
 * Paquets nécessaires:
 
   apt-get install php5 php5-gd php5-imagick php5-xdebug php-pear php5-mysql apache2 mysql-server libapache2-mod-php5 subversion
 
+	(ArchLinux: yaourt -S php php-gd php-imagick xdebug php-pear apache mysql php-apache subversion)
 
-* Configuration PEAR:
+* Configuration PEAR (en compte root / sudo):
 
   pear config-set auto_discover 1
   pear install pear.phpunit.de/PHPUnit
@@ -20,11 +21,14 @@ Ubuntu / Debian
 
 * Configuration Apache / PHP:
 
-	Activez les modules:
+	Activez les modules :
 
 	  a2enmod headers rewrite php5
 
-	Dans /etc/php5/apache2/php.ini, configurer les variables suivantes:
+  (ArchLinux: modifiez /etc/httpd/conf/http.conf et ajoutez la ligne: LoadModule php5_module modules/libphp5.so)
+
+
+	Dans /etc/php5/apache2/php.ini (ArchLinux: /etc/php/php.ini), configurer les variables suivantes:
 
 	  post_max_filesize = 10M
 		upload_max_filesize = 10M
@@ -46,7 +50,7 @@ Dans la conf Apache, supprimer l'option Indexes (listing des fichiers) et autori
   
 * Configuration MySQL
   
-Mosudodifier /etc/mysql/my.cnf et ajouter dans la section [mysqld]:
+Modifier /etc/mysql/my.cnf et ajouter dans la section [mysqld]:
 
   #forcer l'indexation fulltext à partir de 2 lettres
   ft_min_word_len = 2  
