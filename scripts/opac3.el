@@ -53,6 +53,7 @@
 	 tab-width 2
 	 indent-tabs-mode t
 	 flymake-mode t
+	 c-basic-offset 2
 	 compilation-error-regexp-alist  '(	("^\\(/.*\\):\\([0-9]+\\)$" 1 2)
 																			("^.* \\(/.*\\):\\([0-9]+\\)" 1 2)
 																			("PHP\s+[0-9]+\. [^/]* \\([^:]+\\):\\([0-9]+\\)" 1 2)
