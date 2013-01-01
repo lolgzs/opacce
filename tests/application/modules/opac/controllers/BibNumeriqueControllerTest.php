@@ -343,8 +343,8 @@ class BibNumeriqueControllerDownloadRessourcesTest extends AbstractBibNumeriqueC
 	/** @test */
 	public function thumbnailIdOneShouldRenderThumbnail() {
 		$this->dispatch('/opac/bib-numerique/thumbnail/id/1');
-		$this->assertEquals(Class_AlbumRessource::getLoader()->find(1)->getImage()->getImageBlob(),
-												$this->_response->getBody());
+		$this->assertContains(substr(Class_AlbumRessource::getLoader()->find(1)->getImage()->getImageBlob(), 0, 100),
+													$this->_response->getBody());
 	}
 }
 
