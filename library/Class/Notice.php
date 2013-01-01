@@ -702,7 +702,7 @@ class Class_Notice extends Storm_Model_Abstract {
 				{
 					if ($titre == $chapeau) $titre = "";
 					$data=$this->get_subfield('461','v');
-					$tome=$data[0];
+					$tome = isset($data[0]) ? $data[0] : null;
 					if ($tome) $chapeau .= " n° " . $tome;
 					if ($titre) $titre = $chapeau . BR . $titre;
 					else $titre = $chapeau;
