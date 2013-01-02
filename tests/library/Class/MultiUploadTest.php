@@ -112,7 +112,7 @@ class MultiUploadXHRTest extends MultiUploadTestCase {
 		$this->_upload->setHandlerFactory($factoryWrapper);
 
 		$this->assertFalse($this->_upload->handleUpload('', ''));
-		$this->assertEquals('No file transmitted', $this->_upload->getError());
+		$this->assertEquals('Aucun fichier transmis', $this->_upload->getError());
 	}
 
 
@@ -130,7 +130,7 @@ class MultiUploadXHRTest extends MultiUploadTestCase {
 		$this->_upload->setHandlerFactory($factoryWrapper);
 
 		$this->assertFalse($this->_upload->handleUpload('', ''));
-		$this->assertEquals('Image file size too big', $this->_upload->getError());
+		$this->assertEquals('Fichier trop volumineux', $this->_upload->getError());
 	}
 
 
@@ -155,7 +155,8 @@ class MultiUploadXHRTest extends MultiUploadTestCase {
 										->handleUpload($this->_tmpBasePath, '5')
 		);
 
-		$this->assertEquals('Destination not writable', $this->_upload->getError());
+		$this->assertEquals('Le dossier "/tmp/testAlbum" n\'est pas accessible en écriture', 
+												$this->_upload->getError());
 	}
 
 
