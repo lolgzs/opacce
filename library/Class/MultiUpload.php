@@ -172,12 +172,12 @@ class Class_MultiUpload {
 			return false;
 
 		if (0 == ($size = $this->_handler->getSize())) {
-			$this->_error = 'No file transmitted';
+			$this->_error = 'Aucun fichier transmis';
 			return false;
 		}
 
 		if ($size > $this->_sizeLimit) {
-			$this->_error = 'Image file size too big';
+			$this->_error = 'Fichier trop volumineux';
 			return false;
 		}
 
@@ -202,7 +202,7 @@ class Class_MultiUpload {
 	 */
 	protected function _ensureDirectory($path) {
 		if (!$this->getFolderManager()->ensure($path)) {
-			$this->_error = 'Destination not writable';
+			$this->_error = sprintf('Le dossier "%s" n\'est pas accessible en écriture', $path);
 			return false;
 		}
 
