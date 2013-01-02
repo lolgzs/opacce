@@ -58,6 +58,41 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 		$animation = $this->_categories[0];
 		$this->assertEquals('Animation / loisirs', $animation->getLibelle());
 	}
+
+
+	/** @test */
+	public function firstLocationLibelleShouldBeMuseeDeLaVille() {
+		$musee = $this->_locations[0];
+		$this->assertEquals('Musée de la ville', $musee->getLibelle());
+		return $musee;
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstLocationLibelleShouldBeMuseeDeLaVille
+	 */
+	public function firstLocationCodePostalShouldBe78180($musee) {
+		$this->assertEquals('78180', $musee->getCodePostal());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstLocationLibelleShouldBeMuseeDeLaVille
+	 */
+	public function firstLocationVilleShouldBeMontigny($musee) {
+		$this->assertEquals('Montigny-le-Bretonneux', $musee->getVille());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstLocationLibelleShouldBeMuseeDeLaVille
+	 */
+	public function firstLocationPaysShouldBeFrance($musee) {
+		$this->assertEquals('France', $musee->getPays());
+	}
 }
 
 

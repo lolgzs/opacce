@@ -38,6 +38,10 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 
 	public function __construct() {
 		$this->_wrapped_instance = new static::$_item_class();
+		$this->initialize();
+	}
+
+	public function initialize() {
 	}
 
 	public function __call($method, $args) {
@@ -71,7 +75,17 @@ class Class_Agenda_SQY_LocationWrapper {
 	use Trait_Agenda_SQY_ItemWrapper;
 
 	protected static $_item_class = 'Class_Lieu';
-	protected static $_method_map = [];
+	protected static $_method_map = ['setTitle' => 'setLibelle',
+																	 'getLibelle' => 'getLibelle',
+																	 'setZip' => 'setCodePostal',
+																	 'getCodePostal' => 'getCodePostal',
+																	 'setCity' => 'setVille',
+																	 'getVille' => 'getVille',
+																	 'getPays' => 'getPays'];
+
+	public function initialize() {
+		$this->_wrapped_instance->setPays('France');
+	}
 }
 
 
@@ -109,7 +123,7 @@ class Class_Agenda_SQY {
 
 
 	public function getLocations() {
-		return Class_Agenda_SQY_CategoryWrapper::getInstances();
+		return Class_Agenda_SQY_LocationWrapper::getInstances();
 	}
 
 
@@ -147,6 +161,16 @@ class Class_Agenda_SQY {
 
 	public function endTitle($data) {
 		$this->_item->setTitle($data);
+	}
+
+	
+	public function endZip($data) {
+		$this->_item->setZip($data);
+	}
+
+
+	public function endCity($data) {
+		$this->_item->setCity($data);
 	}
 }
 
