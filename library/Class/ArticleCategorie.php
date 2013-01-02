@@ -40,7 +40,8 @@ class Class_ArticleCategorie extends Storm_Model_Abstract {
 
 	protected $_default_attribute_values = array(
 																							 'id_site' => 0,
-																							 'id_cat_mere' => 0);
+																							 'id_cat_mere' => 0,
+																							 'libelle' => '');
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
