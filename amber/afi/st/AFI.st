@@ -597,6 +597,7 @@ zoomControlsStyle
 			  height: 100%;
 			  display: none;
 			  z-index: 200;
+              text-align: left;
 			}
 
 			.b-zoom .page-desc {
@@ -1043,8 +1044,7 @@ bookStyle
 .bk-widget .b-navigator-thumbnail li.selected + li.odd img {
     opacity: 0.6;
 }
-
-   '
+'
 !
 
 fullScreenStyle
