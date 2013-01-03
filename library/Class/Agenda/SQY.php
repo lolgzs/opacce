@@ -23,26 +23,38 @@
 Trait Trait_Agenda_SQY_ItemWrapper {
 	protected static $_instances = [];
 	protected $_wrapped_instance;
+	protected $_attributes;
 
 	public static function resetInstances() {
 		static::$_instances = [];
 	}
 
-	public static function newInstance() {
-		return static::$_instances []= new static();
+
+	public static function newInstance($attributes) {
+		$id = $attributes['INDEX'];
+		return static::$_instances[$id]= new static($attributes);
 	}
+
 
 	public static function getInstances() {
 		return static::$_instances;
 	}
 
-	public function __construct() {
+
+	public static function getWrappedInstance($id) {
+		return static::$_instances[$id];
+	}
+
+
+	public function __construct($attributes) {
 		$this->_wrapped_instance = new static::$_item_class();
+		$this->_attributes = $attributes;
 		$this->initialize();
 	}
 
-	public function initialize() {
-	}
+
+	public function initialize() {}
+
 
 	public function __call($method, $args) {
 		return isset(static::$_method_map[$method])
@@ -51,6 +63,8 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 			: null;
 	}
 }
+
+
 
 
 class Class_Agenda_SQY_EventWrapper {
@@ -64,12 +78,22 @@ class Class_Agenda_SQY_EventWrapper {
 																	 'setDescription' => 'setContenu',
 																	 'getContenu' => 'getContenu',
 																	 'getEventsDebut' => 'getEventsDebut',
-																	 'getEventsFin' => 'getEventsFin',];
+																	 'getEventsFin' => 'getEventsFin',
+																	 'getLieu' => 'getLieu'];
+
+
+	public static function mapLocationsAndCategories() {
+		$instances = static::getInstances();
+		foreach($instances as $event) {
+			$event->mapLocation()->mapCategory();
+		}
+	}
 
 
 	public function formatDateForArticle($date) {
 		return implode('-', array_reverse(explode('/', $date)));
 	}
+
 
 	public function setDateStart($date) {
 		$this->_wrapped_instance->setEventsDebut($this->formatDateForArticle($date));
@@ -79,7 +103,19 @@ class Class_Agenda_SQY_EventWrapper {
 	public function setDateEnd($date) {
 		$this->_wrapped_instance->setEventsFin($this->formatDateForArticle($date));
 	}
+
+
+	public function mapLocation() {
+		if (!$location_id = $this->_attributes['LOCATION'])
+			return $this;
+
+		$lieu = Class_Agenda_SQY_LocationWrapper::getWrappedInstance($location_id);
+		$this->_wrapped_instance->setLieu($lieu);
+		return $this;
+	}
 }
+
+
 
 
 class Class_Agenda_SQY_CategoryWrapper {
@@ -89,6 +125,8 @@ class Class_Agenda_SQY_CategoryWrapper {
 	protected static $_method_map = ['setTitle' => 'setLibelle',
 																	 'getLibelle' => 'getLibelle'];
 }
+
+
 
 
 class Class_Agenda_SQY_LocationWrapper {
@@ -107,6 +145,8 @@ class Class_Agenda_SQY_LocationWrapper {
 		$this->_wrapped_instance->setPays('France');
 	}
 }
+
+
 
 
 class Class_Agenda_SQY_OrganizerWrapper {
@@ -128,6 +168,7 @@ class Class_Agenda_SQY {
 	public function importFromXML($xml) {
 		$this->_xml_parser = (new Class_WebService_XMLParser())->setElementHandler($this);
 		$this->_xml_parser->parse($xml);
+		Class_Agenda_SQY_EventWrapper::mapLocationsAndCategories();
 		return $this;
 	}
 
@@ -148,7 +189,8 @@ class Class_Agenda_SQY {
 
 
 	public function startItem($attributes) {
-		$this->_item = call_user_func([$this->_item_class, 'newInstance']);
+		$this->_item = call_user_func_array([$this->_item_class, 'newInstance'], 
+																				[$attributes]);
 	}
 
 
@@ -182,26 +224,32 @@ class Class_Agenda_SQY {
 	public function endTitle($data) {
 		$this->_item->setTitle($data);
 	}
+
 	
 	public function endZip($data) {
 		$this->_item->setZip($data);
 	}
 
+
 	public function endCity($data) {
 		$this->_item->setCity($data);
 	}
+
 
 	public function endAbstract($data) {
 		$this->_item->setAbstract($data);
 	}
 
+
 	public function endDescription($data) {
 		$this->_item->setDescription($data);
 	}
 
+
 	public function endDate_Start($data) {
 		$this->_item->setDateStart($data);
 	}
+
 
 	public function endDate_End($data) {
 		$this->_item->setDateEnd($data);

@@ -42,8 +42,8 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
-	public function eventsCountShouldBeHeightyFive() {
-		$this->assertEquals(85, count($this->_events));
+	public function eventsCountShouldBeSeventyThree() {
+		$this->assertEquals(73, count($this->_events));
 	}
 
 
@@ -55,14 +55,14 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function firstCategoryLibelleShouldBeAnimationLoisirs() {
-		$animation = $this->_categories[0];
+		$animation = $this->_categories[46];
 		$this->assertEquals('Animation / loisirs', $animation->getLibelle());
 	}
 
 
 	/** @test */
 	public function firstLocationLibelleShouldBeMuseeDeLaVille() {
-		$musee = $this->_locations[0];
+		$musee = $this->_locations[69];
 		$this->assertEquals('Musée de la ville', $musee->getLibelle());
 		return $musee;
 	}
@@ -97,7 +97,7 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 	/** @test */
 	public function firstEventTitreShouldBeRevonsLaVille() {
-		$event_revons = $this->_events[0];
+		$event_revons = $this->_events[3421];
 		$this->assertEquals('"Rêvons la ville"', $event_revons->getTitre());
 		return $event_revons;
 	}
@@ -139,6 +139,14 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	public function firstEventFinShouldBe2013Dash03Dash16($event_revons) {
 		$this->assertEquals('2013-03-16', 
 												$event_revons->getEventsFin());
+	}
+
+
+	/** @test */
+	public function fourthEventLocationShouldBeMuseeNational() {
+		$event_infinis = $this->_events[3992];
+		$this->assertContains('Musée national des Granges',
+													$event_infinis->getLieu()->getLibelle());
 	}
 }
 
