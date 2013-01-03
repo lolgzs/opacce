@@ -79,7 +79,8 @@ class Class_Agenda_SQY_EventWrapper {
 																	 'getContenu' => 'getContenu',
 																	 'getEventsDebut' => 'getEventsDebut',
 																	 'getEventsFin' => 'getEventsFin',
-																	 'getLieu' => 'getLieu'];
+																	 'getLieu' => 'getLieu',
+																	 'getCategorie' => 'getCategorie'];
 
 
 	public static function mapLocationsAndCategories() {
@@ -113,17 +114,35 @@ class Class_Agenda_SQY_EventWrapper {
 		$this->_wrapped_instance->setLieu($lieu);
 		return $this;
 	}
+
+
+	public function mapCategory() {
+		$category_id = $this->_attributes['CATEGORY'] ? $this->_attributes['CATEGORY'] : 0;
+
+		$category_id = explode(',', $category_id)[0];
+		$category = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance($category_id);
+		$this->_wrapped_instance->setCategorie($category);
+		return $this;
+	}
 }
 
 
 
 
 class Class_Agenda_SQY_CategoryWrapper {
-	use Trait_Agenda_SQY_ItemWrapper;
+	use Trait_Agenda_SQY_ItemWrapper {
+		resetInstances as originalResetInstances;
+	}
 
 	protected static $_item_class = 'Class_ArticleCategorie';
 	protected static $_method_map = ['setTitle' => 'setLibelle',
 																	 'getLibelle' => 'getLibelle'];
+
+
+	public static function resetInstances() {
+		static::originalResetInstances();
+		static::newInstance(['INDEX' => 0])->setTitle('Portail');
+	}
 }
 
 

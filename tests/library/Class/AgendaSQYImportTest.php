@@ -36,8 +36,8 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
-	public function categoriesCountShouldBeFourtyFive() {
-		$this->assertEquals(45, count($this->_categories));
+	public function categoriesCountShouldBeFourtySix() {
+		$this->assertEquals(46, count($this->_categories));
 	}
 
 
@@ -147,6 +147,27 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 		$event_infinis = $this->_events[3992];
 		$this->assertContains('Musée national des Granges',
 													$event_infinis->getLieu()->getLibelle());
+	}
+
+
+	/** @test */
+	public function eventJazzClubShouldBeInCategoryJazz() {
+		$event_jazz = $this->_events[3486];
+		$this->assertEquals('Jazz', $event_jazz->getCategorie()->getLibelle());		
+	}
+
+
+	/** @test */
+	public function eventHistoireDuSoldatShouldBeInCategoryMusique() {
+		$event_soldat = $this->_events[3654];
+		$this->assertEquals('Musique', $event_soldat->getCategorie()->getLibelle());		
+	}
+
+
+	/** @test */
+	public function eventJeuxDuMercrediShouldBeInCategoryPortail() {
+		$event_jeux = $this->_events[4006];
+		$this->assertEquals('Portail', $event_jeux->getCategorie()->getLibelle());		
 	}
 }
 
