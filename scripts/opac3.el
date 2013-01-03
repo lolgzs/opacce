@@ -45,6 +45,7 @@
 	(require 'phpunit)
 	(require 'auto-complete)
 	(auto-complete-mode t)
+	(subword-mode t)
 ;;	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(setq ac-sources '(ac-source-etags ac-source-words-in-buffer))
 	(imenu-add-menubar-index)
