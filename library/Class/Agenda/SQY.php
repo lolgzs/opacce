@@ -45,11 +45,10 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 	}
 
 	public function __call($method, $args) {
-		if (!isset(static::$_method_map[$method]))
-			return null;
-
-		return call_user_func_array([$this->_wrapped_instance, static::$_method_map[$method]], 
-																$args);
+		return isset(static::$_method_map[$method])
+			? call_user_func_array([$this->_wrapped_instance, static::$_method_map[$method]], 
+														 $args)
+			: null;
 	}
 }
 
@@ -58,7 +57,28 @@ class Class_Agenda_SQY_EventWrapper {
 	use Trait_Agenda_SQY_ItemWrapper;
 
 	protected static $_item_class = 'Class_Article';
-	protected static $_method_map = [];
+	protected static $_method_map = ['setTitle' => 'setTitre',
+																	 'getTitre' => 'getTitre',
+																	 'setAbstract' => 'setDescription',
+																	 'getDescription' => 'getDescription',
+																	 'setDescription' => 'setContenu',
+																	 'getContenu' => 'getContenu',
+																	 'getEventsDebut' => 'getEventsDebut',
+																	 'getEventsFin' => 'getEventsFin',];
+
+
+	public function formatDateForArticle($date) {
+		return implode('-', array_reverse(explode('/', $date)));
+	}
+
+	public function setDateStart($date) {
+		$this->_wrapped_instance->setEventsDebut($this->formatDateForArticle($date));
+	}
+
+
+	public function setDateEnd($date) {
+		$this->_wrapped_instance->setEventsFin($this->formatDateForArticle($date));
+	}
 }
 
 
@@ -162,15 +182,29 @@ class Class_Agenda_SQY {
 	public function endTitle($data) {
 		$this->_item->setTitle($data);
 	}
-
 	
 	public function endZip($data) {
 		$this->_item->setZip($data);
 	}
 
-
 	public function endCity($data) {
 		$this->_item->setCity($data);
+	}
+
+	public function endAbstract($data) {
+		$this->_item->setAbstract($data);
+	}
+
+	public function endDescription($data) {
+		$this->_item->setDescription($data);
+	}
+
+	public function endDate_Start($data) {
+		$this->_item->setDateStart($data);
+	}
+
+	public function endDate_End($data) {
+		$this->_item->setDateEnd($data);
 	}
 }
 

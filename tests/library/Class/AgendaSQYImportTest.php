@@ -93,6 +93,53 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	public function firstLocationPaysShouldBeFrance($musee) {
 		$this->assertEquals('France', $musee->getPays());
 	}
+
+
+	/** @test */
+	public function firstEventTitreShouldBeRevonsLaVille() {
+		$event_revons = $this->_events[0];
+		$this->assertEquals('"Rêvons la ville"', $event_revons->getTitre());
+		return $event_revons;
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstEventTitreShouldBeRevonsLaVille
+	 */
+	public function firstEventDescriptionShouldContainsLaNouvelleExposition($event_revons) {
+		$this->assertContains('la nouvelle exposition du Musée', $event_revons->getDescription());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstEventTitreShouldBeRevonsLaVille
+	 */
+	public function firstEventContenuShouldContainsDesActeursDeSaintQuentin($event_revons) {
+		$this->assertContains('<p>Des acteurs de Saint-Quentin-en-Yvelines', 
+													$event_revons->getContenu());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstEventTitreShouldBeRevonsLaVille
+	 */
+	public function firstEventDebutShouldBe2012Dash05Dash16($event_revons) {
+		$this->assertEquals('2012-05-16', 
+												$event_revons->getEventsDebut());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstEventTitreShouldBeRevonsLaVille
+	 */
+	public function firstEventFinShouldBe2013Dash03Dash16($event_revons) {
+		$this->assertEquals('2013-03-16', 
+												$event_revons->getEventsFin());
+	}
 }
 
 
