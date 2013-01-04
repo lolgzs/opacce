@@ -61,6 +61,7 @@ class ZendAfi_View_Helper_NuageTags extends ZendAfi_View_Helper_BaseHelper {
 	//------------------------------------------------------------------------------------------------------
 	private function calcultranches($tableau,$methode=3)
 	{
+		$tranches = [];
 		// Nouveau mode
 		if($methode == 3)
 			{

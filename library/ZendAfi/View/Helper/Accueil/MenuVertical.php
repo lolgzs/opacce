@@ -291,7 +291,8 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	 * @return string
 	 */
 	private function _defaultBuilder($menuitem) {
-		$param_url = $this->_cls_menu->getUrl($menuitem["type_menu"], $menuitem["preferences"]);
+		$preferences = isset($menuitem["preferences"]) ? $menuitem["preferences"] : null;
+		$param_url = $this->_cls_menu->getUrl($menuitem["type_menu"], $preferences);
 		$url = $param_url["url"];
 		$target = ($param_url["target"] > "") ? $param_url["target"] : null;
 
