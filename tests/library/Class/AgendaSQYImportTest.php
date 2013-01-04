@@ -168,10 +168,24 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/**  @test  */
+	/** @test */
+	public function categoryVisiteWithNoArticlesShouldNotHaveBeenSaved() {
+		$visite = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance(41);
+		$this->assertFalse(Class_ArticleCategorie::methodHasBeenCalledWithParams('save', [$visite]));
+	}
+
+
+	/** @test */
 	public function lieuMuseeDeLaVilleShouldHaveBeenSaved() {
 		$this->assertEquals('Musée de la ville',
 												Class_Lieu::getFirstAttributeForMethodCallAt('save', 0)->getLibelle());
+	}
+
+
+	/** @test */
+	public function lieuGuyancourtWithNoEventsShouldNotHaveBeenSaved() {
+		$guyancourt = Class_Agenda_SQY_LocationWrapper::getWrappedInstance(121);
+		$this->assertFalse(Class_Lieu::methodHasBeenCalledWithParams('save', [$guyancourt]));
 	}
 
 

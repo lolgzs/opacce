@@ -173,8 +173,10 @@ class Class_Agenda_SQY_CategoryWrapper {
 		static::newInstance(['INDEX' => 0])->setTitle('Portail');
 	}
 
+
 	public function save() {
-		$this->_wrapped_instance->save();
+		if ($this->_wrapped_instance->hasArticles())
+			$this->_wrapped_instance->save();
 	}
 }
 
@@ -199,7 +201,8 @@ class Class_Agenda_SQY_LocationWrapper {
 
 
 	public function save() {
-		$this->_wrapped_instance->save();
+		if ($this->_wrapped_instance->hasArticles())
+			$this->_wrapped_instance->save();
 	}
 }
 
