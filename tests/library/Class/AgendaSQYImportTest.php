@@ -73,7 +73,10 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @test 
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"69"][lieu Musée de la ville]]
+	 */
 	public function firstLocationLibelleShouldBeMuseeDeLaVille() {
 		$musee = $this->_locations[69];
 		$this->assertEquals('Musée de la ville', $musee->getLibelle());
@@ -162,6 +165,13 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	public function firstEventShouldHaveBeenSaved($event_revons) {
 		$this->assertEquals('"Rêvons la ville"',
 												Class_Article::getFirstAttributeForMethodCallAt('save', 0)->getTitre());
+	}
+
+
+	/**  @test  */
+	public function lieuMuseeDeLaVilleShouldHaveBeenSaved() {
+		$this->assertEquals('Musée de la ville',
+												Class_Lieu::getFirstAttributeForMethodCallAt('save', 0)->getLibelle());
 	}
 
 

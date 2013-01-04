@@ -52,12 +52,10 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 	}
 
 
-	public static function getWrappedInstances() {
-		$wrapped_instances = [];
+	public static function saveInstances() {
 		foreach(static::$_instances as $instance) {
-			$wrapped_instances []= $instance->_wrapped_instance;
+			$instance->save();
 		}
-		return $wrapped_instances;
 	}
 
 
@@ -128,7 +126,7 @@ class Class_Agenda_SQY_EventWrapper {
 			return $this;
 
 		$lieu = Class_Agenda_SQY_LocationWrapper::getWrappedInstance($location_id);
-		$this->_wrapped_instance->setLieu($lieu);
+		$lieu->addArticle($this->_wrapped_instance);
 		return $this;
 	}
 
@@ -175,12 +173,8 @@ class Class_Agenda_SQY_CategoryWrapper {
 		static::newInstance(['INDEX' => 0])->setTitle('Portail');
 	}
 
-
-	public static function saveInstances() {
-		$instances = static::getWrappedInstances();
-		foreach($instances as $category) {
-			$category->save();
-		}
+	public function save() {
+		$this->_wrapped_instance->save();
 	}
 }
 
@@ -201,6 +195,11 @@ class Class_Agenda_SQY_LocationWrapper {
 
 	public function initialize() {
 		$this->_wrapped_instance->setPays('France');
+	}
+
+
+	public function save() {
+		$this->_wrapped_instance->save();
 	}
 }
 
@@ -228,6 +227,7 @@ class Class_Agenda_SQY {
 		$this->_xml_parser->parse($xml);
 		Class_Agenda_SQY_EventWrapper::mapLocationsAndCategories();
 		Class_Agenda_SQY_CategoryWrapper::saveInstances();
+		Class_Agenda_SQY_LocationWrapper::saveInstances();
 		return $this;
 	}
 

@@ -21,15 +21,15 @@
 
 class Class_Lieu extends Storm_Model_Abstract {
 	protected $_table_name = 'lieux';
-	protected $_default_attribute_values = array('libelle' => '',
-																							 'adresse' => '',
-																							 'ville' => '',
-																							 'code_postal' => '',
-																							 'pays' => 'FRANCE');
+	protected $_default_attribute_values = ['libelle' => '',
+																					'adresse' => '',
+																					'ville' => '',
+																					'code_postal' => '',
+																					'pays' => 'FRANCE'];
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
+	protected $_has_many = ['articles' => ['model' => 'Class_Article',
+																				 'role' => 'lieu',
+																				 'order' => 'titre']];
 
 
 	public static function getAllLibelles() {
