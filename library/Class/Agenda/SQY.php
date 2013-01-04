@@ -20,6 +20,8 @@
  */
 
 
+/** [[file:~/public_html/afi-opac3/tests/library/Class/AgendaSQYImportTest.php::class%20AgendaSQYImportTest%20extends%20Storm_Test_ModelTestCase%20{][tests]]  */
+
 Trait Trait_Agenda_SQY_ItemWrapper {
 	protected static $_instances = [];
 	protected $_wrapped_instance;
@@ -42,7 +44,7 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 
 
 	public static function getWrappedInstance($id) {
-		return static::$_instances[$id];
+		return isset(static::$_instances[$id]) ? static::$_instances[$id] : null;
 	}
 
 
@@ -80,13 +82,16 @@ class Class_Agenda_SQY_EventWrapper {
 																	 'getEventsDebut' => 'getEventsDebut',
 																	 'getEventsFin' => 'getEventsFin',
 																	 'getLieu' => 'getLieu',
-																	 'getCategorie' => 'getCategorie'];
+																	 'getCategorie' => 'getCategorie',
+																	 'getTags' => 'getTags'];
 
 
 	public static function mapLocationsAndCategories() {
 		$instances = static::getInstances();
 		foreach($instances as $event) {
-			$event->mapLocation()->mapCategory();
+			$event->mapLocation()
+						->mapCategory()
+						->mapTags();
 		}
 	}
 
@@ -122,6 +127,20 @@ class Class_Agenda_SQY_EventWrapper {
 		$category_id = explode(',', $category_id)[0];
 		$category = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance($category_id);
 		$this->_wrapped_instance->setCategorie($category);
+		return $this;
+	}
+
+
+	public function mapTags() {
+		$category_ids = array_merge(explode(',', $this->_attributes['CATEGORY']),
+																explode(',', $this->_attributes['CATEGORY2']),
+																explode(',', $this->_attributes['CATEGORY3']));
+		$tags = [];
+		foreach ($category_ids as $category_id) {
+			if ($category = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance($category_id))
+				$tags []= $category->getLibelle();
+		}
+		$this->_wrapped_instance->setTags(implode(',', $tags));
 		return $this;
 	}
 }

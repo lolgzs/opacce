@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-
 class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	protected $_categories;
 	protected $_events;
@@ -53,7 +52,10 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @test 
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"46"][catégorie animation/loisirs]]
+	 */
 	public function firstCategoryLibelleShouldBeAnimationLoisirs() {
 		$animation = $this->_categories[46];
 		$this->assertEquals('Animation / loisirs', $animation->getLibelle());
@@ -157,17 +159,60 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
+	/**
+	 * @test 
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"3654"%20location%3D"45"%20organizer%3D""%20category%3D"10,11"%20category2%3D"68"%20category3%3D""%20city2%3D"5"][event histoire soldat]]
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"10"][catégorie musique]]
+	 */
 	public function eventHistoireDuSoldatShouldBeInCategoryMusique() {
 		$event_soldat = $this->_events[3654];
 		$this->assertEquals('Musique', $event_soldat->getCategorie()->getLibelle());		
+		return $event_soldat;
 	}
 
 
-	/** @test */
+	/** 
+	 * @test 
+	 * @depends eventHistoireDuSoldatShouldBeInCategoryMusique
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"68"][catégorie spectacles]]
+	 */
+	public function evenHistoireDuSoldatTagsShouldContainsSpectacle($event_soldat) {
+		$this->assertEquals('Musique,Théâtre,Spectacles', $event_soldat->getTags());
+	}
+
+
+	/** 
+	 * @test 
+	 */
 	public function eventJeuxDuMercrediShouldBeInCategoryPortail() {
 		$event_jeux = $this->_events[4006];
 		$this->assertEquals('Portail', $event_jeux->getCategorie()->getLibelle());		
+	}
+
+
+	/** 
+	 * @test 
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"4037"%20location%3D"15"%20organizer%3D""%20category%3D"11"%20category2%3D"70,68"%20category3%3D""%20city2%3D"1"][évenement "d'un retournement à l'autre"]]
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"70"][catégorie Eco-emploi]]
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"68"][catégorie spectacles]]
+	 */
+	public function eventRetournementShouldHaveTagsEcoEmploiAndSpectacles() {
+		$event_retournement = $this->_events[4037];
+		$this->assertEquals('Théâtre,Eco - emploi,Spectacles', $event_retournement->getTags());
+	}
+
+
+	/**
+	 * @test 
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"3786"%20location%3D"54"%20organizer%3D""%20category%3D"18,14"%20category2%3D"68"%20category3%3D"59"%20city2%3D"3"][évènement Pascal Péroteau]]
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"14"][catégorie Jeune public]] 
+	 * [[file:~/public_html/afi-opac3/tests/fixtures/agenda-sqy.xml::<item%20index%3D"68"][catégorie spectacles]]
+	 * [[file:tests/fixtures/agenda-sqy.xml::<item%20index%3D"59"][catégorie Représentation scolaire]]
+	 */
+	public function eventPascalPeroteauShouldHaveTagsJeunePublicAndSpectaclesAndRepresentationScolaire() {
+		$event_peroteau = $this->_events[3786];
+		$this->assertEquals('Chanson,Jeune public,Spectacles,Représentation scolaire',
+												$event_peroteau->getTags());
 	}
 }
 
