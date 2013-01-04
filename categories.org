@@ -245,3 +245,9 @@ var openDialogExemplaires = function() {
 
 * Dublin core OAI
 http://localhost:8081/afi-opac3/opac/oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai::VERSAILLESALBERTSAMAIN--ALBERTSAMAIN----102
+
+* Import flux evenements SQY
+	[[file:tests/library/Class/AgendaSQYImportTest.php::class%20AgendaSQYImportTest%20extends%20Storm_Test_ModelTestCase%20{][Tests]]
+	[[file:library/Class/Agenda/SQY.php::Trait%20Trait_Agenda_SQY_ItemWrapper%20{][SQY import]]
+	[[file:tests/fixtures/agenda-sqy.xml::<?xml%20version%3D"1.0"%20encoding%3D"UTF-8"?][fixtures]]
+*** [[file:tests/fixtures/agenda-sqy.xml::<category][categories]]

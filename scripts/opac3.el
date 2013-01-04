@@ -31,6 +31,7 @@
 ;; (defun my-php-mode() 
 ;; 	(autoload 'opac3-mode "opac3" "OPAC3 mode")
 ;; 	(opac3-mode)
+;;  (setq opac3-phpunit-config "~/path/to/afi-opac3/tests/phpunit.xml")
 ;; )
 ;; (add-hook 'php-mode-hook 'my-php-mode) 
 
@@ -44,8 +45,10 @@
 	(require 'geben)
 	(require 'phpunit)
 	(require 'auto-complete)
+	(require 'org-link-minor-mode)
 	(auto-complete-mode t)
 	(subword-mode t)
+	(org-link-minor-mode t)
 ;;	(setq ac-sources '(ac-source-etags ac-source-words-in-same-mode-buffers))
 	(setq ac-sources '(ac-source-etags ac-source-words-in-buffer))
 	(imenu-add-menubar-index)
