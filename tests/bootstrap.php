@@ -45,9 +45,9 @@ $path = dirname(__FILE__);
 $parts = explode(DIRECTORY_SEPARATOR, $path);
 $parts = array_reverse($parts);
 
-define("BASE_URL", "/" . $parts[1]);
-define("URL_IMG", BASE_URL . "/public/opac/skins/original/images/");
-define("URL_SHARED_IMG", BASE_URL . "/public/opac/images");
+defineConstant("BASE_URL", "/" . $parts[1]);
+defineConstant("URL_IMG", BASE_URL . "/public/opac/skins/original/images/");
+defineConstant("URL_SHARED_IMG", BASE_URL . "/public/opac/images");
 
 setupOpac();
 

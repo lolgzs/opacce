@@ -44,7 +44,20 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 
 
 	public static function getWrappedInstance($id) {
-		return isset(static::$_instances[$id]) ? static::$_instances[$id] : null;
+		if (!isset(static::$_instances[$id]))
+			return null;
+		
+		$wrapper = static::$_instances[$id];
+		return $wrapper->_wrapped_instance;
+	}
+
+
+	public static function getWrappedInstances() {
+		$wrapped_instances = [];
+		foreach(static::$_instances as $instance) {
+			$wrapped_instances []= $instance->_wrapped_instance;
+		}
+		return $wrapped_instances;
 	}
 
 
@@ -56,7 +69,6 @@ Trait Trait_Agenda_SQY_ItemWrapper {
 
 
 	public function initialize() {}
-
 
 	public function __call($method, $args) {
 		return isset(static::$_method_map[$method])
@@ -126,7 +138,7 @@ class Class_Agenda_SQY_EventWrapper {
 
 		$category_id = explode(',', $category_id)[0];
 		$category = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance($category_id);
-		$this->_wrapped_instance->setCategorie($category);
+		$category->addArticle($this->_wrapped_instance);
 		return $this;
 	}
 
@@ -161,6 +173,14 @@ class Class_Agenda_SQY_CategoryWrapper {
 	public static function resetInstances() {
 		static::originalResetInstances();
 		static::newInstance(['INDEX' => 0])->setTitle('Portail');
+	}
+
+
+	public static function saveInstances() {
+		$instances = static::getWrappedInstances();
+		foreach($instances as $category) {
+			$category->save();
+		}
 	}
 }
 
@@ -207,6 +227,7 @@ class Class_Agenda_SQY {
 		$this->_xml_parser = (new Class_WebService_XMLParser())->setElementHandler($this);
 		$this->_xml_parser->parse($xml);
 		Class_Agenda_SQY_EventWrapper::mapLocationsAndCategories();
+		Class_Agenda_SQY_CategoryWrapper::saveInstances();
 		return $this;
 	}
 

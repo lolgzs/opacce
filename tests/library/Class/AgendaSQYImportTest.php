@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
+
 class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	protected $_categories;
 	protected $_events;
@@ -26,6 +27,16 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+		->whenCalled('save')->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_ArticleCategorie')
+		->whenCalled('save')->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+		->whenCalled('save')->answers(true);
+
 		$xml = file_get_contents(realpath(dirname(__FILE__)). '/../../fixtures/agenda-sqy.xml');
 		$agenda = (new Class_Agenda_SQY())->importFromXML($xml);
 		$this->_categories = $agenda->getCategories();
@@ -141,6 +152,16 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	public function firstEventFinShouldBe2013Dash03Dash16($event_revons) {
 		$this->assertEquals('2013-03-16', 
 												$event_revons->getEventsFin());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstEventTitreShouldBeRevonsLaVille
+	 */
+	public function firstEventShouldHaveBeenSaved($event_revons) {
+		$this->assertEquals('"Rêvons la ville"',
+												Class_Article::getFirstAttributeForMethodCallAt('save', 0)->getTitre());
 	}
 
 
