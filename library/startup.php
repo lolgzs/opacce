@@ -51,7 +51,7 @@ function defineConstant($name, $value) {
 
 
 function setupConstants() {
-	defineConstant('VERSION_PERGAME','V-05.40 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
+	defineConstant('VERSION_PERGAME','V-05.41 [r'.array_at(1, explode(' ', '$Revision$ ')).']');
 	defineConstant('ROOT_PATH',  './');
 	defineConstant('ZEND_FRAMEWORK_PATH',  ROOT_PATH.'../ZendFramework-1.6.2/library/Zend/');
 
