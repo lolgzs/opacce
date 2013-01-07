@@ -187,8 +187,8 @@ class DynixGetNoticeLeCombatOrdinaire extends DynixTestCase {
 
 
 	/** @test */
-	public function thirdExemplaireDisponibiliteShouldNotBeDisponible() {
-		$this->assertEquals('Indisponible',
+	public function thirdExemplaireDisponibiliteShouldBeDisponible() {
+		$this->assertEquals('Disponible',
 												$this->_notice->exemplaireAt(2)->getDisponibilite());
 	}	
 

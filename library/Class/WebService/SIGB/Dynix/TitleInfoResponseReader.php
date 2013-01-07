@@ -93,7 +93,7 @@ class Class_WebService_SIGB_Dynix_TitleInfoResponseReader extends Class_WebServi
 	
 	public function endHomeLocationId($data) {
 		if (!array_key_exists($this->_current_location_id,$this->_code_disponibilite) &&
-				$this->_current_location_id != $data)
+				$this->_current_location_id == $data)
 			$this->_current_exemplaire->setDisponibiliteLibre();
 	}
 
