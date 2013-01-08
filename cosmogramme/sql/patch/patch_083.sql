@@ -1,0 +1,1 @@
+alter table album_ressources change folio folio varchar(20);

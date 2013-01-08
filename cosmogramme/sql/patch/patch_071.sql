@@ -1,0 +1,1 @@
+ALTER TABLE  `album` ADD cfg_thumbnails text;

@@ -1,0 +1,1 @@
+ALTER TABLE  `bib_c_zone` ADD  `MAP_COORDS` TEXT NOT NULL;

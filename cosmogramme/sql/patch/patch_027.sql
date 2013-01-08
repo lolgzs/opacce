@@ -1,0 +1,11 @@
+delete from codif_dewey where id_dewey in(0,1,2,3,4,5,6,7,8,9);
+insert into codif_dewey (id_dewey,libelle) values(0,'Généralités');
+insert into codif_dewey (id_dewey,libelle) values(1,'Philosophie et disciplines connexes');
+insert into codif_dewey (id_dewey,libelle) values(2,'Religion');
+insert into codif_dewey (id_dewey,libelle) values(3,'Sciences sociales');
+insert into codif_dewey (id_dewey,libelle) values(4,'Langues');
+insert into codif_dewey (id_dewey,libelle) values(5,'Sciences de la nature et mathématiques');
+insert into codif_dewey (id_dewey,libelle) values(6,'Technique (sciences appliquées)');
+insert into codif_dewey (id_dewey,libelle) values(7,'Arts');
+insert into codif_dewey (id_dewey,libelle) values(8,'Littérature (Belle-lettres)');
+insert into codif_dewey (id_dewey,libelle) values(9,'Histoire, géographie');

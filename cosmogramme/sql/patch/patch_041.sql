@@ -1,0 +1,2 @@
+ALTER TABLE  `exemplaires` ADD  `id` INT NOT NULL AUTO_INCREMENT FIRST , 
+ADD PRIMARY KEY (  `id` );

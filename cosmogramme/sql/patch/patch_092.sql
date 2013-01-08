@@ -1,0 +1,2 @@
+INSERT INTO `variables` (`clef`, `valeur`, `commentaire`, `type_champ`, `liste`, `groupe`, `ordre`, `verrou`)
+			 VALUES ('site_retrait_resa', '0', 'Proposer le choix du site de retrait à la réservation', '2', '0:non\r\n1:oui', '4', '111', 'checked');

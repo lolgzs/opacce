@@ -1,0 +1,1 @@
+ALTER TABLE  `album_ressources` CHANGE fichier fichier varchar(250);

@@ -1,0 +1,2 @@
+INSERT	IGNORE INTO oai_entrepots (libelle, `handler`) VALUES('BNF:Gallica', 'http://oai.bnf.fr/oai2/OAIHandler');
+INSERT IGNORE INTO oai_entrepots (libelle, `handler`) VALUES('Open Archives', 'http://hal.archives-ouvertes.fr/oai/oai.php');

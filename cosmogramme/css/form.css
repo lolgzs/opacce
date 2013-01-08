@@ -1,0 +1,58 @@
+div.form
+{
+	margin-bottom:10px;
+}
+span.form
+{
+	background-color:#FFFFCF;
+	color:#B73901;
+	margin-top:15px;
+	font-weight:bold;
+}
+table.form
+{
+	width:100%;
+	border:1px solid;
+	border-color:#E0E0E0;
+	background-color:#FFFFCF;
+}
+th.form
+{
+	background-color:#E9F6A7;
+	color:#003687;
+	font-weight:bold;
+	border: none;
+	padding-top:7px;
+	padding-bottom:7px;
+}
+td.form
+{
+	border: none;
+	background-color:#FFFFCF;
+	padding-top:0px;
+	padding-bottom:5px;
+	height:10px;
+}
+td.form_milieu
+{
+	border: none;
+	background-color:#FFFFCF;
+	padding-top:0px;
+	padding-bottom:5px;
+	height:30px;
+	vertical-align:middle;
+}
+
+td.form_first
+{
+	border: none;
+	background-color:#FFFFCF;
+	padding-top:5px;
+	padding-bottom:5px;
+	height:10px;
+}
+form
+{
+	margin:0px;
+}
+

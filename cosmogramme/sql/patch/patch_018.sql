@@ -1,0 +1,1 @@
+ALTER TABLE  `notices_avis` ADD INDEX (  `ABON_OU_BIB` );

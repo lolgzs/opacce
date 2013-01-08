@@ -1,0 +1,8 @@
+config.php
+ftp
+charge*.txt
+report
+fichiers/cache
+fichiers/log
+fichiers/transferts
+*~

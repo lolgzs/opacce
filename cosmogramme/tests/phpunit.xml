@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+	bootstrap="./bootstrap.php"
+	colors="false"
+	backupGlobals="false"
+	stopOnFailure="false"
+	stopOnError="false"
+	>
+	<testsuites>
+		<testsuite name="ApplicationTestSuite">
+			<directory>./php/</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../php/classes</directory>
+			<directory suffix=".php">../php/fonctions</directory>
+		</whitelist>
+	</filter>
+</phpunit>

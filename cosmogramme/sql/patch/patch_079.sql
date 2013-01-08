@@ -1,0 +1,1 @@
+UPDATE  `variables` SET  `liste` =  'f:995$f\r\nh:995$h\r\nb:995$b\r\n997:997$a\r\n852:852$g\r\na:995$a' WHERE  `variables`.`clef` =  'champ_code_barres';

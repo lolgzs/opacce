@@ -1,0 +1,1 @@
+DROP TRIGGER datemaj_notices_update

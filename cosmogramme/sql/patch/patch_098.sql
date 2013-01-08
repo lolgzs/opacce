@@ -1,0 +1,1 @@
+alter table sessions_formation add column date_fin date;
