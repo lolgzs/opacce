@@ -219,11 +219,17 @@ class Class_Agenda_SQY_OrganizerWrapper {
 
 
 
-class Class_Agenda_SQY {
+class Class_Agenda_SQY extends Class_WebService_Abstract {
 	/** @var Class_WebService_XMLParser */
 	protected $_xml_parser;
 	protected $_item_class;
 	protected $_item;
+
+
+	public function importFromURL($url) {
+		$xml = static::getHttpClient()->open_url($url);
+		return $this->importFromXML($xml);
+	}
 
 	public function importFromXML($xml) {
 		$this->_xml_parser = (new Class_WebService_XMLParser())->setElementHandler($this);

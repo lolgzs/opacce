@@ -38,10 +38,23 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 		->whenCalled('save')->answers(true);
 
 		$xml = file_get_contents(realpath(dirname(__FILE__)). '/../../fixtures/agenda-sqy.xml');
-		$agenda = (new Class_Agenda_SQY())->importFromXML($xml);
+		$mock_http_client = Storm_Test_ObjectWrapper::mock()->whenCalled('open_url')
+																												->with('http://sqy.fr/events.xml')
+																												->answers($xml)
+																												->getWrapper();
+
+		Class_Agenda_SQY::setDefaultHttpClient($mock_http_client);
+
+		$agenda = (new Class_Agenda_SQY())->importFromURL('http://sqy.fr/events.xml');
 		$this->_categories = $agenda->getCategories();
 		$this->_events = $agenda->getEvents();
 		$this->_locations = $agenda->getLocations();
+	}
+
+
+	public function tearDown() {
+		Class_Agenda_SQY::setDefaultHttpClient(null);
+		parent::tearDown();
 	}
 
 
