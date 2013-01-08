@@ -21,21 +21,23 @@
 
 
 class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
+	protected static $_agenda;
+	protected static $_article_loader;
+	protected static $_article_categorie_loader;
+	protected static $_lieu_loader;
 	protected $_categories;
 	protected $_events;
 	protected $_locations;
 
-	public function setUp() {
-		parent::setUp();
+	public static  function setUpBeforeClass() {
+		static::$_article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+															->whenCalled('save')->answers(true);
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
-		->whenCalled('save')->answers(true);
+		static::$_article_categorie_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_ArticleCategorie')
+		                                     ->whenCalled('save')->answers(true);
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_ArticleCategorie')
-		->whenCalled('save')->answers(true);
-
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
-		->whenCalled('save')->answers(true);
+		static::$_lieu_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+		                        ->whenCalled('save')->answers(true);
 
 		$xml = file_get_contents(realpath(dirname(__FILE__)). '/../../fixtures/agenda-sqy.xml');
 		$mock_http_client = Storm_Test_ObjectWrapper::mock()->whenCalled('open_url')
@@ -45,16 +47,22 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 
 		Class_Agenda_SQY::setDefaultHttpClient($mock_http_client);
 
-		$agenda = (new Class_Agenda_SQY())->importFromURL('http://sqy.fr/events.xml');
-		$this->_categories = $agenda->getCategories();
-		$this->_events = $agenda->getEvents();
-		$this->_locations = $agenda->getLocations();
+		static::$_agenda = (new Class_Agenda_SQY())->importFromURL('http://sqy.fr/events.xml');
 	}
 
 
-	public function tearDown() {
+	public static function tearDownAfterClass() {
+		Storm_Model_Abstract::unsetLoaders();
 		Class_Agenda_SQY::setDefaultHttpClient(null);
-		parent::tearDown();
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_categories = static::$_agenda->getCategories();
+		$this->_events = static::$_agenda->getEvents();
+		$this->_locations = static::$_agenda->getLocations();
 	}
 
 
@@ -177,28 +185,28 @@ class AgendaSQYImportTest extends Storm_Test_ModelTestCase {
 	 */
 	public function firstEventShouldHaveBeenSaved($event_revons) {
 		$this->assertEquals('"Rêvons la ville"',
-												Class_Article::getFirstAttributeForMethodCallAt('save', 0)->getTitre());
+												static::$_article_loader->getFirstAttributeForMethodCallAt('save', 0)->getTitre());
 	}
 
 
 	/** @test */
 	public function categoryVisiteWithNoArticlesShouldNotHaveBeenSaved() {
 		$visite = Class_Agenda_SQY_CategoryWrapper::getWrappedInstance(41);
-		$this->assertFalse(Class_ArticleCategorie::methodHasBeenCalledWithParams('save', [$visite]));
+		$this->assertFalse(static::$_article_categorie_loader->methodHasBeenCalledWithParams('save', [$visite]));
 	}
 
 
 	/** @test */
 	public function lieuMuseeDeLaVilleShouldHaveBeenSaved() {
 		$this->assertEquals('Musée de la ville',
-												Class_Lieu::getFirstAttributeForMethodCallAt('save', 0)->getLibelle());
+												static::$_lieu_loader->getFirstAttributeForMethodCallAt('save', 0)->getLibelle());
 	}
 
 
 	/** @test */
 	public function lieuGuyancourtWithNoEventsShouldNotHaveBeenSaved() {
 		$guyancourt = Class_Agenda_SQY_LocationWrapper::getWrappedInstance(121);
-		$this->assertFalse(Class_Lieu::methodHasBeenCalledWithParams('save', [$guyancourt]));
+		$this->assertFalse(static::$_lieu_loader->methodHasBeenCalledWithParams('save', [$guyancourt]));
 	}
 
 
