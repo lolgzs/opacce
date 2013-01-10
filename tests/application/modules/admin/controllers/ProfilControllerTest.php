@@ -337,7 +337,7 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('1');
-		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit', true);
 		$this->assertXPathContentContains('//option', 'Formations');
 	}
 
@@ -347,7 +347,7 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('0');
-		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit',true);
 		$this->assertNotXPathContentContains('//option', 'Formations');
 	}
 
@@ -1174,4 +1174,49 @@ class Admin_ProfilControllerGenresActionTest extends Admin_AbstractControllerTes
 	function actionShouldBeGenres() {
 		$this->assertAction('genres');
 	}
+
 }
+
+/**
+ *  [[file:~/afi/afi-opac3/application/modules/admin/controllers/ProfilController.php::public%20function%20menusmajAction()%20{][Action menusmaj]]
+ */
+class Admin_ProfilControllerEditMenuHorizontalTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$cfg_menus = array(
+											 'H' => array( 
+																		"libelle" => "Menu horizontal",
+																		"picto" => "vide.gif",
+																		"menus" => array(array('type_menu' => 'MENU',
+																													 'libelle' => 'Pratique',
+																													 'picto' => 'bookmark.png'))),
+											 'V' => array(
+																		"libelle" => "Menu vertical",
+																		"picto" => "vide.gif"));
+
+		$this->profil_jazz = Class_Profil::newInstanceWithId(5, [ 'browser' => 'opac',
+																															'libelle' => 'Jazz pour tous',
+																															'cfg_menus' => $cfg_menus ]);
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+	}
+
+
+	/** @test */
+	public function tdShouldContainsPratique() {
+		$this->assertXPathContentContains("//td/span","Pratique");
+	}
+
+	/** @test */
+	public function selectOptionShouldContainsMenu() {
+		$this->assertXPathContentContains("//td/select/option","Menu");
+	}
+
+	/** @test */
+	public function selectOptgroupShouldContainsModulesInformations() {
+		$this->assertXPath("//td//optgroup[@label='Modules informations']",$this->_response->getBody());
+	}
+
+
+}
+
+

@@ -32,11 +32,13 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	 * @var array
 	 */
 	protected $_groupes = array(
-		self::GROUP_INFO => "Informations",
-		self::GROUP_RECH => "Recherches",
-		self::GROUP_SITE => "Site",
-		self::GROUP_ABONNE => "Abonnés"
+		self::GROUP_INFO => "Module Informations",
+		self::GROUP_RECH => "Module Recherches",
+		self::GROUP_SITE => "Module Site",
+		self::GROUP_ABONNE => "Module Abonnés"
 	);
+
+
 
 	/**
 	 * @var array

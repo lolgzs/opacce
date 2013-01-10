@@ -24,18 +24,6 @@ class Admin_MenusControllerProfilJazzTestCase extends Admin_AbstractControllerTe
 	public function setUp() {
 		parent::setUp();	
 
-		$cfg_menus = array(
-											 'H' => array( 
-																		"libelle" => "Menu horizontal",
-																		"picto" => "vide.gif",
-																		"menus" => array(array('type_menu' => 'MENU',
-																													 'libelle' => 'Pratique',
-																													 'picto' => 'bookmark.png'))),
-											 'V' => array(
-																		"libelle" => "Menu vertical",
-																		"picto" => "vide.gif"));
-
-
 		$this->profil_jazz = Class_Profil::getLoader()
 			->newInstanceWithId(5)
 			->setBrowser('opac')
@@ -71,6 +59,7 @@ class Admin_MenusControllerProfilJazzTestCase extends Admin_AbstractControllerTe
 		$this->assertInstanceOf('Class_Profil_NullTranslator', Class_Profil::getCurrentProfil()->getTranslator());
 	}
 }
+
 
 
 

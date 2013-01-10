@@ -49,7 +49,7 @@ class Class_Systeme_ModulesAccueil_Null {
 		if (get_class($this) == 'Class_Systeme_ModulesAccueil_Null')
 			return false;
 
-		if (!$profil->isTelephone())
+		if ($profil && !$profil->isTelephone())
 			return true;
 
 		return $this->_isPhone && (!$this->_isPackMobile || Class_AdminVar::isPackMobileEnabled());
@@ -63,7 +63,7 @@ class Class_Systeme_ModulesAccueil_Null {
 
 		if (!isset($this->_defaultValues['titre']))
 			$this->_defaultValues['titre'] = '';
-
+		
 		return $this->_defaultValues;
 	}
 
@@ -113,6 +113,8 @@ class Class_Systeme_ModulesAccueil_Null {
 								 'popup_height' => $this->getPopupHeight(),
 								 'phone' => $this->isPhone());
 	}
+
+
 }
 
 ?>
