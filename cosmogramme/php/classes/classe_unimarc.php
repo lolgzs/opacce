@@ -600,16 +600,27 @@ private function getExemplaires999()
 			 else $invisible=0;
 			 if($invisible==1) $ex["ignore_exemplaire"]=true;
 			}
+			
+			// exclure les exemplaires qui ont un 996$k
+			elseif($champ["code"]=="k")
+			{
+				$exclu=array("LOST-ASSUM","MISSING","LOST-CLAIM","LOST");
+				if(in_array($champ['valeur'],$exclu)) $ex["ignore_exemplaire"]=true;
+			}
 		}
-
 		
 		// date de nouveaute
 		$ex["date_nouveaute"]=$date_nouveaute;
 		
 		// ajouter aux exemplaires
-		if($ex["code_barres"]>"" and !$ex["ignore_exemplaire"])
+		if($ex["code_barres"]>"")
 		{
 			$nb_ex++;
+			if($ex["ignore_exemplaire"]==true)
+			{
+				$nb_ex_detruits++;
+				$ex["activite"]="d";
+			}
 			$ret["exemplaires"][]=$ex;
 		}
 	}

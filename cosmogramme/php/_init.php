@@ -1,25 +1,6 @@
 <?PHP
-/**
- * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
- *
- * AFI-OPAC 2.0 is free software; you can redistribute it and/or modify
- * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
- * the Free Software Foundation.
- *
- * There are special exceptions to the terms and conditions of the AGPL as it
- * is applied to this software (see README file).
- *
- * AFI-OPAC 2.0 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- * along with AFI-OPAC 2.0; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
- */
 // Constantes
-define("VERSION_COSMOGRAMME","6.25");
+define("VERSION_COSMOGRAMME","6.24");
 define("PATCH_LEVEL","141");
 define("APPLI","cosmogramme");
 define("CRLF", chr(13) . chr(10));
@@ -28,17 +9,20 @@ define("COSMOPATH", "/var/www/html/vhosts/opac2/www/htdocs");
 
 date_default_timezone_set('Europe/Paris');
 
+// Add cg: site= nom du site Opac (Ex: mabellebib.net)
 $argc = isset($argc) ? $argc : 0;
 if ($argc != 3) {
-	$site= "/" . substr($_SERVER['SCRIPT_NAME'], 1, strpos($_SERVER['SCRIPT_NAME'], "/" . APPLI . "/") -1) . "/" ;
-
-	if ($_SERVER['SERVER_ADDR'] != "127.0.0.1" and $_SERVER['SERVER_ADDR'] != "::1")	{
+	if ($_SERVER['SERVER_ADDR'] != "127.0.0.1" and $_SERVER['SERVER_ADDR'] != "::1")
+	{
+		$site= "/" . substr($_SERVER['SCRIPT_NAME'], 1, strpos($_SERVER['SCRIPT_NAME'], "/" . APPLI . "/") -1) . "/" ;
 		$cfgfile= COSMOPATH . $site . APPLI . "/config.php" ;
-	}	else {
+	}
+	else
+	{
+		$site= "/" ;
 		$cfgfile= "config.php";
 	}
 }
-
 else $cfgfile="./config.php";
 
 define("URL_BASE","http://" . $_SERVER["HTTP_HOST"] . $site . APPLI . "/");
