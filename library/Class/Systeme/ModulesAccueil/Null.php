@@ -45,11 +45,17 @@ class Class_Systeme_ModulesAccueil_Null {
 
 
 	/** @return boolean */
+	public function isNullModule() {
+		return (false != strpos(get_class($this), '_Null'));
+	}
+
+
+	/** @return boolean */
 	public function isVisibleForProfil($profil) {
-		if (get_class($this) == 'Class_Systeme_ModulesAccueil_Null')
+		if ($this->isNullModule())
 			return false;
 
-		if ($profil && !$profil->isTelephone())
+		if ((null == $profil) || !$profil->isTelephone())
 			return true;
 
 		return $this->_isPhone && (!$this->_isPackMobile || Class_AdminVar::isPackMobileEnabled());

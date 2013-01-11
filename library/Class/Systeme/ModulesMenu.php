@@ -83,9 +83,10 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	 ];
 
 		$modules_accueil = Class_Systeme_ModulesAccueil::getModules();
+		foreach($modules_accueil as $key => $module) {
+			$this->fonctions['BOITE_'.$key] = $module;
+		}
 		
-		//		$this->fonctions = array_merge($this->fonctions,Class_Systeme_ModulesAccueil::getModules());
-	
 		foreach ($this->fonctions as $key => $module) {
 			if (!$module->isVisibleForProfil(null)) 
 				unset($this->fonctions[$key]);

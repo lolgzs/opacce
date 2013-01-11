@@ -449,14 +449,6 @@ class Class_Article extends Storm_Model_Abstract {
 																				];
 
 	/**
-	 * @return ArticleLoader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
-	/**
 	 * Ne retourne que les traductions des articles donnés
 	 * pour la langue courante.
 	 * @param array
