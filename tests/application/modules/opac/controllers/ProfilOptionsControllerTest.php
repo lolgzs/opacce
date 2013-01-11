@@ -48,7 +48,12 @@ abstract class ProfilOptionsControllerWithProfilAdulteTestCase extends AbstractC
 																			 'libelle' => 'Articles',
 																			 'picto' => 'vide.gif',
 																			 'preferences' => ['id_items' => '1-3',
-																												 'display_order' => 'Selection']] ]],
+																												 'display_order' => 'Selection']],
+
+																			['type_menu' => 'FORM_CONTACT',
+																			 'libelle' => 'Formulaire contact',
+																			 'picto' => 'vide.gif' ]]
+													],
 
 									'V' => ['libelle' => 'Menu vertical',
 													'picto' => 'vide.gif']];
@@ -214,8 +219,14 @@ class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControlle
 	/** @test */
 	public function menuHorizontalShouldIncludeLinkToArticleCms() {
 		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[contains(@href, 'cms/articleviewpreferences?id_items=1-3&nb_aff=5&nb_analyse=10&display_order=Selection')]", 
-																			'Articles',
-																			$this->_response->getBody());
+																			'Articles');
+	}
+
+
+	/** @test */
+	public function menuHorizontalShouldIncludeLinkToFormulaireContact() {
+		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[contains(@href, '/index/formulairecontact')]", 
+																			'Formulaire contact');
 	}
 
 

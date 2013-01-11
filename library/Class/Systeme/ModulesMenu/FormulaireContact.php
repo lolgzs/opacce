@@ -27,11 +27,5 @@ class Class_Systeme_ModulesMenu_FormulaireContact extends Class_Systeme_ModulesM
 
 	/** @var string */
 	protected $_url =  '/index/formulairecontact';
-
-	public function getUrl($preferences=[]) {
-		return ($user = Class_Users::getIdentity())
-		   ? $this->getVodeclicUrlForUser($user)
-		   : BASE_URL . '/auth/login';
-	}
 }
 ?>
