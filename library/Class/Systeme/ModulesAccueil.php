@@ -23,19 +23,19 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	const MODULES_KEY = 'modules';
 	const PREFERENCES_KEY = 'preferences';
 
-	const GROUP_INFO = 'INFO';
-	const GROUP_RECH = 'RECH';
-	const GROUP_SITE = 'SITE';
-	const GROUP_ABONNE = 'ABONNE';
+	const GROUP_INFO = 'ACCUEIL_INFO';
+	const GROUP_RECH = 'ACCUEIL_RECH';
+	const GROUP_SITE = 'ACCUEIL_SITE';
+	const GROUP_ABONNE = 'ACCUEIL_ABONNE';
 
 	/**
 	 * @var array
 	 */
 	protected $_groupes = array(
-		self::GROUP_INFO => "Module Informations",
-		self::GROUP_RECH => "Module Recherches",
-		self::GROUP_SITE => "Module Site",
-		self::GROUP_ABONNE => "Module Abonnés"
+		self::GROUP_INFO => "Modules Information",
+		self::GROUP_RECH => "Modules Recherche",
+		self::GROUP_SITE => "Modules Site",
+		self::GROUP_ABONNE => "Modules Abonné"
 	);
 
 

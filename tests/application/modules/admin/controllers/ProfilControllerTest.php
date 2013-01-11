@@ -1215,8 +1215,6 @@ class Admin_ProfilControllerEditMenuHorizontalTest extends Admin_AbstractControl
 	public function selectOptgroupShouldContainsModulesInformations() {
 		$this->assertXPath("//td//optgroup[@label='Modules informations']",$this->_response->getBody());
 	}
-
-
 }
 
 

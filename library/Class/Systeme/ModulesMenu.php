@@ -25,11 +25,11 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	const MENUS_KEY				= 'menus';
 	const SUBMENUS_KEY		= 'sous_menus';
 
-	const GROUP_MENU_NAVIGATION = 'NAV';
-	const GROUP_MENU_INFORMATIONS = 'INFO';
-	const GROUP_MENU_RECHERCHES = 'RECH';
-	const GROUP_MENU_CATALOGUES = 'CATALOG';
-	const GROUP_MENU_ABONNES = 'ABON';
+	const GROUP_MENU_NAVIGATION = 'MENU_NAV';
+	const GROUP_MENU_INFORMATIONS = 'MENU_INFO';
+	const GROUP_MENU_RECHERCHES = 'MENU_RECH';
+	const GROUP_MENU_CATALOGUES = 'MENU_CATALOG';
+	const GROUP_MENU_ABONNES = 'MENU_ABONNE';
 
 	protected $_groupes = [
 		self::GROUP_MENU_NAVIGATION => "Navigation"  ,
