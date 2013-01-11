@@ -60,7 +60,7 @@ if ($phase == 0.2)
 	if ($phase_data["nombre"] and !$mode_cron) print('<span class="violet">Notices CMS :</span>' . BR);
 	if (!$mode_cron and $chrono->tempsPasse() > 10) sauveContexte();
 	$chrono->start();
-	$result = $sql->prepareListe("select * from cms_article where ID_ARTICLE >" . $phase_data["pointeur_reprise"] . " and INDEXATION=1 order by ID_ARTICLE");
+	$result = $sql->prepareListe("select * from cms_article where ID_ARTICLE >" . $phase_data["pointeur_reprise"] . " and INDEXATION=1 and STATUS NOT IN(1, 2, 4) order by ID_ARTICLE");
 	if ($result)
 	{
 		while ($enreg = $sql->fetchNext($result))
