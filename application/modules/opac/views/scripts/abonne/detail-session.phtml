@@ -1,14 +1,14 @@
 <?php 
 echo $this->openBoite(sprintf('Formation %s: session du %s',
 															$this->session->getLibelleFormation(),
-															$this->humanDate($this->session->getDateDebut(), 
-																							 'd MMMM yyyy')));
+															$this->renderDateRange($this->session->getDateDebut(), 
+																										 $this->session->getDateFin())));
 
 ?>
 
 <dl class="session_formation">
 	<dt><?php echo $this->_('Lieu') ?></dt>
-	<dd><?php echo $this->session->getLieu() ?></dd>
+	<dd><?php echo $this->renderLieu($this->session->getLieu(), array('size' => '300x300')) ?></dd>
 
 
 	<dt><?php echo $this->_('Horaires') ?></dt>
@@ -33,7 +33,7 @@ echo $this->openBoite(sprintf('Formation %s: session du %s',
 	  <ul>
 	  <?php
 	  foreach ($this->session->getIntervenants() as $intervenant)
-		  echo sprintf('<li>%s</li>', $intervenant->getNomAff());
+		  echo sprintf('<li>%s, %s</li>', $intervenant->getNom(), $intervenant->getPrenom());
     ?>
     </ul>
 	</dd>
@@ -44,9 +44,6 @@ echo $this->openBoite(sprintf('Formation %s: session du %s',
 
 	<dt><?php echo $this->_('Contenu') ?></dt>
 	<dd><?php echo $this->session->getContenu() ?></dd>
-
-	<dt><?php echo $this->_('Objectif') ?></dt>
-	<dd><?php echo $this->session->getObjectif() ?></dd>
 </dl>
 
 

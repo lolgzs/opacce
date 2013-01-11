@@ -1,0 +1,27 @@
+<h1><?php echo $this->escape($this->titre);?></h1>
+<div class="panel">
+	<?php if ($metadatas = $this->catalog->getMetadatas()) { ?>
+	<ul style="list-style:none;">
+		<?php foreach($metadatas as $k => $v) { ?>
+		<li><strong><?php echo $this->escape($k);?></strong> : <?php echo $this->escape($v);?></li>
+		<?php } ?>
+	</ul>
+	<?php } ?>
+		 <?php if ($this->catalog->getSearch()) echo $this->catalog->getSearchForm();?>
+</div>
+<ul>
+	<?php foreach($this->catalog->getEntries() as $entry) { ?>
+	<li>
+		<?php if ($entry->isNotice()) { ?>
+		  <?php echo $this->escape($entry->getTitle());?>
+		  <?php if ($entry->getAuthor()) echo '(' . $this->escape($entry->getAuthor()) . ')';?>
+			<?php if ($entry->hasFiles()) { ?>
+			- <a href="<?php echo $this->url(array('action' => 'import'));?>?feed=<?php echo urlencode($this->catalog->getUrl());?>&entry=<?php echo urlencode($entry->getId());?>">Importer</a>
+			<?php } ?>
+		<?php } else { ?>
+				<a href="<?php echo $this->url();?>?entry=<?php echo urlencode($entry->getLink()); ?>">
+				<?php echo $this->escape($entry->getTitle());?></a>
+		<?php } ?>
+	</li>
+	<?php } ?>
+</ul>

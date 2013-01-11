@@ -21,6 +21,7 @@
 
 class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_AbstractService {
 	protected $_id_bib;
+	protected $_legacy_service;
 
 	public static function newInstance() {
 		return new self();
@@ -30,6 +31,24 @@ class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_Abstra
 	public static function getService($id_bib) {
 		return self::newInstance()->setIdBib($id_bib);
 	}
+
+
+	public function isPergame() {
+		return true;
+	}
+
+
+	public function setLegacyService($service) {
+		$this->_legacy_service = $service;
+	}
+
+
+	public function getLegacyService() {
+		if (!isset($this->_legacy_service))
+			$this->_legacy_service = (new Class_Systeme_PergameService(Class_Users::getIdentity()));
+		return $this->_legacy_service;
+	}
+
 
 	public function setIdBib($id_bib) {
 		$this->_id_bib = $id_bib;
@@ -44,17 +63,23 @@ class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_Abstra
 	}
 
 
-	public function getEmpruntsOf($emprunteur) {
+	public function getEmpruntsOf($emprunteur)
+	{
+		$params = Class_IntBib::getLoader()->find($this->_id_bib)->getCommParamsAsArray();
+		$renouvelable = isset($params['Autoriser_prolongations']) ? $params['Autoriser_prolongations'] : false;
+		
 		$user = Class_Users::getLoader()->find($emprunteur->getId());
 		$prets = Class_Pret::getLoader()->findAllBy(array('IDABON' => $user->getIdabon(),
 																											'ORDREABON' => $user->getOrdreabon(),
 																											'EN_COURS' => 1));
 		$emprunts = array();
-		foreach($prets as $pret) {
+		foreach($prets as $pret)
+		{
 			$emprunts []= Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire()
+				->setId($pret->getIdPret())
 				->setExemplaireOPAC($pret->getExemplaire())
 				->setDateRetour(implode('/', array_reverse(explode('-',$pret->getDateRetour()))))
-				->beNotRenewable();
+				->setRenewable($renouvelable);
 		}
 
 		return $emprunts;
@@ -78,15 +103,23 @@ class Class_WebService_SIGB_Pergame_Service extends Class_WebService_SIGB_Abstra
 	}
 
 
-	public function reserverExemplaire($user, $exemplaire_id, $code_annexe) {}
+	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
+		return $this->getLegacyService()->reserverExemplaire($this->_id_bib, 
+																												 $exemplaire->getIdOrigine(), 
+																												 $code_annexe);
+	}
 
 
-	public function supprimerReservation($user, $reservation_id) {}
+	public function supprimerReservation($user, $reservation_id) {
+		return $this->getLegacyService()->supprimerReservation($reservation_id);
+	}
 
 
-	public function prolongerPret($user, $pret_id) {}
+	public function prolongerPret($user, $pret_id) {
+		return $this->getLegacyService()->prolongerPret($pret_id);
+	}
 
-
+	
 	public function getNotice($id){
 		if (!$exemplaire = Class_Exemplaire::getLoader()->findFirstBy(array('id_origine' => $id,
 																																				'id_bib' => $this->_id_bib)))

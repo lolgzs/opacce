@@ -26,7 +26,8 @@ class ZendAfi_View_Helper_Pager extends ZendAfi_View_Helper_BaseHelper
 {
 
 	function Pager($nombre,$nb_par_page,$page,$url)	{
-		if(!$nombre) return;
+		if (!$nombre or !$nb_par_page) return;
+
 		// Nombre de pages
 		if(!$page) $page=1;
 		$nb_pages=intval($nombre / $nb_par_page);
@@ -67,15 +68,18 @@ class ZendAfi_View_Helper_Pager extends ZendAfi_View_Helper_BaseHelper
 		return $html;
 	}
 	
-	private function getLigne($href,$page,$libelle)
-	{
-		if($href == "#")
-		{ 
-			$style=' style="font-size:larger;color:#808080"';
-			$libelle='<big>'.$libelle.'</big>';
+	private function getLigne($href, $page, $libelle) {
+		$style = '';
+		if ($href == "#") { 
+			$style = ' style="font-size:larger;color:#808080"';
+			$libelle = '<big>' . $libelle . '</big>';
 		}
-		if(substr($href,0,4) == "java") $href=str_replace("@PAGE@",$page,$href);
-		else $href.=$page;
+
+		if (substr($href, 0, 4) == "java") 
+			$href = str_replace("@PAGE@", $page, $href);
+		else 
+			$href .= $page;
+
 		return '<span style="padding-left:5px;padding-right:5px"><a href="'.$href.'"'.$style.'><b>'.$libelle.'</b></a></span>';
 	}
 }

@@ -21,12 +21,27 @@
 
 class MockMailTransport extends Zend_Mail_Transport_Abstract {
 	public $sent_mail = null;
+	protected $_send_block;
+	protected $_sent_mails = array();
 
 	public function send(Zend_Mail $mail) {
 		$this->sent_mail = $mail;
+		$this->_sent_mails []= $mail;
+
+		if (isset($this->_send_block)) {
+			call_user_func($this->_send_block);
+		}
+	}
+
+	public function onSendDo($block) {
+		$this->_send_block = $block;
 	}
 
 	protected function _sendMail() {}
+
+	public function getSentMails() {
+		return $this->_sent_mails;
+	}
 }
 
 ?>

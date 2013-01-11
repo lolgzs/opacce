@@ -193,11 +193,12 @@ class Class_Calendar {
 		$action_url=BASE_URL.'/opac/cms/calendar/';
 
 		return sprintf('
-			<form id="calendar_select_categorie"	method="get" action="$action_url">
+			<form id="calendar_select_categorie"	method="get" action="%s">
 			  <label for="select_id_categorie">%s:</label>
 				<select id="select_id_categorie" name="select_id_categorie">%s</select>
 				<input type="hidden" name="id_module" value="%d"></input>
 			</form>',
+		 $action_url,
 		 $this->_translate->_('Catégorie'),
 		 $options,
 		 $this->id_module);
@@ -289,9 +290,9 @@ class Class_Calendar {
 		$html.="	<tr class=\"calendar_title\">";
 		$html.="		<td class=\"calendar_title_left_arrow\"></td>";
 		$html.="		<td class=\"calendar_title_month\">
-										<a href=\"".$this->getURL("LAST_MONTH")."\" class=\"calendar_title_month_clickable\">&laquo;&nbsp;</a>
+										<a  data-ajax='false' href=\"".$this->getURL("LAST_MONTH")."\" class=\"calendar_title_month_clickable\">&laquo;&nbsp;</a>
 										<a href=\"".$this->getURL("MONTH")."\" class=\"calendar_title_month_clickable\" target='_parent'>".$this->MONTHS[$this->month-1].strftime(" %Y", mktime(5,0,0, $this->month, 1, $this->year))."</a>
-										<a href=\"".$this->getURL("NEXT_MONTH")."\" class=\"calendar_title_month_clickable\">&nbsp;&raquo;</a></td>";
+										<a  data-ajax='false' href=\"".$this->getURL("NEXT_MONTH")."\" class=\"calendar_title_month_clickable\">&nbsp;&raquo;</a></td>";
 
 		$html.="		<td class=\"calendar_title_right_arrow\"></td>";
 		$html.="	</tr>";
@@ -393,7 +394,7 @@ class Class_Calendar {
 
 		$news_html = sprintf(
 			"<div class='calendar_event_list'>".
-				"<p align='center' style='font-size:13px;'>".
+				"<p style='text-align:center'>".
 					"<b>%s</b>".
 			"</p>", $this->_translate->_('Prochains rendez-vous'));
 
@@ -449,7 +450,12 @@ class Class_Calendar {
 				$url = BASE_URL."/cms/articleviewbydate?d=".$this->year.'-'.$mois.'-'.$day;
 				break;
 		}
-		return $url."&amp;id_module=".$this->id_module.'&amp;select_id_categorie='.$this->param["SELECT_ID_CAT"];
+		return $url."&amp;".http_build_query(array(
+																							 'id_module' => $this->id_module,
+																							 'id_profil' => Class_Profil::getCurrentProfil()->getId(),
+																							 'select_id_categorie' => $this->param["SELECT_ID_CAT"]),
+																				 null,
+																				 '&amp;');
 	}
 
 	function getLastMonth($month, $year) {
@@ -479,6 +485,10 @@ class Class_Calendar {
 	// Rend array('0' => jour, '1' => mois, '2' => an) sans 0 pour le calendrier
 	function filtreDateZend($zend) {
 		$date_zend = explode('-',$zend);
+
+		if (count($date_zend) != 3)
+			return array(0,0,0);
+
 		if (substr($date_zend[2],0,1) == 0)
 			$day = substr($date_zend[2],1,1);
 		else

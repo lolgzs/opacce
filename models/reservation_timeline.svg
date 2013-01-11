@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="reservation_timeline.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="232.44496"
+     inkscape:cy="1403.3005"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1454"
+     inkscape:window-height="886"
+     inkscape:window-x="221"
+     inkscape:window-y="119"
+     inkscape:window-maximized="0"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       orientation="0,1"
+       position="149.50258,739.43167"
+       id="guide2991" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="50,791.78572"
+       id="guide2993" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="100,835"
+       id="guide2995" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="410.12193,892.97485"
+       id="guide2997" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="460.35714,936.42858"
+       id="guide2999" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:0.75;fill:#007fff;fill-opacity:1;stroke:#000000;stroke-width:0.96187466;stroke-opacity:1"
+       d="m 54.626014,2.8952257 355.495916,0 c 16.92785,17.2973953 50.24302,55.0000053 50.24302,55.0000053 l -50.24302,54.999999 -355.495916,0 c -2.562812,0 -4.626014,-2.23 -4.626014,-5 L 50,7.8952307 c 0,-2.77 2.063202,-5.000005 4.626014,-5.000005 z"
+       id="rect2985"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="scccssss"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       sodipodi:nodetypes="scccssss"
+       inkscape:connector-curvature="0"
+       id="path3759"
+       d="m 454.0507,115.75112 -404.0507,0 50,55 -50,55 404.0507,0 c 2.92334,0 5.27678,-2.23 5.27678,-5 l 0,-100 c 0,-2.77 -2.35344,-5 -5.27678,-5 z"
+       style="opacity:0.75;fill:#007fff;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       style="opacity:0.75;fill:#007fff;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       d="m 410.12193,228.63979 -360.12193,0 50,55.00001 -50,55 360.12193,0 49.20554,-55 z"
+       id="path3761"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       sodipodi:nodetypes="scccssss"
+       inkscape:connector-curvature="0"
+       id="path3763"
+       d="m 54.626014,341.56108 355.495916,0 c 16.92785,17.2974 50.24302,55.00001 50.24302,55.00001 l -50.24302,55 -355.495916,0 c -2.562812,0 -4.626014,-2.23 -4.626014,-5 l 0,-100 c 0,-2.77 2.063202,-5.00001 4.626014,-5.00001 z"
+       style="opacity:0.75;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.96187466;stroke-opacity:1"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       style="opacity:0.75;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       d="m 454.0507,454.41702 -404.0507,0 50,55.71429 -50,54.28571 404.0507,0 c 2.92334,0 5.27678,-2.23 5.27678,-5 l 0,-100 c 0,-2.77 -2.35344,-5 -5.27678,-5 z"
+       id="path3765"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="scccssss"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path3767"
+       d="m 410.12193,567.30566 -360.12193,0 50,55.00001 -50,55 360.12193,0 49.20554,-55 z"
+       style="opacity:0.75;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       style="opacity:0.75;fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:0.96187466;stroke-opacity:1"
+       d="m 54.626014,680.227 355.495916,0 c 16.92785,17.2974 50.24302,55.00001 50.24302,55.00001 l -50.24302,55 -355.495916,0 c -2.562812,0 -4.626014,-2.23 -4.626014,-5 l 0,-100 c 0,-2.77 2.063202,-5.00001 4.626014,-5.00001 z"
+       id="path3769"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="scccssss"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       sodipodi:nodetypes="scccssss"
+       inkscape:connector-curvature="0"
+       id="path3771"
+       d="m 454.05071,793.08293 -404.05071,0 50,55 -50,55 404.05071,0 c 2.92334,0 5.27678,-2.23 5.27678,-5 l 0,-100 c 0,-2.77 -2.35344,-5 -5.27678,-5 z"
+       style="opacity:0.75;fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+    <path
+       style="opacity:0.75;fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:1.02730536;stroke-opacity:1"
+       d="m 410.12193,905.97156 -360.12193,0 50,55 -50,55.00004 360.12193,0 49.20555,-55.00004 z"
+       id="path3773"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/Users/laurentlaffont/dev/afi/afi-opac3/models/reservation_timeline.png"
+       inkscape:export-xdpi="31.881113"
+       inkscape:export-ydpi="31.881113" />
+  </g>
+</svg>

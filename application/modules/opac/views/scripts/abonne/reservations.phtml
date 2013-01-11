@@ -7,18 +7,19 @@
 		<th style="text-align:left"><?php echo $this->_('n°');?></th>
 		<th style="text-align:left"><?php echo $this->_('Titre');?></th>
 		<th style="text-align:left"><?php echo $this->_('Auteur');?></th>
+		<th style="text-align:left"><?php echo $this->_('Bibliothèque');?></th>
 		<th style="text-align:left"><?php echo $this->_('Etat');?></th>
 		<th style="text-align:center"><?php echo $this->_('Rang');?></th>
 		<th style="text-align:center;width:20px"><?php echo $this->_('Suppr.');?></th>
 	</tr>
 	<?php if ($this->fiche["message"]) { ?>
 	<tr>
-		<td colspan="5"><p class="error"><?php echo $this->fiche["message"];?></p></td>
+		<td colspan="6"><p class="error"><?php echo $this->fiche["message"];?></p></td>
 	</tr>
 	<?php } ?>
 	<?php if ($this->fiche["erreur"]) { ?>
 	<tr>
-		<td colspan="5"><p class="error"><?php echo $this->fiche["erreur"];?></p></td>
+		<td colspan="6"><p class="error"><?php echo $this->fiche["erreur"];?></p></td>
 	</tr>
 	<?php } ?>
 	<?php
@@ -36,6 +37,7 @@
 						?>
 			</td>
 			<td><?php echo $this->escape(strip_tags($resa->getAuteur()));?></td>
+			<td><?php echo $this->escape($resa->getBibliotheque());?></td>
 			<td style="text-align:left"><?php echo $this->escape($resa->getEtat());?></td>
 			<td style="text-align:center"><?php echo $this->escape($resa->getRang());?></td>
 			<td style="text-align:center">
@@ -52,8 +54,6 @@
 </table>
 
 <?php $this->closeBoite();?>
-<div style="margin-top:5px">
-	<a href="<?php echo BASE_URL ?>/abonne/fiche"><?php echo $this->_('Retour') ?></a>
-</div>
+<?php echo $this->abonne_RetourFiche(); ?>
 <br/>
 <br/>

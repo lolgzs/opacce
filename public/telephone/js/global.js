@@ -1,17 +1,21 @@
 //-----------------------------------------------------------
 // Faire disparaitre le toolbar iphone
 //-----------------------------------------------------------
-$(document).ready(function(){
+$(document).bind('pageinit', function(){
 	setTimeout(function(){
 		window.scrollTo(0, 1);
 	}, 100);
+
+	setTimeout(function(){
+		$('div.main>img:first-child').slideUp('slow', 'linear');
+	},
+	500);
 });
 
 //-----------------------------------------------------------
 // Click sur le container (pour le mode simulation telephone)
 //-----------------------------------------------------------
-function clickContainer(event)
-{
+function clickContainer(event) {
 	var position=$('#iphone_container').offset();
 	var x=event.clientX-position.left;
 	var y=event.clientY;
@@ -21,4 +25,14 @@ function clickContainer(event)
 		if(x >221 && x <250) document.location=baseUrl + "/admin";
 		if(x >311 && x <333) document.location=baseUrl + "?id_profil=1";
 	}
+}
+
+
+function showPopWin(url) {
+	window.open(url);
+}
+
+
+function hidePopWin() {
+	window.location = window.parent.location;
 }

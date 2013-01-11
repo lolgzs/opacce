@@ -32,6 +32,8 @@ abstract class Admin_NewsletterControllerTestCase extends Admin_AbstractControll
 }
 
 
+
+
 class Admin_NewsletterControllerIndexActionTest extends Admin_NewsletterControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -82,6 +84,10 @@ class Admin_NewsletterControllerIndexActionTest extends Admin_NewsletterControll
 		$this->assertXPath("//tr[1]//td//a[@href='/admin/newsletter/delete/id/1']");
 	}
 
+	public function testEditSubscribersNouveautesClassiqueLink() {
+		$this->assertXPath("//tr[1]//td//a[@href='/admin/newsletter/edit-subscribers/id/1']");
+	}
+
 	public function testPreviewNouveautesClassiqueLink() {
 		$this->assertXPath("//tr[1]//td//a[@href='/admin/newsletter/preview/id/1']");
 	}
@@ -129,6 +135,7 @@ class Admin_NewsletterControllerIndexActionTest extends Admin_NewsletterControll
 
 
 
+
 class Admin_NewsletterControllerAddActionTest extends Admin_NewsletterControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -160,7 +167,7 @@ class Admin_NewsletterControllerAddActionTest extends Admin_NewsletterController
 	}
 
 	public function testFormContenu() {
-		$this->assertQuery("form textarea#contenu");
+		$this->assertQuery("form textarea[@name='contenu']");
 	}
 
 	public function testTitle() {
@@ -171,6 +178,7 @@ class Admin_NewsletterControllerAddActionTest extends Admin_NewsletterController
 			$this->assertXPath(utf8_encode("//div[contains(@onclick, \"document.forms['newsletter'].submit()\")]"));
 	}
 }
+
 
 
 
@@ -204,6 +212,7 @@ class Admin_NewsletterControllerAddActionWithCataloguesTest extends Admin_Newsle
 		$this->assertXPathContentContains("//select[@id='id_catalogue']/option[@value='5']", 'BD');
 	}
 }
+
 
 
 
@@ -257,8 +266,8 @@ class Admin_NewsletterControllerEditActionTest extends Admin_NewsletterControlle
 		$this->assertXPath("//form//input[@id='expediteur'][@value='laurent@free.fr']");
 	}
 
-	public function testFormContenu() {
-		$this->assertQueryContentContains("form textarea#contenu",
+	public function testFormContenuHTML() {
+		$this->assertQueryContentContains("form textarea[@name='contenu'][following-sibling::script]",
 																			'Notre sélection du mois');
 	}
 
@@ -292,6 +301,8 @@ class Admin_NewsletterControllerEditActionTest extends Admin_NewsletterControlle
 }
 
 
+
+
 class Admin_NewsletterControllerSaveActionTest extends Admin_NewsletterControllerTestCase {
 
 	public function testSubmitAddActionCreateNewInstance() {
@@ -317,6 +328,7 @@ class Admin_NewsletterControllerSaveActionTest extends Admin_NewsletterControlle
 		$this->assertRedirectTo('/admin/newsletter/index');
 	}
 }
+
 
 
 
@@ -354,6 +366,7 @@ class Admin_NewsletterControllerValidationsTest extends Admin_NewsletterControll
 
 
 
+
 class Admin_NewsletterControllerDeleteActionTest extends Admin_NewsletterControllerTestCase {
 	public function testDeleteCalledOnInstance() {
 		$newsletter = $this->getMock('Class_Newsletter');
@@ -375,6 +388,8 @@ class Admin_NewsletterControllerDeleteActionTest extends Admin_NewsletterControl
 		$this->assertRedirectTo('/admin/newsletter/index');
 	}
 }
+
+
 
 
 class Admin_NewsletterControllerSendActionTest extends Admin_NewsletterControllerTestCase {
@@ -420,6 +435,8 @@ class Admin_NewsletterControllerSendActionTest extends Admin_NewsletterControlle
 }
 
 
+
+
 class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -443,7 +460,7 @@ class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterContro
 		$nouveautes
 			->setId(3)
 			->setTitre('Nouveautés')
-			->setContenu('Notre sélection du mois')			
+			->setContenu('Notre sélection du mois<img src="zork.jpg"/> <b>Hoho</b>')			
 			->setIdCatalogue(null)
 			->setNbNotices(0)
 			->setIdPanier(null)
@@ -472,11 +489,11 @@ class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterContro
 	}
 
 	public function testBodyText() {
-		$this->assertQueryContentContains('p', 'Notre sélection du mois');
+		$this->assertQueryContentContains('p', 'Notre sélection du mois Hoho');
 	}
 
 	public function testBodyHtml() {
-		$this->assertQueryContentContains('p', 'Notre sélection du mois');
+		$this->assertXPath('//div//img[@src="zork.jpg"]');
 	}
 
 	public function testTableAbonnes() {
@@ -494,6 +511,7 @@ class Admin_NewsletterControllerPreviewActionTest extends Admin_NewsletterContro
 			$this->assertQueryContentContains('table#abonnes tbody tr td', $content);
 	}
 }
+
 
 
 
@@ -530,6 +548,8 @@ class Admin_NewsletterControllerSendTestActionTest extends Admin_NewsletterContr
 }
 
 
+
+
 class Admin_NewsletterControllerWithoutExpediteurSendTestActionTest extends Admin_NewsletterControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -551,6 +571,8 @@ class Admin_NewsletterControllerWithoutExpediteurSendTestActionTest extends Admi
 		$this->assertXPath('//form//input[@id="destinataire"][@value=""]');
 	}
 }
+
+
 
 
 class Admin_NewsletterControllerPostSendTestActionTest extends Admin_NewsletterControllerTestCase {
@@ -622,6 +644,118 @@ class Admin_NewsletterControllerPostSendTestActionTest extends Admin_NewsletterC
 		$this->_post(array('destinataire' => 'marcel@free.fr'));
 		$this->assertQueryContentContains("ul.errors li", 
 																			"Echec de l'envoi: Connection timed out");	
+	}
+}
+
+
+
+
+abstract class Admin_NewsletterControllerEditSubcsribersTestCase extends Admin_NewsletterControllerTestCase {
+	protected $_nl_nouveautes;
+	protected $_nl_wrapper;
+	protected $_mduchamp;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_mduchamp = Class_Users::newInstanceWithId(3, ['nom' => 'Duchamp', 'prenom' => 'Marcel', 'login' => 'mduchamp']);
+
+		$this->_nl_nouveautes = Class_Newsletter::newInstanceWithId(1, ['titre' => 'Nouveautés'])
+			->setUsers([$this->_mduchamp]);
+
+		$this->_nl_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Newsletter')
+			->whenCalled('save')->answers(true);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_NewsletterSubscription')
+			->whenCalled('save')->answers(true)
+			->whenCalled('delete')->answers(true);
+	}
+}
+
+
+
+
+class Admin_NewsletterControllerEditSubcsribersTest extends Admin_NewsletterControllerEditSubcsribersTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/newsletter/edit-subscribers/id/1', true);	
+	}
+
+
+	/** @test */
+	public function titleShouldBeAbonnesALaLettre() {
+		$this->assertXPathContentContains("//h1", 'Abonnés de la lettre: Nouveautés', $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function tdShouldContainsMarcel() {
+		$this->assertXPathContentContains('//td', 'Marcel');
+	}
+}
+
+
+
+
+class Admin_NewsletterControllerEditSubcsribersAddTest extends Admin_NewsletterControllerEditSubcsribersTestCase {
+	protected $_picasso;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_picasso = Class_Users::newInstanceWithId(45, ['login' => 'ppicasso', 'nom' => 'Picasso', 'prenom' => 'Pablo']);
+
+		$this->postDispatch('/admin/newsletter/edit-subscribers/id/1?search=Van', 
+												['users' => [45]]);	
+	}
+
+	
+	/** @test */
+	public function newsletterShouldContainsUserPicasso() {
+		$this->assertEquals($this->_picasso, $this->_nl_nouveautes->getUsers()[1]);		
+	}
+
+
+	/** @test */
+	public function newsletterShouldHaveBeenSaved() {
+		$this->assertTrue($this->_nl_wrapper->methodHasBeenCalled('save'));
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToEditSubscribers() {
+		$this->assertRedirectTo('/admin/newsletter/edit-subscribers/id/1?search=Van');
+	}
+}
+
+
+
+
+class Admin_NewsletterControllerEditSubcsribersDeleteTest extends Admin_NewsletterControllerEditSubcsribersTestCase {
+	protected $_picasso;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->dispatch('/admin/newsletter/edit-subscribers/id/1/delete/3?search=Klimt', true);	
+	}
+
+
+	/** @test */
+	public function userDuchampShouldNotBeInNewsletterAnymore() {
+		$this->assertNotContains($this->_mduchamp, $this->_nl_nouveautes->getUsers());
+	}
+
+
+	/** @test */
+	public function newsletterShouldHaveBeenSaved() {
+		$this->assertTrue($this->_nl_wrapper->methodHasBeenCalled('save'));
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToEditSubscribers() {
+		$this->assertRedirectTo('/admin/newsletter/edit-subscribers/id/1?search=Klimt');
 	}
 }
 

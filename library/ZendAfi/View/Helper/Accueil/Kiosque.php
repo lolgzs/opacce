@@ -18,104 +18,96 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Class module kiosque
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class ZendAfi_View_Helper_Accueil_Kiosque extends ZendAfi_View_Helper_Accueil_Base {
 	protected function _renderHeadScriptsOn($script_loader) {
 		$script_loader->addJQueryReady('$(".embedcode>div:first-child").click(function(){$(this).next().toggle("fast")})');
 	}
 
 
-	//---------------------------------------------------------------------
-	// rend l'iframe 
-	//---------------------------------------------------------------------
-	public function getHtml()
-	{
+	public function getHtml() {
 		extract($this->preferences);
 		
 		// Proprietes en fonction du type de liste
-		$args=array("id_module" => $this->id_module, 
-								'id_profil' => Class_Profil::getCurrentProfil()->getId());
-		$action="kiosque";
-		switch($style_liste)
-		{
+		$args = array("id_module" => $this->id_module, 
+									'id_profil' => Class_Profil::getCurrentProfil()->getId());
+		$action = "kiosque";
+		switch($style_liste) {
 			case "slide_show":
-				$controler="java";
+				$controler = "java";
 				$args["vue"]="slide_show";
-				$hauteur=$op_hauteur_img+7;
-				if($hauteur == 7) $hauteur=117;
+				$hauteur = $op_hauteur_img + 7;
+				if ($hauteur == 7) 
+					$hauteur = 117;
 				break;
 			case "protoflow":
-				$controler="java";
-				$args["vue"]="protoflow";
-				$hauteur=350;
+				$controler = "java";
+				$args["vue"] = "protoflow";
+				$hauteur = 350;
 				break;
 			case "cube":
-				$controler="java";
-				$args["vue"]="cube";
-				$hauteur=$op_hauteur_img+20;
+				$controler = "java";
+				$args["vue"] = "cube";
+				$hauteur = $op_hauteur_img + 20;
 				break;
 			case "diaporama":
-				$controler="java";
-				$args["vue"]="diaporama";
-				$hauteur=$op_hauteur_boite;
+				$controler = "java";
+				$args["vue"] = "diaporama";
+				$hauteur = $op_hauteur_boite;
 				break;
 			case "jcarousel":
-				$controler="java";
-				$args["vue"]="jcarousel";
-				$hauteur=$op_hauteur_img+10;
+				$controler = "java";
+				$args["vue"] = "jcarousel";
+				$hauteur = $op_hauteur_img + 10;
 				break;
 		case "mycarousel_horizontal":
-				$controler="java";
-				$args["vue"]="mycarousel_horizontal";
-				$hauteur=$op_hauteur_img+5;
+				$controler = "java";
+				$args["vue"] = "mycarousel_horizontal";
+				$hauteur = $op_hauteur_img + 5;
 				break;
 		case "mycarousel_vertical":
-				$controler="java";
-				$args["vue"]="mycarousel_vertical";
-				$hauteur=($op_visible * $op_hauteur_img)+15;
+				$controler = "java";
+				$args["vue"] = "mycarousel_vertical";
+				$hauteur = ($op_visible * $op_hauteur_img) + 15;
 				break;
 			case "coverflow":
-				$controler="flash";
-				$action="coverflow";
-				$hauteur=270;
+				$controler = "flash";
+				$action = "coverflow";
+				$hauteur = 270;
 				break;
 			case "carrousel_horizontal":
-				$controler="flash";
-				$action="carrouselhorizontal";
-				$hauteur=310;
+				$controler = "flash";
+				$action = "carrouselhorizontal";
+				$hauteur = 310;
 				break;
 			case "carrousel_vertical":
-				$controler="flash";
-				$action="carrouselvertical";
-				$hauteur=500;
+				$controler = "flash";
+				$action = "carrouselvertical";
+				$hauteur = 500;
 				break;
 			case "dockmenu_horizontal":
-				$controler="flash";
-				$action="dockmenuh";
-				$hauteur=170;
+				$controler = "flash";
+				$action = "dockmenuh";
+				$hauteur = 170;
 				break;
 			case "dockmenu_vertical":
-				$controler="flash";
-				$action="dockmenuv";
-				$hauteur=300;
+				$controler = "flash";
+				$action = "dockmenuv";
+				$hauteur = 300;
 				break;
 			case "pyramid_gallery":
-				$controler="flash";
-				$action="pyramidhorizontal";
-				$hauteur=290;
+				$controler = "flash";
+				$action = "pyramidhorizontal";
+				$hauteur = 290;
 				break;
 		}
 
 		// Iframe
-		$_SESSION["recherche"]["retour_liste"]=$_SERVER["REQUEST_URI"];
-		$iframe=new ZendAfi_View_Helper_IframeContainer();
+		$iframe = new ZendAfi_View_Helper_IframeContainer();
 		$iframe->iframeContainer("100%",
 														 $hauteur,
-														 array('controller' => $controler,
-																	 'action' => $action),
-														 $args);
+														 array_merge(['controller' => $controler,
+																					'action' => $action],
+																				 $args));
 		if ($this->shouldCacheContent())
 			$iframe->setCacheKey($this->getCacheKey());
 
@@ -128,7 +120,7 @@ class ZendAfi_View_Helper_Accueil_Kiosque extends ZendAfi_View_Helper_Accueil_Ba
 
 		$this->contenu .= $iframe->getHtml();
 
-		$this->titre=$titre;
+		$this->titre = $titre;
 
 		if ($this->preferences['rss_avis'])
 			$this->rss_interne = $this->_getRSSurl('rss', 'kiosque');

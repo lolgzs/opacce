@@ -44,49 +44,44 @@ abstract class AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase ex
 	public function setUp() {
 		parent::setUp();
 		
-		$album = Class_Album::getLoader()
-			->newInstanceWithId(999)
-			->setTitre('Premier volume')
-			->setDescription("On ne peut que reconnaitre le talent de l'artiste !")
-			->setCategorie(Class_AlbumCategorie::getLoader()
-										 ->newInstanceWithId(2)
-										 ->setLibelle('Les enluminures')
-										 ->setParentCategorie(Class_AlbumCategorie::getLoader()
-																					->newInstanceWithId(3)
-																					->setLibelle('La bible de souvigny')))
-			->setThumbnailWidth(200)
-			->setThumbnailLeftPageCropRight(10)
-			->setThumbnailRightPageCropTop(5)
-			->setIdOrigine('DC23')
-			->setPdf('volume1.pdf');
+		$album = Class_Album::newInstanceWithId(999,
+																						['titre' => 'Premier volume',
+																						 'description' => "On ne peut que reconnaitre le talent de l'artiste !",
+																						 'thumbnail_width' => 200,
+																						 'thumbnail_left_page_crop_right' => 10,
+																						 'thumbnail_right_page_crop_top' => 5,
+																						 'id_origine' => 'DC23',
+																						 'pdf' => 'volume1.pdf'])
+			->beDiaporama()
+			->setCategorie(Class_AlbumCategorie::newInstanceWithId(2, ['libelle' => 'Les enluminures'])
+										 ->setParentCategorie(Class_AlbumCategorie::newInstanceWithId(3, ['libelle' => 'La bible de souvigny'])));
 
 		$im = new Imagick();
 		$im->newPseudoImage(50, 10, "gradient:red-black");
 		$im->setImageFormat('jpg');
-		$firstRessource = Class_AlbumRessource::getLoader()
-																->newInstanceWithId(1)
-																->setFichier('1.jpg')
-			                          ->setImage($im)
-																->setFolio('1R3')
-			                          ->setAlbum($album);
 
+		$album->setRessources([Class_AlbumRessource::newInstanceWithId(1,
+																																	 ['fichier' => '1.jpg',
+																																		'image' => $im,
+																																		'folio' => '1R3',
+																																		'album' => $album]),
 
-		$album->setRessources(array($firstRessource,
-																Class_AlbumRessource::getLoader()
-																->newInstanceWithId(2)
-																->setFichier('2.pdf')
-																->setAlbum($album)
-																->setTitre('Procedure de numerisation')
-																->setLinkTo('http://wikipedia.org/numerisation')
-																->setDescription('Comment numériser avec joie')));
+													 Class_AlbumRessource::newInstanceWithId(2,
+																																	 ['fichier' => '2.jpg',
+																																		'album' => $album,
+																																		'titre' => 'Procedure de numerisation',
+																																		'link_to' => 'http://wikipedia.org/numerisation',
+																																		'description' => 'Comment numériser avec joie'])]);
 	}
 }
+
+
 
 
 class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/bib-numerique/album/id/999.json');
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
 		$this->json = json_decode($this->_response->getBody());
 	}
 
@@ -159,6 +154,12 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 													$this->json->album->ressources[0]->navigator_thumbnail);
 	}
 
+	/** @test */
+	function firstRessourceNavigatorDownloadShouldBeUrlToDownloadRessource() {
+		$this->assertContains('/bib-numerique/download-resource/id/1',
+													$this->json->album->ressources[0]->download);
+	}
+
 
 	/** @test */
 	function firstRessourceOriginalShouldBeOneDotJpg() {
@@ -191,14 +192,61 @@ class BibNumeriqueControllerAlbumPremierVolumeTestToJSON extends AbstractBibNume
 		$this->assertContains('/bib-numerique/thumbnail/width/200/crop_top/0/crop_right/10/crop_bottom/0/crop_left/0/id/2',
 													$this->json->album->ressources[1]->thumbnail);
 	}
+}
+
+
+
+
+
+class BibNumeriqueControllerAlbumPremierVolumeDisplayMonopageTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Album::find(999)
+			->setThumbnailCropTop(12)
+			->setThumbnailCropLeft(5)
+			->beMonopage();
+
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
+		$this->json = json_decode($this->_response->getBody());
+	}
 
 
 	/** @test */
-	function secondRessourceNavigatorThumbnailShouldPassResizeParamsOfLeftPageCropRightTenWidth50() {
-		$this->assertContains(BASE_URL . '/public/opac/images/earth-logo.jpg',
-													$this->json->album->ressources[1]->navigator_thumbnail);
+	public function playerShouldBeBookMonoWidget() {
+		$this->assertEquals('BookMonoWidget', $this->json->album->player);
+	}
+
+
+	/** @test */
+	function firstRessourceThumbnailShouldPassResizeParams() {
+		$this->assertContains('/bib-numerique/thumbnail/width/200/crop_top/12/crop_right/0/crop_bottom/0/crop_left/5/id/1',
+													$this->json->album->ressources[0]->thumbnail);
+	}
+
+}
+
+
+
+
+class BibNumeriqueControllerAlbumPremierVolumeWithPDFTestToJSON extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AlbumRessource::find(2)->setFichier('2.pdf');
+
+		$this->dispatch('/opac/bib-numerique/album/id/999.json', true);
+		$this->json = json_decode($this->_response->getBody());
+	}
+
+
+	/** @test */
+	function secondRessourceNavigatorThumbnailShouldBeEarthLogoDotJpg() {
+				$this->assertContains(BASE_URL . '/public/opac/images/earth-logo.jpg',
+															$this->json->album->ressources[1]->navigator_thumbnail);
 	}
 }
+
 
 
 
@@ -291,12 +339,12 @@ class BibNumeriqueControllerAlbumPremierVolumeWithoutPDFTestToJSON extends Abstr
 
 
 
-class BibNumeriqueControllerDownloadRessoucesTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
+class BibNumeriqueControllerDownloadRessourcesTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	/** @test */
 	public function thumbnailIdOneShouldRenderThumbnail() {
 		$this->dispatch('/opac/bib-numerique/thumbnail/id/1');
-		$this->assertEquals(Class_AlbumRessource::getLoader()->find(1)->getImage()->getImageBlob(),
-												$this->_response->getBody());
+		$this->assertContains(substr(Class_AlbumRessource::getLoader()->find(1)->getImage()->getImageBlob(), 0, 100),
+													$this->_response->getBody());
 	}
 }
 
@@ -340,6 +388,7 @@ class BibNumeriqueControllerBookletTest extends AbstractBibNumeriqueControllerAl
 
 
 
+
 class BibNumeriqueControllerViewAlbumActionPremierVolumeTest extends AbstractBibNumeriqueControllerAlbumActionPremierVolumeTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -376,6 +425,7 @@ class BibNumeriqueControllerViewAlbumActionPremierVolumeTest extends AbstractBib
 		$this->assertXPath('//script[contains(@src, "prettyPhoto.js")]');
 	}
 }
+
 
 
 
@@ -463,6 +513,7 @@ abstract class BibNumeriqueControllerBibleDeSouvignyTestCase extends AbstractCon
 
 
 
+
 class BibNumeriqueControllerViewCategorieActionLaBibleDeSouvignyTest extends BibNumeriqueControllerBibleDeSouvignyTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -490,3 +541,278 @@ class BibNumeriqueControllerViewCategorieActionLaBibleDeSouvignyTest extends Bib
 
 
 
+
+
+abstract class BibNumeriqueControllerAlbumMultiMediasTestCase extends AbstractControllerTestCase {
+	protected $_xpath;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_xpath = new Storm_Test_XPathXML();
+
+		$album = Class_Album::newInstanceWithId(999)
+			->beDiaporama()
+			->setTitre('Plein de medias')
+			->setDateMaj('2012-02-17 10:00:00')
+			->setDescription('<p>pour passer la soirée</p>')
+			->setRessources([Class_AlbumRessource::newInstanceWithId(2)
+											 ->setFichier('mimi_jolie.mp3')
+											 ->setTitre('Emilie jolie')
+											 ->setOrdre(1)
+											 ->setPoster('mimi_jolie.png'),
+											 
+											 Class_AlbumRessource::newInstanceWithId(4)
+											 ->setFichier('dark_night.mp4')
+											 ->setTitre('Batman Dark Knight')
+											 ->setPoster('batman.jpg')
+											 ->setOrdre(2)
+											 ->setDescription('Une nouvelle aventure du justicier noir'),
+
+											 Class_AlbumRessource::newInstanceWithId(5)
+											 ->setUrl('http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4')
+											 ->setTitre('Hunger Games')
+											 ->setOrdre(3)
+											 ->setPoster('hunger.jpg'),
+
+											 Class_AlbumRessource::newInstanceWithId(6)
+											 ->setFichier('Monsieur l\'escargot.mp3')
+											 ->setTitre('Monsieur l\'escargot')
+											 ->setOrdre(4)
+											 ->setPoster('l\'escargot.jpg')]);
+	}
+}
+
+
+
+
+class BibNumeriqueControllerAlbumMultiMediasXSPFTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_xpath->registerNameSpace('xspf', 'http://xspf.org/ns/0/');
+		$this->dispatch('/opac/bib-numerique/album-xspf-playlist/id/999.xspf', true);
+	}
+
+	
+	/** @test */
+	public function headerShouldContainsContentTypeXspf() {
+		$this->assertHeaderContains('Content-Type', 'application/xspf+xml');
+	}
+
+
+	/** @test */
+	public function headerShouldContainsContentDispositionAttachment() {
+		$this->assertHeaderContains('Content-Disposition', 'attachment');
+	}
+	
+
+	/** @test */
+	public function xmlVersionShouldOneDotZero() {
+		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");
+	}
+
+
+	/** @test */
+	public function xmlEncodingShouldBeUtf8() {
+		$this->_xpath->assertXmlEncoding($this->_response->getBody(), "UTF-8");
+	}
+
+
+	/** @test */
+	public function firstTrackTitleShouldBeMimiJolie() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
+																							'Emilie jolie');
+	}
+
+
+	/** @test */
+	public function firstTrackImageShouldBeMimiJolieDotPng() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:image', 
+																							'http://localhost' . BASE_URL . '/userfiles/album/999/thumbs/media/mimi_jolie.png');
+	}
+
+
+	/** @test */
+	public function firstTrackLocationShouldBeMimiJolieDotMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
+																							'http://localhost' . BASE_URL . '/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+
+	/** @test */
+	public function secondTrackTitleShouldBeBatmanDarkKnight() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:title', 
+																							'Batman Dark Knight');
+	}
+
+
+	/** @test */
+	public function thirdTrackLocationShouldBeTotaleClipsDotCom() {
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+			 '//xspf:playlist/xspf:trackList/xspf:track/xspf:location[text()="http://progressive.totaleclips.com.edgesuite.net/107/e107950_227.mp4"]');
+	}
+
+
+	/** @test */
+	public function fourthTrackLocationShouldBeUrlEncoded() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//xspf:playlist/xspf:trackList/xspf:track/xspf:location', 
+																							'Monsieur%20l%27escargot.mp3');
+	}
+}
+
+
+
+
+class BibNumeriqueControllerAlbumMultiMediasRSSTest extends BibNumeriqueControllerAlbumMultiMediasTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->_xpath->registerNameSpace('itunes', 'http://www.itunes.com/dtds/podcast-1.0.dtd');
+
+		$this->dispatch('/opac/bib-numerique/album-rss-feed/id/999.xml', true);
+	}
+
+
+	/** @test */
+	public function xmlVersionShouldOneDotZero() {
+		$this->_xpath->assertXmlVersion($this->_response->getBody(), "1.0");
+	}
+
+
+	/** @test */
+	public function xmlEncodingShouldBeUtf8() {
+		$this->_xpath->assertXmlEncoding($this->_response->getBody(), "utf-8");
+	}
+
+
+	/** @test */
+	public function headerShouldContainsContentTypeRss() {
+		$this->assertHeaderContains('Content-Type', 'application/rss+xml');
+	}
+
+
+	/** @test */
+	public function titleShouldBePleinDeMedias() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(), 
+																							'//channel/title',
+																							'Plein de medias');
+	}
+
+
+	/** @test */
+	public function itunesImageShouldBeNoticeThumbnail() {
+		$this->_xpath->assertXPath($this->_response->getBody(), 
+															 '//channel/itunes:image[@href="http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/id/999"]');
+	}
+
+
+	/** @test */
+	public function descriptionShouldBePourPasserLaSoiree() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/description',
+																							'<p>pour passer la soirée</p>');
+	}
+
+
+	/** @test */
+	public function itunesSummaryShouldBePourPasserLaSoiree() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/itunes:summary',
+																							'<p>pour passer la soirée</p>');
+	}
+
+
+	/** @test */
+	public function linkShouldBeBibNumeriqueNoticeId999() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/link',
+																							'http://localhost'.BASE_URL.'/bib-numerique/notice/id/999');
+	}
+
+
+	
+	/** @test */
+	public function pubDateShouldBeFri17Feb2012() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/pubDate',
+																							'Fri, 17 Feb 2012');
+	}
+
+
+	/** @test */
+	public function firstItemTitleShouldBeEmilieJolie() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/title',
+																							'Emilie jolie');
+	}
+
+
+	/** @test */
+	public function firstItemLinkShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/link',
+																							'http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+
+	/** @test */
+	public function firstItemEnclosureShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//channel/item[1]/enclosure[@url="http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3"][@type="audio/mpeg"]');
+	}
+
+
+	/** @test */
+	public function firstItemITunesOrderShouldBeOne() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/itunes:order',
+																							'1');
+	}
+
+
+	/** @test */
+	public function firstItemGUIDShouldBeMediaMimiJolieMp3() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[1]/guid',
+																							'http://localhost'.BASE_URL.'/userfiles/album/999/big/media/mimi_jolie.mp3');
+	}
+
+
+	/** @test */
+	public function firstItemItunesImageShouldBeMimiJolie() {
+		$this->_xpath->assertXPath($this->_response->getBody(),
+															 '//channel/item[1]/itunes:image[@href="http://localhost'.BASE_URL.'/userfiles/album/999/thumbs/media/mimi_jolie.png"]');
+	}
+
+
+	/** @test */
+	public function secondItemTitleShouldBeDarkKnight() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/title',
+																							'Batman Dark Knight');
+	}
+
+
+	/** @test */
+	public function secondItemDescriptionShouldBeAventureJusticierNoir() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/description',
+																							'Une nouvelle aventure du justicier noir');
+	}
+
+	/** @test */
+	public function firstItemITunesOrderShouldBeTwo() {
+		$this->_xpath->assertXPathContentContains($this->_response->getBody(),
+																							'//channel/item[2]/itunes:order',
+																							'2');
+	}
+
+}
+
+
+?>

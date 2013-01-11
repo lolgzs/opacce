@@ -20,15 +20,17 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTestCase {
-	protected $_souvigny;
+abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTestCase { 
+	protected $_category_wrapper;
+	protected $_album_wrapper;
 
 	public function setUp() {
 		parent::setUp();
 
-		Class_CosmoVar::getLoader()
-			->newInstanceWithId('types_docs')
-			->setListe("1:cd\r\n200:non identifié\r\n201:livres\r\n202:bd");
+		Class_CosmoVar::newInstanceWithId('types_docs', 
+																			['liste' =>  "1:cd\r\n200:non identifié\r\n201:livres\r\n202:bd"]);
+		Class_CosmoVar::newInstanceWithId('nature_docs', 
+																			['liste' =>  "1:Collection\r\n2:Manuscrits\r\n3:Image"]);
 
 		$langue_loader = Class_CodifLangue::getLoader();
 		$cus = $langue_loader->newInstanceWithId('cus')->setLibelle('couchitique');
@@ -39,75 +41,103 @@ abstract class Admin_AlbumControllerTestCase extends Admin_AbstractControllerTes
 			->whenCalled('findAllBy')
 			->answers(array($cus, $fre, $dak));
 
-		$this->loader_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie')
-			->whenCalled('findAllBy')
-			->answers(array(
-											 $cat_favoris = Class_AlbumCategorie::getLoader()
-													->newInstanceWithId(2)
-													->setParentId(0)
-													->setLibelle('Favoris')
-													->setSousCategories(array())
-													->setAlbums(array())
-													->addAlbum(Class_Album::getLoader()
-																		 ->newInstanceWithId(43)
-																		 ->setTitre('Mes BD')
-																		 ->setAuteur('Laurent')
-																		 ->setTags('bd;dessin')
-																		 ->setDateMaj('2011-10-05 17:12:00')
-																		 ->setDescription('Les préférées')
-																		 ->setAnnee(1978)
-																		 ->setTypeDocId(202)
-																		 ->setIdOrigine('DC023')
-																		 ->setMatiere('1;3;5')
-																		 ->setDewey('10;12')
-																		 ->setGenre('65;66;67')
-																		 ->setPdf('souvigny.pdf')
-																		 ->setProvenance('Prieuré, Souvigny')
-																		 ->setCote('MS001'))
-													->addAlbum($this->_souvigny = Class_Album::getLoader()
-													  				 ->newInstanceWithId(44)
-																		 ->setTitre('Bible Souvigny')
-																		 ->beLivreNumerique()
-																		 ->setThumbnailAttributes(array('thumbnail_width' => 350,
-																																		'thumbnail_left_page_crop_left' => 10,
-																																		'thumbnail_left_page_crop_right' => 5,
-																																		'thumbnail_left_page_crop_bottom' => 2,
-																																		'thumbnail_right_page_crop_left' => 5))
-																		 ->setRessources(array()))
-													->addSousCategorie($cat_adulte = Class_AlbumCategorie::getLoader()
-																						 ->newInstanceWithId(6)
-																						 ->setLibelle('Adulte')
-																						 ->setParentId(2)
-																						 ->setSousCategories(array())
-																						 ->setAlbums(array())
-																						 ->addAlbum(Class_Album::getLoader()
-																												->newInstanceWithId(24)
-																												->setTitre('Mes Romans')
-																												->setLangue(''))),
-													$cat_patrimoine = Class_AlbumCategorie::getLoader()
-															->newInstanceWithId(38)
-															->setParentId(0)
-															->setSousCategories(array())
-															->setAlbums(array())
-															->setLibelle('Patrimoine')))
+		$this->_category_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumCategorie');
+		$this->_album_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Album');
 
-			->whenCalled('findAll')->answers(array($cat_adulte, $cat_patrimoine, $cat_favoris))
-			->getWrapper();
+		Class_AlbumCategorie::newInstanceWithId(2)
+			->setParentId(0)
+			->setLibelle('Favoris')
+			->setSousCategories(array())
+			->setAlbums(array());
 
+		Class_AlbumCategorie::newInstanceWithId(6)
+			->setLibelle('Adulte')
+			->setParentId(2)
+			->setSousCategories(array())
+			->setAlbums(array());
+				
+		Class_AlbumCategorie::newInstanceWithId(38)
+			->setParentId(0)
+			->setSousCategories(array())
+			->setAlbums(array())
+			->setLibelle('Patrimoine');
 
-		$this->album_loader_wrapper = Storm_Test_ObjectWrapper
-			::onLoaderOfModel('Class_Album')
-			->whenCalled('save')
-			->answers(true)
-			->getWrapper();
+		Class_Album::newInstanceWithId(43)
+			->setTitre('Mes BD')
+			->setAuteur('Laurent')
+			->setTags('bd;dessin')
+			->setDateMaj('2011-10-05 17:12:00')
+			->setDescription('Les préférées')
+			->setAnnee(1978)
+			->beDiaporama()
+			->setIdOrigine('DC023')
+			->setMatiere('1;3;5')
+			->setDewey('10;12')
+			->setGenre('65;66;67')
+			->setPdf('souvigny.pdf')
+			->setProvenance('Prieuré, Souvigny')
+			->setCote('MS001')
+			->setVisible(false)
+			->setNatureDoc('1;3');
+
+		Class_Album::newInstanceWithId(44)
+			->setTitre('Bible Souvigny')
+			->beLivreNumerique()
+			->setThumbnailAttributes(['thumbnail_width' => 350,
+																'thumbnail_left_page_crop_left' => 10,
+																'thumbnail_left_page_crop_right' => 5,
+																'thumbnail_left_page_crop_bottom' => 2,
+																'thumbnail_right_page_crop_left' => 5])
+			->setRessources([]);
+
+	  Class_Album::newInstanceWithId(24)
+			->setTitre('Mes Romans')
+			->setLangue('');
 	}
 }
+
+
 
 
 class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/admin/album');
+
+		$this->_category_wrapper
+			->whenCalled('findAllBy')
+			->with(['parent_id' => 0, 'order' => 'libelle'])
+			->answers([Class_AlbumCategorie::newInstanceWithId(2)
+								 ->setParentId(0)
+								 ->setLibelle('Favoris')
+								 ->setSousCategories([Class_AlbumCategorie::find(6)
+																			->setAlbums([Class_Album::find(24)])])
+								 ->setAlbums([Class_Album::find(43)]),
+								 Class_AlbumCategorie::newInstanceWithId(38)
+								 ->setParentId(0)
+								 ->setSousCategories([])
+								 ->setAlbums([])
+								 ->setLibelle('Patrimoine')]);
+
+		$this->_album_wrapper
+				->whenCalled('getItemsOf')
+				->with(0)
+				->answers(array(Class_Album::getLoader()
+						->newInstanceWithId(66)
+						->setParentId(0)
+						->setTitre("L'orphelin")))
+
+				->whenCalled('getItemsOf')
+				->with(2)
+				->answers(array(Class_Album::getLoader()->find(43)))
+
+				->whenCalled('getItemsOf')
+				->with(6)
+				->answers(array(Class_Album::getLoader()->find(24)))
+
+				->whenCalled('countBy')
+				->answers(1);
+				
+		$this->dispatch('/admin/album', true);
 	}
 
 
@@ -124,8 +154,8 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 	/** @test */
-	public function titreShouldBeBibliothequeNumerique() {
-		$this->assertXPathContentContains("//h1", 'Bibliothèque numérique');
+	public function titreShouldBeCollections() {
+		$this->assertXPathContentContains("//h1", 'Collections');
 	}
 
 
@@ -143,7 +173,13 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 	/** @test */
 	public function albumMesBDShouldBeInCategorieFavoris() {
-		$this->assertXPathContentContains("//ul/li/ul/li[@class='album']", 'Mes BD');
+		$this->assertXPathContentContains("//div[@class='item-label']", 'Mes BD');
+	}
+
+
+	/** @test */
+	public function albumMesBDShouldHaveIconForDiaporama() {
+		$this->assertXPath("//div//img[contains(@src, 'images.png')]");
 	}
 
 
@@ -155,61 +191,67 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 	/** @test */
 	public function albumMesRomansShouldBeInCategorieAdulte() {
-		$this->assertXPathContentContains("//ul/li/ul/li/ul/li[@class='album']", 'Mes Romans');
+		$this->assertXPathContentContains("//div[@class='item-label']", 'Mes Romans');
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveAnAjouteCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/add_categorie_to/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'add_categorie_to/id/6')]");
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveAnAjouteAlbumLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/add_album_to/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'add_album_to/id/6')]");
 	}
 
 
 	/** @test */
 	public function categorieAdulteShouldHaveEditCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, 'album/edit_categorie/id/6')]");
+		$this->assertXPath("//a[contains(@href, 'edit_categorie/id/6')]");
 	}
 
 
 	/** @test */
-	public function categorieAdulteShouldHaveDeleteCategorieLinkDisabled() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a[contains(@href, '#')]");
-	}
-
-
-	/** @test */
-	public function categorieAdulteShouldHaveAlertMessegeOnDeleteCategorieLink() {
-		$this->assertXPath("//ul/li/ul/li[@class='categorie']/div/a/img[contains(@onclick, 'alert')]");
+	public function categorieAdulteShouldNotHaveDeleteCategorieLink() {
+		$this->assertNotXPath("//a[contains(@href, 'delete_categorie/id/6')]");
 	}
 
 
 	/** @test */
 	public function categoriePatrimoineShouldHaveDeleteCategorieLink() {
-		$this->assertXPath("//ul/li[@class='categorie']/div/a[contains(@href, 'album/delete_categorie/id/38')]");
+		$this->assertXPath("//a[contains(@href, 'delete_categorie/id/38')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHaveEditLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/edit_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'edit_album/id/24')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHavePreviewLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/preview_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/24')]");
+	}
+
+
+	/** @test */
+	public function albumMesRomansPreviewLinkImgShouldBeShowDotGif() {
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/24')]//img[contains(@src, '/show.gif')]");
+	}
+
+
+	/** @test */
+	public function albumMesBDPreviewLinkImgShouldBeHideDotGif() {
+		$this->assertXPath("//a[contains(@href, 'preview_album/id/43')]//img[contains(@src, '/hide.gif')]");
 	}
 
 
 	/** @test */
 	public function albumMesRomansShouldHaveDeleteLink() {
-		$this->assertXPath("//ul/li/ul/li/ul/li[@class='album']/div/a[contains(@href, 'album/delete_album/id/24')]");
+		$this->assertXPath("//a[contains(@href, 'delete_album/id/24')]");
 	}
 
 
@@ -220,23 +262,60 @@ class Admin_AlbumControllerIndexTest extends Admin_AlbumControllerTestCase {
 
 
 	/** @test */
-	public function pageShouldContainsFormImportEAD() {
-		$this->assertXPath('//form[contains(@action, "admin/album/import_ead")]');
+	public function categorieAlbumsNonClassesShouldBeVisible() {
+		$this->assertXPathContentContains('//li', 'Albums non classés');
 	}
 
 
 	/** @test */
-	public function formImportEADShouldContainsFileInputForXML() {
-		$this->assertXPath('//input[@type="file"][@name="ead"]');
+	public function categorieAlbumsNonClassesShouldHaveNoActions() {
+		$this->assertNotXPath('//ul[@class="root"]/li[last()]/div[@class="actions"]');
 	}
 
 
 	/** @test */
-	public function formShouldHaveSubmitButtonImportEAD() {
-		$this->assertXPath('//input[@type="submit"][@value="Importer le fichier EAD"]');
+	public function categorieAlbumsNonClassesShouldHaveAlbumOrphelin() {
+		$this->assertXPathContentContains('//ul[@class="root"]/li[last()]//li', "L'orphelin");
+	}
+
+
+	/** @test */
+	public function categorieAlbumsNonClassesShouldNotHaveCategories() {
+		$this->assertNotXPath('//ul[@class="root"]/li[last()]//li[@class="categorie"]');
 	}
 
 }
+
+
+
+
+class Admin_AlbumControllerWithoutBibNumTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Class_AdminVar::newInstanceWithId('BIBNUM')->setValeur('0');
+		$this->dispatch('/admin/album', true);
+	}
+
+
+	/** @test */
+	public function buttonAddAlbumShouldNotBeVisible() {
+
+		$this->assertNotXPath("//div[contains(@onclick, '/admin/album/add_categorie')]");
+	}
+
+
+	/** @test */
+	public function noAjouteAlbumLinkShouldBeVisible() {
+		$this->assertNotXPath("//a[contains(@href, 'add_album_to')]");
+	}
+
+
+	/** @test */
+	public function noAddCategorieToLinkShouldBeVisible() {
+		$this->assertNotXPath("//a[contains(@href, 'add_categorie_to')]");
+	}
+}
+
 
 
 
@@ -284,8 +363,8 @@ class Admin_AlbumControllerAddCategorieToFavorisTest extends Admin_AlbumControll
 
 
 	/** @test */
-	public function shouldHaveCancelButton() {
-		$this->assertXPathContentContains("//table//td", "Annuler");
+	public function shouldHaveBackButton() {
+		$this->assertXPathContentContains("//table//td", "Retour");
 	}
 }
 
@@ -303,12 +382,12 @@ class Admin_AlbumControllerPostAddCategorieToFavorisTest extends Admin_AlbumCont
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
 		$this->dispatch('/admin/album/add_categorie_to/id/2');
-		$this->new_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->new_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -344,7 +423,7 @@ class Admin_AlbumControllerInvalidPostAddCategorieToFavorisTest extends Admin_Al
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
@@ -354,7 +433,7 @@ class Admin_AlbumControllerInvalidPostAddCategorieToFavorisTest extends Admin_Al
 
 	/** @test */
 	public function saveShouldNotHaveBeenCalled() {
-		$this->assertFalse($this->loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertFalse($this->_category_wrapper->methodHasBeenCalled('save'));
 	}
 
 
@@ -404,12 +483,12 @@ class Admin_AlbumControllerPostAddCategorieAtRootTest extends Admin_AlbumControl
 			->setPost($data);
 
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('save')
 			->answers(true);
 
 		$this->dispatch('/admin/album/add_categorie');
-		$this->new_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->new_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -468,7 +547,7 @@ class Admin_AlbumControllerDeleteCategorieFavorisTest extends Admin_AlbumControl
 	public function setUp() {
 		parent::setUp();
 
-		$this->loader_wrapper
+		$this->_category_wrapper
 			->whenCalled('delete')
 			->answers(true);
 
@@ -478,7 +557,7 @@ class Admin_AlbumControllerDeleteCategorieFavorisTest extends Admin_AlbumControl
 
 	/** @test */
 	public function deleteShouldHaveBeenCalledOnFavoris() {
-		$this->deleted_cat = $this->loader_wrapper->getFirstAttributeForLastCallOn('delete');
+		$this->deleted_cat = $this->_category_wrapper->getFirstAttributeForLastCallOn('delete');
 		$this->assertEquals('Favoris', $this->deleted_cat->getLibelle());
 	}
 
@@ -542,14 +621,33 @@ class Admin_AlbumControllerAddAlbumToPatrimoineTest extends Admin_AlbumControlle
 
 	/** @test */
 	public function fieldForFichierShouldStateLimitedFilesExtensions() {
-		$this->assertXPathContentContains('//form[@id="album"]//td', '(jpg, gif, png)');
+		$this->assertXPathContentContains('//form[@id="album"]//td', 
+																			'(jpg, gif, png)', 
+																			$this->_response->getBody());
 	}
-
 
 
 	/** @test */
   public function formShouldHaveATextAreaForDescription() {
 		$this->assertXPath("//form[@id='album']//textarea[@name='description']");
+	}
+
+
+	/** @test */
+	public function fieldForAuthorShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='auteur']");
+	}
+
+
+	/** @test */
+	public function fieldForRightsShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='radio'][@name='droits']");
+	}
+
+
+	/** @test */
+	public function fieldForRightsPrecisionShouldBePresent() {
+		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='droits_precision']");
 	}
 
 
@@ -560,8 +658,8 @@ class Admin_AlbumControllerAddAlbumToPatrimoineTest extends Admin_AlbumControlle
 
 
 	/** @test */
-	public function shouldHaveCancelButton() {
-		$this->assertXPathContentContains("//table//td", "Annuler");
+	public function shouldHaveBackButton() {
+		$this->assertXPathContentContains("//table//td", "Retour");
 	}
 
 
@@ -578,9 +676,10 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 	public function setUp() {
 		parent::setUp();
 
-		$data = array('titre' => 'Renaissance',
-									'sous_titre' => 'Ze Renaissance',
-									'description' => 'Oeuvres majeures sous François 1er');
+		$data = ['titre' => 'Renaissance',
+						 'sous_titre' => 'Ze Renaissance',
+			       'description' => 'Oeuvres majeures sous François 1er',
+						 'nature_doc_ids' => [2,3]];
 
 		$this
 			->getRequest()
@@ -596,15 +695,15 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 													 'tmp_name' => '', 
 													 'error' => 4);
 
-		$this->album_loader_wrapper
+		$this->_album_wrapper
 			->whenCalled('save')
 			->willDo(function($model) {
 					$model->setId(67);
 					return true;
 				});
 
-		$this->dispatch('/admin/album/add_album_to/id/38');
-		$this->new_album = $this->album_loader_wrapper->getFirstAttributeForLastCallOn('save');
+		$this->dispatch('/admin/album/add_album_to/id/38', true);
+		$this->new_album = $this->_album_wrapper->getFirstAttributeForLastCallOn('save');
 	}
 
 
@@ -637,9 +736,16 @@ class Admin_AlbumControllerPostAlbumRenaissanceToPatrimoineTest extends Admin_Al
 		$this->assertRedirectTo('/admin/album/edit_album/id/67');
 	}
 
+
 	/** @test */
 	public function categoryShouldBePatrimoine() {
 		$this->assertEquals('Patrimoine', $this->new_album->getCategorie()->getLibelle());
+	}
+
+
+	/** @test */
+	public function natureDocShouldBe2SemiColon3() {
+		$this->assertEquals('2;3', $this->new_album->getNatureDoc());
 	}
 }
 
@@ -662,7 +768,7 @@ class Admin_AlbumControllerPostAlbumWithoutTitreToPatrimoineTest extends Admin_A
 
 	/** @test */
 	public function saveShouldNotHaveBeenCalled() {
-		$this->assertFalse($this->album_loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertFalse($this->_album_wrapper->methodHasBeenCalled('save'));
 	}
 
 
@@ -690,6 +796,10 @@ class Admin_AlbumControllerPostAlbumWithoutTitreToPatrimoineTest extends Admin_A
 class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+		$this->_category_wrapper
+				->whenCalled('getAllLibelles')
+				->answers(array('2' => 'Favoris',
+				'6' => 'Favoris>Adulte'));
 		$this->dispatch('/admin/album/edit_album/id/43');
 	}
 
@@ -702,14 +812,14 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 
 	/** @test */
 	public function permalienShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice/ido/DC023"]',
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice/ido/DC023"]',
 											 $this->_response->getBody());
 	}
 
 
 	/** @test */
 	public function permalienVignetteShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice-thumbnail/ido/DC023"]');
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice-thumbnail/ido/DC023"]');
 	}
 
 
@@ -734,6 +844,12 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 	/** @test */
   public function formShouldHaveATextFieldForTitre() {
 		$this->assertXPath("//form[@id='album']//input[@type='text'][@name='titre'][@value='Mes BD']");
+	}
+
+
+	/** @test */
+	public function formShouldHaveACheckBoxForVisible() {
+		$this->assertXPath('//form//input[@type="checkbox"][@name="visible"]');
 	}
 
 
@@ -799,9 +915,18 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@value='201']", 
 																			'livres');
 
-		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@selected='selected'][@value='202']", 
-																			'bd',
+		$this->assertXPathContentContains("//select[@name='type_doc_id']//option[@selected='selected'][@value='101']", 
+																			'Diaporama',
 																			$this->_response->getBody());
+	}
+
+
+
+	/** @test */
+	function formShouldHaveCheckboxesForTypeNatureDocsSelection() {
+		$this->assertXPath("//label[contains(text(), 'Collection')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='1'][@checked='checked']");
+		$this->assertXPath("//label[contains(text(), 'Manuscrits')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='2'][not(@checked)]");
+		 $this->assertXPath("//label[contains(text(), 'Image')]//input[@type='checkbox'][@name='nature_doc_ids[]'][@value='3'][@checked='checked']");
 	}
 
 
@@ -839,9 +964,17 @@ class Admin_AlbumControllerEditAlbumMesBDTest extends Admin_AlbumControllerTestC
 class Admin_AlbumControllerEditAlbumMesRomans extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+		Class_Album::getLoader()
+				->newInstanceWithId(24)
+				->setTitre('Mes Romans')
+				->setLangue('')
+				->setNotes([['field' => 856,
+							       'data' => ['x' => 'video',
+											          'a' => 'http://www.youtube.com/watch?v=FqXYGBZooHg&feature=html5_ns&list=UUzfAMGBG12oxX7dSYAurMGA&playnext=1']]]);
 		$this->dispatch('/admin/album/edit_album/id/24');
 	}
 
+	
 	/** @test */
 	function formShouldHaveEmptyTagSuggestForMatiere() {
 		$this->assertXPath("//input[@name='matiere'][@value='']");
@@ -888,7 +1021,7 @@ class Admin_AlbumControllerPostEditAlbumMesBDTest extends Admin_AlbumControllerT
 													 'tmp_name' => '', 
 													 'error' => 4);
 
-		$this->dispatch('/admin/album/edit_album/id/43');
+		$this->dispatch('/admin/album/edit_album/id/43',true);
 
 		$this->bd = Class_Album::getLoader()->find(43);
 	}
@@ -946,6 +1079,7 @@ class Admin_AlbumControllerPostEditAlbumMesBDTest extends Admin_AlbumControllerT
 
 	/** @test */
 	function deweyShouldContainsFifteen() {
+
 		$this->assertEquals('15', $this->bd->getDewey());
 	}
 
@@ -974,7 +1108,7 @@ class Admin_AlbumControllerDeleteAlbumMesBDTest extends Admin_AlbumControllerTes
 	public function setUp() {
 		parent::setUp();
 
-		$this->album_loader_wrapper
+		$this->_album_wrapper
 			->whenCalled('delete')
 			->answers(true);
 
@@ -984,7 +1118,7 @@ class Admin_AlbumControllerDeleteAlbumMesBDTest extends Admin_AlbumControllerTes
 
 	/** @test */
 	public function deleteShouldHaveBeenCalledOnMesBD() {
-		$this->deleted_album = $this->album_loader_wrapper->getFirstAttributeForLastCallOn('delete');
+		$this->deleted_album = $this->_album_wrapper->getFirstAttributeForLastCallOn('delete');
 		$this->assertEquals('Mes BD', $this->deleted_album->getTitre());
 	}
 
@@ -1004,6 +1138,7 @@ abstract class Admin_AlbumControllerAlbumHarlockTestCase extends Admin_AlbumCont
 			->newInstanceWithId(999)
 			->setTitre('Harlock')
 			->setIdOrigine('HL22')
+			->setTypeDocId(Class_TypeDoc::DIAPORAMA)
 			->setCategorie(
 										 Class_AlbumCategorie::getLoader()->newInstanceWithId(999)
 										 ->setLibelle('')
@@ -1116,14 +1251,32 @@ class Admin_AlbumControllerAlbumHarlockEditImagesActionTest extends Admin_AlbumC
 
 
 	/** @test */
+	public function checkAllSelectionShouldBePresent() {
+		$this->assertXPath('//input[@type="checkbox"][@class="all_mass_deletions"]');
+	}
+
+
+	/** @test */
+	public function massDeletionLinkShouldBePresent() {
+		$this->assertXPath('//a[@onclick="return fireMediaMassDeletion();"]');
+	}
+
+
+	/** @test */
 	public function shouldHaveTwoRessources() {
 		$this->assertXpathCount('//ul[@class="tree"]/li[@class="ressource"]', 2);
 	}
 
 
 	/** @test */
-	function linkToEditRessourceNausicaShouldBePresent() {
+	public function linkToEditRessourceNausicaShouldBePresent() {
 		$this->assertXpath('//a[contains(@href, "album/edit_ressource/id/2")]');
+	}
+
+
+	/** @test */
+	public function selectionCheckboxNausicaShouldBePresent() {
+		$this->assertXPath('//input[@type="checkbox"][@value="2"][@onclick="toggleMediaSelection(this);"]');
 	}
 
 
@@ -1162,23 +1315,22 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceOneActionTest extends Admin_
 		$this->assertXPathContentContains('//a[contains(@href, "album/edit_images/id/999")]', '002');
 	}
 
+	
+	/** @test */
+	public function panelShouldContainsIconSupportForAlbumHarlock() {
+		$this->assertXPath("//div//img[contains(@src, 'images.png')]");
+	}
+
 
 	/** @test */
-	public function inputFolioShouldContainsOne() {
-		$this->assertXPath('//input[@name="folio"][@value="1"]', $this->_response->getBody());
+	public function inputFolioShouldNotBePresent() {
+		$this->assertNotXPath('//input[@name="folio"]');
 	}
 
 
 	/** @test */
 	function textAreaDescriptionShouldContainsLeVaisseauSpatial() {
 		$this->assertXPathContentContains('//textarea[@name="description"]', 'Le vaisseau spatial');
-	}
-
-
-	/** @test */
-	function imageOneDotPngShouldBeDisplayed() {
-		$this->assertXPath('//img[@src="' . BASE_URL . '/userfiles/album/999/thumbs/media/1.png"]',
-											 $this->_response->getBody());
 	}
 
 
@@ -1215,7 +1367,7 @@ class Admin_AlbumControllerAlbumHarlockEditRessourceTwoActionTest extends Admin_
 
 	/** @test */
 	public function permalienShoulBeVisible() {
-		$this->assertXPath('//input[@value="http://localhost/bib-numerique/notice/ido/HL22/folio/4R"]',
+		$this->assertXPath('//input[@value="http://localhost'.BASE_URL.'/bib-numerique/notice/ido/HL22/folio/4R"]',
 											 $this->_response->getBody());
 	}
 }
@@ -1246,12 +1398,13 @@ class Admin_AlbumControllerAlbumHarlocPostRessourceOneActionTest extends Admin_A
 			->answers(true);
 
 		$this->postDispatch('/admin/album/edit_ressource/id/1',
-												array('titre' => 'Atlantis',
-															'description' => 'autre vaisseau',
-															'link_to' => 'http://www.atlantis.com',
-															'matiere' => '666',
-															'folio' => '3R'));
-		$this->ressource = Class_AlbumRessource::getLoader()->find(1);
+												['titre' => 'Atlantis',
+												 'description' => 'autre vaisseau',
+												 'link_to' => 'http://www.atlantis.com',
+												 'matiere' => '666',
+												 'folio' => '3R']);
+		
+		$this->ressource = Class_AlbumRessource::find(1);
 	}
 
 
@@ -1296,7 +1449,7 @@ class Admin_AlbumControllerAlbumHarlocPostRessourceOneActionTest extends Admin_A
 
 	/** @test */
 	function albumShouldHaveBeenSaved() {
-		$this->assertTrue($this->album_loader_wrapper->methodHasBeenCalled('save'));
+		$this->assertTrue($this->_album_wrapper->methodHasBeenCalled('save'));
 	}
 
 	/** @test */
@@ -1354,6 +1507,12 @@ class Admin_AlbumControllerPreviewMesBDTest extends Admin_AlbumControllerTestCas
 	public function formThumbnailsShouldNotHaveInputForThumbnailLeftPageCropLeft() {
 		$this->assertNotXPath('//input[@name="thumbnail_left_page_crop_left"]');
 	}
+
+
+	/** @test */
+	public function pageShouldContainsPoidsDeLaVignette() {
+		$this->assertXPathContentContains('//div', 'Poids de la première vignette');
+	}
 }
 
 
@@ -1362,7 +1521,7 @@ class Admin_AlbumControllerPreviewMesBDTest extends Admin_AlbumControllerTestCas
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/admin/album/preview_album/id/44');
+		$this->dispatch('/admin/album/preview_album/id/44', true);
 	}
 
 	/** @test */
@@ -1370,10 +1529,12 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 		$this->assertXPathContentContains('//h1', 'Visualisation de l\'album "Bible Souvigny"');
 	}
 
+
 	/** @test */
 	public function formThumbnailsShouldHaveInputForThumbnailWidth() {
 		$this->assertXPath('//form[@id="thumbnails"]//input[@name="thumbnail_width"][@value="350"]');
 	}
+
 
 	/** @test */
 	public function formThumbnailsShouldHaveInputForThumbnailRightPageCropLeft() {
@@ -1382,9 +1543,16 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 
 
 	/** @test */
+	public function formThumbnailsShouldHaveCheckboxUncheckedForDisplayOnePage() {
+		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][not(@checked)]');
+	}
+
+
+	/** @test */
 	public function pageShouldContainsLinkToEdit() {
 		$this->assertXPath("//a[contains(@href, 'album/edit_album/id/44')]");
 	}
+
 
 	/** @test */
 	public function bookletShouldBeLoaded() {
@@ -1393,16 +1561,47 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyTest extends Admin_AlbumCont
 }
 
 
-class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_AlbumControllerTestCase {
+
+
+class Admin_AlbumControllerPreviewAlbumMonopageTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Album::newInstanceWithId(56, ['titre' => 'Journal',
+																				'thumbnail_width' => 400,
+																				'thumbnail_crop_left' => 10,
+																				'thumbnail_crop_right' => 5,
+																				'thumbnail_crop_bottom' => 2,
+																				'thumbnail_crop_top' => 5,
+																				'display_one_page' => true,
+																				'ressources' => []])
+			->beLivreNumerique();
+
+
+		$this->dispatch('/admin/album/preview_album/id/56', true);
+	}
+
+
+	/** @test */
+	public function formThumbnailsShouldHaveCheckboxCheckedForDisplayOnePage() {
+		$this->assertXPath('//form[@id="thumbnails"]//input[@type="checkbox"][@name="display_one_page"][@checked="checked"]');
+	}
+}
+
+
+
+
+class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_AlbumControllerTestCase {
+	protected $_souvigny;
+	public function setUp() {
+		parent::setUp();
+		$this->_souvigny = Class_Album::getLoader()->find(44);
 		$this->postDispatch('/admin/album/preview_album/id/44',
 												array('thumbnail_right_page_crop_right' => 34));
 	}
 
 	/** @test */
 	public function thumbnailRightPageCropRightShouldBeThirtyFour() {
-		$souvigny = $this->_souvigny;
 		$this->assertEquals(34, $this->_souvigny->getThumbnailRightPageCropRight(),
 												$this->_response->getBody());
 	}
@@ -1422,6 +1621,8 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostTest extends Admin_Album
 }
 
 
+
+
 class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostWrongDataTest extends Admin_AlbumControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -1438,8 +1639,49 @@ class Admin_AlbumControllerPreviewAlbumBibleSouvignyPostWrongDataTest extends Ad
 
 
 
+
+class Admin_AlbumControllerImportEADTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/album/import_ead');
+	}
+
+
+	/** @test */
+	public function menuGaucheAdminShouldContainsLinkToImportEAD() {
+		$this->assertXPath('//div[@class="menuGaucheAdmin"]//a[contains(@href, "admin/album/import_ead")]');
+	}
+
+
+	/** @test */
+	public function titreShouldBeRessourcesEAD() {
+		$this->assertXPathContentContains('//h1', 'Import EAD');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsFormImportEAD() {
+		$this->assertXPath('//form[contains(@action, "admin/album/import_ead")]');
+	}
+
+
+	/** @test */
+	public function formImportEADShouldContainsFileInputForXML() {
+		$this->assertXPath('//input[@type="file"][@name="ead"]');
+	}
+
+
+	/** @test */
+	public function formShouldHaveSubmitButtonImportEAD() {
+		$this->assertXPath('//input[@type="submit"][@value="Importer le fichier EAD"]');
+	}
+}
+
+
+
+
 /** LL: quand j'aurais trouvé comment contourner is_uploaded_file */
-abstract class Admin_AlbumControllerImportEADTest extends Admin_AlbumControllerAlbumHarlockTestCase {
+abstract class Admin_AlbumControllerPostImportEADTest extends Admin_AlbumControllerAlbumHarlockTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -1466,4 +1708,142 @@ abstract class Admin_AlbumControllerImportEADTest extends Admin_AlbumControllerA
 }
 
 
+
+class Admin_AlbumControllerPreviewFilmArteVODTest extends Admin_AlbumControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		
+		Class_Album::getLoader()
+			->newInstanceWithId(102)
+			->setTitre('Mulholland drive')
+			->beArteVOD()
+			->setNotes(array(
+											 array('field' => '856',
+														 'data' => array('x' => 'trailer',
+																						 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4')),
+											 array('field' => '856',
+														 'data' => array('x' => 'trailer',
+																						 'a' => 'http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv')),
+											 
+											 array('field' => '856',
+														 'data' => array('x' => 'poster',
+																						 'a' => 'http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg'))));
+			
+		$this->dispatch('/admin/album/preview_album/id/102', true);
+	}
+
+
+	/** @test */
+	public function formVignetteShouldNotBeVisible() {
+		$this->assertNotXPath('//form');
+	}
+
+
+	/** @test */
+	public function albumhouldHaveIconForArteVOD() {
+		$this->assertXPath("//div//img[contains(@src, 'artevod.png')]");
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsPoidsDeLaVignette() {
+		$this->assertNotXPathContentContains('//div', 'Poids de la première vignette');
+	}
+
+
+	/** @test */
+	public function videoTagShouldContainsTwoSources() {
+		$this->assertXPathCount('//video//source', 2, $this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function videoTagShouldContainsMp4() {
+		$this->assertXPath('//video//source[@src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.mp4"][@type="video/mp4"]');
+	}
+
+
+	/** @test */
+	public function videoTagShouldContainsFlv() {
+		$this->assertXPath('//video//source[@src="http://media.universcine.com/7e/5b/7e5bece6-7d56-11e1-9d5b-6b449667e8b8.flv"][@type="video/flv"]');
+	}
+
+
+	/** @test */
+	public function posterShouldBeInVideoTag() {
+		$this->assertXPath('//video[@poster="http://media.universcine.com/7e/5c/7e5c210a-b4ad-11e1-b992-959e1ee6d61d.jpg"]');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsVideoJS() {
+		$this->assertXPath('//link[contains(@href, "http://vjs.zencdn.net/c/video-js.css")]');
+		$this->assertXPath('//script[contains(@src, "http://vjs.zencdn.net/c/video.js")]');
+	}
+}
+
+
+
+class Admin_AlbumControllerMassRessourceDeleteActionTest extends Admin_AlbumControllerTestCase {
+	/** @var Storm_Test_ObjectWrapper */
+	protected $_ressource_wrapper;
+	
+	public function setUp() {
+		parent::setUp();
+
+		$this->_ressource_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AlbumRessource')
+				->whenCalled('delete')->answers(null);
+	}
+
+
+	/** @test */
+	public function withoutIdShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withoutIdsShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withEmptyIdsShouldNotDelete() {
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withValidRessourceShouldDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(Class_Album::newInstanceWithId(999));
+				
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasBeenCalled('delete'));
+	}
+
+
+	/** @test */
+	public function withRessourceOfAnotherAlbumShouldNotDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(Class_Album::newInstanceWithId(7));
+				
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+
+
+	/** @tests */
+	public function withRessourceOfEmptyAlbumShouldNotDeleteIt() {
+		Class_AlbumRessource::newInstanceWithId(37)
+				->setAlbum(null);
+
+		$this->dispatch('/admin/album/mass-ressource-delete/id/999?ids=37', true);
+		$this->assertTrue($this->_ressource_wrapper->methodHasNotBeenCalled('delete'));
+	}
+}
 ?>

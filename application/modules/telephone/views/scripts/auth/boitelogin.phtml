@@ -1,0 +1,45 @@
+<?php
+
+if($user = Class_Users::getLoader()->getIdentity()) {
+	echo sprintf("<div class='welcome'> %s %s </div>", 
+							 $this->tagAnchor(array('controller' => 'abonne',
+																			'action' => 'fiche'),
+																$this->_("Bienvenue ").$user->getNomAff()), 
+							 $this->tagAnchor(array('controller' => 'auth', 'action' => 'logout'),
+																$this->tagImg(URL_IMG.'systeme/exit.png',
+																							array('alt' => $this->_('Déconnexion'))))
+							 );	
+
+	if ($user->hasIdabon())
+			echo $this->ficheAbonneLinks($user->getNbEmprunts(), 
+																	 $user->getNbEmpruntsRetard(), 
+																	 $user->getNbReservations());
+
+} else {
+	$form = new ZendAfi_Form_Login();
+	$form->setAction($this->url(array('controller' => 'auth', 
+																		'action' => 'boitelogin', 
+																		'id_module' => $this->id_module)))
+		->setAttrib('class', 'ui-grid-b');
+
+	$form->getElement('username')
+		->setLabel($this->preferences['identifiant'])
+		->setAttrib('placeholder', $this->preferences['identifiant_exemple'])
+		->setAttrib('data-mini', 'true')
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-a'));
+
+	$form->getElement('password')
+		->setLabel($this->preferences['mot_de_passe'])
+		->setAttrib('placeholder', $this->preferences['mot_de_passe_exemple'])
+		->setAttrib('data-mini', 'true')
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-b'));
+
+	$form->getElement('login')
+		->setLabel($this->preferences['lien_connexion'])
+		->setAttrib('data-mini', 'true')
+		->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'ui-block-c'));
+	echo $form;
+}
+
+?>
+<div class="clear"></div>

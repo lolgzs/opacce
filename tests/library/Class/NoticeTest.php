@@ -35,6 +35,8 @@ class NoticeFixtures extends TestFixtures {
 }
 
 
+
+
 class NoticeTestFindAll extends ModelTestCase {
 	public function setUp() {
 		$this->_setFindAllExpectation('Class_Notice', 'NoticeFixtures');
@@ -80,6 +82,8 @@ class NoticeTestTypeDoc extends ModelTestCase {
 }
 
 
+
+
 class NoticeTestGetAvis extends ModelTestCase {
 	public function setUp() {
 		$this->avis_bib1 = new Class_AvisNotice();
@@ -118,16 +122,19 @@ class NoticeTestGetAvis extends ModelTestCase {
 												$this->notice->getAvisBibliothequaires());
 	}
 
+
 	public function testGetNoteMoyenneAvisBibliothequaires() {	
 		$this->assertEquals(4.5,
 												$this->notice->getNoteMoyenneAvisBibliothequaires());
 	}
+
 
 	public function testGetAvisAbonnes() {	
 		$this->assertEquals(array($this->avis_abon1, 
 															$this->avis_abon2),
 												$this->notice->getAvisAbonnes());
 	}
+
 
 	public function testGetNoteMoyenneAvisAbonnes() {	
 		$this->assertEquals(2.5,

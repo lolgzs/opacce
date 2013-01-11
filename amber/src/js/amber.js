@@ -22,9 +22,9 @@ amber = (function() {
     var nocache = '';
 
 	that.toggleIDE = function() {
-		if ($('#jtalk').length == 0) {
+		if ($('#amber').length == 0) {
 			smalltalk.Browser._open();
-		} else if ($('#jtalk').is(':visible')) {
+		} else if ($('#amber').is(':visible')) {
 			smalltalk.TabManager._current()._close();
 		} else {
 			smalltalk.TabManager._current()._open();
@@ -56,7 +56,8 @@ amber = (function() {
 		}
 
 		loadDependencies();
-		addJSToLoad('compat.js');
+		addJSToLoad('lib/es5-shim-2.0.2/es5-shim.min.js');
+		addJSToLoad('lib/es5-shim-2.0.2/es5-sham.min.js');
 		addJSToLoad('boot.js');
 
 		if (deploy) {
@@ -83,10 +84,17 @@ amber = (function() {
 				'Kernel-Transcript',
 				'Kernel-Announcements',
 				'Canvas',
-				'Compiler',
+				'SUnit',
+				'Importer-Exporter',
+				'Compiler-Exceptions',
+				'Compiler-Core',
+				'Compiler-AST',
+				'Compiler-Semantic',
+				'Compiler-IR',
+				'Compiler-Inlining',
+				'Compiler-Tests',
 				'parser',
 				'IDE',
-				'SUnit',
 				'Examples',
 				'Benchfib',
 				'Kernel-Tests'
@@ -149,7 +157,7 @@ amber = (function() {
 
 	function loadDependencies() {
 		if (typeof jQuery == 'undefined') {
-			writeScriptTag(buildJSURL('lib/jQuery/jquery-1.6.4.min.js'));
+			writeScriptTag(buildJSURL('lib/jQuery/jquery-1.8.2.min.js'));
 		}
 
 		if ((typeof jQuery == 'undefined') || (typeof jQuery.ui == 'undefined')) {      
@@ -168,14 +176,11 @@ amber = (function() {
 	// This will be called after JS files have been loaded
 	function initializeSmalltalk() {
 		window.smalltalkReady = function() {
-			if (deploy) {
-				smalltalk.setDeploymentMode();
-			}
-
 			if (spec.ready) {
 				spec.ready();
-			}
-		}
+			};
+            evaluateSmalltalkScripts();
+		};
 
 		loadAllJS(); 
 	};
@@ -220,6 +225,17 @@ amber = (function() {
 		var scriptString = '<script src="' + src + '" type="text/javascript"></script>';
 		document.write(scriptString);
 	};
+
+    function evaluateSmalltalkScripts() {
+        jQuery(document).ready(function() {
+            jQuery('script[type="text/smalltalk"]').each(function(i, elt) {
+                smalltalk.send(
+                    smalltalk.send(smalltalk.Compiler, '_new'),
+                    '_evaluateExpression_',
+                    [jQuery(elt).html()])
+            });
+        })
+    };
 
 	function populateLocalPackages(){
 		var localStorageRE = /^smalltalk\.packages\.(.*)$/;

@@ -45,6 +45,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 		if (null !== $expiration_date = $status_babelio['expire_at'])
 			$this->view->status_babelio .= ', expiration le '.$expiration_date->toString("d MMMM yyyy");
 		$this->view->show_babelio_info = !$status_babelio['enabled'] || $expiration_date !== null;
+
+		$this->view->user = Class_Users::getLoader()->getIdentity();
 	}
 
 	public function adminvarAction()	{
@@ -65,6 +67,15 @@ class Admin_IndexController extends Zend_Controller_Action {
 
 	}
 
+
+
+	public function shouldEncodeVar($cle) {
+		return in_array($cle->getId(), 
+										array("REGISTER_OK", "RESA_CONDITION","TEXTE_MAIL_RESA",
+													"USER_VALIDATED", "USER_NON_VALIDATED"));
+	}
+
+
 	public function adminvareditAction() {
 		$id = $this->_getParam('cle');
 		$cle = Class_AdminVar::getLoader()->find($id);
@@ -73,10 +84,7 @@ class Admin_IndexController extends Zend_Controller_Action {
 			$filter = new Zend_Filter_StripTags();
 			$new_valeur = $this->_request->getPost('valeur');
 
-			if (in_array($cle->getId(),
-									 array("REGISTER_OK", "RESA_CONDITION","TEXTE_MAIL_RESA",
-													"USER_VALIDATED", "USER_NON_VALIDATED"))
-			) {
+			if ($this->shouldEncodeVar($cle)) {
 				$cle->setValeur(urlencode($new_valeur));
 
 			} else if ($cle->getId() == 'GOOGLE_ANALYTICS') {
@@ -84,18 +92,22 @@ class Admin_IndexController extends Zend_Controller_Action {
 
 			} else {
 				$cle->setValeur(trim($filter->filter($new_valeur)));
-
 			}
 
 			$cle->save();
 			$this->_redirect('admin/index/adminvar');
 		}
 
-		$this->view->var_valeur	= $cle->getValeur();
+		if ($this->shouldEncodeVar($cle))
+			$this->view->var_valeur	= urldecode($cle->getValeur());
+		else
+			$this->view->var_valeur	= $cle->getValeur();
+
 		$this->view->var_cle		= $cle->getId();
 		$this->view->tuto				= $this->_getAdminVarHelpFor($cle->getId());
 		$this->view->titre			= 'Modifier la variable: '.$cle->getId();
 	}
+
 
 	public function changelocaleAction() {
 		$locale= $this->_getParam('locale', 0);
@@ -121,6 +133,8 @@ class Admin_IndexController extends Zend_Controller_Action {
 			'AVIS_MAX_SAISIE'           => 'Nombre de caractères maximum autorisé à saisir dans les avis.',
 			'AVIS_MIN_SAISIE'           => 'Nombre de caractères minimum autorisé à saisir dans les avis.',
 			'BLOG_MAX_NB_CARAC'         => "Nombre de caractères maximum à afficher dans le bloc critiques.",
+			'PCDM4_LIB'									=> "Libellé affichage pour la PCDM4",
+			'DEWEY_LIB'									=> "Libellé affichage pour la Dewey",
 			'NB_AFFICH_AVIS_PAR_AUTEUR' => "Nombre d'avis maximum à afficher par utilisateur.",
 			'CLEF_GOOGLE_MAP'           => 'Clef d\'activation pour le plan d\'accès google map. <a target="_blank" href="http://code.google.com/apis/maps/signup.html">Obtenir la clé google map</a>',
 			'MODO_AVIS'                 => 'Modération des avis des lecteurs.<br /> 0 = Validation a priori<br /> 1 = Validation a posteriori.',
@@ -151,7 +165,18 @@ class Admin_IndexController extends Zend_Controller_Action {
 																					$this->view->url(array('action' => 'clearcache'))
 																				)
 																			)
-																	)
+																	 ),
+			'VODECLIC_KEY'              => 'Clé de sécurité Vodeclic',
+			'VODECLIC_ID'               => 'Identifiant partenaire Vodeclic',
+			'OAI_SERVER'                => 'Activation du serveur OAI. 0 = inactif, 1 = actif',
+			'PACK_MOBILE'               => 'Activation des fonctions avancées du téléphone.  0 = inactif, 1 = actif',
+			'ARTE_VOD_LOGIN'            => 'Login ARTE VOD',
+			'ARTE_VOD_KEY'              => 'Clé ARTE VOD',
+			'ARTE_VOD_SSO_KEY'          => 'Clé ARTE VOD Single Sign-On',
+			'BABELTHEQUE_JS'            => 'URL du javascript Babelthèque à insérer dans l\'OPAC',
+			'MULTIMEDIA_KEY'            => 'Clé AFI-multimédia',
+			'CSS_EDITOR'                => 'Activation de l\'editeur CSS. 0 = inactif, 1 = actif',
+			'CMS_FORMULAIRES'           => 'Activation des formulaires.  0 = inactif, 1 = actif' 
 		);
 
 		if (!array_key_exists($name, $help)) {
@@ -159,6 +184,11 @@ class Admin_IndexController extends Zend_Controller_Action {
 		}
 
 		return $help[$name];
+	}
+
+
+	public function heartbeatAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
 	}
 
 }

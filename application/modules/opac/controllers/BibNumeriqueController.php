@@ -19,6 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class BibNumeriqueController extends Zend_Controller_Action {
+	public function init() {
+		session_write_close();
+	}
+
 	public function viewAlbumAction() {
 		if (null === ($album = Class_Album::getLoader()->find((int)$this->_getParam('id')))) {
 			$this->_redirect('opac/');
@@ -29,77 +33,42 @@ class BibNumeriqueController extends Zend_Controller_Action {
 	}
 
 
-	public function albumPageParams($album, $left_or_right) {
-		return array('width' => (int)$album->getThumbnailWidth(),
-								 'crop_top' => (int)$album->_get('thumbnail_'.$left_or_right.'_page_crop_top'),
-								 'crop_right' => (int)$album->_get('thumbnail_'.$left_or_right.'_page_crop_right'),
-								 'crop_bottom' => (int)$album->_get('thumbnail_'.$left_or_right.'_page_crop_bottom'),
-								 'crop_left' => (int)$album->_get('thumbnail_'.$left_or_right.'_page_crop_left'));
-	}
-
-
-	public function albumPageThumbnailUrl($album, $left_or_right, $width = null) {
-		return $this->view->url(array_merge(
-																				array('controller' => 'bib-numerique',
-																							'action' => 'thumbnail'),
-																				$this->albumPageParams($album, $left_or_right)),
-														null,
-														true);
-	}
-
-
 	/**
 	 * Génére le JSON pour le livre numérique
 	 */
 	public function albumAction() {
 		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
 
-		$thumbnail_params = array($this->albumPageParams($album, 'right'),
-															$this->albumPageParams($album, 'left'));
-
-		$thumbnail_urls = array($this->albumPageThumbnailUrl($album, 'right'),
-														$this->albumPageThumbnailUrl($album, 'left'));
+		$this->getHelper('ViewRenderer')->setNoRender();
+		$this->_response->setBody($this->view->album_JsonVisitor($album));
+	}
 
 
-		$json = new StdClass();
-		$json->album->id = $album->getId();
-		$json->album->titre = $album->getTitre();
-		$json->album->download_url = '';
-		if ($album->hasPdf())
-			$json->album->download_url = $this->view->url(array('action' => 'download_album',
-																													'id' => $album->getId().'.pdf'));
-		$json->album->description = $album->getDescription();
-		$json->album->ressources = array();
-		$json->album->width = $album->getThumbnailWidth();
-		$json->album->height = $album->getThumbnailHeight();
-
-		$page = 0;
-		foreach($album->getRessources() as $ressource) {
-			$right_or_left = ($page++ % 2);
-			$json_ressource = new StdClass();
-			$json_ressource->id = $ressource->getId();
-			$json_ressource->foliono = $ressource->getFolio();
-			$json_ressource->titre = $ressource->getTitre();
-			$json_ressource->link_to = $ressource->getLinkTo();
-			$json_ressource->description = $ressource->getDescription();
-
-			$params = $thumbnail_params[$right_or_left];
-			$params['id'] = $ressource->getId();
-
-			if ($ressource->isThumbnailExistsForParams($params))
-				$json_ressource->thumbnail = $ressource->getThumbnailUrlForParams($params);
-			else
-				$json_ressource->thumbnail = $thumbnail_urls[$right_or_left].'/id/'.$ressource->getId();
-
-			$json_ressource->navigator_thumbnail = $ressource->getThumbnailUrl();
-			$json_ressource->original = $ressource->getOriginalUrl();
-			$json->album->ressources []= $json_ressource;
-		}
+	public function albumXspfPlaylistAction() {
+		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
+		$playlist = $this->view->album_XspfPlaylistVisitor($album);
 
 
 		$this->getHelper('ViewRenderer')->setNoRender();
-		$this->_response->setHeader('Content-Type', 'application/json');
-		$this->_response->setBody(json_encode($json));
+		$response = $this->_response;
+		$response->clearAllHeaders();
+		$response->setHeader('Content-Type', 'application/xspf+xml; name="' . $album->getId(). '.xspf"', true);
+		$response->setHeader('Content-Disposition', 'attachment; filename="' . $album->getId(). '.xspf"', true);
+		$response->setHeader('Content-Transfer-Encoding', 'base64', true);
+		$response->setHeader('Expires', '0');
+		$response->setHeader('Cache-Control', 'no-cache, must-revalidate');
+		$response->setHeader('Pragma', 'no-cache');
+		$response->setHeader('Access-Control-Allow-Origin', '*');
+		$response->setBody($playlist);
+	}
+
+
+	public function albumRssFeedAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+		$album = Class_Album::getLoader()->find((int)$this->_getParam('id'));
+		$rss = $this->view->album_RssFeedVisitor($album);
+		$this->_response->setBody($rss);
+		$this->_response->setHeader('Content-Type', 'application/rss+xml', true);
 	}
 
 
@@ -219,7 +188,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 			exit;
 		}
 
-		echo $this->_renderFile($resource->getOriginalPath());
+		echo $this->_renderFile($resource->getOriginalPath(), $as_attachment);
 	}
 
 
@@ -237,12 +206,11 @@ class BibNumeriqueController extends Zend_Controller_Action {
 
 		// puis son type mime
 		$mimeType = Class_File_Mime::getType($ext);
-
 		$fileInfos = stat($filepath);
 		$parts = pathinfo($filepath);
 
 		$response->clearAllHeaders();
-		$response->setHeader('Content-Type', $mimeType . '; name="' . $parts['filename'] . '"', true);
+		$response->setHeader('Content-Type', $mimeType . '; name="' . $parts['basename'] . '"', true);
 		$response->setHeader('Content-Transfer-Encoding', 'binary', true);
 		$response->setHeader('Content-Length', $fileInfos['size'], true);
 		$response->setHeader('Expires', '0');
@@ -250,7 +218,7 @@ class BibNumeriqueController extends Zend_Controller_Action {
 		$response->setHeader('Pragma', 'no-cache');
 
 		if ($as_attachment)
-			$response->setHeader('Content-Disposition', 'attachment; filename="' . $parts['filename'] . '"', true);
+			$response->setHeader('Content-Disposition', 'attachment; filename="' . $parts['basename'] . '"', true);
 
 		$response->sendHeaders();
 

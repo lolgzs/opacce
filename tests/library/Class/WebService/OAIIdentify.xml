@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+	<responseDate>2012-04-19T09:00:37Z
+	</responseDate>
+	<request verb="Identify">http://oai.bnf.fr/oai2/OAIHandler
+	</request>
+	<Identify>
+		<repositoryName>Entrepôt OAI-PMH numéro 1 de la Bibliothèque nationale de France : collections numériques
+		</repositoryName>
+		<baseURL>http://oai.bnf.fr/oai2/OAIHandler
+		</baseURL>
+		<protocolVersion>2.0
+		</protocolVersion>
+		<adminEmail>mailto:oaiAdmin@bnf.fr
+		</adminEmail>
+		<earliestDatestamp>2010-06-09
+		</earliestDatestamp>
+		<deletedRecord>transient
+		</deletedRecord>
+		<granularity>YYYY-MM-DD
+		</granularity>
+		<compression>gzip
+		</compression>
+		<compression>deflate
+		</compression>
+		<description>
+			<oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
+				<scheme>oai
+				</scheme>
+				<repositoryIdentifier>bnf.fr
+				</repositoryIdentifier>
+				<delimiter>:
+				</delimiter>
+				<sampleIdentifier>oai:bnf.fr:gallica/ark:/12148/bpt6k205058h
+				</sampleIdentifier>
+			</oai-identifier>
+		</description>
+		<description>
+			<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+				<dc:identifier>http://bibnum.bnf.fr/oai/
+				</dc:identifier>
+				<dc:description xml:lang="fre">Cet entrepôt OAI a été créé par la Bibliothèque nationale de France pour faciliter l'accès aux documents numérisés et l'échange de métadonnées descriptives. Il contient les métadonnées de documents tombés dans le domaine public et numérisés à partir d'un exemplaire conservé à la BnF. Environ 1 295 000 documents seront accessibles via cet entrepôt.
+				</dc:description>
+				<dc:description xml:lang="eng">This OAI repository was created by the Bibliothèque nationale de France (French National Library) to facilitate the access to digitized documents and to improve the diffusion and exchange of descriptive metadata. It contains metadata about public domain documents that have been digitized using a BnF copy. This repository will give access to nearly 1,295,000 documents.
+				</dc:description>
+				<dc:relation>http://catoai.bnf.fr/oai2/OAIHandler (entrepôt OAI des catalogues de la BnF)
+				</dc:relation>
+			</oai_dc:dc>
+		</description>
+		<description>
+			<friends xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/friends/ http://www.openarchives.org/OAI/2.0/friends.xsd">
+				<baseURL>http://memory.loc.gov/cgi-bin/oai2_0?
+				</baseURL>
+				<baseURL>http://cnum.cnam.fr/oai/oai2.php
+				</baseURL>
+				<baseURL>http://web2.bium.univ-paris5.fr/oai/oai2.php
+				</baseURL>
+				<baseURL>http://web2.bium.univ-paris5.fr/oai-img/oai2.php
+				</baseURL>
+				<baseURL>http://www.bvh.univ-tours.fr/oai2
+				</baseURL>
+				<baseURL>http://num-scd-ulp.u-strasbg.fr:8080/perl/oai2/
+				</baseURL>
+				<baseURL>http://jubil.upmc.fr/oaicat/OAIHandler
+				</baseURL>
+				<baseURL>http://www.bibliotheques.versailles.fr:8080/oaicat/OAIHandler
+				</baseURL>
+				<baseURL>http://numerique.bibliotheque.toulouse.fr/cgi-bin/oaiserver
+				</baseURL>
+				<baseURL>http://www.hstl.crhst.cnrs.fr/tools/oai/oai2.php
+				</baseURL>
+				<baseURL>http://esx1gw.scd.univ-lille3.fr/ori-oai-repository/OAIHandler
+				</baseURL>
+				<baseURL>http://www.cineressources.net/oai/serveurOAI.php
+				</baseURL>
+				<baseURL>http://www.e-rara.ch/oai
+				</baseURL>
+				<baseURL>http://cujas-num.univ-paris1.fr/oai
+				</baseURL>
+				<baseURL>http://oai.bn-r.fr/oai.php
+				</baseURL>
+				<baseURL>http://www.manioc.org/gsdl/cgi-bin/oaiserver
+				</baseURL>
+			</friends>
+		</description>
+	</Identify>
+</OAI-PMH>

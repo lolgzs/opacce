@@ -19,15 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-class Telephone_IndexController extends Zend_Controller_Action
-{
-
-//-------------------------------------------------------------------------------
-// PAGE D'ACCUEIL
-//-------------------------------------------------------------------------------
-	function indexAction()
-	{
+class Telephone_IndexController extends Zend_Controller_Action {
+	public function indexAction() {
 
 	}
-	
 }

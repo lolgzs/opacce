@@ -18,20 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 :	Abonnements aux newsletter
-//////////////////////////////////////////////////////////////////////////////////////////
 
 class Class_NewsletterSubscription extends Storm_Model_Abstract {
 	protected $_table_name = 'newsletters_users';
-	protected $_belongs_to = 	array('user' => array('model' => 'Class_Users'),
-																	'newsletter' => array('model' => 'Class_Newsletter'));
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
+	protected $_belongs_to = 	['user' => ['model' => 'Class_Users'],
+														 'newsletter' => ['model' => 'Class_Newsletter']];
 }
-
-
 
 ?>

@@ -54,13 +54,15 @@ class ArticleCategorieTest extends Storm_Test_ModelTestCase {
 		$this->cat_concerts_jazz = Class_ArticleCategorie::getLoader()
 			->newInstanceWithId(73)
 			->setLibelle('Jazz')
-			->setIdCatMere(34);
+			->setIdCatMere(34)
+			->setSousCategories(array());
 
 
 		$this->cat_actu = Class_ArticleCategorie::getLoader()
 			->newInstanceWithId(12)
 			->setLibelle('Actu')
-			->setIdCatMere(5);
+			->setIdCatMere(5)
+			->setSousCategories(array());
 
 
 		$this->cat_wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_ArticleCategorie')
@@ -235,7 +237,7 @@ JSON;
 
 
 	/** @test */
-	public function aduteRecursiveSousCategoriesShouldAnswerArrayWithConcertsJazzAndActu() {
+	public function adulteRecursiveSousCategoriesShouldAnswerArrayWithConcertsJazzAndActu() {
 		$this->assertEquals(array($this->cat_concerts,
 															$this->cat_actu,
 															$this->cat_concerts_jazz),

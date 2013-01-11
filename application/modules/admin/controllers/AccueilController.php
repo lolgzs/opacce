@@ -44,6 +44,16 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		if (!$this->profil = Class_Profil::getLoader()->find($this->id_profil))
 			$this->profil = Class_Profil::getCurrentProfil();
 
+		$user = Class_Users::getIdentity();
+ 
+		if (($user->getRoleLevel() < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
+				|| ($user->isAdminBib() && ($user->getIdSite() !== $this->profil->getIdSite()))) {
+			 $this->_redirect('admin/index');
+			 return;
+		}
+
+
+
 		if ($this->config == "admin")
 			$this->preferences = $this->_extractProperties();
 
@@ -51,10 +61,12 @@ class Admin_AccueilController extends Zend_Controller_Action {
 			$this->preferences = $this->profil->getOrCreateConfigAccueil($this->id_module,
 																																	 $this->type_module);
 
+		$boite = isset($this->preferences["boite"]) ? $this->preferences["boite"] : '';
 		$this->view->preferences = $this->preferences;
 		$this->view->url = $this->_request->getRequestUri();
-		$this->view->combo_templates = ZendAfi_View_Helper_Accueil_Base::getComboTemplates($this->preferences["boite"],
-																																											     $this->profil->getPathTemplates());
+		
+		$this->view->combo_templates = ZendAfi_View_Helper_Accueil_Base::getComboTemplates($boite,
+																																											 $this->profil->getPathTemplates());
 		$this->view->id_profil = $this->profil->getId();
 		$this->view->id_bib = $this->profil->getIdSite();
 
@@ -64,10 +76,6 @@ class Admin_AccueilController extends Zend_Controller_Action {
 	public function preDispatch(){
 		Zend_Layout::startMvc(array());
 	}
-
-
-
-	public function indexAction()	{}
 
 
 	public function calendrierAction()	{
@@ -128,6 +136,21 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		$this->_simpleAction();
 	}
 
+	public function pretsAction() {
+		$this->_simpleAction();
+	}
+
+	public function reservationsAction() {
+		$this->_simpleAction();
+	}
+
+	public function multimediaAction() {
+		$this->_simpleAction();
+	}
+
+	public function newslettersAction() {
+		$this->_simpleAction();
+	}
 
 	public function bibliothequeNumeriqueAction() {
 		if (1 == $this->_getParam('styles_reload')) {
@@ -163,7 +186,7 @@ class Admin_AccueilController extends Zend_Controller_Action {
 		if ($this->_request->isPost()) 	{
 			$enreg = $this->_request->getPost();
 			if ($enreg["id_panier"]) {
-				$user = Zend_Auth::getInstance()->getIdentity();
+				$user = ZendAfi_Auth::getInstance()->getIdentity();
 				$enreg["id_catalogue"] = 0;
 				$enreg["id_user"] = $user->ID_USER;
 
@@ -231,7 +254,7 @@ class Admin_AccueilController extends Zend_Controller_Action {
 					$enreg["nb_analyse"] = $enreg["nb_notices"] + 10;
 
 				if ($enreg["id_panier"]) {
-					$user = Zend_Auth::getInstance()->getIdentity();
+					$user = ZendAfi_Auth::getInstance()->getIdentity();
 					$enreg["id_catalogue"] = 0;
 					$enreg["id_user"] = $user->ID_USER;
 
@@ -261,10 +284,10 @@ class Admin_AccueilController extends Zend_Controller_Action {
 			return;
 		}
 
-		$modules_accueil = new Class_Systeme_ModulesAccueil();
+		$modules_accueil = Class_Systeme_ModulesAccueil::getModules();
 		$modules = array();
-		foreach ($modules_accueil->getModules() as $key => $values)
-			$modules[$key] = $values['libelle'];
+		foreach ($modules_accueil as $key => $module)
+			$modules[$key] = $module->getLibelle();
 
 		$this->view->modules = $modules;
 	}
@@ -294,7 +317,8 @@ class Admin_AccueilController extends Zend_Controller_Action {
 
 	/** @return array */
 	private function _extractProperties() {
-		if (null !== ($props = $this->_getParam("proprietes"))) {
+
+		if (null != ($props = $this->_getParam("proprietes"))) {
 			$props = explode('/', $props);
 			foreach ($props as $prop) {
 				$pos = strpos($prop, '=');

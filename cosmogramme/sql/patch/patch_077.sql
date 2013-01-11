@@ -1,0 +1,1 @@
+ALTER TABLE session_formation_inscriptions ADD presence BOOLEAN;

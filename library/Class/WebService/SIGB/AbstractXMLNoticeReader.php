@@ -25,6 +25,12 @@ abstract class Class_WebService_SIGB_AbstractXMLNoticeReader {
 	/** @var Class_WebService_SIGB_Notice */
 	protected $_notice;
 
+	/**
+	 * @return Class_WebService_SIGB_AbstractXMLNoticeReader
+	 */
+	public static function newInstance() {
+		return new static();
+	}
 
 	/**
 	 * @param string $xml

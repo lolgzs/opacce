@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 :	Newsletters
-//////////////////////////////////////////////////////////////////////////////////////////
 
 /*
  * exemple des possibilités:
@@ -54,21 +51,16 @@
  * $nl = Class_Newsletter::getLoader()->find(3);
  * $this->assertEquals('test', $nl->getTitre());
  *
- * Très cool pour tester un controller / vue.
  */
 
 class Class_Newsletter extends Storm_Model_Abstract {
 	protected $_table_name = 'newsletters';
-	protected $_has_many = array('subscriptions' => array('model' => 'Class_NewsletterSubscription',
-																												'role' => 'newsletter',
-																												'dependents' => 'delete'),
-															 'users' => array('through' => 'subscriptions'));
+	protected $_has_many = ['subscriptions' => ['model' => 'Class_NewsletterSubscription',
+																							'role' => 'newsletter',
+																							'dependents' => 'delete'],
+													'users' => ['through' => 'subscriptions',
+																			'unique' => true]];
 	protected $_notices_finder;
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
 
 	public function send() {
 		$this
@@ -98,7 +90,7 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	protected function _newMail() {
 		$notices = $this->getNotices();
 
-		$mail = new Zend_Mail('utf8');
+		$mail = new ZendAfi_Mail('utf8');
 		$mail
 			->setSubject($this->getTitre())
 			->setBodyText($this->_getBodyText($notices))
@@ -142,9 +134,14 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	}
 
 
+	protected function _htmlToText($html) {
+		return strip_tags(preg_replace('/<br[^>]*>/i', "\n", $html));
+	}
+
+
 
 	protected function _getBodyText($notices) {
-		$lines = array($this->getContenu(), "");
+		$lines = array($this->_htmlToText($this->getContenu()));
 
 		foreach($notices as $notice) {
 			$url_notice = sprintf('http://%s/recherche/viewnotice/id/%d',
@@ -168,7 +165,7 @@ class Class_Newsletter extends Storm_Model_Abstract {
 	protected function _getBodyHTML($notices) {
 		$view = new ZendAfi_Controller_Action_Helper_View();
 
-		$html = "<p>".nl2br($this->getContenu())."</p>";
+		$html = $this->getContenu();
 
 		foreach($notices as $notice) {
 			$title = $this->_getTitleForNotice($notice);

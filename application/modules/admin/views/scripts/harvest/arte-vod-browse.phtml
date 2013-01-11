@@ -1,0 +1,48 @@
+<form id="artevod_harvest">
+	<input type="submit" value="<?php echo $this->_('Lancer le moissonnage');?>">
+</form>
+
+<div id="harvest_progress" style="display:none">
+	<div id="progress_message"><?php echo $this->_('Moissonnage en cours');?></div>
+	<div id="progress_bar"></div>
+</div>
+
+<script type="text/javascript">
+var artevod_harvest = function(page_number) {
+	var harvest_url = '<?php echo BASE_URL . '/admin/harvest/arte-vod-ajax'; ?>';
+	var params = {page: page_number};
+	$.getJSON(harvest_url, params, function(data) {
+		if (data == null) {
+			$('#progress_message').text('Aucune donnée retournée');
+			$('#progress_bar').progressbar({value:100});
+			return;
+		}
+
+		if (data['error'] != null) {	 
+			$('#progress_message').text('Erreur : ' + data['error']);
+			$('#progress_bar').progressbar({value:100});
+			return;
+		}
+
+		if (!data['has_next']) {
+			$('#progress_message').text('Catalogue importé');
+			$('#progress_bar').progressbar({value:100});
+			return;
+		}
+
+		$('#progress_message').text(data['total_count'] + ' notices au total. Page ' 
+																+ data['current_page'] + '/' + data['page_count']);
+		$('#progress_bar').progressbar({value:(data['current_page'] * 100) / data['page_count']});
+		artevod_harvest(page_number+1);
+	});
+}
+
+
+$(document).ready(function(){
+	$('#artevod_harvest').submit(function() {
+		$('#harvest_progress').children().andSelf().show();
+		artevod_harvest(1);
+		return false;
+	});
+});
+</script>

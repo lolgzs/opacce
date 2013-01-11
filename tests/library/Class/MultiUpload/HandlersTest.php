@@ -121,6 +121,17 @@ class MultiUploalHandlerFormTest extends MultiUploadHandlerTestCase {
 
 		$this->assertFalse($this->_handler->save(sys_get_temp_dir() . '/test.gif'));
 		$this->assertStringStartsWith('Cannot move uploaded file to',
-																									$this->_handler->getError());
+																	$this->_handler->getError());
 	}
+
+
+	/** @test */
+	public function withSizeAndUploadMovedSaveShouldReturnTrue() {
+		$_FILES['qqfile']['size'] = '111001';
+		$this->_handler->setUploadMover(Storm_Test_ObjectWrapper::mock()
+																		->whenCalled('moveUploadedFile')
+																		->answers(true));
+		$this->assertTrue($this->_handler->save(sys_get_temp_dir(). '/test.gif'));
+	}
+
 }

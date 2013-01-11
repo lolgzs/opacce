@@ -276,14 +276,16 @@ function createAccessibilityDialog() {
 		$('link[rel="alternate stylesheet"]').each(function(index, element){
 				$('<li>'+$(element).attr('title')+'</li>').
 						appendTo(css_list).
-						data('css', $(element).attr('href')).
+						attr('data-css', $(element).attr('href')).
 						css('cursor', 'pointer').
 						addClass('ui-widget-content');
 		});
 
 		css_list.selectable({
 				selected: function(event, ui){
-						var css = $(event.target).children('.ui-selected').data('css');
+						var css = $(ui.selected).attr('data-css');
+					  if (css == undefined)
+							css = $(event.srcElement).attr('data-css');
 						$("link#accessibility_stylesheet").attr("href", css);
 						$.cookie("accessibility_css",css, {expires: 365, path: '/'});
 						return false;

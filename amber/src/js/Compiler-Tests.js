@@ -1,137 +1,898 @@
 smalltalk.addPackage('Compiler-Tests', {});
-smalltalk.addClass('ImporterTest', smalltalk.TestCase, [], 'Compiler-Tests');
+smalltalk.addClass('CodeGeneratorTest', smalltalk.TestCase, ['receiver'], 'Compiler-Tests');
 smalltalk.addMethod(
-unescape('_chunkString'),
+"_codeGeneratorClass",
 smalltalk.method({
-selector: unescape('chunkString'),
-category: 'private',
-fn: function (){
-var self=this;
-return unescape("%21Object%20methodsFor%3A%20%27importer%20test%20method%27%21%0A%0AimporterTestMethod%0A%0A%09%5E%27success%27%0A%21%20%21%0A");
-return self;},
+selector: "codeGeneratorClass",
+category: 'accessing',
+fn: function () {
+    var self = this;
+    return smalltalk.CodeGenerator || CodeGenerator;
+},
 args: [],
-source: unescape('chunkString%0A%0A%09%5E%27%21Object%20methodsFor%3A%20%27%27importer%20test%20method%27%27%21%0A%0AimporterTestMethod%0A%0A%09%5E%27%27success%27%27%0A%21%20%21%0A%27'),
+source: "codeGeneratorClass\x0a\x09^ CodeGenerator",
+messageSends: [],
+referencedClasses: ["CodeGenerator"]
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_compiler",
+smalltalk.method({
+selector: "compiler",
+category: 'factory',
+fn: function () {
+    var self = this;
+    var $2, $3, $1;
+    $2 = smalltalk.send(smalltalk.Compiler || Compiler, "_new", []);
+    smalltalk.send($2, "_codeGeneratorClass_", [smalltalk.send(self, "_codeGeneratorClass", [])]);
+    $3 = smalltalk.send($2, "_yourself", []);
+    $1 = $3;
+    return $1;
+},
+args: [],
+source: "compiler\x0a\x09^ Compiler new\x0a\x09\x09codeGeneratorClass: self codeGeneratorClass;\x0a\x09\x09yourself",
+messageSends: ["codeGeneratorClass:", "codeGeneratorClass", "new", "yourself"],
+referencedClasses: ["Compiler"]
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_setUp",
+smalltalk.method({
+selector: "setUp",
+category: 'initialization',
+fn: function () {
+    var self = this;
+    self['@receiver'] = smalltalk.send(smalltalk.send(self, "_targetClass", []), "_new", []);
+    return self;
+},
+args: [],
+source: "setUp\x0a\x09receiver := self targetClass new",
+messageSends: ["new", "targetClass"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_should_return_",
+smalltalk.method({
+selector: "should:return:",
+category: 'testing',
+fn: function (aString, anObject) {
+    var self = this;
+    var method;
+    var result;
+    method = smalltalk.send(smalltalk.send(self, "_compiler", []), "_install_forClass_category_", [aString, smalltalk.send(self, "_targetClass", []), "tests"]);
+    result = smalltalk.send(self['@receiver'], "_perform_", [smalltalk.send(method, "_selector", [])]);
+    smalltalk.send(smalltalk.send(self, "_targetClass", []), "_removeCompiledMethod_", [method]);
+    smalltalk.send(self, "_assert_equals_", [anObject, result]);
+    return self;
+},
+args: ["aString", "anObject"],
+source: "should: aString return: anObject\x0a\x09| method result |\x0a\x0a\x09method := self compiler install: aString forClass: self targetClass category: 'tests'.\x0a\x09result := receiver perform: method selector.\x0a\x09self targetClass removeCompiledMethod: method.\x0a\x09self assert: anObject equals: result",
+messageSends: ["install:forClass:category:", "targetClass", "compiler", "perform:", "selector", "removeCompiledMethod:", "assert:equals:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_targetClass",
+smalltalk.method({
+selector: "targetClass",
+category: 'accessing',
+fn: function () {
+    var self = this;
+    return smalltalk.DoIt || DoIt;
+},
+args: [],
+source: "targetClass\x0a\x09^ DoIt",
+messageSends: [],
+referencedClasses: ["DoIt"]
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_tearDown",
+smalltalk.method({
+selector: "tearDown",
+category: 'initialization',
+fn: function () {
+    var self = this;
+    return self;
+},
+args: [],
+source: "tearDown\x0a\x09\x22receiver := nil\x22",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.ImporterTest);
+smalltalk.CodeGeneratorTest);
 
 smalltalk.addMethod(
-unescape('_setUp'),
+"_testAssignment",
 smalltalk.method({
-selector: unescape('setUp'),
-category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_setUp", [], smalltalk.TestCase);
-smalltalk.send(self, "_cleanUp", []);
-return self;},
-args: [],
-source: unescape('setUp%0A%0A%09super%20setUp.%0A%09self%20cleanUp'),
-messageSends: ["setUp", "cleanUp"],
-referencedClasses: []
-}),
-smalltalk.ImporterTest);
-
-smalltalk.addMethod(
-unescape('_tearDown'),
-smalltalk.method({
-selector: unescape('tearDown'),
-category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_tearDown", [], smalltalk.TestCase);
-smalltalk.send(self, "_cleanUp", []);
-return self;},
-args: [],
-source: unescape('tearDown%0A%0A%09super%20tearDown.%0A%09self%20cleanUp'),
-messageSends: ["tearDown", "cleanUp"],
-referencedClasses: []
-}),
-smalltalk.ImporterTest);
-
-smalltalk.addMethod(
-unescape('_cleanUp'),
-smalltalk.method({
-selector: unescape('cleanUp'),
-category: 'running',
-fn: function (){
-var self=this;
-((($receiver = smalltalk.send(smalltalk.send((smalltalk.Object || Object), "_methodDictionary", []), "_includesKey_", [smalltalk.symbolFor("importerTestMethod")])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send((smalltalk.Object || Object), "_removeCompiledMethod_", [smalltalk.send((smalltalk.Object || Object), "_methodAt_", [smalltalk.symbolFor("importerTestMethod")])]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send((smalltalk.Object || Object), "_removeCompiledMethod_", [smalltalk.send((smalltalk.Object || Object), "_methodAt_", [smalltalk.symbolFor("importerTestMethod")])]);})]));
-return self;},
-args: [],
-source: unescape('cleanUp%0A%0A%09%28Object%20methodDictionary%20includesKey%3A%20%23importerTestMethod%29%0A%09%09ifTrue%3A%20%5B%20Object%20removeCompiledMethod%3A%20%28Object%20methodAt%3A%20%23importerTestMethod%29%5D.'),
-messageSends: ["ifTrue:", "includesKey:", "methodDictionary", "removeCompiledMethod:", "methodAt:"],
-referencedClasses: ["Object"]
-}),
-smalltalk.ImporterTest);
-
-smalltalk.addMethod(
-unescape('_bigChunkString'),
-smalltalk.method({
-selector: unescape('bigChunkString'),
-category: 'private',
-fn: function (){
-var self=this;
-return unescape("Smalltalk%20current%20createPackage%3A%20%27Cypress-Definitions%27%20properties%3A%20%23%7B%7D%21%0AObject%20subclass%3A%20%23CypressSnapshot%0A%09instanceVariableNames%3A%20%27definitions%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressSnapshot%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Adefinitions%3A%20aDefinitions%0A%0A%09definitions%20%3A%3D%20aDefinitions%0A%21%0A%0Adefinitions%0A%0A%09%5Edefinitions%0A%21%20%21%0A%0A%21CypressSnapshot%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Adefinitions%3A%20aDefinitions%0A%0A%09%5E%28self%20new%29%20definitions%3A%20aDefinitions%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPackage%0A%09instanceVariableNames%3A%20%27name%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressPackage%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0A%3D%20other%0A%09%5E%20other%20species%20%3D%20self%20species%20and%3A%20%5Bother%20name%20sameAs%3A%20name%5D%0A%21%0A%0Aname%0A%09%5E%20name%0A%21%0A%0Aname%3A%20aString%0A%09name%20%3A%3D%20aString%0A%21%0A%0Asnapshot%0A%09%7C%20package%20definitions%20name%20%20%7C%0A%09package%20%3A%3D%20Package%20named%3A%20self%20name.%0A%09definitions%20%3A%3D%20OrderedCollection%20new.%0A%09package%20sortedClasses%20do%3A%20%5B%3Acls%20%7C%0A%20%20%20%20%20%20%20%20%09definitions%20add%3A%20cls%20asCypressClassDefinition.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20cls%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09%28method%20category%20match%3A%20%27%5E%5C*%27%29%20ifFalse%3A%20%5B%20%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20cls%20class%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09%28method%20category%20match%3A%20%27%5E%5C*%27%29%20ifFalse%3A%20%5B%20%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D%5D.%0A%09name%20%3A%3D%20package%20name.%0A%09Smalltalk%20current%20classes%2C%20%28Smalltalk%20current%20classes%20collect%3A%20%5B%3Aeach%20%7C%20each%20class%5D%29%20do%3A%20%5B%3Aeach%20%7C%0A%09%09each%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09method%20category%20%3D%20%28%27*%27%2C%20name%29%20ifTrue%3A%20%5B%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D%5D.%0A%09%5E%20CypressSnapshot%20definitions%3A%20definitions%0A%21%0A%0AprintString%0A%09%5Esuper%20printString%2C%20%27%28%27%2C%20name%2C%20%27%29%27%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressDefinition%0A%09instanceVariableNames%3A%20%27%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressDefinition%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0A%3D%20aDefinition%0A%09%5E%28aDefinition%20isKindOf%3A%20CypressDefinition%29%20and%3A%20%5Bself%20isRevisionOf%3A%20aDefinition%5D%0A%21%0A%0AisRevisionOf%3A%20aDefinition%0A%09%5E%20%28aDefinition%20isKindOf%3A%20CypressDefinition%29%20and%3A%20%5BaDefinition%20description%20%3D%20self%20description%5D%0A%21%0A%0Adescription%0A%09self%20subclassResponsibility%0A%21%0A%0AisSameRevisionAs%3A%20aDefinition%0A%09%5E%20self%20%3D%20aDefinition%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPatch%0A%09instanceVariableNames%3A%20%27operations%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressPatch%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0AfromBase%3A%20baseSnapshot%20toTarget%3A%20targetSnapshot%0A%09%7C%20base%20target%20%7C%09%0A%09operations%20%3A%3D%20OrderedCollection%20new.%0A%09base%20%3A%3D%20CypressDefinitionIndex%20definitions%3A%20baseSnapshot%20definitions.%0A%09target%20%3A%3D%20CypressDefinitionIndex%20definitions%3A%20targetSnapshot%20definitions.%0A%09%0A%09target%20definitions%20do%3A%0A%09%09%5B%3At%20%7C%0A%09%09base%0A%09%09%09definitionLike%3A%20t%0A%09%09%09ifPresent%3A%20%5B%3Ab%20%7C%20%28b%20isSameRevisionAs%3A%20t%29%20ifFalse%3A%20%5Boperations%20add%3A%20%28CypressModification%20of%3A%20b%20to%3A%20t%29%5D%5D%0A%09%09%09ifAbsent%3A%20%5Boperations%20add%3A%20%28CypressAddition%20of%3A%20t%29%5D%5D.%0A%09%09%0A%09base%20definitions%20do%3A%0A%09%09%5B%3Ab%20%7C%0A%09%09target%0A%09%09%09definitionLike%3A%20b%0A%09%09%09ifPresent%3A%20%5B%3At%20%7C%20%5D%0A%09%09%09ifAbsent%3A%20%5Boperations%20add%3A%20%28CypressRemoval%20of%3A%20b%29%5D%5D%0A%21%0A%0Aoperations%0A%0A%09%5Eoperations%0A%21%20%21%0A%0A%21CypressPatch%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0AfromBase%3A%20baseSnapshot%20toTarget%3A%20targetSnapshot%0A%09%5E%20%28self%20new%29%0A%09%09fromBase%3A%20baseSnapshot%0A%09%09toTarget%3A%20targetSnapshot%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressDefinitionIndex%0A%09instanceVariableNames%3A%20%27definitionMap%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressDefinitionIndex%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aadd%3A%20aDefinition%0A%09%5E%20self%20definitionMap%20at%3A%20aDefinition%20description%20put%3A%20aDefinition%0A%21%0A%0AaddAll%3A%20aCollection%0A%09aCollection%20do%3A%20%5B%3Aea%20%7C%20self%20add%3A%20ea%5D%0A%21%0A%0AdefinitionLike%3A%20aDefinition%20ifPresent%3A%20foundBlock%20ifAbsent%3A%20errorBlock%0A%09%7C%20definition%20%7C%0A%09definition%20%3A%3D%20self%20definitionMap%20at%3A%20aDefinition%20description%20ifAbsent%3A%20%5B%5D.%0A%09%5E%20definition%0A%09%09ifNil%3A%20errorBlock%0A%09%09ifNotNil%3A%20%5BfoundBlock%20value%3A%20definition%5D%0A%21%0A%0Adefinitions%0A%09%5Eself%20definitionMap%20values%0A%21%0A%0AdefinitionMap%0A%09definitionMap%20ifNil%3A%20%5B%20definitionMap%20%3A%3D%20Dictionary%20new%20%5D.%0A%09%5E%20definitionMap%0A%21%0A%0Aremove%3A%20aDefinition%0A%09self%20definitionMap%20removeKey%3A%20aDefinition%20description%20ifAbsent%3A%20%5B%5D%0A%21%20%21%0A%0A%21CypressDefinitionIndex%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Adefinitions%3A%20aCollection%0A%09%5E%20self%20new%20addAll%3A%20aCollection%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPatchOperation%0A%09instanceVariableNames%3A%20%27%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0ACypressDefinition%20subclass%3A%20%23CypressClassDefinition%0A%09instanceVariableNames%3A%20%27name%20superclassName%20category%20comment%20instVarNames%20classInstVarNames%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressClassDefinition%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aname%3A%20aClassName%20superclassName%3A%20aSuperclassName%20category%3A%20aCategory%20instVarNames%3A%20anInstanceVariableNames%20classInstVarNames%3A%20aClassInstanceVariableNames%20comment%3A%20aComment%0A%0A%09name%20%3A%3D%20aClassName.%0A%09superclassName%20%3A%3D%20aSuperclassName.%0A%09category%20%3A%3D%20aCategory.%0A%09instVarNames%20%3A%3D%20anInstanceVariableNames.%0A%09classInstVarNames%20%3A%3D%20aClassInstanceVariableNames.%0A%09comment%20%3A%3D%20aComment%0A%21%0A%0A%3D%20aDefinition%0A%09%5E%28super%20%3D%20aDefinition%29%0A%09%09and%3A%20%5BsuperclassName%20%3D%20aDefinition%20superclassName%0A%09%09and%3A%20%5Bcategory%20%3D%20aDefinition%20category%0A%09%09and%3A%20%5BinstVarNames%20%3D%20aDefinition%20instVarNames%0A%09%09and%3A%20%5BclassInstVarNames%20%3D%20aDefinition%20classInstVarNames%0A%09%09and%3A%20%5Bcomment%20%3D%20aDefinition%20comment%5D%5D%5D%5D%5D%0A%21%0A%0AsuperclassName%0A%0A%09%5EsuperclassName%0A%21%0A%0Aname%0A%0A%09%5Ename%0A%21%0A%0Acategory%0A%0A%09%5Ecategory%0A%21%0A%0Acomment%0A%0A%09%5Ecomment%0A%21%0A%0Adescription%0A%0A%09%5E%20Array%20with%3A%20name%0A%21%0A%0AinstVarNames%0A%0A%09%5EinstVarNames%0A%21%0A%0AclassInstVarNames%0A%0A%09%5EclassInstVarNames%0A%21%20%21%0A%0A%21CypressClassDefinition%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aname%3A%20aClassName%20%0AsuperclassName%3A%20aSuperclassName%0Acategory%3A%20aCategory%0AinstVarNames%3A%20anInstanceVariableNames%0AclassInstVarNames%3A%20aClassInstanceVariableNames%0Acomment%3A%20aComment%0A%0A%09%5E%28self%20new%29%20%0A%09%09name%3A%20aClassName%20%0A%09%09superclassName%3A%20aSuperclassName%0A%09%09category%3A%20aCategory%0A%09%09instVarNames%3A%20anInstanceVariableNames%0A%09%09classInstVarNames%3A%20aClassInstanceVariableNames%0A%09%09comment%3A%20aComment%0A%21%20%21%0A%0ACypressDefinition%20subclass%3A%20%23CypressMethodDefinition%0A%09instanceVariableNames%3A%20%27classIsMeta%20source%20category%20selector%20className%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressMethodDefinition%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0AclassName%3A%20aName%20classIsMeta%3A%20isMetaclass%20selector%3A%20aSelector%20category%3A%20aCategory%20source%3A%20aSource%0A%0A%09className%20%3A%3D%20aName.%0A%09classIsMeta%20%3A%3D%20isMetaclass.%0A%09selector%20%3A%3D%20aSelector.%0A%09category%20%3A%3D%20aCategory.%0A%09source%20%3A%3D%20aSource.%0A%21%0A%0A%3D%20aDefinition%0A%20%20%20%20%5E%20super%20%3D%20aDefinition%0A%20%20%20%20%20%20%20%20and%3A%20%5B%20aDefinition%20source%20%3D%20self%20source%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20and%3A%20%5B%20aDefinition%20category%20%3D%20self%20category%20%5D%20%5D%0A%21%0A%0Asource%0A%0A%09%5Esource%0A%21%0A%0Acategory%0A%0A%09%5Ecategory%0A%21%0A%0Adescription%0A%09%5E%20Array%09%0A%09%09with%3A%20className%0A%09%09with%3A%20selector%0A%09%09with%3A%20classIsMeta%0A%21%20%21%0A%0A%21CypressMethodDefinition%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0AclassName%3A%20aName%0AclassIsMeta%3A%20isMetaclass%0Aselector%3A%20aSelector%0Acategory%3A%20aCategory%0Asource%3A%20aSource%0A%0A%09%5E%28self%20new%29%0A%09%09className%3A%20aName%0A%09%09classIsMeta%3A%20isMetaclass%0A%09%09selector%3A%20aSelector%0A%09%09category%3A%20aCategory%0A%09%09source%3A%20aSource%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressAddition%0A%09instanceVariableNames%3A%20%27definition%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressAddition%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Adefinition%3A%20aDefinition%0A%0A%09definition%20%3A%3D%20aDefinition%0A%21%20%21%0A%0A%21CypressAddition%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aof%3A%20aDefinition%0A%09%5E%20self%20new%20definition%3A%20aDefinition%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressModification%0A%09instanceVariableNames%3A%20%27obsoletion%20modification%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressModification%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Abase%3A%20base%20target%3A%20target%0A%0A%09obsoletion%20%3A%3D%20base.%0A%09modification%20%3A%3D%20target.%0A%21%20%21%0A%0A%21CypressModification%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aof%3A%20base%20to%3A%20target%0A%09%5E%20self%20new%20base%3A%20base%20target%3A%20target%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressRemoval%0A%09instanceVariableNames%3A%20%27definition%27%0A%09package%3A%20%27Cypress-Definitions%27%21%0A%0A%21CypressRemoval%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Adefinition%3A%20aDefinition%0A%0A%09definition%20%3A%3D%20aDefinition%0A%21%20%21%0A%0A%21CypressRemoval%20class%20methodsFor%3A%20%27not%20yet%20classified%27%21%0A%0Aof%3A%20aDefinition%0A%09%5E%20self%20new%20definition%3A%20aDefinition%0A%21%20%21%0A%0A%21Object%20methodsFor%3A%20%27*Cypress-Definitions%27%21%0A%0Aspecies%0A%0A%09%5Eself%20class%0A%21%20%21%0A%0A%21Class%20methodsFor%3A%20%27*Cypress-Definitions%27%21%0A%0AasCypressClassDefinition%0A%09%5ECypressClassDefinition%0A%09%09name%3A%20self%20name%0A%09%09superclassName%3A%20self%20superclass%20name%0A%09%09category%3A%20self%20category%20%0A%09%09instVarNames%3A%20self%20instanceVariableNames%0A%09%09classInstVarNames%3A%20self%20class%20instanceVariableNames%0A%09%09comment%3A%20self%20comment%0A%21%20%21%0A%0A%21CompiledMethod%20methodsFor%3A%20%27*Cypress-Definitions%27%21%0A%0AasCypressMethodDefinition%0A%0A%09%5ECypressMethodDefinition%20%0A%20%20%20%20%20%20%20%20%09className%3A%20self%20methodClass%20name%0A%09%09classIsMeta%3A%20self%20methodClass%20isMetaclass%0A%09%09selector%3A%20self%20selector%0A%09%09category%3A%20self%20category%0A%09%09source%3A%20self%20source%0A%21%20%21%0A%0A%21CharacterArray%20methodsFor%3A%20%27*Cypress-Definitions%27%21%0A%0AsameAs%3A%20aString%0A%0A%09%5Eself%20asUppercase%20%3D%20aString%20asUppercase%0A%21%20%21%0A%0A");
-return self;},
-args: [],
-source: unescape('bigChunkString%0A%0A%09%5E%27Smalltalk%20current%20createPackage%3A%20%27%27Cypress-Definitions%27%27%20properties%3A%20%23%7B%7D%21%0AObject%20subclass%3A%20%23CypressSnapshot%0A%09instanceVariableNames%3A%20%27%27definitions%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressSnapshot%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Adefinitions%3A%20aDefinitions%0A%0A%09definitions%20%3A%3D%20aDefinitions%0A%21%0A%0Adefinitions%0A%0A%09%5Edefinitions%0A%21%20%21%0A%0A%21CypressSnapshot%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Adefinitions%3A%20aDefinitions%0A%0A%09%5E%28self%20new%29%20definitions%3A%20aDefinitions%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPackage%0A%09instanceVariableNames%3A%20%27%27name%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressPackage%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0A%3D%20other%0A%09%5E%20other%20species%20%3D%20self%20species%20and%3A%20%5Bother%20name%20sameAs%3A%20name%5D%0A%21%0A%0Aname%0A%09%5E%20name%0A%21%0A%0Aname%3A%20aString%0A%09name%20%3A%3D%20aString%0A%21%0A%0Asnapshot%0A%09%7C%20package%20definitions%20name%20%20%7C%0A%09package%20%3A%3D%20Package%20named%3A%20self%20name.%0A%09definitions%20%3A%3D%20OrderedCollection%20new.%0A%09package%20sortedClasses%20do%3A%20%5B%3Acls%20%7C%0A%20%20%20%20%20%20%20%20%09definitions%20add%3A%20cls%20asCypressClassDefinition.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20cls%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09%28method%20category%20match%3A%20%27%27%5E%5C*%27%27%29%20ifFalse%3A%20%5B%20%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20cls%20class%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09%28method%20category%20match%3A%20%27%27%5E%5C*%27%27%29%20ifFalse%3A%20%5B%20%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D%5D.%0A%09name%20%3A%3D%20package%20name.%0A%09Smalltalk%20current%20classes%2C%20%28Smalltalk%20current%20classes%20collect%3A%20%5B%3Aeach%20%7C%20each%20class%5D%29%20do%3A%20%5B%3Aeach%20%7C%0A%09%09each%20methodDictionary%20values%20do%3A%20%5B%3Amethod%20%7C%0A%09%09%09method%20category%20%3D%20%28%27%27*%27%27%2C%20name%29%20ifTrue%3A%20%5B%0A%09%09%09%09definitions%20add%3A%20method%20asCypressMethodDefinition%20%5D%5D%5D.%0A%09%5E%20CypressSnapshot%20definitions%3A%20definitions%0A%21%0A%0AprintString%0A%09%5Esuper%20printString%2C%20%27%27%28%27%27%2C%20name%2C%20%27%27%29%27%27%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressDefinition%0A%09instanceVariableNames%3A%20%27%27%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressDefinition%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0A%3D%20aDefinition%0A%09%5E%28aDefinition%20isKindOf%3A%20CypressDefinition%29%20and%3A%20%5Bself%20isRevisionOf%3A%20aDefinition%5D%0A%21%0A%0AisRevisionOf%3A%20aDefinition%0A%09%5E%20%28aDefinition%20isKindOf%3A%20CypressDefinition%29%20and%3A%20%5BaDefinition%20description%20%3D%20self%20description%5D%0A%21%0A%0Adescription%0A%09self%20subclassResponsibility%0A%21%0A%0AisSameRevisionAs%3A%20aDefinition%0A%09%5E%20self%20%3D%20aDefinition%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPatch%0A%09instanceVariableNames%3A%20%27%27operations%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressPatch%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0AfromBase%3A%20baseSnapshot%20toTarget%3A%20targetSnapshot%0A%09%7C%20base%20target%20%7C%09%0A%09operations%20%3A%3D%20OrderedCollection%20new.%0A%09base%20%3A%3D%20CypressDefinitionIndex%20definitions%3A%20baseSnapshot%20definitions.%0A%09target%20%3A%3D%20CypressDefinitionIndex%20definitions%3A%20targetSnapshot%20definitions.%0A%09%0A%09target%20definitions%20do%3A%0A%09%09%5B%3At%20%7C%0A%09%09base%0A%09%09%09definitionLike%3A%20t%0A%09%09%09ifPresent%3A%20%5B%3Ab%20%7C%20%28b%20isSameRevisionAs%3A%20t%29%20ifFalse%3A%20%5Boperations%20add%3A%20%28CypressModification%20of%3A%20b%20to%3A%20t%29%5D%5D%0A%09%09%09ifAbsent%3A%20%5Boperations%20add%3A%20%28CypressAddition%20of%3A%20t%29%5D%5D.%0A%09%09%0A%09base%20definitions%20do%3A%0A%09%09%5B%3Ab%20%7C%0A%09%09target%0A%09%09%09definitionLike%3A%20b%0A%09%09%09ifPresent%3A%20%5B%3At%20%7C%20%5D%0A%09%09%09ifAbsent%3A%20%5Boperations%20add%3A%20%28CypressRemoval%20of%3A%20b%29%5D%5D%0A%21%0A%0Aoperations%0A%0A%09%5Eoperations%0A%21%20%21%0A%0A%21CypressPatch%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0AfromBase%3A%20baseSnapshot%20toTarget%3A%20targetSnapshot%0A%09%5E%20%28self%20new%29%0A%09%09fromBase%3A%20baseSnapshot%0A%09%09toTarget%3A%20targetSnapshot%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressDefinitionIndex%0A%09instanceVariableNames%3A%20%27%27definitionMap%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressDefinitionIndex%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aadd%3A%20aDefinition%0A%09%5E%20self%20definitionMap%20at%3A%20aDefinition%20description%20put%3A%20aDefinition%0A%21%0A%0AaddAll%3A%20aCollection%0A%09aCollection%20do%3A%20%5B%3Aea%20%7C%20self%20add%3A%20ea%5D%0A%21%0A%0AdefinitionLike%3A%20aDefinition%20ifPresent%3A%20foundBlock%20ifAbsent%3A%20errorBlock%0A%09%7C%20definition%20%7C%0A%09definition%20%3A%3D%20self%20definitionMap%20at%3A%20aDefinition%20description%20ifAbsent%3A%20%5B%5D.%0A%09%5E%20definition%0A%09%09ifNil%3A%20errorBlock%0A%09%09ifNotNil%3A%20%5BfoundBlock%20value%3A%20definition%5D%0A%21%0A%0Adefinitions%0A%09%5Eself%20definitionMap%20values%0A%21%0A%0AdefinitionMap%0A%09definitionMap%20ifNil%3A%20%5B%20definitionMap%20%3A%3D%20Dictionary%20new%20%5D.%0A%09%5E%20definitionMap%0A%21%0A%0Aremove%3A%20aDefinition%0A%09self%20definitionMap%20removeKey%3A%20aDefinition%20description%20ifAbsent%3A%20%5B%5D%0A%21%20%21%0A%0A%21CypressDefinitionIndex%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Adefinitions%3A%20aCollection%0A%09%5E%20self%20new%20addAll%3A%20aCollection%0A%21%20%21%0A%0AObject%20subclass%3A%20%23CypressPatchOperation%0A%09instanceVariableNames%3A%20%27%27%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0ACypressDefinition%20subclass%3A%20%23CypressClassDefinition%0A%09instanceVariableNames%3A%20%27%27name%20superclassName%20category%20comment%20instVarNames%20classInstVarNames%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressClassDefinition%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aname%3A%20aClassName%20superclassName%3A%20aSuperclassName%20category%3A%20aCategory%20instVarNames%3A%20anInstanceVariableNames%20classInstVarNames%3A%20aClassInstanceVariableNames%20comment%3A%20aComment%0A%0A%09name%20%3A%3D%20aClassName.%0A%09superclassName%20%3A%3D%20aSuperclassName.%0A%09category%20%3A%3D%20aCategory.%0A%09instVarNames%20%3A%3D%20anInstanceVariableNames.%0A%09classInstVarNames%20%3A%3D%20aClassInstanceVariableNames.%0A%09comment%20%3A%3D%20aComment%0A%21%0A%0A%3D%20aDefinition%0A%09%5E%28super%20%3D%20aDefinition%29%0A%09%09and%3A%20%5BsuperclassName%20%3D%20aDefinition%20superclassName%0A%09%09and%3A%20%5Bcategory%20%3D%20aDefinition%20category%0A%09%09and%3A%20%5BinstVarNames%20%3D%20aDefinition%20instVarNames%0A%09%09and%3A%20%5BclassInstVarNames%20%3D%20aDefinition%20classInstVarNames%0A%09%09and%3A%20%5Bcomment%20%3D%20aDefinition%20comment%5D%5D%5D%5D%5D%0A%21%0A%0AsuperclassName%0A%0A%09%5EsuperclassName%0A%21%0A%0Aname%0A%0A%09%5Ename%0A%21%0A%0Acategory%0A%0A%09%5Ecategory%0A%21%0A%0Acomment%0A%0A%09%5Ecomment%0A%21%0A%0Adescription%0A%0A%09%5E%20Array%20with%3A%20name%0A%21%0A%0AinstVarNames%0A%0A%09%5EinstVarNames%0A%21%0A%0AclassInstVarNames%0A%0A%09%5EclassInstVarNames%0A%21%20%21%0A%0A%21CypressClassDefinition%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aname%3A%20aClassName%20%0AsuperclassName%3A%20aSuperclassName%0Acategory%3A%20aCategory%0AinstVarNames%3A%20anInstanceVariableNames%0AclassInstVarNames%3A%20aClassInstanceVariableNames%0Acomment%3A%20aComment%0A%0A%09%5E%28self%20new%29%20%0A%09%09name%3A%20aClassName%20%0A%09%09superclassName%3A%20aSuperclassName%0A%09%09category%3A%20aCategory%0A%09%09instVarNames%3A%20anInstanceVariableNames%0A%09%09classInstVarNames%3A%20aClassInstanceVariableNames%0A%09%09comment%3A%20aComment%0A%21%20%21%0A%0ACypressDefinition%20subclass%3A%20%23CypressMethodDefinition%0A%09instanceVariableNames%3A%20%27%27classIsMeta%20source%20category%20selector%20className%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressMethodDefinition%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0AclassName%3A%20aName%20classIsMeta%3A%20isMetaclass%20selector%3A%20aSelector%20category%3A%20aCategory%20source%3A%20aSource%0A%0A%09className%20%3A%3D%20aName.%0A%09classIsMeta%20%3A%3D%20isMetaclass.%0A%09selector%20%3A%3D%20aSelector.%0A%09category%20%3A%3D%20aCategory.%0A%09source%20%3A%3D%20aSource.%0A%21%0A%0A%3D%20aDefinition%0A%20%20%20%20%5E%20super%20%3D%20aDefinition%0A%20%20%20%20%20%20%20%20and%3A%20%5B%20aDefinition%20source%20%3D%20self%20source%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20and%3A%20%5B%20aDefinition%20category%20%3D%20self%20category%20%5D%20%5D%0A%21%0A%0Asource%0A%0A%09%5Esource%0A%21%0A%0Acategory%0A%0A%09%5Ecategory%0A%21%0A%0Adescription%0A%09%5E%20Array%09%0A%09%09with%3A%20className%0A%09%09with%3A%20selector%0A%09%09with%3A%20classIsMeta%0A%21%20%21%0A%0A%21CypressMethodDefinition%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0AclassName%3A%20aName%0AclassIsMeta%3A%20isMetaclass%0Aselector%3A%20aSelector%0Acategory%3A%20aCategory%0Asource%3A%20aSource%0A%0A%09%5E%28self%20new%29%0A%09%09className%3A%20aName%0A%09%09classIsMeta%3A%20isMetaclass%0A%09%09selector%3A%20aSelector%0A%09%09category%3A%20aCategory%0A%09%09source%3A%20aSource%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressAddition%0A%09instanceVariableNames%3A%20%27%27definition%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressAddition%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Adefinition%3A%20aDefinition%0A%0A%09definition%20%3A%3D%20aDefinition%0A%21%20%21%0A%0A%21CypressAddition%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aof%3A%20aDefinition%0A%09%5E%20self%20new%20definition%3A%20aDefinition%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressModification%0A%09instanceVariableNames%3A%20%27%27obsoletion%20modification%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressModification%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Abase%3A%20base%20target%3A%20target%0A%0A%09obsoletion%20%3A%3D%20base.%0A%09modification%20%3A%3D%20target.%0A%21%20%21%0A%0A%21CypressModification%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aof%3A%20base%20to%3A%20target%0A%09%5E%20self%20new%20base%3A%20base%20target%3A%20target%0A%21%20%21%0A%0ACypressPatchOperation%20subclass%3A%20%23CypressRemoval%0A%09instanceVariableNames%3A%20%27%27definition%27%27%0A%09package%3A%20%27%27Cypress-Definitions%27%27%21%0A%0A%21CypressRemoval%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Adefinition%3A%20aDefinition%0A%0A%09definition%20%3A%3D%20aDefinition%0A%21%20%21%0A%0A%21CypressRemoval%20class%20methodsFor%3A%20%27%27not%20yet%20classified%27%27%21%0A%0Aof%3A%20aDefinition%0A%09%5E%20self%20new%20definition%3A%20aDefinition%0A%21%20%21%0A%0A%21Object%20methodsFor%3A%20%27%27*Cypress-Definitions%27%27%21%0A%0Aspecies%0A%0A%09%5Eself%20class%0A%21%20%21%0A%0A%21Class%20methodsFor%3A%20%27%27*Cypress-Definitions%27%27%21%0A%0AasCypressClassDefinition%0A%09%5ECypressClassDefinition%0A%09%09name%3A%20self%20name%0A%09%09superclassName%3A%20self%20superclass%20name%0A%09%09category%3A%20self%20category%20%0A%09%09instVarNames%3A%20self%20instanceVariableNames%0A%09%09classInstVarNames%3A%20self%20class%20instanceVariableNames%0A%09%09comment%3A%20self%20comment%0A%21%20%21%0A%0A%21CompiledMethod%20methodsFor%3A%20%27%27*Cypress-Definitions%27%27%21%0A%0AasCypressMethodDefinition%0A%0A%09%5ECypressMethodDefinition%20%0A%20%20%20%20%20%20%20%20%09className%3A%20self%20methodClass%20name%0A%09%09classIsMeta%3A%20self%20methodClass%20isMetaclass%0A%09%09selector%3A%20self%20selector%0A%09%09category%3A%20self%20category%0A%09%09source%3A%20self%20source%0A%21%20%21%0A%0A%21CharacterArray%20methodsFor%3A%20%27%27*Cypress-Definitions%27%27%21%0A%0AsameAs%3A%20aString%0A%0A%09%5Eself%20asUppercase%20%3D%20aString%20asUppercase%0A%21%20%21%0A%0A%27%0A'),
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.ImporterTest);
-
-smalltalk.addMethod(
-unescape('_testBigChunkString'),
-smalltalk.method({
-selector: unescape('testBigChunkString'),
+selector: "testAssignment",
 category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(smalltalk.send((smalltalk.Importer || Importer), "_new", []), "_import_", [smalltalk.send(smalltalk.send(self, "_bigChunkString", []), "_readStream", [])]);
-smalltalk.send(smalltalk.send((smalltalk.CypressPackage || CypressPackage), "_new", []), "_species", []);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo | a | a := true ifTrue: [ 1 ]. ^ a", 1]);
+    smalltalk.send(self, "_should_return_", ["foo | a | a := false ifTrue: [ 1 ]. ^ a", nil]);
+    smalltalk.send(self, "_should_return_", ["foo | a | ^ a := true ifTrue: [ 1 ]", 1]);
+    return self;
+},
 args: [],
-source: unescape('testBigChunkString%0A%09%22importer%20does%20not%20correctly%20add%20extension%20methods.%0A%0A%09%20After%20loading%20in%20AmberProjectImporter%2C%20the%20following%20import%20fails...get%20a%20MNU%20from%20%60CypressPackage%20new%20species%60%3A%0A%0A%20%20%20%20%09%09AmberProjectImporter%0A%09%09%09importSTPackage%3A%20%27Cypress-Definitions%27%20%0A%09%09%09prefix%3A%20%27tests/%27.%0A%0A%09%09CypressPackage%20new%20species.%20%0A%0A%09WARNING%20this%20guy%20isn%27t%20cleaned%20up%20automatically%22%0A%0A%09Importer%20new%20import%3A%20self%20bigChunkString%20readStream.%0A%09CypressPackage%20new%20species.%0A'),
-messageSends: ["import:", "new", "readStream", "bigChunkString", "species"],
-referencedClasses: ["Importer", "CypressPackage"]
-}),
-smalltalk.ImporterTest);
-
-smalltalk.addMethod(
-unescape('_testChunkString'),
-smalltalk.method({
-selector: unescape('testChunkString'),
-category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(smalltalk.send((smalltalk.Importer || Importer), "_new", []), "_import_", [smalltalk.send(smalltalk.send(self, "_chunkString", []), "_readStream", [])]);
-smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send((smalltalk.Object || Object), "_methodDictionary", []), "_includesKey_", ["importerTestMethod"])]);
-smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send((smalltalk.Object || Object), "_new", []), "_importerTestMethod", []), "__eq", ["success"])]);
-return self;},
-args: [],
-source: unescape('testChunkString%0A%0A%09Importer%20new%20import%3A%20self%20chunkString%20readStream.%0A%09self%20assert%3A%20%28Object%20methodDictionary%20includesKey%3A%20%27importerTestMethod%27%29.%0A%09self%20assert%3A%20%28Object%20new%20importerTestMethod%20%3D%20%27success%27%29.%0A'),
-messageSends: ["import:", "new", "readStream", "chunkString", "assert:", "includesKey:", "methodDictionary", unescape("%3D"), "importerTestMethod"],
-referencedClasses: ["Importer", "Object"]
-}),
-smalltalk.ImporterTest);
-
-
-
-smalltalk.addMethod(
-unescape('_importerLoadMethod'),
-smalltalk.method({
-selector: unescape('importerLoadMethod'),
-category: '*Compiler-Tests',
-fn: function (){
-var self=this;
-return "success";
-return self;},
-args: [],
-source: unescape('importerLoadMethod%0A%0A%09%5E%27success%27'),
-messageSends: [],
+source: "testAssignment\x0a\x09self should: 'foo | a | a := true ifTrue: [ 1 ]. ^ a' return: 1.\x0a\x09self should: 'foo | a | a := false ifTrue: [ 1 ]. ^ a' return: nil.\x0a\x0a\x09self should: 'foo | a | ^ a := true ifTrue: [ 1 ]' return: 1 ",
+messageSends: ["should:return:"],
 referencedClasses: []
 }),
-smalltalk.Object);
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testBlockReturn",
+smalltalk.method({
+selector: "testBlockReturn",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ #(1 2 3) collect: [ :each | true ifTrue: [ each + 1 ] ]", [2, 3, 4]]);
+    smalltalk.send(self, "_should_return_", ["foo ^ #(1 2 3) collect: [ :each | false ifFalse: [ each + 1 ] ]", [2, 3, 4]]);
+    smalltalk.send(self, "_should_return_", ["foo ^ #(1 2 3) collect: [ :each | each odd ifTrue: [ each + 1 ] ifFalse: [ each - 1 ] ]", [2, 1, 4]]);
+    return self;
+},
+args: [],
+source: "testBlockReturn\x0a\x09self should: 'foo ^ #(1 2 3) collect: [ :each | true ifTrue: [ each + 1 ] ]' return: #(2 3 4).\x0a\x09self should: 'foo ^ #(1 2 3) collect: [ :each | false ifFalse: [ each + 1 ] ]' return: #(2 3 4).\x0a\x09self should: 'foo ^ #(1 2 3) collect: [ :each | each odd ifTrue: [ each + 1 ] ifFalse: [ each - 1 ] ]' return: #(2 1 4).",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testCascades",
+smalltalk.method({
+selector: "testCascades",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ Array new add: 3; add: 4; yourself", [3, 4]]);
+    return self;
+},
+args: [],
+source: "testCascades\x0a\x09\x0a\x09self should: 'foo ^ Array new add: 3; add: 4; yourself' return: #(3 4)",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testLiterals",
+smalltalk.method({
+selector: "testLiterals",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 'hello'", "hello"]);
+    smalltalk.send(self, "_should_return_", ["foo ^ #(1 2 3 4)", [1, 2, 3, 4]]);
+    smalltalk.send(self, "_should_return_", ["foo ^ {1. [:x | x ] value: 2. 3. [4] value}", [1, 2, 3, 4]]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true", true]);
+    smalltalk.send(self, "_should_return_", ["foo ^ false", false]);
+    smalltalk.send(self, "_should_return_", ["foo ^ #{1->2. 3->4}", smalltalk.HashedCollection._fromPairs_([smalltalk.send(1, "__minus_gt", [2]), smalltalk.send(3, "__minus_gt", [4])])]);
+    smalltalk.send(self, "_should_return_", ["foo ^ #hello", smalltalk.symbolFor("hello")]);
+    smalltalk.send(self, "_should_return_", ["foo ^ -123.456", -123.456]);
+    return self;
+},
+args: [],
+source: "testLiterals\x0a\x09self should: 'foo ^ 1' return: 1.\x0a\x09self should: 'foo ^ ''hello''' return: 'hello'.\x0a\x09self should: 'foo ^ #(1 2 3 4)' return: #(1 2 3 4).\x0a\x09self should: 'foo ^ {1. [:x | x ] value: 2. 3. [4] value}' return: #(1 2 3 4).\x0a\x09self should: 'foo ^ true' return: true.\x0a\x09self should: 'foo ^ false' return: false.\x0a\x09self should: 'foo ^ #{1->2. 3->4}' return: #{1->2. 3->4}.\x0a\x09self should: 'foo ^ #hello' return: #hello.\x0a\x09self should: 'foo ^ -123.456' return: -123.456",
+messageSends: ["should:return:", "->"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testLocalReturn",
+smalltalk.method({
+selector: "testLocalReturn",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 + 1", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ", self['@receiver']]);
+    smalltalk.send(self, "_should_return_", ["foo self asString", self['@receiver']]);
+    smalltalk.send(self, "_should_return_", ["foo | a b | a := 1. b := 2. ^ a + b", 3]);
+    return self;
+},
+args: [],
+source: "testLocalReturn\x0a\x09self should: 'foo ^ 1' return: 1.\x0a\x09self should: 'foo ^ 1 + 1' return: 2.\x0a\x09self should: 'foo ' return: receiver.\x0a\x09self should: 'foo self asString' return: receiver.\x0a\x09self should: 'foo | a b | a := 1. b := 2. ^ a + b' return: 3",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testMessageSends",
+smalltalk.method({
+selector: "testMessageSends",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 asString", "1"]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 + 1", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 + 2 * 3", 9]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 to: 3", [1, 2, 3]]);
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 to: 5 by: 2", [1, 3, 5]]);
+    return self;
+},
+args: [],
+source: "testMessageSends\x0a\x09self should: 'foo ^ 1 asString' return: '1'.\x0a\x0a\x09self should: 'foo ^ 1 + 1' return: 2.\x0a\x09self should: 'foo ^ 1 + 2 * 3' return: 9.\x0a\x0a\x09self should: 'foo ^ 1 to: 3' return: #(1 2 3).\x0a\x09self should: 'foo ^ 1 to: 5 by: 2' return: #(1 3 5)",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testNestedIfTrue",
+smalltalk.method({
+selector: "testNestedIfTrue",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifTrue: [ false ifFalse: [ 1 ] ]", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifTrue: [ false ifTrue: [ 1 ] ]", nil]);
+    smalltalk.send(self, "_should_return_", ["foo true ifTrue: [ false ifFalse: [ ^ 1 ] ]", 1]);
+    smalltalk.send(self, "_should_return_", ["foo true ifTrue: [ false ifTrue: [ ^ 1 ] ]", self['@receiver']]);
+    return self;
+},
+args: [],
+source: "testNestedIfTrue\x0a\x09self should: 'foo ^ true ifTrue: [ false ifFalse: [ 1 ] ]' return: 1.\x0a\x09self should: 'foo ^ true ifTrue: [ false ifTrue: [ 1 ] ]' return: nil.\x0a\x0a\x09self should: 'foo true ifTrue: [ false ifFalse: [ ^ 1 ] ]' return: 1.\x0a\x09self should: 'foo true ifTrue: [ false ifTrue: [ ^ 1 ] ]' return: receiver.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testNonLocalReturn",
+smalltalk.method({
+selector: "testNonLocalReturn",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo [ ^ 1 ] value", 1]);
+    smalltalk.send(self, "_should_return_", ["foo [ ^ 1 + 1 ] value", 2]);
+    smalltalk.send(self, "_should_return_", ["foo | a b | a := 1. b := 2. [ ^ a + b ] value. self halt", 3]);
+    smalltalk.send(self, "_should_return_", ["foo [ :x | ^ x + x ] value: 4. ^ 2", 8]);
+    return self;
+},
+args: [],
+source: "testNonLocalReturn\x0a\x09self should: 'foo [ ^ 1 ] value' return: 1.\x0a\x09self should: 'foo [ ^ 1 + 1 ] value' return: 2.\x0a\x09self should: 'foo | a b | a := 1. b := 2. [ ^ a + b ] value. self halt' return: 3.\x0a\x09self should: 'foo [ :x | ^ x + x ] value: 4. ^ 2' return: 8",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifFalse",
+smalltalk.method({
+selector: "testifFalse",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo true ifFalse: [ ^ 1 ]", self['@receiver']]);
+    smalltalk.send(self, "_should_return_", ["foo false ifFalse: [ ^ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifFalse: [ 1 ]", nil]);
+    smalltalk.send(self, "_should_return_", ["foo ^ false ifFalse: [ 2 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifFalse\x0a\x09self should: 'foo true ifFalse: [ ^ 1 ]' return: receiver.\x0a\x09self should: 'foo false ifFalse: [ ^ 2 ]' return: 2.\x0a\x09\x0a\x09self should: 'foo ^ true ifFalse: [ 1 ]' return: nil.\x0a\x09self should: 'foo ^ false ifFalse: [ 2 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifFalseIfTrue",
+smalltalk.method({
+selector: "testifFalseIfTrue",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo true ifFalse: [ ^ 1 ] ifTrue: [ ^ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo false ifFalse: [ ^ 2 ] ifTrue: [ ^1 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifFalse: [ 1 ] ifTrue: [ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ false ifFalse: [ 2 ] ifTrue: [ 1 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifFalseIfTrue\x0a\x09self should: 'foo true ifFalse: [ ^ 1 ] ifTrue: [ ^ 2 ]' return: 2.\x0a\x09self should: 'foo false ifFalse: [ ^ 2 ] ifTrue: [ ^1 ]' return: 2.\x0a\x09\x0a\x09self should: 'foo ^ true ifFalse: [ 1 ] ifTrue: [ 2 ]' return: 2.\x0a\x09self should: 'foo ^ false ifFalse: [ 2 ] ifTrue: [ 1 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifNil",
+smalltalk.method({
+selector: "testifNil",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 ifNil: [ 2 ]", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ nil ifNil: [ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo 1 ifNil: [ ^ 2 ]", self['@receiver']]);
+    smalltalk.send(self, "_should_return_", ["foo nil ifNil: [ ^ 2 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifNil\x0a\x09self should: 'foo ^ 1 ifNil: [ 2 ]' return: 1.\x0a\x09self should: 'foo ^ nil ifNil: [ 2 ]' return: 2.\x0a\x0a\x09self should: 'foo 1 ifNil: [ ^ 2 ]' return: receiver.\x0a\x09self should: 'foo nil ifNil: [ ^ 2 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifNilIfNotNil",
+smalltalk.method({
+selector: "testifNilIfNotNil",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 ifNil: [ 2 ] ifNotNil: [ 3 ]", 3]);
+    smalltalk.send(self, "_should_return_", ["foo ^ nil ifNil: [ 2 ] ifNotNil: [ 3 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo 1 ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]", 3]);
+    smalltalk.send(self, "_should_return_", ["foo nil ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifNilIfNotNil\x0a\x09self should: 'foo ^ 1 ifNil: [ 2 ] ifNotNil: [ 3 ]' return: 3.\x0a\x09self should: 'foo ^ nil ifNil: [ 2 ] ifNotNil: [ 3 ]' return: 2.\x0a\x0a\x09self should: 'foo 1 ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]' return: 3.\x0a\x09self should: 'foo nil ifNil: [ ^ 2 ] ifNotNil: [ ^3 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifNotNil",
+smalltalk.method({
+selector: "testifNotNil",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo ^ 1 ifNotNil: [ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ nil ifNotNil: [ 2 ]", nil]);
+    smalltalk.send(self, "_should_return_", ["foo 1 ifNotNil: [ ^ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo nil ifNotNil: [ ^ 2 ]", self['@receiver']]);
+    return self;
+},
+args: [],
+source: "testifNotNil\x0a\x09self should: 'foo ^ 1 ifNotNil: [ 2 ]' return: 2.\x0a\x09self should: 'foo ^ nil ifNotNil: [ 2 ]' return: nil.\x0a\x0a\x09self should: 'foo 1 ifNotNil: [ ^ 2 ]' return: 2.\x0a\x09self should: 'foo nil ifNotNil: [ ^ 2 ]' return: receiver.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifTrue",
+smalltalk.method({
+selector: "testifTrue",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo false ifTrue: [ ^ 1 ]", self['@receiver']]);
+    smalltalk.send(self, "_should_return_", ["foo true ifTrue: [ ^ 2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo ^ false ifTrue: [ 1 ]", nil]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifTrue: [ 2 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifTrue\x0a\x09self should: 'foo false ifTrue: [ ^ 1 ]' return: receiver.\x0a\x09self should: 'foo true ifTrue: [ ^ 2 ]' return: 2.\x0a\x09\x0a\x09self should: 'foo ^ false ifTrue: [ 1 ]' return: nil.\x0a\x09self should: 'foo ^ true ifTrue: [ 2 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+smalltalk.addMethod(
+"_testifTrueIfFalse",
+smalltalk.method({
+selector: "testifTrueIfFalse",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_should_return_", ["foo false ifTrue: [ ^ 1 ] ifFalse: [ ^2 ]", 2]);
+    smalltalk.send(self, "_should_return_", ["foo true ifTrue: [ ^ 1 ] ifFalse: [ ^ 2 ]", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ false ifTrue: [ 2 ] ifFalse: [ 1 ]", 1]);
+    smalltalk.send(self, "_should_return_", ["foo ^ true ifTrue: [ 2 ] ifFalse: [ 1 ]", 2]);
+    return self;
+},
+args: [],
+source: "testifTrueIfFalse\x0a\x09self should: 'foo false ifTrue: [ ^ 1 ] ifFalse: [ ^2 ]' return: 2.\x0a\x09self should: 'foo true ifTrue: [ ^ 1 ] ifFalse: [ ^ 2 ]' return: 1.\x0a\x09\x0a\x09self should: 'foo ^ false ifTrue: [ 2 ] ifFalse: [ 1 ]' return: 1.\x0a\x09self should: 'foo ^ true ifTrue: [ 2 ] ifFalse: [ 1 ]' return: 2.",
+messageSends: ["should:return:"],
+referencedClasses: []
+}),
+smalltalk.CodeGeneratorTest);
+
+
+
+smalltalk.addClass('InliningCodeGeneratorTest', smalltalk.CodeGeneratorTest, [], 'Compiler-Tests');
+smalltalk.addMethod(
+"_codeGeneratorClass",
+smalltalk.method({
+selector: "codeGeneratorClass",
+category: 'accessing',
+fn: function () {
+    var self = this;
+    return smalltalk.InliningCodeGenerator || InliningCodeGenerator;
+},
+args: [],
+source: "codeGeneratorClass\x0a\x09^ InliningCodeGenerator",
+messageSends: [],
+referencedClasses: ["InliningCodeGenerator"]
+}),
+smalltalk.InliningCodeGeneratorTest);
+
+
+
+smalltalk.addClass('ScopeVarTest', smalltalk.TestCase, [], 'Compiler-Tests');
+smalltalk.addMethod(
+"_testClassRefVar",
+smalltalk.method({
+selector: "testClassRefVar",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var $1, $2;
+    var node;
+    $1 = smalltalk.send(smalltalk.ClassReferenceNode || ClassReferenceNode, "_new", []);
+    smalltalk.send($1, "_value_", ["Object"]);
+    $2 = smalltalk.send($1, "_yourself", []);
+    node = $2;
+    smalltalk.send(smalltalk.send(smalltalk.SemanticAnalyzer || SemanticAnalyzer, "_new", []), "_visit_", [node]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(node, "_binding", []), "_isClassRefVar", [])]);
+    return self;
+},
+args: [],
+source: "testClassRefVar\x0a\x09| node |\x0a\x09node := ClassReferenceNode new\x0a\x09\x09value: 'Object';\x0a\x09\x09yourself.\x0a\x09SemanticAnalyzer new visit: node.\x0a\x09self assert: node binding isClassRefVar",
+messageSends: ["value:", "new", "yourself", "visit:", "assert:", "isClassRefVar", "binding"],
+referencedClasses: ["ClassReferenceNode", "SemanticAnalyzer"]
+}),
+smalltalk.ScopeVarTest);
+
+smalltalk.addMethod(
+"_testInstanceVar",
+smalltalk.method({
+selector: "testInstanceVar",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var $1, $2;
+    var node;
+    var scope;
+    $1 = smalltalk.send(smalltalk.VariableNode || VariableNode, "_new", []);
+    smalltalk.send($1, "_value_", ["bzzz"]);
+    $2 = smalltalk.send($1, "_yourself", []);
+    node = $2;
+    scope = smalltalk.send(smalltalk.MethodLexicalScope || MethodLexicalScope, "_new", []);
+    smalltalk.send(scope, "_addIVar_", ["bzzz"]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(scope, "_bindingFor_", [node]), "_isInstanceVar", [])]);
+    return self;
+},
+args: [],
+source: "testInstanceVar\x0a\x09| node scope |\x0a\x09node := VariableNode new\x0a\x09\x09value: 'bzzz';\x0a\x09\x09yourself.\x0a\x09scope := MethodLexicalScope new.\x0a\x09scope addIVar: 'bzzz'.\x0a\x09self assert: (scope bindingFor: node) isInstanceVar",
+messageSends: ["value:", "new", "yourself", "addIVar:", "assert:", "isInstanceVar", "bindingFor:"],
+referencedClasses: ["VariableNode", "MethodLexicalScope"]
+}),
+smalltalk.ScopeVarTest);
+
+smalltalk.addMethod(
+"_testPseudoVar",
+smalltalk.method({
+selector: "testPseudoVar",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var $1, $2;
+    var node;
+    var pseudoVars;
+    pseudoVars = ["self", "super", "true", "false", "nil"];
+    smalltalk.send(pseudoVars, "_do_", [function (each) {$1 = smalltalk.send(smalltalk.VariableNode || VariableNode, "_new", []);smalltalk.send($1, "_value_", [each]);$2 = smalltalk.send($1, "_yourself", []);node = $2;node;return smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.MethodLexicalScope || MethodLexicalScope, "_new", []), "_bindingFor_", [node]), "_isPseudoVar", [])]);}]);
+    return self;
+},
+args: [],
+source: "testPseudoVar\x0a\x09| node pseudoVars |\x0a\x09pseudoVars := #('self' 'super' 'true' 'false' 'nil').\x0a\x09pseudoVars do: [:each |\x0a\x09\x09node := VariableNode new\x0a\x09\x09value: each;\x0a\x09\x09yourself.\x0a\x09\x09self assert: (MethodLexicalScope new bindingFor: node) isPseudoVar ]",
+messageSends: ["do:", "value:", "new", "yourself", "assert:", "isPseudoVar", "bindingFor:"],
+referencedClasses: ["VariableNode", "MethodLexicalScope"]
+}),
+smalltalk.ScopeVarTest);
+
+smalltalk.addMethod(
+"_testTempVar",
+smalltalk.method({
+selector: "testTempVar",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var $1, $2;
+    var node;
+    var scope;
+    $1 = smalltalk.send(smalltalk.VariableNode || VariableNode, "_new", []);
+    smalltalk.send($1, "_value_", ["bzzz"]);
+    $2 = smalltalk.send($1, "_yourself", []);
+    node = $2;
+    scope = smalltalk.send(smalltalk.MethodLexicalScope || MethodLexicalScope, "_new", []);
+    smalltalk.send(scope, "_addTemp_", ["bzzz"]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(scope, "_bindingFor_", [node]), "_isTempVar", [])]);
+    return self;
+},
+args: [],
+source: "testTempVar\x0a\x09| node scope |\x0a\x09node := VariableNode new\x0a\x09\x09value: 'bzzz';\x0a\x09\x09yourself.\x0a\x09scope := MethodLexicalScope new.\x0a\x09scope addTemp: 'bzzz'.\x0a\x09self assert: (scope bindingFor: node) isTempVar",
+messageSends: ["value:", "new", "yourself", "addTemp:", "assert:", "isTempVar", "bindingFor:"],
+referencedClasses: ["VariableNode", "MethodLexicalScope"]
+}),
+smalltalk.ScopeVarTest);
+
+smalltalk.addMethod(
+"_testUnknownVar",
+smalltalk.method({
+selector: "testUnknownVar",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var $1, $2;
+    var node;
+    $1 = smalltalk.send(smalltalk.VariableNode || VariableNode, "_new", []);
+    smalltalk.send($1, "_value_", ["bzzz"]);
+    $2 = smalltalk.send($1, "_yourself", []);
+    node = $2;
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.MethodLexicalScope || MethodLexicalScope, "_new", []), "_bindingFor_", [node]), "_isNil", [])]);
+    return self;
+},
+args: [],
+source: "testUnknownVar\x0a\x09| node |\x0a\x09node := VariableNode new\x0a\x09\x09value: 'bzzz';\x0a\x09\x09yourself.\x0a\x09self assert: (MethodLexicalScope new bindingFor: node) isNil",
+messageSends: ["value:", "new", "yourself", "assert:", "isNil", "bindingFor:"],
+referencedClasses: ["VariableNode", "MethodLexicalScope"]
+}),
+smalltalk.ScopeVarTest);
+
+
+
+smalltalk.addClass('SemanticAnalyzerTest', smalltalk.TestCase, ['analyzer'], 'Compiler-Tests');
+smalltalk.addMethod(
+"_setUp",
+smalltalk.method({
+selector: "setUp",
+category: 'running',
+fn: function () {
+    var self = this;
+    self['@analyzer'] = smalltalk.send(smalltalk.SemanticAnalyzer || SemanticAnalyzer, "_on_", [smalltalk.Object || Object]);
+    return self;
+},
+args: [],
+source: "setUp\x0a\x09analyzer := SemanticAnalyzer on: Object",
+messageSends: ["on:"],
+referencedClasses: ["Object", "SemanticAnalyzer"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testAssignment",
+smalltalk.method({
+selector: "testAssignment",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo self := 1";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self, "_should_raise_", [function () {return smalltalk.send(self['@analyzer'], "_visit_", [ast]);}, smalltalk.InvalidAssignmentError || InvalidAssignmentError]);
+    return self;
+},
+args: [],
+source: "testAssignment\x0a\x09| src ast |\x0a\x0a\x09src := 'foo self := 1'.\x0a\x09ast := smalltalk parse: src.\x0a\x09self should: [analyzer visit: ast] raise: InvalidAssignmentError",
+messageSends: ["parse:", "should:raise:", "visit:"],
+referencedClasses: ["InvalidAssignmentError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testNonLocalReturn",
+smalltalk.method({
+selector: "testNonLocalReturn",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. ^ a";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_deny_", [smalltalk.send(smalltalk.send(ast, "_scope", []), "_hasNonLocalReturn", [])]);
+    return self;
+},
+args: [],
+source: "testNonLocalReturn\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. ^ a'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09self deny: ast scope hasNonLocalReturn",
+messageSends: ["parse:", "visit:", "deny:", "hasNonLocalReturn", "scope"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testNonLocalReturn2",
+smalltalk.method({
+selector: "testNonLocalReturn2",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [\xA0[ ^ a]\xA0]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(ast, "_scope", []), "_hasNonLocalReturn", [])]);
+    return self;
+},
+args: [],
+source: "testNonLocalReturn2\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. [ [ ^ a] ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09self assert: ast scope hasNonLocalReturn",
+messageSends: ["parse:", "visit:", "assert:", "hasNonLocalReturn", "scope"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testScope",
+smalltalk.method({
+selector: "testScope",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ | b | b := a ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_deny_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_scope", []), "__eq_eq", [smalltalk.send(ast, "_scope", [])])]);
+    return self;
+},
+args: [],
+source: "testScope\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. [ | b | b := a ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09self deny: ast nodes first nodes last scope == ast scope.",
+messageSends: ["parse:", "visit:", "deny:", "==", "scope", "last", "nodes", "first"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testScope2",
+smalltalk.method({
+selector: "testScope2",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ [ | b | b := a\xA0] ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_deny_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_scope", []), "__eq_eq", [smalltalk.send(ast, "_scope", [])])]);
+    return self;
+},
+args: [],
+source: "testScope2\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. [ [ | b | b := a ] ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09self deny: ast nodes first nodes last nodes first nodes first scope == ast scope.",
+messageSends: ["parse:", "visit:", "deny:", "==", "scope", "first", "nodes", "last"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testScopeLevel",
+smalltalk.method({
+selector: "testScopeLevel",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ [ | b | b := a\xA0] ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(ast, "_scope", []), "_scopeLevel", []), "__eq", [1])]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_scope", []), "_scopeLevel", []), "__eq", [3])]);
+    return self;
+},
+args: [],
+source: "testScopeLevel\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. [ [ | b | b := a ] ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09self assert: ast scope scopeLevel = 1.\x0a\x09self assert: ast nodes first nodes last nodes first nodes first scope scopeLevel = 3",
+messageSends: ["parse:", "visit:", "assert:", "=", "scopeLevel", "scope", "first", "nodes", "last"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testUnknownVariables",
+smalltalk.method({
+selector: "testUnknownVariables",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | b + a";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self, "_should_raise_", [function () {return smalltalk.send(self['@analyzer'], "_visit_", [ast]);}, smalltalk.UnknownVariableError || UnknownVariableError]);
+    return self;
+},
+args: [],
+source: "testUnknownVariables\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | b + a'.\x0a\x09ast := smalltalk parse: src.\x0a\x0a\x09self should: [ analyzer visit: ast ] raise: UnknownVariableError",
+messageSends: ["parse:", "should:raise:", "visit:"],
+referencedClasses: ["UnknownVariableError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testUnknownVariablesDefinedInJS",
+smalltalk.method({
+selector: "testUnknownVariablesDefinedInJS",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var someVariable = 1;
+    smalltalk.send(self, "_shouldnt_raise_", [function () {return smalltalk.send(smalltalk, "_parse_", ["foo someVariable"]);}, smalltalk.UnknownVariableError || UnknownVariableError]);
+    return self;
+},
+args: [],
+source: "testUnknownVariablesDefinedInJS\x0a\x0a\x09< var someVariable = 1 >.\x0a\x0a\x09self shouldnt: [ smalltalk parse: 'foo someVariable' ] raise: UnknownVariableError",
+messageSends: ["shouldnt:raise:", "parse:"],
+referencedClasses: ["UnknownVariableError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testUnknownVariablesWithScope",
+smalltalk.method({
+selector: "testUnknownVariablesWithScope",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a b | [ c + 1. [ a + 1. d + 1 ]]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self, "_should_raise_", [function () {return smalltalk.send(self['@analyzer'], "_visit_", [ast]);}, smalltalk.UnknownVariableError || UnknownVariableError]);
+    return self;
+},
+args: [],
+source: "testUnknownVariablesWithScope\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a b | [ c + 1. [ a + 1. d + 1 ]]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09\x0a\x09self should: [ analyzer visit: ast ] raise: UnknownVariableError",
+messageSends: ["parse:", "should:raise:", "visit:"],
+referencedClasses: ["UnknownVariableError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariableShadowing",
+smalltalk.method({
+selector: "testVariableShadowing",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    return self;
+},
+args: [],
+source: "testVariableShadowing\x0a\x09| src ast |\x0a\x09src := 'foo | a | a + 1'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast",
+messageSends: ["parse:", "visit:"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariableShadowing2",
+smalltalk.method({
+selector: "testVariableShadowing2",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ | a | a := 2 ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self, "_should_raise_", [function () {return smalltalk.send(self['@analyzer'], "_visit_", [ast]);}, smalltalk.ShadowingVariableError || ShadowingVariableError]);
+    return self;
+},
+args: [],
+source: "testVariableShadowing2\x0a\x09| src ast |\x0a\x09src := 'foo | a | a + 1. [ | a | a := 2 ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09self should: [analyzer visit: ast] raise: ShadowingVariableError",
+messageSends: ["parse:", "should:raise:", "visit:"],
+referencedClasses: ["ShadowingVariableError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariableShadowing3",
+smalltalk.method({
+selector: "testVariableShadowing3",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ | b | b := 2 ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    return self;
+},
+args: [],
+source: "testVariableShadowing3\x0a\x09| src ast |\x0a\x09src := 'foo | a | a + 1. [ | b | b := 2 ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast",
+messageSends: ["parse:", "visit:"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariableShadowing4",
+smalltalk.method({
+selector: "testVariableShadowing4",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ [\xA0[ | b | b := 2 ]\xA0]\xA0]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    return self;
+},
+args: [],
+source: "testVariableShadowing4\x0a\x09| src ast |\x0a\x09src := 'foo | a | a + 1. [ [ [ | b | b := 2 ] ] ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast",
+messageSends: ["parse:", "visit:"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariableShadowing5",
+smalltalk.method({
+selector: "testVariableShadowing5",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ [\xA0[ | a | a := 2 ]\xA0]\xA0]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self, "_should_raise_", [function () {return smalltalk.send(self['@analyzer'], "_visit_", [ast]);}, smalltalk.ShadowingVariableError || ShadowingVariableError]);
+    return self;
+},
+args: [],
+source: "testVariableShadowing5\x0a\x09| src ast |\x0a\x09src := 'foo | a | a + 1. [ [ [ | a | a := 2 ] ] ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09self should: [analyzer visit: ast] raise: ShadowingVariableError",
+messageSends: ["parse:", "should:raise:", "visit:"],
+referencedClasses: ["ShadowingVariableError"]
+}),
+smalltalk.SemanticAnalyzerTest);
+
+smalltalk.addMethod(
+"_testVariablesLookup",
+smalltalk.method({
+selector: "testVariablesLookup",
+category: 'tests',
+fn: function () {
+    var self = this;
+    var src;
+    var ast;
+    src = "foo | a | a + 1. [ | b | b := a ]";
+    ast = smalltalk.send(smalltalk, "_parse_", [src]);
+    smalltalk.send(self['@analyzer'], "_visit_", [ast]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_receiver", []), "_binding", []), "_isTempVar", [])]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_receiver", []), "_binding", []), "_scope", []), "__eq_eq", [smalltalk.send(ast, "_scope", [])])]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_left", []), "_binding", []), "_isTempVar", [])]);
+    smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_nodes", []), "_first", []), "_nodes", []), "_first", []), "_left", []), "_binding", []), "_scope", []), "__eq_eq", [smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(smalltalk.send(ast, "_nodes", []), "_first", []), "_nodes", []), "_last", []), "_scope", [])])]);
+    return self;
+},
+args: [],
+source: "testVariablesLookup\x0a\x09| src ast |\x0a\x0a\x09src := 'foo | a | a + 1. [ | b | b := a ]'.\x0a\x09ast := smalltalk parse: src.\x0a\x09analyzer visit: ast.\x0a\x0a\x09\x22Binding for `a` in the message send\x22\x0a\x09self assert: ast nodes first nodes first receiver binding isTempVar.\x0a\x09self assert: ast nodes first nodes first receiver binding scope == ast scope.\x0a\x0a\x09\x22Binding for `b`\x22\x0a\x09self assert: ast nodes first nodes last nodes first nodes first left binding isTempVar.\x0a\x09self assert: ast nodes first nodes last nodes first nodes first left binding scope == ast nodes first nodes last scope.",
+messageSends: ["parse:", "visit:", "assert:", "isTempVar", "binding", "receiver", "first", "nodes", "==", "scope", "left", "last"],
+referencedClasses: []
+}),
+smalltalk.SemanticAnalyzerTest);
+
+
 

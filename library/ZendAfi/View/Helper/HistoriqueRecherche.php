@@ -117,7 +117,7 @@ class ZendAfi_View_Helper_HistoriqueRecherche extends ZendAfi_View_Helper_BaseHe
 			foreach($bibs as $bib)
 			{
 				if(!trim($bib)) continue;
-				$id_bib=substr($bib,1);
+				$id_bib=(int)substr($bib,1);
 				$lib=fetchOne("select nom_court from int_bib where id_bib=$id_bib");
 				if($valeur) $valeur.=", ";
 				$valeur.=$lib;

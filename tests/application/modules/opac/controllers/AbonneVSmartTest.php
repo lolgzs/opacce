@@ -67,7 +67,7 @@ abstract class AbonneVSmartTestCase extends AbstractControllerTestCase {
 			->setPseudo('manoune')
 			->setDateDebut(null)
 			->setPassword('gaga')
-			->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_VSMART, 
+			->setFicheSIGB(array('type_comm' => Class_IntBib::COM_VSMART, 
 													 'nom_aff' => 'Marcus',
 													 'fiche' => $emprunteur))
 			->setRole('abonne_sigb')
@@ -86,10 +86,13 @@ abstract class AbonneVSmartTestCase extends AbstractControllerTestCase {
 	}
 }
 
+
+
+
 class AbonneVSmartTest extends AbonneVSmartTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/abonne/fiche/id/34');
+		$this->dispatch('/opac/abonne/fiche/id/34', true);
 	}
 
 
@@ -132,6 +135,8 @@ class AbonneVSmartTest extends AbonneVSmartTestCase {
 																			$this->_response->getBody());
 	}
 }
+
+
 
 
 class AbonneWithExpiredSubscriptionVSmartTest extends AbonneVSmartTestCase {

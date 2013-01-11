@@ -1,36 +1,43 @@
 smalltalk.addPackage('AFI-Tests', {});
 smalltalk.addClass('BibNumAlbumTestCase', smalltalk.TestCase, ['ajax', 'container', 'album'], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_setUp'),
+"_setUp",
 smalltalk.method({
-selector: unescape('setUp'),
+selector: "setUp",
 category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(smalltalk.send((typeof window == 'undefined' ? nil : window), "_location", []), "_hash_", [" "]);
-(self['@ajax']=smalltalk.send((smalltalk.AMockWrapper || AMockWrapper), "_on_", [smalltalk.send((smalltalk.Ajax || Ajax), "_new", [])]));
-smalltalk.send(self['@ajax'], "_onMessage_answer_", ["send", self['@ajax']]);
-(self['@container']=smalltalk.send(smalltalk.send(unescape("%3Cdiv%3E%3C/div%3E"), "_asJQuery", []), "_width_", [(500)]));
-(self['@album']=(function($rec){smalltalk.send($rec, "_ajax_", [self['@ajax']]);return smalltalk.send($rec, "_container_", [self['@container']]);})(smalltalk.send((smalltalk.BibNumAlbum || BibNumAlbum), "_new", [])));
-return self;},
+fn: function () {
+    var self = this;
+    var $1, $2;
+    smalltalk.send(smalltalk.send(window, "_location", []), "_hash_", [" "]);
+    self['@ajax'] = smalltalk.send(smalltalk.AMockWrapper || AMockWrapper, "_on_", [smalltalk.send(smalltalk.Ajax || Ajax, "_new", [])]);
+    smalltalk.send(self['@ajax'], "_onMessage_answer_", ["send", self['@ajax']]);
+    self['@container'] = smalltalk.send(smalltalk.send("<div></div>", "_asJQuery", []), "_width_", [500]);
+    $1 = smalltalk.send(smalltalk.BibNumAlbum || BibNumAlbum, "_new", []);
+    smalltalk.send($1, "_ajax_", [self['@ajax']]);
+    smalltalk.send($1, "_scriptsRoot_", ["http://localhost/afi-opac3/amber/afi/souvigny/"]);
+    $2 = smalltalk.send($1, "_container_", [self['@container']]);
+    self['@album'] = $2;
+    return self;
+},
 args: [],
-source: unescape('setUp%0A%09window%20location%20hash%3A%20%27%20%27.%0A%09ajax%20%3A%3D%20AMockWrapper%20on%3A%20Ajax%20new.%0A%09ajax%20onMessage%3A%20%27send%27%20answer%3A%20ajax.%0A%0A%09container%20%3A%3D%20%27%3Cdiv%3E%3C/div%3E%27%20asJQuery%20width%3A%20500.%0A%0A%09album%20%3A%3D%20BibNumAlbum%20new%20%0A%09%09ajax%3A%20ajax%3B%0A%09%09container%3A%20container'),
-messageSends: ["hash:", "location", "on:", "new", "onMessage:answer:", "width:", "asJQuery", "ajax:", "container:"],
-referencedClasses: ["AMockWrapper", "Ajax", "BibNumAlbum"]
+source: "setUp\x0a\x09window location hash: ' '.\x0a\x09ajax := AMockWrapper on: Ajax new.\x0a\x09ajax onMessage: 'send' answer: ajax.\x0a\x0a\x09container := '<div></div>' asJQuery width: 500.\x0a\x0a\x09album := BibNumAlbum new \x0a\x09\x09ajax: ajax;\x0a\x09\x09scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';\x0a\x09\x09container: container.",
+messageSends: ["hash:", "location", "on:", "new", "onMessage:answer:", "width:", "asJQuery", "ajax:", "scriptsRoot:", "container:"],
+referencedClasses: ["Ajax", "AMockWrapper", "BibNumAlbum"]
 }),
 smalltalk.BibNumAlbumTestCase);
 
 smalltalk.addMethod(
-unescape('_tearDown'),
+"_tearDown",
 smalltalk.method({
-selector: unescape('tearDown'),
+selector: "tearDown",
 category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(self['@container'], "_remove", []);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self['@container'], "_remove", []);
+    return self;
+},
 args: [],
-source: unescape('tearDown%0A%09container%20remove.'),
+source: "tearDown\x0a\x09container remove.",
 messageSends: ["remove"],
 referencedClasses: []
 }),
@@ -40,50 +47,53 @@ smalltalk.BibNumAlbumTestCase);
 
 smalltalk.addClass('BibNumAlbumDonjonTest', smalltalk.BibNumAlbumTestCase, ['ajax', 'container', 'album'], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_donjonJSON'),
+"_donjonJSON",
 smalltalk.method({
-selector: unescape('donjonJSON'),
+selector: "donjonJSON",
 category: 'accessing',
-fn: function (){
-var self=this;
-return unescape("%7B%22album%22%3A%20%7B%09%22id%22%3A4%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Donjon%20Zenith%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22Une%20bonne%20bagarre%22%2C%0A%09%09%09%09%09%22width%22%3A%20200%2C%0A%09%09%09%09%09%22height%22%3A%2050%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Donjon%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/4/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/4/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/4.jpg%22%7D%0A%09%09%09%09%5D%0A%09%09%7D%20%7D");
-return self;},
+fn: function () {
+    var self = this;
+    return unescape("%7B%22album%22%3A%20%7B%09%22id%22%3A4%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Donjon%20Zenith%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22Une%20bonne%20bagarre%22%2C%0A%09%09%09%09%09%22width%22%3A%20200%2C%0A%09%09%09%09%09%22height%22%3A%2050%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Donjon%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/4/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/4/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/4.jpg%22%7D%0A%09%09%09%09%5D%0A%09%09%7D%20%7D");
+    return self;
+},
 args: [],
-source: unescape('donjonJSON%0A%09%5E%20%20%20%27%7B%22album%22%3A%20%7B%09%22id%22%3A4%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Donjon%20Zenith%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22Une%20bonne%20bagarre%22%2C%0A%09%09%09%09%09%22width%22%3A%20200%2C%0A%09%09%09%09%09%22height%22%3A%2050%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Donjon%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/4/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/4/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/4.jpg%22%7D%0A%09%09%09%09%5D%0A%09%09%7D%20%7D%27.'),
+source: "donjonJSON\x0a\x09^   '{\x22album\x22: {\x09\x22id\x22:4, \x0a\x09\x09\x09\x09\x09\x22titre\x22:\x22Donjon Zenith\x22, \x0a\x09\x09\x09\x09\x09\x22description\x22:\x22Une bonne bagarre\x22,\x0a\x09\x09\x09\x09\x09\x22width\x22: 200,\x0a\x09\x09\x09\x09\x09\x22height\x22: 50,\x0a\x09\x09\x09\x09\x09\x22ressources\x22:[ \x0a                                                          \x09\x09\x09\x09{\x09\x22id\x22:1,\x0a                                                          \x09\x09\x09\x09\x09\x22titre\x22: \x22Donjon\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22link_to\x22:\x22\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22thumbnail\x22:\x22userfiles/album/4/thumbs/media/1.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22navigator_thumbnail\x22:\x22userfiles/album/4/thumbs/media/1_small.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22original\x22:\x22bib-numerique/get-resource/id/4.jpg\x22}\x0a\x09\x09\x09\x09]\x0a\x09\x09} }'.",
 messageSends: [],
 referencedClasses: []
 }),
 smalltalk.BibNumAlbumDonjonTest);
 
 smalltalk.addMethod(
-unescape('_setUp'),
+"_setUp",
 smalltalk.method({
-selector: unescape('setUp'),
+selector: "setUp",
 category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_setUp", [], smalltalk.BibNumAlbumTestCase);
-(function($rec){smalltalk.send($rec, "_url_", ["donjon.json"]);return smalltalk.send($rec, "_load", []);})(self['@album']);
-smalltalk.send(smalltalk.send(smalltalk.send(self['@ajax'], "_options", []), "_at_", ["success"]), "_value_", [smalltalk.send(self, "_donjonJSON", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_setUp", [], smalltalk.BibNumAlbumTestCase);
+    (function ($rec) {smalltalk.send($rec, "_url_", ["donjon.json"]);return smalltalk.send($rec, "_load", []);}(self['@album']));
+    smalltalk.send(smalltalk.send(smalltalk.send(self['@ajax'], "_options", []), "_at_", ["success"]), "_value_", [smalltalk.send(self, "_donjonJSON", [])]);
+    return self;
+},
 args: [],
-source: unescape('setUp%0A%09super%20setUp.%0A%0A%09album%0A%09%09url%3A%20%27donjon.json%27%3B%0A%09%09load.%0A%0A%09%28ajax%20options%20at%3A%20%27success%27%29%20%20value%3A%20self%20donjonJSON.'),
+source: "setUp\x0a\x09super setUp.\x0a\x0a\x09album\x0a\x09\x09url: 'donjon.json';\x0a\x09\x09load.\x0a\x0a\x09(ajax options at: 'success')  value: self donjonJSON.",
 messageSends: ["setUp", "url:", "load", "value:", "at:", "options", "donjonJSON"],
 referencedClasses: []
 }),
 smalltalk.BibNumAlbumDonjonTest);
 
 smalltalk.addMethod(
-unescape('_testAnchorToDownloadPDFShouldNotBePresent'),
+"_testAnchorToDownloadPDFShouldNotBePresent",
 smalltalk.method({
-selector: unescape('testAnchorToDownloadPDFShouldNotBePresent'),
+selector: "testAnchorToDownloadPDFShouldNotBePresent",
 category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_assert_equals_", [(0), smalltalk.send(smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape("div.b-download-book%20a")]), "_at_", ["size"]), "_value", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", [0, smalltalk.send(smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape("div.b-download-book%20a")]), "_at_", ["size"]), "_value", [])]);
+    return self;
+},
 args: [],
-source: unescape('testAnchorToDownloadPDFShouldNotBePresent%0A%09self%20assert%3A%200%20equals%3A%20%28%28container%20find%3A%20%27div.b-download-book%20a%27%29%20at%3A%20%27size%27%29%20value'),
+source: "testAnchorToDownloadPDFShouldNotBePresent\x0a\x09self assert: 0 equals: ((container find: 'div.b-download-book a') at: 'size') value",
 messageSends: ["assert:equals:", "value", "at:", "find:"],
 referencedClasses: []
 }),
@@ -91,29 +101,35 @@ smalltalk.BibNumAlbumDonjonTest);
 
 
 
-smalltalk.addClass('BibNumAlbumTintinTest', smalltalk.BibNumAlbumTestCase, ['bible', 'album', 'container', 'ajax'], 'AFI-Tests');
+smalltalk.addClass('BibNumAlbumTintinTestCase', smalltalk.BibNumAlbumTestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_setUp'),
+"_setUp",
 smalltalk.method({
-selector: unescape('setUp'),
+selector: "setUp",
 category: 'running',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_setUp", [], smalltalk.BibNumAlbumTestCase);
-(function($rec){smalltalk.send($rec, "_url_", [unescape("/bib-numerique/album/id/2.json")]);smalltalk.send($rec, "_scriptsRoot_", [unescape("http%3A//localhost/afi-opac3/amber/afi/souvigny/")]);return smalltalk.send($rec, "_load", []);})(self['@album']);
-smalltalk.send(smalltalk.send(smalltalk.send(self['@ajax'], "_options", []), "_at_", ["success"]), "_value_", [smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_parseJSON_", [smalltalk.send(self, "_tintinJSON", [])])]);
-return self;},
+fn: function () {
+    var self = this;
+    var $1;
+    smalltalk.send(self, "_setUp", [], smalltalk.BibNumAlbumTestCase);
+    smalltalk.send(self['@album'], "_url_", ["/bib-numerique/album/id/2.json"]);
+    $1 = smalltalk.send(self['@album'], "_load", []);
+    smalltalk.send(smalltalk.send(smalltalk.send(self['@ajax'], "_options", []), "_at_", ["success"]), "_value_", [smalltalk.send(jQuery, "_parseJSON_", [smalltalk.send(self, "_tintinJSON", [])])]);
+    return self;
+},
 args: [],
-source: unescape('setUp%0A%09super%20setUp.%0A%0A%09album%0A%09%09url%3A%20%27/bib-numerique/album/id/2.json%27%3B%0A%09%09scriptsRoot%3A%20%27http%3A//localhost/afi-opac3/amber/afi/souvigny/%27%3B%0A%09%09load.%0A%0A%09%28ajax%20options%20at%3A%20%27success%27%29%20%20value%3A%20%28jQuery%20parseJSON%3A%20self%20tintinJSON%29.'),
-messageSends: ["setUp", "url:", "scriptsRoot:", "load", "value:", "at:", "options", "parseJSON:", "tintinJSON"],
+source: "setUp\x0a\x09super setUp.\x0a\x0a\x09album\x0a\x09\x09url: '/bib-numerique/album/id/2.json';\x0a\x09\x09load.\x0a\x0a\x09(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).",
+messageSends: ["setUp", "url:", "load", "value:", "parseJSON:", "tintinJSON", "at:", "options"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinTestCase);
 
+
+
+smalltalk.addClass('BibNumAlbumTintinBookletTest', smalltalk.BibNumAlbumTintinTestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_testAnchorToDownloadPDFShouldBePresent'),
+"_testAnchorToDownloadPDFShouldBePresent",
 smalltalk.method({
-selector: unescape('testAnchorToDownloadPDFShouldBePresent'),
+selector: "testAnchorToDownloadPDFShouldBePresent",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -121,33 +137,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testAnchorToDownloadPDFShouldBePresent%0A%09self%20assert%3A%20%27http%3A//localhost/pdf/2%27%20%20equals%3A%20%28%28container%20find%3A%20%27div.b-download-book%20a%27%29%20attr%3A%20%27href%27%20%29'),
+source: "testAnchorToDownloadPDFShouldBePresent\x0a\x09self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )",
 messageSends: ["assert:equals:", "attr:", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testBookletJSShouldBeLoadedOnce'),
+"_testBookletPluginShouldBeLoaded",
 smalltalk.method({
-selector: unescape('testBookletJSShouldBeLoadedOnce'),
-category: 'tests',
-fn: function () {
-    var self = this;
-    smalltalk.send(self, "_assert_equals_", [1, smalltalk.send(smalltalk.send(smalltalk.send("head", "_asJQuery", []), "_find_", [unescape("script%5Bsrc*%3D%22booklet.1.2.0.min.js%22%5D")]), "_length", [])]);
-    return self;
-},
-args: [],
-source: unescape('testBookletJSShouldBeLoadedOnce%0A%09self%20assert%3A%201%20equals%3A%20%28%20%27head%27%20asJQuery%20find%3A%20%27script%5Bsrc*%3D%22booklet.1.2.0.min.js%22%5D%27%29%20length%0A%09'),
-messageSends: ["assert:equals:", "length", "find:", "asJQuery"],
-referencedClasses: []
-}),
-smalltalk.BibNumAlbumTintinTest);
-
-smalltalk.addMethod(
-unescape('_testBookletPluginShouldBeLoaded'),
-smalltalk.method({
-selector: unescape('testBookletPluginShouldBeLoaded'),
+selector: "testBookletPluginShouldBeLoaded",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -155,16 +154,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testBookletPluginShouldBeLoaded%0A%09self%20assert%3A%20%28%27body%27%20asJQuery%20at%3A%20%27booklet%27%29%20notNil%20'),
+source: "testBookletPluginShouldBeLoaded\x0a\x09self assert: ('body' asJQuery at: 'booklet') notNil ",
 messageSends: ["assert:", "notNil", "at:", "asJQuery"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testChapterSelectorInitialHeightShouldBeZero'),
+"_testChapterSelectorInitialHeightShouldBeZero",
 smalltalk.method({
-selector: unescape('testChapterSelectorInitialHeightShouldBeZero'),
+selector: "testChapterSelectorInitialHeightShouldBeZero",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -172,16 +171,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testChapterSelectorInitialHeightShouldBeZero%0A%09self%20assert%3A%200%20%20equals%3A%20%28container%20find%3A%20%27.b-selector-chapter%3Eul%27%29%20%20%20height%20'),
+source: "testChapterSelectorInitialHeightShouldBeZero\x0a\x09self assert: 0  equals: (container find: '.b-selector-chapter>ul')   height ",
 messageSends: ["assert:equals:", "height", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testChapterSelectorShouldContainsLinkToFirstPage'),
+"_testChapterSelectorShouldContainsLinkToFirstPage",
 smalltalk.method({
-selector: unescape('testChapterSelectorShouldContainsLinkToFirstPage'),
+selector: "testChapterSelectorShouldContainsLinkToFirstPage",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -189,16 +188,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testChapterSelectorShouldContainsLinkToFirstPage%0A%09self%20assert%3A%20%27Origins%27%20%20equals%3A%20%28container%20find%3A%20%27.b-selector-chapter%20%23selector-page-1%27%29%20%20%20text%20'),
+source: "testChapterSelectorShouldContainsLinkToFirstPage\x0a\x09self assert: 'Origins'  equals: (container find: '.b-selector-chapter #selector-page-1')   text ",
 messageSends: ["assert:equals:", "text", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testDivBkWidgetShouldBePresent'),
+"_testDivBkWidgetShouldBePresent",
 smalltalk.method({
-selector: unescape('testDivBkWidgetShouldBePresent'),
+selector: "testDivBkWidgetShouldBePresent",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -208,16 +207,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testDivBkWidgetShouldBePresent%0A%09%7CbkWidget%7C%0A%09bkWidget%20%3A%3D%20container%20children%3A%20%27.bk-widget%27.%0A%09self%20assert%3A%20%280%20%3C%20bkWidget%20length%29.'),
-messageSends: ["children:", "assert:", unescape("%3C"), "length"],
+source: "testDivBkWidgetShouldBePresent\x0a\x09|bkWidget|\x0a\x09bkWidget := container children: '.bk-widget'.\x0a\x09self assert: (0 < bkWidget length).",
+messageSends: ["children:", "assert:", "<", "length"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testDivBookShouldBePresent'),
+"_testDivBookShouldBePresent",
 smalltalk.method({
-selector: unescape('testDivBookShouldBePresent'),
+selector: "testDivBookShouldBePresent",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -227,32 +226,50 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testDivBookShouldBePresent%0A%09%7Cbook%7C%0A%09book%20%3A%3D%20container%20find%3A%20%27.book%27.%0A%09self%20assert%3A%20%280%20%3C%20book%20length%29.'),
-messageSends: ["find:", "assert:", unescape("%3C"), "length"],
+source: "testDivBookShouldBePresent\x0a\x09|book|\x0a\x09book := container find: '.book'.\x0a\x09self assert: (0 < book length).",
+messageSends: ["find:", "assert:", "<", "length"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testFirstPageImageFolioNumberShouldBeTwelveR'),
+"_testFirstPageDownloadURLShouldLinkToDownloadResourceAction",
 smalltalk.method({
-selector: unescape('testFirstPageImageFolioNumberShouldBeTwelveR'),
+selector: "testFirstPageDownloadURLShouldLinkToDownloadResourceAction",
 category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_assert_equals_", ["12R", smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-counter%20+%20.b-counter")]), "_text", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", [unescape("bib-numerique/download-resource/id/1"), smalltalk.send(smalltalk.send(smalltalk.send(self['@album'], "_pages", []), "_first", []), "_downloadURL", [])]);
+    return self;
+},
 args: [],
-source: unescape('testFirstPageImageFolioNumberShouldBeTwelveR%0A%09self%20assert%3A%20%2712R%27%20equals%3A%20%28container%20find%3A%20%27.b-counter%20+%20.b-counter%27%29%20%20text'),
+source: "testFirstPageDownloadURLShouldLinkToDownloadResourceAction\x0a\x09self assert: 'bib-numerique/download-resource/id/1' equals: album pages first downloadURL ",
+messageSends: ["assert:equals:", "downloadURL", "first", "pages"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinBookletTest);
+
+smalltalk.addMethod(
+"_testFirstPageImageFolioNumberShouldBeTwelveR",
+smalltalk.method({
+selector: "testFirstPageImageFolioNumberShouldBeTwelveR",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", ["12R", smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-counter%20+%20.b-counter")]), "_text", [])]);
+    return self;
+},
+args: [],
+source: "testFirstPageImageFolioNumberShouldBeTwelveR\x0a\x09self assert: '12R' equals: (container find: '.b-counter + .b-counter')  text",
 messageSends: ["assert:equals:", "text", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testFirstPageImageShouldLinkToOneDotJpg'),
+"_testFirstPageImageShouldLinkToOneDotJpg",
 smalltalk.method({
-selector: unescape('testFirstPageImageShouldLinkToOneDotJpg'),
+selector: "testFirstPageImageShouldLinkToOneDotJpg",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -260,32 +277,33 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testFirstPageImageShouldLinkToOneDotJpg%0A%09self%20assert%3A%200%20%3C%20%28container%20find%3A%20%27img%5Bsrc*%3D%22userfiles/album/2/thumbs/media/1.jpg%22%5D%27%29%20%20length'),
-messageSends: ["assert:", unescape("%3C"), "length", "find:"],
+source: "testFirstPageImageShouldLinkToOneDotJpg\x0a\x09self assert: 0 < (container find: 'img[src*=\x22userfiles/album/2/thumbs/media/1.jpg\x22]')  length",
+messageSends: ["assert:", "<", "length", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg'),
+"_testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg",
 smalltalk.method({
-selector: unescape('testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg'),
+selector: "testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg",
 category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_assert_equals_", [unescape("userfiles/album/2/thumbs/media/1_small.jpg"), smalltalk.send(smalltalk.send(smalltalk.send(self['@album'], "_pages", []), "_first", []), "_navigatorThumbnailURL", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", [unescape("userfiles/album/2/thumbs/media/1_small.jpg"), smalltalk.send(smalltalk.send(smalltalk.send(self['@album'], "_pages", []), "_first", []), "_navigatorThumbnailURL", [])]);
+    return self;
+},
 args: [],
-source: unescape('testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg%0A%09self%20assert%3A%20%27userfiles/album/2/thumbs/media/1_small.jpg%27%20equals%3A%20album%20pages%20first%20navigatorThumbnailURL%20'),
+source: "testFirstPageNavigatorThumbnailShouldBeOneSmallDotJpg\x0a\x09self assert: 'userfiles/album/2/thumbs/media/1_small.jpg' equals: album pages first navigatorThumbnailURL ",
 messageSends: ["assert:equals:", "navigatorThumbnailURL", "first", "pages"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testFirstPageZoomedImageShouldLinkToOneDotJpg'),
+"_testFirstPageZoomedImageShouldLinkToOneDotJpg",
 smalltalk.method({
-selector: unescape('testFirstPageZoomedImageShouldLinkToOneDotJpg'),
+selector: "testFirstPageZoomedImageShouldLinkToOneDotJpg",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -294,33 +312,34 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testFirstPageZoomedImageShouldLinkToOneDotJpg%0A%09%28container%20find%3A%20%27.b-zoom-magnify%20a%27%29%20click.%0A%09self%20assert%3A%200%20%3C%20%28container%20find%3A%20%27.iviewer%20img%5Bsrc*%3D%22bib-numerique/get-resource/id/1.jpg%22%5D%27%29%20%20length'),
-messageSends: ["click", "find:", "assert:", unescape("%3C"), "length"],
+source: "testFirstPageZoomedImageShouldLinkToOneDotJpg\x0a\x09(container find: '.b-zoom-magnify a') click.\x0a\x09self assert: 0 < (container find: '.iviewer img[src*=\x22bib-numerique/get-resource/id/1.jpg\x22]')  length",
+messageSends: ["click", "find:", "assert:", "<", "length"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testNextPageShouldSetMenuTextToFin'),
+"_testNextPageShouldSetMenuTextToFin",
 smalltalk.method({
-selector: unescape('testNextPageShouldSetMenuTextToFin'),
+selector: "testNextPageShouldSetMenuTextToFin",
 category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book"]), "_booklet_", ["next"]);
-smalltalk.send(self, "_assert_equals_", ["Fin", smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-current")]), "_text", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book"]), "_booklet_", ["next"]);
+    smalltalk.send(self, "_assert_equals_", ["Fin", smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-current")]), "_text", [])]);
+    return self;
+},
 args: [],
-source: unescape('testNextPageShouldSetMenuTextToFin%0A%09%28container%20find%3A%20%27.book%27%29%20booklet%3A%20%27next%27.%0A%09self%20assert%3A%20%27Fin%27%20equals%3A%20%28container%20find%3A%20%27.b-current%27%29%20text'),
+source: "testNextPageShouldSetMenuTextToFin\x0a\x09(container find: '.book') booklet: 'next'.\x0a\x09self assert: 'Fin' equals: (container find: '.b-current') text",
 messageSends: ["booklet:", "find:", "assert:equals:", "text"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testPageDescShouldContainsCreatedIn1929ByHerge'),
+"_testPageDescShouldContainsCreatedIn1929ByHerge",
 smalltalk.method({
-selector: unescape('testPageDescShouldContainsCreatedIn1929ByHerge'),
+selector: "testPageDescShouldContainsCreatedIn1929ByHerge",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -328,16 +347,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testPageDescShouldContainsCreatedIn1929ByHerge%0A%09self%20assert%3A%20%27Created%20in%201929%20by%20Herge%27%20equals%3A%20%28container%20find%3A%20%27.page-desc%27%29%20text'),
+source: "testPageDescShouldContainsCreatedIn1929ByHerge\x0a\x09self assert: 'Created in 1929 by Herge' equals: (container find: '.page-desc') text",
 messageSends: ["assert:equals:", "text", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testPageHeightShouldBe124'),
+"_testPageHeightShouldBe124",
 smalltalk.method({
-selector: unescape('testPageHeightShouldBe124'),
+selector: "testPageHeightShouldBe124",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -345,16 +364,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testPageHeightShouldBe124%0A%09%22the%20width%20of%20page%20%28165%29%20*%20%20height%20of%20first%20image%20in%20json%20%28300%29%20/%20width%20of%20first%20image%20in%20json%20%28400%29%22%20%20%0A%09self%20assert%3A%20124%20equals%3A%20%28container%20find%3A%20%27.b-page%27%29%20%20height'),
+source: "testPageHeightShouldBe124\x0a\x09\x22the width of page (165) *  height of first image in json (300) / width of first image in json (400)\x22  \x0a\x09self assert: 124 equals: (container find: '.b-page')  height",
 messageSends: ["assert:equals:", "height", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testPageWidthShouldBe165'),
+"_testPageWidthShouldBe165",
 smalltalk.method({
-selector: unescape('testPageWidthShouldBe165'),
+selector: "testPageWidthShouldBe165",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -362,98 +381,189 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testPageWidthShouldBe165%0A%09%22resize%20to%20its%20container%20width%20%28500%29%20%20-%20margins%20%28170%29%20%20/%202%20pages%22%20%20%0A%09self%20assert%3A%20165%20equals%3A%20%28container%20find%3A%20%27.b-page%27%29%20%20width'),
+source: "testPageWidthShouldBe165\x0a\x09\x22resize to its container width (500)  - margins (170)  / 2 pages\x22  \x0a\x09self assert: 165 equals: (container find: '.b-page')  width",
 messageSends: ["assert:equals:", "width", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_testSecondPageImageFolioNumberShouldBeXX'),
+"_testSecondPageImageFolioNumberShouldBeXX",
 smalltalk.method({
-selector: unescape('testSecondPageImageFolioNumberShouldBeXX'),
-category: 'tests',
-fn: function (){
-var self=this;
-smalltalk.send(self, "_assert_equals_", ["XX", smalltalk.send(smalltalk.send(smalltalk.send(self['@album'], "_pages", []), "_last", []), "_foliono", [])]);
-return self;},
-args: [],
-source: unescape('testSecondPageImageFolioNumberShouldBeXX%0A%09self%20assert%3A%20%27XX%27%20equals%3A%20album%20pages%20last%20foliono'),
-messageSends: ["assert:equals:", "foliono", "last", "pages"],
-referencedClasses: []
-}),
-smalltalk.BibNumAlbumTintinTest);
-
-smalltalk.addMethod(
-unescape('_testShouldContainsFourPages'),
-smalltalk.method({
-selector: unescape('testShouldContainsFourPages'),
+selector: "testSecondPageImageFolioNumberShouldBeXX",
 category: 'tests',
 fn: function () {
     var self = this;
-    smalltalk.send(self, "_assert_equals_", [4, smalltalk.send(smalltalk.send(self['@container'], "_find_", [unescape(".b-page")]), "_length", [])]);
+    smalltalk.send(self, "_assert_equals_", ["XX", smalltalk.send(smalltalk.send(smalltalk.send(self['@album'], "_pages", []), "_last", []), "_foliono", [])]);
     return self;
 },
 args: [],
-source: unescape('testShouldContainsFourPages%0A%09%222%20pages%20+%20covers%22%0A%09self%20assert%3A%204%20equals%3A%20%28container%20find%3A%20%27.b-page%27%29%20length'),
+source: "testSecondPageImageFolioNumberShouldBeXX\x0a\x09self assert: 'XX' equals: album pages last foliono",
+messageSends: ["assert:equals:", "foliono", "last", "pages"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinBookletTest);
+
+smalltalk.addMethod(
+"_testShouldContainsFourPages",
+smalltalk.method({
+selector: "testShouldContainsFourPages",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", [4, smalltalk.send(smalltalk.send(self['@container'], "_find_", [".b-page"]), "_length", [])]);
+    return self;
+},
+args: [],
+source: "testShouldContainsFourPages\x0a\x09\x222 pages + covers\x22\x0a\x09self assert: 4 equals: (container find: '.b-page') length",
 messageSends: ["assert:equals:", "length", "find:"],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
 
 smalltalk.addMethod(
-unescape('_tintinJSON'),
+"_tintinJSON",
 smalltalk.method({
-selector: unescape('tintinJSON'),
+selector: "tintinJSON",
 category: 'json',
-fn: function (){
-var self=this;
-return unescape("%7B%22album%22%3A%20%7B%09%22id%22%3A2%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Tintin%20et%20Milou%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22The%20real%20story%20of%20Tintin%22%2C%0A%09%09%09%09%09%22width%22%3A%20400%2C%0A%09%09%09%09%09%22height%22%3A%20300%2C%0A%09%09%09%09%09%22download_url%22%3A%20%22http%3A//localhost/pdf/2%22%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A12%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Origins%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%2212R%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Created%20in%201929%20by%20Herge%22%20%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/1.jpg%22%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A13%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Haddock%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%22XX%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Captain%20living%20in%20Moulinsard%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/2.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/2_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/2.jpg%22%20%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%5D%0A%09%09%09%09%7D%20%7D");
-return self;},
+fn: function () {
+    var self = this;
+    return unescape("%7B%22album%22%3A%20%7B%09%22id%22%3A2%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Tintin%20et%20Milou%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22The%20real%20story%20of%20Tintin%22%2C%0A%09%09%09%09%09%22width%22%3A%20400%2C%0A%09%09%09%09%09%22height%22%3A%20300%2C%0A%09%09%09%09%09%22download_url%22%3A%20%22http%3A//localhost/pdf/2%22%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A12%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Origins%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%2212R%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Created%20in%201929%20by%20Herge%22%20%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22download%22%3A%22bib-numerique/download-resource/id/1%22%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A13%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Haddock%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%22XX%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Captain%20living%20in%20Moulinsard%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/2.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/2_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/2.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22download%22%3A%22bib-numerique/download-resource/id/2%22%20%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%5D%0A%09%09%09%09%7D%20%7D");
+    return self;
+},
 args: [],
-source: unescape('tintinJSON%0A%09%5E%20%20%20%27%7B%22album%22%3A%20%7B%09%22id%22%3A2%2C%20%0A%09%09%09%09%09%22titre%22%3A%22Tintin%20et%20Milou%22%2C%20%0A%09%09%09%09%09%22description%22%3A%22The%20real%20story%20of%20Tintin%22%2C%0A%09%09%09%09%09%22width%22%3A%20400%2C%0A%09%09%09%09%09%22height%22%3A%20300%2C%0A%09%09%09%09%09%22download_url%22%3A%20%22http%3A//localhost/pdf/2%22%2C%0A%09%09%09%09%09%22ressources%22%3A%5B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A12%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Origins%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%2212R%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Created%20in%201929%20by%20Herge%22%20%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/1.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/1_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/1.jpg%22%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%7B%09%22id%22%3A13%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22titre%22%3A%20%22Haddock%22%2C%0A%09%09%09%09%09%09%09%09%09%09%09%09%22foliono%22%3A%20%22XX%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22link_to%22%3A%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22description%22%3A%22Captain%20living%20in%20Moulinsard%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22thumbnail%22%3A%22userfiles/album/2/thumbs/media/2.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22navigator_thumbnail%22%3A%22userfiles/album/2/thumbs/media/2_small.jpg%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%09%22original%22%3A%22bib-numerique/get-resource/id/2.jpg%22%20%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%09%09%09%5D%0A%09%09%09%09%7D%20%7D%27.'),
+source: "tintinJSON\x0a\x09^   '{\x22album\x22: {\x09\x22id\x22:2, \x0a\x09\x09\x09\x09\x09\x22titre\x22:\x22Tintin et Milou\x22, \x0a\x09\x09\x09\x09\x09\x22description\x22:\x22The real story of Tintin\x22,\x0a\x09\x09\x09\x09\x09\x22width\x22: 400,\x0a\x09\x09\x09\x09\x09\x22height\x22: 300,\x0a\x09\x09\x09\x09\x09\x22download_url\x22: \x22http://localhost/pdf/2\x22,\x0a\x09\x09\x09\x09\x09\x22ressources\x22:[ \x0a                                                          \x09\x09\x09\x09{\x09\x22id\x22:12,\x0a                                                          \x09\x09\x09\x09\x09\x22titre\x22: \x22Origins\x22,\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x22foliono\x22: \x2212R\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22link_to\x22:\x22\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22description\x22:\x22Created in 1929 by Herge\x22 ,\x0a                                                          \x09\x09\x09\x09\x09\x22thumbnail\x22:\x22userfiles/album/2/thumbs/media/1.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22navigator_thumbnail\x22:\x22userfiles/album/2/thumbs/media/1_small.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22original\x22:\x22bib-numerique/get-resource/id/1.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22download\x22:\x22bib-numerique/download-resource/id/1\x22},\x0a                                                          \x0a                                                          \x09\x09\x09\x09{\x09\x22id\x22:13,\x0a                                                          \x09\x09\x09\x09\x09\x22titre\x22: \x22Haddock\x22,\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x22foliono\x22: \x22XX\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22link_to\x22:\x22\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22description\x22:\x22Captain living in Moulinsard\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22thumbnail\x22:\x22userfiles/album/2/thumbs/media/2.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22navigator_thumbnail\x22:\x22userfiles/album/2/thumbs/media/2_small.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22original\x22:\x22bib-numerique/get-resource/id/2.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22download\x22:\x22bib-numerique/download-resource/id/2\x22 }                                                        \x0a                                                          \x09\x09\x09\x09]\x0a\x09\x09\x09\x09} }'.",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.BibNumAlbumTintinTest);
+smalltalk.BibNumAlbumTintinBookletTest);
+
+
+
+smalltalk.addClass('BibNumAlbumTintinMonopageTest', smalltalk.BibNumAlbumTintinTestCase, [], 'AFI-Tests');
+smalltalk.addMethod(
+"_testBookMenuShouldContainsLIWithHaddock",
+smalltalk.method({
+selector: "testBookMenuShouldContainsLIWithHaddock",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_", [smalltalk.send(0, "__lt", [smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book-menu ul li:contains(\"Haddock\")"]), "_length", [])])]);
+    return self;
+},
+args: [],
+source: "testBookMenuShouldContainsLIWithHaddock\x0a\x09self assert: 0 < (container find: '.book-menu ul li:contains(\x22Haddock\x22)')  length",
+messageSends: ["assert:", "<", "length", "find:"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
+"_testBookMenuShouldContainsLIWithOrigins",
+smalltalk.method({
+selector: "testBookMenuShouldContainsLIWithOrigins",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_", [smalltalk.send(0, "__lt", [smalltalk.send(smalltalk.send(self['@container'], "_find_", [".book-menu li:contains(\"Origins\")"]), "_length", [])])]);
+    return self;
+},
+args: [],
+source: "testBookMenuShouldContainsLIWithOrigins\x0a\x09self assert: 0 < (container find: '.book-menu li:contains(\x22Origins\x22)')  length",
+messageSends: ["assert:", "<", "length", "find:"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
+"_testBookletShouldNotBeLoaded",
+smalltalk.method({
+selector: "testBookletShouldNotBeLoaded",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_equals_", [0, smalltalk.send(smalltalk.send(self['@container'], "_find_", [".b-load"]), "_length", [])]);
+    return self;
+},
+args: [],
+source: "testBookletShouldNotBeLoaded\x0a\x09self assert: 0 equals: ( container find: '.b-load') length\x0a\x09",
+messageSends: ["assert:equals:", "length", "find:"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
+"_testFirstPageImageShouldLinkToOneDotJpg",
+smalltalk.method({
+selector: "testFirstPageImageShouldLinkToOneDotJpg",
+category: 'tests',
+fn: function () {
+    var self = this;
+    smalltalk.send(self, "_assert_", [smalltalk.send(0, "__lt", [smalltalk.send(smalltalk.send(self['@container'], "_find_", ["img[src*=\"userfiles/album/2/thumbs/media/1.jpg\"]"]), "_length", [])])]);
+    return self;
+},
+args: [],
+source: "testFirstPageImageShouldLinkToOneDotJpg\x0a\x09self assert: 0 < (container find: 'img[src*=\x22userfiles/album/2/thumbs/media/1.jpg\x22]')  length",
+messageSends: ["assert:", "<", "length", "find:"],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
+
+smalltalk.addMethod(
+"_tintinJSON",
+smalltalk.method({
+selector: "tintinJSON",
+category: 'json',
+fn: function () {
+    var self = this;
+    return "{\"album\": {\t\"id\":2, \n\t\t\t\t\t\"titre\":\"Tintin et Milou\", \n\t\t\t\t\t\"description\":\"The real story of Tintin\",\n\t\t\t\t\t\"width\": 400,\n\t\t\t\t\t\"height\": 300,\n\t\t\t\t\t\"download_url\": \"http://localhost/pdf/2\",\n                    \"player\": \"BookMonoWidget\",\n\t\t\t\t\t\"ressources\":[ \n                                                          \t\t\t\t{\t\"id\":12,\n                                                          \t\t\t\t\t\"titre\": \"Origins\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"12R\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Created in 1929 by Herge\" ,\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/1.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/1_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/1.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/1\"},\n                                                          \n                                                          \t\t\t\t{\t\"id\":13,\n                                                          \t\t\t\t\t\"titre\": \"Haddock\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"foliono\": \"XX\",\n                                                          \t\t\t\t\t\"link_to\":\"\",\n                                                          \t\t\t\t\t\"description\":\"Captain living in Moulinsard\",\n                                                          \t\t\t\t\t\"thumbnail\":\"userfiles/album/2/thumbs/media/2.jpg\",\n                                                          \t\t\t\t\t\"navigator_thumbnail\":\"userfiles/album/2/thumbs/media/2_small.jpg\",\n                                                          \t\t\t\t\t\"original\":\"bib-numerique/get-resource/id/2.jpg\",\n                                                          \t\t\t\t\t\"download\":\"bib-numerique/download-resource/id/2\" }                                                        \n                                                          \t\t\t\t]\n\t\t\t\t} }";
+},
+args: [],
+source: "tintinJSON\x0a\x09^   '{\x22album\x22: {\x09\x22id\x22:2, \x0a\x09\x09\x09\x09\x09\x22titre\x22:\x22Tintin et Milou\x22, \x0a\x09\x09\x09\x09\x09\x22description\x22:\x22The real story of Tintin\x22,\x0a\x09\x09\x09\x09\x09\x22width\x22: 400,\x0a\x09\x09\x09\x09\x09\x22height\x22: 300,\x0a\x09\x09\x09\x09\x09\x22download_url\x22: \x22http://localhost/pdf/2\x22,\x0a                    \x22player\x22: \x22BookMonoWidget\x22,\x0a\x09\x09\x09\x09\x09\x22ressources\x22:[ \x0a                                                          \x09\x09\x09\x09{\x09\x22id\x22:12,\x0a                                                          \x09\x09\x09\x09\x09\x22titre\x22: \x22Origins\x22,\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x22foliono\x22: \x2212R\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22link_to\x22:\x22\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22description\x22:\x22Created in 1929 by Herge\x22 ,\x0a                                                          \x09\x09\x09\x09\x09\x22thumbnail\x22:\x22userfiles/album/2/thumbs/media/1.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22navigator_thumbnail\x22:\x22userfiles/album/2/thumbs/media/1_small.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22original\x22:\x22bib-numerique/get-resource/id/1.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22download\x22:\x22bib-numerique/download-resource/id/1\x22},\x0a                                                          \x0a                                                          \x09\x09\x09\x09{\x09\x22id\x22:13,\x0a                                                          \x09\x09\x09\x09\x09\x22titre\x22: \x22Haddock\x22,\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x22foliono\x22: \x22XX\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22link_to\x22:\x22\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22description\x22:\x22Captain living in Moulinsard\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22thumbnail\x22:\x22userfiles/album/2/thumbs/media/2.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22navigator_thumbnail\x22:\x22userfiles/album/2/thumbs/media/2_small.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22original\x22:\x22bib-numerique/get-resource/id/2.jpg\x22,\x0a                                                          \x09\x09\x09\x09\x09\x22download\x22:\x22bib-numerique/download-resource/id/2\x22 }                                                        \x0a                                                          \x09\x09\x09\x09]\x0a\x09\x09\x09\x09} }'.",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BibNumAlbumTintinMonopageTest);
 
 
 
 smalltalk.addClass('CycleTest', smalltalk.TestCase, [], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_testCycleWithFourElements'),
+"_testCycleWithFourElements",
 smalltalk.method({
-selector: unescape('testCycleWithFourElements'),
+selector: "testCycleWithFourElements",
 category: 'tests',
-fn: function (){
-var self=this;
-var cycle=nil;
-(cycle=smalltalk.send((smalltalk.Cycle || Cycle), "_with_", [["one", "two", "three", "four"]]));
-smalltalk.send((3), "_timesRepeat_", [(function(){smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);smalltalk.send(self, "_assert_equals_", ["three", smalltalk.send(cycle, "_next", [])]);return smalltalk.send(self, "_assert_equals_", ["four", smalltalk.send(cycle, "_next", [])]);})]);
-return self;},
+fn: function () {
+    var self = this;
+    var cycle = nil;
+    cycle = smalltalk.send(smalltalk.Cycle || Cycle, "_with_", [["one", "two", "three", "four"]]);
+    smalltalk.send(3, "_timesRepeat_", [function () {smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);smalltalk.send(self, "_assert_equals_", ["three", smalltalk.send(cycle, "_next", [])]);return smalltalk.send(self, "_assert_equals_", ["four", smalltalk.send(cycle, "_next", [])]);}]);
+    return self;
+},
 args: [],
-source: unescape('testCycleWithFourElements%0A%09%7Ccycle%7C%0A%09cycle%20%3A%3D%20Cycle%20with%3A%20%23%28%27one%27%20%27two%27%20%27three%27%20%27four%27%29.%0A%093%20timesRepeat%3A%20%5B%0A%09%09self%20assert%3A%20%27one%27%20equals%3A%20cycle%20next.%0A%09%09self%20assert%3A%20%27two%27%20equals%3A%20cycle%20next.%0A%09%09self%20assert%3A%20%27three%27%20equals%3A%20cycle%20next.%0A%09%09self%20assert%3A%20%27four%27%20equals%3A%20cycle%20next%20%5D.%0A%09'),
+source: "testCycleWithFourElements\x0a\x09|cycle|\x0a\x09cycle := Cycle with: #('one' 'two' 'three' 'four').\x0a\x093 timesRepeat: [\x0a\x09\x09self assert: 'one' equals: cycle next.\x0a\x09\x09self assert: 'two' equals: cycle next.\x0a\x09\x09self assert: 'three' equals: cycle next.\x0a\x09\x09self assert: 'four' equals: cycle next ].\x0a\x09",
 messageSends: ["with:", "timesRepeat:", "assert:equals:", "next"],
 referencedClasses: ["Cycle"]
 }),
 smalltalk.CycleTest);
 
 smalltalk.addMethod(
-unescape('_testCycleWithTwoElements'),
+"_testCycleWithTwoElements",
 smalltalk.method({
-selector: unescape('testCycleWithTwoElements'),
+selector: "testCycleWithTwoElements",
 category: 'tests',
-fn: function (){
-var self=this;
-var cycle=nil;
-(cycle=smalltalk.send((smalltalk.Cycle || Cycle), "_with_", [["one", "two"]]));
-smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);
-smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);
-smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);
-smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);
-return self;},
+fn: function () {
+    var self = this;
+    var cycle = nil;
+    cycle = smalltalk.send(smalltalk.Cycle || Cycle, "_with_", [["one", "two"]]);
+    smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);
+    smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);
+    smalltalk.send(self, "_assert_equals_", ["one", smalltalk.send(cycle, "_next", [])]);
+    smalltalk.send(self, "_assert_equals_", ["two", smalltalk.send(cycle, "_next", [])]);
+    return self;
+},
 args: [],
-source: unescape('testCycleWithTwoElements%0A%09%7Ccycle%7C%0A%09cycle%20%3A%3D%20Cycle%20with%3A%20%23%28%27one%27%20%27two%27%29.%0A%09self%20assert%3A%20%27one%27%20equals%3A%20cycle%20next.%0A%09self%20assert%3A%20%27two%27%20equals%3A%20cycle%20next.%0A%09self%20assert%3A%20%27one%27%20equals%3A%20cycle%20next.%0A%09self%20assert%3A%20%27two%27%20equals%3A%20cycle%20next.%0A%09'),
+source: "testCycleWithTwoElements\x0a\x09|cycle|\x0a\x09cycle := Cycle with: #('one' 'two').\x0a\x09self assert: 'one' equals: cycle next.\x0a\x09self assert: 'two' equals: cycle next.\x0a\x09self assert: 'one' equals: cycle next.\x0a\x09self assert: 'two' equals: cycle next.\x0a\x09",
 messageSends: ["with:", "assert:equals:", "next"],
 referencedClasses: ["Cycle"]
 }),
@@ -463,9 +573,9 @@ smalltalk.CycleTest);
 
 smalltalk.addClass('SouvignyBibleTest', smalltalk.TestCase, ['bible'], 'AFI-Tests');
 smalltalk.addMethod(
-unescape('_setUp'),
+"_setUp",
 smalltalk.method({
-selector: unescape('setUp'),
+selector: "setUp",
 category: 'running',
 fn: function () {
     var self = this;
@@ -473,16 +583,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('setUp%0A%09bible%20%3A%3D%20SouvignyBible%20new'),
+source: "setUp\x0a\x09bible := SouvignyBible new",
 messageSends: ["new"],
 referencedClasses: []
 }),
 smalltalk.SouvignyBibleTest);
 
 smalltalk.addMethod(
-unescape('_testFolio150VShouldReturnPage306'),
+"_testFolio150VShouldReturnPage306",
 smalltalk.method({
-selector: unescape('testFolio150VShouldReturnPage306'),
+selector: "testFolio150VShouldReturnPage306",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -490,16 +600,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testFolio150VShouldReturnPage306%0A%09self%20assert%3A%20306%20equals%3A%28bible%20parseFolioNo%3A%20%27150v%27%29.'),
+source: "testFolio150VShouldReturnPage306\x0a\x09self assert: 306 equals:(bible parseFolioNo: '150v').",
 messageSends: ["assert:equals:", "parseFolioNo:"],
 referencedClasses: []
 }),
 smalltalk.SouvignyBibleTest);
 
 smalltalk.addMethod(
-unescape('_testFolio151RShouldReturnPage307'),
+"_testFolio151RShouldReturnPage307",
 smalltalk.method({
-selector: unescape('testFolio151RShouldReturnPage307'),
+selector: "testFolio151RShouldReturnPage307",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -507,16 +617,16 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testFolio151RShouldReturnPage307%0A%09self%20assert%3A%20307%20equals%3A%28bible%20parseFolioNo%3A%20%27151r%27%29.'),
+source: "testFolio151RShouldReturnPage307\x0a\x09self assert: 307 equals:(bible parseFolioNo: '151r').",
 messageSends: ["assert:equals:", "parseFolioNo:"],
 referencedClasses: []
 }),
 smalltalk.SouvignyBibleTest);
 
 smalltalk.addMethod(
-unescape('_testFolioOneShouldReturnPageOne'),
+"_testFolioOneShouldReturnPageOne",
 smalltalk.method({
-selector: unescape('testFolioOneShouldReturnPageOne'),
+selector: "testFolioOneShouldReturnPageOne",
 category: 'tests',
 fn: function () {
     var self = this;
@@ -524,7 +634,7 @@ fn: function () {
     return self;
 },
 args: [],
-source: unescape('testFolioOneShouldReturnPageOne%0A%09self%20assert%3A%201%20equals%3A%20%28bible%20parseFolioNo%3A%20%271%27%29'),
+source: "testFolioOneShouldReturnPageOne\x0a\x09self assert: 1 equals: (bible parseFolioNo: '1')",
 messageSends: ["assert:equals:", "parseFolioNo:"],
 referencedClasses: []
 }),

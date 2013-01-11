@@ -1,0 +1,291 @@
+body
+{
+	background-color:#FFFFFF;
+	margin:0px;
+	font-family: "Verdana";
+	font-size: 10pt;
+}
+hr{color:#003687}
+div
+{
+	margin:0px;
+	padding:0px;
+	text-align:left;
+}
+div.info
+{
+	font-size:10pt;
+	width:700px;
+	margin-left:20px;
+	color:#CC6600;
+	margin-bottom:5px;
+}
+h1
+{
+	color:#003687;
+	font-weight:bold;
+	font-size:12pt;
+	border-bottom:1px solid;
+	border-color:#003687;
+}
+h2
+{
+	color:#003687;	
+	font-size:12pt;
+}
+h3
+{
+	color:#003687;
+	font-weight:bold;
+	font-size:10pt;
+}
+
+h4
+{
+	color:#003687;
+	font-weight:bold;
+	font-size:10pt;
+	text-decoration:underline;
+}
+h5
+{
+	color:#B73901;
+	font-size:12pt;
+}
+a:link{color:#003687;font-weight:bold;text-decoration:none;font-size:8pt;}
+a:visited{color:#003687;font-weight:bold;text-decoration:none;font-size:8pt;}
+a:hover{color:#B73901;font-weight:bold;text-decoration:none;font-size:8pt;}
+
+p
+{
+	color:#003687;
+}
+h3.erreur
+{
+	color:red;
+}
+table.liste
+{
+	background-color:#FFFFFF;
+}
+td.liste
+{
+	background-color:#FFFFFF;
+	color:#B73901;
+	font-weight:bold;
+	border:0px;
+}
+body.droite
+{
+	background-color:#FFFFFF;
+	margin-left:10px;
+	margin-top:15px;
+}
+form
+{
+	margin:0px;
+	padding:0px;
+}
+
+table
+{
+	font-size: 10pt;
+	border:1px solid;
+	border-color:#E0E0E0;
+}
+
+th
+{
+	padding-top:3px;
+	padding-bottom:5px;
+	vertical-align:middle;
+	color:#ffffff;
+	background-color:#BBCE60;
+	padding-left:5px;
+	padding-right:5px;
+}
+td
+{
+	background-color:#E9F6A7;
+	color:#003687;
+	padding-left:5px;
+	padding-right:5px;
+	height:25px;
+	border:none;
+}
+td.haut
+{
+	padding-top:10px;
+}
+td.bas
+{
+	padding-bottom:10px;
+}
+td.milieu
+{
+	padding-bottom:5px;
+	padding-top:5px;
+}
+td.bouton
+{
+	padding-bottom:7px;
+	padding-top:10px;
+	background-color:#FFFFCF;
+	text-align:center;
+}
+div.commentaire
+{
+	background-color:#FFFFCF;
+	color:#B73901;
+	padding:5px;
+}
+
+input.bouton
+{
+	font-size: 8pt;
+	font-weight:bold;
+	color:#003687;
+  	background-color:#f0f0f0;
+  	border:1px solid;
+  	border-color:#afafaf;
+  	cursor:pointer;
+  	padding:1px;
+}	
+span.table
+{
+	background-color:#FFFFCF;
+	color:#B73901;
+	padding-bottom:5px;
+}
+
+span.vert
+{
+	color:darkGreen;
+}
+span.rouge
+{	
+	font-weight:bold;
+	color:red;
+}
+span.violet
+{	
+	color:purple;
+}
+span.bib
+{	
+	color:#660000;
+}
+span.num_notice
+{
+	color:#660000;
+	font-weight:bold;
+}
+span.orange
+{
+	color:#CC6600;
+	font-weight:bold;
+}
+table.blank
+{
+	border-left:1px solid;
+	border-top:1px solid;
+	border-right:none;
+	border-bottom:none;
+	border-color:#E0E0E0;
+  background-color:#FFFFFF;
+}
+th.blank
+{
+	color:#003687;
+	background-color:#FFFFCC;
+	border-right:1px solid;
+	border-bottom:1px solid;
+	border-color:#E0E0E0;
+	font-weight:bold;
+	text-align:center;
+}
+td.blank
+{
+	color:black;
+	background-color:#FFFFFF;
+	border-right:1px solid;
+	border-bottom:1px solid;
+	border-color:#E0E0E0;
+}
+div.jauge
+{
+	width:500px;
+	border-left:1px solid;
+	border:1px solid;
+	border-color:#E0E0E0;
+	margin-left:30px;
+}
+div.jauge_avance
+{
+	background-color:#FFCC66;
+	width:0%;
+	height:20px;
+	margin:0px;
+	padding:0px;
+}
+div.pct
+{
+	width:100%;
+	text-align:center;
+	font-size:10pt;
+	font-weight:bold;
+	color:#CC6600;
+	padding:0px;
+	margin:0px;
+}
+div.liste
+{
+	width:700px;
+	margin-left:20px;
+}
+div.liste_img
+{
+	float:left;
+	width:15px;
+	padding-top:2px;
+}
+div.liste_titre
+{
+	color:#B73901;
+	font-weight:bold;
+	margin-bottom:5px;
+}
+div.trace_debug
+{
+	margin-left:10px;
+	margin-bottom:5px;
+	margin-top:5px;
+	border:1px solid;
+	border-color:#E0E0E0;
+	background-color:#CCFF99;
+	padding:5px;
+}
+div.erreur_sql
+{
+	margin-left:10px;
+	border:1px solid;
+	border-color:#E0E0E0;
+	background-color:#CC99FF;
+	padding:5px;
+	margin-bottom:5px;
+}
+div.analyse
+{
+	font-size:12pt;
+	color:#CC6600;
+	margin-bottom:5px;
+}
+div.message_grand
+{
+	font-size:14pt;
+	color:#CC6600;
+}
+
+a:link.liste{color:#003687;font-weight:bold;text-decoration:none;font-size:10pt;}
+a:visited.liste{color:#003687;font-weight:bold;text-decoration:none;font-size:10pt;}
+a:hover.liste{color:#B73901;font-weight:bold;text-decoration:none;font-size:10pt;}

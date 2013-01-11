@@ -24,22 +24,60 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 	 * @return string
 	 */
 	public function renderForm($form) {
+		if (!$form)
+			return;
+
+		$form->setAttrib('class', trim($form->getAttrib('class').' form'));
+
+		// compatibilité avec les tables admin standard
+		$this->setupTableDecoratorsForForm($form);
+
+		if ($this->isFormContainsSubmit($form))
+			return $form->render();
+
+
+		return $this->renderFormWithButtonsValiderAnnuler($form);
+	}
+
+
+	public function renderFormWithButtonsValiderAnnuler($form) {
 		Class_ScriptLoader::getInstance()
 			->addAdminScript('controle_maj')
 			->addJQueryReady('$("form input").change(function(){setFlagMaj(true)})');
 
-		// compatibilité avec les tables admin standard
+		return $form->render() . $this->_buttonsFor($form);
+	}
+
+
+	public function isFormContainsSubmit($form) {
+		$isFormContainsSubmit = false;
+
+		foreach($form->getElements() as $element)
+			$isFormContainsSubmit = ($isFormContainsSubmit || ($element->helper == 'formSubmit'));
+
+		return $isFormContainsSubmit;
+	}
+
+
+	public function setupTableDecoratorsForForm($form) {
 		$form
-			->setAttrib('class', trim($form->getAttrib('class').' form'))
 			->setDisplayGroupDecorators(array(
 																				'FormElements',
 																				array('HtmlTag', array('tag' => 'table')),
 																				'Fieldset'))
 			->removeDecorator('HtmlTag');
+		
 
-		foreach ($form->getElements() as $element) {
-			$decorators	= $element->getDecorators();
+		foreach ($form->getElements() as $element)
+			$element->setDecorators($this->_decoratorsForTableRendering($element));			
+
+		return $this;
+	}
+
+
+	protected function _decoratorsForTableRendering($element) {
 			$newDecorators = array();
+			$decorators	= $element->getDecorators();
 
 			foreach ($decorators as $name => $decorator) {
 				$name = explode('_', $name);
@@ -47,38 +85,59 @@ class ZendAfi_View_Helper_RenderForm extends ZendAfi_View_Helper_BaseHelper {
 				$name = strtolower($name);
 
 				switch ($name) {
-					case 'label':
-						$newDecorators[] = array(array('input_data' => 'HtmlTag'),
-								array('tag' => 'td', 'class' => 'gauche'));
-					case 'viewhelper':
-						$decorator->setOption('tag', 'td');
+				case 'label':
+					$newDecorators[] = array(array('input_data' => 'HtmlTag'),
+																	 array('tag' => 'td', 'class' => 'gauche'));
+					$decorator->setOption('tag', 'td');
+					$newDecorators[$name] = $decorator;
+					$newDecorators[] = array('HtmlTag', array('tag' => 'tr'));
+					break;
+
+				case 'dtddwrapper':
+					break;
+
+				case 'viewhelper':
+					$decorator->setOption('tag', 'td');
+					$newDecorators[$name] = $decorator;
+					break;
+
+				default:
+					$newDecorators[$name] = $decorator;
+					break;
 				}
-
-				$newDecorators[$name] = $decorator;
-
 			}
 
-			$newDecorators[] = array('HtmlTag', array('tag' => 'tr'));
-			$element->setDecorators($newDecorators);
-		}
-
-		return
-			$form->render().
-			$this->_buttonsFor($form->getAttrib('id'));
+			return $newDecorators;
 	}
 
 
-	protected function _buttonsFor($id) {
+	/**
+	 * @param $form Zend_Form
+	 * @return string
+	 */
+	protected function _buttonsFor($form) {
+		$id = $form->getAttrib('id');
 		return "
 		<table>
 	    <tr>
         <td align='right'>".$this->view->bouton('type=V', "form=$id", "javascript=;setFlagMaj(false);")."</td>
         <td align='left'>".$this->view->bouton('id=29',
-																							 'picto=del.gif',
-																							 sprintf('texte=%s', $this->translate()->_('Annuler')),
-																							 'url='.$this->view->url(array('action' => 'index')),
+																							 'picto=back.gif',
+																							 sprintf('texte=%s', $this->translate()->_('Retour')),
+					                                     'url='. $this->_getBackUrl($form),
 																							 'largeur=120px')."</td>
     	</tr>
     </table>";
+	}
+
+
+	/**
+	 * @param $form Zend_Form
+	 * @return string
+	 */
+	protected function _getBackUrl($form) {
+		return ($form->getAttrib('data-backurl')) ?
+				$form->getAttrib('data-backurl') :
+				$this->view->url(['action' => 'index']);
 	}
 }

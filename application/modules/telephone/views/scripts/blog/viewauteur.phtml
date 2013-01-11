@@ -1,0 +1,4 @@
+<?php
+echo $this->toolbar($this->_("Critiques de %s", $this->name));
+echo $this->partial('blog/_liste_avis.phtml', array('liste_avis' => $this->liste_avis));
+?>

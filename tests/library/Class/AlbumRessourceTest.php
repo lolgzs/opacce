@@ -117,6 +117,15 @@ class AlbumRessourceInitializationTest extends AlbumRessourceFileUploadTestCase 
 												->initializeWith(null)
 		);
 	}
+
+
+	/** @test */
+	public function getImageWithInexistingPathShouldCreateBlackImage() {
+		$black_image = new Imagick();
+		$black_image->newPseudoImage(50, 50, "gradient:black-black");
+		$black_image->setImageFormat('jpg');
+		$this->assertEquals($black_image->getImageBlob(), $this->_resource->getImage());
+	}
 }
 
 
@@ -147,7 +156,13 @@ class AlbumRessourceReceivingFileTest extends AlbumRessourceFileUploadTestCase {
 			->method('receive')
 			->will($this->returnValue(false));
 
-		$this->assertFalse($this->_resource->setUploadHandler($this->_handler)->receiveFile());
+		$this->_handler
+			->expects($this->once())
+			->method('resetError')
+			->will($this->returnValue($this->_handler));
+
+		$this->assertFalse($this->_resource->setUploadHandlerFor($this->_handler, 'fichier')
+			                                 ->receiveFile());
 	}
 }
 

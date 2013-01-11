@@ -18,12 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-////////////////////////////////////////////////////////////////////////////////////////
-// OPAC 3 : INDICES PCDM4
-///////////////////////////////////////////////////////////////////////////////////////
 
-class Class_Pcdm4
-{
+class Class_Pcdm4 extends Storm_Model_Abstract {
+  protected $_table_name = 'codif_pcdm4';
+  protected $_table_primary = 'id_pcdm4';
+
 // ----------------------------------------------------------------
 // Rend une liste pour un champ suggestion
 // ----------------------------------------------------------------

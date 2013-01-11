@@ -315,7 +315,7 @@ class BibNumeriqueCollectionEnluminuresTest extends BibNumeriqueViewCollectionTe
 abstract class AbstractBibNumeriqueViewHelperWithAlbumHarlockTestCase extends ViewHelperTestCase {
 	public function setUp() {
 		parent::setUp();
-
+		Class_ScriptLoader::resetInstance();
 		$harlock = Class_Album::getLoader()
 			->newInstanceWithId(99)
 			->setTitre('Harlock');
@@ -441,6 +441,8 @@ class BibNumeriqueAlbumTeaserTest extends AbstractBibNumeriqueViewHelperWithAlbu
 
 	/** @test */
 	function pageShouldContainsCodeToLoadPrettyPhoto() {
+		$this->_buildHelperLimitedTo(2);
+		$this->_helper->getBoite();
 		$this->assertXPath(Class_ScriptLoader::getInstance()->html(),
 											 '//script[contains(@src,"prettyPhoto")]');
 	}
@@ -516,6 +518,7 @@ class BibNumeriqueAlbumHarlockAsBookletTest extends AbstractBibNumeriqueViewHelp
 																													 array('division' => 1,
 																																 'type_module' => 'BIB_NUMERIQUE',
 																																 'preferences' => $preferences));
+		Class_ScriptLoader::resetInstance();
 		$this->html = $helper->getBoite();
 	}
 

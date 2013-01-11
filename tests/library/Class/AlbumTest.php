@@ -84,6 +84,25 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 												$this->_album->getPermalink());
 	}
 
+
+	/** @test */
+	public function albumShouldBeVisible() {
+		$this->assertTrue($this->_album->isVisible());
+	}
+
+
+	/** @test */
+	public function getVisibleShouldReturnTrue() {
+		$this->assertTrue($this->_album->getVisible());
+	}
+
+
+	/** @test */
+	public function withVisibleFalseShouldNotBeVisible() {
+		$this->_album->setVisible(false);
+		$this->assertFalse($this->_album->isVisible());
+	}
+
 	
 	/** @test */
 	public function withIdOrigine_05DC03_PermalinkShouldBeBibNumNoticeIDO_05DC03() {
@@ -108,31 +127,42 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 
 	/** @test */
 	function toArrayShouldContainsNativeAndThumbnailsAttributes() {
-		$this->assertEquals(array('id' => 999,
-															'titre' => 'Harlock',
-															'type_doc_id' => 2,
-															'fichier' => '',
-															'date_maj' => '',
-															'annee' => '',
-															'id_langue' => 'fre',
-															'id_origine' => '',
-															'thumbnail_width' => 400,
-															'thumbnail_left_page_crop_top' => 0,
-															'thumbnail_left_page_crop_right' => 0,
-															'thumbnail_left_page_crop_bottom' => 0,
-															'thumbnail_left_page_crop_left' => 0,
-															'thumbnail_right_page_crop_top' => 0,
-															'thumbnail_right_page_crop_right' => 0,
-															'thumbnail_right_page_crop_bottom' => 0,
-															'thumbnail_right_page_crop_left' => 0,
-															'cfg_thumbnails' => '',
-															'sous_titre' => '',
-															'pdf' => '',
-															'auteur' => '',
-															'matiere' => '',
-															'provenance' => '',
-															'cote' => ''), 
-												$this->_album->toArray());
+		$this->assertEquals(
+				['id' => 999,
+				 'titre' => 'Harlock',
+				 'type_doc_id' => 2,
+				 'fichier' => '',
+				 'date_maj' => '',
+				 'annee' => '',
+				 'id_langue' => 'fre',
+				 'id_origine' => '',
+				 'thumbnail_width' => 400,
+				 'thumbnail_left_page_crop_top' => 0,
+				 'thumbnail_left_page_crop_right' => 0,
+				 'thumbnail_left_page_crop_bottom' => 0,
+				 'thumbnail_left_page_crop_left' => 0,
+				 'thumbnail_right_page_crop_top' => 0,
+				 'thumbnail_right_page_crop_right' => 0,
+				 'thumbnail_right_page_crop_bottom' => 0,
+				 'thumbnail_right_page_crop_left' => 0,
+				 'thumbnail_crop_top' => 0,
+				 'thumbnail_crop_right' => 0,
+				 'thumbnail_crop_bottom' => 0,
+				 'thumbnail_crop_left' => 0,
+				 'display_one_page' => false,
+				 'cfg_thumbnails' => '',
+				 'sous_titre' => '',
+				 'pdf' => '',
+				 'auteur' => '',
+				 'matiere' => '',
+				 'provenance' => '',
+				 'cote' => '',
+				 'editeur' => '',
+				 'visible' => true,
+				 'droits' => '',
+				 'nature_doc' => '',
+				 'nature_doc_ids' => []],
+				$this->_album->toArray());
 	}
 
 
@@ -213,6 +243,12 @@ class AlbumHarlockBasicTest extends AlbumHarlockTestCase {
 	public function notesAsArrayShouldContains305and317() {
 		$this->assertEquals(array('305$a' => '20eme siecle', '317$a' => 'viens de l\'espace'), 
 												$this->_album->getNotesAsArray());
+	}
+
+
+	/** @test */
+	public function isGallicaShouldAnswersFalse() {
+		$this->assertFalse($this->_album->isGallica());
 	}
 }
 

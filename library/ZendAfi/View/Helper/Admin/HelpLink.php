@@ -23,29 +23,32 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 class ZendAfi_View_Helper_Admin_HelpLink extends ZendAfi_View_Helper_BaseHelper {
 	protected $_mapping =
-		array('profil' => array( 'index' => 3612,
-														 'menusindex' => 3618,
-														 'accueil' => 3614,
-														 'proprietes' => 3894),
+		['profil' => [ 'index' => 3612,
+									 'menusindex' => 3618,
+									 'accueil' => 3614,
+									 'proprietes' => 3894],
 
-					'catalogue' => array( 'index' => 3613 ),
+		 'catalogue' => [ 'index' => 3613 ],
 
-					'formation' => array( 'index' => 4477 ),
+		 'formation' => [ 'index' => 4477 ],
 
-					'accueil' => array('kiosque' => 3651),
+		 'accueil' => ['kiosque' => 3651],
 
-					'cms' => array('index' => 3611),
+		 'cms' => ['index' => 3611],
 
-					'index' => array('index' => 4037),
+		 'index' => ['index' => 4037,
+								 'changelog' => 4488],
 
-					'modules' => array('recherche_viewnotice' => 3647,
-														 'recherche_resultat' => 3643),
+		 'modules' => ['recherche_viewnotice' => 3647,
+									 'recherche_resultat' => 3643],
 
-					'modo' => array('index' => 3648,
-													'membreview' => 3890),
+		 'modo' => ['index' => 3648,
+								'membreview' => 3890],
 
-					'bib' => array('index' => 3928)
-				);
+		 'bib' => ['index' => 3928],
+
+		 'upload' => ['vignette-notice' => 4635]
+		];
 
 
 	public function helpLink($action = null) {

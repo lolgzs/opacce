@@ -1,0 +1,10 @@
+<?php echo $this->toolbar();?>
+<?php echo '<h2>'.$this->article->getTitre().'</h2>';?>
+<?php echo '<h2>'.$this->_('Merci. Le formulaire a bien été enregistré :').'</h2>';?>
+
+<ul data-role="listview" data-inset="true">
+<?php 
+foreach ($this->datas as $key => $value)
+	echo sprintf('<li>%s : %s</li>', $key, $value);
+?>
+</ul>

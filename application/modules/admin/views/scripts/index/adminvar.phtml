@@ -13,7 +13,7 @@ $ligne = 0;
 foreach($this->vars as $var)
 {
 	if ($var->getId() == 'GOOGLE_ANALYTICS')
-		$value = htmlspecialchars($var->getValeur());
+		$value = $this->escape($var->getValeur());
 	else if(preg_match('^%0D%0A^',$var->getValeur()))
 		$value = urldecode(str_replace('%0D%0A','<br />',$var->getValeur()));
 	else

@@ -1,0 +1,18 @@
+<?php
+echo $this->bouton('id=add_category',
+									 'picto=add.gif',
+									 'texte=' . $this->traduire('Ajouter un catalogue'),
+									 'url=' . $this->url(array('action' => 'add',
+																						 'id' => null))
+									 );
+
+echo $this->tagModelTable($this->catalogs, 
+													array($this->_('Libellé'), 'URL'),
+													array('libelle', 'url'),
+													array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+																array('action' => 'browse', 'content' => $this->boutonIco('type=show')),
+																array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+													'opds');
+
+echo $this->subview;
+?>

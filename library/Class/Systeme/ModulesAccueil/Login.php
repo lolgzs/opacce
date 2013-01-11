@@ -32,16 +32,23 @@ class Class_Systeme_ModulesAccueil_Login extends Class_Systeme_ModulesAccueil_Nu
 	protected $_popupWidth = 570;
 
 	/** @var int */
-	protected $_popupHeight = 262;
+	protected $_popupHeight = 400;
 
 	/** @var bool */
 	protected $_isPhone = false;
+
+	/** @var bool */
+	protected $_isPackMobile = true;
 
 	/** @var array */
 	protected $_defaultValues = array(
 		'titre' => "Se connecter",			// Titre de la boite
 		'identifiant' => 'Identifiant',
+		'identifiant_exemple' => '',    //texte du placeholder
 		'mot_de_passe' => 'Mot de passe',
+		'mot_de_passe_exemple' => '',    // texte du placeholder,
+		'lien_connexion' => '» Se connecter',
+		'lien_mot_de_passe_oublie' => '» Mot de passe oublié ?' 
 	);
 }
 ?>

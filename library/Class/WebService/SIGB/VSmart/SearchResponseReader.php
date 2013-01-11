@@ -18,12 +18,8 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_VSmart_SearchResponseReader {
-	protected $_xml_parser;
-	protected $_notice;
-	protected $_current_datafield;
-	protected $_current_subfield;
-	protected $_current_controlfield;
+
+class Class_WebService_SIGB_VSmart_SearchResponseReader extends Class_WebService_SIGB_AbstractMarcXMLNoticeReader {
 	protected $_current_exemplaire;
 	protected $_STATUT_SYSTEME = array('0' => 'Disponible',
 																		 '4' => 'En prêt',
@@ -45,59 +41,6 @@ class Class_WebService_SIGB_VSmart_SearchResponseReader {
 
 	public static function newInstance() {
 		return new self();
-	}
-
-
-	public function getNoticeFromXML($xml) {
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance();
-		$this->_xml_parser
-			->setElementHandler($this)
-			->parse($xml);
-
-		return $this->_notice;
-	}
-
-
-	public function startControlField($attributes) {
-		$this->_current_controlfield = $attributes['TAG'];
-	}
-
-
-	public function endControlField($data) {
-		$callback = 'endControlfield_'.$this->_current_controlfield;
-
-		if (method_exists($this, $callback))
-			$this->$callback($data);
-	}
-
-
-	public function startDataField($attributes) {
-		$this->_current_datafield = $attributes['TAG'];
-		$callback = 'startDatafield_'.$this->_current_datafield;
-
-		if (method_exists($this, $callback))
-			$this->$callback();
-	}
-
-
-	public function endDataField($data) {
-		$callback = 'endDatafield_'.$this->_current_datafield;
-
-		if (method_exists($this, $callback))
-			$this->$callback($data);
-	}
-
-
-	public function startSubField($attributes) {
-		$this->_current_subfield = $attributes['CODE'];
-	}
-
-
-	public function endSubfield($data) {
-		$callback = 'endSubfield_'.$this->_current_datafield.'_'.$this->_current_subfield;
-
-		if (method_exists($this, $callback))
-			$this->$callback($data);
 	}
 
 

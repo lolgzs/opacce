@@ -40,7 +40,7 @@ class ZendAfi_View_Helper_IframeContainer extends ZendAfi_View_Helper_BaseHelper
 
 
 		$this->_params = array('height' => $hauteur,
-													 'frameborder' => 0,
+													 'style' => 'border: 0px; overflow:hidden',
 													 'width' => $largeur,
 													 'scrolling' => 'no');
 		return $this->getHtml();
@@ -53,15 +53,10 @@ class ZendAfi_View_Helper_IframeContainer extends ZendAfi_View_Helper_BaseHelper
 
 
 	public function getHtml() {
-		$absolute_url = sprintf("http://%s%s",
-														$_SERVER['HTTP_HOST'],
-														$this->_url);
-		$this->_params['src'] = sprintf("%s?%s",
-																		$absolute_url,
-																		http_build_query($this->_src_args, '', '&amp;'));
-
-		$this->_params['longdesc'] = sprintf("%sdesc",$absolute_url);
-
+		$src = $this->view->absoluteUrl($this->_url);
+		if ($this->_src_args)
+			$src .= '?'.http_build_query($this->_src_args, '', '&amp;');
+		$this->_params['src'] = $src;
 
 		$iframe_attributes = '';
 		foreach($this->_params as $name => $value)

@@ -23,18 +23,22 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	const MODULES_KEY = 'modules';
 	const PREFERENCES_KEY = 'preferences';
 
-	const GROUP_INFO = 'INFO';
-	const GROUP_RECH = 'RECH';
-	const GROUP_SITE = 'SITE';
+	const GROUP_INFO = 'ACCUEIL_INFO';
+	const GROUP_RECH = 'ACCUEIL_RECH';
+	const GROUP_SITE = 'ACCUEIL_SITE';
+	const GROUP_ABONNE = 'ACCUEIL_ABONNE';
 
 	/**
 	 * @var array
 	 */
 	protected $_groupes = array(
-		self::GROUP_INFO => "Modules d'informations",
-		self::GROUP_RECH => "Modules de recherches",
-		self::GROUP_SITE => "Modules niveau site"
+		self::GROUP_INFO => "Modules Information",
+		self::GROUP_RECH => "Modules Recherche",
+		self::GROUP_SITE => "Modules Site",
+		self::GROUP_ABONNE => "Modules Abonné"
 	);
+
+
 
 	/**
 	 * @var array
@@ -58,8 +62,17 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 	 * @param string $code
 	 * @return Class_Systeme_ModulesAccueil_Null or subclass
 	 */
+	public static function moduleByCode($code) {
+		return self::getInstance()->getModuleByCode($code);
+	}
+
+
+	/** 
+	 * @param string $code
+	 * @return Class_Systeme_ModulesAccueil_Null or subclass
+	 */
 	public function getModuleByCode($code) {
-		$modules = $this->_getModules();
+		$modules = self::getModules();
 		if (array_key_exists((string)$code, $modules)) {
 			return $modules[(string)$code];
 		}
@@ -69,39 +82,10 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 
 
 	/**
-	 * @param string $type_module
-	 * @return array
-	 */
-	public function getModules($type_module=false) {
-		$modules = $this->_getModules();
-		if ($type_module && array_key_exists($type_module, $modules)) {
-			return $modules[$type_module]->getProperties();
-
-		}
-		
-		$modulesProperties = array();
-		foreach ($modules as $k => $module) {
-			$modulesProperties[$k] = $module->getProperties();
-		}
-
-		return $modulesProperties;
-	}
-
-
-	/**
 	 * @return array
 	 */
 	public function getValeursParDefaut($type) {
-		$modules = $this->_getModules();
-
-		if (array_key_exists($type, $modules))
-			$values = $modules[$type]->getDefaultValues();
-		else
-			$values = array();
-
-		return array_merge(array('boite' => null,
-														  'titre' => ''),
-											 $values);
+		return $this->getModuleByCode($type)->getDefaultValues();
 	}
 
 
@@ -118,30 +102,34 @@ class Class_Systeme_ModulesAccueil extends Class_Systeme_ModulesAbstract {
 
 
 	/** @return array */
-	private function _getModules() {
+	public static function getModules() {
 		if (null === self::$_modules) {
-			self::$_modules = array('NEWS' => new Class_Systeme_ModulesAccueil_News,
-															'CRITIQUES' => new Class_Systeme_ModulesAccueil_Critiques,
-															'CALENDAR' => new Class_Systeme_ModulesAccueil_Calendrier,
-															'RSS' => new Class_Systeme_ModulesAccueil_Rss,
-															'SITO' => new Class_Systeme_ModulesAccueil_Sitotheque,
-															'RECH_SIMPLE' => new Class_Systeme_ModulesAccueil_RechercheSimple,
-															'RECH_GUIDEE' => new Class_Systeme_ModulesAccueil_RechercheGuidee,
-															'TAGS' => new Class_Systeme_ModulesAccueil_Tags,
-															//'CATALOGUE' => new Class_Systeme_ModulesAccueil_Catalogue,
-															'KIOSQUE' => new Class_Systeme_ModulesAccueil_Kiosque,
-															'MENU_VERTICAL' => new Class_Systeme_ModulesAccueil_MenuVertical,
-															'CARTE_ZONES' => new Class_Systeme_ModulesAccueil_CarteZones,
-															'LOGIN' => new Class_Systeme_ModulesAccueil_Login,
-															'CONTENEUR_DEUX_COLONNES' => new Class_Systeme_ModulesAccueil_ConteneurDeuxColonnes,
-															'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
-															'LANGUE' => new Class_Systeme_ModulesAccueil_Langue
-															);
-			
-			if (Class_AdminVar::isBibNumEnabled()) {
-				self::$_modules['BIB_NUMERIQUE'] = new Class_Systeme_ModulesAccueil_BibliothequeNumerique;
+			self::$_modules = ['NEWS' => new Class_Systeme_ModulesAccueil_News,
+												 'CRITIQUES' => new Class_Systeme_ModulesAccueil_Critiques,
+												 'CALENDAR' => new Class_Systeme_ModulesAccueil_Calendrier,
+												 'RSS' => new Class_Systeme_ModulesAccueil_Rss,
+												 'SITO' => new Class_Systeme_ModulesAccueil_Sitotheque,
+												 'RECH_SIMPLE' => new Class_Systeme_ModulesAccueil_RechercheSimple,
+												 'RECH_GUIDEE' => new Class_Systeme_ModulesAccueil_RechercheGuidee,
+												 'TAGS' => new Class_Systeme_ModulesAccueil_Tags,
+												 //'CATALOGUE' => new Class_Systeme_ModulesAccueil_Catalogue,
+												 'KIOSQUE' => new Class_Systeme_ModulesAccueil_Kiosque,
+												 'MENU_VERTICAL' => new Class_Systeme_ModulesAccueil_MenuVertical,
+												 'CARTE_ZONES' => new Class_Systeme_ModulesAccueil_CarteZones,
+												 'LOGIN' => new Class_Systeme_ModulesAccueil_Login,
+												 'CONTENEUR_DEUX_COLONNES' => new Class_Systeme_ModulesAccueil_ConteneurDeuxColonnes,
+												 'COMPTEURS' => new Class_Systeme_ModulesAccueil_Compteurs,
+												 'LANGUE' => new Class_Systeme_ModulesAccueil_Langue,
+												 'BIB_NUMERIQUE' => new Class_Systeme_ModulesAccueil_BibliothequeNumerique,
+												 'RESERVATIONS' => new Class_Systeme_ModulesAccueil_Reservations,
+												 'PRETS' => new Class_Systeme_ModulesAccueil_Prets,
+												 'NEWSLETTERS' => new Class_Systeme_ModulesAccueil_Newsletters,
+												 //	 'FORMATIONS' => new Class_Systeme_ModulesAccueil_Formations,
+												 'MULTIMEDIA' => new Class_Systeme_ModulesAccueil_Multimedia
+
+
+			];
 			}
-		}
 
 		return self::$_modules;
 	}

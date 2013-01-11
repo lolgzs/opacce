@@ -27,11 +27,10 @@ class ZendAfi_Form_Element_Image extends ZendAfi_Form_Element_File {
 		parent::__construct($spec, $options);
 
 		$decorators = $this->_decorators;
-		$this->_decorators = array('Image' => new ZendAfi_Form_Decorator_Image());
+		$this->_decorators = ['Image' => new ZendAfi_Form_Decorator_Image()];
 
-		foreach ($decorators as $name => $value) {
+		foreach ($decorators as $name => $value)
 			$this->_decorators[$name] = $value;
-		}
 
 		$this->setAutoInsertNotEmptyValidator(false);
 	}

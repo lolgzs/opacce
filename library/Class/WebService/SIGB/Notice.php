@@ -49,11 +49,13 @@ class Class_WebService_SIGB_Notice {
 	public function addExemplaire($exemplaire){
 		$this->exemplaires[]=$exemplaire;
 		$exemplaire->setNotice($this);
+		return $this;
 	}
 
 	public function addAllExemplaires($exemplaires){
 		foreach($exemplaires as $ex)
 			$this->addExemplaire($ex);
+		return $this;
 	}
 
 	public function nbExemplaires(){

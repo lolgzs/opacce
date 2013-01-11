@@ -1,0 +1,32 @@
+<?php
+echo $this->bouton('id=add_category',
+									 'picto=add.gif',
+									 'texte=' . $this->traduire('Ajouter un entrepôt'),
+									 'url=' . $this->url(array('action' => 'add',
+																						 'id' => null))
+									 );
+
+echo $this->tagModelTable($this->entrepots, 
+													array($this->_('Libellé'), 'URL'),
+													array('libelle', 'handler'),
+													array(array('action' => 'edit', 'content' => $this->boutonIco('type=edit')),
+																array('action' => 'browse', 'content' => $this->boutonIco('type=show')),
+																array('action' => 'delete', 'content' => $this->boutonIco('type=del'))),
+													'entrepots_oai');
+
+echo $this->subview;
+
+echo $this->renderForm($this->search_form);
+
+if ($this->error) echo '<div class="error">'.$this->error.'</div>';
+
+if ($this->notices) {
+	echo $this->tagModelTable($this->notices, 
+														array($this->_('Entrepot'), $this->_('Titre')),
+														array('libelle_entrepot', 'titre'),
+														array(array('action' => 'import', 'content' => $this->boutonIco('type=add'))),
+														'notices');
+}
+
+
+?>

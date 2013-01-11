@@ -1,9 +1,29 @@
 <?php
-echo $this->toolbar("Résumés",$this->url_retour,true);
-echo '<h1>'.$this->notice["T"].'</h1>';
-echo '<div class="pave">';
-$notice_html=new Class_NoticeHtml($this->notice);
-$notice_html->notice=$this->notice;
-echo $notice_html->getResume($this->avis);
-echo '</div>'.BR;
+echo $this->toolbar($this->_("Résumés"),
+										array('action' => 'viewnotice'),
+										true);
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
+
+<ul data-role="listview" data-inset="true">
+  
+<?php
+
+  $resumes = $this->notice->findAllResumes();
+foreach($resumes as $resume){?>
+  <li data-role="list-divider">
+    <?php echo $this->_('Source : ') . $resume["source"];?>
+  </li>
+  <li>
+    <?php echo $resume["texte"];?>
+  </li>
+    <?php } ?>
+    <?php  if (empty($resumes)) { ?>
+  <li><?php echo 'Aucun resumé';?></li>
+    <?php } ?>
+</ul>
+  
+
+    
+
+

@@ -6,15 +6,15 @@ if (!$this->user->hasRightSuivreFormation())
 							 $this->_("Vous n'avez pas les droits suffisants pour vous inscrire à une formation"));
 
 foreach($this->formations_by_year as $year => $formations) {
-	echo '<div class="formations tree">';
-	echo sprintf('<h2>%s</h2>', $year);
-	echo sprintf('<ul class="tree">%s</ul>',
-							 $this->partialCycle('abonne/_formation.phtml',
-																	 'formation',
-																	 $formations,
-																	 array('first', 'second')));
+	echo '<div class="formations">';
+	echo $this->partialCycle('abonne/_formation.phtml',
+													 'formation',
+													 $formations,
+													 array('first', 'second'));
 	echo '</div>';
 }
 
 echo $this->closeBoite();
 ?>
+
+<?php echo $this->abonne_RetourFiche(); ?>

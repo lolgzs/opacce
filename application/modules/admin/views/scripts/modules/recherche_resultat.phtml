@@ -22,6 +22,14 @@ echo $this->tagSelectionChamps("libelles");
 						<td class="droite">Style de boite&nbsp;</td>
 						<td class="gauche"><?php echo $this->combo_templates ?></td>
 					</tr>
+
+					<tr>
+	          <td class="droite"><?php echo $this->_('Lien "Suggérer un achat"').'&nbsp;' ?></td>
+	            <td class="gauche"><?php echo $this->formCheckbox('suggestion_achat', 
+																																$this->preferences['suggestion_achat'], 
+																																null,
+																																[1, 0]) ?></td>
+					</tr>
 				</table>
 			</fieldset>
 
@@ -44,6 +52,10 @@ echo $this->tagSelectionChamps("libelles");
     				echo $data["champ_code"].$data["champ_libelle"].$data["bloc_saisie"]; 
     				?>  				
     			</td>
+  			</tr>
+  			<tr>
+          <td class="droite">Zones de titre (séparées par ;)&nbsp;</td>
+    			<td class="gauche"><input type="text" placeholder="exemple: 200$e;464$t" value="<?php echo $this->preferences['zones_titre'] ?>" name="zones_titre" id="zones_titre" size="50"></td>
   			</tr>
   		</table>
 			</fieldset>

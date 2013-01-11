@@ -79,11 +79,14 @@ class EADEmptyLoadTest extends Storm_Test_ModelTestCase {
 
 
 
-class EADMoulinsTest extends Storm_Test_ModelTestCase {
+class EADMoulinsTest extends PHPUnit_Framework_TestCase {
+	protected static $ead;
+	protected static $folio_souvigny_1R;
+	protected static $folio_souvigny_3R;
+	protected static $folio_souvigny_3V;
 
-	public function setUp() {
-		parent::setUp();
 
+	public static  function setUpBeforeClass() {
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Matiere')
 			->whenCalled('save')
 			->willDo(function($model) {
@@ -130,16 +133,16 @@ class EADMoulinsTest extends Storm_Test_ModelTestCase {
 															 ->newInstanceWithId(9)
 															 ->setLibelle('Patrimoine'))
 								->setRessources(array(
-																			$this->_folio_souvigny_1R = Class_AlbumRessource::getLoader()
+																			self::$folio_souvigny_1R = Class_AlbumRessource::getLoader()
 																			->newInstanceWithId(23)
 																			->setFolio('MS_001_0001R')
 																			->setTitre('Mon titre'),
 
-																			$this->_folio_souvigny_3R = Class_AlbumRessource::getLoader()
+																			self::$folio_souvigny_3R = Class_AlbumRessource::getLoader()
 																			->newInstanceWithId(24)
 																			->setFolio('MS_001_0003R'),
 
-																			$this->_folio_souvigny_3V = Class_AlbumRessource::getLoader()
+																			self::$folio_souvigny_3V = Class_AlbumRessource::getLoader()
 																			->newInstanceWithId(25)
 																			->setFolio('MS_001_0003V'))))
 
@@ -157,8 +160,21 @@ class EADMoulinsTest extends Storm_Test_ModelTestCase {
 					return true;
 				});
 
-		$this->_ead = new Class_EAD();
-		$this->_ead->loadFile('./tests/fixtures/ead_moulins.xml');
+		self::$ead = new Class_EAD();
+		self::$ead->loadFile('./tests/fixtures/ead_moulins.xml');
+	}
+
+
+	public static function tearDownAfterClass() {
+		Storm_Model_Abstract::unsetLoaders();
+	}
+
+
+	public function setUp() {
+		$this->_ead = self::$ead;
+		$this->_folio_souvigny_1R = self::$folio_souvigny_1R;
+		$this->_folio_souvigny_3R = self::$folio_souvigny_3R;
+		$this->_folio_souvigny_3V = self::$folio_souvigny_3V;
 		$this->_souvigny = array_first($this->_ead->getAlbums());
 		$this->_eglise_izeure = array_at(89, $this->_ead->getAlbums());
 	}

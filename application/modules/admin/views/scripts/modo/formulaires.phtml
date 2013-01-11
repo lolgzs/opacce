@@ -1,0 +1,55 @@
+<?php 
+echo sprintf('<a style="float:right;margin:4px 0px" href="%s"><img style="vertical-align: middle" src="%s">%s</a>',
+						 $this->url(['module' => 'admin',
+												 'controller' => 'modo',
+												 'action' => 'export-csv-formulaire',
+												 'id_article' => $this->article->getId()],
+												null,
+												true),
+						 URL_ADMIN_IMG.'ico/down.gif',
+						 $this->_('Export CSV')); 
+?>
+<h1><?php echo $this->_('Modération des formulaires: '.$this->article->getTitre());?></h1>
+
+<?php 
+echo '<div  class="table_scroll">';
+$data_names = Class_Formulaire::mergeDataNames($this->formulaires);
+
+echo $this->tagModelTable(
+	$this->formulaires,
+	array_merge([$this->_('Date'), $this->_('Posté par'), $this->_('Bibliothèque')], $data_names),
+
+	array_merge(
+		[
+			'date_creation',
+			'compte', 
+			'libelle_bib'
+		], 
+		$data_names
+	),
+
+	[ ['action' => 'delete-formulaire', 'content' => $this->boutonIco('type=del')],
+		function($model) {
+				return $model->isValidated() 
+					? ''
+					: $this->tagAnchor(['action' => 'validate-formulaire',
+															'id' => $model->getId()],
+														 $this->boutonIco('type=validate'));
+		},
+	],
+
+	'formulaires',
+
+	null,
+
+
+	[
+		'date_creation' => function($model) {
+			return $this->humanDate($model->getDateCreation(), 'dd/MM/yyyy');
+		}
+	]
+
+);
+
+echo '</div>';
+?>

@@ -1,0 +1,11 @@
+<?php
+echo $this->toolbar("Avis", 
+										array('controller' => 'recherche',
+													'action' => 'avis',
+													'id' => $this->avis->getFirstNotice()->getId()), 
+										true);
+?>
+
+<div class="pave">
+	 <?php echo $this->avis($this->avis)?>
+</div>

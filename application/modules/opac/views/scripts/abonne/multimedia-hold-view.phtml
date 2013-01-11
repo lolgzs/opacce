@@ -1,0 +1,15 @@
+<?php $this->openBoite($this->_("Votre réservation")); ?>
+<div class="workflow_step">
+	<ul>
+		<li><?php echo sprintf('%s : %s', $this->_('Lieu'), $this->escape($this->location));?></li>
+		<li><?php echo sprintf('%s : %s', $this->_('Jour'), $this->escape($this->day));?></li>
+		<li><?php echo sprintf('%s : %s', $this->_('À partir de'), $this->escape($this->time));?></li>
+		<li><?php echo sprintf('%s : %s', $this->_('Durée'), $this->escape($this->duration));?></li>
+		<li><?php echo sprintf('%s : %s', $this->_('Poste'), $this->escape($this->device));?></li>
+	</ul>
+	<div class="actions">
+		<a href="<?php echo $this->url(array('controller' => 'abonne', 'action' => 'fiche'), null, true);?>"><?php echo $this->_('Retour');?>
+		<a href="<?php echo $this->url(array('delete' => 1));?>" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')"><?php echo $this->_('Annuler cette réservation');?>
+	</div>
+</div>
+<?php $this->closeBoite();?>

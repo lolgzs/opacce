@@ -19,6 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Admin_UploadController extends Zend_Controller_Action {
+	public function preDispatch(){
+		Zend_Layout::startMvc(array());
+	}
+
 	public function multipleAction() {
 		$this->view->headScript()
 								->appendFile(JQUERY)
@@ -67,6 +71,22 @@ $(document).ready(function () {
 		}
 
 		$this->_helper->json(array('success' => 'false'));
+	}
+
+
+	public function vignetteNoticeAction() {
+		$this->_helper->getHelper('viewRenderer')->setLayoutScript('subModal.phtml');
+
+		$form = new ZendAfi_Form_VignetteNotice();
+
+		if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+			if (!$this->view->error = Class_WebService_AllServices::uploadVignetteForNotice($this->_getParam('url_vignette'),
+																																											$this->_getParam('id')))
+				$this->renderScript('upload/vignette-uploaded.phtml');
+		}
+
+		$this->view->form = $form;
+		$this->view->url_vignette = Class_Notice::find($this->_getParam('id'))->getUrlVignette();
 	}
 }
 ?>

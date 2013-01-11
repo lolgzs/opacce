@@ -19,63 +19,85 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   OPAC3 : Gestion des menus de navigation
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	const PREFERENCES_KEY	= 'preferences';
 	const MENUS_KEY				= 'menus';
 	const SUBMENUS_KEY		= 'sous_menus';
 
-	protected $_groupes = array(
-		"NAV" => "Navigation",
-		"INFO" => "Informations",
-		"RECH" => "Recherches",
-		"CATALOG" => "Catalogues",
-		"ABON" => "Abonnés"
-	);
+	const GROUP_MENU_NAVIGATION = 'MENU_NAV';
+	const GROUP_MENU_INFORMATIONS = 'MENU_INFO';
+	const GROUP_MENU_RECHERCHES = 'MENU_RECH';
+	const GROUP_MENU_CATALOGUES = 'MENU_CATALOG';
+	const GROUP_MENU_ABONNES = 'MENU_ABONNE';
 
-	private $fonctions = array(
-		"ACCUEIL" => array("libelle" => "Retour à l'accueil", "groupe" => "NAV", "phone" => true),
-		"CONNECT" => array("libelle" => "Se connecter", "groupe" => "NAV", "phone" => false),
-		"DISCONNECT" => array("libelle" => "Se déconnecter", "groupe" => "NAV", "phone" => true),
-		"GOOGLEMAP" => array("libelle" => "Plan d'accès google", "groupe" => "NAV", "action" => "googlemap", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"AVIS" => array("libelle" => "Dernières critiques", "groupe" => "INFO", "action" => "avis", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"LAST_NEWS" => array("libelle" => "Derniers articles", "groupe" => "INFO", "action" => "lastnews", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"NEWS" => array("libelle" => "Articles cms", "groupe" => "INFO", "action" => "news", "popup_width" => 800, "popup_height" => 600, "phone" => false),
-		"SITO" => array("libelle" => "Sitothèque", "groupe" => "INFO", "action" => "sitotheque", "popup_width" => 800, "popup_height" => 550, "phone" => false),
-		"RSS" => array("libelle" => "Fils Rss", "groupe" => "INFO", "action" => "rss", "popup_width" => 800, "popup_height" => 550, "phone" => false),
-		"URL" => array("libelle" => "Lien vers un site", "groupe" => "INFO", "action" => "liensite", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"PROFIL" => array("libelle" => "Lien vers un profil du portail", "groupe" => "INFO", "action" => "lienprofil", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"BIBNUM" => array("libelle" => "Lien vers un album", "groupe" => "INFO", "action" => "album", "popup_width" => 550, "popup_height" => 290, "phone" => false),
-		"RECH_SIMPLE" => array("libelle" => "Recherche simple", "groupe" => "RECH", "phone" => true),
-		"RECH_AVANCEE" => array("libelle" => "Recherche avancée", "groupe" => "RECH", "phone" => false),
-		"RECH_GUIDEE" => array("libelle" => "Recherche guidée", "groupe" => "RECH", "phone" => false),
-		"RECH_GEO" => array("libelle" => "Recherche géographique", "groupe" => "RECH", "phone" => false),
-		"RECH_OAI" => array("libelle" => "Recherche OAI", "groupe" => "RECH", "phone" => false),
-		"CATALOGUE" => array("libelle" => "Catalogue", "groupe" => "CATALOG", "action" => "catalogue", "popup_width" => 550, "popup_height" => 470, "phone" => false),
-		"ETAGERE" => array("libelle" => "Etagères", "groupe" => "CATALOG", "action" => "etagere", "popup_width" => 550, "popup_height" => 200, "phone" => false),
-		"TAGS" => array("libelle" => "Nuage de tags", "groupe" => "CATALOG", "phone" => false),
-		"PANIER" => array("libelle" => "Paniers de notices", "groupe" => "ABON", "phone" => false),
-		"ABON_AVIS" => array("libelle" => "Derniers avis", "groupe" => "ABON", "phone" => false),
-		"ABON_FICHE" => array("libelle" => "Fiche abonné", "groupe" => "ABON", "phone" => false),
-		"ABON_MODIF_FICHE" => array("libelle" => "Modifier données abonné", "groupe" => "ABON", "phone" => false),
-		"ABON_PRETS" => array("libelle" => "Prêts en cours", "groupe" => "ABON", "phone" => false),
-		"ABON_RESAS" => array("libelle" => "Réservations en cours", "groupe" => "ABON", "phone" => false),
-		"ABON_FORMATIONS" => array("libelle" => "Formations", "groupe" => "ABON", "phone" => false),
-		"FORM_CONTACT" => array("libelle" => "Formulaire de contact", "groupe" => "ABON", "phone" => false)
-	);
+	protected $_groupes = [
+		self::GROUP_MENU_NAVIGATION => "Navigation"  ,
+		self::GROUP_MENU_INFORMATIONS => "Informations",
+		self::GROUP_MENU_RECHERCHES =>"Recherches" ,
+		self::GROUP_MENU_CATALOGUES => "Catalogues",
+		self::GROUP_MENU_ABONNES	=> "Abonnés",
+		Class_Systeme_ModulesAccueil::GROUP_INFO => "Modules informations",
+		Class_Systeme_ModulesAccueil::GROUP_RECH => "Modules Recherches",
+		Class_Systeme_ModulesAccueil::GROUP_SITE => "Modules Site",
+		Class_Systeme_ModulesAccueil::GROUP_ABONNE => "Modules Abonnés"
 
-	private $fonction_vide = array("action" => "index", "popup_width" => 550, "popup_height" => 215, "phone" => true);
+	];
 
+	private $fonctions;
 
 	public function __construct() {
-		if (!Class_AdminVar::isFormationEnabled())
-			unset($this->fonctions['ABON_FORMATIONS']);
+		$this->fonctions = [
+			"vide" => new Class_Systeme_ModulesMenu_Null(),
+			"ACCUEIL" => new Class_Systeme_ModulesMenu_Accueil(),
+			"CONNECT" => new Class_Systeme_ModulesMenu_Connect(),
+			"DISCONNECT" => new Class_Systeme_ModulesMenu_Disconnect(),
+			"GOOGLEMAP" => new Class_Systeme_ModulesMenu_GoogleMap(),
+			"AVIS" => new Class_Systeme_ModulesMenu_Avis(),
+			"LAST_NEWS" => new Class_Systeme_ModulesMenu_LastNews(),
+			"NEWS" => new Class_Systeme_ModulesMenu_News(),
+			"SITO" => new Class_Systeme_ModulesMenu_Sitotheque(),
+			"RSS" => new Class_Systeme_ModulesMenu_Rss(),
+			"URL" => new Class_Systeme_ModulesMenu_Url(),
+			"PROFIL" => new Class_Systeme_ModulesMenu_Profil(),
+			"BIBNUM" => new Class_Systeme_ModulesMenu_BibliothequeNumerique(),
+			"RECH_SIMPLE" => new Class_Systeme_ModulesMenu_RechercheSimple(),
+			"RECH_AVANCEE" => new Class_Systeme_ModulesMenu_RechercheAvancee(),
+			"RECH_GUIDEE" => new Class_Systeme_ModulesMenu_RechercheGuidee(),
+			"RECH_GEO" => new Class_Systeme_ModulesMenu_RechercheGeographique(),
+			"RECH_OAI" => new Class_Systeme_ModulesMenu_RechercheOai(),
+			"CATALOGUE" => new Class_Systeme_ModulesMenu_Catalogue(),
+			"ETAGERE" => new Class_Systeme_ModulesMenu_Etagere(),
+			"TAGS" => new Class_Systeme_ModulesMenu_Tags(),
+			"PANIER" => new Class_Systeme_ModulesMenu_Paniers(),
+			"ABON_AVIS" => new Class_Systeme_ModulesMenu_Avis(),
+			"ABON_FICHE" => new Class_Systeme_ModulesMenu_AbonneFiche(),
+			"ABON_MODIF_FICHE" => new Class_Systeme_ModulesMenu_AbonneModificationFiche(),
+			"ABON_PRETS" => new Class_Systeme_ModulesMenu_AbonnePrets(),
+			"ABON_RESAS" => new Class_Systeme_ModulesMenu_AbonneReservations(),
+			"ABON_FORMATIONS" => new Class_Systeme_ModulesMenu_AbonneFormations(),
+			"FORM_CONTACT" => new Class_Systeme_ModulesMenu_FormulaireContact(), 
+			"VODECLIC" => new Class_Systeme_ModulesMenu_Vodeclic(),
+			"RESERVER_POSTE" => new Class_Systeme_ModulesMenu_ReserverPoste(),
+			'SUGGESTION_ACHAT' => new Class_Systeme_ModulesMenu_SuggestionAchat()
+	 ];
 
-		if (!Class_AdminVar::isBibNumEnabled())
-			unset($this->fonctions['BIBNUM']);
+		$modules_accueil = Class_Systeme_ModulesAccueil::getModules();
+		foreach($modules_accueil as $key => $module) {
+			$this->fonctions['BOITE_'.$key] = $module;
+		}
+		
+		foreach ($this->fonctions as $key => $module) {
+			if (!$module->isVisibleForProfil(null)) 
+				unset($this->fonctions[$key]);
+				
+		}
+	}
+
+
+	public function getValeursParDefaut($type) {
+		return $this->getFonction($type)->getDefaultValues();
+
 	}
 
 
@@ -84,32 +106,11 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	 * @return array
 	 */
 	public function getFonction($type) {
-		$fonction = $this->fonctions[$type];
-		if (!$fonction)
-			$fonction = $this->fonction_vide;
-		return $fonction;
+		if (isset($this->fonctions[$type]))
+				return $this->fonctions[$type];
+		return new Class_Systeme_ModulesMenu_Null();
 	}
 
-	/**
-	 * @param string $type
-	 * @return array
-	 */
-	public function getValeursParDefaut($type) {
-		switch ($type) {
-			case "URL": return $this->getDefautUrl();
-			case "PROFIL": return $this->getDefautProfil();
-			case "GOOGLEMAP": return $this->getDefautGoogleMap();
-			case "AVIS": return $this->getDefautAvis();
-			case "NEWS": return $this->getDefautNews();
-			case "LAST_NEWS": return $this->getDefautLastNews();
-			case "SITO": return $this->getDefautSitotheque();
-			case "RSS": return $this->getDefautRss();
-			case "CATALOGUE": return $this->getDefautCatalogue();
-			case "ETAGERE": return $this->getDefautEtagere();
-			case "ALBUM": return $this->getDefautAlbum();
-			default: return array();
-		}
-	}
 
 	/**
 	 * @param string $type
@@ -117,205 +118,15 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	 * @return string
 	 */
 	public function getUrl($type, $preferences) {
-		$target = '';
+		$module = $this->getFonction($type);
 
-		if (!$preferences)
-			$preferences = $this->getValeursParDefaut($type);
+		$preferences = array_merge($module->getDefaultValues(),$preferences);
 
-		switch ($type) {
-			case "MENU": $url = "#";
-				break;
-			case "CONNECT": $url = BASE_URL . "/auth/login/";
-				break;
-			case "DISCONNECT": $url = BASE_URL . "/auth/logout/";
-				break;
-			case "URL":
-				$url = $preferences["url"];
-				if ($preferences["target"] == 0)
-					$target = "_blank";
-				break;
-			case "PROFIL":$url = BASE_URL . "/opac?id_profil=" . $preferences["clef_profil"];
-				break;
-			case "GOOGLEMAP":$url = BASE_URL . "/opac/bib/mapview?id_bib=" . $preferences["id_bib"] . "&retour=" . $_SERVER["HTTP_REFERER"];
-				break;
-			case "RECH_SIMPLE": $url = BASE_URL . "/recherche/simple?statut=reset";
-				break;
-			case "RECH_AVANCEE": $url = BASE_URL . "/recherche/avancee?statut=reset";
-				break;
-			case "RECH_GUIDEE": $url = BASE_URL . "/recherche/guidee?statut=reset";
-				break;
-			case "RECH_GEO": $url = BASE_URL . "/bib";
-				break;
-			case "RECH_OAI": $url = BASE_URL . "/rechercheoai?statut=saisie";
-				break;
-
-			case "PANIER":
-				$url = BASE_URL . "/panier";
-				$retour = null;
-				if (array_isset("recherche", $_SESSION))
-					$retour = $_SESSION["recherche"]["retour_liste"];
-
-				if (!$retour or strpos($retour, "viewnotice") > 0)
-					$_SESSION["recherche"]["retour_liste"] = $_SERVER["HTTP_REFERER"];
-				break;
-
-			case "AVIS": $url = BASE_URL . "/blog/lastcritique/nb/" . $preferences["nb"];
-				break;
-			case "CATALOGUE":
-				$url = BASE_URL . "/catalogue/appelmenu" . $this->getArgsPreferences($preferences) . "&reset=true";
-				break;
-			case "ETAGERE":
-				$url = BASE_URL . "/etagere/appelmenu" . $this->getArgsPreferences($preferences) . "&reset=true";
-				break;
-			case "BIBNUM":
-				$url = BASE_URL . "/bib-numerique/booklet/id/" . $preferences['album_id'];
-				break;
-			case "LAST_NEWS": $url = BASE_URL . "/cms/articleviewrecent/nb/" . $preferences["nb"];
-				break;
-			case "NEWS": // Pour l'instant 1 seul article et 1 seule categorie
-				if ($preferences["id_items"]) {
-					$items = explode("-", $preferences["id_items"]);
-					$url = BASE_URL . "/cms/articleview/id/" . $items[0];
-				}
-				if ($preferences["id_categorie"]) {
-					$items = explode("-", $preferences["id_categorie"]);
-					$url = BASE_URL . "/cms/categorieview/id/" . $items[0];
-				}
-				break;
-			case "SITO": // Pour l'instant 1 seul site et pas de categorie
-				if ($preferences["id_items"]) {
-					$items = explode("-", $preferences["id_items"]);
-					$url = BASE_URL . "/sito/sitoview/id/" . $items[0];
-				}
-				break;
-			case "RSS": // Pour l'instant 1 seul flux et pas de categorie
-				if ($preferences["id_items"]) {
-					$items = explode("-", $preferences["id_items"]);
-					$url = BASE_URL . "/rss/main/id_flux/" . $items[0];
-				}
-				break;
-			case "ABON_AVIS": $url = BASE_URL . "/abonne/viewavis";
-				break;
-			case "ABON_FICHE": $url = BASE_URL . "/abonne/fiche";
-				break;
-			case "ABON_MODIF_FICHE": $url = BASE_URL . "/abonne/edit";
-				break;
-			case "ABON_PRETS": $url = BASE_URL . "/abonne/prets";
-				break;
-			case "ABON_RESAS": $url = BASE_URL . "/abonne/reservations";
-				break;
-			case "ABON_FORMATIONS": $url = BASE_URL . "/abonne/formations";
-				break;
-			case "FORM_CONTACT": $url = BASE_URL . "/index/formulairecontact";
-				break;
-			default: $url = BASE_URL;
-				break;
-		}
-
-		return array("url" => $url, "target" => $target);
-
+		return ['url' => $module->getUrl($preferences),
+						'target' => $module->shouldOpenInNewWindow($preferences) ? '_blank' : ''];
 	}
 
-	/**
-	 * @return array
-	 */
-	private function getDefautUrl() {
-		return array(
-			'target' => 1, // Ouvrir dans un nouvel onglet ou pas
-			'url' => 'http://google.fr',
-		);
 
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautProfil() {
-		return array('clef_profil' => '1');// Par defaut profil portail
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautGoogleMap() {
-		return array('id_bib' => '1'); // Par defaut bibliothèque n°1
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautAvis() {
-		return array('nb' => '10');// Nombres d'avis à afficher
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautNews() {
-		return array(
-			'id_categorie' => '', // Liste d'id_categorie séparés par des tirets
-			'id_items' => '', // Liste d'id_news séparés par des tirets
-			'nb_aff' => '5', // Nombres d'articles à afficher
-			'nb_analyse' => '10', // Nombres d'articles à analyser
-			'display_order' => 'Selection',
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautLastNews() {
-		return array('nb' => '5'); // Nombres d'articles à afficher
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautRss() {
-		return array(
-			'id_categorie' => '', // Liste d'id_categorie séparés par des tirets
-			'id_items' => '', // Liste d'id_rss séparés par des tirets
-			'nb' => '10', // Nombres de flux à afficher
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautSitotheque() {
-		return array(
-			'id_categorie' => '', // Liste d'id_categorie séparés par des tirets
-			'id_items' => '', // Liste d'id_sito séparés par des tirets
-			'nb' => '10', // Nombres de flux à afficher
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautCatalogue() {
-		return array(
-			'titre' => 'Catalogue', // Titre de la boite
-			'nb_notices' => 20, // Nombre de notices a afficher
-			'aleatoire' => 1,	// 1=tirage aleatoire
-			'tri' => 1, // 0=alpha,1=par date de creation,2=les plus consultées
-			'nb_analyse' => 50, // nbre a analyser pour le mode aleatoire
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautEtagere() {
-		return array('titre' => 'Etagère'); // Titre de la boite
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getDefautAlbum() {
-		return array('titre' => 'Album photos'); // Titre de la boite
-	}
 
 	/**
 	 *
@@ -333,18 +144,18 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		foreach ($this->getGroupes() as $id_groupe => $libelle) {
 			$combo.='<optgroup style="font-style: normal; color: #FF6600;" label="' . $libelle . '">';
 
-			foreach ($this->fonctions as $id_fonction => $fonction) {
-				if ($fonction["groupe"] != $id_groupe)
+			foreach ($this->fonctions as $id_fonction => $module) {
+				if ($module->getGroup() != $id_groupe)
 					continue;
 
-				if ($browser == "telephone" and $fonction["phone"] == false)
+				if ($browser == "telephone" && !$module->isPhone())
 					continue;
 
 				if ($item_selected == $id_fonction)
 					$selected = " selected"; else
 					$selected="";
 
-				$combo.='<option style="color:#575757" value="' . $id_fonction . '"' . $selected . '>' . stripSlashes($fonction["libelle"]) . '</option>';
+				$combo.='<option style="color:#575757" value="' . $id_fonction . '"' . $selected . '>' . stripSlashes($module->getLibelle()) . '</option>';
 
 			}
 
@@ -364,13 +175,15 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 		$js = "function initModules(){" . NL;
 		$js.="sModules['vide']=new Array();" . NL;
 
-		foreach ($this->fonction_vide as $id => $valeur)
-			$js.="sModules['vide']['" . $id . "']='" . $valeur . "';" . NL;
+		//		foreach ($this->fonction_vide as $id => $valeur)
+		//			$js.="sModules['vide']['" . $id . "']='" . $valeur . "';" . NL;
 
-		foreach ($this->fonctions as $clef => $fonction) {
+		foreach ($this->fonctions as $clef => $module) {
 			$js.="sModules['" . $clef . "']=new Array();" . NL;
 
-			foreach ($fonction as $id => $valeur)
+			$properties = $module->getProperties();
+
+			foreach ($properties as $id => $valeur)
 				$js.="sModules['" . $clef . "']['" . $id . "']=\"" . $valeur . "\";" . NL;
 
 		}
@@ -379,22 +192,6 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 
 		return $js;
 
-	}
-
-	/**
-	 * @param array $preferences
-	 * @return string
-	 */
-	private function getArgsPreferences($preferences) {
-		$args = "";
-		if (!$preferences)
-			return false;
-		foreach ($preferences as $clef => $valeur) {
-			if ($args)
-				$args.="&";
-			$args.=$clef . "=" . urlencode($valeur);
-		}
-		return "?" . $args;
 	}
 
 

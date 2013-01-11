@@ -28,42 +28,49 @@ class ZendAfi_View_Helper_ReseauxSociaux extends ZendAfi_View_Helper_BaseHelper
 	//------------------------------------------------------------------------------------------------------
 	// Main routine
 	//------------------------------------------------------------------------------------------------------
-	function reseauxSociaux($type,$id_notice,$type_doc=0)
-	{
-		// Url en fonction du type
-		switch($type)
-		{
-			case "notice" : $url_portail="/recherche/viewnotice/id/".$id_notice."?id_profil=".$_SESSION["id_profil"]."?type_doc=".$type_doc; break;
-			case "article" : $url_portail="/cms/articleview/id/".$id_notice."?id_profil=".$_SESSION["id_profil"]; break;
+	function reseauxSociaux($type,$id_notice,$type_doc=0)	{
+		$id_profil = Class_Profil::getCurrentProfil()->getId();
+
+		switch($type)	{
+		case "notice" : 
+			if (!$notice = Class_Notice::find($id_notice))
+				return '';
+
+			$url_portail="/recherche/viewnotice/clef/".$notice->getClefAlpha()."?id_profil=".$id_profil."&amp;type_doc=".$notice->getTypeDoc(); 
+			$message = $notice->getTitrePrincipal();
+      break;
+		case "article" : 
+			$url_portail="/cms/articleview/id/".$id_notice."?id_profil=".$id_profil; 
+			$message = '';
+			break;
 		}
 
 
-		return $this->links($url_portail);
+		return $this->links($url_portail, $message);
 	}
 
 
-	public function links($url_portail) {
+	public function links($url_portail, $message = '') {
 		// Get reseaux
 		$cls=new Class_WebService_ReseauxSociaux();
 		$reseaux=$cls->getReseau();
 
 		// Html
 		$html='<div style="text-align:left;margin-top:7px">';
-		foreach($reseaux as $clef => $reseau)
-		{
-			try {
-				$url=$cls->getUrl($clef,$url_portail);
-				$html.=sprintf('<img src="%s" style="margin-right:3px;cursor:pointer" alt="%s" title="%s" onclick="window.open(\'%s\',\'_blank\',\'location=yes, width=800, height=410\');" />',
-											 URL_ADMIN_IMG.'reseaux/'.$clef.'.gif',
-											 sprintf("%s ".$clef, $this->translate()->_('icone')),
-											 sprintf("%s ".$clef, $this->translate()->_('partager sur')),
-											 $url);
-			} catch (Exception $e) {
-
-			}
+		foreach($reseaux as $clef => $reseau) {
+			$url = $this->view->url(['controller' => 'social-network',
+															 'action' => 'share',
+															 'on' => $clef], null, true)
+				.'?url='.urlencode($url_portail)
+				.'&amp;message='.urlencode($message);
+			$html.=sprintf('<img src="%s" style="margin-right:3px;cursor:pointer" alt="%s" title="%s" onclick="$.getScript(\'%s\'); return false" />',
+										 URL_ADMIN_IMG.'reseaux/'.$clef.'.gif',
+										 sprintf("%s ".$clef, $this->translate()->_('icone')),
+										 sprintf("%s ".$clef, $this->translate()->_('partager sur')),
+										 $url);
 		}
 
-		$url="http://".$_SERVER["HTTP_HOST"].BASE_URL.$url_portail;
+		$url = $this->view->absoluteUrl($url_portail);
 		$html .= $this->view->permalink($url);
 		$html.='</div>';
 		return $html;

@@ -19,78 +19,67 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
-	public function assertQueryContentContains($html, $path, $match, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__, $match)) {
-            $constraint->fail($path, $message);
-		}
+	public function assertQueryContentContains() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
 	}
 
 
-	public function assertNotQueryContentContains($html, $path, $match, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__, $match)) {
-            $constraint->fail($path, $message);
-		}
+	public function assertNotQueryContentContains() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
 	}
 
 
-	public function assertXpath($html, $path, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__)) {
-            $constraint->fail($path, $message);
-		}
+	public function assertXpath() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
 	}
 
 
-	public function assertNotXpath($html, $path, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__)) {
-            $constraint->fail($path, $message);
-		}
+	public function assertXpathCount() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
 	}
 
 
-	public function assertXpathContentContains($html, $path, $match, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__, $match)) {
-			$constraint->fail($path, $message);
-		}
+	public function assertNotXpath() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
 	}
 
 
-	public function assertNotXpathContentContains($html, $path, $match, $message = '') {
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__, $match)) {
-			$constraint->fail($path, $message);
-		}
+	public function assertXpathContentContains() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
 	}
 
 
-	public function assertQueryCount($html, $path, $count, $message = '')
-	{
-		$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-		if (!$constraint->evaluate($html, __FUNCTION__, $count)) {
-			$constraint->fail($path, $message);
-		}
+	public function assertNotXpathContentContains() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
 	}
 
+
+	public function assertQueryCount()	{
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
+
+	}
 
 	/** 
 	 * @param string $html
 	 * @param array $paths
 	 * @param string $message
 	 */
-	public function assertAnyXpath($html, array $paths, $message = '') {
-		foreach ($paths as $path) {
-			$constraint = new Zend_Test_PHPUnit_Constraint_DomQuery($path);
-			if ($constraint->evaluate($html, 'assertXpath')) {
-				return;
-			}
-		}
+	public function assertAnyXpath() {
+		call_user_func_array(array(new Storm_Test_XPath(), __FUNCTION__), 
+												 func_get_args());
 
-		$this->fail("Failed asserting any path from (\n\t" . implode(", \n\t", $paths)  
-								. ') EXISTS' . "\n" . $message);
 	}
 
 
@@ -134,7 +123,7 @@ abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
 
 
 	public function logout() {
-		Zend_Auth::getInstance()->clearIdentity();
+		ZendAfi_Auth::getInstance()->clearIdentity();
 	}
 
 	public function login($role) {
@@ -155,7 +144,7 @@ abstract class ViewHelperTestCase extends PHPUnit_Framework_TestCase {
 			->newInstanceWithId(1)
 			->setLibelle('Tombouctou');
 
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 }
 ?>

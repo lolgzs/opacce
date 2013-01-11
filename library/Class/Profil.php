@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 : Classe de gestion des profils
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class ProfilLoader extends Storm_Model_Loader {
 	public function findAllByZoneAndBib($id_zone=0,$id_bib=0) {
@@ -52,7 +49,11 @@ class ProfilLoader extends Storm_Model_Loader {
 }
 
 
+
+
 class Class_Profil extends Storm_Model_Abstract {
+	use Trait_StaticFileWriter;
+
   const DIV_BANNIERE = 4;
 	protected static $_default_translator = null;
 
@@ -60,17 +61,23 @@ class Class_Profil extends Storm_Model_Abstract {
   protected $_table_name = 'bib_admin_profil';
   protected $_table_primary = 'ID_PROFIL';
 
-  protected $_belongs_to = array('bib' => array('model' => 'Class_Bib',
-                                                'referenced_in' => 'id_site'),
-                                  'parent_profil' => array('model' => 'Class_Profil',
-                                                           'referenced_in' => 'parent_id'));
+  protected $_belongs_to = ['bib' => ['model' => 'Class_Bib',
+																			'referenced_in' => 'id_site'],
 
-  protected $_has_many  = array('sub_profils' => array('model' => 'Class_Profil',
-																											  'role' => 'parent',
-																											  'dependents' => 'delete'));
+														'parent_profil' => ['model' => 'Class_Profil',
+																								'referenced_in' => 'parent_id']];
+
+  protected $_has_many  = ['sub_profils' => ['model' => 'Class_Profil',
+																						 'role' => 'parent_profil',
+																						 'dependents' => 'delete']];
 
   protected static $_current_profil;
   protected static $DEFAULT_VALUES, $CFG_SITE_KEYS, $FORWARDED_ATTRIBUTES;
+
+	// cache des attributs pour raison de performances
+	protected $_has_parent_profil;
+	protected $_cfg_site_array;
+	protected $_should_forward_attributes = [];
 
 	/**
 	 * liste des bannieres
@@ -84,20 +91,23 @@ class Class_Profil extends Storm_Model_Abstract {
 	protected $_translator;
 
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
-
 	/**
 	 * @return Class_Profil
 	 */
 	public static function getCurrentProfil() {
 		if (!isset(self::$_current_profil)) {
-			$id_profil = array_isset('id_profil', $_SESSION) ? $_SESSION['id_profil'] : 1;
+			if (!$id_profil = Zend_Registry::get('session')->id_profil)
+				$id_profil = 1;
 			self::$_current_profil = self::getLoader()->find($id_profil);
 		}
 		return self::$_current_profil;
+	}
+
+
+
+	public static function goBackToPreviousProfil() {
+		$session = Zend_Registry::get('session');
+		$session->id_profil = $session->previous_id_profil;
 	}
 
 
@@ -105,7 +115,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @param Class_Profil $profil
 	 */
 	public static function setCurrentProfil($profil) {
-		self::$_current_profil = $profil;
+		return self::$_current_profil = $profil;
 	}
 
 
@@ -117,6 +127,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			self::$CFG_SITE_KEYS = array( 'accessibilite_on',
 																		'barre_nav_on',
 																		'header_css',
+																		'header_js',
 																		'header_img',
 																		'header_img_cycle',
 																		'largeur_division2',
@@ -137,7 +148,9 @@ class Class_Profil extends Storm_Model_Abstract {
 																		'logo_gauche_img',
 																		'logo_gauche_link',
 																		'logo_droite_img',
-																		'logo_droite_link');
+																		'logo_droite_link',
+																		'header_social_network',
+																		'mail_suggestion_achat');
 	  return self::$CFG_SITE_KEYS;
 
 	}
@@ -149,66 +162,66 @@ class Class_Profil extends Storm_Model_Abstract {
 	public static function getDefaultValues() {
 		if (!isset(self::$DEFAULT_VALUES))
 			self::$DEFAULT_VALUES =
-				array('cfg_site' => '',
-							'cfg_accueil' => ZendAfi_Filters_Serialize::serialize(array("modules" => array())),
-							'cfg_menus' => ZendAfi_Filters_Serialize::serialize(
-																	 array(
-																				'H' => array(
-																										 "libelle" => "Menu horizontal",
-																										 "picto" => "vide.gif"),
-																				'V' => array(
-																										 "libelle" => "Menu vertical",
-																										 "picto" => "vide.gif"))),
-							'cfg_modules' => '',
-							'cfg_notice' => ZendAfi_Filters_Serialize::serialize(
-																			 array('exemplaires' => array(
-																																		'grouper' => 0,
-																																		'annexe' => 0,
-																																		'bib' => 1,
-																																		'section' => 0,
-																																		'emplacement' => 0,
-																																		'localisation' => 1,
-																																		'plan' => 1,
-																																		'resa' => 1,
-																																		'dispo' => 1,
-																																		'date_retour' => 0),
-																																		'en_pret' => 'En prêt')),
-							'hauteur_banniere' => 100,
-							'mail_site' => '',
-							'skin' => 'original',
-							'largeur_site' => 1000,
-							'nb_divisions' => 3,
-							'largeur_division1' => 250,
-							'marge_division1' => 10,
-							'largeur_division2' => 550,
-							'marge_division2' => 10,
-							'largeur_division3' => 200,
-							'marge_division3' => 10,
-							'menu_haut_on' => true,
-							'barre_nav_on' => true,
-							'ref_description' => '',
-							'ref_tags' => '',
-							'id_site' => 0,
-							'sel_section' => '',
-							'sel_type_doc' => '',
-							'header_css' => null,
-							'header_img' => null,
-							'header_img_cycle' => false,
-							'liens_sortants_off' => false,
-							'titre_site' => '',
-							'libelle' => '** nouveau profil **',
-							'commentaire' => '',
-							'browser' => 'opac',
-							'accessibilite_on' => true,
-							'couleur_lien_bandeau' => '',
-							'couleur_texte_bandeau' => '',
-							'access_level' => -1,
-							'parent_id' => 0, 
-							'favicon' => '',
-							'logo_gauche_img' => '',
-							'logo_gauche_link' => '',
-							'logo_droite_img' => '',
-							'logo_droite_link' => '');
+				['cfg_site' => '',
+				 'cfg_accueil' => ZendAfi_Filters_Serialize::serialize(['modules' => []]),
+				 'cfg_menus' => ZendAfi_Filters_Serialize::serialize(['H' => ['libelle' => 'Menu horizontal',
+																																			'picto' => 'vide.gif',
+																																			'menus' => []],
+																															'V' => ['libelle' => 'Menu vertical',
+																																			'picto' => 'vide.gif',
+																																			'menus' => []]]),
+				 'cfg_modules' => '',
+				 'cfg_notice' => ZendAfi_Filters_Serialize::serialize(['exemplaires' => ['grouper' => 0,
+																																								 'annexe' => 0,
+																																								 'bib' => 1,
+																																								 'section' => 0,
+																																								 'emplacement' => 0,
+																																								 'localisation' => 1,
+																																								 'plan' => 1,
+																																								 'resa' => 1,
+																																								 'dispo' => 1,
+																																								 'date_retour' => 0],
+																															 'en_pret' => 'En prêt']),
+				 'hauteur_banniere' => 100,
+				 'mail_site' => '',
+				 'mail_suggestion_achat' => '',
+				 'skin' => 'original',
+				 'largeur_site' => 1000,
+				 'nb_divisions' => 3,
+				 'largeur_division1' => 250,
+				 'marge_division1' => 10,
+				 'largeur_division2' => 550,
+				 'marge_division2' => 10,
+				 'largeur_division3' => 200,
+				 'marge_division3' => 10,
+				 'menu_haut_on' => true,
+				 'barre_nav_on' => true,
+				 'ref_description' => '',
+				 'ref_tags' => '',
+				 'id_site' => 0,
+				 'sel_section' => '',
+				 'sel_annexe' => '',
+				 'sel_type_doc' => '',
+				 'header_css' => null,
+				 'header_js' => null,
+				 'header_img' => null,
+				 'header_img_cycle' => false,
+				 'liens_sortants_off' => false,
+				 'titre_site' => '',
+				 'libelle' => '** nouveau profil **',
+				 'commentaire' => '',
+				 'browser' => 'opac',
+				 'accessibilite_on' => true,
+				 'couleur_lien_bandeau' => '',
+				 'couleur_texte_bandeau' => '',
+				 'access_level' => -1,
+				 'parent_id' => 0, 
+				 'favicon' => '',
+				 'logo_gauche_img' => '',
+				 'logo_gauche_link' => '',
+				 'logo_droite_img' => '',
+				 'logo_droite_link' => '',
+				 'header_social_network' => false];
 	  return self::$DEFAULT_VALUES;
   }
 
@@ -248,15 +261,28 @@ class Class_Profil extends Storm_Model_Abstract {
 		return self::$FORWARDED_ATTRIBUTES;
 	}
 
+
 	/**
 	 * @param string $field
 	 * @return bool
 	 */
 	public function shouldForwardAttributeToParent($field) {
-		return
-			in_array($field, self::getAttributesForwardedToParent())
-			and $this->hasParentProfil();
+		if (!isset($this->_should_forward_attributes[$field]))
+			$this->_should_forward_attributes[$field] = in_array($field, self::getAttributesForwardedToParent()) && $this->hasParentProfil();
+		return $this->_should_forward_attributes[$field];
 	}
+
+
+	/**
+	 * Surcharge la methode storm pour raisons de performances
+	 * @return bool
+	 */
+	public function hasParentProfil() {
+		if (!isset($this->_has_parent_profil))
+			$this->_has_parent_profil = (null != $this->_get('parent_profil'));
+		return $this->_has_parent_profil;
+	}
+
 
 	/**
 	 * @param Class_I18nTranslator $translator
@@ -294,7 +320,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	public function getPathTheme()	{
 		$path='/public/'.$this->getBrowser().'/skins/'.$this->getSkin().'/';
-		if(!file_exists(".".$path))
+		if(!file_exists('.'.$path))
 			$path='/public/'.$this->getBrowser().'/skins/original/';
 		return $path;
 	}
@@ -304,7 +330,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return string
 	 */
 	public function getPathTemplates() {
-		return ".".$this->getPathTheme()."templates/boites/";
+		return '.'.$this->getPathTheme().'templates/boites/';
 	}
 
 
@@ -316,19 +342,18 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function getOrCreateConfigAccueil($id_module, $type_module) {
 		$cfg_accueil = $this->getCfgAccueilAsArray();
 
-		if (array_isset($id_module, $cfg_accueil["modules"]))
-			$module = $cfg_accueil["modules"][$id_module];
+		if (array_isset($id_module, $cfg_accueil['modules']))
+			$module = $cfg_accueil['modules'][$id_module];
 		else
-			$module = array("preferences" => array());
+			$module = array('preferences' => array());
 
 		$data = array();
-		if (array_isset("preferences", $module))
-			$data = $module["preferences"];
+		if (array_isset('preferences', $module))
+			$data = $module['preferences'];
 
 		$default_values = Class_Systeme_ModulesAccueil::getInstance()->getValeursParDefaut($type_module);
 		return array_merge($default_values, $data);
 	}
-
 
 
 	/**
@@ -351,7 +376,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	 */
 	public function updateModuleConfigAccueil($id_module, $module_config) {
 		$cfg_accueil=$this->getCfgAccueilAsArray();
-		$cfg_accueil["modules"][$id_module] = $module_config;
+		$cfg_accueil['modules'][$id_module] = $module_config;
 		$this->setCfgAccueil($cfg_accueil);
 		return $this;
 	}
@@ -385,8 +410,8 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		// réserve l'id pour ne pas redonner 2 fois le même
 		$cfg_accueil = $this->getCfgAccueilAsArray();
-		$cfg_accueil['modules'][$new_id] = array("preferences" => array(
-																								 "id_module" => $new_id));
+		$cfg_accueil['modules'][$new_id] = array('preferences' => array(
+																								 'id_module' => $new_id));
 		$this->setCfgAccueil($cfg_accueil);
 
 		return $new_id;
@@ -509,14 +534,6 @@ class Class_Profil extends Storm_Model_Abstract {
 
 
 	/**
-	 * @return array
-	 */
-	public function getDefaultCfgAccueil() {
-		return $this->_unserialize(self::getDefaultValue('cfg_accueil'));
-	}
-
-
-	/**
 	 * @param string $name
 	 * @return array
 	 */
@@ -558,7 +575,9 @@ class Class_Profil extends Storm_Model_Abstract {
 	 * @return array
 	 */
 	public function getCfgSiteAsArray() {
-		return $this->_getCfgAsArrayNamed('Site');
+		if (!isset($this->_cfg_site_array))
+			$this->_cfg_site_array = $this->_getCfgAsArrayNamed('Site');
+		return $this->_cfg_site_array;
 	}
 
 
@@ -632,6 +651,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_set($cfg_name, $cfg);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
@@ -639,6 +659,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function setCfgAccueil($string_or_array) {
 		return $this->_setCfgNamed('cfg_accueil', $string_or_array);
 	}
+
 
 	/**
 	 * @param mixed $string_or_array
@@ -648,6 +669,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_setCfgNamed('cfg_menus', $string_or_array);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
@@ -655,6 +677,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function setCfgNotice($string_or_array) {
 		return $this->_setCfgNamed('cfg_notice', $string_or_array);
 	}
+
 
 	/**
 	 * @param mixed $string_or_array
@@ -664,13 +687,17 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->_setCfgNamed('cfg_modules', $string_or_array);
 	}
 
+
 	/**
 	 * @param mixed $string_or_array
 	 * @return Class_Profil
 	 */
 	public function setCfgSite($string_or_array) {
-		return $this->_setCfgNamed('cfg_site', $string_or_array);
+		$this->_setCfgNamed('cfg_site', $string_or_array);
+		$this->_cfg_site_array = null;
+		return $this;
 	}
+
 
 	/**
 	 * @return string
@@ -681,6 +708,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $this->getLibelle('libelle');
 	}
+
 
 	/**
 	 * @return array
@@ -693,6 +721,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $attributes;
 	}
 
+
 	/**
 	 * @param string $param
 	 * @param mixed $value
@@ -704,6 +733,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setCfgSite(ZendAfi_Filters_Serialize::serialize($cfg_site));
 	}
 
+
 	/**
 	 * @param string $param
 	 * @return bool
@@ -711,6 +741,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function hasDefaultValue($param) {
 		return array_key_exists($param, self::getDefaultValues());
 	}
+
 
 	/**
 	 * @param string $param
@@ -720,6 +751,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$default_values = self::getDefaultValues();
 		return $default_values[$param];
 	}
+
 
 	/**
 	 * @param string $param
@@ -732,6 +764,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $cfg_site[$param];
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -739,21 +772,31 @@ class Class_Profil extends Storm_Model_Abstract {
 		return 'telephone' == $this->getBrowser();
 	}
 
+
+	/**
+	 * @return Class_Profil
+	 */
+	public function beTelephone() {
+		return $this->setBrowser('telephone');
+	}
+
+
 	/**
 	 * @return array
 	 */
 	function getAvailableSkins()	{
 		// Parcourir le dossier des skins opac
-		$scanlisting = scandir("./public/opac/skins");
+		$scanlisting = scandir('./public/opac/skins');
 		$availableSkins = array();
 
 		foreach($scanlisting as $key => $value)
-			if (is_dir("./public/opac/skins/$value") == true and $value[0] != '.')
+			if (is_dir("./public/opac/skins/$value") and $value[0] != '.')
 				$availableSkins[$value] = $value;
 
 		return $availableSkins;
 
 	}
+
 
 	/**
 	 * Si un attribut n'est pas trouvé, regarde s'il n'est pas dans cfgSite.
@@ -803,6 +846,7 @@ class Class_Profil extends Storm_Model_Abstract {
 			return parent::_set($field, $value);
 	}
 
+
 	/**
 	 * @return Class_Profil
 	 */
@@ -816,17 +860,17 @@ class Class_Profil extends Storm_Model_Abstract {
 		$this->check($this->getLargeurDivision1() +
 								 $this->getLargeurDivision2() +
 								 $this->getLargeurDivision3() <= $this->getLargeurSite(),
-								 "La somme des largeurs des divisions ne doit pas excéder la largeur du site.");
+								 'La somme des largeurs des divisions ne doit pas excéder la largeur du site.');
 
-		$this->check($this->getLargeurDivision1(), "Il manque la largeur de la division 1.");
+		$this->check($this->getLargeurDivision1(), 'Il manque la largeur de la division 1.');
 		$this->check($this->getLargeurDivision2() or $this->getNbDivisions() < 2,
-								 "Il manque la largeur de la division 2.");
+								 'Il manque la largeur de la division 2.');
 		$this->check($this->getLargeurDivision3() or $this->getNbDivisions() < 3,
-								 "Il manque la largeur de la division 3.");
+								 'Il manque la largeur de la division 3.');
 		$this->check($this->getMargeDivision1() < 20
 								 and $this->getMargeDivision2() < 20
 								 and $this->getMargeDivision3() < 20,
-								 "Une marge interne de division ne peut pas excéder 20 pixels.");
+								 'Une marge interne de division ne peut pas excéder 20 pixels.');
 
 
 		$this->check($this->_isCSSColorValid($this->getCouleurTexteBandeau()),
@@ -837,12 +881,13 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		$url_validate = new ZendAfi_Validate_Url();
 		$this->check(!$this->getLogoGaucheLink() or $url_validate->isValid($this->getLogoGaucheLink()),
-								 "Le lien pour le logo gauche n'est pas valide");
+								 'Le lien pour le logo gauche n\'est pas valide');
 
 		$this->check(!$this->getLogoDroiteLink() or $url_validate->isValid($this->getLogoDroiteLink()),
-								 "Le lien pour le logo droite n'est pas valide");
+								 'Le lien pour le logo droite n\'est pas valide');
     return $this;
 	}
+
 
 	/**
 	 * @param string $color
@@ -852,6 +897,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return !$color or preg_match('/^#([A-F0-9]{3}|[A-F0-9]{6})$/i', $color);
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -859,18 +905,19 @@ class Class_Profil extends Storm_Model_Abstract {
 			$css = '<style id="profil_stylesheet" type="text/css">';
 
 			if ($hauteur_banniere = $this->getHauteurBanniere())
-				$css .= "div#banniere, div#header{height:".$hauteur_banniere."px}";
+				$css .= 'div#banniere, div#header{height:'.$hauteur_banniere.'px}';
 
 			if ($couleur_texte = $this->getCouleurTexteBandeau())
-				$css .= "div#header * {color:$couleur_texte} div#header form input {color: #000}";
+				$css .= 'div#header * {color:'.$couleur_texte.'} div#header form input {color: #000}';
 
 			if ($couleur_lien = $this->getCouleurLienBandeau())
-				$css .= "div#header a, div#header a:visited {color:$couleur_lien}";
+				$css .= 'div#header a, div#header a:visited {color:'.$couleur_lien.'}';
 
 			$css .= '</style>';
 
 			return $css;
 	}
+
 
 	/**
 	 * @return array
@@ -884,12 +931,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $roles;
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function isPublic() {
 		return (int)$this->getAccessLevel() === -1;
 	}
+
 
 	/**
 	 * @param string $type_module
@@ -899,6 +948,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		$modules_accueil = new Class_Systeme_ModulesAccueil();
 		return $modules_accueil->getValeursParDefaut($type_module);
 	}
+
 
 	/**
 	 * @param string $type_module
@@ -913,6 +963,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return false;
 	}
 
+
 	/**
 	 * @param int $division
 	 * @return array
@@ -923,17 +974,18 @@ class Class_Profil extends Storm_Model_Abstract {
 		else
 			$cfg_accueil = $this->getCfgAccueilAsArray();
 
-		$cls_module = new Class_Systeme_ModulesAccueil();
-
 		$boites = array();
-		foreach ($cfg_accueil["modules"] as $id => $module) {
+		foreach ($cfg_accueil['modules'] as $id => $module) {
 			if (!$module) $module = array();
 			$module = array_merge(array('type_module' => null,
 																	'preferences' => array()),
 														$module);
-			
-			$module['preferences'] = array_merge(																			
-																					 $cls_module->getValeursParDefaut($module['type_module']),
+
+			$module_accueil = Class_Systeme_ModulesAccueil::moduleBycode($module['type_module']);
+			if (!$module_accueil->isVisibleForProfil($this))
+				continue;
+
+			$module['preferences'] = array_merge($module_accueil->getDefaultValues(),	
 																					 $module['preferences']);
 
 			if (array_key_exists('division', $module) and $module['division'] == $division)
@@ -942,6 +994,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $boites;
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -962,15 +1015,16 @@ class Class_Profil extends Storm_Model_Abstract {
 			$cfg_accueil['modules'][$id] = $module;
 
 		} else {
-			foreach ($cfg_accueil["modules"] as $index => $module)  {
+			foreach ($cfg_accueil['modules'] as $index => $module)  {
 				if ($module['division'] == self::DIV_BANNIERE and
 						$module['type_module'] == $type_module)
-					unset($cfg_accueil["modules"][$index]);
+					unset($cfg_accueil['modules'][$index]);
 			}
 		}
 
 		return $this->setCfgAccueil($cfg_accueil);
 	}
+
 
 	/**
 	 * @return bool
@@ -979,12 +1033,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->isTypeBoiteInBanniere('LOGIN');
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function getBoiteRechercheSimpleInBanniere() {
 		return $this->isTypeBoiteInBanniere('RECH_SIMPLE');
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -996,6 +1052,7 @@ class Class_Profil extends Storm_Model_Abstract {
 
 		return $this->setBoiteOfTypeInBanniere($is_present, 'LOGIN');
 	}
+
 
 	/**
 	 * @param bool $is_present
@@ -1009,6 +1066,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setBoiteOfTypeInBanniere($is_present, 'RECH_SIMPLE');
 	}
 
+
 	/**
 	 * @param int $id_menu
 	 * @return array
@@ -1016,6 +1074,7 @@ class Class_Profil extends Storm_Model_Abstract {
 	public function getMenu($id_menu) {
 		return array_at($id_menu, $this->getCfgMenusAsArray());
 	}
+
 
 	/**
 	 * @param array $menu
@@ -1031,6 +1090,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $last_index;
 	}
 
+
 	/**
 	 * @return array
 	 */
@@ -1043,6 +1103,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		}
 		return $boites_menu;
 	}
+
 
 	/**
 	 * @return array
@@ -1057,6 +1118,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $menus;
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -1066,12 +1128,14 @@ class Class_Profil extends Storm_Model_Abstract {
 		return '';
 	}
 
+
 	/**
 	 * @return bool
 	 */
 	public function isInPortail() {
 		return null === $this->getBib();
 	}
+
 
 	/**
 	 * @return bool
@@ -1080,18 +1144,36 @@ class Class_Profil extends Storm_Model_Abstract {
 		return 1 === $this->getId();
 	}
 
+
 	/**
+	 * Créé une copie profil (non récursif)
 	 * @return Class_Profil
 	 */
 	public function copy() {
-		$clone = new Class_Profil();
+		$copy = new Class_Profil();
 		$attributes = $this->_attributes;
 		unset($attributes['id']);
 		unset($attributes['id_profil']);
-		return $clone
+		
+		return $copy
 			->updateAttributes($attributes)
 			->setLibelle('** Nouveau Profil **');
 	}
+
+
+	/**
+	 * Créé une copie du profil et de ses sous-pages
+	 * @return Class_Profil
+	 */
+	public function deepCopy() {
+		$clone = $this->copy()->setSubProfils([]);
+		$pages = $this->getSubProfils();
+		foreach($pages as $page)
+			$clone->addSubProfil($page->copy()->setLibelle($page->getLibelle()));
+			
+		return $clone;
+	}
+
 
 	/**
 	 * @param Class_Profil $new_parent
@@ -1119,6 +1201,7 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this->setCfgAccueil($cfg_accueil);
 	}
 
+
 	/**
 	 * @param Class_Profil $new_parent
 	 * @return Class_Profil
@@ -1136,13 +1219,23 @@ class Class_Profil extends Storm_Model_Abstract {
 		return $this;
 	}
 
+
 	/**
 	 * @return array
 	 */
 	public function getSubProfils() {
-		$sub_profils = array();
-		foreach(parent::_get('sub_profils') as $profil)
-			$sub_profils[$profil->getLibelle()] = $profil;
+		$sub_profils = [];
+		foreach(parent::_get('sub_profils') as $profil) {
+			$libelle = $profil->getLibelle();
+
+			if (isset($sub_profils[$libelle])) {
+				$i = 1;
+				while (isset($sub_profils[$libelle.' ('.$i.')']))	$i++;
+				$libelle = $libelle.' ('.$i.')';
+			}
+
+			$sub_profils[$libelle] = $profil;
+		}
 
 		ksort($sub_profils);
 		return $sub_profils;
@@ -1165,5 +1258,104 @@ class Class_Profil extends Storm_Model_Abstract {
 			return $this->getMailSite();
 
 		return $this->getLoader()->getPortail()->getMailSite();
+	}
+
+
+	public function getMailSuggestionAchatOrPortail() {
+		if ($this->isPortail()) {
+			if ($mail =$this->getMailSuggestionAchat())
+				return $mail;
+			return $this->getMailSite();
+		}
+
+		if ($this->hasMailSuggestionAchat())
+			return $this->getMailSuggestionAchat();
+
+		if ($mail = $this->getLoader()->getPortail()->getMailSuggestionAchat())
+			return $mail;
+
+		return $this->getMailSiteOrPortail();
+	}
+
+
+	protected function _getIdModuleAtDivPosInCfg($div, $pos, $cfg_accueil) {
+		$id_module = 0;
+		$i = 0;
+		foreach($cfg_accueil['modules'] as $module_id => $module) {
+			if ($module['division'] == $div) {
+				if ($pos == $i) {
+					$id_module = $module_id;
+					break;
+				}
+				$i++;
+			}
+		}
+
+		return $id_module;
+	}
+
+
+	public function moveModuleOldDivPosNewDivPos($old_div, $old_pos, $new_div, $new_pos) {
+		$cfg_accueil = $this->getCfgAccueilAsArray();
+		$id = $this->_getIdModuleAtDivPosInCfg($old_div, $old_pos, $cfg_accueil);
+		$moved_module = $cfg_accueil['modules'][$id];
+		$moved_module['division'] = $new_div;
+		unset($cfg_accueil['modules'][$id]);
+
+		$new_modules = array();
+		$i = 0;
+		foreach($cfg_accueil['modules'] as $module_id => $module) {
+			$in_new_div = $module['division'] == $new_div;
+
+			if (($i == $new_pos) && $in_new_div) 
+				$new_modules[$id] = $moved_module;
+
+			if ($in_new_div)
+				$i++;
+
+			$new_modules[$module_id] = $module;
+		}
+
+		if (!isset($new_modules[$id]))
+			$new_modules[$id] = $moved_module;
+			
+		$cfg_accueil['modules'] = $new_modules;
+
+		$this->setCfgAccueil($cfg_accueil);
+	}
+
+
+	public function writeHeaderCss($data) {
+		if (!$header_css = $this->getHeaderCssPath()) 
+			$header_css = USERFILESPATH.'/css/profil_'.$this->getId().'.css';
+
+		$this->getFileWriter()->putContents($header_css, $data);		
+		return $this->setHeaderCss(str_replace(USERFILESPATH.'/', USERFILESURL, $header_css));
+	}
+
+	
+	public function getHeaderCssPath() {
+		if ($header_css = $this->_get('header_css'))
+			return USERFILESPATH.str_replace(USERFILESURL, '/', $this->_get('header_css'));
+		return '';
+	}
+
+
+	public function getHeaderCss() {
+		if ($this->getFileWriter()->fileExists($this->getHeaderCssPath()))
+			return $this->_get('header_css');
+		return '';
+	}
+
+
+	/** @return array la liste des zones titre a afficher dans le resultat de recherche */
+	public function getZonesTitre() {
+		$cfg = $this->getCfgModulesAsArray();
+		
+		$zones = isset($cfg['recherche']['resultatsimple']['zones_titre']) 
+			? $cfg['recherche']['resultatsimple']['zones_titre']
+			: (new Class_Systeme_ModulesAppli())->getValeursParDefaut('recherche', 'resultat')['zones_titre'];
+
+		return explode(';', $zones);
 	}
 }

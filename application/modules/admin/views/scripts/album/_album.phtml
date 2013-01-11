@@ -1,5 +1,5 @@
 <li class='album'>
-    <div><img src="<?php echo URL_ADMIN_IMG ?>ico/liste.gif" alt="Catégorie" /></div>
+	 <div><?php echo $this->iconeSupport($this->album->getTypeDocId()); ?></div>
     <div><?php echo $this->album->getTitre(); ?></div>
 		<?php
 			$album_actions = array(
@@ -16,7 +16,7 @@
 				),
 				array(
 					'action' => 'preview_album',
-					'icon' => 'show.gif',
+					'icon' => $this->album->isVisible() ? 'show.gif' : 'hide.gif',
 					'help' => "Visualisation de l'album"
 				),
 				array(

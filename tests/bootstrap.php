@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-chdir('..');
+chdir(realpath(dirname(__FILE__)).'/../');
 
 error_reporting(E_ALL^E_DEPRECATED);
 ini_set('display_startup_errors', 1);
@@ -30,7 +30,6 @@ set_include_path( realpath(dirname(__FILE__)).'/../library'
 . PATH_SEPARATOR . realpath(dirname(__FILE__)).'/library/Class'
 . PATH_SEPARATOR . realpath(dirname(__FILE__)).'/../library/Class'
 . PATH_SEPARATOR . realpath(dirname(__FILE__)).'/../library/ZendAfi'
-. PATH_SEPARATOR . realpath(dirname(__FILE__)).'/../library/grouik'
 . PATH_SEPARATOR . '../ZendFramework-1.6.2/library'
 . PATH_SEPARATOR . realpath(dirname(__FILE__)).'/../application/modules'
 . PATH_SEPARATOR . realpath(dirname(__FILE__)).'/application/modules'
@@ -39,22 +38,30 @@ set_include_path( realpath(dirname(__FILE__)).'/../library'
 
 // Includes de base
 include_once( "fonctions/fonctions.php");
-//include_once( "grouik/init.php" );
 require_once "Zend/Loader.php";
-require_once "startup.php";
+require_once "library/startup.php";
 
 $path = dirname(__FILE__);
 $parts = explode(DIRECTORY_SEPARATOR, $path);
 $parts = array_reverse($parts);
 
-define("BASE_URL", "/" . $parts[1]);
-define("URL_IMG", BASE_URL . "/public/opac/skins/original/images/");
-define("URL_SHARED_IMG", BASE_URL . "/public/opac/images");
+defineConstant("BASE_URL", "/" . $parts[1]);
+defineConstant("URL_IMG", BASE_URL . "/public/opac/skins/original/images/");
+defineConstant("URL_SHARED_IMG", BASE_URL . "/public/opac/images");
 
 setupOpac();
 
 Zend_Registry::get('cache')->setOption('caching', true);
+$cfg = new Zend_Config(Zend_Registry::get('cfg')->toArray(), true);
+$cfg->amber = new Zend_Config(array('deploy' => false));
+
+Zend_Registry::set('cfg', $cfg);
+$translate = Zend_Registry::get('translate');
+$translate->setLocale('fr');
+$translate->addTranslation(LANG_DIR.'ro.mo', 'ro');
+$translate->addTranslation(LANG_DIR.'en.mo', 'en');
 
 $_SERVER['SERVER_NAME'] = 'localhost';
+
 
 ?>

@@ -72,9 +72,11 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 
 		$this->view->getHelper('SubscribeUsers')
 			->setUsers($group->getUsers())
-			->setSearch($this->_getParam('search'));
+			->setSearch($this->_getParam('search'))
+			->setReadOnly($group->isDynamic());
 
 		$this->view->titre = "Membres du groupe: ".$group->getLibelle();
+		$this->view->group = $group;
 	}
 
 
@@ -89,8 +91,10 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 	protected function _setupGroupFormAndSave($action, $group) {
 		$form = $this->_groupForm($action, $group);
 		if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+			$post = array_merge(['rights' => []], 
+													$this->_request->getPost());
 			$group
-				->updateAttributes($this->_request->getPost())
+				->updateAttributes($post)
 				->save();
 
 			$this->_redirect('admin/usergroup');
@@ -106,20 +110,81 @@ class Admin_UsergroupController extends Zend_Controller_Action {
 	protected function _groupForm($action, $group) {
 		$form = $this->view
 			->newForm(array('id' => 'usergroupform'))
-			->setAction($this->view->url(array('action' => $action)))
-			->addElement('text', 'libelle', array('label' => $this->view->_('Libellé *'),
-																						'required' => true,
-																						'allowEmpty' => false))
-			->addElement('multiCheckbox', 'rights', array('label' => 'Droits',
-																										'multiOptions' => Class_UserGroup::getRightDefinitionList()))
-			->addDisplayGroup(
-												array('libelle',
-															'rights'),
-												'usergroup',
-												array('legend' => 'Groupe'))
-			->populate($group->toArray());
+			->setAction($this->view->url(array('action' => $action)));
+
+		$form
+			->addRequiredTextNamed('libelle')
+			->setLabel('Libellé *');
+
+		$form
+			->addElement('radio',
+									 'group_type',
+									 ['label' => $this->view->_('Mode de sélection des utilisateurs'),
+										'multiOptions' => [Class_UserGroup::TYPE_MANUAL =>  $this->view->_('Manuel'),
+																			 Class_UserGroup::TYPE_DYNAMIC => $this->view->_('Dynamique')] ] )
+			->addElement('select',
+									 'role_level',
+									 ['label' => $this->view->_('Rôle'),
+										'multiOptions' => ZendAfi_Acl_AdminControllerRoles::getListeRolesWithoutSuperAdmin()] )
+
+			->addDisplayGroup(['libelle', 'group_type'], 
+												'usergroup', 
+												['legend' => $this->view->_('Groupe')])
+
+			->addDisplayGroup(['role_level'], 
+												'dynamic_filter', 
+												['legend' => $this->view->_('Filtre')]);		
+
+		$this->displayGroupFiltreVisibleOnlyOnDynamicGroup();
+ 
+		if (Class_AdminVar::isFormationEnabled()) {
+			$form
+				->addElement('multiCheckbox',
+				                'rights',
+				                 ['label' => '',
+													'multiOptions' => Class_UserGroup::getRightDefinitionList()])
+				->addDisplayGroup(['rights'], 'rights_group', ['legend' => $this->view->_('Droits')]);
+		}
+
+
+
+		if (Class_AdminVar::isMultimediaEnabled()) {
+			$form->addRequiredTextNamed('max_day')
+				->setLabel('Par jour *')
+				->setValue(0)
+				->setValidators(array('Digits'));
+			
+			$form->addRequiredTextNamed('max_week')
+				->setLabel('Par semaine *')
+				->setValue(0)
+				->setValidators(array('Digits',
+						                  new ZendAfi_Validate_FieldsGreater(array('max_day' => 'Par jour'), true)));
+
+			$form->addRequiredTextNamed('max_month')
+				->setLabel('Par mois *')
+				->setValue(0)
+				->setValidators(array('Digits',
+						                  new ZendAfi_Validate_FieldsGreater(array(
+																	'max_day' => 'Par jour',
+																	'max_week' => 'Par semaine'),
+																true)));
+
+			$form->addDisplayGroup(
+				array('max_day', 'max_week', 'max_month'),
+				'multimedia',
+				array('legend' => 'Quota de réservation multimédia (mn)'));
+		}
+		
+		$form->populate($group->toArray());
 		
 		return $form;
 	}
+
+
+	public function displayGroupFiltreVisibleOnlyOnDynamicGroup() {
+		Class_ScriptLoader::getInstance()
+			->addInlineScript('formSelectToggleVisibilityForElement("input[name=\'group_type\']", "#fieldset-dynamic_filter", ["1"]);');
+	}
+
 }
 ?>

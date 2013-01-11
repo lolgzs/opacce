@@ -1,0 +1,15 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+<?php echo $this->timeline($this->timelineActions);?>
+
+<div class="workflow_step">
+	<h2><?php echo $this->_('Quand ?') ?></h2>
+	<?php if ($this->error) { ?>
+	<div class="error">
+	<?php echo $this->error;?>
+	</div>
+	<?php } ?>
+
+  <?php echo $this->renderForm($this->form) ?>
+</div>
+
+<?php $this->closeBoite();?>

@@ -1,0 +1,14 @@
+<tr class="<?php echo $this->item_class ?>">
+  <?php 
+	   echo sprintf("<td>%s</td>", $this->mapForLieu($this->lieu, array('size' => '100x100', 'zoom' => '12'))); 
+		 echo sprintf("<td>%s</td>", $this->lieu->getLibelle()); 
+		 echo sprintf("<td>%s %s</td>", 
+									$this->tagAnchor(array('action' => 'edit',
+																				 'id' => $this->lieu->getId()),
+																	 $this->boutonIco("type=edit")),
+
+									$this->tagAnchor(array('action' => 'delete',
+																				 'id' => $this->lieu->getId()),
+																	 $this->boutonIco("type=del")));
+	?>
+</tr>

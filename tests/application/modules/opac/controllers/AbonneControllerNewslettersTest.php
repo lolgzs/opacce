@@ -48,10 +48,8 @@ abstract class AbstractAbonneControllerNewslettersTestCase extends AbstractContr
 			->whenCalled('save')
 			->answers(true);
 
-		$this->newsletter_loader = $this->getMock('MockModelLoader', array('findAll', 'find'));
-		Storm_Model_Abstract::setLoaderFor('Class_Newsletter', $this->newsletter_loader);
-
-
+		$this->newsletter_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Newsletter');
+		
 		parent::setUp();
 	}
 }
@@ -61,22 +59,14 @@ abstract class AbonneControllerWithTwoNewslettersTestCase extends AbstractAbonne
 	public function setUp() {
 		parent::setUp();
 
-		$this->concerts = new Class_Newsletter();
-		$this->concerts
-			->setId(12)
-			->setTitre('Concerts')
-			->setContenu('Festival jazz');
+		$this->concerts = Class_Newsletter::newInstanceWithId(12, ['titre' =>'Concerts',
+																															 'contenu' => 'Festival jazz']);
 
-		$this->visites = new Class_Newsletter();
-		$this->visites
-			->setId(14)
-			->setTitre('Visites')
-			->setContenu('du patrimoine');
+		$this->visites = Class_Newsletter::newInstanceWithId(14, [ 'titre' =>'Visites',
+																															 'contenu' => 'du patrimoine']);
 
-		$this->newsletter_loader
-			->expects($this->any())
-			->method('findAll')
-			->will($this->returnValue(array($this->concerts, $this->visites)));
+		$this->newsletter_loader->whenCalled('findAll')
+													 ->answers(array($this->concerts, $this->visites));
 
 		$this->marcus
 			->setNewsletters(array($this->concerts));	//Marcus is subscribed to concerts newsletter
@@ -84,16 +74,13 @@ abstract class AbonneControllerWithTwoNewslettersTestCase extends AbstractAbonne
 }
 
 
-class AbonneControllerFicheActionWithNoExistingNewsletterTest extends AbstractAbonneControllerNewslettersTestCase {
+class AbonneControllerNewslettersFicheActionWithNoExistingNewslettersTest extends AbstractAbonneControllerNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
 		$this->marcus->setNewsletters(array());
-
-		$this->newsletter_loader
-			->expects($this->any())
-			->method('findAll')
-			->will($this->returnValue(array()));
+		$this->newsletter_loader->whenCalled('findAll')
+													 ->answers(array());
 
 		$this->dispatch('/opac/abonne');
 	}
@@ -118,10 +105,10 @@ class AbonneControllerFicheActionWithNoExistingNewsletterTest extends AbstractAb
 }
 
 
-class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersFicheActionWithOneSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/opac/abonne');
+		$this->dispatch('/opac/abonne', true);
 	}
 
 	public function testForwardedToFiche() {
@@ -140,6 +127,12 @@ class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControlle
 																			"Vous êtes abonné à la lettre d'information: Concerts");
 	}
 
+
+	public function testIconeNewsletterDisplayed () {
+		$this->assertXPath('//div[@class="abonneFiche"]//a[contains(@href, "/abonne/edit")]//img[contains(@src, "abonnes/newsletter.png")]');
+	}
+
+
 	public function testLinkToEditInformationsInfoAbonnements() {
 		$this->assertXPathContentContains("//div[@class='abonneFiche']//a[@href='/abonne/edit']",
 																			'Modifier mes abonnements');
@@ -148,7 +141,7 @@ class AbonneControllerFicheActionWithOneSubscriptionTest extends AbonneControlle
 }
 
 
-class AbonneControllerFicheActionWithTwoSubscriptionsTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersFicheActionWithTwoSubscriptionsTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -166,7 +159,7 @@ class AbonneControllerFicheActionWithTwoSubscriptionsTest extends AbonneControll
 }
 
 
-class AbonneControllerFicheActionWithNoSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersFicheActionWithNoSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -183,7 +176,7 @@ class AbonneControllerFicheActionWithNoSubscriptionTest extends AbonneController
 }
 
 
-class AbonneControllerNewsletterEditActionTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersEditActionTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -204,7 +197,7 @@ class AbonneControllerNewsletterEditActionTest extends AbonneControllerWithTwoNe
 	}
 
 	public function testAideIsDisplayed() {
-		$this->assertQueryContentContains('div.help', "Saisissez<br />\nvos données");
+		$this->assertContains("<div class='help'>Saisissez<br />\nvos données</div>", $this->_response->getBody());
 	}
 
 	public function testUserForm() {
@@ -253,15 +246,9 @@ class AbonneControllerNewsletterEditActionTest extends AbonneControllerWithTwoNe
 
 
 
-class AbonneControllerNewsletterSaveActionTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersSaveActionTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		$this->newsletter_loader
-			->expects($this->once())
-			->method('find')
-			->with(14)
-			->will($this->returnValue($this->visites));
 
 		$data = array('nom' => 'MILLER',
 									'prenom' => 'MARCUS',
@@ -313,7 +300,7 @@ class AbonneControllerNewsletterSaveActionTest extends AbonneControllerWithTwoNe
 }
 
 
-class AbonneControllerNewsletterSaveWithEmptyDataTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersSaveWithEmptyDataTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -339,7 +326,7 @@ class AbonneControllerNewsletterSaveWithEmptyDataTest extends AbonneControllerWi
 
 
 
-class AbonneControllerNewsletterOpsysCommunicationTest extends AbonneControllerWithTwoNewslettersTestCase {
+class AbonneControllerNewslettersOpsysCommunicationTest extends AbonneControllerWithTwoNewslettersTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -347,7 +334,7 @@ class AbonneControllerNewsletterOpsysCommunicationTest extends AbonneControllerW
 		$this->emprunteur = new Class_WebService_SIGB_Emprunteur('00123', 'Marcus');
 		$this->emprunteur->setService($this->opsys_service);
 
-		$this->marcus->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_OPSYS,
+		$this->marcus->setFicheSIGB(array('type_comm' => Class_IntBib::COM_OPSYS,
 																			'fiche' => $this->emprunteur,
 																			'nom_aff' => 'Marcus'));
 
@@ -396,8 +383,74 @@ class AbonneControllerNewsletterOpsysCommunicationTest extends AbonneControllerW
 
 
 
+class AbonneControllerNewslettersSubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
 
-class AbonneControllerNewsletterValidationsTest extends AbonneControllerWithTwoNewslettersTestCase {
+	public function setUp() {
+		parent::setUp();
+		$_SERVER['HTTP_REFERER'] = '/opac/index';
+		$this->dispatch('/opac/abonne/subscribe-newsletter/id/14',true);
+		
+	}	
+
+
+	/** @test **/
+	public function subscribeActionShouldCallSubscribenewsletterAction() {
+		$this->assertAction('subscribe-newsletter');
+	}
+
+
+	/** @test **/
+	public function subscribeActionShouldRedirectToCurrentPage() {
+		$this->assertRedirectTo('/opac/index');
+	}
+
+
+	/** @test **/
+	public function subscribeActionShouldAddNewsletterToUser() {
+		$this->assertContains( $this->visites,$this->marcus->getNewsletters());
+	}
+
+
+	/** @test **/
+	public function userShouldHaveBeenSaved() {
+		$this->assertTrue(Class_Users::methodHasBeenCalled('save'));
+	}
+
+}
+
+
+class AbonneControllerNewslettersUnsubscriptionTest extends AbonneControllerWithTwoNewslettersTestCase {
+
+	public function setUp() {
+		parent::setUp();
+		$_SERVER['REQUEST_URI'] = '/';
+		$this->dispatch('/opac/abonne/unsubscribe-newsletter/id/14',true);
+		
+	}	
+
+	/** @test **/
+	public function unsubscribeActionShouldCallSubscribenewsletterAction() {
+		$this->assertAction('unsubscribe-newsletter');
+	}
+
+
+	/** @test **/
+	public function unsubscribeActionShouldAddNewsletterToUser() {
+		$this->assertNotContains( $this->visites,$this->marcus->getNewsletters());
+	}
+
+
+	/** @test **/
+	public function userShouldHaveBeenSaved() {
+		$this->assertTrue(Class_Users::methodHasBeenCalled('save'));
+	}
+
+
+
+}
+
+
+class AbonneControllerNewslettersValidationsTest extends AbonneControllerWithTwoNewslettersTestCase {
 	protected function _postData($data) {
 		$this->getRequest()
 			->setMethod('POST')

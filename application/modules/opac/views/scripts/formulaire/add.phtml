@@ -1,0 +1,15 @@
+<?php
+echo $this->openBoite($this->article->getTitre());
+
+echo '<h2>'.$this->_('Merci. Le formulaire a bien été enregistré :').'</h2>';
+
+echo '<ul>';
+
+foreach ($this->datas as $key => $value)
+	echo sprintf('<li>%s : %s</li>', $key, $value);
+
+echo '</ul>';
+
+echo $this->closeBoite();
+
+?>

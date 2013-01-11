@@ -22,24 +22,14 @@
 // OPAC3 : Codifications
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_Codification
-{
+class Class_Codification {
+	protected static $_nom_champs, $_nom_onglets;
 
 //------------------------------------------------------------------------------------------------------
 // Liste des types de documents 
 //------------------------------------------------------------------------------------------------------
-	static function getTypesDocs()
-	{
-		$ret = array();
-		$data=fetchOne("select liste from variables where clef='types_docs'");
-		$types=explode(chr(13).chr(10),$data);
-		foreach($types as $type)
-		{
-			$elem=split(":",$type);
-			if(trim($elem[0])=="") continue;
-			$ret[$elem[0]]=$elem[1];
-		}
-		return $ret;
+	static function getTypesDocs()	{
+		return Class_TypeDoc::allByIdLabel();
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -47,14 +37,19 @@ class Class_Codification
 //------------------------------------------------------------------------------------------------------
 	static function getComboTypesDocs($valeur,$events="",$tous=false)
 	{
+		/*
+		 * Attention: utilisé dans la sélection type doc recherche simple et certains suppriment des types de
+		 * docs dans cosmogramme pour ne pas les avoir dans la liste des types de doc
+		 *
+		 */
 		$data=fetchOne("select liste from variables where clef='types_docs'");
 		if($events > "") $events=" ".$events;
 		$combo='<select name="type_doc" '.$events.'>';
 		if($tous == true) $combo.='<option value="">tous</option>';
-		$v=split(chr(13).chr(10),$data);
+		$v=explode(chr(13).chr(10),$data);
 		for($i=0; $i<count($v); $i++)
 		{
-			$elem=split(":",$v[$i]);
+			$elem=explode(":",$v[$i]);
 			if(trim($elem[0])>"")
 			{
 				if($valeur==$elem[0]) $selected=" selected"; else $selected="";
@@ -82,90 +77,105 @@ class Class_Codification
 			case "D": return Class_Dewey::getLibelle($id);
 			case "P": return Class_Pcdm4::getLibelle($id);
 			case "A": return fetchOne("select libelle from codif_auteur where id_auteur=".(int)$id);
-			case "M": return fetchOne("select libelle from codif_matiere where id_matiere=$id");
-			case "F": return fetchOne("select libelle from codif_interet where id_interet=$id");
-			case "G": return fetchOne("select libelle from codif_genre where id_genre=$id");
+		  case "M": return fetchOne("select libelle from codif_matiere where id_matiere=".(int)$id);
+			case "F": return fetchOne("select libelle from codif_interet where id_interet=".(int)$id);
+			case "G": return fetchOne("select libelle from codif_genre where id_genre=".(int)$id);
 			case "L": return fetchOne("select libelle from codif_langue where id_langue='$id'");
-			case "S": return fetchOne("select libelle from codif_section where id_section=$id");
-			case "E": return fetchOne("select libelle from codif_emplacement where id_emplacement=$id");
-			case "B": return fetchOne("select nom_court from int_bib where id_bib=$id");
-			case "Y": return fetchOne("select libelle from codif_annexe where code='$id'");
+			case "S": return fetchOne("select libelle from codif_section where id_section=".(int)$id);
+		  case "E": return fetchOne("select libelle from codif_emplacement where id_emplacement=".(int)$id);
+		  case "B": return fetchOne("select nom_court from int_bib where id_bib=".(int)$id);
+		  case "Y": return fetchOne("select libelle from codif_annexe where code='".addslashes($id)."'");
 			case "Z": return fetchOne("select libelle from codif_tags where id_tag=$id");
 			case "T":
-			case "t":
-			{
-				if(!array_key_exists("libelles_types_docs", $_SESSION)){
-					$_SESSION["libelles_types_docs"] = array($id => '');
-					$td=fetchOne("select liste from variables where clef='types_docs'");
-					$items=explode(chr(13).chr(10),$td);
-					foreach($items as $item)
-					{
-						$elem=split(":",$item);
-						if(trim($elem[0])>"") $_SESSION["libelles_types_docs"][$elem[0]]=trim($elem[1]);
-					}
-				}
-				return $_SESSION["libelles_types_docs"][$id];
+			case "t":	{
+				if ($type_doc = Class_TypeDoc::getLoader()->find((int)$id))
+					return $type_doc->getLabel();
+				return '';
 			}
 		}
 	}
+
+
+	static function genereNomsChamps () {
+		if (isset(self::$_nom_champs))
+			return;
+
+		$translate = Zend_Registry::get('translate');
+		self::$_nom_champs = array(
+			"A" => array($translate->_("Auteur"),				$translate->_( "Auteur(s)")),
+			"B" => array($translate->_("Bibliothèque"),	$translate->_("Bibliothèque(s)")),
+			"C" => array($translate->_("Collection"),		$translate->_("Collection(s)")),
+			"D" => array($translate->_("Dewey"),				$translate->_("Dewey")),
+			"E" => array($translate->_("Editeur"),			$translate->_("Editeur(s)")),
+			"F" => array($translate->_("Centre d'intérêt"),$translate->_("Centre(s) d'intérêt")),
+			"G" => array($translate->_("Genre"),				$translate->_("Genre")),
+			"I" => array($translate->_("Identifiant"),	$translate->_("Identifiant")),
+			"K" => array($translate->_("Collation"),		$translate->_("Collation")),
+			"L" => array($translate->_("Langue"),				$translate->_("Langue(s)")),
+			"M" => array($translate->_("Sujet"),				$translate->_("Sujet(s)")),
+			"N" => array($translate->_("Année"),				$translate->_("Année")),
+			"O" => array($translate->_("Notes"),				$translate->_("Notes")),
+			"P" => array($translate->_("Pcdm4"),				$translate->_("Pcdm4")),
+			"R" => array($translate->_("Résumé"),				$translate->_("Résumé")),
+			"S" => array($translate->_("Section"),			$translate->_("Section")),
+			"T" => array($translate->_("Titre"),				$translate->_("Titre(s)")),
+			"t" => array($translate->_("Type de document"),				$translate->_("Types de documents")),
+			"Y" => array($translate->_("Site"),					$translate->_("Site")),
+			"Z" => array($translate->_("Tag"),					$translate->_("Tag(s)")),
+			"8" => array($translate->_("Lien internet"),$translate->_("Liens internet")));
+
+		$l=getVar("PCDM4_LIB"); if(trim($l)) {self::$_nom_champs["P"][0]=$l; self::$_nom_champs["P"][1]=$l; }
+		$l=getVar("DEWEY_LIB"); if(trim($l)) {self::$_nom_champs["D"][0]=$l; self::$_nom_champs["D"][1]=$l; }
+	}
+
 //------------------------------------------------------------------------------------------------------
 // Retourne un nom de champ a partir d'1 type ou d'1 facette
 //------------------------------------------------------------------------------------------------------
-	static function getNomChamp($code,$pluriel=0)
-	{
-		$translate = Zend_Registry::get('translate');
-		$type=$code[0];
-		$libs=array(
-								"A" => array($translate->_("Auteur"),				$translate->_( "Auteur(s)")),
-								"B" => array($translate->_("Bibliothèque"),	$translate->_("Bibliothèque(s)")),
-								"C" => array($translate->_("Collection"),		$translate->_("Collection(s)")),
-								"D" => array($translate->_("Dewey"),				$translate->_("Dewey")),
-								"E" => array($translate->_("Editeur"),			$translate->_("Editeur(s)")),
-								"F" => array($translate->_("Centre d'intérêt"),$translate->_("Centre(s) d'intérêt")),
-								"G" => array($translate->_("Genre"),				$translate->_("Genre")),
-								"I" => array($translate->_("Identifiant"),	$translate->_("Identifiant")),
-								"K" => array($translate->_("Collation"),		$translate->_("Collation")),
-								"L" => array($translate->_("Langue"),				$translate->_("Langue(s)")),
-								"M" => array($translate->_("Sujet"),				$translate->_("Sujet(s)")),
-								"N" => array($translate->_("Année"),				$translate->_("Année")),
-								"O" => array($translate->_("Notes"),				$translate->_("Notes")),
-								"P" => array($translate->_("Pcdm4"),				$translate->_("Pcdm4")),
-								"R" => array($translate->_("Résumé"),				$translate->_("Résumé")),
-								"S" => array($translate->_("Section"),			$translate->_("Section")),
-								"T" => array($translate->_("Titre"),				$translate->_("Titre(s)")),
-								"t" => array($translate->_("Type de document"),				$translate->_("Types de documents")),
-								"Y" => array($translate->_("Site"),					$translate->_("Site")),
-								"Z" => array($translate->_("Tag"),					$translate->_("Tag(s)")),
-								"8" => array($translate->_("Lien internet"),$translate->_("Liens internet")));
-		$l=getVar("PCDM4_LIB"); if(trim($l)) {$libs["P"][0]=$l; $libs["P"][1]=$l; }
-		$l=getVar("DEWEY_LIB"); if(trim($l)) {$libs["D"][0]=$l; $libs["D"][1]=$l; }
-		if($code=="tous")
-		{ 
-			foreach($libs as $key => $valeur) $lib[$key]=$valeur[0];
+	static function getNomChamp($code,$pluriel=0)	{
+		if (!$type=$code[0])
+			return '';
+
+		self::genereNomsChamps();
+
+		if($code=="tous")	{ 
+			foreach(self::$_nom_champs as $key => $valeur) 
+				$lib[$key]=$valeur[0];
 			return $lib;
 		}
-		else return $libs[$type][$pluriel];	
+
+		return isset(self::$_nom_champs[$type][$pluriel]) ? self::$_nom_champs[$type][$pluriel] : '';	
 	}
+
 //------------------------------------------------------------------------------------------------------
 // Retourne un nom d'onglet pour les notices
 //------------------------------------------------------------------------------------------------------
-	static function getNomOnglet($onglet)	{
-			$translate = Zend_Registry::get('translate');
-			$libs=array(
-								"detail" => $translate->_("Notice détaillée"),
-								"avis" => $translate->_("Avis"),
+
+	static function genereNomsOnglets () {
+		if (isset(self::$_nom_onglets))
+			return;
+
+		$translate = Zend_Registry::get('translate');
+		self::$_nom_onglets = array(
+								"detail" => $translate->_("Description du document"),
+								"avis" => $translate->_("Critiques"),
 								"exemplaires" => $translate->_("Exemplaires"),
-								"resume" => $translate->_("Résumés, analyses"),
-								"tags" => $translate->_("Tags"),
-								"biographie" => $translate->_("Biographies"),
-								"similaires" => $translate->_("Notices similaires"),
-								"bibliographie"	=> $translate->_("Bibliographies"),
+								"resume" => $translate->_("Résumés"),
+								"tags" => $translate->_("Rebondir dans le catalogue"),
+								"biographie" => $translate->_("Biographie de l'auteur"),
+								"similaires" => $translate->_("Documents similaires"),
+								"bibliographie"	=> $translate->_("Discographie"),
 								"morceaux" => $translate->_("Morceaux"),
 								"bandeAnnonce"	=> $translate->_("Bande-annonce"),
 								"photos" => $translate->_("Photos"),
 								"videos" => $translate->_("Archives vidéo"),
-								"resnumeriques" => $translate->_("Ressources numériques"));
-		if($onglet) return $libs[$onglet];
-		else return $libs;
+								"resnumeriques" => $translate->_("Ressources numériques"),
+								"babeltheque" => $translate->_('Babelthèque'),
+								'frbr' => $translate->_('Notices liées'));
+	}
+
+
+	static function getNomOnglet($onglet)	{
+		self::genereNomsOnglets();
+		return $onglet ? self::$_nom_onglets[$onglet] : self::$_nom_onglets;
 	}
 }

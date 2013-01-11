@@ -19,44 +19,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_CommSigb {
-	const COM_PERGAME = 1;
-	const COM_OPSYS = 2;
-	const COM_VSMART = 4;
-	const COM_KOHA = 5;
-	const COM_CARTHAME = 6;
-	const COM_NANOOK = 7;
-	const COM_ORPHEE = 8;
-	const COM_MICROBIB = 9;
+	use Trait_Translator;
+	protected static $_instance;
 
-	private $COM_CLASSES = array(self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
-															 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
-															 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
-															 self::COM_KOHA => 'Class_WebService_SIGB_Koha',
-															 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
-															 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
-															 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
-															 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib');
-
-	private $mode_comm;								// memo de modes de comm pour les bibs
-	private $msg_erreur_comm;					// Message d'erreur pour la connexion au service de communication
-	private $_translate;
-
-
-	public function  __construct() {
-		$this->_translate = Zend_Registry::get('translate');
-		$this->msg_erreur_comm = $this->_translate->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.");
+	public static function getInstance() {
+		if (null != self::$_instance)
+			return self::$_instance;
+		return new self();
 	}
 
-
-	/**
-	 * @param int $id_bib
-	 * @return int
-	 */
-	public function getTypeComm($id_bib) {
-		$comm = $this->getModeComm($id_bib);
-		return $comm['type'];
+	public static function setInstance($instance) {
+		self::$_instance = $instance;
 	}
-
 
 	/**
 	 * @param array $exemplaires_to_check
@@ -66,32 +40,74 @@ class Class_CommSigb {
 		$exemplaires = array();
 
 		foreach ($exemplaires_to_check as $exemplaire)	{
-			$exemplaire["dispo"] = "non connue";
-			$exemplaire["reservable"]=false;
-
-			$mode_comm=$this->getModeComm($exemplaire['id_bib']);
-			if ($sigb = $this->getSIGBComm($mode_comm)) {
-				$sigb_exemplaire = $sigb->getExemplaire($exemplaire["id_origine"],
-																								$exemplaire["code_barres"]);
-
-				if ($sigb_exemplaire->isPilonne() || !$sigb_exemplaire->isVisibleOPAC()) continue;
-
-				if ($sigb_exemplaire->isValid()) {
-					$exemplaire["dispo"]=$sigb_exemplaire->getDisponibilite();
-					$exemplaire["date_retour"]=$sigb_exemplaire->getDateRetour();
-					$exemplaire["reservable"]=$sigb_exemplaire->isReservable();
-					$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
-					//Cas Nanook pour la localisation de l'exemplaire en temps reel
-					if ($code_annexe = $sigb_exemplaire->getCodeAnnexe()) {
-						$exemplaire["id_bib"] = $code_annexe;
-						$exemplaire["annexe"] = $code_annexe;
-					}
-				}
-			}
-			
-			$exemplaires []= $exemplaire;
+			if ($dispo = $this->getDispoExemplaire($exemplaire["id_bib"], 
+																						 $exemplaire["id_origine"], 
+																						 $exemplaire["code_barres"]))
+				$exemplaires []= array_merge($exemplaire, $dispo);
 		}
 		return $exemplaires;
+	}
+
+
+	public function getDispoExemplaire($id_bib, $id_origine, $code_barre) {
+		$exemplaire = ["dispo" => "non connue",
+									 "reservable" => false];
+
+		$int_bib = Class_IntBib::find($id_bib);
+		if (! ($int_bib && ($sigb = $int_bib->getSIGBComm())))
+			return $exemplaire;
+
+		$sigb_exemplaire = $sigb->getExemplaire($id_origine, $code_barre);
+
+		if ($sigb_exemplaire->isPilonne() || !$sigb_exemplaire->isVisibleOPAC()) 
+			return null;
+
+		if (!$sigb_exemplaire->isValid())
+			return $exemplaire;
+
+		$exemplaire["dispo"]=$sigb_exemplaire->getDisponibilite();
+		$exemplaire["date_retour"]=$sigb_exemplaire->getDateRetour();
+		$exemplaire["reservable"]=$sigb_exemplaire->isReservable();
+		$exemplaire["id_exemplaire"]=$sigb_exemplaire->getId();
+		
+		if ($cote = $sigb_exemplaire->getCote())
+			$exemplaire["cote"] = $cote;
+
+		if ($emplacement = $sigb_exemplaire->getEmplacement())
+			$exemplaire["emplacement"] = $emplacement;
+
+		if (!$code_annexe = $sigb_exemplaire->getCodeAnnexe())
+			return $exemplaire;
+
+		//pour la localisation de l'exemplaire en temps reel
+		$exemplaire["annexe"] = $code_annexe;
+		if (is_numeric($code_annexe))
+			$exemplaire["id_bib"] = $code_annexe;
+
+		return $exemplaire;
+	}
+
+
+	/**
+	 * @param Class_Users $user
+	 * @return array
+	 */
+	public function ficheAbonne($std_user) {
+		$user = Class_Users::getLoader()->find($std_user->ID_USER);
+		$cache = Class_WebService_SIGB_EmprunteurCache::newInstance();
+		if ($cache->isCached($user))
+			return ['fiche' => $cache->load($user)];
+
+		$ficheAbonneClosure = function ($user, $sigb) use ($cache) {
+			try {
+				return ['fiche' =>  $cache->loadFromCacheOrSIGB($user, $sigb)];
+			} catch (Exception $e) {
+				return ['erreur' =>  $e->getMessage()];
+			}
+		};
+
+
+    return $this->withUserAndSIGBDo($std_user, $ficheAbonneClosure);
 	}
 
 
@@ -102,66 +118,21 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function reserverExemplaire($id_bib, $exemplaire_id, $code_annexe) {
-		$mode_comm = $this->getModeComm($id_bib);
-		if (!$user = Class_Users::getLoader()->getIdentity())
-			return array('erreur' => $this->_translate->_('Vous devez vous connecter pour réserver un document.'));
-		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
+		if (!$user = Class_Users::getIdentity())
+			return ['statut' => 2,
+							'erreur' => $this->_('Vous devez vous connecter pour réserver un document.')];
+		
+		if (!$user->getIdabon())
+			return ['statut' => 2,
+							"erreur" => $this->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.')];
 
-		$exemplaire = Class_Exemplaire::getLoader()->find($exemplaire_id);
-		$ret = array('statut' => 2,
-								 'erreur' => '');
+		$exemplaire = Class_Exemplaire::find($exemplaire_id);
 
-		switch ($mode_comm['type']) {
-			// Pergame
-			case self::COM_PERGAME:
-				$pergame = new Class_Systeme_PergameService($user);
-				$ret = $pergame->ReserverExemplaire($id_bib, $exemplaire->getIdOrigine(), $code_annexe);
-				break;
+		$reserver = function ($user, $sigb) use ($exemplaire, $code_annexe) {
+			return $sigb->reserverExemplaire($user, $exemplaire, $code_annexe);
+		};
 
-			// Autres
-		  case self::COM_OPSYS:
-		  case self::COM_VSMART:
-  		case self::COM_KOHA:
-		  case self::COM_CARTHAME:
-			case self::COM_NANOOK:
-			case self::COM_ORPHEE:
-			case self::COM_MICROBIB:
-				if (false == $sigb = $this->getSIGBComm($mode_comm))
-					return array("erreur" => $this->msg_erreur_comm);
-				
-				if (!$user->IDABON)
-					return array("erreur" => $this->_translate->_('Vous devez vous connecter sous votre numéro de carte pour effectuer une réservation.'));
-					
-				$ret = $sigb->reserverExemplaire($user, $exemplaire, $code_annexe);
-				break;
-		}
-
-		return $ret;
-	}
-
-
-	/**
-	 * @param Class_Users $user
-	 * @return array
-	 */
-	public function ficheAbonne($user) {
-		$mode_comm = $this->getModeComm($user->ID_SITE);
-		if (!$mode_comm['type'])
-			return array();
-
-		$user = Class_Users::getLoader()->find($user->ID_USER);
-		$cache = Class_WebService_SIGB_EmprunteurCache::newInstance();
-		if ($cache->isCached($user))
-			return array('fiche' => $cache->load($user));
-
-		if (false == $sigb = $this->getSIGBComm($mode_comm))
-			return array('erreur' => $this->msg_erreur_comm);
-
-		try {
-			return array('fiche' =>  $cache->loadFromCacheOrSIGB($user, $sigb));
-		} catch (Exception $e) {
-			return array('erreur' =>  $e->getMessage());
-		}
+		return $this->withUserAndSIGBDo($user, $reserver);
 	}
 
 
@@ -171,36 +142,11 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function supprimerReservation($std_user, $id_reservation) {
-		$user = Class_Users::getLoader()->find($std_user->ID_USER);
-		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
+		$supprimer = function ($user, $sigb) use ($id_reservation) {
+					return $sigb->supprimerReservation($user, $id_reservation);			
+		};
 
-		$mode_comm = $this->getModeComm($user->getIdSite());
-		$ret = array();
-		switch ($mode_comm["type"]) {
-			// Pergame
-			case self::COM_PERGAME:
-				$pergame = new Class_Systeme_PergameService($user);
-				$ret = $pergame->supprimerReservation($id_reservation);
-				break;
-
-			// Autres
-		  case self::COM_OPSYS:
-		  case self::COM_VSMART:
-  		case self::COM_KOHA:
-	    case self::COM_CARTHAME:
-			case self::COM_NANOOK:
-			case self::COM_ORPHEE:
-			case self::COM_MICROBIB:
-				$user = Class_Users::getLoader()->find($user->ID_USER);
-				$sigb = $this->getSIGBComm($mode_comm);
-				if ($sigb == false) {
-					$ret['erreur'] = $this->msg_erreur_comm;
-				} else {
-					$ret = $sigb->supprimerReservation($user, $id_reservation);
-				}
-				break;
-		}
-		return $ret;
+		return $this->withUserAndSIGBDo($std_user, $supprimer);
 	}
 
 
@@ -210,57 +156,24 @@ class Class_CommSigb {
 	 * @return array
 	 */
 	public function prolongerPret($std_user, $id_pret) {
-		$user = Class_Users::getLoader()->find($std_user->ID_USER);
+		$prolonger = function($user, $sigb) use ($std_user, $id_pret) {
+				return $sigb->prolongerPret($user, $id_pret);
+		};
+
+		return $this->withUserAndSIGBDo($std_user, $prolonger);
+	}
+
+
+	public function withUserAndSIGBDo($std_user, $closure) {
+		$user = is_a($std_user, 'Class_Users') ? $std_user : Class_Users::find($std_user->ID_USER);
 		Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($user);
 
-		$mode_comm = $this->getModeComm($user->getIdSite());
-		if (!$mode_comm['type'])
-			return array();
+		if (null == $sigb = $user->getSIGBComm())
+			return ['erreur' => $this->_('Communication SIGB indisponible')];
+		
+		if (!$sigb->isConnected())
+			return ['erreur' => $this->_("Une erreur de communication avec le serveur a fait échouer la réservation. Merci de signaler ce problème à la bibliothèque.")];
 
-		if (false == $sigb = $this->getSIGBComm($mode_comm))
-			return array('erreur' => $this->msg_erreur_comm);
-
-		return $sigb->prolongerPret($user, $id_pret);
-	}
-
-
-	/**
-	 * @param int $id_bib
-	 * @return array
-	 */
-	public function getModeComm($id_bib){
-		if (isset($this->mode_comm[$id_bib]))
-			return $this->mode_comm[$id_bib];
-
-		$int_bib = Class_IntBib::getLoader()->find($id_bib);
-		if ($int_bib) {
-			$ret = $int_bib->getCommParamsAsArray();
-			$ret['type'] = $int_bib->getCommSigb();
-		}	else
-			$ret = array("type" => 0);
-
-		$ret['id_bib'] = $id_bib;
-		$this->mode_comm[$id_bib] = $ret;
-
-		return $ret;
-	}
-
-
-	/**
-	 * @param array $mode_comm
-	 * @return Class_WebService_SIGB_AbstractService
-	 */
-	private function getSIGBComm($mode_comm) {
-		if (!array_key_exists($mode_comm['type'], $this->COM_CLASSES))
-			return null;
-
-		$service_class = $this->COM_CLASSES[$mode_comm['type']];
-		$sigb_com = call_user_func(array($service_class, 'getService'),
-															 $mode_comm);
-
-		if(!$sigb_com->isConnected())
-			return false;
-
-		return $sigb_com;
+		return $closure($user, $sigb);
 	}
 }

@@ -32,22 +32,25 @@ class Class_WebService_SIGB_Emprunteur {
 	protected $_nb_emprunts = null;
 	protected $_nb_retards = null;
 	protected $_service = null;
+	protected $_valid = false;
+	protected $_end_date = null;
 
 
 	public function __sleep() {
 		$this->getEmprunts();
 		$this->getReservations();
-		return array('_id',
-								 '_name',
-								 '_emprunts',
-								 '_reservations',
-								 '_email',
-								 '_nom',
-								 '_prenom',
-								 '_password',
-								 '_nb_reservations',
-								 '_nb_emprunts',
-								 '_nb_retards');
+		return ['_id',
+					 '_name',
+					 '_emprunts',
+					 '_reservations',
+					 '_email',
+					 '_nom',
+					 '_prenom',
+					 '_password',
+					 '_nb_reservations',
+					 '_nb_emprunts',
+           '_nb_retards',
+           '_end_date'];
 	}
 
 
@@ -90,6 +93,7 @@ class Class_WebService_SIGB_Emprunteur {
 		return $this;
 	}
 
+
 	/**
 	 * @param string $name
 	 * @return Class_WebService_SIGB_Emprunteur
@@ -98,6 +102,7 @@ class Class_WebService_SIGB_Emprunteur {
 		$this->_name = $name;
 		return $this;
 	}
+
 
 	/**
 	 * @param array $emprunts
@@ -113,6 +118,7 @@ class Class_WebService_SIGB_Emprunteur {
 		$this->sortByDateRetour($this->_emprunts);
 		return $this;
 	}
+
 
 	/**
 	 * @param Class_WebService_SIGB_Emprunt $emprunt
@@ -349,8 +355,24 @@ class Class_WebService_SIGB_Emprunteur {
 		return $this->_password;
 	}
 
+
 	/**
-	 *
+	 * @param $date string YYYY-MM-DD format
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function setEndDate($date) {
+		$this->_end_date = $date;
+		return $this;
+	}
+
+
+	/** @return string YYYY-MM-DD format */
+	public function getEndDate() {
+		return $this->_end_date;
+	}
+		
+
+	/**
 	 * @param Class_WebService_SIGB_AbstractService $service
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
@@ -377,6 +399,38 @@ class Class_WebService_SIGB_Emprunteur {
 			return '';
 
 		return $this->_service->getPopupUrlForUserInformations($user);
+	}
+
+
+	/**
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function beValid() {
+		$this->_valid = true;
+		return $this;
+	}
+
+	
+	/**
+	 * @return boolean
+	 */
+	public function isValid() {
+		return $this->_valid;
+	}
+
+
+	/**
+	 * @param $user Class_Users
+	 */
+	public function updateUser($user) {
+		$user
+				->setIdabon($this->getId())
+				->setNom($this->getNom())
+				->setPrenom($this->getPrenom())
+				->setMail($this->getEmail());
+
+		if ($this->_end_date)
+				$user->setDateFin($this->getEndDate());
 	}
 
 

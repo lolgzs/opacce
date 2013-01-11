@@ -26,7 +26,13 @@ class ZendAfi_View_Helper_BaseHelper {
 
 	public function __construct() {
 		$this->view = new ZendAfi_Controller_Action_Helper_View();
+		$this->init();
 	}
+
+
+	public function init() {
+	}
+
 
 	/**
 	 * @param string $libelle

@@ -66,6 +66,18 @@
 					<td class="droite">Téléphone&nbsp;</td>
 					<td class="gauche"><input type="text" name="telephone" size="50" value="<?php echo $this->escape($this->user->getTelephone());?>"/></td>
 				</tr>
+				<tr>
+					<td class="droite">Adresse&nbsp;</td>
+					<td class="gauche"><textarea name="adresse" rows="5"><?php echo $this->escape($this->user->getAdresse());?></textarea></td>
+				</tr>
+				<tr>
+					<td class="droite">Code postal&nbsp;</td>
+					<td class="gauche"><input type="text" name="code_postal" size="10" value="<?php echo $this->escape($this->user->getCodePostal());?>"/></td>
+				</tr>
+				<tr>
+					<td class="droite">Ville&nbsp;</td>
+					<td class="gauche"><input type="text" name="ville" size="50" value="<?php echo $this->escape($this->user->getVille());?>"/></td>
+				</tr>
 			</table>
 		</fieldset>
 

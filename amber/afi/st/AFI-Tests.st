@@ -14,7 +14,8 @@ setUp
 
 	album := BibNumAlbum new 
 		ajax: ajax;
-		container: container
+		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
+		container: container.
 !
 
 tearDown
@@ -62,11 +63,27 @@ testAnchorToDownloadPDFShouldNotBePresent
 	self assert: 0 equals: ((container find: 'div.b-download-book a') at: 'size') value
 ! !
 
-BibNumAlbumTestCase subclass: #BibNumAlbumTintinTest
-	instanceVariableNames: 'bible album container ajax'
+BibNumAlbumTestCase subclass: #BibNumAlbumTintinTestCase
+	instanceVariableNames: ''
 	package: 'AFI-Tests'!
 
-!BibNumAlbumTintinTest methodsFor: 'json'!
+!BibNumAlbumTintinTestCase methodsFor: 'running'!
+
+setUp
+	super setUp.
+
+	album
+		url: '/bib-numerique/album/id/2.json';
+		load.
+
+	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
+! !
+
+BibNumAlbumTintinTestCase subclass: #BibNumAlbumTintinBookletTest
+	instanceVariableNames: ''
+	package: 'AFI-Tests'!
+
+!BibNumAlbumTintinBookletTest methodsFor: 'json'!
 
 tintinJSON
 	^   '{"album": {	"id":2, 
@@ -83,7 +100,8 @@ tintinJSON
                                                           					"description":"Created in 1929 by Herge" ,
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/1.jpg",
                                                           					"navigator_thumbnail":"userfiles/album/2/thumbs/media/1_small.jpg",
-                                                          					"original":"bib-numerique/get-resource/id/1.jpg"},
+                                                          					"original":"bib-numerique/get-resource/id/1.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/1"},
                                                           
                                                           				{	"id":13,
                                                           					"titre": "Haddock",
@@ -92,32 +110,16 @@ tintinJSON
                                                           					"description":"Captain living in Moulinsard",
                                                           					"thumbnail":"userfiles/album/2/thumbs/media/2.jpg",
                                                           					"navigator_thumbnail":"userfiles/album/2/thumbs/media/2_small.jpg",
-                                                          					"original":"bib-numerique/get-resource/id/2.jpg" }                                                        
+                                                          					"original":"bib-numerique/get-resource/id/2.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/2" }                                                        
                                                           				]
 				} }'.
 ! !
 
-!BibNumAlbumTintinTest methodsFor: 'running'!
-
-setUp
-	super setUp.
-
-	album
-		url: '/bib-numerique/album/id/2.json';
-		scriptsRoot: 'http://localhost/afi-opac3/amber/afi/souvigny/';
-		load.
-
-	(ajax options at: 'success')  value: (jQuery parseJSON: self tintinJSON).
-! !
-
-!BibNumAlbumTintinTest methodsFor: 'tests'!
+!BibNumAlbumTintinBookletTest methodsFor: 'tests'!
 
 testAnchorToDownloadPDFShouldBePresent
 	self assert: 'http://localhost/pdf/2'  equals: ((container find: 'div.b-download-book a') attr: 'href' )
-!
-
-testBookletJSShouldBeLoadedOnce
-	self assert: 1 equals: ( 'head' asJQuery find: 'script[src*="booklet.1.2.0.min.js"]') length
 !
 
 testBookletPluginShouldBeLoaded
@@ -142,6 +144,10 @@ testDivBookShouldBePresent
 	|book|
 	book := container find: '.book'.
 	self assert: (0 < book length).
+!
+
+testFirstPageDownloadURLShouldLinkToDownloadResourceAction
+	self assert: 'bib-numerique/download-resource/id/1' equals: album pages first downloadURL
 !
 
 testFirstPageImageFolioNumberShouldBeTwelveR
@@ -187,6 +193,62 @@ testSecondPageImageFolioNumberShouldBeXX
 testShouldContainsFourPages
 	"2 pages + covers"
 	self assert: 4 equals: (container find: '.b-page') length
+! !
+
+BibNumAlbumTintinTestCase subclass: #BibNumAlbumTintinMonopageTest
+	instanceVariableNames: ''
+	package: 'AFI-Tests'!
+
+!BibNumAlbumTintinMonopageTest methodsFor: 'json'!
+
+tintinJSON
+	^   '{"album": {	"id":2, 
+					"titre":"Tintin et Milou", 
+					"description":"The real story of Tintin",
+					"width": 400,
+					"height": 300,
+					"download_url": "http://localhost/pdf/2",
+                    "player": "BookMonoWidget",
+					"ressources":[ 
+                                                          				{	"id":12,
+                                                          					"titre": "Origins",
+																			"foliono": "12R",
+                                                          					"link_to":"",
+                                                          					"description":"Created in 1929 by Herge" ,
+                                                          					"thumbnail":"userfiles/album/2/thumbs/media/1.jpg",
+                                                          					"navigator_thumbnail":"userfiles/album/2/thumbs/media/1_small.jpg",
+                                                          					"original":"bib-numerique/get-resource/id/1.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/1"},
+                                                          
+                                                          				{	"id":13,
+                                                          					"titre": "Haddock",
+																			"foliono": "XX",
+                                                          					"link_to":"",
+                                                          					"description":"Captain living in Moulinsard",
+                                                          					"thumbnail":"userfiles/album/2/thumbs/media/2.jpg",
+                                                          					"navigator_thumbnail":"userfiles/album/2/thumbs/media/2_small.jpg",
+                                                          					"original":"bib-numerique/get-resource/id/2.jpg",
+                                                          					"download":"bib-numerique/download-resource/id/2" }                                                        
+                                                          				]
+				} }'.
+! !
+
+!BibNumAlbumTintinMonopageTest methodsFor: 'tests'!
+
+testBookMenuShouldContainsLIWithHaddock
+	self assert: 0 < (container find: '.book-menu ul li:contains("Haddock")')  length
+!
+
+testBookMenuShouldContainsLIWithOrigins
+	self assert: 0 < (container find: '.book-menu li:contains("Origins")')  length
+!
+
+testBookletShouldNotBeLoaded
+	self assert: 0 equals: ( container find: '.b-load') length
+!
+
+testFirstPageImageShouldLinkToOneDotJpg
+	self assert: 0 < (container find: 'img[src*="userfiles/album/2/thumbs/media/1.jpg"]')  length
 ! !
 
 TestCase subclass: #CycleTest

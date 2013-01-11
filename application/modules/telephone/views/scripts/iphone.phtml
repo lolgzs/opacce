@@ -1,10 +1,12 @@
-<?php echo $this->render('head.phtml'); ?>
+<?php
+ob_start();
+?>
 
 <body	 class="iphone" <?php echo $this->bodyParam; ?>>
-<div>
+<div style="position:absolute">
 	<div id='retour_accueil'>
 	 <a href='<?php echo BASE_URL."?id_profil=1" ?>'>
-		 <img src='<?php echo URL_IMG."go_back.png" ?>'>Retour au site
+	 <img src='<?php echo URL_IMG."go_back.png" ?>' alt='<?php echo $this->_('Retour au site'); ?>'><?php echo $this->_('Retour au site'); ?>
 	 </a>
 	</div>
 
@@ -20,8 +22,8 @@
  </div>
 
  <div id="iphone_container" class="iphone_container" onclick="clickContainer(event)">
-	 <div class="iphone_application" align="left">
-		 <img src="<?php echo $this->profil->getHeaderImg(); ?>" width="100%">
+	 <div class="iphone_application">
+		 <?php echo $this->partial("banniere.phtml", array("profil" => $this->profil)); ?>
 		 <div style="background-color: transparent">
 			 <?php echo $this->render($this->actionScript);?>
 		 </div>
@@ -29,3 +31,12 @@
  </div>
 	
 <?php echo $this->render('footer.phtml'); ?>
+
+
+<?php
+$html = ob_get_contents();
+ob_end_clean();
+
+echo $this->render('head.phtml');
+echo $html;
+?>

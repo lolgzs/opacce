@@ -59,14 +59,9 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 		foreach ($matches as $match) {
 			$tag = array_shift($match);
-			$attributes = explode('.',array_shift($match));
 
-			$model = $this->getDataSourceNamed(array_shift($attributes));
 			try {
-				if (is_array($value = $this->getValue($model, $attributes))) 
-					$tag_value = $this->buildTable($value, array_shift($match));
-				else
-					$tag_value = htmlentities(utf8_decode($value));
+				$tag_value = $this->getTagValueForString($match);
 			} catch (Storm_Model_Exception $e) {
 				continue;
 			} 
@@ -79,18 +74,45 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 		return $contenu_decode;
 	}
 
+
+	public function getTagValueForString($match) {
+		$attributes = explode('.',array_shift($match));
+
+		$model = $this->getDataSourceNamed(array_shift($attributes));
+
+		if (is_array($value = $this->getValue($model, $attributes))) 
+			return $this->buildTable($value, array_shift($match));
+
+		return $this->htmlize($value);
+	}
+
+
+	public function htmlize($value) {
+		//php 5.4 - 5.2 compat
+		if (!$in_utf8 =  htmlentities($value, ENT_QUOTES, 'UTF-8'))
+			return htmlentities($value, ENT_QUOTES);
+		return $in_utf8;
+	}
+
 	
 	public function getValue($modele, &$attributes) {
-		$value_or_model = $modele->callGetterByAttributeName(array_shift($attributes));
+		if (!$next_attribute = array_shift($attributes))
+			return '';
+
+		if (!$value_or_model = $modele->callGetterByAttributeName($next_attribute))
+			return '';
+
 		if (count($attributes)==0) 
 			return $value_or_model;
+		
 		return $this->getValue($value_or_model, $attributes);
 	}
 
 
 	public function buildTable($items, $columns_def_string) {
 		$matches = array();
-		preg_match_all('/(?:\"([^\"]+)\"\:)(\w+)?(?:\s*,\s*)?/', $columns_def_string, $matches, PREG_SET_ORDER);
+
+		preg_match_all('/(?:\"([^\"]+)\"\:)([\w|\.]+)?(?:\s*,\s*)?/', $columns_def_string, $matches, PREG_SET_ORDER);
 
 		$columns = array();
 		foreach ($matches as $match)
@@ -98,7 +120,7 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 		$content = '<tr>';
 		foreach($columns as $label => $attribute)
-			$content .= '<td>'.htmlentities($label).'</td>';
+			$content .= '<td>'.$this->htmlize($label).'</td>';
 		$content .= '</tr>';
 
 			
@@ -111,9 +133,13 @@ class Class_ModeleFusion extends Storm_Model_Abstract {
 
 	public function buildTableRow($model, &$attributes) {
 		$row = '';
+
 		foreach($attributes as $attribute) {
+			$requested_attributes = explode('.', $attribute);
+			$value = $this->getValue($model, $requested_attributes);
+
 			$row .= sprintf('<td>%s</td>', 
-											$attribute ? htmlentities($model->callGetterByAttributeName($attribute)) : '');
+											$attribute ? $this->htmlize($value) : '');
 		}
 
 		return sprintf('<tr>%s</tr>', $row);

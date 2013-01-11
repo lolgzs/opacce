@@ -21,7 +21,7 @@
 class Admin_FormationController extends Zend_Controller_Action {
 	public function indexAction() {
 		$this->view->titre = 'Mise à jour des formations';
-		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAll());
+		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAllBy(array('order' => 'id desc')));
 	}
 
 
@@ -153,7 +153,7 @@ class Admin_FormationController extends Zend_Controller_Action {
 
 
 	public function ficheemargementAction() {
-		$this->_renderLettreFusion(new SessionFusionStrategy('FORMATION_EMARGEMENT'));
+		$this->_renderLettreFusion(new SessionOneLetterPerDayFusionStrategy('FORMATION_EMARGEMENT'));
 	}
 
 
@@ -354,19 +354,16 @@ class Admin_FormationController extends Zend_Controller_Action {
 			$session
 				->updateAttributes($post)
 				->setDateDebut($this->_readPostDate($this->_request->getPost('date_debut')))
+				->setDateFin($this->_readPostDate($this->_request->getPost('date_fin')))
 				->setDateLimiteInscription($this->_readPostDate($this->_request->getPost('date_limite_inscription')))
-				->setIntervenants($intervenants)
-				->validate();
+				->setIntervenants($intervenants);
 			
-			if ($form->isValid($this->_request->getPost()) && $session->isValid()) {
+			if ($form->isValid($session)) {
 				$session->save();
-				$this->_redirect('admin/formation');
+				$this->_helper->notify(sprintf('Session du %s sauvegardée', 
+																			 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY')));
+				$this->_redirect('admin/formation/session_edit/id/'.$session->getId());
 				return true;
-			}
-
-			foreach($session->getErrors() as $attribute => $message) {
-				if ($element = $form->getElement($attribute))
-					$element->addError($message);
 			}
 		}
 
@@ -399,8 +396,11 @@ class Admin_FormationController extends Zend_Controller_Action {
 																										 'size'	=> 10,
 																										 'required' => true,
 																										 'allowEmpty' => false	))
+			->addElement('datePicker', 'date_fin', array(
+																										 'label' => 'Date fin',
+																										 'size'	=> 10	))
 			->addElement('datePicker', 'date_limite_inscription', array(
-																																	'label' => 'Date limite d\'inscription',
+																																	'label' => 'Date limite d\'inscription *',
 																																	'size'	=> 10	))
 			->addElement('text', 'effectif_min', array(
 																								 'label' => 'Effectif minimum *',
@@ -419,35 +419,38 @@ class Admin_FormationController extends Zend_Controller_Action {
 																					'label' => 'Durée (h)',
 																					'size'	=> 2,
 																					'validators' => array('int')))
+
 			->addElement('text', 'horaires', array(
-																						 'label' => 'Horaires',
+																						 'label' => 'Horaires *',
 																						 'size'	=> 50,
 																						 'required' => true,
 																						 'allowEmpty' => false))
-			->addElement('text', 'lieu', array(
-																				 'label' => 'Lieu',
-																				 'size'	=> 50,
-																				 'required' => true,
-																				 'allowEmpty' => false))
+
+			->addElement('select', 'lieu_id', array('label' => 'Lieu',
+																							'multiOptions' => Class_Lieu::getAllLibelles()))
+
 			->addElement('text', 'cout', array(
 																				 'label' => 'Coût',
 																				 'size'	=> 6,
 																				 'validators' => array('int')))
+
 			->addElement('checkbox', 'is_annule', array('label' => 'Session annulée'))
+
 			->addElement($intervenants_checkboxes)
+
 			->addElement('ckeditor', 'contenu', array(
-																										 'label' => 'Contenu *',
+																										 'label' => '',
 																										 'required' => true,
 																										 'allowEmpty' => false))
-			->addElement('ckeditor', 'objectif', array('label' => 'Objectif'))
 			->addElement('ckeditor', 'compte_rendu', array('label' => ''))
 
 			->addDisplayGroup(
 												array('date_debut',
+															'date_fin',
 															'date_limite_inscription',
 															'effectif_min',
 															'effectif_max',
-															'lieu',
+															'lieu_id',
 															'horaires',
 															'duree',
 															'cout',
@@ -459,10 +462,9 @@ class Admin_FormationController extends Zend_Controller_Action {
 												'intervenants',
 												array('legend' => 'Intervenants'))
 			->addDisplayGroup(
-												array('contenu',
-															'objectif'), 
+												array('contenu'), 
 												'programme',
-												array('legend' => 'Programme'))
+												array('legend' => 'Contenu *'))
 			->addDisplayGroup(
 												array('compte_rendu'),
 												'bilan',
@@ -503,10 +505,76 @@ class AbstractSessionFusionStrategy {
 class SessionFusionStrategy extends AbstractSessionFusionStrategy{
 	public function getContenuFusionne($session_formation) {
 		return $this->_modele_fusion
-			->setDataSource(array("session_formation" => $session_formation))
+			->setDataSource(array("session_formation" => $session_formation,
+														"date_jour" => new FusionDateContext()))
 			->getContenuFusionne();
 	}
 }
+
+
+class SessionOneLetterPerDayFusionStrategy extends AbstractSessionFusionStrategy{
+	public function getContenuFusionne($session_formation) {
+		$date_context = new FusionDateContext($session_formation->getDateDebut());
+
+		$nb_jours = $date_context->numberOfDaysTo($session_formation->getDateFin());
+
+		$lettres = array();
+		for ($i=0; $i<=$nb_jours; $i++) {
+			$lettres []= $this->_modele_fusion
+				->setDataSource(array("session_formation" => $session_formation,
+															"date_context" => $date_context,
+															"date_jour" => new FusionDateContext()))
+				->getContenuFusionne();
+			$date_context->forwardOneDay();
+		}
+
+		return implode('<div style="page-break-after: always"></div>', $lettres);
+	}
+}
+
+
+
+
+class FusionDateContext {
+	protected $_current_date;
+
+	public function __construct($datestr=null) {
+		$this->_current_date = $this->dateStringToZendDate($datestr);
+	}
+
+
+	public function dateStringToZendDate($datestr) {
+		return new Zend_Date($datestr, null, Zend_Registry::get('locale'));
+	}
+
+
+	public function forwardOneDay() {
+		$this->_current_date->add(1, Zend_Date::DAY);		
+		return $this;
+	}
+
+
+	public function getTexte() {
+		return $this->_current_date->toString('d MMMM yyyy');
+	}
+
+
+	public function numberOfDaysTo($other_datestr) {
+		if (!$other_datestr)
+			return 0;
+
+		$other_date = $this->dateStringToZendDate($other_datestr);
+		$other_date->sub($this->_current_date);
+		return ($other_date->toValue(Zend_Date::DAY)-1);
+	}
+
+
+	public function callGetterByAttributeName($attribute) {
+		return call_user_func(array($this, 'get'.Storm_Inflector::camelize($attribute)));
+	}
+}
+
+
 
 
 class SessionStagiairesFusionStrategy extends AbstractSessionFusionStrategy{
@@ -516,7 +584,8 @@ class SessionStagiairesFusionStrategy extends AbstractSessionFusionStrategy{
 		foreach($stagiaires as $stagiaire)
 			$lettres []= $this->_modele_fusion
 													->setDataSource(array('session_formation' => $session_formation,
-																								'stagiaire' => $stagiaire))
+																								'stagiaire' => $stagiaire,
+																								"date_jour" => new FusionDateContext()))
 													->getContenuFusionne();
 
 

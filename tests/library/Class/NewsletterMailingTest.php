@@ -62,6 +62,13 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 			->setMail('mduchamp@hotmail.com');
 
 
+		$this->zork = new Class_Users();
+		$this->zork
+			->setPrenom('')
+			->setNom('Zork')
+			->setMail('zork');
+
+
 		$this->animations = new Class_Newsletter();
 		$this->animations
 			->setTitre('Animations du mois')
@@ -71,6 +78,7 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 			->setIdPanier(null)
 			->addUser($this->rdubois)
 			->addUser($this->mduchamp)
+			->addUser($this->zork)
 			->setExpediteur(null);
 
 		$this->mock_transport = new MockMailTransport();
@@ -102,6 +110,13 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 		$this->assertContains('mduchamp@hotmail.com',
 													$this->mail->getRecipients());
 	}
+
+
+	public function testBccShouldNotIncludeZork() {
+		$this->assertNotContains('zork',
+													$this->mail->getRecipients());
+	}
+
 
 	public function testToIsAdminPortail() {
 		$this->assertContains('flo@astrolabe.fr',
@@ -160,6 +175,7 @@ class NewsletterMailingAnimationsTestSendMail extends ModelTestCase {
 
 
 
+
 class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 	public function setUp() {
 		$jpasse = new Class_Users();
@@ -178,7 +194,7 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 		$concerts = new Class_Newsletter();
 		$concerts
 			->setTitre('Concerts')
-			->setContenu("Marcus Miller\nau Jazz Festival")
+			->setContenu("Marcus Miller<br />au Jazz Festival")
 			->setIdCatalogue(null)
 			->setNbNotices(0)
 			->setIdPanier(null);
@@ -186,6 +202,8 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 		$concerts
 			->addUser($jpasse)
 			->addUser($user_without_mail);
+
+		Class_Profil::getPortail()->setMailSite('');
 
 		$this->mail = $concerts->generateMail();
 	}
@@ -202,7 +220,7 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 
 
 	public function testBodyHTMLBreaksLines() {
-		$this->assertContains("Marcus Miller<br />\nau Jazz Festival",
+		$this->assertContains("Marcus Miller<br />au Jazz Festival",
 													quoted_printable_decode($this->mail->getBodyHTML()->getContent()));
 	}
 
@@ -212,10 +230,11 @@ class NewsletterConcertsTestMailRecipients extends ModelTestCase {
 													$this->mail->getRecipients());
 	}
 
-	public function testRecipientsSizeIsTwo() {
-		$this->assertEquals(2, count($this->mail->getRecipients()));
+	public function testRecipientsSizeIsOne() {
+		$this->assertEquals(1, count($this->mail->getRecipients()));
 	}
 }
+
 
 
 

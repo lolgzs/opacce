@@ -1,67 +1,86 @@
 <center>
 <div class="form" align="center" >
-	<form name="form" action="<?php print(BASE_URL.'/admin/catalogue/validation/id_catalogue/'.$this->catalogue["ID_CATALOGUE"]) ?>" method="post">
+	<form name="form" method="post">
 
 		<fieldset>
 			<legend><?php echo $this->traduire('Catalogue'); ?> </legend>
 			<?php
-			if($this->erreurs)
-			{
+      if($this->catalogue->hasErrors())	{
 				echo '<p class="error">';
-				foreach($this->erreurs as $erreur) print($erreur.BR);
+				echo implode(BR, $this->catalogue->getErrors());
 				echo '</p>';
 			}
 			?>
 				<table border="0" cellpadding="5" cellspacing="0">
 					<tr>
 						<td class="droite" style="width:150px;"><?php echo $this->traduire('Libelle'); ?></td>
-						<td class="gauche"><input type="text" name="LIBELLE" value="<?php echo $this->catalogue["LIBELLE"]?>" maxlength="50" size="50" onchange="setFlagMaj(true)"></td>
+						<td class="gauche"><input type="text" name="libelle" value="<?php echo $this->catalogue->getLibelle()?>" maxlength="50" size="50" onchange="setFlagMaj(true)"></td>
 					</tr>
-					
+
+					<tr>
+						<td class="droite" style="width:150px;"><?php echo $this->traduire('Description'); ?></td>
+						<td class="gauche"><textarea name="description" rows='10' onchange="setFlagMaj(true)"><?php echo $this->catalogue->getDescription()?></textarea></td>
+					</tr>
+
 				</table>
 		</fieldset>
-		
+
+	  <?php if (Class_AdminVar::isOAIServerEnabled()) { ?>
+    <fieldset>
+			<legend><?php echo $this->traduire('Serveur OAI'); ?> </legend>
+		  <table border="0" cellpadding="5" cellspacing="0">
+					<tr>
+						<td class="droite" style="width:150px;"><?php echo $this->traduire('OAI spec'); ?></td>
+						<td class="gauche"><input type="text" name="oai_spec" value="<?php echo $this->catalogue->getOaiSpec()?>" maxlength="50" size="50" onchange="setFlagMaj(true)"></td>
+					</tr>
+		  </table>    
+    </fieldset>
+   <?php } ?>
+
 		<fieldset>
 			<legend><?php echo $this->traduire('Critères généraux'); ?> </legend>
 				<table border="0" cellpadding="5" cellspacing="0">
 					
 					<tr>
 						<td class="droite" valign="top" style="width:180px;"><?php echo $this->traduire('Types de documents'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("type_doc","TYPE_DOC",$this->catalogue["TYPE_DOC"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("type_doc","type_doc",$this->catalogue->getTypeDoc()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire('Genres'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("genre","GENRE",$this->catalogue["GENRE"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("genre","genre",$this->catalogue->getGenre()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire('Langues'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("langue","LANGUE",$this->catalogue["LANGUE"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("langue","langue",$this->catalogue->getLangue()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite"><?php echo $this->traduire('Année de parution - depuis'); ?></td>
-						<td class="gauche"><input type="text" name="ANNEE_DEBUT" size="4" maxlength="4" value="<?php echo $this->catalogue["ANNEE_DEBUT"]?>">&nbsp;(sur 4 chiffres)</td>
+						<td class="gauche"><input type="text" name="annee_debut" size="4" maxlength="4" value="<?php echo $this->catalogue->getAnneeDebut()?>">&nbsp;(sur 4 chiffres)</td>
 					</tr>
 					
 					<tr>
 						<td class="droite"><?php echo $this->traduire('jusqu\'à'); ?></td>
-						<td class="gauche"><input type="text" name="ANNEE_FIN" size="4" maxlength="4"  value="<?php echo $this->catalogue["ANNEE_FIN"]?>">&nbsp;(sur 4 chiffres)</td>
+						<td class="gauche"><input type="text" name="annee_fin" size="4" maxlength="4"	 value="<?php echo $this->catalogue->getAnneeFin()?>">&nbsp;(sur 4 chiffres)</td>
 					</tr>
 
 					<tr>
 						<td class="droite"><?php echo $this->traduire('Cote - depuis'); ?></td>
-						<td class="gauche"><input type="text" name="COTE_DEBUT" size="25" maxlength="25" value="<?php echo $this->catalogue["COTE_DEBUT"]?>">&nbsp;(Pergame et Nanook uniquement)</td>
+						<td class="gauche"><input type="text" name="cote_debut" size="25" maxlength="25" value="<?php echo $this->catalogue->getCoteDebut()?>">&nbsp;(Pergame et Nanook uniquement)</td>
 					</tr>
 
 					<tr>
 						<td class="droite"><?php echo $this->traduire('jusqu\'à'); ?></td>
-						<td class="gauche"><input type="text" name="COTE_FIN" size="25" maxlength="25"  value="<?php echo $this->catalogue["COTE_FIN"]?>">&nbsp;(Pergame et Nanook uniquement)</td>
+						<td class="gauche"><input type="text" name="cote_fin" size="25" maxlength="25"	value="<?php echo $this->catalogue->getCoteFin()?>">&nbsp;(Pergame et Nanook uniquement)</td>
 					</tr>
 					<tr>
 						<td class="droite"><?php echo $this->traduire('Nouveautés uniquement'); ?></td>
-						<td class="gauche"><input type="checkbox" name="NOUVEAUTE"  value="1" <?php if($this->catalogue["NOUVEAUTE"]) echo "checked=ckecked"?>></td>
+						<td class="gauche"><?php echo $this->formCheckbox('nouveaute',
+																															(int)$this->catalogue->getNouveaute(),
+																															null,
+																															array(1, 0)); ?></td>
 					</tr>
 					
 				</table>
@@ -72,22 +91,22 @@
 				<table border="0" cellpadding="5" cellspacing="0">
 					<tr>
 						<td class="droite" style="width:150px" valign="top"><?php echo $this->traduire('Bibliothèques'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("bibliotheque","BIBLIOTHEQUE",$this->catalogue["BIBLIOTHEQUE"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("bibliotheque","bibliotheque",$this->catalogue->getBibliotheque()); ?></td>
 					</tr>
 
 					<tr>
 						<td class="droite" style="width:150px" valign="top"><?php echo $this->traduire('Sections'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("section","SECTION",$this->catalogue["SECTION"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("section","section",$this->catalogue->getSection()); ?></td>
 					</tr>
 
 					<tr>
 						<td class="droite" style="width:150px" valign="top"><?php echo $this->traduire('Sites'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("annexe","ANNEXE",$this->catalogue["ANNEXE"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("annexe","annexe",$this->catalogue->getAnnexe()); ?></td>
 					</tr>
 
 					<tr>
 						<td class="droite" style="width:150px" valign="top"><?php echo $this->traduire('Emplacements'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeCoches("emplacement","EMPLACEMENT",$this->catalogue["EMPLACEMENT"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeCoches("emplacement","emplacement",$this->catalogue->getEmplacement()); ?></td>
 					</tr>
 
 				</table>
@@ -103,32 +122,32 @@
 
 					<tr>
 						<td class="droite" valign="top" style="width:130px"><?php echo $this->traduire('Auteurs'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("auteur","AUTEUR",$this->catalogue["AUTEUR"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("auteur","auteur",$this->catalogue->getAuteur()); ?></td>
 					</tr>
 
 					<tr>
 						<td class="droite" valign="top" style="width:130px"><?php echo $this->traduire('Matières / sujets'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("matiere","MATIERE",$this->catalogue["MATIERE"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("matiere","matiere",$this->catalogue->getMatiere()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire('Indices Dewey'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("dewey","DEWEY",$this->catalogue["DEWEY"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("dewey","dewey",$this->catalogue->getDewey()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire('Pcdm4'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("pcdm4","PCDM4",$this->catalogue["PCDM4"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("pcdm4","pcdm4",$this->catalogue->getPcdm4()); ?></td>
 					</tr>
 
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire("Centres d'intérêt"); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("interet","INTERET",$this->catalogue["INTERET"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("interet","interet",$this->catalogue->getInteret()); ?></td>
 					</tr>
 					
 					<tr>
 						<td class="droite" valign="top"><?php echo $this->traduire('Tags utilisateur'); ?></td>
-						<td class="gauche"><?php echo $this->TagListeSuggestion("tag","TAGS",$this->catalogue["TAGS"]); ?></td>
+						<td class="gauche"><?php echo $this->TagListeSuggestion("tag","tags",$this->catalogue->getTags()); ?></td>
 					</tr>
 					
 				</table>

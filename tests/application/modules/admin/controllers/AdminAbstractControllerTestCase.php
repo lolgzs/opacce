@@ -26,7 +26,7 @@ abstract class Admin_AbstractControllerTestCase extends AbstractControllerTestCa
 	}
 
 	protected function _loginHook($account) {
-		$account->ROLE = "admin_portail";
+		$account->ROLE = "super_admin";
 		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN;
 		$account->LOGIN = "sysadmin";
 		$account->PSEUDO = "admin";

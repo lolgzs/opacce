@@ -1,9 +1,11 @@
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo URL_CSS?>nuage_tags.css"/>
-<?php
-echo $this->toolbar("Biographie",$this->url_retour,true);
-echo '<h1>'.$this->notice["T"].'</h1>';
-echo '<div class="pave">';
-
-echo $this->html;
-echo '</div>'.BR;
+<?php 
+echo $this->toolbar($this->_("Biographie"), array('action' => 'viewnotice'), true); 
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 ?>
+
+<ul data-role="listview" data-inset="true">
+  <li>
+    <?php echo $this->biographie($this->notice); ?>
+  </li>
+</ul>
+

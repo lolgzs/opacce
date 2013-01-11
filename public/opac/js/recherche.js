@@ -65,9 +65,14 @@ function infos_onglet(sIdOngletCourant,sIsbn,sType,sCherche,nNiveau,nPage)
 	onglet
 		.css('display','block')
 		.css('max-width', onglet.parent().width()+'px')
-		.load(sUrl);
+		.load(sUrl, function() { blocNoticeAfterLoad(sType, sIsbn, onglet); } );
 
 }
+
+
+if (undefined == window.blocNoticeAfterLoad) 
+	window.blocNoticeAfterLoad = function (info, isbn, target) {};
+
 
 function infos_bloc(sIdBloc,sIsbn,sType,sCherche,nNiveau,nPage)
 {
@@ -91,7 +96,7 @@ function infos_bloc(sIdBloc,sIsbn,sType,sCherche,nNiveau,nPage)
 	var bloc = $('#'+sIdBloc + '_contenu');
 	bloc
 		.css('max-width', bloc.parent().width()+'px')
-		.load(sUrl);
+		.load(sUrl, function() { blocNoticeAfterLoad(sType, sIsbn, bloc); });
 }
 	
 function fermer_infos_notice(sId)
@@ -328,8 +333,43 @@ function reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe)
 		$(oImg).attr('src',saveImg);
 
 		if (data.indexOf('http') == 0)
-			showPopWin(data, 500, 345, null);
+			showPopWin(data, 500, 345, 
+								 function(event, ui) {
+									 if (undefined == event.srcElement)
+										 reservationAjax(oImg,nIdBib,sIdOrigine, sCodeAnnexe);
+								 });
 		else 
 			alert(data);
 	});
+}
+
+
+var pickupImgCallback;
+var pickupConfirmCallBack;
+function reservationPickupAjax(oImg,nIdBib,sIdOrigine,sCodeAnnexe)
+{
+	var sUrl = baseUrl+'/recherche/reservation-pickup-ajax?id_bib='+nIdBib+"&id_origine="+sIdOrigine+"&code_annexe="+sCodeAnnexe;
+	var saveImg = $(oImg).attr('src');
+	pickupImgLoadingCallback = function() {
+		$(oImg).attr('src', saveImg);
+	};
+	pickupConfirmCallBack = function(form) {
+		reservationPickupAjaxCancel();
+		var sCodeAnnexe = $(form).find('input:radio[name="code_annexe"]:checked').val();
+		reservationAjax(oImg, nIdBib, sIdOrigine, sCodeAnnexe);
+	};
+
+	$(oImg).attr('src',imagesUrl+'patience.gif');
+	showPopWin(sUrl, 500, 345, null);
+}
+
+
+function reservationPickupAjaxCancel() {
+	pickupImgLoadingCallback();
+	hidePopWin(false);
+}
+
+
+function reservationPickupAjaxConfirm(form) {
+	pickupConfirmCallBack(form);
 }

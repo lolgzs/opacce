@@ -1,0 +1,35 @@
+<h1 style="text-align: center; margin-bottom: 10px"><?php echo $this->_('Modifier la vignette'); ?></h1>
+
+<div class="formTable" style="margin: 0 auto">
+
+<?php 
+if ($this->error)
+	echo '<div class="error">'.$this->_('Erreur: ').$this->error.'</div>';
+echo $this->renderForm($this->form); 
+?>
+
+<img class="patience" style="display:none; margin: 0 auto" src="<?php echo URL_ADMIN_IMG ?>patience.gif" border="0"  alt="'.$this->_('Chargement en cours').'" />
+<div style="text-align: center; margin-top: 10px">
+  <p><?php echo $this->_("Préférez une image de résolution comprise entre 320x240 et 800x600 au format jpg, png ou gif."); ?></p>
+  <p><?php echo $this->_('Aperçu:') ?></p>
+	<img class="preview" width="150px" style="display:block; margin: 0px auto" src="<?php echo $this->url_vignette ?>"/>
+</div>
+</div>
+
+
+<script>
+$('input[type=submit]').click(function() {
+		$('img.patience').css('display', 'block');
+	});
+
+var url_input = $('input[name=url_vignette]');
+
+var update_preview = function() {
+	$('img.preview').attr('src', url_input.attr('value'))
+};
+
+url_input.keyup(update_preview);
+url_input.mouseup(update_preview);
+url_input.change(update_preview);
+
+</script>

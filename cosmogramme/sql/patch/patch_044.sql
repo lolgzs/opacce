@@ -1,0 +1,1 @@
+ALTER TABLE `album` ADD `fichier` VARCHAR( 20 ) NULL DEFAULT NULL;

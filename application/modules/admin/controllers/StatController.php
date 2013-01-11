@@ -66,8 +66,8 @@ class Admin_StatController extends Zend_Controller_Action
 	function rechercheinfructueuseAction()
 	{
 		$this->view->titre = 'Recherches infructueuses';
-		$this->view->nb_par_page=20;
-		$page=$_REQUEST["page"];
+		$this->view->nb_par_page = 20;
+		$page = $this->_getParam('page');
 		if(!$page) $page=1;
 		$this->view->page=$page;
 		$limit=($page-1) * $this->view->nb_par_page;

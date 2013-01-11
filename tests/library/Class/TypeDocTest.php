@@ -29,13 +29,13 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 			->whenCalled('save')
 			->answers(true);
 
-		$this->types_docs = Class_TypeDoc::getLoader()->findAll();
+		$this->types_docs = Class_TypeDoc::getLoader()->reset()->findAll();
 	}
 
 
 	/** @test */
-	function instancesCountShouldBeThree() {
-		$this->assertEquals(3, count($this->types_docs));
+	function instancesCountShouldBeHeight() {
+		$this->assertEquals(8, count($this->types_docs));
 	}
 
 
@@ -67,7 +67,7 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 	function saveNewInstanceVideoShouldUpdateTypesDocsVars() {
 		Class_TypeDoc::newWithLabel('videos')->save();
 
-		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:périodiques\r\n3:videos",
+		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:périodiques\r\n100:Livres numérisés\r\n101:Diaporamas\r\n102:E-Books\r\n103:OAI\r\n104:Arte VOD\r\n105:videos",
 												$this->cosmo_types->getListe());
 	}
 
@@ -78,7 +78,7 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 			->setLabel('journaux')
 			->save();
 
-		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:journaux",
+		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:journaux\r\n100:Livres numérisés\r\n101:Diaporamas\r\n102:E-Books\r\n103:OAI\r\n104:Arte VOD",
 												$this->cosmo_types->getListe(),
 												'Current value: '.$this->cosmo_types->getListe());		
 	}
@@ -96,7 +96,7 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 			->setLabel('CD')
 			->save();
 
-		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:périodiques\r\n3:videos\r\n4:CD",
+		$this->assertEquals("0:non identifié\r\n1:livres\r\n2:périodiques\r\n100:Livres numérisés\r\n101:Diaporamas\r\n102:E-Books\r\n103:OAI\r\n104:Arte VOD\r\n105:videos\r\n106:CD",
 												$this->cosmo_types->getListe(),
 												'Current value: '.$this->cosmo_types->getListe());
 	}
@@ -106,7 +106,7 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 	function deleteLivresShouldUpdateTypesDocsVar() {
 		array_at(1, $this->types_docs)->delete();
 
-		$this->assertEquals("0:non identifié\r\n2:périodiques",
+		$this->assertEquals("0:non identifié\r\n2:périodiques\r\n100:Livres numérisés\r\n101:Diaporamas\r\n102:E-Books\r\n103:OAI\r\n104:Arte VOD",
 												$this->cosmo_types->getListe());
 	}
 
@@ -114,7 +114,14 @@ class TypeDocTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	function typeDocToIdLabelArrayShouldAnswerAssociativeArray() {
 		$array = Class_TypeDoc::toIdLabelArray(Class_TypeDoc::getLoader()->findAll());
-		$this->assertEquals($array, array(0 => 'non identifié', 1 => 'livres', 2 => 'périodiques'));
+		$this->assertEquals($array, [0 => 'non identifié', 
+				                         1 => 'livres', 
+				                         2 => 'périodiques', 
+				                         100 => 'Livres numérisés',
+				                         101 => 'Diaporamas',
+				                         102 => 'E-Books',
+				                         103 => 'OAI',
+				                         104 => 'Arte VOD']);
 	}
 
 

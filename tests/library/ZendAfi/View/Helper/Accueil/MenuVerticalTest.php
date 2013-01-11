@@ -277,6 +277,40 @@ class MenuVerticalSitothequeWithManyItemsTest extends MenuVerticalWithManyItemsT
 
 
 
+class MenuVerticalAlbumDeletedTest extends MenuVerticalTestCase {
+	protected function _menuConfigTrigger() {
+		Class_Profil::getCurrentProfil()->setCfgMenus(
+			array(
+				7 => array(
+					'libelle' => 'Albums',
+					'menus' => array(
+						array(
+							'type_menu' => 'BIBNUM',
+							'libelle' => 'Bible de souvigny',
+							'picto' => 'vide.gif',
+							'preferences' => array(
+								'album_id' => '9999999999999999'
+							),
+							'sous_menus' => ''
+						),
+					)
+				)
+			)
+		);
+
+		$this->_itemLabel = 'Bible de souvigny';
+	}
+
+
+	/** @test */
+	function menuShouldNotContainAnyLinkToBibNum() {
+		$this->assertNotXPath($this->_html,'//li//a[contains(@href, "bib-numerique")]', $this->_html);
+	}
+}
+
+
+
+
 class MenuVerticalAlbumTest extends MenuVerticalTestCase {
 	protected function _menuConfigTrigger() {
 		Class_Profil::getCurrentProfil()->setCfgMenus(

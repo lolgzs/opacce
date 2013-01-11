@@ -1,7 +1,12 @@
 <?php
-echo $this->toolbar("Jaquette",$this->url_retour,true);
-echo '<h1>'.$this->titre.'</h1>';
+echo $this->toolbar($this->_("Jaquette"), 
+										array('action' => 'viewnotice'), 
+										true);
+
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
 echo '<div class="pave" align="center">';
-echo '<a href="'.$this->url_retour.'"><img class="grande_image" src="'.$this->url_image.'"></a>';
+echo sprintf('<a href="%s"><img class="grande_image" src="%s"></a>',
+						 $this->url(array('action' => 'viewnotice')),
+						 $this->notice->getUrlImage());
 echo '</div>'.BR;
 ?>

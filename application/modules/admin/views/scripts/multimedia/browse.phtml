@@ -1,0 +1,17 @@
+<h2><?php echo $this->titre;?></h2>
+<?php if (0 == count($this->devices)) { ?>
+	<div class="infos"><?php echo $this->_('Aucun poste dans ce groupe');?></div>
+<?php } else { ?>
+<?php echo $this->tagModelTable(
+																$this->devices,
+																[$this->_('Libellé'), $this->_('Os')],
+																['libelle', 'os'],
+																[ ['action' => 'holds', 
+																	 'content' => function($model) {
+																			return $this->boutonIco('type=show').$model->numberOfNextHolds().' rés.';
+																		}] 
+																	],
+																'multimedia_devices',
+																'group_libelle');?>
+	</table>
+<?php } ?>

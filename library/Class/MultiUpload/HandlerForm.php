@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class Class_MultiUpload_HandlerForm extends Class_MultiUpload_Handler {
+	protected $_uploadMover;
+
 	/**
 	 * @param string $path
 	 * @return type
@@ -29,13 +31,38 @@ class Class_MultiUpload_HandlerForm extends Class_MultiUpload_Handler {
 			return false;
 		}
 
-		if (!move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
+		if (!$this->moveUploadedFile($path)) {
 			$this->_error = 'Cannot move uploaded file to ' . $path;
 			return false;
 
 		}
 
 		return true;
+	}
+
+
+	/**
+	 * @category testing
+	 * @return bool
+	 */
+	public function moveUploadedFile($path) {
+		return $this->getUploadMover()->moveUploadedFile($path);
+	}
+
+
+	/**
+	 * @category testing
+	 */
+	public function setUploadMover($uploadMover) {
+		$this->_uploadMover = $uploadMover;
+		return $this;
+	}
+
+
+	public function getUploadMover() {
+		if (null != $this->_uploadMover) 
+			return $this->_uploadMover;
+		return new Class_MultiUpload_HandlerForm_UploadMover();
 	}
 
 
@@ -54,4 +81,12 @@ class Class_MultiUpload_HandlerForm extends Class_MultiUpload_Handler {
 		return $_FILES['qqfile']['size'];
 	}
 }
+
+
+class Class_MultiUpload_HandlerForm_UploadMover {
+	public function moveUploadedFile($path) {
+		return move_uploaded_file($_FILES['qqfile']['tmp_name'], $path);
+	}
+}
+
 ?>

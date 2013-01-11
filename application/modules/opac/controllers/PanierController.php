@@ -43,13 +43,13 @@ class PanierController extends Zend_Controller_Action
 			$_SESSION["panier"]["url_retour"]=$retour;
 		
 		//Verify that the user has successfully authenticated.  If not, we redirect to the login.
-		$user = Zend_Auth::getInstance();
+		$user = ZendAfi_Auth::getInstance();
 		if (!$user->hasIdentity())	{
 			$_SESSION["abonne_redirect"]=$this->_request->REQUEST_URI;
 			$this->_redirect('opac/auth/login');
 		}
 		else 
-			$this->_user = Zend_Auth::getInstance()->getIdentity();
+			$this->_user = ZendAfi_Auth::getInstance()->getIdentity();
 		
 		// Instanciation classe panier
 		$this->panier=new Class_PanierNotice();

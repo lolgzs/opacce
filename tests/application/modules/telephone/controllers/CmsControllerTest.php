@@ -18,13 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-require_once 'AbstractControllerTestCase.php';
+require_once 'TelephoneAbstractControllerTestCase.php';
 
-abstract class AbstractCmsControllerTelephoneTestCase extends AbstractControllerTestCase {
+abstract class AbstractCmsControllerTelephoneTestCase extends TelephoneAbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-
-		Class_Profil::getCurrentProfil()->setBrowser('telephone');
 
 		Class_Article::getLoader()
 			->newInstanceWithId(4)
@@ -32,6 +30,8 @@ abstract class AbstractCmsControllerTelephoneTestCase extends AbstractController
 			->setDescription('A Annecy !');
 	}
 }
+
+
 
 
 class CmsControllerTelephoneTest extends AbstractCmsControllerTelephoneTestCase {
@@ -52,8 +52,9 @@ class CmsControllerTelephoneTest extends AbstractCmsControllerTelephoneTestCase 
 	function contentShouldBeAAnnecy() {
 		$this->assertXPathContentContains('//div[@class="article pave"]', 'A Annecy !');
 	}
-
 }
+
+
 
 
 class CmsControllerTelephoneEmbeddedTest extends AbstractCmsControllerTelephoneTestCase {
@@ -65,8 +66,79 @@ class CmsControllerTelephoneEmbeddedTest extends AbstractCmsControllerTelephoneT
 
 
 	/** @test */
-	function urlReturnShouldContainsEmbed() {
-		$this->assertXPath('//td[@class="gauche"]//a[contains(@href,"/embed")]');
+	function urlHomeShouldContainsEmbed() {
+		$this->assertXPath('//a[contains(@href,"/embed")][@data-icon="home"]');
+	}
+}
+
+
+
+
+
+class CmsControllerCalendarActionTest extends AbstractCmsControllerTelephoneTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->dispatch('/telephone/cms/calendar?date=2011-10', true);
+	}
+
+
+	/** @test */
+	public function pageShouldRenderOctober() {
+		$this->assertXPathContentContains('//td[@class="calendar_title_month"]/a', 
+																			"octobre"); 
+	}
+}
+
+
+
+
+class CmsControllerArticleViewByDateActionTest extends AbstractCmsControllerTelephoneTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+			->whenCalled('getArticlesByPreferences')
+			->answers(array(
+											Class_Article::getLoader()
+											->newInstanceWithId(1)
+											->setTitre('La fête de la banane')
+											->setContenu('Une fête qui glisse !')
+											->setEventsDebut('2011-09-03')
+											->setEventsFin('2011-10-03')
+											->setCategorie(
+																		 Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
+																		 ->setLibelle('Alimentaire')
+																		 ->setBib(Class_Bib::getLoader()
+																							->newInstanceWithId(1)
+																							->setLibelle('Bonlieu'))
+																		 ),
+											Class_Article::getLoader()
+											->newInstanceWithId(1)
+											->setTitre('La fête de la frite')
+											->setContenu('')
+											->setEventsDebut('2011-09-03')
+											->setEventsFin('2011-09-03')
+											->setCategorie(
+																		 Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
+																		 ->setLibelle('Alimentaire')
+																		 ),
+											));
+
+		$this->dispatch('/telephone/cms/articleviewbydate?d=2011-10-01', true);
+	}
+
+
+	/** @test */
+	public function feteDeLaBananeShouldBePresent() {
+		$this->assertXpathContentContains('//ul//li//a', 'La fête de la banane');
+	}
+
+
+	/** @test */
+	public function feteDeLaBananeAnchorShouldLinkToActionViewArticleOne() {
+		$this->assertXpathContentContains('//ul//li//a[contains(@href, "cms/articleview/id/1")]', 
+																			'La fête de la banane');
 	}
 }
 

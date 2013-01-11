@@ -137,6 +137,15 @@ class MicrobibServiceTestInfosExemplaires5204 extends MicrobibServiceTestCase {
 	public function secondExemplaireDateRetourShouldBe31_03_2012($exemplaire) {
 		$this->assertEquals('31/03/2012', $exemplaire->getDateRetour());
 	}
+
+
+	/** @test */
+	public function thirdExemplaireDisponibiliteShouldBeNonPretable() {
+		$exemplaire = $this->notice->getExemplaires()[2];
+		$this->assertEquals('Inaccessible au prêt', $exemplaire->getDisponibilite());
+		return $exemplaire;
+	}
+
 }
 
 
@@ -208,14 +217,26 @@ class MicrobibServiceTestInfosAbonne extends MicrobibServiceTestCase {
 
 
 	/** @test */
-	public function emprunteurShouldHaveOneReservation() {
-		$this->assertEquals(1, count($this->emprunteur->getReservations()));
+	public function emprunteurShouldHaveTwoReservations() {
+		$this->assertEquals(2, count($this->emprunteur->getReservations()));
 	}
 
 
 	/** @test */
 	public function firstReservationAuteurShouldBeBIGART() {
 		$this->assertEquals('BIGART T.P.', array_first($this->emprunteur->getReservations())->getAuteur());
+	}
+
+
+	/** @test */
+	public function firstReservationEtatShouldBeReserve() {
+		$this->assertEquals('Réservé', array_first($this->emprunteur->getReservations())->getEtat());
+	}
+
+
+	/** @test */
+	public function secondReservationEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', array_last($this->emprunteur->getReservations())->getEtat());
 	}
 }
 

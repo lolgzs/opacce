@@ -1,0 +1,1 @@
+UPDATE `variables` SET `valeur` = '600abcjxyz;601abcx;602ajxyz;605a;606ajxyz;607ajxyz;608ajxyz;610aejxyz;615amnx;616acfjxy;620abcdefghi' WHERE `clef` = 'unimarc_zone_matiere'; 

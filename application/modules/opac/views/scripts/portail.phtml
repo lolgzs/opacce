@@ -3,37 +3,41 @@ ob_start();
 echo '<body '.$this->bodyParam.'>';
 ?>
 
+<?php 
+if (isTelephone()) 
+	echo sprintf('<div class="back_to_phone">%s</div>', 
+								 $this->tagAnchor($this->url(array('module' => 'telephone'), null, true), 
+																	$this->_('Afficher le site en mode mobile')));  
+?>
 
 <div id="site_web_wrapper" style="width:<?php echo $this->profil->getLargeurSite(); ?>px; margin-left:auto; margin-right:auto">
-	<div class="siteWeb portail_background_img">
-		<div id="site_web_content">
+<div class="siteWeb portail_background_img">
+	<div id="site_web_content">
+		<?php	echo $this->partial("banniere.phtml", array("profil" => $this->profil));	?>	
+		<div id="col_wrapper">
+			<?php
+	switch ($this->profil->getNbDivisions()) {
+	case 1:
+		echo $this->division($this->profil, 1, 'colContenu');
+		break;
 
-			<?php	echo $this->partial("banniere.phtml", array("profil" => $this->profil));	?>	
+	case 2:
+		echo $this->division($this->profil, 1, 'colGauche');
+		echo $this->division($this->profil, 2, 'colContenu');
+		break;
 
-			<div id="col_wrapper">
-				<?php
-					switch ($this->profil->getNbDivisions()) {
-					case 1:
-					echo $this->division($this->profil, 1, 'colContenu');
-					break;
-
-					case 2:
-					echo $this->division($this->profil, 1, 'colGauche');
-					echo $this->division($this->profil, 2, 'colContenu');
-					break;
-
-					case 3:
-					echo '<div id="right_col_color">';
-					echo $this->division($this->profil, 1, 'colGauche');
-					echo $this->division($this->profil, 2, 'colMilieu');
-					echo $this->division($this->profil, 3, 'colDroite');
-					echo '</div>';
-					break;
-					}
-				?>
-				<div class="clear"></div>
-			</div> <!-- col_wrapper -->
-		</div> <!-- site_web_content -->
+	case 3:
+		echo '<div id="right_col_color">';
+		echo $this->division($this->profil, 1, 'colGauche');
+		echo $this->division($this->profil, 2, 'colMilieu');
+		echo $this->division($this->profil, 3, 'colDroite');
+		echo '</div>';
+		break;
+	}
+			?>
+			<div class="clear"></div>
+		</div> <!-- col_wrapper -->
+	</div> <!-- site_web_content -->
 </div> <!-- siteWeb -->
 
 

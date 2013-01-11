@@ -1,0 +1,16 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+<?php echo $this->timeline($this->timelineActions);?>
+
+<div class="workflow_step">
+	<h2><?php echo $this->_('Quelle secteur ?') ?></h2>
+	<ul>
+	<?php
+		foreach($this->groups as $group) {
+			echo '<li>'.$this->tagAnchor(['action' => 'multimedia-hold-group', 'group' => $group->getId()],
+																	 $group->getLibelle()).'</li>';
+		}
+	?>
+	</ul>
+</div>
+
+<?php $this->closeBoite();?>

@@ -313,7 +313,7 @@ class ArticleLoader extends Storm_Model_Loader {
 	 * @param array $articles
 	 * @return array
 	 */
-	public function groupByBib(array $articles) {
+	public static function groupByBib(array $articles) {
 		$grouped = array();
 
 		foreach ($articles as $article) {
@@ -361,6 +361,11 @@ class ArticleLoader extends Storm_Model_Loader {
 	public function filterByLocaleAndWorkflow($articles) {
 		return Class_Article::filterByLocaleAndWorkflow($articles);
 	}
+
+	public function articlesWithFormulaire() {
+		return Class_Article::findAll('select id_article,titre from cms_article where id_article in (select distinct id_article from formulaires)');
+	}
+
 }
 
 
@@ -387,51 +392,61 @@ class Class_Article extends Storm_Model_Abstract {
 	protected $_table_name = 'cms_article';
 	protected $_table_primary = 'ID_ARTICLE';
 
-	protected $_has_many = array('traductions' => array('model' => 'Class_Article',
-																											 'role' => 'article_original',
-																											 'dependents' => 'delete'));
+	protected $_has_many = ['traductions' => ['model' => 'Class_Article',
+																						'role' => 'article_original',
+																						'dependents' => 'delete'],
 
-	protected $_belongs_to = array('categorie' => array('model' => 'Class_ArticleCategorie',
-																											 'referenced_in' => 'id_cat'),
+													'avis_users' => ['model' => 'Class_Avis',
+																					 'role' => 'article',
+																					 'dependents' => 'delete',
+																					 'order' => 'date_avis desc'],
 
-																 'article_original' => array('model' => 'Class_Article',
-																														 'referenced_in' => 'parent_id'),
-																 'bib' => array('through' => 'categorie')
-													);
+													'formulaires' => ['model' => 'Class_Formulaire',
+																						'role' => 'article',
+																						'order' => 'date_creation desc'],
+
+													'formulaires_to_validate' => ['model' => 'Class_Formulaire',
+																												'role' => 'article',
+																												'scope' => ['validated' => false]]
+	];
+
+	protected $_belongs_to = ['categorie' => ['model' => 'Class_ArticleCategorie',
+																						'referenced_in' => 'id_cat'],
+
+														'article_original' => ['model' => 'Class_Article',
+																									 'referenced_in' => 'parent_id'],
+
+														'bib' => ['through' => 'categorie'],
+
+														'lieu' => ['model' => 'Class_Lieu',
+																			 'referenced_in' => 'id_lieu'] ];
 
 
-	protected $_overrided_attributes = array('id',
-																					  'parent_id',
-																					  'article_original',
-																					  'langue',
-																					  'titre',
-																					  'description',
-																					  'contenu');
+	protected $_overrided_attributes = ['id',
+																			'parent_id',
+																			'article_original',
+																			'langue',
+																			'titre',
+																			'description',
+																			'contenu'];
 
-	protected $_default_attribute_values = array(
+	protected $_default_attribute_values = [
 																					'titre' => '',
 																					'description' => '',
 																					'contenu' => '',
-																					'debut' => '',
-																					'fin' => '',
+																					'debut' => null,
+																					'fin' => null,
 																					'avis' => false,
 																					'tags' => '',
-																					'events_debut' => '',
-																					'events_fin' => '',
+																					'events_debut' => null,
+																					'events_fin' => null,
 																					'indexation' => 1,
 																					'cacher_titre' => 0,
 																					'date_maj' => '',
 																					'date_creation' => '',
 																					'status' => self::STATUS_DRAFT,
-																				);
-
-	/**
-	 * @return ArticleLoader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
-
+																					'id_lieu' => 0
+																				];
 
 	/**
 	 * Ne retourne que les traductions des articles donnés
@@ -572,12 +587,22 @@ class Class_Article extends Storm_Model_Abstract {
 			->setContenu($original->getContenu());
 	}
 
+
+
+	/**
+   * Surcharge la methode storm pour raisons de performances
+	 * @return bool
+	 */
+	public function hasArticleOriginal() {
+		return null !== $this->_get('article_original');
+  }
+
+
 	/**
 	 * @return bool
 	 */
 	public function isTraduction() {
-		$is_trad = $this->hasArticleOriginal();
-		return $is_trad;
+		return $this->hasArticleOriginal();
 	}
 
 	/**
@@ -699,6 +724,7 @@ class Class_Article extends Storm_Model_Abstract {
 		return (trim($head_and_content[0]));
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -710,6 +736,42 @@ class Class_Article extends Storm_Model_Abstract {
 
 		return $content;
 	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getContenu() {
+		$contenu = parent::_get('contenu');
+
+		$quote = '[\"\']';
+		$no_quotes = '[^\"\']+';
+		$quoted_value = $quote.$no_quotes.$quote;
+		if (preg_match('/(<form[^>]+)action='.$quote.'http/i', $contenu))
+			return $contenu;
+
+		$replaced_form = preg_replace(['/(<form[^>]+)action='.$quoted_value.'/i',
+																	 '/(<form[^>]+)method='.$quoted_value.'/i',
+																	 '/(<form *)/i'],
+																	['$1 ', 
+																	 '$1 ',
+																	 '$1 action="'.BASE_URL.'/formulaire/add/id_article/'.$this->getId().'" method="POST" '],
+																	$contenu);
+
+		$typesubmit = 'type='.$quote.'(?:submit|button)'.$quote;
+		$namesubmit = 'name='.$quoted_value;
+		$otherattributes = '[^>]+';
+		$inputtag = '<input';
+		return preg_replace([ '/('.$inputtag.$otherattributes.')('.$typesubmit.$otherattributes.')'.$namesubmit.'/i',
+													'/('.$inputtag.$otherattributes.')'.$namesubmit.'('.$otherattributes.$typesubmit.')/i',
+													'/('.$inputtag.$otherattributes.')'.$typesubmit.'('.$otherattributes.')\/>/i' ],
+												[ '$1$2',
+													'$1$2',
+													'$1$2type="submit"/>'],
+												$replaced_form);
+												
+	}
+
 
 	/**
 	 * @return string
@@ -875,6 +937,11 @@ class Class_Article extends Storm_Model_Abstract {
 	 */
 	public function getBibLibelle() {
 		return $this->getCategorie()->getBib()->getLibelle();
+	}
+
+
+	public function getRank() {
+		return Class_CmsRank::getLoader()->findFirstBy(array('id_cms' => $this->getId()));
 	}
 }
 

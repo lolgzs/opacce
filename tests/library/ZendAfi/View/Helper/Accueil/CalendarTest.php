@@ -127,6 +127,25 @@ class CalendarWithEmptyPreferencesTest extends CalendarWithEmptyPreferencesTestC
 
 
 	/** @test */
+	public function cacheKeyShouldContainsBASE_URL() {
+		$params = array(BASE_URL, 
+										2, 
+										Class_Profil::getCurrentProfil()->getId(), 
+										Zend_Registry::get('translate')->getLocale(), 
+										$this->helper->getPreferences());
+		$this->assertEquals(md5(serialize($params)), $this->helper->getCacheKey());
+	}
+
+
+	/** @test */
+	public function titreShouldBeAgendaAndLinkToArticleViewByDate() {
+		$this->assertXPathContentContains($this->html, 
+																			'//a[contains(@href, "/cms/articleviewbydate/id_module/2/id_profil/2")]', 
+																			'Agenda');
+	}
+
+
+	/** @test */
 	function shouldDisplayCurrentMonth() {
 		$this->assertXPathContentContains($this->html,
 																			'//td[@class="calendar_title_month"]/a',
@@ -175,6 +194,48 @@ class CalendarWithEmptyPreferencesTest extends CalendarWithEmptyPreferencesTestC
 																			'Evenements');
 	}
 }
+
+
+
+
+class CalendarWithPreferencesNbEventsOneTest extends CalendarWithEmptyPreferencesTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+			->whenCalled('getArticlesByPreferences')
+			->with(array(
+									 'display_order' => 'EventDebut',
+									 'id_categorie' => '',
+									 'event_date' => strftime('%Y-%m'),
+									 'events_only' => true,
+									 'published' => false))
+			->answers(array($this->nanook2, $this->opac4, $this->amber))
+			->getWrapper()
+			->beStrict();
+
+
+		$params = array('division' => '1',
+										'type_module' => 'CALENDAR',
+										'preferences' => array('titre' => 'Calendrier',
+																					 'rss_avis' => '0',
+																					 'id_categorie' => '',
+																					 'nb_events' => 1));
+		$this->helper = new ZendAfi_View_Helper_Accueil_Calendar(2, $params);
+
+		$this->html = $this->helper->getBoite();
+	}
+
+
+	/** @test */
+	function calendarEventListShouldContainsOneArticle() {
+		$this->assertXPathCount($this->html,
+														'//a[@class="calendar_event_title"][contains(@href, "cms/articleview")]',
+														1);
+	}
+}
+
+
 
 
 class CalendarWithEmptyParamsLocaleEnAndOnlyTwoArticlesReturned Extends CalendarWithEmptyPreferencesTestCase {
@@ -277,7 +338,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthFirstLinkShouldGoToFebruary() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-02&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-02&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -285,7 +346,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthSecondLinkShouldLinkToArticleViewByDate() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[2][contains(@href, "cms/articleviewbydate?d=2011-03&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[2][contains(@href, "cms/articleviewbydate?d=2011-03&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -293,7 +354,7 @@ class CalendarWithCategoryLimitAndBibPreferencesTest extends CalendarViewHelperT
 	/** @test */
 	function titleMonthLastLinkShouldGoToApril() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2011-04&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2011-04&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 
@@ -378,7 +439,7 @@ class CalendarWithCategorySelectorAndRssPreferencesTest extends CalendarViewHelp
 	/** @test */
 	function titleMonthLastLinkShouldGoToJanuary2012Categorie12() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2012-01&id_module=2&select_id_categorie=12")]',
+					'//td[@class="calendar_title_month"]//a[3][contains(@href, "cms/calendar?date=2012-01&id_module=2&id_profil=2&select_id_categorie=12")]',
 					$this->html);
 	}
 
@@ -386,6 +447,18 @@ class CalendarWithCategorySelectorAndRssPreferencesTest extends CalendarViewHelp
 	/** @test */
 	function calendarEventListShouldNotContainsPortail() {
 		$this->assertNotXPathContentContains($this->html, '//a', 'Portail');
+	}
+
+
+	/** @test */
+	public function categorySelectorShouldBeVisible() {
+		$this->assertXPath($this->html, '//form[@id="calendar_select_categorie"]//select');
+	}
+
+
+	/** @test */
+	public function categorySelectorActionShouldBeOpacCmsCalendar() {
+		$this->assertXPath($this->html, '//form[@id="calendar_select_categorie"][contains(@action, "opac/cms/calendar")]');
 	}
 }
 
@@ -524,7 +597,7 @@ class CalendarOnJanuaryTest extends CalendarViewHelperTestCase {
 	/** @test */
 	function titleMonthPreviousLinkShouldGoToDecember2011() {
 		$this->assertXPath($this->html,
-					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-12&id_module=2&select_id_categorie=all")]',
+					'//td[@class="calendar_title_month"]//a[1][contains(@href, "cms/calendar?date=2011-12&id_module=2&id_profil=2&select_id_categorie=all")]',
 					$this->html);
 	}
 

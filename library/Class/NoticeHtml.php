@@ -22,11 +22,9 @@
 // OPAC3 - Constitution notice html
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class Class_NoticeHtml
-{
+class Class_NoticeHtml {
 	public $notice;								// Structure complete de la notice
 	public $haut_onglet;					// Html ligne du haut avec image fermer pour les onglets
-	private $java_script_auto;		// JavaScript pour ouverture automatique onglets et blocs
 	public $preferences;					// Préférences d'affichage pour les blocs et les onglets
 	private $_translate;
 	
@@ -73,131 +71,6 @@ class Class_NoticeHtml
 		return $html;
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Boite a onglets
-//------------------------------------------------------------------------------------------------------
-	public function getOnglets()
-	{
-		// Init
-		if(!$this->notice["onglets"]) return false;
-		$id=$this->notice["id_notice"];
-		$isbn=$this->notice["isbn"];
-		
-		// Html du set
-		$tag_patience ='<div class="notice_patience" style="text-align:right;width:15px"><img src="'.URL_IMG.'patience.gif" border="0" alt="'.$this->_translate->_('Chargement en cours').'" /></div>';
-		$tag_patience.='<div class="notice_patience">'.$this->_translate->_('Veuillez patienter : lecture en cours...').'</div>';
-
-		$html_onglets = $html_contenu = '';
-
-		// Onglets
-		$nb_onglets=count($this->notice['onglets']);
-		$i=0;
-		$tabs = array();
-
-		foreach($this->notice["onglets"] as $onglet) {
-			$id_onglet = sprintf('set%d_onglet_%d', $id, $i++);
-			$js_onclick = $this->getOnclick($onglet["type"],$isbn,$id_onglet);
-
-			if($i==1) 
-				$this->java_script_auto[]="infos_onglet". str_replace("this.id","'".$id_onglet."'", $js_onclick);
-
-			$html_onglets.= sprintf('<div id="%s" class="titre_onglet" style="width:%d%%" onclick="infos_onglet%s">%s</div>',
-															$id_onglet,
-															$onglet["largeur"] ? $onglet["largeur"] : 20,
-															$js_onclick,
-															$onglet["titre"]);
-
-			// Boite contenu
-			$html_contenu.=sprintf('<div id="%s_contenu_row">%s</div>', 
-														 $id_onglet, 
-														 sprintf('<div id="%s_contenu" class="onglet">%s</div>', 
-																		 $id_onglet, 
-																		 $tag_patience));
-		}
-
-		// Contenu et fin
-		return sprintf('<div class="onglets">'.
-									   '<div class="onglets_titre">'.
-									     '<div>%s</div>'.
-									   '</div>'.
-									   '<div class="onglets_contenu">%s</div>'.
-									 '</div>', 
-									 $html_onglets, 
-									 $html_contenu);
-	}
-	
-//------------------------------------------------------------------------------------------------------
-// Blocs et leurs contenus
-//------------------------------------------------------------------------------------------------------
-	public function getBlocs()
-	{
-		// Init
-		if(!$this->notice["blocs"]) return false;
-		$id=$this->notice["id_notice"];
-		$isbn=$this->notice["isbn"];
-		
-		// Conteneur
-		$html='<table cellspacing="0" cellpadding="0" width="100%">';
-
-		// Blocs
-		$i=0;
-		foreach($this->notice["blocs"] as $bloc)
-		{
-			$id_bloc="bloc_".$id."_".$i++;
-			$js='infos_bloc'.$this->getOnclick($bloc["type"],$isbn,$id_bloc);
-			if($bloc["aff"]==1) $this->java_script_auto[]="infos_bloc". str_replace("this.id","'".$id_bloc."'",$this->getOnclick($bloc["type"],$isbn,$id_bloc));
-			// Titre
-			$html.='<tr>';
-			$html.='<td width="10" style="text-align:center" valign="top"><img id="I'.$id_bloc.'" src="'.URL_IMG.'bouton/plus_carre.gif" border="0" onclick="'.$js.'" style="cursor:pointer;margin-top:5px"  alt="Déplier"  /></td>';
-			$html.='<td><div id="'.$id_bloc.'" class="notice_bloc_titre" onclick="'. $js.'">'.$bloc["titre"].'</div></td>';
-			$html.='</tr>';
-			// Boite contenu
-			$html.='<tr id="'.$id_bloc.'_contenu_row"><td></td>';
-			$html.='<td><div id="'.$id_bloc.'_contenu" class="notice_bloc">';
-			$html.='<table><tr>';
-			$html.='<td class="notice_patience" style="text-align:right;width:15px"><img src="'.URL_IMG.'patience.gif" border="0"  alt="'.$this->_translate->_('Chargement en cours').'" /></td>';
-			$html.='<td class="notice_patience">'.$this->_translate->_('Veuillez patienter : lecture en cours...').'</td>';
-			$html.='</tr></table></div></td></tr>';
-		}
-		
-		// fin
-		$html.='</table>';
-		return $html;
-	}
-
-//------------------------------------------------------------------------------------------------------
-// Onclick pour onglet ou bloc
-//------------------------------------------------------------------------------------------------------
-	private function getOnclick($rubrique,$isbn,$id_onglet)
-	{
-		$action = sprintf("(this.id,'','%s',0,'',0)", $rubrique);
-		switch($rubrique) {
-			case "avis" : $action="(this.id,'".$isbn."','avis',0,'',1)"; break;
-			case "exemplaires" : $action="(this.id,'".$isbn."','exemplaires',0,'',1)"; break;
-			case "tags" : 
-				if (is_array($isbn))
-					$isbn = $isbn["isbn"];
-				$action="(this.id,'".$isbn."','tags',0,'',0)"; 
-        break;
-			case "resume" : $action="(this.id,'".$isbn."','resume',0,'',0)"; break;
-			case "similaires" : $action="(this.id,'".$isbn."','similaires',0,'',0)"; break;
-		}
-		$_SESSION["onglets"][$rubrique]=$id_onglet;
-		return $action;
-	}
-
-//------------------------------------------------------------------------------------------------------
-// Java script pour ouverture automatique du 1er bloc et du 1er onglet
-//------------------------------------------------------------------------------------------------------
-	public function getJavaScriptAuto()
-	{
-		if(!$this->java_script_auto) return false;
-		$html.='<script type="text/javascript">';
-		foreach($this->java_script_auto as $js) $html.=$js.";";
-		$html.='</script>';
-		return $html;
-	}
-	
 //------------------------------------------------------------------------------------------------------
 // Conteneur ajax pour une notice
 //------------------------------------------------------------------------------------------------------
@@ -308,13 +181,16 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------
 	public function getExemplaires($exemplaires,$nb_notices_oeuvre=0,$aff="normal")
 	{
-    if(!$exemplaires) return false;
-		$preferences=$this->preferences["exemplaires"];
+    if (!$exemplaires)
+			return false;
+		$preferences = $this->preferences["exemplaires"];
+
 		// Recup des donnees de dispo et reservable
-		if($preferences["grouper"]==1)
-		{
-			$cls_comm=new Class_CommSigb();
-			$exemplaires=$cls_comm->getDispoExemplaires($exemplaires);
+
+		$cls_comm = null;
+		if ($preferences["grouper"] == 1) {
+			$cls_comm = new Class_CommSigb();
+			$exemplaires = $cls_comm->getDispoExemplaires($exemplaires);
 		}
 
 		$html=$this->haut_onglet;
@@ -394,41 +270,11 @@ class Class_NoticeHtml
 				else $html.='&nbsp;';
 				$html.='</td>';
 			}
+
 			// Réservation
-			if($preferences["resa"]==1 and $aff=="normal")
-			{
-				if($bib["INTERDIRE_RESA"]==1) $html.='&nbsp;';
-				else
-				{
-					$html.='<td class="exemplaires" style="text-align:center;">';
-
-					if(isset($cls_comm)) {
-						$type_comm=$cls_comm->getTypeComm($ex["id_bib"]); 
-					}
-					else 
-						$type_comm="";
-
-					if(!$type_comm) 
-						$html .= sprintf('<a href="%s"><img src="%s" border="0" title="%s" alt="%s"/></a>',
-														 BASE_URL.'/recherche/reservation?b='.$ex["id_bib"].'&amp;n='.$ex["id_notice"].'&amp;cote='.$ex["cote"],
-														 URL_IMG.'resa.gif',
-														 $this->_translate->_('Réserver'),
-														 $this->_translate->_('Réserver'));
-					else
-					{
-						if($ex["reservable"]==true)
-						{
-							$onclick="reservationAjax(this,'".$ex["id_bib"]."','".$ex["id"]."', '".$ex["code_annexe"]."')";
-							$html.= sprintf('<img src="%s" border="0" alt="%s" title="%s" onclick="%s" style="cursor:pointer" />',
-															URL_IMG.'resa.gif',
-															$this->_translate->_('Réserver'),
-															$this->_translate->_('Réserver'),
-															$onclick);
-						}
-						else $html.='&nbsp;';
-					}
-				}
-				$html.='</td>';
+			if ($preferences["resa"]==1 and $aff=="normal") {
+				$html = NoticeReservationRenderer::newWith($bib, $cls_comm, $this->_translate->_('Réserver'))
+					->renderItemOn($ex, $html);
 			}
 
 			// Lien vers notice en affichage oeuvre
@@ -452,11 +298,11 @@ class Class_NoticeHtml
 		// lien pour exemplaires de la meme oeuvre
 		if($nb_notices_oeuvre)
 		{
-			$onclick="$('#exemplaires_oeuvre').show().load(baseUrl+'/opac/noticeajax/exemplaires?id_notice=".$ex["id_notice"]."&data=OEUVRE')";
+			$onclick="$('.exemplaires_oeuvre').show().load(baseUrl+'/opac/noticeajax/exemplaires?id_notice=".$ex["id_notice"]."&data=OEUVRE')";
 			$html.='<div class="notice_bloc_titre" style="padding:10px;" onclick="'.$onclick.'">';
 			$html.=sprintf('<b>%s</b>', $this->_translate->_('Afficher toutes les éditions de ce document'));
 			$html.='</div>';
-			$html.='<div id="exemplaires_oeuvre" style="display:none"><img src="'.URL_IMG.'patience.gif"></div>';
+			$html.='<div class="exemplaires_oeuvre" style="display:none"><img src="'.URL_IMG.'patience.gif"></div>';
 		}
 		
 		// Pour afficher la localisation sur le plan
@@ -491,29 +337,31 @@ class Class_NoticeHtml
 		return $html;
 	}
 	
-//------------------------------------------------------------------------------------------------------
-// Liste de notices
-//------------------------------------------------------------------------------------------------------
+
 	public function getListeNotices($notices, $view, $base_url = BASE_URL) {
-		$html=$this->haut_onglet;
+		$html = $this->haut_onglet;
 
-		if(!$notices) 
-			return $html.$this->getNonTrouve();
+		if (!$notices) 
+			return $html . $this->getNonTrouve();
 
-		$html.='<table cellspacing="0" width="100%">';
-
-		if($nb = count($notices)>1) 
-			$nb = $this->_translate->_("%s livres", $nb); 
-		else 
-			$nb = $this->_translate->_("%s livre", $nb);
+		$html .= '<table cellspacing="0" width="100%">';
 
 		$read_speaker_helper = new ZendAfi_View_Helper_ReadSpeaker();
+		$num = 0;
 
-		$num=0;
-		foreach($notices as $notice)
-		{
+		foreach ($notices as $notice) {
+			if (is_object($notice)) {
+				$model = $notice;
+				$notice = ['id_notice' => $model->getId(),
+					         'clef_alpha' => $model->getClefAlpha(),
+					         'type_doc' => $model->getTypeDoc(),
+					         'titre_principal' => $model->getTitrePrincipal(),
+					         'auteur_principal' => $model->getAuteurPrincipal(),
+					         'annee' => $model->getAnnee()];
+			}
+			
 			$num++;
-			$url_notice="document.location.replace('".$base_url."/recherche/viewnotice/id/".$notice["id_notice"]."/type_doc/".$notice["type_doc"]."')";
+			$url_notice = "document.location.replace('".$view->urlNotice($notice)."')";
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			
 			$read_speaker_tag = $read_speaker_helper->readSpeaker('recherche', 
@@ -566,28 +414,30 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------
 // Biographie
 //------------------------------------------------------------------------------------------------------
-	public function getBiographie($data,$notice)
-	{
-		if(!$data["biographie"]) return $this->getNonTrouve("",true);
+	public function getBiographie($data,$notice)	{
+		if(!$data["biographie"]) 
+			return $this->getNonTrouve("",true);
+
+		$auteur = $notice->getAuteurPrincipal();
 		$html=$this->haut_onglet;
 		$html.='<table width="100%">';
 		$html.=sprintf('<tr><td class="notice_info_titre" align="left" width="100%%">%s<font size="-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(%s : %s)</font></td></tr>',
-									 $notice["A"],
+									 $auteur,
 									 $this->_translate->_('Source'),
 									 $data["source"]);
-		foreach($data["biographie"] as $ligne)
-		{
-			if(!$ligne["texte"]) continue;
-			if($ligne["liste"])
-			{
+		$suite = false;
+		foreach ($data["biographie"] as $ligne)	{
+			if(!isset($ligne["texte"])) continue;
+			if(isset($ligne["liste"])){
 				$liste='<ul class="notice_info">';
 				foreach($ligne["liste"] as $item) $liste.='<li class="notice_liste">'.$item.'</li>';
 				$liste.='</ul>';
 				$ligne["texte"]=str_replace("@LISTE@",$liste,$ligne["texte"]);
 			}
-			if($suite)
-			{
-				if($ligne["titre"]) $html.='<tr><td class="notice_info_titre" align="left" width="100%">'.$ligne["titre"].'</td></tr>';
+			if ($suite){
+				if(isset($ligne["titre"])) 
+					$html.='<tr><td class="notice_info_titre" align="left" width="100%">'.$ligne["titre"].'</td></tr>';
+
 				$html.='<tr><td class="notice_info" align="left" width="100%">'.$ligne["texte"].'</td></tr>';
 			}
 			else
@@ -601,8 +451,8 @@ class Class_NoticeHtml
 																					 $this->_translate->_('Vignette'));
 					if($data["image"])
 					{
-						$id="auteur_".$notice["id_notice"];
-						$vignette='<a id="'.$id.'" href="'.$data["image"].'" rel="lightbox" title="'.$notice["A"].'">'.$vignette;
+						$id="auteur_".$notice->getId();
+						$vignette='<a id="'.$id.'" href="'.$data["image"].'" rel="lightbox" title="'.$auteur.'">'.$vignette;
 						$vignette.='</a>';
 						$vignette.='<script type="text/javascript">$("a[id=\''.$id.'\']").slimbox({}, null, null)</script>';
 					}
@@ -716,9 +566,11 @@ class Class_NoticeHtml
 	{
 		$ix= new Class_Indexation();
 		$html=$this->haut_onglet;
+		$audio_js_player = new ZendAfi_View_Helper_AudioJsPlayer();
+
 		if(!$notice["morceaux"]) return $html.$this->getNonTrouve();
 		$html.='<table width="100%">';
-		$html.=sprintf('<tr><td class="notice_info_titre" align="left" colspan="4">%s : %s</td></tr>',
+		if($source) $html.=sprintf('<tr><td class="notice_info_titre" align="left" colspan="4">%s : %s</td></tr>',
 									 $this->_translate->_('Source'),
 									 $source);
 		$volume=0;	
@@ -734,11 +586,11 @@ class Class_NoticeHtml
 			forEach($vol as $morceau)
 			{
 				$plage++;
+				$img_ecoute="";
 				// Amazon
 				if($notice["asin"]) 
 				{
 					$id_div=$notice["asin"]."_".$volume."_".$plage;
-					$player=$morceau["url_ecoute"];
 					$js_video="chercher_videos('".$id_div."','".addslashes($notice["auteur"])."','".addslashes($morceau["titre"])."')";
 					$img_video=sprintf('<img src="%s" border="0" onclick="%s" style="cursor:pointer" title="%s" alt="%s" />',
 														 URL_IMG.'bouton/voir_video.gif',
@@ -751,10 +603,9 @@ class Class_NoticeHtml
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
 
-					//$img_ecoute='<img src="'.URL_IMG.'bouton/ecouter.gif" border="0" onclick="afficher_media(\''.$id_div.'\',\''.$player.'\',\'real_audio\')" style="cursor:pointer" title="Ecouter un extrait">';
 				}
-				// Last.fm
-				else 
+				// autres
+				else
 				{
 					$id_div=$notice["id_notice"]."_".$volume."_".$plage;
 					$js_video="chercher_videos('".$id_div."','".addslashes($notice["auteur"])."','".addslashes($morceau["titre"])."')";
@@ -768,11 +619,12 @@ class Class_NoticeHtml
 												 "afficher_media('".$id_div."','close','')",
 												 $this->_translate->_("Replier"),
 												 $this->_translate->_("Replier"));
-					//if($morceau["url_ecoute"])$img_ecoute='<img src="'.URL_IMG.'bouton/ecouter.gif" border="0" onclick="afficher_media(\''.$id_div.'\',\''.$morceau["url_ecoute"].'\',\'last_fm\')" style="cursor:pointer" title="Ecouter un extrait">';
-					//else $img_ecoute="&nbsp;";
+			
+					if (isset($morceau["url_ecoute"])) $img_ecoute .= $audio_js_player->audioJsPlayer($morceau["url_ecoute"]);
 				}
+
 				// Html
-				$img_ecoute="&nbsp;";
+				if(!$img_ecoute) $img_ecoute="&nbsp;";
 				$html.='<tr><td class="notice_info_ligne" align="left" width="100%">'.$plage.' : '.$morceau["titre"].'</td><td style="text-align:center">'.$img_ecoute.'</td><td>'.$img_video.'</td><td>'.$close.'</td></tr>';
 				$html.='<tr><td colspan="4" style="text-align:center"><div id="'.$id_div.'" rel="video" style="display:none;"></div></td>';
 				$html.='</tr>';
@@ -858,7 +710,10 @@ class Class_NoticeHtml
 		$html.='</ul></td></tr>';
 
 		// Avis page courante
-		$source=$_REQUEST["cherche"];
+		$source = null;
+		if (array_key_exists('cherche', $_REQUEST))
+			$source = $_REQUEST["cherche"];
+
 		if(!$source) {
 			if($avis["bib"]["nombre"] > 0) $source="bib";
 			elseif($avis["abonne"]["nombre"] > 0) $source="abonne";
@@ -899,8 +754,7 @@ class Class_NoticeHtml
 //------------------------------------------------------------------------------------------------------	
 // Tags utilisateur
 //------------------------------------------------------------------------------------------------------	
-	public function getTags($tags,$id_notice)
-	{
+	public function getTags($tags,$id_notice)	{
 		// Identité user connecté
 		$user = Zend_Auth::getInstance()->getIdentity();
 		
@@ -912,5 +766,86 @@ class Class_NoticeHtml
 									 $url,
 									 $this->_translate->_('Proposer des tags pour cette notice'));
 		return $html;
+	}
+}
+
+
+class NoticeReservationRenderer {
+	const HOLD_IMG = 'resa.gif';
+
+	protected $_bib;
+	protected $_holdLabel;
+	
+	public static function newWith($bib, $commClass, $holdLabel) {
+		$instance = new NoticeReservationRenderer();
+		$instance->_bib = $bib;
+		$instance->_holdLabel = $holdLabel;
+		return $instance;
+	}
+
+
+	/**
+	 * @param $ex array
+	 * @param $html string
+	 * @return string modified html
+	 */
+	public function renderItemOn($ex, $html) {
+		$html .= '<td class="exemplaires" style="text-align:center;">';
+
+		if (1 == $this->_bib['INTERDIRE_RESA'])
+			return $html .= '&nbsp;</td>';
+
+		$type_comm = ($int_bib = Class_IntBib::find($ex['id_bib'])) ? $int_bib->getCommSigb() : 0;
+		if (!$type_comm)
+			return $this->_renderStandardOn($ex, $html);
+
+		if (!$ex['reservable'])
+			return $html . '&nbsp;</td>';
+ 
+		if (Class_CosmoVar::isSiteRetraitResaEnabled())
+			return $this->_renderPickupAjaxOn($ex, $html);
+
+		return $this->_renderAjaxOn($ex, $html);
+	}
+
+
+	/** @return string */
+	protected function getHoldImage() {
+		return URL_IMG . self::HOLD_IMG;
+	}
+
+
+	/** @return string */
+  protected function _renderStandardOn($ex, $html) {
+    $html .= sprintf('<a href="%s"><img src="%s" border="0" title="%s" alt="%s"/></a>',
+										 BASE_URL . '/recherche/reservation?b=' . $ex["id_bib"] . '&amp;n=' . $ex["id_notice"] . '&amp;cote=' . $ex["cote"],
+										 URL_IMG . self::HOLD_IMG,
+										 $this->_holdLabel,
+										 $this->_holdLabel);
+		return $html . '</td>';
+  }
+
+
+	/** @return string */
+	protected function _renderAjaxOn($ex, $html) {
+		return $this->_renderAjaxLinkOn($ex, $html, 'reservation');
+	}
+
+
+	/** @return string */
+	protected function _renderPickupAjaxOn($ex, $html) {
+		return $this->_renderAjaxLinkOn($ex, $html, 'reservationPickup');
+	}
+
+
+	/** @return string */
+	protected function _renderAjaxLinkOn($ex, $html, $functionName) {
+		$onclick = $functionName . "Ajax(this,'" . $ex["id_bib"] . "','" . $ex["id"] . "', '" . $ex["code_annexe"] . "')";
+		$html .= sprintf('<img src="%s" border="0" alt="%s" title="%s" onclick="%s" style="cursor:pointer" />',
+										 URL_IMG . self::HOLD_IMG,
+										 $this->_holdLabel,
+										 $this->_holdLabel,
+										 $onclick);
+		return $html .= '</td>';
 	}
 }

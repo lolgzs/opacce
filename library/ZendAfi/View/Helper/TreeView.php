@@ -29,14 +29,24 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	/** @var array */
 	protected $_itemActions;
 
+	/** Abstract_TreeViewRenderItem  */
+	protected $_item_render_strategy;
+
+
+	public function renderItemWithIconeSupport() {
+		$this->_item_render_strategy = new TreeViewRenderItemWithIconeSupportStrategy($this->view);
+		return $this;
+	}
+
 	/**
 	 * @param array $elements
 	 * @param array $containerActions
 	 * @return string
 	 */
 	public function treeView(array $elements,
-														array $containerActions = array(),
-														array $itemActions = array()) {
+													 array $containerActions = array(),
+													 array $itemActions = array(),
+													 $withWorkflow = true) {
 		$html = '';
 
 		if (0 == count($elements)) {
@@ -48,7 +58,7 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 			<label for="treeViewSearch">' . $this->view->_('Rechercher') . '</label> :
 			<input type="text" size="20" class="treeViewSearch" id="treeViewSearch" />';
 
-		if (Class_AdminVar::isWorkflowEnabled()) {
+		if ($withWorkflow && Class_AdminVar::isWorkflowEnabled()) {
 			$html .= '<div class="treeViewSearchStatus" style="margin:5px 0;float:right;">'
 									. $this->view->_('Filtrer par statut : ');
 			$statuses = array($this->view->tagAnchor(
@@ -70,24 +80,15 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 		$this->_itemActions = $itemActions;
 
 		foreach ($elements as $data) {
-			$html .= '<h3><a href="#">' . $data['bib']->getLibelle() . '</a></h3>
-				<div>'
-						. $this->view->tagAnchor(
-								$this->view->url(array(
-																	'module' => 'admin',
-																	'controller' => 'cms',
-																	'action' => 'catadd',
-																	'id_bib' => $data['bib']->getId()
-																)),
-								$this->view->tagImg(URL_ADMIN_IMG . 'ico/add_cat.gif')
-										. $this->view->_(' Ajouter une catégorie')
-						)
-					.'<ul class="root">';
-
-			foreach ($data['containers'] as $container) {
-				$html .= $this->_renderContainer($container);
+			$html .= '<h3><a href="#">' . $data['bib']->getLibelle() . '</a></h3><div>';
+			if (array_key_exists('add_link', $data)) {
+				$html .= $data['add_link'];
 			}
+			$html .= '<ul class="root">';
 
+			foreach ($data['containers'] as $container)
+				$html .= $this->_renderContainer($container);
+		 
 			$html .= '</ul></div>';
 		}
 
@@ -115,31 +116,35 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 
 		if ($container->hasChildren()) {
 			$html .= '<ul style="display:none;" id="child-of-' . $container->getId() . '">';
-
-			foreach ($container->getSousCategories() as $subContainer) {
+			
+			foreach ($container->getSousCategories() as $subContainer)
 				$html .= $this->_renderContainer($subContainer);
-			}
 
-			foreach ($container->getItems() as $item) {
+			$items = $container->getItems();
+			foreach ($items as $item)
 				$html .= $this->_renderItem($item);
-			}
-
 			$html .= '</ul>';
 		}
 
 		return $html .= '</li>';
 	}
 
+
+	public function getItemRenderStrategy() {
+		if (isset($this->_item_render_strategy))
+			return $this->_item_render_strategy;
+
+		return $this->_item_render_strategy = new TreeViewRenderItemDefaultStrategy($this->view);
+	}
+
+
 	/**
 	 * @param Storm_Model_Abstract $item
 	 * @return string
 	 */
 	protected function _renderItem($item) {
-		$html = '<div>' . $this->view->tagImg(URL_ADMIN_IMG . 'ico/liste.gif') . '</div>'
-						. '<div class="item-label">' . $item->getTitre() . '</div>';
-
-		$html .= $this->_renderItemActions($item);
-
+		$html = $this->getItemRenderStrategy()->render($item);
+    $html .= $this->_renderItemActions($item);
 		return '<li class="item status-' . $item->getStatus() . '">' . $html . '</li>';
 	}
 
@@ -156,6 +161,8 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	protected function _renderContainerActions($container) {
+		if ($container->isNew())
+			return '';
 		return $this->_renderActions(self::NODE_CONTAINER, $container);
 	}
 
@@ -176,7 +183,14 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 				}
 			}
 
-			$action['id'] = $model->getId();
+			if (array_key_exists('caption', $action)) {
+				$action['caption'] = $model->{$action['caption']}();
+			}
+
+			$action['url'] = sprintf($action['url'], $model->getId());
+
+			if (isset($action['icon']) && is_a($action['icon'], 'Closure'))
+				$action['icon'] = $action['icon']($model);
 
 			$html .= $this->_renderAction($action);
 		}
@@ -189,29 +203,51 @@ class ZendAfi_View_Helper_TreeView extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	protected function _renderAction(array $options) {
-		$url = $this->view->url(
-			array(
-				'module'			=> $options['module'],
-				'controller'	=> $options['controller'],
-				'action'			=> $options['action'],
-				(array_key_exists('idName', $options)) ? $options['idName'] : 'id'
-					=> $options['id']
-			),
-			null,
-			true
-		);
-
 		$anchorOptions = array();
 		if (array_key_exists('anchorOptions', $options)) {
 			$anchorOptions = array_merge($anchorOptions, $options['anchorOptions']);
 		}
 
-		return $this->view->tagAnchor(
-			$url,
-			$this->view->tagImg(URL_ADMIN_IMG . $options['icon'],
-													array('alt' => $options['label'], 'class' => 'ico')),
-			$anchorOptions
-		);
+		$content = $this->view->tagImg(URL_ADMIN_IMG . $options['icon'],
+																	 array('alt' => $options['label'], 'class' => 'ico'));
+		if (array_key_exists('caption', $options))
+			$content .= $options['caption'];
+
+		return $this->view->tagAnchor($options['url'], $content, $anchorOptions);
 	}
 }
+
+
+
+
+abstract class Abstract_TreeViewRenderItem {
+	protected $view;
+
+	public function __construct($view) {
+		$this->view = $view;
+	}
+
+	public function render($item) {}
+}
+
+
+
+
+class TreeViewRenderItemWithIconeSupportStrategy extends Abstract_TreeViewRenderItem {
+	public function render($item) {
+		return '<div>' . $this->view->iconeSupport($item->getTypeDocId()) . '</div>'
+			. '<div class="item-label">' . $item->getTitre() . '</div>';
+	}
+}
+
+
+
+
+class TreeViewRenderItemDefaultStrategy extends Abstract_TreeViewRenderItem {
+	public function render($item) {
+		return '<div>' . $this->view->tagImg(URL_ADMIN_IMG . 'ico/liste.gif') . '</div>'
+			. '<div class="item-label">' . $item->getTitre() . '</div>';
+	}
+}
+
 ?>

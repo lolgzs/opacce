@@ -54,7 +54,7 @@ class ZendAfi_View_Helper_Admin_TagListeCoches extends ZendAfi_View_Helper_BaseH
 				if($data) foreach($data as $enreg) $liste[$enreg["id_emplacement"]]=$enreg["libelle"];
 				break;
 			case "annexe":
-				if($id_bib) $where="id_bib=$id_bib and ";
+				$where = $id_bib ? "id_bib=$id_bib and " : '';
 				$where.=" invisible=0";
 				$data=fetchAll("select code,libelle from codif_annexe where ".$where." order by libelle");
 				if($data) foreach($data as $enreg) $liste[$enreg["code"]]=$enreg["libelle"];

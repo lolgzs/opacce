@@ -30,7 +30,7 @@ class Class_WebService_XMLParser {
 	 * @return Class_WebService_XMLParser
 	 */
 	public static function newInstance() {
-		return new self();
+		return new static();
 	}
 
 
@@ -43,8 +43,8 @@ class Class_WebService_XMLParser {
 		$this->_parents = array() ;
 		$parser = $this->_createParser() ;
 		xml_parse($parser, $xml) ;
-		//echo xml_error_string(xml_get_error_code($parser));
-		//echo xml_get_current_line_number($parser);
+		// echo xml_error_string(xml_get_error_code($parser));
+		// echo xml_get_current_line_number($parser);
 		xml_parser_free($parser) ;
 		return $this ;
 	}
@@ -78,7 +78,9 @@ class Class_WebService_XMLParser {
 	 * @param array $attributes
 	 */
 	public function startElement($parser, $tag, $attributes) {
-		$this->_parents[] = strtolower($tag) ;
+		$tag = $this->tagWithoutNamespace($tag);
+		$this->_parents[] = strtolower($tag); 
+
 		if ($this->isDataToBeResetOnTag($tag))
 			$this->_current_data = null ;
 
@@ -104,7 +106,7 @@ class Class_WebService_XMLParser {
 	 * @param string $tag
 	 */
 	public function endElement($parser, $tag) {
-		$method_name = 'end'.$tag ;
+		$method_name = 'end'.$this->tagWithoutNamespace($tag);
 
 		if (method_exists($this->_element_handler, $method_name))  {
 			$this->_element_handler->$method_name($this->_current_data);
@@ -128,6 +130,17 @@ class Class_WebService_XMLParser {
 	 */
 	public function inParents($tag) {
 		return in_array(strtolower($tag), $this->_parents) ;
+	}
+
+
+
+	/**
+	 * @param string $tag
+	 * @return string
+	 */
+	public function tagWithoutNamespace($tag) {
+		$parts = explode(':', $tag);
+		return end($parts);
 	}
 }
 

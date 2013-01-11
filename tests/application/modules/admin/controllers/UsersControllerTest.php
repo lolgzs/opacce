@@ -38,7 +38,11 @@ abstract class UsersControllerWithMarcusTestCase extends AbstractControllerTestC
 			->setIdabon('00123')
 			->setOrdreabon(1)
 			->setDateDebut('19-07-2009')
-			->setDateFin('19-07-2010');
+			->setDateFin('19-07-2010')
+			->setTelephone('01 23 45 67 89')
+			->setAdresse('34 avenue Funk')
+			->setCodePostal('99000')
+			->setVille('Jazz City');
 		
 		$this->assertTrue($this->marcus->isValid());
 
@@ -91,6 +95,22 @@ class UsersControllerEditMarcusTest extends UsersControllerWithMarcusTestCase {
 
 	public function testMailIsMarcusAtGmailDotCom() {
 		$this->assertXPath("//input[@name='mail'][@value='marcus@gmail.com']");
+	}
+
+	public function testTelephoneIs0123456789() {
+		$this->assertXPath("//input[@name='telephone'][@value='01 23 45 67 89']");
+	}
+
+	public function testAdresseIs34avenueFunk() {
+		$this->assertXPathContentContains("//textarea[@name='adresse']", '34 avenue Funk');
+	}
+
+	public function testCodePostalIs99000() {
+		$this->assertXPath("//input[@name='code_postal'][@value='99000']");
+	}
+
+	public function testVilleIsJazzCity() {
+		$this->assertXPath("//input[@name='ville'][@value='Jazz City']");
 	}
 
 	public function testNumeroCarteIs00123() {
@@ -153,7 +173,10 @@ class UsersControllerPostMarcusDataTest extends UsersControllerWithMarcusTestCas
 															 'bib' => '1',
 															 'id_abon' => '2341',
 															 'ordre' => '2',
-															 'telephone' => ''));
+															 'telephone' => '09 87 76 54 32 12',
+															 'adresse' => '12 rue miles',
+															 'code_postal' => '75000',
+															 'ville' => 'Paris'));
 		$this->assertRedirectTo('/admin/users');
 	}
 
@@ -177,6 +200,22 @@ class UsersControllerPostMarcusDataTest extends UsersControllerWithMarcusTestCas
 
 	public function testPrenomIsMiles() {
 		$this->assertEquals('Miles', $this->marcus->getPrenom());
+	}
+
+	public function testTelephoneIs09_87_76_54_32_12() {
+		$this->assertEquals('09 87 76 54 32 12', $this->marcus->getTelephone());
+	}
+
+	public function testAdresseIs12RueMiles() {
+		$this->assertEquals('12 rue miles', $this->marcus->getAdresse());
+	}
+
+	public function testCodePostalIs75000() {
+		$this->assertEquals('75000', $this->marcus->getCodePostal());
+	}
+
+	public function testVilleIsParis() {
+		$this->assertEquals('Paris', $this->marcus->getVille());
 	}
 
 	public function testMailIsMDavisAtFreeDotFr() {
@@ -212,7 +251,10 @@ class UsersControllerPostMarcusInvalidDataTest extends UsersControllerWithMarcus
 															 'bib' => '0',
 															 'id_abon' => '2341',
 															 'ordre' => '2',
-															 'telephone' => ''));
+															 'telephone' => '',
+															 'adresse' => '',
+															 'code_postal' => '',
+															 'ville' => ''));
 		$this->assertAction('edit');
 		$this->assertQueryContentContains('span#abonne_erreur', "Vous devez compléter le champ 'Identifiant'");
 		$this->assertQueryContentContains('span#abonne_erreur', "Vous devez compléter le champ 'Mot de passe'");
@@ -231,7 +273,10 @@ class UsersControllerPostMarcusInvalidDataTest extends UsersControllerWithMarcus
 															 'bib' => '1',
 															 'id_abon' => '',
 															 'ordre' => '2',
-															 'telephone' => '04 50 12 34'));
+															 'telephone' => '04 50 12 34',
+															 'adresse' => '',
+															 'code_postal' => '',
+															 'ville' => ''));
 		$this->assertAction('edit');
 		$this->assertQueryContentContains('span#abonne_erreur',
 																			"Le champ 'Identifiant' doit être inférieur à 50 caractères");
@@ -251,7 +296,7 @@ class UsersControllerPostValidDataWithCommOpsysTest extends UsersControllerWithM
 		$this->emprunteur = new Class_WebService_SIGB_Emprunteur('2341', 'Marcus');
 		$this->emprunteur->setService($this->opsys_service);
 
-		$this->marcus->setFicheSIGB(array('type_comm' => Class_CommSigb::COM_OPSYS,
+		$this->marcus->setFicheSIGB(array('type_comm' => Class_IntBib::COM_OPSYS,
 																			'fiche' => $this->emprunteur,
 																			'nom_aff' => 'Marcus'));
 
@@ -271,7 +316,10 @@ class UsersControllerPostValidDataWithCommOpsysTest extends UsersControllerWithM
 															 'bib' => '1',
 															 'id_abon' => '2341',
 															 'ordre' => '2',
-															 'telephone' => '04 12 34 56 78'));
+															 'telephone' => '04 12 34 56 78',
+															 'adresse' => '',
+															 'code_postal' => '',
+															 'ville' => ''));
 	}
 
 
@@ -350,7 +398,10 @@ class UsersControllerAddPostTest extends UsersControllerWithMarcusTestCase {
 											 'bib' => '1',
 											 'id_abon' => '2341',
 											 'ordre' => '2',
-											 'telephone' => '')));
+											 'telephone' => '',
+											 'adresse' => '',
+											 'code_postal' => '',
+											 'ville' => '')));
 		$this->dispatch('/admin/users/add');
 	}
 

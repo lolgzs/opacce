@@ -21,7 +21,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  OPAC3: AUTHENTIFICATION ABONNE
 //
-// @TODO@ : A nettoyer
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class AuthController extends Zend_Controller_Action
@@ -51,29 +50,9 @@ class AuthController extends Zend_Controller_Action
 		if (empty($password))
 			return $this->view->_('Entrez votre mot de passe S.V.P.');
 
-		// setup Zend_/Auth adapter for a database table
-		$authAdapter = new ZendAfi_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
-		$authAdapter->setTableName('bib_admin_users');
-		$authAdapter->setIdentityColumn('LOGIN');
-		$authAdapter->setCredentialColumn('PASSWORD');
-
-		// Set the input credential values to authenticate against
-		$authAdapter->setIdentity($username);
-		$authAdapter->setCredential($password);
-
 		// do the authentication
-		$auth = Zend_Auth::getInstance();
-
-		$result = $auth->authenticate($authAdapter);
-		if (!$result->isValid())
+		if (!ZendAfi_Auth::getInstance()->authenticateLoginPassword($username, $password))
 			return $this->view->_('Identifiant ou mot de passe incorrect.');
-
-		// success: store database row to auth's storage
-		$data = $authAdapter->getResultRowObject(null,'password');
-		$auth->getStorage()->write($data);
-
-		return null;
-
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -89,7 +68,7 @@ class AuthController extends Zend_Controller_Action
 			$error = $this->_authenticate();
 			if (!$error) {
 				$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-				if($_SESSION["abonne_redirect"])
+				if (isset($_SESSION["abonne_redirect"]))
 					$this->getResponse()->setBody("<script>window.location.replace('" .$_SESSION["abonne_redirect"] . "');</script>");
 				else
 					$this->_redirect('opac');
@@ -112,14 +91,14 @@ class AuthController extends Zend_Controller_Action
 			$error = $this->_authenticate();
 
 			if (!$error) {
-				$data = Zend_Auth::getInstance()->getIdentity();
+				$data = ZendAfi_Auth::getInstance()->getIdentity();
 				$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
 				$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.abonne_ok(".$data->ID_USER.",'". $data->LOGIN ."', '')</script>");
 			}
 		}
 
 		// Affichage du formulaire
-		$this->view->message = $error;
+		$this->view->message = isset($error) ? $error : null;
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('subModal.phtml');
 	}
@@ -129,7 +108,7 @@ class AuthController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	function boiteloginAction() {
 		$id_module = $this->_getParam('id_module');
-
+		$error = '';
 		$this->view->preferences = Class_Profil::getCurrentProfil()->getModuleAccueilPreferences($id_module);
 
 		if ($this->_request->isPost()) {
@@ -163,10 +142,9 @@ class AuthController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // Logout
 //------------------------------------------------------------------------------------------------------
-	function logoutAction()
-	{
-		Zend_Auth::getInstance()->clearIdentity();
-		$this->_redirect(BASE_URL);
+	function logoutAction()	{
+		ZendAfi_Auth::getInstance()->clearIdentity();
+		$this->_redirect('/');
 	}
 
 //------------------------------------------------------------------------------------------------------

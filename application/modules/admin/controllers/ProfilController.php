@@ -39,7 +39,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		if (!$this->_profil = Class_Profil::getLoader()->find($id_profil_param)) {
 			if (!in_array(
 							$this->_request->getActionName(),
-							array('index', 'redirect-to-index', 'add', 'genres'))
+							array('index', 'redirect-to-index', 'add', 'genres', 'module-sort'))
 			) {
 				$this->_forward('redirect-to-index');
 				return;
@@ -54,9 +54,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 		$this->id_profil = $this->_profil->getId();
 
-		$session['id_profil']	= $this->id_profil;
-		$_SESSION['admin']		= $session;
-
+		$session['id_profil'] = $this->id_profil;
+		$_SESSION['admin'] = $session;
 
 		$this->view->id_zone = $this->id_zone;
 		$this->view->id_bib = $this->id_bib;
@@ -70,7 +69,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 
 	public function indexAction()	{
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		$profils = Class_Profil::getLoader()->findAllByZoneAndBib($this->id_zone,
 																															$this->id_bib);
@@ -118,6 +117,19 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
+	public function uploadCssAction() {
+		$profil_to_update = $this->_profil->hasParentProfil() 
+			? $this->_profil->getParentProfil() 
+			: $this->_profil;
+
+		$profil_to_update
+			->writeHeaderCss($this->_request->getRawBody())
+			->save();
+
+		$this->getHelper('ViewRenderer')->setNoRender();
+	}
+
+	
 	public function menusmajAction() {
 		$id_menu=$this->_getParam('id_menu');
 		$profil = Class_Profil::getLoader()->find($this->id_profil);
@@ -285,6 +297,13 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
+	public function deepcopyAction() {
+		$copy = $this->_profil->deepCopy();
+		$copy->save();
+		$this->_redirect('admin/profil/edit/id_profil/'.$copy->getId());
+	}
+
+
 	public function accueilAction()	{
 		// Instanciations et initialisations
 		$this->view->titre = "Configuration de la page: ".$this->_profil->getLibelle();
@@ -342,17 +361,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		else {
 			// Html des modules sélectionnés triés par divisions
 			$box = array(1 => '', 2 => '', 3 => '', 4 => '');
-			$cfg_acc = $profil->getCfgAccueilAsArray();
-			if($cfg_acc['modules']) {
-				foreach($cfg_acc['modules'] as $id_module => $module) {
-					$division=$module["division"];
-					$type_module=$module["type_module"];
-					$box[$division].=$this->_getItemModule($type_module,
-																								$liste_module[$type_module],
-																								$module["preferences"],
-																								$id_module);
-				}
-			}
+			foreach($box as $division => $content) 
+				$box[$division] = $this->_getHTMLForProfilModulesDivision($profil, $division);
 
 			// Html des objets disponibles
 			$groupes=$class_module->getGroupes();
@@ -360,23 +370,25 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			foreach($groupes as $groupe => $libelle) {
 				if (!array_key_exists($groupe, $box_dispo))
 					$box_dispo[$groupe] = '';
-				$box_dispo[$groupe].='<div><p>'.$libelle.'</p><ul id="allItems" style="height:185px;">';
+				$box_dispo[$groupe].='<div><p>'.$libelle.'</p><ul id="allItems" style="height:300px;">';
 			}
 
 			foreach($liste_module as $type_module => $module) {
-				$groupe=$module["groupe"];
-				if($profil->isTelephone() and $module["phone"]==false) continue;
-				$box_dispo[$groupe].=$this->_getItemModule($type_module,$module);
+				if (!$module->isVisibleForProfil($profil)) continue;
+				$box_dispo[$module->getGroup()].=$this->_getItemModule($type_module,$module);
 			}
-			foreach($groupes as $groupe => $libelle) $box_dispo[$groupe].='</ul></div>';
+
+			foreach($groupes as $groupe => $libelle) 
+				$box_dispo[$groupe].='</ul></div>';
 
 			// Get le nombre de divisions dans le profil
 			$this->view->nb_divisions = $profil->getNbDivisions();
 
 			// Variables de vue
-			$this->view->module_info = $box_dispo["INFO"];
-			$this->view->module_rech = $box_dispo["RECH"];
-			$this->view->module_site = $box_dispo["SITE"];
+			$this->view->module_info = $box_dispo[Class_Systeme_ModulesAccueil::GROUP_INFO];
+			$this->view->module_rech = $box_dispo[Class_Systeme_ModulesAccueil::GROUP_RECH];
+			$this->view->module_site = $box_dispo[Class_Systeme_ModulesAccueil::GROUP_SITE];
+			$this->view->module_abonne = $box_dispo[Class_Systeme_ModulesAccueil::GROUP_ABONNE];
 			$this->view->box1 = $box[1];
 			$this->view->box2 = $box[2];
 			$this->view->box3 = $box[3];
@@ -384,7 +396,20 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
-	private function _getItemModule($type_module, $module, $preferences = '', $id_module = 0) {
+	protected function _getHTMLForProfilModulesDivision($profil, $division) {
+		$html = '';
+		$modules = $profil->getBoitesDivision($division);
+
+		foreach($modules as $id_module => $module)
+			$html .= $this->_getItemModule($module['type_module'], 
+																		 Class_Systeme_ModulesAccueil::moduleByCode($module['type_module']), 
+																		 $module['preferences'],
+																		 $id_module);
+		return $html;
+	}
+
+
+	protected function _getItemModule($type_module, $module, $preferences = '', $id_module = 0) {
 		$properties = '';
 		if ($preferences)	{
 			foreach($preferences as $clef => $valeur)
@@ -392,10 +417,10 @@ class Admin_ProfilController extends Zend_Controller_Action {
 		}
 
 		if($id_module) $display="block"; else $display="none";
-		$onclick="majProprietes(this,'".BASE_URL."/admin/accueil/".$module["action"]."?config=admin&amp;id_profil=".$this->id_profil."',".$module['popup_width'].",".$module['popup_height'].");";
+		$onclick="majProprietes(this,'".BASE_URL."/admin/accueil/".$module->getAction()."?config=admin&amp;id_profil=".$this->id_profil."',".$module->getPopupWidth().",".$module->getPopupHeight().");";
 
 		$item='<li id="'.$type_module.'" id_module="'.$id_module.'" proprietes="'.$properties.'"><table width="97%"><tr>';
-		$item.='<td align="left" class="cfg_accueil">'.$module["libelle"].'</td>';
+		$item.='<td align="left" class="cfg_accueil">'.$module->getLibelle().'</td>';
 		$item.='<td align="right"><img src="'.URL_ADMIN_IMG.'ico/fonctions_admin.png" onclick="'.$onclick.'" title="propriétés" style="display:'.$display.'" alt="Propriétés"/></td>';
 		$item.='</tr></table></li>';
 		return $item;
@@ -423,6 +448,8 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 	public function addAction()	{
 		$profil = Class_Profil::getLoader()->find(1)->copy();
+		$profil->setHeaderCss('');
+
 		if ($this->_postProfil($profil))
 			$this->_redirect('admin/profil/edit/id_profil/'.$profil->getId());
 
@@ -437,9 +464,12 @@ class Admin_ProfilController extends Zend_Controller_Action {
 			return false;
 
 		$post = ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
-		return $profil
-			->updateAttributes($post)
-			->save();
+		if ($result = $profil->updateAttributes($post)->save()) {
+			Class_Profil::setCurrentProfil($profil);
+			Zend_Registry::get('session')->id_profil = $profil->getId();
+		}
+
+		return $result;
 	}
 
 
@@ -468,6 +498,20 @@ class Admin_ProfilController extends Zend_Controller_Action {
 	}
 
 
+	public function moduleSortAction() {
+		$this->getHelper('ViewRenderer')->setNoRender();
+
+		if (!$profil = Class_Profil::getLoader()->find($this->_getParam('profil')))
+			return;
+
+		$profil->moveModuleOldDivPosNewDivPos($this->_getParam('fromDivision'), 
+																					$this->_getParam('fromPosition'), 
+																					$this->_getParam('toDivision'), 
+																					$this->_getParam('toPosition'));
+		$profil->save();
+	}
+
+
 	public function deleteAction()	{
 		$profil = Class_Profil::getLoader()->find($this->id_profil);
 		$profil->delete();
@@ -479,6 +523,7 @@ class Admin_ProfilController extends Zend_Controller_Action {
 
 		$this->_redirect('admin/profil');
 	}
+
 
 
 	private function _splitArg($item) {

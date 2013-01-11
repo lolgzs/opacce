@@ -1,4 +1,4 @@
-
+<?php
 /**
  * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
  *
@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-<?php
+
 class ZendAfi_Form_Element_File extends Zend_Form_Element_Xhtml {
 	/** @var string Default view helper */
 	public $helper = 'formFile';
@@ -35,18 +35,29 @@ class ZendAfi_Form_Element_File extends Zend_Form_Element_Xhtml {
 	/** @var string */
 	protected $_actionUrl;
 
+
 	public function __construct($spec, $options = null) {
 		parent::__construct($spec, $options);
 
-		$decorators = $this->_decorators;
-		$this->_decorators = array('File' => new ZendAfi_Form_Decorator_File(),
-															 'DeleteButton' => new ZendAfi_Form_Decorator_DeleteButton());
-
-		foreach ($decorators as $name => $value) {
-			$this->_decorators[$name] = $value;
-		}
+		$this->_insertDecoratorsBefore(['File' => new ZendAfi_Form_Decorator_File(),
+				                            'DeleteButton' => new ZendAfi_Form_Decorator_DeleteButton()]);
 	}
+	
 
+	/**
+	 * @param $decoratorsToInsert array
+	 */
+	protected function _insertDecoratorsBefore($decoratorsToInsert) {
+		if (!$decoratorsToInsert)
+			return;
+
+		$decorators = $this->_decorators;
+		$this->_decorators = $decoratorsToInsert;
+
+		foreach ($decorators as $name => $value)
+			$this->_decorators[$name] = $value;
+	}
+	
 
 	/**
 	 * @param string $path

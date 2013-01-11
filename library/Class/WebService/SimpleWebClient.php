@@ -27,6 +27,12 @@ class Class_WebService_SimpleWebClient {
 		$response = $httpClient->request();
 		return $response->getBody();
 	}
+
+
+	public function setAuth($user, $pass) {
+		$httpClient = Zend_Registry::get('httpClient');
+		$httpClient->setAuth($user, $pass);
+	}
 }
 
 ?>

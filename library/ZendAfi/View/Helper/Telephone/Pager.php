@@ -42,18 +42,20 @@ class ZendAfi_View_Helper_Telephone_Pager extends ZendAfi_View_Helper_BaseHelper
 		$url.="page=";
 		
 		// Pager
-		$html='<div class="pager"><table width="100%">';
-		if($page>1) 
-			$html.=sprintf('<td align="left"><a href="%s">%s&nbsp;</a></td>',
-										 $url.($page-1),
-										 $this->translate()->_('Résultats précédents'));
+		$html='<div class="ui-bar" data-theme="c" data-role="footer" data-id="pager" data-position="fixed">';
+		$html.='<div data-role="controlgroup" data-type="horizontal">';
 
-		if($page != $nb_pages)
-			$html.=sprintf('<td align="right"><a href="%s">&nbsp;%s</a></td>',
-										 $url.($page+1),
-										 $this->translate()->_('Résultats suivants'));
+		$html.=sprintf('<a href="%s" data-role="button" data-icon="arrow-l" %s>%s</a>',
+									 $url.($page-1),
+									 $page > 1 ? '' : 'class="ui-disabled"',
+									 $this->translate()->_('Page précédente'));
 
-		$html.='</table></div></a>';
+		$html.=sprintf('<a href="%s" data-role="button" data-icon="arrow-r" data-iconpos="right" %s>%s</a>',
+									 $url.($page+1),
+									 ($page != $nb_pages) ? '' : 'class="ui-disabled"',
+									 $this->translate()->_('Page suivante'));
+
+		$html.='</div></div>';
 		return $html;
 	}
 }

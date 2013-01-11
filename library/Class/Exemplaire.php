@@ -33,6 +33,12 @@ class Class_Exemplaire extends Storm_Model_Abstract {
 																 'album' => array('model' => 'Class_Album',
 																									'referenced_in' => 'id_origine'));
 
+	protected $_default_attribute_values = array('id_origine' => null,
+																							 'code_barres' => null);
+
+	protected $_sigb_exemplaire;
+
+
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
@@ -55,6 +61,25 @@ class Class_Exemplaire extends Storm_Model_Abstract {
 		if ($this->hasPret())
 			return $this->getPret()->getDateRetour();
 		return '';
+	}
+
+
+	public function getSigbExemplaire() {
+		if (!isset($this->_sigb_exemplaire))
+			$this->_sigb_exemplaire = $this->getBib()->getSigbExemplaire($this->getIdOrigine(), 
+				                                                           $this->getCodeBarres());
+		return $this->_sigb_exemplaire;
+	}
+
+
+	public function setSigbExemplaire($sigb_exemplaire) {
+		$this->_sigb_exemplaire = $sigb_exemplaire;
+		return $this;
+	}
+
+
+	public function getTitrePrincipal() {
+		return $this->getNotice()->getTitrePrincipal();
 	}
 }
 

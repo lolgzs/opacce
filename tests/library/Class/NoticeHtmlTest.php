@@ -57,11 +57,11 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 		$account->ROLE_LEVEL   = 4;
 		$account->confirmed    = true;
 		$account->enabled      = true;
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 
 	public function testVisibleWithAdminAndAvisReaderAllowed() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
 		$this->avis_bib_seulement->setValeur('0');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -70,7 +70,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testVisibleWithReaderAndAvisReaderAllowed() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
 		$this->avis_bib_seulement->setValeur('0');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -79,7 +79,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testVisibleWithAdminAndAvisReaderForbidden() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 5;
 		$this->avis_bib_seulement->setValeur('1');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -88,7 +88,7 @@ class NoticeHtmlDonnezVotreAvisTest extends ModelTestCase {
 
 
 	public function testInvisibleWithReaderAndAvisReaderForbidden() {
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 1;
 		$this->avis_bib_seulement->setValeur('1');
 
 		$html = $this->notice_html->getAvis($this->millenium, $this->avis);
@@ -110,9 +110,7 @@ class NoticeHtmlGetExemplairesEmptyTest extends ModelTestCase {
 class NoticeHtmlGetExemplairesWithOneExemplaireNoWebServiceTest extends ModelTestCase {
 	public function setUp() {
 		parent::setUp();
-		$_SESSION['id_profil'] = 2;
-		Class_Profil::getLoader()->newInstanceWithId(2);
-
+		Class_Profil::setCurrentProfil(new Class_Profil());
 		$exemplaire = array('id_bib' => -1,
 												'id_notice' => '24765',
 												'annexe' => 'MOUL',
@@ -139,8 +137,9 @@ class NoticeHtmlGetExemplairesWithOneExemplaireNoWebServiceTest extends ModelTes
 
 
 
+abstract class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase extends ModelTestCase {
+	protected $exemplaire;
 
-class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 		$_SESSION['id_profil'] = 4;
@@ -161,7 +160,7 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 
 		Class_IntBib::getLoader()
 			->newInstanceWithId(1)
-			->setCommSigb(Class_CommSigb::COM_MICROBIB)
+			->setCommSigb(Class_IntBib::COM_MICROBIB)
 			->setCommParams('');
 
 
@@ -176,7 +175,7 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 																							 ->answers(true)
 																							 ->getWrapper());
 
-		$exemplaire = array('id' => 12,
+		$this->exemplaire = array('id' => 12,
 												'id_bib' => 1,
 												'id_notice' => '24765',
 												'id_origine' => '666',
@@ -186,9 +185,22 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 												'dispo' => "Disponible",
 												'code_barres' => "12345",
 												'section' => 3,
-												'emplacement' => 2); 
+												'emplacement' => 2);
+	}
+}
+
+
+
+
+class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest 
+  extends NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase {
+
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()->newInstanceWithId('site_retrait_resa')
+			->setValeur('0');
 		$notice_html = new Class_NoticeHtml();
-		$this->html = $notice_html->getExemplaires(array($exemplaire));
+		$this->html = $notice_html->getExemplaires(array($this->exemplaire));
 	}
 
 
@@ -198,4 +210,25 @@ class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTest extends ModelTe
 	}
 }
 
+
+
+class NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceAndPickupActiveTest
+  extends NoticeHtmlGetExemplairesWithOneExemplaireAndWebServiceTestCase {
+	
+
+	public function setUp() {
+		parent::setUp();
+		Class_CosmoVar::getLoader()->newInstanceWithId('site_retrait_resa')
+			->setValeur('1');
+
+		$notice_html = new Class_NoticeHtml();
+		$this->html = $notice_html->getExemplaires(array($this->exemplaire));
+	}
+
+
+	/** @test */
+	public function shouldRenderReservationPickup() {
+		$this->assertContains("reservationPickupAjax(this,'1','12', 'MOUL')", $this->html);
+	}
+}
 ?>

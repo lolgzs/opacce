@@ -18,7 +18,7 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class CmsController extends ZendAfi_Controller_IFrameAction {
+class CmsController extends Zend_Controller_Action {
 	public function init() {
 		parent::init();
 
@@ -39,22 +39,29 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 	 *		'cat': identifiant de la catégorie
 	 */
 	public function articleviewbydateAction() {
-		$prefs = array(
-									 'event_date'		=> $this->_getParam('d'),
-									 'id_bib'				=> $this->_getParam('b'),
-									 'display_order' => 'EventDebut',
-									 'events_only'		=> true,
-									 'published' => false);
-		if ($id_cat = (int)$this->_getParam('select_id_categorie'))
-			$prefs['id_categorie'] = $id_cat;
+		$id_profil = (int)$this->_getParam('id_profil');
+		$id_module = (int)$this->_getParam('id_module');
+		if (!$profil = Class_Profil::getLoader()->find($id_profil))
+			$profil = Class_Profil::getCurrentProfil();
+		$preferences	= $profil->getModuleAccueilPreferences($id_module);
 
-		$articles = Class_Article::getLoader()->getArticlesByPreferences($prefs);
+		$preferences['event_date']		= $this->_getParam('d');
+		$preferences['id_bib']				= $this->_getParam('b');
+		$preferences['display_order'] = 'EventDebut';
+		$preferences['events_only']		= true;
+		$preferences['published'] = !(bool)$preferences['event_date'];
+
+		if ($id_cat = (int)$this->_getParam('select_id_categorie'))
+			$preferences['id_categorie'] = $id_cat;
+
+		$articles = Class_Article::getLoader()->getArticlesByPreferences($preferences);
 
 		$articles = Class_Article::getLoader()->filterByLocaleAndWorkflow($articles);
 
 		$this->view->articles	= Class_Article::getLoader()->groupByBib($articles);
 
 	}
+
 
 	public function calendarrssAction() {
 		$id_profil = (int)$this->_getParam('id_profil');
@@ -106,7 +113,7 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 		$article = $article->getTraductionLangue($langue);
 
 		$this->view->article = $article;
-		$this->view->title = $article->getTitre();
+		$this->view->titreAdd($article->getTitre());
 	}
 
 
@@ -193,12 +200,14 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 
 	}
 
+
 	/**
 	 * @see ZendAfi_View_Helper_Accueil_MenuVertical
 	 */
 	public function viewsummaryAction() {
 		$this->_viewArticlesByPreferences($this->_getAllParams());
 	}
+
 
 	/**
 	 * @see ZendAfi_View_Helper_Accueil_News
@@ -211,6 +220,14 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 		if (!array_isset('display_order', $preferences) || ('Random' == $preferences['display_order']))
 			$preferences['display_order'] = 'DateCreationDesc';
 		$this->_viewArticlesByPreferences($preferences);
+	}
+
+
+	/**
+	 * @see ZendAfi_View_Helper_Accueil_News
+	 */
+	public function articleviewpreferencesAction() {
+		$this->_viewArticlesByPreferences($this->_request->getParams());
 	}
 
 
@@ -232,8 +249,10 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 
 		$date = $this->_getParam("date");
 		$id_module = $this->_getParam("id_module");
-		$preferences = $this->_modulesPreferences($id_module);
 
+		$module_calendrier = new Class_Systeme_ModulesAccueil_Calendrier();
+		$preferences = array_merge($module_calendrier->getDefaultValues(),
+															 $this->_modulesPreferences($id_module));
 		if (!preg_match('/[0-9]{4}-[0-9]{2}/', $date)) {
 			$date = date('Y-m-d');
 		}
@@ -244,15 +263,15 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 		$param["ID_BIB"]=Class_Profil::getCurrentProfil()->getIdSite();
 		$param["AFFICH_MOIS"]=1;
 		$param["NEWS"]["AFFICH_NEWS"]=1;
-		$param["NB_NEWS"]=3;
+		$param["NB_NEWS"]= (int)$preferences["nb_events"];
 		$param["ALEATOIRE"]=1;
 		$param["ID_MODULE"] = $id_module;
-		$param["ID_CAT"] = $preferences["id_categorie"];
+		$param["ID_CAT"] = $preferences['id_categorie'];
 		$param["SELECT_ID_CAT"] = $preferences["display_cat_select"]
 																? $this->_getParam("select_id_categorie")
 																: "all";
 		$param["DISPLAY_CAT_SELECT"] = $preferences["display_cat_select"];
-		$param["DISPLAY_NEXT_EVENT"] = array_key_exists('display_next_event', $preferences) ? $preferences["display_next_event"] : '1';
+		$param["DISPLAY_NEXT_EVENT"] = $preferences["display_next_event"];
 		$param["EVENT_INFO"] = $preferences["display_event_info"];
 		$class_calendar = new Class_Calendar($param);
 		$this->getResponse()->setBody($class_calendar->rendHTML());
@@ -312,7 +331,7 @@ class CmsController extends ZendAfi_Controller_IFrameAction {
 			$this->view->title = $preferences['titre'];
 		}
 
-		if (array_key_exists('summary_content', $preferences)) {
+		if (isset($preferences['summary_content']) && isset($preferences['display_mode']) && ($preferences['display_mode'] == 'Summary')) {
 			$this->view->show_content = $preferences['summary_content'];
 		} else {
 			$this->view->show_content = 'FullContent';

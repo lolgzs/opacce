@@ -8,15 +8,16 @@
 		?></td>
 
 	 <?php 
-			foreach(array('edit' => $this->boutonIco("type=edit"),
-										'delete' => $this->boutonIco("type=del"), 
-										'preview' => $this->boutonIco("type=show"), 
-										'sendtest' => $this->boutonIco("type=test"), 
-										'send' => $this->boutonIco("type=mail")) 
+			foreach(['edit' => $this->boutonIco("type=edit"),
+							 'delete' => $this->boutonIco("type=del"), 
+							 'preview' => $this->boutonIco("type=show"), 
+							 'edit-subscribers' => $this->boutonIco("picto=picto/abonnes.gif", "bulle=Membres"), 
+							 'sendtest' => $this->boutonIco("type=test"), 
+							 'send' => $this->boutonIco("type=mail")]
 						as $action => $view) {
 				echo "<td rel='$action'>";
-				echo $this->tagAnchor($this->url(array('action' => $action,
-																							 'id' => $this->newsletter->getId())),
+				echo $this->tagAnchor($this->url(['action' => $action,
+																					'id' => $this->newsletter->getId()]),
 															$view);
 				echo '</td>';
 		}

@@ -27,10 +27,12 @@ class ZendAfi_View_Helper_TagUploadMultiple extends ZendAfi_View_Helper_BaseHelp
 	 */
 	public function tagUploadMultiple($name, $buttonLabel, Array $args) {
 		return $this->getJavaScript($name, $args)
-			. '<input type="button" class="bouton" value="'
-			. $buttonLabel
-			. '" onclick="load_' . $name . '();">'
-			. '<div id="' . $name . '_conteneur"></div>';
+				   . $this->view->bouton('id=mass_upload',
+						                     'picto=add_cat.gif',
+				                         'texte=' . $buttonLabel,
+						                     'javascript=load_' . $name . '();',
+						                     'largeur=250px')
+				   . '<div id="' . $name . '_conteneur"></div>';
 	}
 
 

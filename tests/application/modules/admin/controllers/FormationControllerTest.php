@@ -70,7 +70,10 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Formation')
 			->whenCalled('save')->answers(true)
 			->whenCalled('delete')->answers(null)
-			->whenCalled('findAll')->answers(array(
+
+			->whenCalled('findAllBy')
+			->with(array('order' => 'id desc'))
+			->answers(array(
 							 $this->_learn_java = Class_Formation::getLoader()
 							 ->newInstanceWithId(3)
 							 ->setLibelle('Learn Java')
@@ -80,12 +83,15 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->newInstanceWithId(32)
 																	 ->setFormationId(3)
 																	 ->setDateDebut('2012-03-27')
+																	 ->setDateFin('2012-03-29')
 																	 ->setEffectifMin(5)
 																	 ->setEffectifMax(25)
 																	 ->setDuree(8)
 																	 ->setContenu('Intro à la syntaxe')
 																	 ->setHoraires('9h - 12h, 13h - 18h')
-																	 ->setLieu('Salle réunion AFI')
+																	 ->setLieu($salle_reunion = Class_Lieu::getLoader()
+																						                     ->newInstanceWithId(12)
+																						                      ->setLibelle('Salle reunion AFI'))
 																	 ->setDateLimiteInscription('2012-03-05')
 																	 ->setIntervenants(array($this->_prof_laurent)),
 
@@ -93,6 +99,7 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->newInstanceWithId(31)
 																	 ->setFormationId(3)
 																	 ->setDateDebut('2012-02-17')
+																	 ->setDateFin('')
 																	 ->setEffectifMax(10)
 																	 ->setStagiaires(array($this->_benoit)))),
 											
@@ -108,6 +115,23 @@ abstract class Admin_FormationControllerTestCase extends Admin_AbstractControlle
 																	 ->setStagiaires(array())
 																	 ->beAnnule())) 
 							 ));
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+			->whenCalled('save')
+			->answers(true)
+
+			->whenCalled('findAllBy')
+			->answers(array($salle_reunion,
+
+											Class_Lieu::getLoader()
+											->newInstanceWithId(28)
+											->setLibelle('au marché'),
+
+											Class_Lieu::getLoader()
+											->newInstanceWithId(18)
+											->setLibelle('Au café du coin')));
+
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_SessionFormationInscription')
 			->whenCalled('save')->answers(true)
@@ -378,14 +402,14 @@ class Admin_FormationControllerIndexTest extends Admin_FormationControllerTestCa
 
 
 	/** @test */
-	function secondH2ShouldContains2009() {
-		$this->assertXPathContentContains('//div[3]//h2', '2009', $this->_response->getBody());
+	function firstH2ShouldContains2009() {
+		$this->assertXPathContentContains('//div[2]//h2', '2009', $this->_response->getBody());
 	}
 
 
 	/** @test */
-	function firstH2ShouldContains2012() {
-		$this->assertXPathContentContains('//div[2]//h2', '2012');
+	function secondH2ShouldContains2012() {
+		$this->assertXPathContentContains('//div[3]//h2', '2012');
 	}
 
 
@@ -495,6 +519,23 @@ class Admin_FormationControllerIndexTest extends Admin_FormationControllerTestCa
 
 
 
+class Admin_FormationControllerEditSessionLearningJavaFevrierTest extends  Admin_FormationControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/formation/session_edit/id/31');
+	}
+
+
+	/** @test */
+	function inputDateFinShouldBeEmpty() {
+		$this->assertXPath('//form[@id="sessionForm"]//input[@name="date_fin"][@value=""]');
+	}
+
+}
+
+
+
+
 class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_FormationControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
@@ -510,15 +551,19 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 
 	/** @test */
 	function inputDateDebutShouldContains27_03_2012() {
-		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_debut"][@value="27/03/2012"]', 
-											 $this->_response->getBody());
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_debut"][@value="27/03/2012"]');
+	}
+
+
+	/** @test */
+	function inputDateFinShouldContains28_03_2012() {
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_fin"][@value="29/03/2012"]');
 	}
 
 
 	/** @test */
 	function inputDateLimiteInscriptionShouldContains05_03_2012() {
-		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_limite_inscription"][@value="05/03/2012"]', 
-											 $this->_response->getBody());
+		$this->assertXPath('//form[@id="sessionForm"][contains(@action,"formation/sessionedit")]//input[@name="date_limite_inscription"][@value="05/03/2012"]');
 	}
 
 	
@@ -539,6 +584,7 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 		$this->assertXPathContentContains('//td//textarea[@name="contenu"]', 'Intro à la syntaxe');
 	}
 
+
 	/** @test */
 	public function checkboxIntervenantLaurentShouldBeChecked() {
 		$this->assertXPath('//input[@name="intervenant_ids[]"][@value="34"][@checked="checked"]');	
@@ -553,9 +599,11 @@ class Admin_FormationControllerEditSessionLearningJavaMars27Test extends  Admin_
 
 	/** @test */
 	public function inputLieuShouldContainsSalleReunionAFI() {
-		$this->assertXPath('//input[@name="lieu"][@value="Salle réunion AFI"]');
+		$this->assertXPathContentContains('//select[@name="lieu_id"]//option[@value="12"]', "Salle reunion AFI");
 	}
 }
+
+
 
 
 class Admin_FormationControllerDeleteSessionLearningJavaMars27Test extends  Admin_FormationControllerTestCase  {
@@ -577,6 +625,8 @@ class Admin_FormationControllerDeleteSessionLearningJavaMars27Test extends  Admi
 		$this->assertRedirectTo('/admin/formation');
 	}
 }
+
+
 
 
 class Admin_FormationControllerDeleteFormationLearningJavaTest extends  Admin_FormationControllerTestCase  {
@@ -614,6 +664,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 	public function setUp() {
 		parent::setUp();
+
 		$this->postDispatch('/admin/formation/session_edit/id/32',
 												array('date_debut' => '29/05/2012',
 															'date_limite_inscription' => '03/05/2012',
@@ -621,7 +672,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 															'effectif_max' => '8',
 															'contenu' => 'Accompagné d un bon café',
 															'horaires' => '9h - 18h',
-															'lieu' => 'Au café du coin',
+															'lieu_id' => 18,
 															'is_annule' => '1'));
 		$this->_session = Class_SessionFormation::getLoader()->find(32);
 	}
@@ -653,8 +704,8 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 
 	/** @test */
-	function responseShouldRedirectToFormationIndex() {
-		$this->assertRedirectTo('/admin/formation');
+	function responseShouldRedirectToSessionFormationEdit() {
+		$this->assertRedirectTo('/admin/formation/session_edit/id/32');
 	}
 
 	/** @test */
@@ -677,7 +728,7 @@ class Admin_FormationControllerPostSessionLearnJavaTest extends  Admin_Formation
 
 	/** @test */
 	public function lieuShouldEqualsAuCafeDuCoin() {
-		$this->assertEquals('Au café du coin', $this->_session->getLieu());
+		$this->assertEquals('Au café du coin', $this->_session->getLieu()->getLibelle());
 	}
 
 
@@ -697,7 +748,7 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 												array('date_debut' => '',
 															'effectif_min' => 20,
 															'effectif_max' => 4,
-															'date_limite_inscription' => '05/01/2099'));
+															'date_limite_inscription' => '05/01/2022'));
 	}
 
 	/** @test */
@@ -721,8 +772,26 @@ class Admin_FormationControllerPostSessionLearnJavaWithInvalidDataTest extends  
 	/** @test */
 	public function errorsShouldContainsDateLimiteInscriptionAfterDateDebut() {
 		$this->assertXPathContentContains('//ul[@class="errors"]//li', 
-																			"La date limite d'inscription doit être inférieure ou égale à la date de début",
-																			$this->_response->getBody());
+																			"La date limite d'inscription doit être inférieure ou égale à la date de début");
+	}
+}
+
+
+
+
+class Admin_FormationControllerPostSessionLearnJavaWithInvalidDateFinTest extends  Admin_FormationControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->postDispatch('/admin/formation/session_edit/id/32',
+												array('date_debut' => '05/02/2011',
+															'date_fin' => '05/01/2010'));
+	}
+
+
+	/** @test */
+	public function errorsShouldContainsDateFinBeforeDateDebut() {
+		$this->assertXPathContentContains('//ul[@class="errors"]//li', 
+																			"La date de fin doit être supérieure ou égale à la date de début");
 	}
 }
 
@@ -779,14 +848,24 @@ class Admin_FormationControllerAddSessionToFormationLearningPythonTest extends  
 class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest extends  Admin_FormationControllerTestCase  {
 	public function setUp() {
 		parent::setUp();
+
+
+		Class_SessionFormation::getLoader()
+			->whenCalled('save')
+			->willDo(function($session) {
+					$session->setId(99); 
+					return true;
+				});
+
 		$this->postDispatch('/admin/formation/session_add/formation_id/12',
 												array('date_debut' => '17/02/2010',
+															'date_fin' => '17/02/2010',
 															'effectif_min' => '3',
 															'effectif_max' => '12',
 															'contenu' => 'On charme les serpents',
 															'intervenant_ids' => array(34, 35),
 															'horaires' => '9h - 18h',
-															'lieu' => 'au marché',
+															'lieu_id' => 28,
 															'is_annule' => '0'));
 		$this->session = Class_SessionFormation::getLoader()->getFirstAttributeForLastCallOn('save');
 	}
@@ -799,8 +878,14 @@ class Admin_FormationControllerPostAddSessionToFormationLearningPythonTest exten
 
 
 	/** @test */
+	function newSessionDateFinShouldBe2010_02_17() {
+		$this->assertEquals('2010-02-17', $this->session->getDateFin());
+	}
+
+
+	/** @test */
 	function answerShouldRedirectToFormationIndex() {
-		$this->assertRedirectTo('/admin/formation');
+		$this->assertRedirectTo('/admin/formation/session_edit/id/99');
 	}
 
 
@@ -1143,7 +1228,7 @@ class Admin_FormationControllerInscriptionsSessionMarsJavaRechercheAmaTest exten
 						 "inner join user_group_memberships on user_group_memberships.user_id = bib_admin_users.id_user ".
 						 "inner join user_groups on user_group_memberships.user_group_id = user_groups.id  ".
 						 "where (user_groups.rights_token & 1 = 1) and ".
-						 "(nom like '%ama%' or prenom like '%ama%' or login like '%ama%') ".
+						 "(nom like 'ama%' or login like 'ama%') ".
 						 "order by nom, prenom, login limit 500")
 			->answers(array($this->_amadou, $this->_amandine, $this->_patrick));
 
@@ -1247,7 +1332,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 										<h2>{session_formation.formation.libelle}</h2>
 
 										<p>
-										{session_formation.date_debut}
+										{date_context.texte}
 										</p>
 
 										<p>
@@ -1260,6 +1345,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 			->setNom('FORMATION_CONVOCATION')
 			->setContenu('<div>
 										<h1>Convocation pour {stagiaire.nom}, {stagiaire.prenom}</h1>
+                    <p>Fait le {date_jour.texte}</p>
 										<p>Le stage {session_formation.formation.libelle} débutera le {session_formation.date_debut}</p>
 										</div>');
 
@@ -1267,7 +1353,7 @@ abstract class FormationControllerImpressionsTestCase extends Admin_FormationCon
 		$modele_lettre_stagiaires = Class_ModeleFusion::getLoader()
 			->newInstanceWithId(19)
 			->setNom('FORMATION_LISTE_STAGIAIRES')
-			->setContenu('<h1>Liste des stagiaires pour la session du {session_formation.date_debut_texte}</h1>
+			->setContenu('<h1>Liste des stagiaires pour la session du {session_formation.date_debut_texte} au {session_formation.date_fin_texte}</h1>
 			              <h2>{session_formation.formation.libelle}</h2>
 				            {session_formation.stagiaires["Nom":nom, "Prénom":prenom, "Bibliothèque":bib.libelle, "Téléphone":telephone]}');
 
@@ -1434,10 +1520,15 @@ class FormationControllerFicheEmargementSessionJavaFevrierTest extends Formation
 
 	/** @test */
 	public function pageShouldContainsH1WithLettreEmargement() {
-		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//h1', 
-																			'Lettre emargement',
-																			$this->_response->getBody());
+		$this->assertXPathCount('//div[@class="lettre_fusion"]//h1[text()="Lettre emargement"]', 1);
 	}
+
+
+	/** @test */
+	public function pageShouldContainsParagraphWith17Fevrier2012() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//p', '17 février 2012', $this->_response->getBody());
+	}
+
 
 
 	/** @test */
@@ -1462,6 +1553,46 @@ class FormationControllerFicheEmargementSessionJavaFevrierTest extends Formation
 
 
 
+class FormationControllerFicheEmargementSessionJavaMarsTest extends FormationControllerImpressionsTestCase  {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/admin/formation/fiche_emargement/id/32');
+	}
+
+
+	/** @test */
+	public function actionShouldBeFicheEmargement() {
+		$this->assertAction('fiche_emargement');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsThreeH1WithLettreEmargement() {
+		$this->assertXPathCount('//div[@class="lettre_fusion"]//h1[text()="Lettre emargement"]', 3);
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor27Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[1]//p', '27 mars 2012');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor28Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[3]//p', '28 mars 2012');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsLettreFor29Mars() {
+		$this->assertXPathContentContains('//div[@class="lettre_fusion"]//div[5]//p', '29 mars 2012', $this->_response->getBody());
+	}
+}
+
+
+
+
 class FormationControllerConvocationTestCase extends FormationControllerImpressionsTestCase  {
 	public function setUp() {
 		parent::setUp();
@@ -1478,6 +1609,12 @@ class FormationControllerConvocationTestCase extends FormationControllerImpressi
 	/** @test */
 	public function pageShouldContainssConvocationPourBenoit() {
 		$this->assertXPathContentContains('//h1', 'Convocation pour Curzillat, Benoit');
+	}
+
+
+	/** @test */
+	public function pageShouldContainsDateDuJour() {
+		$this->assertXPathContentContains('//p', strftime('%e %B %Y'));
 	}
 
 

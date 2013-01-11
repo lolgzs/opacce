@@ -29,9 +29,13 @@ class Class_Systeme_PergameService
 	//------------------------------------------------------------------------------------------------------
 	// Constructeur
 	//------------------------------------------------------------------------------------------------------
-	function  __construct($user)
-	{
+	function  __construct($user)	{
 		$this->user=$user;
+	}
+
+
+	public function getUser() {
+		return $this->user;
 	}
 
 	//------------------------------------------------------------------------------------------------------
@@ -184,7 +188,7 @@ class Class_Systeme_PergameService
 	private function getNoticeFromTransaction($support,$id_notice_pergame)
 	{
 		$cls_notice=new Class_Notice();
-		$ids=fetchAll("select id_notice from exemplaires where id_origine=$id_notice_pergame");
+		$ids=fetchAll("select id_notice from exemplaires where id_origine='".$id_notice_pergame."'");
 		if(!$ids)
 		{
 			$notice["T"]="Anomalie de lecture du titre";
@@ -270,6 +274,57 @@ class Class_Systeme_PergameService
 		$date=$resa["DATE_RESA"];
 		$id_site=$resa["ID_SITE"];
 		$this->ecrireTransaction(7,array($id_abon,$ordre_abon,$date,$id_origine,$id_site));
+	}
+
+	// Prolonger un prêt
+	function ProlongerPret($id_pret)
+	{
+		// lire enreg pret
+		$pret=fetchEnreg("select * from prets where id_pret=$id_pret");
+		$dateJour = date("Y-m-d");
+		$support=$pret["SUPPORT"];
+
+		// règles paramétrées
+		$regles=Class_IntBib::getLoader()->find($pret['ID_SITE'])->getCommParamsAsArray();
+		$complement_msg ='<br>Veuillez vous adresser à un responsable de la bibliothèque.';
+
+		// Lire le nombre de prolongations
+		$nbProlong=(int)$pret["NB_PROLONGATIONS"];
+		$nbProlong+=1;
+		$dateRetour=$pret["DATE_RETOUR"];
+		if($nbProlong > $regles["Nombre_max_par_document"]) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a atteint le nombre de prolongations autorisé.".$complement_msg);
+
+		// Controle anterioritemax
+		$anteriorite_max=(int)$regles['Anteriorite_max_en_jours'];
+		if($anteriorite_max)
+		{
+			$ecart=ecartDates($dateJour, $dateRetour);
+			if($ecart>$anteriorite_max) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il a un retard trop important.".$complement_msg);
+		}
+
+		// Controle si le doc est réservé
+		if($regles["Interdire_si_reservation"]==1)
+		{
+			$controle=fetchOne("Select Count(*) From reservations Where ID_NOTICE_ORIGINE=".$pret["ID_NOTICE_ORIGINE"]." and IDABON='".$pret["ID_ABON"]."'");
+			if($controle>0) return array('statut'=>0,"erreur"=>"Le prêt n'a pas pu être prolongé car il est réservé.".$complement_msg);
+		}
+		
+		// On prolonge
+		$newDate=ajouterJours($pret["DATE_RETOUR"],$regles['Duree_en_jours']);
+		while($newDate<=$dateJour) $newDate=ajouterJours($newDate,$regles['Duree_en_jours']);
+		$tempsProlong=(int)$regles['Duree_en_jours'];
+
+		// Ecrire le prêt
+		sqlExecute("Update prets Set DATE_RETOUR='$newDate', NB_PROLONGATIONS=$nbProlong Where ID_PRET=".$pret["ID_PRET"]);
+	
+		// Ecrire le mouvement
+		$enreg["ID_PRET"]=$pret["ID_PERGAME"];
+		$enreg["DATE_RETOUR"]=$newDate;
+		$enreg["NB_PROLONG"]=$nbProlong;
+		$enreg["TEMPS_PROLONG"]=$tempsProlong;
+
+		$this->ecrireTransaction(5,$enreg);
+		return array('statut'=>1);
 	}
 
 	//------------------------------------------------------------------------------------------------------

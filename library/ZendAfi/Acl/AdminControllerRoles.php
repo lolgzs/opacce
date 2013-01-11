@@ -36,7 +36,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 	
 	protected static $listeRole = array(
 	'0' => array('abrege' => 'invite','libelle' => 'invité'),   													// 0 - Invité - Par default axx contenu.
-	'1' => array('abrege' => 'abonne','libelle' => 'abonné'),															// 1 - Abonne (registered) - Utilisateur du site (fonctionnalité non pergame reservation par mail, etc...)
+	//	'1' => array('abrege' => 'abonne','libelle' => 'abonné'),															// 1 - Abonne (registered) - Utilisateur du site (fonctionnalité non pergame reservation par mail, etc...)
 	'2' => array('abrege' => 'abonne_sigb','libelle' => 'abonné identifié SIGB'), 		// 2 - Abonne identifié dans 1 sigb - Utilisateur de site bib.( axx fonctionalité pergame)
 	'3' => array('abrege' => 'modo_bib','libelle' => 'rédacteur bibliothèque'),				// 3 - Modo bib - Modo all MAIS que sur sa bib
 	'4' => array('abrege' => 'admin_bib','libelle' => 'administrateur bibliothèque'),	// 4 - Admin de bib - Axx all MAIS que sur sa bib
@@ -64,6 +64,7 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->add(new Zend_Acl_Resource('sito'));
 		$this->add(new Zend_Acl_Resource('menus'));
 		$this->add(new Zend_Acl_Resource('catalogue'));
+		$this->add(new Zend_Acl_Resource('accueil'));
 		
 		// Ressources reprise en OPAC 3
 		$this->add(new Zend_Acl_Resource('index'));
@@ -74,6 +75,8 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->add(new Zend_Acl_Resource('formation'));
 		$this->add(new Zend_Acl_Resource('profil'));
 		$this->add(new Zend_Acl_Resource('stat'));
+		$this->add(new Zend_Acl_Resource('lieu'));
+		$this->add(new Zend_Acl_Resource('upload'));
 
 		//Roles
 		$this->addRole(new Zend_Acl_Role('invite'));
@@ -96,14 +99,16 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$this->allow('modo_bib','agenda');
 		$this->allow('modo_bib','index');
 		$this->allow('modo_bib','stat');
+		$this->allow('modo_bib','accueil');
+		$this->allow('modo_bib','bib');
+		$this->allow('modo_bib','upload');
+
 
 		$this->allow('admin_bib','users');
 		$this->allow('admin_bib','profil');
-		$this->allow('admin_bib','bib');
 		$this->allow('admin_bib','modo');
 		$this->allow('admin_bib','menus');
 		$this->allow('admin_bib','catalogue');
-
 
 		$this->allow('modo_portail');
 		$this->allow('admin_portail');
@@ -115,6 +120,13 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 		$roles = array();
 		foreach(self::$listeRole as $level => $role)
 			$roles[$level] = $role['libelle'];
+		return $roles;
+	}
+
+
+	public static function getListeRolesWithoutSuperAdmin() {
+		$roles = static::getListeRoles();
+		unset($roles[static::SUPER_ADMIN]);
 		return $roles;
 	}
 
@@ -139,11 +151,10 @@ class ZendAfi_Acl_AdminControllerRoles extends Zend_Acl {
 	$html[]='<select name="role">';
 	if($tous==true)
 	{
-		if($selected=="") $sel=' selected="selected"';
+		$sel = ($selected=="") ? ' selected="selected"' : '';
 		$html[]='<option value=""'.$sel.'>&nbsp;</option>';
 	}
-	foreach(self::$listeRole as $level => $role)
-	{
+	foreach(self::$listeRole as $level => $role)	{
 		if ($role["abrege"] == $selected or ($selected > "" and $level==(int)$selected )) $ligne='selected="selected"'; else $ligne="";
 		if ($level <= $user_role_level and $level!=7) $html[]= '<option value="'.$level.'" '.$ligne.'>'. $role["libelle"] . '</option>';
 	}

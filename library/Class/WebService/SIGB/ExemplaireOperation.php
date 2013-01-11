@@ -30,6 +30,11 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	protected $_attributes;
 
 
+	public static function newInstanceWithEmptyExemplaire() {
+		return new static(null, new Class_WebService_SIGB_Exemplaire(null));
+	}
+
+
 	/**
 	 * @param string $id
 	 * @param Class_WebService_SIGB_Exemplaire $exemplaire
@@ -115,6 +120,12 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	}
 
 
+	public function setBibliotheque($data) {
+		$this->_exemplaire->setBibliotheque($data);
+		return $this;
+	}
+
+
 	/**
 	 * @return string
 	 */
@@ -128,7 +139,8 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	 * @return Class_WebService_SIGB_ExemplaireOperation
 	 */
 	public function setAuteur($data) {
-		return $this->_exemplaire->setAuteur($data);
+		$this->_exemplaire->setAuteur($data);
+		return $this;
 	}
 	
 
@@ -155,6 +167,24 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	 */
 	public function getNoticeOPAC() {
 		return $this->_exemplaire->getNoticeOPAC();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getNoNotice() {
+		return $this->_exemplaire->getNoNotice();
+	}
+
+
+	/**
+	 * @param no_notice int
+	 * @return Class_WebService_SIGB_ExemplaireOperation
+	 */
+	public function setNoNotice($no_notice) {
+		$this->_exemplaire->setNoNotice($no_notice);
+		return $this;
 	}
 
 
@@ -190,7 +220,7 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	public function parseExtraAttributes($attributes) {
 		$this->_attributes = $attributes;
 
-		$this->_exemplaire->setBibliotheque($this->getAttribute('Bibliotheque'));
+		$this->_exemplaire->setBibliotheque($this->getAttribute('Biblio'));
 		$this->_exemplaire->setSection($this->getAttribute('Section'));
 		$this->_exemplaire->setAuteur($this->getAttribute('Auteur'));
 		$this->_exemplaire->setNoNotice($this->getAttribute('N° de notice'));
@@ -212,8 +242,11 @@ abstract class Class_WebService_SIGB_ExemplaireOperation {
 	 */
 	protected function getAttribute($name) {
 		if (!isset($this->_attributes)) return '';
-		if (!array_key_exists($name, $this->_attributes)) return '';
-		return $this->_attributes[$name];
+		foreach($this->_attributes as $attribute => $value) {
+			if (false !== strpos(strtolower($attribute), strtolower($name)))
+				return $value;
+		}
+		return '';
 	}
 }
 

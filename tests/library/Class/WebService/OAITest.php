@@ -31,10 +31,9 @@ class OAITestGetSets extends PHPUnit_Framework_TestCase {
 			->will($this->returnValue(
 										file_get_contents(dirname(__FILE__).'/OAIListSets.xml')));
 
+		Class_WebService_OAI::setDefaultWebClient($xml_mock);
 	  $this->oai_service = new Class_WebService_OAI();
-		$this->oai_service
-			->setOAIHandler('http://oai.bnf.fr/oai2/OAIHandler')
-			->setWebClient($xml_mock);
+		$this->oai_service->setOAIHandler('http://oai.bnf.fr/oai2/OAIHandler');
 	}
 
 
@@ -42,6 +41,7 @@ class OAITestGetSets extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(file_get_contents(dirname(__FILE__).'/OAIListSets.xml'),
 												$this->oai_service->listSets());
 	}
+
 
 	public function testSetsCountEqualsOneHundred() {
 		$this->assertEquals(100,
@@ -57,34 +57,41 @@ class OAITestGetSets extends PHPUnit_Framework_TestCase {
 }
 
 
+
+
 class OAITestGetRecordsOfSetGallica extends PHPUnit_Framework_TestCase {
+	protected $oai_service;
+
 	public function setUp() {
 		$xml_mock = $this->getMock('Class_XMLMock',
 															 array('open_url'));
 		$xml_mock
-			->expects($this->once())
+			->expects($this->any())
 			->method('open_url')
 			->with($this->equalTo('http://oai.bnf.fr/oai2/OAIHandler?verb=ListRecords&metadataPrefix=oai_dc&set=gallica'))
 			->will($this->returnValue(
 										file_get_contents(dirname(__FILE__).'/OAIListRecords.xml')));
 
 
+		Class_WebService_OAI::setDefaultWebClient($xml_mock);
 	  $this->oai_service = new Class_WebService_OAI();
 		$this->records = $this->oai_service
 			->setOAIHandler('http://oai.bnf.fr/oai2/OAIHandler')
-			->setWebClient($xml_mock)
 			->getRecordsFromSet('gallica');
 	}
+
 
 	public function testNoticeCountIsOneHundred() {
 		$this->assertEquals(100, count($this->records));
 	}
+
 
 	public function testFirstRecordIsVoyageEgypte() {
 		$first = $this->records[0];
 		$this->assertEquals('http://gallica.bnf.fr/ark:/12148/bpt6k852111',
 												$first['id_oai']);
 	}
+
 
 	public function testFifthIsPremieresOeuvres() {
 		$premieres_oeuvres = $this->records[4];		
@@ -100,24 +107,28 @@ class OAITestGetRecordsOfSetGallica extends PHPUnit_Framework_TestCase {
 												$premieres_oeuvres['date']);
 	}
 
+
 	public function testHasNextRecordsReturnTrue() {
 		$this->assertTrue($this->oai_service->hasNextRecords());
 	}
 
+
 	public function testGetTotalNumberOfRecordsReturns980266 () {
 		$this->assertEquals(980266, $this->oai_service->getTotalNumberOfRecords());
 	}
+
 
 	public function testNextRecordsUseResumptionTokenAndFetchNextRecords() {
 		$xml_mock = $this->getMock('Class_XMLMock',
 															 array('open_url'));
 		$this->oai_service->setWebClient($xml_mock);
 		$xml_mock
-			->expects($this->once())
+			->expects($this->any())
 			->method('open_url')
 			->with($this->equalTo('http://oai.bnf.fr/oai2/OAIHandler?verb=ListRecords&resumptionToken='.urlencode('2!2!2758354!158!100!980266!oai_dc')))
 			->will($this->returnValue(
 										file_get_contents(dirname(__FILE__).'/OAIListRecords2.xml')));
+
 		$this->oai_service->getNextRecords();
 		$this->assertFalse($this->oai_service->hasNextRecords());
 		$this->assertEquals(800, $this->oai_service->getListRecordsResumptionToken()->getCursor());

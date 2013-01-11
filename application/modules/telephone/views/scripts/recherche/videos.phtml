@@ -1,0 +1,20 @@
+
+
+  <?php
+  echo $this->toolbar($this->_("Vidéos"));
+  echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';?>
+<ul data-role="listview" data-inset="true">
+<li data-theme="c">
+<?php
+     if ($this->video_id) 
+       echo sprintf('<iframe src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>',$this->video_id);
+     else
+       echo $this->_('Aucune vidéo trouvée');
+  ?>
+</li>
+</ul>
+
+ 
+
+
+

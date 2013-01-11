@@ -14,7 +14,9 @@ echo $this->bouton('id=add_usergroup',
 		<tr class="soustitre">
 			<td>Libellé</td>
 			<td>Membres</td>
+      <?php if (Class_AdminVar::isFormationEnabled()) { ?>
 			<td>Droits</td>
+      <?php } ?>
 			<td></td>
 		</tr>
 	</thead>

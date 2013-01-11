@@ -25,7 +25,7 @@ class Class_Formation extends Storm_Model_Abstract {
 																									 'model' => 'Class_SessionFormation',
 																									 'role' => 'formation',
 																									 'dependents' => 'delete',
-																									 'order' => 'date_debut desc'),
+																									 'order' => 'date_debut'),
 
 															 'session_formation_inscriptions' => array('through' => 'sessions'),
 
@@ -43,10 +43,10 @@ class Class_Formation extends Storm_Model_Abstract {
 		foreach($formations as $formation) {
 			if (!array_key_exists($formation->getAnnee(), $formations_by_year))
 				$formations_by_year[$formation->getAnnee()] = array();
-
-			$formations_by_year[$formation->getAnnee()][] = $formation;
+			if ($formation->hasSessions())
+				$formations_by_year[$formation->getAnnee()][] = $formation;
 		}
-		krsort($formations_by_year);
+		ksort($formations_by_year);
 
 		return $formations_by_year;
 	}

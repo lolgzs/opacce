@@ -8,11 +8,11 @@ $hauteur=$this->preferences["op_hauteur_img"];
 if(!$largeur) $largeur=90;
 if(!$hauteur) $hauteur=110;
 
-if(!$this->notices) $images='<p style="margin-left:10px;color:red;font-size:10pt">'.$this->_("Aucun document n'a été trouvé").'</p>';
-else
-{
-	foreach($this->notices as $notice)
-	{
+if(!$this->notices) 
+	$images='<p style="margin-left:10px;color:red;font-size:10pt">'.$this->_("Aucun document n'a été trouvé").'</p>';
+else {
+	$images = '';
+	foreach($this->notices as $notice){
 		$img='<img alt="vignette notice'.$notice["titre"].'" src="'.$notice["vignette"].'" width="'.$largeur.'" height="'.$hauteur.'" style="float:left;" alt="'.$notice["titre"].'" title="'.$notice["titre"].'"/>';
 		$images.= '<a id="test" href="'.BASE_URL.'/recherche/viewnotice/id/'.$notice["id_notice"].'/type_doc/'.$notice["type_doc"].'" target="_parent">'.$img.'</a> ';		
 	}

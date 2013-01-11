@@ -36,16 +36,72 @@ class StubSoapClient {
 
 
 
-class OpsysServiceFactoryTest extends PHPUnit_Framework_TestCase {
-	/** @test */
-	public function getServiceShouldReturnAnInstanceOfOpsysService() {
-		Class_WebService_SIGB_Opsys::reset();
 
+abstract class OpsysServiceFactoryWithCatalogueWebTestCase extends PHPUnit_Framework_TestCase {
+	protected $_service;
+
+	public function setUp() {
+		Class_WebService_SIGB_Opsys::reset();
 		Class_WebService_SIGB_Opsys_ServiceFactory::setSoapClientClass('StubSoapClient');
-		$this->assertInstanceOf('Class_WebService_SIGB_Opsys_Service',
-														Class_WebService_SIGB_Opsys::getService("http://localhost:8088/mockServiceRechercheSoap?WSDL"));
 	}
 }
+
+
+
+
+class OpsysServiceFactoryWithCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
+																																		'catalogue_web' => '1'));
+	}
+
+
+	/** @test */
+	public function getServiceShouldReturnAnInstanceOfOpsysService() {
+		$this->assertInstanceOf('Class_WebService_SIGB_Opsys_Service', $this->_service);
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfStupSoapClient() {
+		$this->assertInstanceOf('StubSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
+
+
+
+class OpsysServiceFactoryWithoutCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL",
+																																		'catalogue_web' => '0'));
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfNullCatalogClient() {
+		$this->assertInstanceOf('NullCatalogSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
+
+
+
+class OpsysServiceFactoryWithoutParamCatalogueWebTest extends OpsysServiceFactoryWithCatalogueWebTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->_service = Class_WebService_SIGB_Opsys::getService(array('url_serveur' => "http://localhost:8088/mockServiceRechercheSoap?WSDL"));
+	}
+
+
+	/** @test */
+	public function catalogClientShouldBeAnInstanceOfStupSoapClient() {
+		$this->assertInstanceOf('StubSoapClient', $this->_service->getCatalogClient());
+	}
+}
+
 
 
 
@@ -152,6 +208,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 			->method('createOpsysService')
 			->with(
 						 $this->equalTo('opsys.wsdl'),
+						 $this->equalTo(true),
 						 $this->equalTo( array(
 																	 'proxy_host' => '192.168.2.2',
 																	 'proxy_port' => '3128',
@@ -176,6 +233,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 			->method('createOpsysService')
 			->with(
 						 $this->equalTo('afi.wsdl'),
+						 $this->equalTo(true),
 						 $this->equalTo( array(
 																	 'proxy_host' => '10.0.0.5',
 																	 'proxy_port' => '8080',
@@ -200,7 +258,7 @@ class Class_WebService_SIGB_OpsysServiceTestProxy extends PHPUnit_Framework_Test
 }
 
 
-class NoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
+class OpsysServiceNoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
 	public function testPopDisponibiliteOnEmptyNoticeReturnsFalse(){
 		$notice = new Class_WebService_SIGB_Notice('123');
 		$this->assertFalse($notice->popDisponibilite());
@@ -220,7 +278,9 @@ class NoticeTestDispoExemplaire extends PHPUnit_Framework_TestCase {
 }
 
 
-class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceNoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 	private $notices;
 	private $cache;
 
@@ -233,10 +293,10 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->notice_potter = new Class_WebService_SIGB_Notice('potter');
 		for ($i = 0; $i <= 2; $i++) {
-			$ex = new Class_WebService_SIGB_Exemplaire("$i");
-			$ex->setDisponibiliteLibre();
-			$ex->setCodeBarre("$i");
-			$this->notice_potter->addExemplaire($ex);
+			$this->notice_potter->addExemplaire((new Class_WebService_SIGB_Exemplaire("$i"))
+																					->setDisponibiliteLibre()
+																					->setCodeBarre("$i")
+																					->setCote("HP $i"));
 		}
 
 		$notice_vide = new Class_WebService_SIGB_Notice('vide');
@@ -246,30 +306,36 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 		$this->cache = new Class_WebService_SIGB_NoticeCache($this);
 	}
 
+
 	public function testGetExemplaireWithInexistantNoticeIsIndisponible(){
 		$exemplaire = $this->cache->getExemplaire("inexistant", "");
 		$this->assertEquals("Indisponible", $exemplaire->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithInexistantNoticeIsNotValid(){
 		$exemplaire = $this->cache->getExemplaire("inexistant", "");
 		$this->assertFalse($exemplaire->isValid());
 	}
 
+
 	public function testGetExemplaireWithEmptyNoticeIsIndisponible(){
 		$exemplaire = $this->cache->getExemplaire("vide", "");
 		$this->assertEquals("Indisponible", $exemplaire->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithEmptyNoticeIsNotValid(){
 		$exemplaire = $this->cache->getExemplaire("vide", "");
 		$this->assertFalse($exemplaire->isValid());
 	}
 
+
 	public function testGetExemplaireWithPotterPopDisponiblite(){
 		$this->assertEquals("Disponible",
 												$this->cache->getExemplaire("potter", "0")->getDisponibilite());
 	}
+
 
 	public function testGetExemplaireWithPotterIsValid(){
 		$this->assertTrue($this->cache
@@ -288,6 +354,16 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testGetExemplaireWithCote() {
+		$this->assertEquals("HP 0",
+												$this->cache->getExemplaire("potter", "0")->getCote());
+		$this->assertEquals("HP 1",
+												$this->cache->getExemplaire("potter", "1")->getCote());
+		$this->assertEquals("HP 2",
+												$this->cache->getExemplaire("potter", "2")->getCote());
+	}
+
+
 	public function testCallLoadNoticeOnlyOncePerNotice(){
 		$this->assertEquals("Disponible",
 												$this->cache->getExemplaire("potter", "0")->getDisponibilite());
@@ -300,6 +376,7 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 												$this->cache->getExemplaire("potter", "3")->getDisponibilite());
 	}
 
+
 	public function testExemplaireReservableIfNoticeReservable(){
 		$this->notice_potter->setReservable(true);
 		$this->assertTrue($this->cache->getExemplaire("potter", "1")->isReservable());
@@ -310,38 +387,19 @@ class NoticeCacheTestGetExemplaire extends PHPUnit_Framework_TestCase {
 
 
 
-abstract class OpsysServiceWithSessionTestCase extends PHPUnit_Framework_TestCase {
+
+abstract class OpsysServiceWithSessionTestCase extends Storm_Test_ModelTestCase {
 	protected $opsys;
 
 	public function setUp(){
-		$this->ouvre_session_res = $this->getMock(
-																							'OuvreSessionResponseMock',
-																							array('getGUID'));
+		$this->ouvre_session_res = $this->mock();
+		$this->search_client = $this->mock();
+		$this->catalog_client = $this->mock();
 
-		$this->search_client = $this->getMock(
-																	 'MappedSoapClientMock',
-																	 array('OuvrirSession', 'FermerSession', 'RecupererNotice',
-																				 'EmprAuthentifier', 'EmprSupprResa', 'EmprProlong',
-																				 'EmprListerEntite', 'EmprReserver'));
-
-		$this->catalog_client = $this->getMock(
-																					 'MappedSoapClientMock',
-																					 array('EcrireNotice'));
-
-		$this->search_client
-			->expects($this->any())
-			->method('OuvrirSession')
-			->will($this->returnValue($this->ouvre_session_res));
 
 		$this->ouvre_session_res
-			->expects($this->any())
-			->method('getGUID')
-			->will($this->returnValue('guid_12345'));
-
-		$this->search_client
-			->expects($this->any())
-			->method('FermerSession');
-
+			->whenCalled('getGUID')
+			->answers('guid_12345');
 
 		$auth_response = new EmprAuthentifierResponse();
 		$auth_response->EmprAuthentifierResult = new RspEmprAuthentifier();
@@ -352,17 +410,87 @@ abstract class OpsysServiceWithSessionTestCase extends PHPUnit_Framework_TestCas
 		$auth_response->EmprAuthentifierResult->NombreReservations = 3;
 		$auth_response->EmprAuthentifierResult->NombreRetards = 2;
 
+		$entite_infos_response = new EmprListerEntiteResponse();
+		$entite_infos_response->EmprListerEntiteResult = new RspEmprListerEntite();
+		$entite_infos_response->EmprListerEntiteResult->Entite = new EntiteEmp();
+		$entite_infos_response->EmprListerEntiteResult->Entite->LibelleDonnee = new StdClass();
+		$entite_infos_response->EmprListerEntiteResult->Entite->LibelleDonnee->string = ['Nom', 'Prenom', 'FinAbo'];
+		$entite_infos_response->EmprListerEntiteResult->Entite->Donnees = new StdClass();
+		$entite_infos_response->EmprListerEntiteResult->Entite->Donnees->Lignes = [$donnes_infos = new DonneeEmp()];
+		$donnes_infos->ValeursDonnees = new StdClass();
+		$donnes_infos->ValeursDonnees->string = ['Tin', 'Tin', '10/12/2012'];
+
 		$this->search_client
-			->expects($this->any())
-			->method('EmprAuthentifier')
-			->will($this->returnValue($auth_response));
+			->whenCalled('OuvrirSession')->answers($this->ouvre_session_res)
+			->whenCalled('FermerSession')->answers(null)
+			->whenCalled('EmprAuthentifier')->answers($auth_response)
+			->whenCalled('EmprListerEntite')->answers($entite_infos_response);
 
 		$this->opsys = new Class_WebService_SIGB_Opsys_Service($this->search_client, $this->catalog_client);
 	}
 }
 
 
-class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
+
+class OpsysServiceEmprAuthentifierErreurTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+
+		$auth_response_error = new EmprAuthentifierResponse();
+		$auth_response_error->EmprAuthentifierResult = new RspEmprAuthentifier();
+		$auth_response_error->ErreurService = new WebSrvErreur();
+		$auth_response_error->ErreurService->CodeErreur = '1';
+
+
+		$entite_infos_response_error = new EmprListerEntiteResponse();
+		$entite_infos_response_error->EmprListerEntiteResult = new RspEmprListerEntite();
+		$entite_infos_response_error->EmprListerEntiteResult->ErreurService = new WebSrvErreur();
+		$entite_infos_response_error->EmprListerEntiteResult->ErreurService->CodeErreur = '1';
+
+		$this->search_client			
+			->whenCalled('EmprAuthentifier')->answers($auth_response_error)
+			->whenCalled('EmprListerEntite')->answers($entite_infos_response_error);
+
+		$this->emprunteur = $this->opsys->getEmprunteur(
+													Class_Users::getLoader()->newInstance()
+														->setLogin('tintin')
+														->setPassword('1234'));
+	}
+
+
+	public function testEmprunteurIsNotValid() {
+		$this->assertFalse($this->emprunteur->isValid());
+	}
+}
+
+
+
+
+class OpsysServiceEmprAuthentifierNoCommunicationTest extends OpsysServiceWithSessionTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$this->search_client			
+			->whenCalled('EmprAuthentifier')
+			->willDo(function() {throw new SoapFault('Communication', 'error');});
+
+		$this->emprunteur = $this->opsys->getEmprunteur(
+													Class_Users::getLoader()->newInstance()
+														->setLogin('tintin')
+														->setPassword('1234'));
+	}
+
+
+	public function testEmprunteurIsNotValid() {
+		$this->assertFalse($this->emprunteur->isValid());
+	}
+}
+
+
+
+
+class OpsysServiceEmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->emprunteur = $this->opsys->getEmprunteur(
@@ -378,6 +506,27 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 
 	public function testEmprunteurNameIsTintin() {
 		$this->assertEquals('tintin', $this->emprunteur->getName());
+	}
+
+
+	public function testEmprunteurNomIsTin() {
+		$this->assertEquals('Tin', $this->emprunteur->getNom());
+	}
+
+
+	public function testEmprunteurPrenomIsTin() {
+		$this->assertEquals('Tin', $this->emprunteur->getPrenom());
+	}
+
+
+	/** @test */
+	public function emprunteurEndDateShouldBe10_12_2012() {
+		$this->assertEquals('2012-12-10', $this->emprunteur->getEndDate());
+	}
+
+
+	public function testEmprunteurIsValid() {
+		$this->assertTrue($this->emprunteur->isValid());
 	}
 
 
@@ -402,21 +551,21 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 																	->setPassword('1234')));
 	}
 
-
 	public function testGetEmpruntsOfTintin() {
 		$liste_prets = new EmprListerEntiteResponse();
 		$liste_prets->EmprListerEntiteResult = new RspEmprListerEntite();
 		$liste_retards = $liste_prets;
 
 		$this->search_client
-			->expects($this->at(0))
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_prets));
+			->whenCalled('EmprListerEntite')
+			->willDo(function() use ($liste_prets, $liste_retards) { 
+					$this->search_client
+						->whenCalled('EmprListerEntite')
+						->answers($liste_retards);
 
-		$this->search_client
-			->expects($this->at(1))
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_retards));
+					return $liste_retards;
+				});
+
 
 		$this->assertEquals(0, count($this->opsys->getEmpruntsOf($this->emprunteur)));;
 	}
@@ -427,9 +576,8 @@ class EmprAuthentifierTestCreateEmprunteur extends OpsysServiceWithSessionTestCa
 		$liste_reservations->EmprListerEntiteResult = new RspEmprListerEntite();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprListerEntite')
-			->will($this->returnValue($liste_reservations));
+			->whenCalled('EmprListerEntite')
+			->answers($liste_reservations);
 
 		$this->assertEquals(0, count($this->opsys->getReservationsOf($this->emprunteur)));;
 	}
@@ -457,9 +605,8 @@ class OpsysServiceGetExemplaireFromCacheTestDisponibilite extends OpsysServiceWi
 			->will($this->returnValue($notice_potter));
 
 		$this->search_client
-			->expects($this->any())
-			->method('RecupererNotice')
-			->will($this->returnValue($recuperer_notice_res));
+			->whenCalled('RecupererNotice')
+			->answers($recuperer_notice_res);
 	}
 
 
@@ -498,10 +645,14 @@ class OpsysServiceTestSupprimerReservation extends OpsysServiceWithSessionTestCa
 		$this->resa_response->EmprReserverResult = new RspEmprAction();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprSupprResa')
-			->with($this->equalTo(new EmprSupprResa('guid_12345', 'res_2345')))
-			->will($this->returnValue($this->resa_response));
+			->whenCalled('EmprSupprResa')
+			->willDo(function($param) {
+					$this->assertEquals($param,	new EmprSupprResa('guid_12345', 'res_2345'));
+					$this->search_client
+						->whenCalled('EmprSupprResa')
+						->willDo(function() {$this->fait('EmprSupprResa ne devrait être appelé qu\'une fois');});
+					return $this->resa_response;
+				});
 	}
 
 
@@ -595,10 +746,9 @@ class OpsysServiceTestUpdateInfoEmprunteur extends OpsysServiceWithSessionTestCa
 		$this->ecrire_notice_response->EcrireNoticeResult = new MaNotice();
 
 		$this->catalog_client
-			->expects($this->once())
-			->method('EcrireNotice')
-			->with($this->equalTo($expected_ecrire_notice))
-			->will($this->returnValue($this->ecrire_notice_response));
+			->whenCalled('EcrireNotice')
+			->with($expected_ecrire_notice)
+			->answers($this->ecrire_notice_response);
 	}
 
 	public function testSaveWihtNoErrorsDoNotRaiseErrors() {
@@ -637,10 +787,9 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 		$this->empr_response->EmprProlongResult = new RspEmprAction();
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprProlong')
-			->with($this->equalTo(new EmprProlong('guid_12345', 'pret_12')))
-			->will($this->returnValue($this->empr_response));
+			->whenCalled('EmprProlong')
+			->with(new EmprProlong('guid_12345', 'pret_12'))
+			->answers($this->empr_response);
 	}
 
 
@@ -670,7 +819,26 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 																->setPassword('pass'),
 															'pret_12'
 														);
-		$this->assertEquals(array('statut' => 0, 'erreur' => 'Aucune prolongation effectuée !'), $result);
+		$this->assertEquals(array('statut' => 0, 
+															'erreur' => 'La prolongation de ce document est impossible'), 
+												$result);
+	}
+
+
+	public function testEmprProlongEmptyMessage() {
+		// Aloes ne retourne parfois pas de message lorsque la prolongation a échoué
+		$this->empr_response->EmprProlongResult->Reussite = "true";
+		$this->empr_response->EmprProlongResult->MessageRetour = '';
+
+		$result = $this->opsys->prolongerPret(
+															Class_Users::getLoader()->newInstance()
+																->setLogin('tintin')
+																->setPassword('pass'),
+															'pret_12'
+														);
+		$this->assertEquals(array('statut' => 0, 
+															'erreur' => 'La prolongation de ce document est impossible'), 
+												$result);
 	}
 
 
@@ -688,8 +856,18 @@ class OpsysServiceTestProlongerPret extends OpsysServiceWithSessionTestCase {
 
 
 
-class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase {
+class OpsysServiceRecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase {
 	public function setUp() {
+		$emplacement_reserve = Class_CodifEmplacement::newInstanceWithId(3)
+			->setLibelle('Réserve')
+			->setRegles('995$u=RES');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifEmplacement')
+			->whenCalled('findFirstBy')
+			->with(['where' => 'regles like "%=RES"'])
+			->answers($emplacement_reserve);
+
+
 		$dispo_reserve = new DonneeFille();
 		$dispo_reserve->NomDonnee = "Disponibilité";
 		$dispo_reserve->ValeurDonnee = "Non disponible";
@@ -722,14 +900,23 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 		$section_adulte->ValeurDonnee = "Espace Adultes";
 
 		$code_barre_scrap = new DonneeFille();
-		$code_barre_scrap->NomDonnee = "Code barre exemplaire";
+		$code_barre_scrap->NomDonnee = "Code barre";
 		$code_barre_scrap->ValeurDonnee = "5678";
+
+		$cote_scrap = new DonneeFille();
+		$cote_scrap->NomDonnee = "Cote";
+		$cote_scrap->ValeurDonnee = "SCRAP";
+
+		$emplacement_scrap = new DonneeFille();
+		$emplacement_scrap->NomDonnee = "Emplacement";
+		$emplacement_scrap->ValeurDonnee = "RES";
+
 
 		$scrap = new NoticeFille();
 		$scrap->NumFille = "scrap";
 		$scrap->Reservable = "false";
 		$scrap->DonneesFille = new StdClass();
-		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap);
+		$scrap->DonneesFille->DonneeFille = array($dispo_empty, $section_adulte, $code_barre_scrap, $cote_scrap, $emplacement_scrap);
 
 		$rsp = new RecupererNoticeResponse();
 		$rsp->RecupererNoticeResult = new RspRecupererNotice();
@@ -751,6 +938,7 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 		$this->assertEquals("Non disponible (Manquant)", $potter->getDisponibilite());
 	}
 
+
 	public function testScrapDispoLibre() {
 		$this->response->RecupererNoticeResult->Notice->Reservable = "false";
 		$notice = $this->response->createNotice();
@@ -761,6 +949,19 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 		$this->assertEquals("Disponible", $scrap->getDisponibilite());
 	}
 
+
+	/** @test */
+	public function coteScrapShouldBeSCRAP() {
+		$this->assertEquals('SCRAP', $this->response->createNotice()->exemplaireAt(1)->getCote());
+	}
+
+
+	/** @test */
+	public function emplacementScrapShouldBe3() {
+		$this->assertEquals('3', $this->response->createNotice()->exemplaireAt(1)->getEmplacement());
+	}
+
+
 	public function testCodeBarre(){
 		$notice = $this->response->createNotice();
 		$this->assertEquals("1234", $notice->exemplaireAt(0)->getCodeBarre());
@@ -769,7 +970,9 @@ class RecupererNoticeResponseTestCreateNotice extends PHPUnit_Framework_TestCase
 }
 
 
-class EmprReserverResponseTest extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmprReserverResponseTest extends PHPUnit_Framework_TestCase {
 	private $default_rsp;
 
 	public function setUp(){
@@ -795,7 +998,7 @@ class EmprReserverResponseTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
+class OpsysServiceEmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->opsys_service = $this->getMock('Mock_OpsysService',
 																					array('getEmpruntsOf',
@@ -870,7 +1073,7 @@ class EmprunteurAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class ReservationAttributesTest extends PHPUnit_Framework_TestCase {
+class OpsysServiceReservationAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->reservation = new Class_WebService_SIGB_Reservation('23', new Class_WebService_SIGB_Exemplaire('potter'));
 		$this->reservation->parseExtraAttributes(array(
@@ -912,7 +1115,7 @@ class EmpruntFixtures {
 																			 'Dateretourprevue' => '21/10/2010',
 																			 'Section' => 'Espace jeunesse',
 																			 'Auteur' => 'Lewis Caroll',
-																			 'Bibliotheque' => 'Astrolabe',
+																			 'Bibliothèque' => 'Astrolabe',
 																			 'N° de notice' => '5678'));
 		return $alice;
 	}
@@ -932,7 +1135,9 @@ class EmpruntFixtures {
 }
 
 
-class EmpruntAttributesTest extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->emprunt = EmpruntFixtures::potter();
 	}
@@ -966,7 +1171,9 @@ class EmpruntAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->emprunt = EmpruntFixtures::potter();
 		$this->emprunt->setEnRetard(true);
@@ -997,7 +1204,9 @@ class EmpruntRetardAttributesTest extends PHPUnit_Framework_TestCase {
 }
 
 
-class EmpruntTestSort extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmpruntTestSort extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->opsys_service = $this->getMock('Mock_OpsysService',
 																					array('getEmpruntsOf', 'getReservationsOf'));
@@ -1023,15 +1232,28 @@ class EmpruntTestSort extends PHPUnit_Framework_TestCase {
 		$this->emprunteur->setService($this->opsys_service);
 	}
 
+
 	public function testOrderEmprunt(){
 		$this->assertEquals($this->emprunteur->getEmpruntAt(0)->getTitre(), 'Alice');
 		$this->assertEquals($this->emprunteur->getEmpruntAt(1)->getTitre(), 'Cendrillon');
 		$this->assertEquals($this->emprunteur->getEmpruntAt(2)->getTitre(), 'Potter');
 	}
+
+	/** @test */
+	public function cendrillonBibliothequeShouldBeAstrolabe() {
+		$this->assertEquals('Astrolabe', $this->emprunteur->getEmpruntAt(1)->getBibliotheque());
+	}
+
+	/** @test */
+	public function aliceBibliothequeShouldBeAstrolabe() {
+		$this->assertEquals('Astrolabe', $this->emprunteur->getEmpruntAt(0)->getBibliotheque());
+	}
 }
 
 
-class EmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase {
+
+
+class OpsysServiceEmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase {
 	/** @var Class_WebService_SIGB_Emprunteur */
 	protected $emprunteur;
 
@@ -1055,6 +1277,7 @@ class EmprunteurTestPretsEnRetard extends PHPUnit_Framework_TestCase {
 
 
 
+
 class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -1063,21 +1286,96 @@ class OpsysServiceTestReserverExemplaire extends OpsysServiceWithSessionTestCase
 		$reserverResponse->EmprReserverResult->Reussite = "true";
 
 		$this->search_client
-			->expects($this->once())
-			->method('EmprReserver')
-			->with($this->equalTo(new EmprReserver('guid_12345', 'cb344', 'melun')))
-			->will($this->returnValue($reserverResponse));
+			->whenCalled('EmprReserver')
+			->with(new EmprReserver('guid_12345', 'id_ex_344', 'melun'))
+			->answers($reserverResponse);
+
+		$notice_sigb = (new Class_WebService_SIGB_Notice('ido344'))
+			              ->addExemplaire((new Class_WebService_SIGB_Exemplaire('id_ex_344'))
+																		->setCodeBarre('cb344'));
+
+		$this->opsys->getNoticeCache()->cacheNotice($notice_sigb);
 	}
 
 
 	public function testReserverSuccessful() {
 		$result = $this->opsys->reserverExemplaire(
-															Class_Users::getLoader()->newInstance()
-																->setLogin('tintin')
-																->setPassword('pass'),
-															Class_Exemplaire::getLoader()->newInstanceWithId(12)->setIdOrigine('cb344'),
-															'melun');
-		$this->assertEquals(array('statut' => 1, 'erreur' => ''), $result);
+			Class_Users::newInstance(['login' => 'tintin', 'password' => 'pass']),
+			Class_Exemplaire::newInstanceWithId(12, ['id_origine' => 'ido344', 'code_barres' => 'cb344']),
+			'melun');
+
+		$this->assertEquals(['statut' => 1, 'erreur' => ''], $result);
+	}
+}
+
+
+
+
+class OpsysServiceTestEntiteEmprWithPret extends Storm_Test_ModelTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+		  ->with(array('code_barres' => 'C0002054291'))
+			->answers(Class_Exemplaire::getLoader()->newInstanceWithId(34));
+
+
+		
+		$entite = new EntiteEmp();
+		$entite->LibelleDonnee = new StdClass();
+		$entite->LibelleDonnee->string = array('No Prêt',
+																					  'Code barre',
+																					  'Titre',
+																					  'Support',
+																				    'Section',
+																						'Cote',
+																						'A rendre le');
+		$entite->Donnees = new StdClass();
+		$entite->Donnees->Lignes = array($first_pret = new DonneeEmp());
+		$first_pret->ValeursDonnees = new StdClass();
+		$first_pret->ValeursDonnees->string = array('5486439',
+																								'C0002054291',
+																								'Petit Grounch à l\'école / Yak Rivais. - l\'Ecole des loisirs, 1988',
+																								'Livre',
+																								'Fiction jeunesse',
+																								'RIV',
+																								'27/06/2012');
+		$this->emprunts = $entite->getExemplaires('Class_WebService_SIGB_Emprunt');
+	}
+
+
+	/** @test */
+	public function empruntsShouldHaveSizeOfOne() {
+		$this->assertEquals(1, count($this->emprunts));
+		return $this->emprunts[0];
+	}
+
+
+	/**
+	 * @depends empruntsShouldHaveSizeOfOne
+	 * @test
+	 */
+	public function exemplaireOPACShouldBeSet($emprunt) {
+		$this->assertEquals(34, $emprunt->getExemplaireOpac()->getId());
+	}
+
+
+	/**
+	* @depends empruntsShouldHaveSizeOfOne
+	* @test
+	*/
+	public function titreShouldBePetitGrounch($emprunt) {
+		$this->assertContains('Petit Grounch', $emprunt->getTitre());
+	}
+
+
+	/** 
+	* @test 
+	* @depends empruntsShouldHaveSizeOfOne
+	*/
+	public function dateRetourShouldBe27_06_2012($emprunt) {
+		$this->assertEquals('27/06/2012', $emprunt->getDateRetour());
 	}
 }
 

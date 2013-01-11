@@ -31,7 +31,6 @@ class ZendAfi_View_Helper_TagEditArticle extends Zend_View_Helper_HtmlElement {
 																													 'id' => $article->getId())),
 																		$this->view->tagImg(URL_ADMIN_IMG.'ico/edit.gif',
 																												array('class' => 'article_edit',
-																															'target' => '_blank',
 																															'alt' => $this->view->translate("Modifier l'article"),
 																															'title' => $this->view->translate("Modifier l'article"))));
 		return '';

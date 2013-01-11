@@ -163,7 +163,17 @@ class UserGroupStagiairesTest extends UserGroupTestCase {
 		$this->assertEquals(array(Class_UserGroup::RIGHT_SUIVRE_FORMATION, Class_UserGroup::RIGHT_DIRIGER_FORMATION), 
 												$this->_florence->getRights());
 	}
+
+
+	/** @test */
+	public function groupShouldBeManual() {
+		$this->assertTrue($this->_stagiaires->isManual());
+		$this->assertFalse($this->_stagiaires->isDynamic());
+		$this->assertEquals(Class_UserGroup::TYPE_MANUAL, $this->_stagiaires->getGroupType());
+	}
 }
+
+
 
 
 class UserGroupWithNoUsersTest extends UserGroupTestCase {

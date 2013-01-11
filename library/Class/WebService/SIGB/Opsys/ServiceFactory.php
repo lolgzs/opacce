@@ -43,8 +43,10 @@ class Class_WebService_SIGB_Opsys_ServiceFactory{
 
 	public function defaultOptions(){
 		return array('features' => SOAP_SINGLE_ELEMENT_ARRAYS,
-								  'cache_wsdl' => WSDL_CACHE_BOTH,
-								  'trace' => false);
+								 'cache_wsdl' => WSDL_CACHE_BOTH,
+								 'exceptions' => true,
+								 'trace' => false,
+								 'connection_timeout' => 2);
 	}
 
 	public function getAloesRootFromUrl($url) {
@@ -59,10 +61,18 @@ class Class_WebService_SIGB_Opsys_ServiceFactory{
 		return $this->getAloesRootFromUrl($url_aloes).'/'.self::SERVICE_CATALOG;
 	}
 
-	public function createOpsysService($url_aloes, $extra_options){
+	public function createOpsysService($url_aloes, $with_catalog_web, $extra_options){
 		$options = array_merge($this->defaultOptions(), $extra_options);
 		$search_client = self::newSoapClient($this->getWsdlSearchURL($url_aloes), $options);
-		$catalog_client = self::newSoapClient($this->getWsdlCatalogURL($url_aloes), $options);
+
+		try {
+			$catalog_client = $with_catalog_web 
+				? self::newSoapClient($this->getWsdlCatalogURL($url_aloes), $options) 
+				: new NullCatalogSoapClient;
+		} catch (Exception $e) {
+			$catalog_client = new NullCatalogSoapClient();
+		}
+
 		return new Class_WebService_SIGB_Opsys_Service($search_client, $catalog_client);
 	}
 
@@ -85,6 +95,15 @@ class Class_WebService_SIGB_Opsys_ServiceFactory{
 	/** @codeCoverageIgnore */
 	public static function soapui(){
 		return self::createService(self::MOCK_WSDL);
+	}
+}
+
+
+
+
+class NullCatalogSoapClient {
+	public function EcrireNotice() {
+		return new EcrireNoticeResponse();
 	}
 }
 

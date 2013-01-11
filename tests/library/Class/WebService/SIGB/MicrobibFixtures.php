@@ -58,6 +58,7 @@ class MicrobibFixtures {
 	<Exemplaire>
 		<code_barre>0006260194</code_barre>
 		<disponible>true</disponible>
+		<pretable>true</pretable>
 		<piege/>
 		<date_retour/>
 		<reservable>false</reservable>
@@ -65,9 +66,18 @@ class MicrobibFixtures {
 	<Exemplaire>
 		<code_barre>99999999</code_barre>
 		<disponible>false</disponible>
+		<pretable>true</pretable>
 		<piege>Retour prévu le 31/03/2012</piege>
 		<date_retour>2012-03-31</date_retour>
 		<reservable>true</reservable>
+	</Exemplaire>
+	<Exemplaire>
+		<code_barre>0183050194</code_barre>
+		<pretable>false</pretable>
+		<disponible>true</disponible>
+		<piege></piege>
+		<date_retour></date_retour>
+		<reservable>false</reservable>
 	</Exemplaire>
 </Exemplaires>';
 	} 
@@ -214,6 +224,15 @@ class MicrobibFixtures {
 		<code_barre>1805660020</code_barre>
 		<posee_le>2012-02-28</posee_le>
 		<expire_le/>
+		<disponible>false</disponible>
+	</Liste_Reservations>
+	<Liste_Reservations>
+		<titre>COMMUNAUTÉ DE L\'ANNEAU : LE SEIGNEUR DES ANNEAUX 1 (LA)</titre>
+		<auteur>JACKSON PETER</auteur>
+		<code_barre>0183050194</code_barre>
+		<posee_le>2012-12-11</posee_le>
+		<expire_le/>
+		<disponible>true</disponible>
 	</Liste_Reservations>
 </abonne>';
 	}

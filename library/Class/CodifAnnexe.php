@@ -29,6 +29,12 @@ class Class_CodifAnnexe extends Storm_Model_Abstract {
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
+
+
+	public static function findAllByPickup() {
+		return self::getLoader()->findAllBy(array('no_pickup' => '0',
+																							'order' => 'libelle'));
+	}
 }
 
 ?>

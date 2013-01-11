@@ -24,14 +24,12 @@
 // Ressources :	- Javascript : imageMenu.js
 //							- css :imageMenu.css
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_Java_MenuImage
-{
+class ZendAfi_View_Helper_Java_MenuImage {
 		
 //---------------------------------------------------------------------
 // Fabrique le html (nombre d'entrees principales limite a 10)
 //---------------------------------------------------------------------  
-	public function MenuImage()
-	{
+	public function MenuImage()	{
 		$cls_menu=new Class_Systeme_ModulesMenu();
 		$profil= Class_profil::getCurrentProfil();
 
@@ -46,23 +44,21 @@ class ZendAfi_View_Helper_Java_MenuImage
 		
 		$num_menu=0;
 		$contenu='<div class="menuGauche"><ul class="menuGauche">';
-		foreach($config["menus"] as $entree)
-		{
+		foreach($config["menus"] as $entree)	{
 			$id_menu="vmenu".$num_menu;
 			$html.='<li class="'.$id_menu.'">';
 			$html.='<a href="#">';
 			$html.='<div id="'.$id_menu.'" style="display:none;">';
 			$html.='<div class="titre">'.$entree["libelle"].'</div>';
 
-			if($entree["sous_menus"])
-			{
+			if($entree["sous_menus"])	{
 				$num_sous_menu=0;
 				$html.='<table cellspacing="2" cellpadding="2">';
-				foreach($entree["sous_menus"] as $sous_menu)
-				{ 
+				foreach($entree["sous_menus"] as $sous_menu)	{ 
 					$id_sous_menu=$id_menu."_".$num_sous_menu;
-					$param_url=$cls_menu->getUrl($sous_menu["type_menu"],$sous_menu["preferences"]);
-					$html.='<tr><td onclick="window.parent.location=\''.$param_url["url"].'\';">&raquo;&nbsp;'.$sous_menu["libelle"].'</td></tr>';
+					$preferences = isset($sous_menu["preferences"]) ? $sous_menu["preferences"] : array();
+					$param_url=$cls_menu->getUrl($sous_menu["type_menu"],	$preferences);
+					$html.='<tr><td onclick="window.parent.location=\''.$param_url["url"].'\';">&raquo&nbsp;'.$sous_menu["libelle"].'</td></tr>';
 					$num_sous_menu++;
 				}
 				$html.='</table>';

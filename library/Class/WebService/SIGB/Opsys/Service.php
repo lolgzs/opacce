@@ -45,6 +45,11 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+	public function getCatalogClient() {
+		return $this->catalog_client;
+	}
+
+
 	public function isConnected(){
 		return (isset($this->guid) && ($this->guid !== ""));
 	}
@@ -61,9 +66,23 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	}
 
 
+		/** @codeCoverageIgnore */
+	protected function _dumpSoapTrace() {
+		var_dump($this->search_client->__getLastRequestHeaders());
+		var_dump($this->search_client->__getLastRequest());
+		var_dump($this->search_client->__getLastResponseHeaders());
+		var_dump($this->search_client->__getLastResponse());
+	}
+
+
+
 	public function disconnect(){
 		$fs=new FermerSession($this->guid);
-		$fsr = $this->search_client->FermerSession($fs);
+		try {
+			$fsr = $this->search_client->FermerSession($fs);
+		} catch (Exception $e) {
+				//Aloes V190 plante parfois sur les FermerSession
+		}
 	}
 
 
@@ -107,10 +126,29 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	 */
 	public function authentifierEmprunteur($user) {
 		$auth = new EmprAuthentifier($this->guid, $user->getLogin(), $user->getPassword());
-		$auth_result = $this->search_client->EmprAuthentifier($auth);
-		return $auth_result
+
+		try {
+			$auth_result = $this->search_client->EmprAuthentifier($auth);
+		} catch (Exception $e) {
+			return Class_WebService_SIGB_Emprunteur::nullInstance();
+		}
+
+		$emprunteur = $auth_result
 			->createEmprunteur()
 			->setService($this);
+
+		if (!$emprunteur->isValid())
+			return $emprunteur;
+
+		$entite_result = $this->search_client->EmprListerEntite(EmprListerEntite::infos($this->guid));
+		if ($date_fin_abonnement = $entite_result->findAttribute('FinAbo')) {
+			$date_fin_abonnement = implode('-', array_reverse(explode('/', $date_fin_abonnement)));
+			$emprunteur->setEndDate($date_fin_abonnement);
+		}
+
+		return $emprunteur
+			->setNom($entite_result->findAttribute('nom'))
+			->setPrenom($entite_result->findAttribute('prenom'));
 	}
 
 
@@ -121,10 +159,11 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 	 * @return array
 	 */
 	public function reserverExemplaire($user, $exemplaire, $code_annexe){
+		$exemplaire_sigb = $this->getExemplaire($exemplaire->getIdOrigine(), $exemplaire->getCodeBarres());
 		$emprunteur = $this->authentifierEmprunteur($user);
 		$reserv_result = $this->search_client->EmprReserver(
 																								 new EmprReserver($this->guid,
-																																	$exemplaire->getIdOrigine(),
+																																	$exemplaire_sigb->getId(),
 																																	$code_annexe));
 		return $reserv_result->getReussite();
 	}
@@ -160,9 +199,13 @@ class Class_WebService_SIGB_Opsys_Service extends Class_WebService_SIGB_Abstract
 
 
 	public function getNotice($id){
-		$notice_result = $this->search_client->RecupererNotice(
-																										new RecupererNotice($this->guid, $id));
-		return $notice_result->createNotice();
+		try {
+			$notice_result = $this->search_client->RecupererNotice(
+				new RecupererNotice($this->guid, $id));
+			return $notice_result->createNotice();
+		} catch (Exception $e) {
+			$this->_dumpSoapTrace();
+		}
 	}
 
 
@@ -312,14 +355,14 @@ class RspRecupererParamTable {
 class OuvrirSession {
 	public $Param; // EntOuvrirSession
 
-	function __construct($NomServeur=''){
+	function __construct($NomServeur='INTERNET'){
 		$this->Param = new EntOuvrirSession($NomServeur);
 	}
 
 }
 
 class EntOuvrirSession extends Entree {
-	public $NomMachine; // string
+	public $NomMachine = 'INTERNET'; // string
 	public $ListeServeurs; // ArrayOfServeurSession
 
 	function __construct($NomServeur){
@@ -584,10 +627,12 @@ class EntRecupererNotice extends Entree{
 	public $IDEtape; // string
 	public $Affichage; // AffichageNotice
 	public $Restricteurs; // ArrayOfString
+	public $FondsEnPret; // boolean;
 
 	function __construct(){
 		$this->RangNotice="1";
 		$this->Affichage=new AffichageNotice();
+		$this->FondsEnPret = true;
 	}
 }
 
@@ -612,6 +657,8 @@ class RecupererNoticeResponse {
 			$exemplaire->setCodeBarre($nfille->getCodeBarre());
 			$exemplaire->setDateRetour($nfille->getDateRetour());
 			$exemplaire->setReservable($nfille->Reservable);
+			$exemplaire->setCote($nfille->getCote());
+			$exemplaire->setEmplacement($nfille->getEmplacement());
 			$notice->addExemplaire($exemplaire);
 		}
 		return $notice;
@@ -659,6 +706,9 @@ class ListeNoticesFilles {
 	public $NoticesFilles; // ArrayOfNoticeFille
 }
 
+
+
+
 class NoticeFille {
 	public $NumFille; // string
 	public $StatutFille; // string
@@ -671,35 +721,58 @@ class NoticeFille {
 
 	protected function getData($name){
 		foreach($this->DonneesFille->DonneeFille as $data){
-			if ($data->NomDonnee == $name)
+			if (false !== strpos(strtolower($data->NomDonnee), strtolower($name)))
 				return $data->ValeurDonnee;
 		}
 		return "";
 	}
 
+
 	public function getDisponibilite(){
 		$dispo = $this->getData("Disponibilité");
-		$piege = $this->getData("Piège");
+		if (!$piege = $this->getData("Piège"))
+			$piege = $this->getData("Piege");
+		
 		if (strlen($piege) > 0) $dispo .= " ($piege)";
 		return $dispo;
 	}
+
 
 	public function getSection(){
 		return $this->getData('Section');
 	}
 
+
 	public function getBibliotheque(){
 		return $this->getData("Site");
 	}
 
+
 	public function getCodeBarre(){
-		return $this->getData("Code barre exemplaire");
+		return $this->getData("Code barre");
 	}
 
+
 	public function getDateRetour(){
-		return $this->getData("Retour prévu le");
+		return $this->getData("Retour");
+	}
+
+
+	public function getCote() {
+		return $this->getData('Cote');
+	}
+
+
+	public function getEmplacement() {
+		if (!$code = $this->getData('Emplacement'))
+			return '';
+		if (!$emplacement = Class_CodifEmplacement::findFirstBy(['where' => 'regles like "%='.$code.'"']))
+			return '';
+		return $emplacement->getId();
 	}
 }
+
+
 
 class DonneeFille {
 	public $NomDonnee; // string
@@ -906,11 +979,16 @@ class EmprAuthentifierResponse {
 		$emprunteur = new Class_WebService_SIGB_Emprunteur(
 																 $this->EmprAuthentifierResult->IDEmprunteur,
 																 $this->EmprAuthentifierResult->IdentiteEmpr);
-		return $emprunteur
+		$emprunteur
 			->setEmail($this->EmprAuthentifierResult->EmailEmpr)
 			->setNbReservations($this->EmprAuthentifierResult->NombreReservations)
 			->setNbEmprunts($this->EmprAuthentifierResult->NombrePrets)
 			->setNbPretsEnRetard($this->EmprAuthentifierResult->NombreRetards);
+
+		if ($this->EmprAuthentifierResult->IDEmprunteur)
+			$emprunteur->beValid();
+
+		return $emprunteur;
 	}
 }
 
@@ -954,6 +1032,10 @@ class EmprListerEntite {
 		$this->Param->IdEntite=$entite;
 	}
 
+	public static function infos($guid){
+		return new self($guid, EUEntiteEmp::ListeInfo);
+	}
+
 	public static function prets($guid){
 		return new self($guid, EUEntiteEmp::ListePret);
 	}
@@ -983,13 +1065,19 @@ class EUEntiteEmp {
 	const ListeComsurPlace = 'ListeComsurPlace';
 }
 
+
 class EmprListerEntiteResponse {
 	public $EmprListerEntiteResult; // RspEmprListerEntite
 
 	public function getEntites($container_class){
 		return $this->EmprListerEntiteResult->getExemplaires($container_class);
 	}
+
+	public function findAttribute($name) {
+		return $this->EmprListerEntiteResult->findAttribute($name);
+	}
 }
+
 
 class RspEmprListerEntite {
 	public $GUIDSession; // string
@@ -1003,7 +1091,14 @@ class RspEmprListerEntite {
 		if (!isset($this->Entite)) return array();
 		return $this->Entite->getExemplaires($container_class);
 	}
+
+	public function findAttribute($name) {
+		return $this->Entite->findAttribute($name);
+	}
 }
+
+
+
 
 class EntiteEmp {
 	public $LibelleDonnee; // ArrayOfString
@@ -1011,14 +1106,39 @@ class EntiteEmp {
 	public $Donnees; // ArrayOfDonneeEmp
 	public $Nombre; // int
 
+
+	protected function _findAttribute($name, &$attributes) {
+		foreach($attributes as $libelle => $value) {
+			if (false !== strpos(strtolower($libelle), strtolower($name)))
+				return $value;
+		}
+		return "";
+	}
+
+
+	public function findAttribute($name) {
+		$ligne = $this->Donnees->Lignes[0];
+		$attributes = array_combine($this->LibelleDonnee->string, $ligne->ValeursDonnees->string);
+		return $this->_findAttribute($name, $attributes);
+	}
+	
+
 	public function getExemplaires($container_class){
 		$entites = array();
 		foreach($this->Donnees->Lignes as $data){
 			$attributes = array_combine($this->LibelleDonnee->string, $data->ValeursDonnees->string);
 
 			$exemplaire = new Class_WebService_SIGB_Exemplaire(NULL);
-			$exemplaire->setTitre($attributes['Titre']);
+			$exemplaire->setTitre($this->_findAttribute('Titre', $attributes));
 
+			if ($code_barre = $this->_findAttribute('code', $attributes))
+				$exemplaire_params = array('code_barres' => $code_barre);
+			else
+				$exemplaire_params = array('id_origine' => $this->_findAttribute('notice', $attributes));
+			
+			$exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy($exemplaire_params);
+			$exemplaire->setExemplaireOPAC($exemplaire_opac);
+			
 			$entite = new $container_class($data->ValeursDonnees->string[0], $exemplaire);
 			$entite->parseExtraAttributes($attributes);
 
@@ -1028,6 +1148,9 @@ class EntiteEmp {
 		return $entites;
 	}
 }
+
+
+
 
 class DonneeEmp {
 	public $ValeursDonnees; // ArrayOfString
@@ -1137,8 +1260,8 @@ class EmprProlongResponse {
 
 		// cf test OpsysServiceTestProlongerPret::testEmprProlongNotDone
 		$message = $this->EmprProlongResult->MessageRetour;
-		if (strpos($message, 'Aucune') !== false) {
-			$result['erreur'] = $message;
+		if (('' === $message) || strpos($message, 'Aucune') !== false) {
+			$result['erreur'] = 'La prolongation de ce document est impossible';
 			$result['statut'] = 0;
 		}
 		return $result;

@@ -55,17 +55,28 @@
  *
  */
 
+class AlbumLoader extends Storm_Model_Loader {
+	public function getItemsOf($categoryId) {
+		return $this->findAll('select id, titre, type_doc_id from album where cat_id=' . $categoryId);
+	}
+}
+
+
 class Class_Album extends Storm_Model_Abstract {
 	const BASE_PATH			= 'album/';
 	const THUMBS_PATH		= 'thumbs/';
 	const ORIGINAL_PATH	= 'big/';
 	const ANNEE_MIN = 800;
 	const DEFAULT_CODE_LANGUE = 'fre';
+	const VIDEO_URL_FIELD = '856';
+	const VIDEO_URL_TYPE = 'video';
+	
 	
 	protected static $DEFAULT_THUMBNAIL_VALUES;
 
   protected $_table_name = 'album';
   protected $_table_primary = 'id';
+	protected $_loader_class = 'AlbumLoader';
 	protected $_belongs_to = array(
 		'categorie' => array(
 			'model'					=> 'Class_AlbumCategorie',
@@ -88,6 +99,7 @@ class Class_Album extends Storm_Model_Abstract {
 
 	protected $_default_attribute_values = array('titre' => '',
 																							 'sous_titre' => '',
+																							 'editeur' => '',
 																							 'fichier' => '',
 																							 'pdf' => '',
 																							 'auteur' => '',
@@ -100,7 +112,11 @@ class Class_Album extends Storm_Model_Abstract {
 																							 'cfg_thumbnails' => '',
 																							 'provenance' => '',
 																							 'cote' => '',
-																							 'notes' => '');
+																							 'notes' => '',
+		                                           'visible' => true,
+	                                             'droits' => '',
+																							 'nature_doc' => '');
+
 	/** @var Class_Upload */
 	protected $_uploadHandler;
 
@@ -137,8 +153,29 @@ class Class_Album extends Storm_Model_Abstract {
 																							'thumbnail_right_page_crop_top' => 0,
 																							'thumbnail_right_page_crop_right' => 0,
 																							'thumbnail_right_page_crop_bottom' => 0,
-																							'thumbnail_right_page_crop_left' => 0);
+																							'thumbnail_right_page_crop_left' => 0,
+																							'thumbnail_crop_top' => 0,
+																							'thumbnail_crop_right' => 0,
+																							'thumbnail_crop_bottom' => 0,
+																							'thumbnail_crop_left' => 0,
+																							'display_one_page' => false);
 		return self::$DEFAULT_THUMBNAIL_VALUES;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isMonopage() {
+		return (bool)$this->getDisplayOnePage();
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function beMonopage() {
+		return $this->setDisplayOnePage(true);
 	}
 
 
@@ -302,9 +339,46 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	/** @return boolean */
+	public function isDiaporama() {
+		return $this->getTypeDocId() == Class_TypeDoc::DIAPORAMA;
+	}
+
+
 	public function beLivreNumerique() {
 		return $this->setTypeDocId(Class_TypeDoc::LIVRE_NUM);
 	}
+
+
+	public function beDiaporama() {
+		return $this->setTypeDocId(Class_TypeDoc::DIAPORAMA);
+	}
+
+
+	public function beEPUB() {
+		return $this->setTypeDocId(Class_TypeDoc::EPUB);
+	}
+
+
+	public function beOAI() {
+		return $this->setTypeDocId(Class_TypeDoc::OAI);
+	}
+
+
+	public function isOAI() {
+		return $this->getTypeDocId() == Class_TypeDoc::OAI;
+	}
+
+
+	public function beArteVOD() {
+		return $this->setTypeDocId(Class_TypeDoc::ARTEVOD);
+	}
+
+
+	public function isArteVOD() {
+		return $this->getTypeDocId() == Class_TypeDoc::ARTEVOD;
+	}
+
 
 	/**
 	 * @param Zend_Controller_Request_Http $request
@@ -534,6 +608,14 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	public function hasOnlyImages() {
+		foreach($this->getRessources() as $ressource)
+			if (!$ressource->isImage())
+				return false;
+		return true;
+	}
+
+
 	/**
 	 * @param Class_AlbumRessource $resourceToMove
 	 * @param int $targetId
@@ -618,6 +700,12 @@ class Class_Album extends Storm_Model_Abstract {
 		}
 
 		return $this->_uploadHandler;
+	}
+
+
+	public function setUploadMover($name, $mover) {
+		$this->getUploadHandler($name)->setUploadMover($mover);
+		return $this;
 	}
 
 
@@ -839,6 +927,47 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
+	/**
+	 * @param $field string
+	 * @param $datas array
+	 */
+	public function getNoteForFieldAndDatas($field, $datas = []) {
+		$notes = $this->getNotesAsArray();
+
+		foreach ($notes as $note) {
+			if (!array_key_exists('field', $note)
+				or !array_key_exists('data', $note)
+				or $field != $note['field'])
+				continue;
+
+			foreach ($datas as $k => $v) {
+				if ($note['data'][$k] != $v)
+					continue 2;
+			}
+
+			return $note['data']['a'];
+		}
+	}
+
+
+	/** @return string */
+	public function getVideoUrl() {
+		return $this->getNoteForFieldAndDatas(self::VIDEO_URL_FIELD,
+			                                    ['x' => self::VIDEO_URL_TYPE]);
+	}
+
+		
+	/**
+	 * @param $url string
+	 * @return Class_Album
+	 */
+	public function setVideoUrl($url) {
+		return $this->setNotes([[
+				'field' => self::VIDEO_URL_FIELD, 
+				'data' => ['x' => self::VIDEO_URL_TYPE, 'a' => $url]]]);
+	}
+
+		
 	public function setNotes($array_or_string) {
 		if (is_array($array_or_string)) 
 			parent::setNotes(serialize($array_or_string));
@@ -918,7 +1047,23 @@ class Class_Album extends Storm_Model_Abstract {
 		unset($attributes['notes']);
 		return array_merge($attributes,
 											 $this->getDefaultThumbnailValues(),
-											 $this->getThumbnailAttributes());
+											 $this->getThumbnailAttributes(),
+											 ['nature_doc_ids' => $this->getNatureDocIds()]);
+	}
+
+	
+	/** 
+	 * @return array
+	 */
+	public function getNatureDocIds() {
+		return array_filter(explode(';', $this->getNatureDoc()));
+	}
+
+
+	public function setNatureDocIds($ids) {
+		if (!is_array($ids)) 
+			$ids=[];
+		return $this->setNatureDoc(implode(';', $ids));
 	}
 
 
@@ -934,59 +1079,106 @@ class Class_Album extends Storm_Model_Abstract {
 	}
 
 
-	//-------------------------------------------------------------------------------
-	// Settings
-	//-------------------------------------------------------------------------------
-	public function ecrireSettings($id_album,$largeur_flash)
-	{
-		if(!$id_album) return false;
-		if(!$largeur_flash) $largeur_flash=750;
+	public function getStatus() {
+		return 'none';
+	}
 
-		// chemins
-		$path=getcwd()."/userfiles/album/".$id_album."/";
-		$path_relatif="../../../../userfiles/album/".$id_album."/";
 
-		// settings
-		$settings=file_get_contents($this->path_flash."settings.xml");
-		$settings=str_replace('<width value="760"/>', '<width value="'.$largeur_flash.'"/>', $settings);
-		$settings=str_replace("images.xml", $path_relatif."images.xml", $settings);
-		file_put_contents($path."settings.xml",$settings);
+	public function formatedCount() {
+		return sprintf('%03d', $this->getRessourcesCount());
+	}
 
-		// Lire les images
-		$handle = opendir($path."thumbs");
-		if(!$handle) return false;
-		while ($img = readdir($handle))
-		{
-			if($img=="." or $img=="..") continue;
-			if($this->isImage($path."thumbs/".$img)==false) continue;
-			$data[]=array("image"=>$img);
-			$nb_pages++;
+	
+	public function isGallica() {
+		return ($this->isOAI() && (false !== strpos($this->getIdOrigine(), 'gallica')));
+	}
+
+
+	public function getGallicaArkId() {
+		if (!$this->isGallica())
+			return '';
+		return array_last(explode('/', $this->getIdOrigine()));
+	}
+
+
+	/** 
+	 * Return arteVOD trailer video list
+	 * @return array 
+	 */
+	public function getTrailers() {
+		$trailers = array();
+		$trailers_url = $this->getUnimarc856Values('trailer');
+		foreach($trailers_url as $url)
+			$trailers []= Class_Video::newWithUrl($url);
+
+		return $trailers;
+	}
+
+
+	/** 
+	 * Return arteVOD poster url
+	 * @return string 
+	 */
+	public function getPoster() {
+		if ($posters_url = $this->getUnimarc856Values('poster'))
+			return $posters_url[0];
+		return '';
+	}
+
+
+	/** 
+	 * Return arteVOD poster url
+	 * @return string 
+	 */
+	public function getUnimarc856Values($field) {
+		$values = array();
+		$unimarc_array = $this->getNotesAsArray();
+		foreach($unimarc_array as $unimarc_value) {
+			if (!is_array($unimarc_value) 
+				|| !isset($unimarc_value['field']) 
+				|| '856' !== $unimarc_value['field'] 
+				|| !isset($unimarc_value['data']) 
+				|| !isset($unimarc_value['data']['x'])
+				|| !isset($unimarc_value['data']['a'])
+				|| $field !== $unimarc_value['data']['x'])
+				continue;
+
+			$values []= $unimarc_value['data']['a'];
 		}
-		closedir($handle);
-		sort($data);
+		return $values;
+	}
 
-		// images.xml
-		$xml="<settings><slideshow>";
-		$xml.='<page>';
-		foreach($data as $photo)
-		{
-			$page++;
-			if($page % 2 == 0)
-			{
-				$xml.='</page>'.CRLF;
-				if($page == $nb_pages) $xml.='<lastpage>';
-				else $xml.='<page>';
-			}
-			$xml.='<photo image="'.$path_relatif.'thumbs/'.$photo["image"].'" url="javascript:imageZoom(\''.$photo["image"].'\');" >';
-			$xml.='<![CDATA[<head>Page '.$page.'</head><body></body>]]>';
-			$xml.='</photo>';
-		}
-		if($nb_pages % 2 ==0) $xml.='</lastpage>';
-		else $xml.='</page>';
-		$xml.="</slideshow></settings>";
-		file_put_contents($path."images.xml",$xml);
 
-		return true;
+	/** 
+	 * @return boolean
+	 */
+	public function isVisible() {
+		return (bool)$this->getVisible();
+	}
+
+
+	/**
+	 * @return string url
+	 */
+	public function getExternalUri()  {
+		if ($values = $this->getUnimarc856Values(Class_WebService_ArteVOD_Film::TYPE_EXTERNAL_URI))
+			return $values[0];
+		return '';
+	}
+
+
+	public function setExternalUri($uri)  {
+		$notes = $this->getNotesAsArray();
+		$notes [] = ['field' => '856', 
+								 'data' => array('x' => Class_WebService_ArteVOD_Film::TYPE_EXTERNAL_URI, 'a' => $uri)];
+		return $this->setNotes($notes);
+	}
+
+
+	public function acceptVisitor($visitor) {
+		$visitor->visitAlbum($this);
+		foreach($this->getRessources() as $index => $ressource)
+			$visitor->visitRessource($ressource, $index);
 	}
 }
 

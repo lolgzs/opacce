@@ -51,6 +51,11 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	protected $_laurent_intervention;
 
 	public function setUp() {
+		parent::setUp();
+		Class_Lieu::getLoader()
+			->newInstanceWithId(74)
+			->setLibelle('Bonlieu');
+
 		$this->_learn_st = Class_Formation::getLoader()
 																					->newInstanceWithId(3)
 																					->setLibelle('Learning Smalltalk')
@@ -59,9 +64,11 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 																															->newInstanceWithId(1)
 																															->setFormationId(3)
 																															->setDateDebut('2009-01-05')
+																															->setDateFin('2009-01-07')
 																															->setDateLimiteInscription('0000-00-00')
 																															->setEffectifMin(1)
-																															->setEffectifMax(3),
+																															->setEffectifMax(3)
+																															->setLieuId(74),
 
 																															$this->_session_fevrier = Class_SessionFormation::getLoader()
 																															->newInstanceWithId(2)
@@ -134,6 +141,12 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 
 
 	/** @test */
+	public function lieuSessionJanvierShouldBeBonlieu() {
+		$this->assertEquals('Bonlieu', $this->_session_janvier->getLieu()->getLibelle());
+	}
+
+
+	/** @test */
 	public function sessionJanvierHasDateLimiteInscriptionShouldReturnFalse() {
 		$this->assertFalse($this->_session_janvier->hasDateLimiteInscription());
 	}
@@ -148,6 +161,12 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	/** @test */
 	function patrickInscriptionFormationShouldBeSessionJanvier() {
 		$this->assertSame($this->_session_janvier, $this->_patrick_inscription->getSessionFormation());
+	}
+
+
+	/** @test */
+	public function sessionJanvierDateFinTexteShouldBeSevenJanuary2009() {
+		$this->assertEquals('7 janvier 2009', $this->_session_janvier->getDateFinTexte());
 	}
 
 
@@ -204,7 +223,7 @@ class FormationSmalltalkWithTwoSessionsTest extends Storm_Test_ModelTestCase {
 	 * @test 
 	 * @depends patrickAddSessionFevrierShouldUpdateSessionFormationList
 	 */
-	public function patrickRemoveSessionFevrireShouldUpdateSessionFormatioListe($patrick) {
+	public function patrickRemoveSessionFevrireShouldUpdateSessionFormationListe($patrick) {
 		$patrick->removeSessionFormation($this->_session_fevrier);
 		$this->assertEquals(array($this->_session_janvier), $patrick->getSessionFormations());
 	}

@@ -1,14 +1,14 @@
 <table border="0" cellpadding="3" cellspacing="1">
     <tr>
       <td rowspan="2" valign="top">
-      	<img src="<?php print($this->url_img["vignette"]); ?>" width="90px" onclick="<?php print($this->url_img["image"]);?> " style="cursor:pointer"/>
+      	<img src="<?php print($this->notice->getUrlVignette()); ?>" width="90px" onclick="<?php print($this->notice->getUrlImage());?> " style="cursor:pointer"/>
       </td>
       <td valign="top" width="550px">
       	<table width="100%">
       		<tr>
       			<td style="text-align:left" valign="top">
       				<div>
-      					<div style="float:left"><h1><?php print($this->notice["titre_principal"].BR.$this->notice["auteur_principal"]); ?></h1></div>
+	              <div style="float:left"><h1><?php print($this->notice->getTitrePrincipal().BR.$this->notice->getAuteurPrincipal()); ?></h1></div>
       					<div align="right"><?php if($this->authUser->ROLE_LEVEL > 5) echo $this->fonctionsAdmin("module_standard") ?></div>
       				</div>
       			</td>
@@ -21,26 +21,19 @@
   </tr>
 
 <?php
-	$notice_html=new Class_NoticeHtml($this->notice);
-	
 	// Entete Notice
 	print('<tr><td valign="top">');
-	print( $notice_html->getEntete());
+	print($this->notice_Entete($this->notice, $this->preferences));
 	print('</td></tr>');
 	
 	// Blocs
 	print('<tr><td colspan="3">');
-	print( $notice_html->getBlocs());
+	print($this->notice_Blocs($this->notice, $this->preferences));
 	print('</td></tr>');
 	
 	// Onglets
 	print('<tr><td colspan="3">');
-	print( BR.$notice_html->getOnglets());
+	print( BR.$this->notice_Onglets($this->notice, $this->preferences));
 	print('</td></tr>');
-	
 	print('</table>');
-
-// Javascript pour deployer les blocs
-	print($notice_html->getJavaScriptAuto());
-
 ?>

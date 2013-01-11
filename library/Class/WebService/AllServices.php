@@ -22,8 +22,11 @@
 // OPAC3 : REPERTOIRE DES WEB_SERVICES
 //////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_AllServices
-{
+class Class_WebService_AllServices {
+	const RETOUR_SERVICE_OK = 2;
+
+	private static $_http_client;
+
 	private $services = array
 		(
 			"Amazon" => array
@@ -40,8 +43,7 @@ class Class_WebService_AllServices
 				(
 					"valeurs" => array("ean" => "0794881405923","asin" => "B00005BH6V","volume" => "1","track" => "1"),
 					"services" => array("rend_notice_ean(@ean)"
-												,"getImages(@ean)"
-												,"get_url_ecoute(@asin,@volume,@track)")
+												,"getImages(@ean)")
 				),
 			"AmazonVideo" => array
 				(
@@ -76,7 +78,7 @@ class Class_WebService_AllServices
 				),
 			"Fnac" => array
 				(
-					"valeurs" => array("isbn" => "978-2-07-061239-0"),
+					"valeurs" => array("isbn" => "978-2-7427-6501-0"),
 					"services" => array("getResume(@isbn)")
 				 ),
 			"OAI" => array
@@ -95,37 +97,86 @@ class Class_WebService_AllServices
 //------------------------------------------------------------------------------------------------------
 // Lance un service AFI et renvoie le resultat
 //------------------------------------------------------------------------------------------------------
-	static function runServiceAfi($service,$args)
-	{
-		$url_service=fetchOne("select valeur from variables where clef ='url_services'");
-		if(!$url_service) return false;
-
-		// Clef de securite
-		$clef="IMG".date("DxzxYxM")."VIG";
-		$clef=md5($clef);
-
-		// Contacter le service
-		$http = new Zend_Http_Client($url_service);
-		$http->setParameterGet('src', $clef);
-		$http->setParameterGet('action', $service);
-		$http->setParameterGet($args);
-
-		$response = $http->request();
-		$data = $response->getBody();
-
-		// Decouper la reponse
-		$ret=json_decode($data,true);
-		return $ret;
+	static function runServiceAfiBiographie($args) {
+		return self::runServiceAfi(8, $args);
 	}
+
+
+	static function runServiceAfiVideo($args) {
+		return self::runServiceAfi(9, $args);
+	}
+
+
+	static function runServiceAfiInterviews($args) {
+		return self::runServiceAfi(7, $args);
+	}
+
+	static function runServiceAfiUploadVignette($args) {
+		return self::runServiceAfi(12, $args);
+	}
+
+	static function setHttpClient($client) {
+		self::$_http_client = $client;
+	}
+
+
+	static function uploadVignetteForNotice($url, $id) {
+		$notice = Class_Notice::find($id);
+		$result = static::runServiceAfiUploadVignette(array_filter(['isbn' => $notice->getIsbn(),
+																																'ean' => $notice->getEan(),
+																																'type_doc' => $notice->getTypeDocPergame(),
+																																'titre' => $notice->getTitrePrincipal(),
+																																'auteur' => $notice->getAuteurPrincipal(),
+																																'image' => $url,
+																																'numero' => $notice->getTomeAlpha(),
+																																'clef_chapeau' => $notice->getClefChapeau()]));
+		if (self::RETOUR_SERVICE_OK != $result['statut_recherche'])
+			return $result['message'];
+
+		$notice
+			->setUrlVignette($result['vignette'])
+			->setUrlImage($result['image'])
+			->save();
+
+    Class_WebService_Vignette::deleteVignetteCacheForNotice($id);
+	}
+
+
+	static function httpGet($url, $args) {
+		if (!isset(self::$_http_client))
+			self::$_http_client = new Class_WebService_SimpleWebClient();
+		return self::$_http_client->open_url($url.'?'.http_build_query($args));
+	}
+
+
+	static function runServiceAfi($service,$args)	{
+		if (!$url_service = Class_CosmoVar::get('url_services'))
+			return false;
+
+		if (!$args)
+			$args = array();
+
+		$args['src'] = self::createSecurityKey();
+		$args['action'] = $service;
+
+		return json_decode(self::httpGet($url_service, $args),
+											 true);
+	}
+
+
+	public static function createSecurityKey() {
+		return md5("IMG".date("DxzxYxM")."VIG");
+	}
+	
 
 //------------------------------------------------------------------------------------------------------
 // Test d'un service
 //------------------------------------------------------------------------------------------------------
-	public function testService($id_service,$id_fonction)
-	{
+	public function testService($id_service,$id_fonction)	{
 		if(!$id_service) return false;
 		$instruction="\$cls=new Class_WebService_".$id_service."();";
 		eval($instruction);
+		$num_fonction = 0;
 		foreach($this->services[$id_service]["services"] as $instruction)
 		{
 			$num_fonction++;

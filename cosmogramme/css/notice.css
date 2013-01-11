@@ -1,0 +1,109 @@
+div.notice
+{
+	width:600px;
+	border:1px solid;
+  border-color:#afafaf;
+  background-color:#F5F5F5;
+  text-align:left;
+  padding-top:10px;
+  padding-bottom:10px;
+  padding-left:5px;
+  padding-right:5px;
+}
+div.notice_titre
+{
+	width:600px;
+	text-align:left;
+	color:#660000;
+	font-size:16pt;
+	min-height:30px;
+	margin-bottom:10px;
+}
+div.notice_entete
+{
+	font-weight:bold;
+	background-color:#CCFFCC;
+	width:590px;
+	padding:5px;
+	color:#003687;
+	margin-bottom:5px;
+}
+div.notice_valeur
+{
+	font-size:8pt;
+	font-weight:bold;
+	color:black;
+	min-height:20px;
+	padding-top:2px;
+}
+div.notice_label
+{
+	width:30%;
+	height:20px;
+	text-align:right;
+	font-size:10pt;
+	color:#003687;
+	float:left;
+	padding-right:5px;
+}
+div.notice_zone
+{
+	font-weight:bold;
+	background-color:#F0F0F0;
+	width:590px;
+	padding:5px;
+	color:#003687;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+div.notice_indicateur
+{
+	color:darkGreen;
+	height:20px;
+	width:90px;
+	float:left;
+	text-align:right;
+}
+div.notice_champ
+{
+	width:20px;
+	color:darkGreen;
+	float:left;
+	margin-left:15px;
+}
+div.separateur
+{
+	width:10px;
+	font-weight:bold;
+	float:left;
+	text-align:center;
+	color:purple;
+}
+a:link.notice{color:#660000;font-weight:bold;text-decoration:none;font-size:10pt;}
+a:visited.notice{color:#660000;font-weight:bold;text-decoration:none;font-size:10pt;}
+a:hover.notice{color:#B73901;font-weight:bold;text-decoration:none;font-size:10pt;}
+
+div.guide
+{
+	padding:5px;
+	width:600px;
+	border:1px solid;
+  border-color:#afafaf;
+}
+div.guide_ariane
+{
+	padding:5px;
+	background-color:#CCFFCC;
+	width:100%;
+}
+div.guide_contenu
+{
+	padding:5px;
+}
+a:link.guide_ariane{color:#003687;font-weight:bold;text-decoration:none;font-size:8pt;}
+a:visited.guide_ariane{color:#003687;font-weight:bold;text-decoration:none;font-size:8pt;}
+a:hover.guide_ariane{color:#B73901;font-weight:bold;text-decoration:none;font-size:8pt;}
+
+a:link.guide_contenu{color:#660000;font-weight:normal;text-decoration:none;font-size:8pt;}
+a:visited.guide_contenu{color:#660000;font-weight:normal;text-decoration:none;font-size:8pt;}
+a:hover.guide_contenu{color:#B73901;font-weight:bold;text-decoration:none;font-size:8pt;}

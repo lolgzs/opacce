@@ -1,0 +1,288 @@
+/* Global */
+body {font-family:Arial; color:#666666; font-size:14px; margin: 0px}
+h1 {font-size:1.2em; font-weight:bold; margin-bottom:2px;}
+h2 {font-size:1.1em; font-weight:bold; margin-bottom:5px; margin-top:0px;}
+
+a, a:hover, a:visited { text-decoration:none; }
+a, a:visited {color:#0058A5;}
+a:hover {color:#D44100;}
+
+/* Conteneur site */
+.siteWeb div#colGaucheInner,
+.siteWeb div#colMilieuInner,
+.siteWeb div#colDroiteInner,
+.siteWeb div#colContenuInner {vertical-align:top; padding-top:5px}
+
+.siteWeb div#colGaucheInner {padding-bottom: 10px;}
+
+#site_web_content,
+.siteWeb div#col_wrapper,
+.siteWeb,
+.siteWeb div#right_col_color {
+	float:none;
+}
+
+.colContenu,
+#site_web_wrapper {
+	width: auto !important;
+	max-width: none !important;
+	float: none !important;
+}
+
+
+/* Eléments qui sont redimensionnés en fonction de leur conteneur  */
+.auto_resize img, .auto_resize object, .auto_resize embed {display:none;}
+
+/* Footer */
+.footer {width: auto !important; padding: 0 10px}
+.credit {float: right}
+
+/* Menu horizontal */
+#menu_horizontal * {
+	padding: 0px;
+	margin: 0px;
+}
+
+#menu_horizontal {
+	height: 30px;
+	cursor: pointer;
+
+	font-size:1.1em;
+	font-weight: bold;
+
+	text-align: center;
+	padding-top: 10px;
+	white-space: nowrap;
+}
+
+#menu_horizontal img {
+	display: inline;
+	height: 16px;
+	width: 16px;
+	margin-right: 5px;
+	margin-bottom: -3px;
+}
+
+#menu_horizontal a {
+	text-decoration:none;
+}
+
+#menu_horizontal ul {
+	margin: 0 auto;
+}
+
+#menu_horizontal li {
+	padding: 0px 5px 0px 5px;
+	vertical-align: middle;
+	list-style: none;
+	position: relative;
+	display: inline;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#menu_horizontal ul li
+{
+	padding-bottom: 10px;
+}
+
+#menu_horizontal ul li ul
+{
+	border: 1px solid #B0BEC7;
+	background-color: #FFFFFF;
+	display: none;
+	position: absolute;
+	top: 1.5em;
+	padding: 2px;
+	z-index: 10;
+}
+
+#menu_horizontal ul li ul li {
+	color: #0058A5;
+	height: 22px;
+	padding: 2px;
+	text-align: left;
+	display: block;
+	font-weight: normal;
+	white-space:nowrap;
+}
+
+#menu_horizontal ul li ul li a {
+	color: #0058A5;
+}
+
+#menu_horizontal ul li.over ul {
+	display: block;
+}
+
+#menu_horizontal ul li ul li:hover {
+	background-color: #B0BEC7;
+}
+
+/* Menu Gauche */
+.menuGauche ul{padding:3px 3px 3px 0pt;margin:0pt 0pt 0pt 10px; list-style-image: url(../images/blank.gif);}
+.menuGauche li{color:#D44100; vertical-align:top;cursor:pointer}
+.menuGauche li:hover{background-color:#78AEFF;}
+.menuGauche img{margin-right:5px; margin-bottom: -3px;}
+.menuGauche a{color:#0058A5; text-decoration:none;}
+.menuGauche a:hover{color:#FFFFFF;text-decoration:none;}
+.menuGauche a:visited{color:#D44100;text-decoration:none;}
+
+
+/* Boites */
+
+.boiteMilieu, .boiteGauche, .boiteDroite, .boiteVide {width:100%;}
+.boiteMilieuInner, .boiteGaucheInner, .boiteDroiteInner, .boiteVideInner {overflow:hidden;}
+.boiteMilieu h2, .boiteGauche h2, .boiteDroite h2 {font-weight:normal;padding-top:3px;}
+.boiteMilieu h1, .boiteGauche h1, .boiteDroite h1 {margin-top:0px;white-space:nowrap}
+.boiteMilieu .contenu, .boiteGauche .contenu, .boiteDroite .contenu, .boiteVide contenu {padding: 5px}
+
+.boiteGauche, .boiteDroite { margin-bottom: 5px;}
+
+/* Boite des division sur le côté */
+.boiteGauche div.titre, .boiteDroite div.titre  {padding: 2px 0px 2px 5px;}
+
+/* Boite de la division du milieu */
+.boiteMilieu {margin-top: 10px;}
+.boiteMilieu .rss{float:right; position: relative; top:-17px; right:10px }
+.boiteMilieu div.titreInner {padding:0px 0px 0px 5px}
+.boiteMilieu h1 {color:#666666; font-size:1.6em; font-weight:bold;}
+
+
+.rechSimpleForm select {width: 100%}
+
+/* Abonnés */
+.abonneTitre {background-color:#D7E1E7;text-align:left; color:#007CA5;font-weight:bold;padding:7px}
+.abonneCadre{background-color:#F4F8FB;border:1px solid #007CA5;}
+.abonne {text-align:center;}
+.abonneFiche {text-align:center; padding:5px}
+
+/* Form */
+.form{}
+.form td.masque{text-align:right;}
+.form td.saisie{text-align:left;}
+.submit {background:transparent url(../images/bouton/btn_ok.gif) no-repeat scroll 0 0;border:0 none;cursor:pointer;height:18px;width:18px;}
+
+/* Tableau de liste */
+.listeTitre{border-bottom:1px solid #CACFD5;border-top:1px solid #CACFD5;color:#666666;font-weight:bold;}
+.listePaire{background-color:#F4F4EF;}
+.listeImpaire{background-color:#FFFFFF;}
+
+/* Barre de nav */
+.barre_nav{width:100%;}
+.barre_nav span{font-size:0.9em; color:#666666;padding:1px;}
+.barre_nav a {font-size:0.9em;color:#D44100;}
+.barre_nav a:hover {color:#D44100;text-decoration:none;}
+.barre_nav a:visited {}
+
+/* Calendrier  A SIMPLIFIER */
+table.calendar_main {font-family: Verdana;font-size: 0.9em}
+.calendar_title td {color: #000000; text-align:center;}
+.calendar_title_month_clickable {color: #D44100;text-decoration: none;font-weight:bold;font-size:1.1em}
+.calendar_table {border: none;}
+
+.calendar_table td,
+.calendar_table th { text-align: center;}
+
+.calendar_table th,
+.calendar_weekend {}
+
+.calendar_other_month_clickable,
+.calendar_other_month {color: #FFFFFF;}
+
+.calendar_day_non_clickable,
+.calendar_table th,
+.calendar_non_clickable {color: #666666;}
+
+.day,
+.calendar_today_clickable {font-weight:bold;}
+
+.day_clickable {color: #D44100;}
+
+.day_clickable,
+.calendar_today_clickable,
+.calendar_other_month_clickable,
+.calendar_title_month_clickable,
+.calendar_day_non_clickable {text-decoration: none;}
+
+/* Error */
+.error {color:red;font-weight:bold;}
+
+
+/* Boites bannière*/
+div#header {
+		overflow: hidden;
+}
+
+div#banniere {
+		position:absolute;
+		overflow: hidden;
+}
+
+div#header .boiteBanniereGauche {
+		left: 0px;
+		font-weight: bold;
+		width: 0px;
+		position: relative;
+		height:100%;
+		display:table;
+}
+
+div#header .boiteBanniereGauche h2 {
+		margin-bottom: 0px;
+}
+
+div#header .boiteBanniereGaucheInner,
+div#header .boiteBanniereDroiteInner {
+		display: table-cell;
+		vertical-align: middle;
+		padding-left: 15px;
+}
+
+div#header .boiteBanniereGaucheInner form {
+		width: 400px
+}
+
+div#header .boiteBanniereDroite {
+		padding: 0px;
+		font-weight: bold;
+		width: 200px;
+		right: 0px;
+		overflow: hidden;
+		height:100%;
+		display:table;
+}
+
+
+#open_accessibility {
+		top:5px;
+}
+
+
+
+@media screen and (max-width: 2000px) {
+		.colGauche {display: table}
+		#colGaucheInner {display: table-row}
+		#colGaucheInner>div {
+				display: table-cell;
+				width: auto;
+		}
+
+		.colGauche, .colContenu {
+				float: none !important;
+				width: 100% !important;
+				max-width: none !important;
+		} 
+
+		.colGauche .contenu {
+				display: none
+		}
+
+		#colGaucheInner>div:hover .contenu{ 
+				display: block; 
+				position: absolute; 
+				background-color: white; 
+				box-shadow: 0px 1px 10px;
+				z-index: 10;
+		}
+}

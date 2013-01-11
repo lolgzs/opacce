@@ -29,8 +29,7 @@ class Admin_BibController extends Zend_Controller_Action
 	//------------------------------------------------------------------------------------------------------
 	// Initialisation du controller
 	//------------------------------------------------------------------------------------------------------
-	function init()
-	{
+	function init()	{
 		// Zone et bib du filtre (initialisé dans le plugin DefineUrls)
 		$this->id_zone=$_SESSION["admin"]["filtre_localisation"]["id_zone"];
 		$this->id_bib=$_SESSION["admin"]["filtre_localisation"]["id_bib"];
@@ -47,7 +46,7 @@ class Admin_BibController extends Zend_Controller_Action
 	{
 		$this->view->titre = $this->view->_('Gestion des bibliothèques');
 		// Retour accueil ou liste en fonction du role
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		if ($user->ROLE_LEVEL < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
 			 $this->_redirect('admin/index');
@@ -55,9 +54,7 @@ class Admin_BibController extends Zend_Controller_Action
 		if ($user->ROLE_LEVEL == ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB)
 			$this->_redirect(sprintf('admin/bib/edit/id/%d', $user->ID_SITE));
 
-		$bibClass = new Class_Bib();
-		$liste_bib = $bibClass->getAllBibByIdZone($this->id_zone);
-		$this->view->bib_array = $liste_bib;
+		$this->view->bib_array = Class_Bib::getLoader()->findAllByIdZone($this->id_zone);
 	}
 
 	//------------------------------------------------------------------------------------------------------
@@ -172,7 +169,7 @@ class Admin_BibController extends Zend_Controller_Action
 	// Modif bib
 	//------------------------------------------------------------------------------------------------------
 	function editAction() {
-		$user = Zend_Auth::getInstance()->getIdentity();
+		$user = ZendAfi_Auth::getInstance()->getIdentity();
 
 		if ($user->ROLE_LEVEL < ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB) 
 			$this->_redirect('admin/index');
@@ -241,7 +238,7 @@ class Admin_BibController extends Zend_Controller_Action
 				
 				// Redirection en fonction du role
 				$redirect="admin";
-				$user = Zend_Auth::getInstance()->getIdentity();
+				$user = ZendAfi_Auth::getInstance()->getIdentity();
 				if ($user->ROLE_LEVEL > ZendAfi_Acl_AdminControllerRoles::MODO_PORTAIL) $redirect.="/bib?z=".$this->id_zone;
 				
 				if ($errorMessage == '') 
@@ -430,7 +427,7 @@ class Admin_BibController extends Zend_Controller_Action
 					{
 						$data["ID_BIB"]=$id_bib;
 						if(!$data["ANIMATION"]) $data["ANIMATION"]="etoile.gif";
-						setVar("animation",$data["ANIMATION"]);
+						Class_AdminVar::set("animation",$data["ANIMATION"]);
 						$cls_loc->ecrireLocalisation($id_localisation,$data);
 						$this->_redirect('admin/bib/localisations?id_bib='.$id_bib);
 					}
@@ -594,7 +591,7 @@ class Admin_BibController extends Zend_Controller_Action
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('sansMenuGauche.phtml');
 
-		$id_bib = (int)$this->_request->getParam('id');
+		$id_bib = (int)$this->_request->getParam('id_bib');
 		if($id_bib <= 0)	$this->_redirect('admin/bib');
 		$this->_session->ID_SITE = $id_bib;
 		$cle_plan_acces = getVar('CLEF_GOOGLE_MAP');

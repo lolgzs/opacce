@@ -1,0 +1,17 @@
+<?php
+echo '<ul>';
+foreach ($this->articles as $article) {
+	echo sprintf('<li><a href="%s">%s [%d/%d]</a>%s</li>',
+							 $this->url(['module' => 'admin',
+													 'controller' => 'modo',
+													 'action' => 'formulaires',
+													 'id_article' => $article->getId()],
+													null,
+													true),
+							 $article->getTitre(),
+							 $article->numberOfFormulairesToValidate(),
+							 $article->numberOfFormulaires(),
+							 $this->tagEditArticle($article));
+}
+echo '</ul>';
+?>

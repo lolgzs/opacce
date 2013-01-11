@@ -18,101 +18,112 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Moteur de recherche Pergame
-//////////////////////////////////////////////////////////////////////////////////////////
-
-class Class_MoteurRecherche
-{
+class Class_MoteurRecherche {
 	private $ix;																			// Classe d'indexation
-	private $limite_facettes=" limit 15000";					// limite pour le calcul des facettes
+	private $limite_facettes = " limit 15000";					// limite pour le calcul des facettes
 	private $_translate;
 
-//------------------------------------------------------------------------------------------------------
-// Constructeur
-//------------------------------------------------------------------------------------------------------
-	function __construct()
-	{
+
+	public function __construct()	{
 		$this->ix = new Class_Indexation();
 		$this->_translate = Zend_Registry::get('translate');
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Recherche simple
-//------------------------------------------------------------------------------------------------------
-	function lancerRechercheSimple($crit)
-	{
+
+	public function lancerRechercheSimple($crit) {
+		$pertinence = false;
+		$selection_bib = '';
+		$selection_sections = '';
+		$selection_annexe = '';
+		$expressionRecherche = '';
+		$facette = '';
+		$clef_chapeau = '';
+		$type_doc = 0;
+		$annexe = '';
+		$avec_vignette = false;
+		$tri = 0;
+		$mode_isbn = false;
+		$conditions = '';
+		$against = '';
+		$order_by = '';
+
 		extract($crit);
-		$selection_sections=$crit["selection_sections"];
-		if(trim($selection_bib)=="B") $selection_bib="";
+		
+		if ('B' == trim($selection_bib))
+			$selection_bib = '';
+
+		$ret = array('nb_mots' => null,
+								 'statut' => '',
+								 'nombre' => 0);
 		
 		// Analyse de l'expression
-		$expressionRecherche=trim($expressionRecherche);
-		if(!$expressionRecherche) {
-			$ret["statut"]="erreur"; 
-			$ret["erreur"]=$this->_translate->_("Tapez une expression &agrave; rechercher"); 
+		$expressionRecherche = trim($expressionRecherche);
+		if (!$expressionRecherche) {
+			$ret["statut"] = 'erreur'; 
+			$ret["erreur"] = $this->_translate->_("Tapez une expression &agrave; rechercher"); 
 			return $ret;
 		}
 		
 		// Recherche par isbn (1 seul mot et isbn ou ean valide)
-		if(strpos($expressionRecherche," ") === false and strlen($expressionRecherche) > 9)
-		{
-			$cls=new Class_Isbn($expressionRecherche);
-			$isbn=$cls->getAll();
-			if($isbn["isbn10"])
-			{
+		if ($this->_isISBN($expressionRecherche)) {
+			$cls = new Class_Isbn($expressionRecherche);
+			$isbn = $cls->getAll();
+			if ($isbn["isbn10"]) {
 				$where="Where (isbn='".$isbn["isbn10"]."' or isbn='".$isbn["isbn13"]."') ";
 				$mode_isbn=true;
-			}
-			elseif($isbn["ean"])
-			{
+			} elseif($isbn["ean"]) {
 				$where="Where ean='".$isbn["ean"]."' ";
 				$mode_isbn=true;
 			}
 		}
-		if(!$where)
-		{
-			$mots=$this->ix->getMots($expressionRecherche);
-			$recherche="";
-			foreach($mots as $mot)
-			{
-				$mot=$this->ix->getExpressionRecherche($mot);
-				if($mot)
-				{
+
+
+		$recherche = '';
+		if (!isset($where) || !$where) {
+			$mots = $this->ix->getMots($expressionRecherche);
+			foreach ($mots as $mot) {
+				$mot = $this->ix->getExpressionRecherche($mot);
+				if ($mot) {
 					$ret["nb_mots"]++;
-					if($pertinence == true) $recherche.=" ".$mot;
-					else $recherche.=" +".$mot;
+					$recherche .= ($pertinence ? ' ' : ' +') . $mot;
 				}
 			}
-			$recherche=trim($recherche);
-			if(!$recherche)  {
-				$ret["statut"]="erreur"; 
-				$ret["erreur"]=$this->_translate->_("Il n'y aucun mot assez significatif pour la recherche");
+
+			$recherche = trim($recherche);
+			if (!$recherche) {
+				$ret["statut"] = "erreur"; 
+				$ret["erreur"] = $this->_translate->_("Il n'y aucun mot assez significatif pour la recherche");
 				return $ret;
 			}
 		
 			// Constitution des requetes
-			if($pertinence == true) $against=" AGAINST('".$recherche."')";
-			else $against=" AGAINST('".$recherche."' IN BOOLEAN MODE)";
-			$where="Where MATCH(titres,auteurs,editeur,collection,matieres,dewey)";
+			if ($pertinence == true) 
+				$against=" AGAINST('".$recherche."')";
+			else 
+				$against=" AGAINST('".$recherche."' IN BOOLEAN MODE)";
+
+			$where = "Where MATCH(titres,auteurs,editeur,collection,matieres,dewey)";
 		}
-		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
+		if ($facette) {
+			$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);
+		}
+
 		if($selection_bib) $facette.="+(".$selection_bib.") ";
-		if($selection_sections)
-		{
-			$facette.="+(".str_replace(";"," S",$selection_sections).") ";
-		}
+		if($selection_sections)	$facette.="+(".str_replace(";"," S",$selection_sections).") ";
+		if($selection_annexe) $facette.="+(Y".str_replace(","," Y",$selection_annexe).") ";
+
 		if($facette) $conditions=" And MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($clef_chapeau) $where="where clef_chapeau='$clef_chapeau'";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		if($annexe) $conditions.=" And MATCH(facettes) AGAINST('+Y".$annexe."' IN BOOLEAN MODE)";
 		if($avec_vignette) $conditions.=" and url_vignette >'' and url_vignette !='NO'";
-		
-		if($tri and $tri!="*" and !$pertinence or $mode_isbn==true)
-		{
+
+		if ($tri and $tri!="*" and !$pertinence or $mode_isbn==true) {
 			$select = "select id_notice from notices ";
-			if($tri) $order_by=" order by ".$tri;
+			if ($tri and $tri!="*")
+				$order_by=" order by ".$tri;
 		}
+
 		else
 		{
 			$filtre_against=str_replace("+"," ",$against);
@@ -146,12 +157,25 @@ class Class_MoteurRecherche
 //------------------------------------------------------------------------------------------------------
 // Recherche Avancée
 //------------------------------------------------------------------------------------------------------
-	function lancerRechercheAvancee($crit)
-	{
+	function lancerRechercheAvancee($crit) {
+		$selection_bib = '';
+		$section = '';
+		$selection_sections = '';
+		$conditions = '';
+		$facette = '';
+		$selection_annexe = '';
+		$type_doc = 0;
+		$annee_debut = '';
+		$annee_fin = '';
+		$annexe = '';
+		$nouveaute = false;
+
 		extract($crit);
 		if(trim($selection_bib)=="B") $selection_bib="";
-		if($section) $selection_sections="S".$section;
-		else $selection_sections=$crit["selection_sections"];
+		if ($section) 
+			$selection_sections="S".$section;
+		else if (isset($crit["selection_sections"]))
+			$selection_sections=$crit["selection_sections"];
 
 		// Analyse des expressions
 		foreach($crit as $clef => $valeur)
@@ -193,8 +217,7 @@ class Class_MoteurRecherche
 			}
 		}
 		
-		if(!$conditions)
-		{
+		if(!$conditions)	{
 			//$ret["statut"]="erreur";
 			//$ret["erreur"]=$this->_translate->_("Il n'y aucun mot assez significatif pour la recherche");
 			//return $ret;
@@ -205,6 +228,7 @@ class Class_MoteurRecherche
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
 		if($selection_bib) $facette.="+(".$selection_bib.") ";
 		if($selection_sections) $facette.="+(".str_replace(";"," S",$selection_sections).") ";
+		if($selection_annexe) $facette.="+(Y".str_replace(","," Y",$selection_annexe).") ";
 		if($facette) $conditions.=" And MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		if($annee_debut) $conditions.=" and annee >='".$annee_debut."' ";
@@ -217,7 +241,10 @@ class Class_MoteurRecherche
 			$date=date("Y-m-d",$date);
 			$conditions.=" and date_creation >'".$date."' ";
 		}
-		if($tri > "") $order_by=" order by ".$tri;
+		if (($tri > "") && ($tri !== '*')) 
+			$order_by=" order by ".$tri;
+		else
+			$order_by = '';
 
 		// Finalisation des requetes
 		$req_notices = "Select id_notice from notices Where ".$conditions.$order_by;
@@ -275,16 +302,18 @@ class Class_MoteurRecherche
 		}
 		return $ret;
 }
+
+
 //------------------------------------------------------------------------------------------------------
 // Recherche rebondissante
 //------------------------------------------------------------------------------------------------------
-	function lancerRechercheRebond($recherche)
-	{
+	function lancerRechercheRebond($recherche)	{
 		// Parametres
-		$type_doc=$recherche["type_doc"];
-		$selection_bib=$recherche["selection_bib"];
-		$rebond=$recherche["code_rebond"];
-		$facette=$recherche["facette"];
+		$type_doc = isset($recherche["type_doc"]) ? $recherche["type_doc"] : 0;
+		$selection_bib = isset($recherche["selection_bib"]) ? $recherche["selection_bib"] : 0;
+		$rebond = isset($recherche["code_rebond"]) ? $recherche["code_rebond"] : '';
+		$facette = isset($recherche["facette"]) ? $recherche["facette"] : '';
+    $tri = isset($recherche["tri"]) ? $recherche["tri"] : '';
 
 		// Constitution des requetes
 		if($facette) {$facette=str_replace("["," +",$facette); $facette=str_replace("]"," ",$facette);}
@@ -293,22 +322,28 @@ class Class_MoteurRecherche
 		$conditions=" Where MATCH(facettes) AGAINST('".$facette."' IN BOOLEAN MODE)";
 		if($type_doc) $conditions.=" And type_doc in(".$type_doc.")";
 		$order_by=" order by alpha_titre";
+		if (($tri > "") && ($tri !== '*')) 
+			$order_by=" order by ".$tri;
 
 		$req_liste = "select id_notice from notices ".$conditions.$order_by;
 		$req_comptage = "Select count(*) from notices ".$conditions;
 		$req_facettes = "select id_notice,type_doc,facettes from notices ".$conditions.$this->limite_facettes;
-	
+
 		// Lancer les requetes
+    $ret = ['nb_mots' => 0,
+            'nombre' => 0,
+            'statut' => 'OK'];
+
 		$nb=fetchOne($req_comptage);
-		if(!$nb) 
-		{
-			$ret["statut"]="erreur"; 
-			$ret["erreur"]=$this->_translate->_("Aucun résultat trouvé");
+		if(!$nb) {
+			$ret["statut"] = "erreur"; 
+			$ret["erreur"] = $this->_translate->_("Aucun résultat trouvé");
 			return $ret;
 		}
-		$ret["nombre"]=$nb;
-		$ret["req_liste"]=$req_liste;
-		$ret["req_facettes"]=$req_facettes;
+
+		$ret["nombre"] = $nb;
+		$ret["req_liste"] = $req_liste;
+		$ret["req_facettes"] = $req_facettes;
 		
 		return $ret;
 	}
@@ -386,8 +421,7 @@ class Class_MoteurRecherche
 // ----------------------------------------------------------------
 // Facettes 
 // ----------------------------------------------------------------
-function getFacettes($req,$preferences)
-	{
+function getFacettes($req,$preferences)	{
 		// Preferences
 		$p_facette=array("nombre" => $preferences["facettes_nombre"],"actif" => $preferences["facettes_actif"],"types" => "T".$preferences["facettes_codes"]);
 		$p_facette["nombre"]=$p_facette["nombre"]*2; // pour afficher les n suivants
@@ -413,7 +447,8 @@ function getFacettes($req,$preferences)
 		$facettes = array();
 		foreach($rows as $notice)	
 		{
-			$items=explode(" ",trim($notice["facettes"]));
+			$items = array_filter(explode(" ",trim($notice["facettes"])));
+			
 			foreach($items as $item)
 			{ 
 				$type=substr($item,0,1);
@@ -462,7 +497,12 @@ function getFacettes($req,$preferences)
 				if (!array_isset($type, $facettes)) continue;
 
 				$yen_a_plus=false;
-				if(!$sorted[$type]) {arsort($facettes[$type]); $sorted[$type]=true;}
+
+				if(!isset($sorted[$type])) {
+					arsort($facettes[$type]); 
+					$sorted[$type]=true;
+				}
+
 				$lig=array_slice($facettes[$type],0,1);
 				$compare=array_values($lig);
 				if($compare[0] > $controle["nombre"]) 
@@ -495,5 +535,10 @@ function getFacettes($req,$preferences)
 	{
 		$criteres=addslashes(serialize($criteres));
 		sqlExecute("insert into stats_recherche_echec(type_recherche,criteres) values($type_recherche,'$criteres')");
+	}
+
+
+	protected function _isISBN($value) {
+		return (false == strpos($value, ' ')) && 9 < strlen($value);
 	}
 }

@@ -1,96 +1,102 @@
 smalltalk.addPackage('Kernel-Announcements', {});
 smalltalk.addClass('AnnouncementSubscription', smalltalk.Object, ['block', 'announcementClass'], 'Kernel-Announcements');
 smalltalk.addMethod(
-unescape('_announcementClass'),
+"_announcementClass",
 smalltalk.method({
-selector: unescape('announcementClass'),
+selector: "announcementClass",
 category: 'accessing',
 fn: function (){
 var self=this;
-return self['@announcementClass'];
-return self;},
+return self["@announcementClass"];
+},
 args: [],
-source: unescape('announcementClass%0A%09%5EannouncementClass'),
+source: "announcementClass\x0a\x09^announcementClass",
 messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AnnouncementSubscription);
 
 smalltalk.addMethod(
-unescape('_announcementClass_'),
+"_announcementClass_",
 smalltalk.method({
-selector: unescape('announcementClass%3A'),
+selector: "announcementClass:",
 category: 'accessing',
 fn: function (aClass){
 var self=this;
-(self['@announcementClass']=aClass);
-return self;},
+self["@announcementClass"]=aClass;
+return self},
 args: ["aClass"],
-source: unescape('announcementClass%3A%20aClass%0A%09announcementClass%20%3A%3D%20aClass'),
+source: "announcementClass: aClass\x0a\x09announcementClass := aClass",
 messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AnnouncementSubscription);
 
 smalltalk.addMethod(
-unescape('_block'),
+"_block",
 smalltalk.method({
-selector: unescape('block'),
+selector: "block",
 category: 'accessing',
 fn: function (){
 var self=this;
-return self['@block'];
-return self;},
+return self["@block"];
+},
 args: [],
-source: unescape('block%0A%09%5Eblock'),
+source: "block\x0a\x09^block",
 messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AnnouncementSubscription);
 
 smalltalk.addMethod(
-unescape('_block_'),
+"_block_",
 smalltalk.method({
-selector: unescape('block%3A'),
+selector: "block:",
 category: 'accessing',
 fn: function (aBlock){
 var self=this;
-(self['@block']=aBlock);
-return self;},
+self["@block"]=aBlock;
+return self},
 args: ["aBlock"],
-source: unescape('block%3A%20aBlock%0A%09block%20%3A%3D%20aBlock'),
+source: "block: aBlock\x0a\x09block := aBlock",
 messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AnnouncementSubscription);
 
 smalltalk.addMethod(
-unescape('_deliver_'),
+"_deliver_",
 smalltalk.method({
-selector: unescape('deliver%3A'),
+selector: "deliver:",
 category: 'announcing',
 fn: function (anAnnouncement){
 var self=this;
-((($receiver = smalltalk.send(self, "_handlesAnnouncement_", [anAnnouncement])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(smalltalk.send(self, "_block", []), "_value_", [anAnnouncement]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(smalltalk.send(self, "_block", []), "_value_", [anAnnouncement]);})]));
-return self;},
+var $1;
+$1=smalltalk.send(self,"_handlesAnnouncement_",[anAnnouncement]);
+if(smalltalk.assert($1)){
+smalltalk.send(smalltalk.send(self,"_block",[]),"_value_",[anAnnouncement]);
+};
+return self},
 args: ["anAnnouncement"],
-source: unescape('deliver%3A%20anAnnouncement%0A%09%28self%20handlesAnnouncement%3A%20anAnnouncement%29%0A%09%09ifTrue%3A%20%5Bself%20block%20value%3A%20anAnnouncement%5D'),
-messageSends: ["ifTrue:", "handlesAnnouncement:", "value:", "block"],
+source: "deliver: anAnnouncement\x0a\x09(self handlesAnnouncement: anAnnouncement)\x0a\x09\x09ifTrue: [self block value: anAnnouncement]",
+messageSends: ["ifTrue:", "value:", "block", "handlesAnnouncement:"],
 referencedClasses: []
 }),
 smalltalk.AnnouncementSubscription);
 
 smalltalk.addMethod(
-unescape('_handlesAnnouncement_'),
+"_handlesAnnouncement_",
 smalltalk.method({
-selector: unescape('handlesAnnouncement%3A'),
+selector: "handlesAnnouncement:",
 category: 'announcing',
 fn: function (anAnnouncement){
 var self=this;
-return smalltalk.send(anAnnouncement, "_isKindOf_", [smalltalk.send(self, "_announcementClass", [])]);
-return self;},
+var $1;
+$1=smalltalk.send(anAnnouncement,"_isKindOf_",[smalltalk.send(self,"_announcementClass",[])]);
+return $1;
+},
 args: ["anAnnouncement"],
-source: unescape('handlesAnnouncement%3A%20anAnnouncement%0A%09%5EanAnnouncement%20isKindOf%3A%20self%20announcementClass'),
+source: "handlesAnnouncement: anAnnouncement\x0a\x09^anAnnouncement isKindOf: self announcementClass",
 messageSends: ["isKindOf:", "announcementClass"],
 referencedClasses: []
 }),
@@ -100,53 +106,201 @@ smalltalk.AnnouncementSubscription);
 
 smalltalk.addClass('Announcer', smalltalk.Object, ['registry', 'subscriptions'], 'Kernel-Announcements');
 smalltalk.addMethod(
-unescape('_announce_'),
+"_announce_",
 smalltalk.method({
-selector: unescape('announce%3A'),
+selector: "announce:",
 category: 'announcing',
 fn: function (anAnnouncement){
 var self=this;
-smalltalk.send(self['@subscriptions'], "_do_", [(function(each){return smalltalk.send(each, "_deliver_", [anAnnouncement]);})]);
-return self;},
+smalltalk.send(self["@subscriptions"],"_do_",[(function(each){
+return smalltalk.send(each,"_deliver_",[anAnnouncement]);
+})]);
+return self},
 args: ["anAnnouncement"],
-source: unescape('announce%3A%20anAnnouncement%0A%09subscriptions%20do%3A%20%5B%3Aeach%20%7C%0A%09%09each%20deliver%3A%20anAnnouncement%5D'),
+source: "announce: anAnnouncement\x0a\x09subscriptions do: [:each |\x0a\x09\x09each deliver: anAnnouncement]",
 messageSends: ["do:", "deliver:"],
 referencedClasses: []
 }),
 smalltalk.Announcer);
 
 smalltalk.addMethod(
-unescape('_initialize'),
+"_initialize",
 smalltalk.method({
-selector: unescape('initialize'),
+selector: "initialize",
 category: 'initialization',
 fn: function (){
 var self=this;
-smalltalk.send(self, "_initialize", [], smalltalk.Object);
-(self['@subscriptions']=smalltalk.send((smalltalk.Array || Array), "_new", []));
-return self;},
+smalltalk.send(self,"_initialize",[],smalltalk.Object);
+self["@subscriptions"]=smalltalk.send((smalltalk.Array || Array),"_new",[]);
+return self},
 args: [],
-source: unescape('initialize%0A%09super%20initialize.%0A%09subscriptions%20%3A%3D%20Array%20new'),
+source: "initialize\x0a\x09super initialize.\x0a\x09subscriptions := Array new",
 messageSends: ["initialize", "new"],
 referencedClasses: ["Array"]
 }),
 smalltalk.Announcer);
 
 smalltalk.addMethod(
-unescape('_on_do_'),
+"_on_do_",
 smalltalk.method({
-selector: unescape('on%3Ado%3A'),
+selector: "on:do:",
 category: 'subscribing',
-fn: function (aClass, aBlock){
+fn: function (aClass,aBlock){
 var self=this;
-smalltalk.send(self['@subscriptions'], "_add_", [(function($rec){smalltalk.send($rec, "_block_", [aBlock]);smalltalk.send($rec, "_announcementClass_", [aClass]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send((smalltalk.AnnouncementSubscription || AnnouncementSubscription), "_new", []))]);
-return self;},
+var $1,$2;
+$1=smalltalk.send((smalltalk.AnnouncementSubscription || AnnouncementSubscription),"_new",[]);
+smalltalk.send($1,"_block_",[aBlock]);
+smalltalk.send($1,"_announcementClass_",[aClass]);
+$2=smalltalk.send($1,"_yourself",[]);
+smalltalk.send(self["@subscriptions"],"_add_",[$2]);
+return self},
 args: ["aClass", "aBlock"],
-source: unescape('on%3A%20aClass%20do%3A%20aBlock%0A%09subscriptions%20add%3A%20%28AnnouncementSubscription%20new%0A%09%09block%3A%20aBlock%3B%0A%09%09announcementClass%3A%20aClass%3B%0A%09%09yourself%29'),
-messageSends: ["add:", "block:", "announcementClass:", "yourself", "new"],
+source: "on: aClass do: aBlock\x0a\x09subscriptions add: (AnnouncementSubscription new\x0a\x09\x09block: aBlock;\x0a\x09\x09announcementClass: aClass;\x0a\x09\x09yourself)",
+messageSends: ["add:", "block:", "new", "announcementClass:", "yourself"],
 referencedClasses: ["AnnouncementSubscription"]
 }),
 smalltalk.Announcer);
 
+
+
+smalltalk.addClass('SystemAnnouncer', smalltalk.Announcer, [], 'Kernel-Announcements');
+smalltalk.SystemAnnouncer.comment="My unique instance #current is the global announcer handling all Amber system-related announces"
+
+smalltalk.SystemAnnouncer.klass.iVarNames = ['current'];
+smalltalk.addMethod(
+"_current",
+smalltalk.method({
+selector: "current",
+category: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+if(($receiver = self["@current"]) == nil || $receiver == undefined){
+self["@current"]=smalltalk.send(self,"_new",[],smalltalk.Announcer.klass);
+$1=self["@current"];
+} else {
+$1=self["@current"];
+};
+return $1;
+},
+args: [],
+source: "current\x0a\x09^ current ifNil: [ current := super new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: []
+}),
+smalltalk.SystemAnnouncer.klass);
+
+smalltalk.addMethod(
+"_new",
+smalltalk.method({
+selector: "new",
+category: 'instance creation',
+fn: function (){
+var self=this;
+smalltalk.send(self,"_shouldNotImplement",[]);
+return self},
+args: [],
+source: "new\x0a\x09self shouldNotImplement",
+messageSends: ["shouldNotImplement"],
+referencedClasses: []
+}),
+smalltalk.SystemAnnouncer.klass);
+
+
+smalltalk.addClass('SystemAnnouncement', smalltalk.Object, ['theClass'], 'Kernel-Announcements');
+smalltalk.SystemAnnouncement.comment="I am the superclass of all system announcements"
+smalltalk.addMethod(
+"_theClass",
+smalltalk.method({
+selector: "theClass",
+category: 'accessing',
+fn: function (){
+var self=this;
+return self["@theClass"];
+},
+args: [],
+source: "theClass\x0a\x09^ theClass",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.SystemAnnouncement);
+
+smalltalk.addMethod(
+"_theClass_",
+smalltalk.method({
+selector: "theClass:",
+category: 'accessing',
+fn: function (aClass){
+var self=this;
+self["@theClass"]=aClass;
+return self},
+args: ["aClass"],
+source: "theClass: aClass\x0a\x09theClass := aClass",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.SystemAnnouncement);
+
+
+
+smalltalk.addClass('ClassAdded', smalltalk.SystemAnnouncement, [], 'Kernel-Announcements');
+smalltalk.ClassAdded.comment="I am emitted when a class is added to the system.\x0aSee ClassBuilder >> #addSubclassOf:... methods"
+
+
+smalltalk.addClass('ClassCommentChanged', smalltalk.SystemAnnouncement, [], 'Kernel-Announcements');
+smalltalk.ClassCommentChanged.comment="I am emitted when the comment of a class changes. (Behavior >> #comment)"
+
+
+smalltalk.addClass('ClassDefinitionChanged', smalltalk.SystemAnnouncement, [], 'Kernel-Announcements');
+smalltalk.ClassDefinitionChanged.comment="I am emitted when the defintion of a class changes.\x0aSee ClassBuilder >> #class:instanceVariableNames:"
+
+
+smalltalk.addClass('ClassRemoved', smalltalk.SystemAnnouncement, [], 'Kernel-Announcements');
+smalltalk.ClassRemoved.comment="I am emitted when a class is removed.\x0aSee Smalltalk >> #removeClass:"
+
+
+smalltalk.addClass('ClassRenamed', smalltalk.SystemAnnouncement, [], 'Kernel-Announcements');
+smalltalk.ClassRenamed.comment="I am emitted when a class is renamed.\x0aSee ClassBuilder >> #renameClass:to:"
+
+
+smalltalk.addClass('MethodAnnouncement', smalltalk.SystemAnnouncement, ['method'], 'Kernel-Announcements');
+smalltalk.addMethod(
+"_method",
+smalltalk.method({
+selector: "method",
+category: 'accessing',
+fn: function (){
+var self=this;
+return self["@method"];
+},
+args: [],
+source: "method\x0a\x09^ method",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.MethodAnnouncement);
+
+smalltalk.addMethod(
+"_method_",
+smalltalk.method({
+selector: "method:",
+category: 'accessing',
+fn: function (aCompiledMethod){
+var self=this;
+self["@method"]=aCompiledMethod;
+return self},
+args: ["aCompiledMethod"],
+source: "method: aCompiledMethod\x0a\x09method := aCompiledMethod",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.MethodAnnouncement);
+
+
+
+smalltalk.addClass('MethodAdded', smalltalk.MethodAnnouncement, [], 'Kernel-Announcements');
+
+
+smalltalk.addClass('MethodRemoved', smalltalk.MethodAnnouncement, [], 'Kernel-Announcements');
 
 

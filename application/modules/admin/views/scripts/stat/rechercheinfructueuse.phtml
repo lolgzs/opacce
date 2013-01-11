@@ -20,12 +20,20 @@ foreach($this->liste as $ligne)
 	addSelection("RESET","","");
 	$crit="";
 	$date=substr($ligne["date_recherche"],8,2).substr($ligne["date_recherche"],4,4).substr($ligne["date_recherche"],0,4);
-	$crit=ZendAfi_Filters_Serialize::unserialize($ligne["criteres"]);
+	try {
+		if (!$crit = ZendAfi_Filters_Serialize::unserialize($ligne["criteres"]))
+			$crit = [];
+	} catch (Exception $e) {
+		$crit = [];
+	}
+
+	$crit = array_merge(array('type_doc' => 0, 'selection_bib' => 0),
+											$crit);
 	switch($ligne["type_recherche"])
 	{
 		case 1: // recherche simple
 			$type="simple";
-			$expression=$crit["expressionRecherche"];
+			$expression = isset($crit["expressionRecherche"]) ? $crit["expressionRecherche"] : '';
 			break;
 		case 2: // recherche avancée
 			$type="avancée";
@@ -45,8 +53,8 @@ foreach($this->liste as $ligne)
 			break;
 	}
 	// Criteres de selection communs
-	$criteres=addSelection("Type de doc.",$crit["type_doc"]);
-	$criteres=addSelection("Bibliothèques",$crit["selection_bib"]);
+	$criteres = addSelection("Type de doc.",$crit["type_doc"]);
+	$criteres = addSelection("Bibliothèques",$crit["selection_bib"]);
 	
 	print('<tr>');
 	print('<td valign="top" style="text-align:center">'.$date.'</td>');
@@ -90,13 +98,14 @@ function addSelection($libelle,$valeur)
 	}
 	if($libelle == "Bibliothèques" and trim($valeur) > "" )
 	{
-		$bibs=explode(" ",$valeur);
+		$bibs=array_filter(explode(" ",$valeur));
 		$valeur="";
+
 		foreach($bibs as $bib)
 		{
 			if(!trim($bib)) continue;
 			$id_bib=substr(trim($bib),1);
-			$lib=fetchOne("select nom_court from int_bib where id_bib=$id_bib");
+			$lib = fetchOne("select nom_court from int_bib join codif_annexe where code='$id_bib'");
 			if($valeur) $valeur.=", ";
 			$valeur.=$lib;
 		}

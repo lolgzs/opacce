@@ -1,61 +1,66 @@
-<?php
-// Recup du user connecté
-$user=$this->authUser;
+<h2><?php echo $this->traduire('Version');?>&nbsp;:</h2>
+<?php echo $this->ligneInfos("Numéro de version", VERSION_PERGAME . $this->helpLink('changelog'));?>
+
+<h2><?php echo $this->traduire('Paramètres du site');?>&nbsp;:</h2>
+<?php 
 $profil = Class_Profil::getCurrentProfil();
-
-// No de version
-print('<h2>'.$this->traduire('Version').'&nbsp;:</h2>');
-echo $this->ligneInfos("Numéro de version",VERSION_PERGAME);
-
-// Parametres du site
-print('<h2>'.$this->traduire('Paramètres du site').'&nbsp;:</h2>');
-
 $lien_edit_site = $lien = '';
-if($user->ROLE_LEVEL > 5) {
-	$lien='<a href="admin?setsiteok='.$this->href_site.'" style="margin-left:30px">&raquo;&nbsp;'.$this->lien_site.'&nbsp;&laquo;</a>';
-	$lien_edit_site= "<a href='".$this->url(array('controller' => 'profil', 'action' => 'accueil', 'id_profil' => $profil->getId()))."' style='margin-left:30px' >&raquo;&nbsp;Paramétrer&nbsp;&laquo;</a>";
+if ($this->user->isAdmin()) {
+	$lien = sprintf('<a href="admin?setsiteok=%s" style="margin-left:30px">&raquo;&nbsp;%s&nbsp;&laquo;</a>',
+									$this->href_site, $this->lien_site);
+	$lien_edit_site = sprintf('<a href="%s" style="margin-left:30px" >&raquo;&nbsp;Paramétrer&nbsp;&laquo;</a>',
+														$this->url(array('controller' => 'profil', 
+																						 'action' => 'accueil', 
+																						 'id_profil' => $profil->getId())));
 }
-echo $this->ligneInfos("Etat du site",$this->etat_site.$lien);
-echo $this->ligneInfos("Profil", $profil->getLibelle().$lien_edit_site);
-echo $this->ligneInfos("Thème",$profil->getSkin());
-echo $this->ligneInfos("Avis Babelio", $this->status_babelio);
 
-if ($this->show_babelio_info)
-  echo "<div class='ligne_info'>Le service <a href='http://www.babelio.com/'>Babelio</a> est gratuit pour une durée de 
-90 jours à compter de l'ouverture du portail. Veuillez contacter AFI pour souscrire à un abonnement.</div>";
+echo $this->ligneInfos("Etat du site", $this->etat_site . $lien) 
+  . $this->ligneInfos("Profil", $profil->getLibelle() . $lien_edit_site) 
+  . $this->ligneInfos("Thème", $profil->getSkin())
+  . $this->ligneInfos("Avis Babelio", $this->status_babelio);
 
-// Accès
-$acl=new ZendAfi_Acl_AdminControllerRoles();
-print('<h2>'.$this->traduire('Accès').'&nbsp;:</h2>');
-echo $this->ligneInfos($this->traduire("Utilisateur"),$user->LOGIN);
-echo $this->ligneInfos("Pseudo",$user->PSEUDO);
-echo $this->ligneInfos("Rôle",$acl->getLibelleRole($user->ROLE_LEVEL));
-$id_bib=$user->ID_SITE;
-if($id_bib) $bib=fetchOne("select LIBELLE from bib_c_site where ID_SITE=$id_bib");
-if(!$bib) $bib="Portail";
-echo $this->ligneInfos("Bibliothèque",$bib);
+if ($this->show_babelio_info) { ?>
+  <div class='ligne_info'>Le service <a href='http://www.babelio.com/'>Babelio</a> est gratuit pour une durée de 
+90 jours à compter de l'ouverture du portail. Veuillez contacter AFI pour souscrire à un abonnement.</div>
+<?php } ?>
 
-// Modération
-print('<h2>'.
-			$this->traduire('Données en attente de modération').'&nbsp;:'.
-			'<a class="rss" href="'.BASE_URL.'/opac/rss/moderations"><img src="'.URL_ADMIN_IMG.'/rss.gif" alt="RSS"/></a>'.
-			'</h2>');
-
-$moderer = new Class_Moderer();
-$modstats = $moderer->getModerationStats();
-
-foreach($modstats as $stat) {
-	$nombre = $stat['count'];
-	if(!$nombre) $nombre="aucun";
-	echo $this->ligneInfos('<a href="'.$stat['url'].'" style="font-size:10pt">'.$stat['label'].'</a>',$nombre);
-}
+<h2><?php echo $this->traduire('Accès');?>&nbsp;:</h2>
+<?php
+$acl = new ZendAfi_Acl_AdminControllerRoles();
+echo $this->ligneInfos($this->traduire("Utilisateur"), $this->user->getLogin());
+echo $this->ligneInfos("Pseudo", $this->user->getNomAff());
+echo $this->ligneInfos("Rôle", $acl->getLibelleRole($this->user->getRoleLevel()));
+$bib = $this->user->getBib();
+$bib = (!$bib) ? 'Portail' : $bib->getLibelle();
+echo $this->ligneInfos("Bibliothèque", $bib);
 ?>
 
+<h2><?php echo $this->traduire('Données en attente de modération');?>&nbsp;:
+<a class="rss" href="<?php 
+echo $this->url(array('module' => 'opac',
+                      'controller' => 'rss',
+                      'action' => 'moderations'));
+?>"><img src="<?php echo URL_ADMIN_IMG;?>/rss.gif" alt="RSS"/></a>
+</h2>
+<?php 
+$moderer = new Class_Moderer();
+$modstats = $moderer->getModerationStats();
+foreach ($modstats as $stat) {
+	$nombre = ($stat['count']) ? $stat['count'] : 'aucun';
+	echo $this->ligneInfos(sprintf('<a href="%s" style="font-size:10pt">%s</a>',
+                                 $stat['url'], $stat['label']), 
+                         $nombre);
+}
+?>
 
 <h2>Un problème ? Contactez le support AFI:</h2>
 <?php echo $this->ligneInfos('Par courriel (de préférence)',  '<a href="mailto:hotline@afi-sa.fr">hotline@afi-sa.fr</a>') ?>
 <?php echo $this->ligneInfos('Par téléphone',  '01.60.17.12.34') ?>
 
+<h2>Participez à la communauté !</h2>
+<div class='ligne_info'><a onclick="window.open(this.href); return false" href="https://groups.google.com/group/afi-opac2">Google group afi-opac2</a></div>
+<div class='ligne_info'><a onclick="window.open(this.href); return false" href="http://bibliopedia.fr/index.php/AFI-OPAC2.0_-_Trucs_et_astuces">Wiki sur Bibliopedia</a></div>
+	
 <h2>Dernières informations de l'équipe AFI-OPAC2 via Twitter:</h2>
 
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>

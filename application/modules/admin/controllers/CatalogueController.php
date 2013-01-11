@@ -55,9 +55,8 @@ class Admin_CatalogueController extends Zend_Controller_Action
 		if(!$id_catalogue) $this->_redirect("admin/catalogue/index");
 		
 		// Lire les notices
-		$class_catalogue = new Class_Catalogue();
-		$preferences=array("nb_notices" => 20,"id_catalogue" => $id_catalogue);
-		$ret=$class_catalogue->getTestCatalogue($preferences);
+		$catalogue = Class_Catalogue::getLoader()->find($id_catalogue);
+		$ret=$catalogue->getTestCatalogue();
 		
 		// Variables de vue
 		$this->view->requete=$ret["requete"];
@@ -72,60 +71,60 @@ class Admin_CatalogueController extends Zend_Controller_Action
 	//----------------------------------------------------------------------------------
 	// Ajout d'un catalogue
 	//----------------------------------------------------------------------------------
-	function addAction()
-	{
-		$this->view->titre="Ajout de catalogue";
-		$this->view->id_catalogue=0;
-		$this->view->catalogue=array("LIBELLE" => "** nouveau catalogue **");
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->renderScript('catalogue/form.phtml');
+	function addAction() {
+		$catalogue = Class_Catalogue::getLoader()
+			->newInstance()
+			->setLibelle("** nouveau catalogue **");
+
+		if ($this->isSaved($catalogue)) {
+			$this->_redirect("admin/catalogue/index");
+			return;
+		}
+
+		$this->view->catalogue = $catalogue;
+		$this->view->titre = "Ajout de catalogue";
+		$this->getHelper('ViewRenderer')->renderScript('catalogue/form.phtml');
 	}
 	
+
 	//----------------------------------------------------------------------------------
 	// modification d'un catalogue
 	//----------------------------------------------------------------------------------
-	function editAction()
-	{
+	function editAction()	{
 		$id_catalogue=(int)$this->_getParam("id_catalogue");
-		if(!$id_catalogue) $this->_redirect("admin/catalogue/index");
-		$class_catalogue = new Class_Catalogue();
-		$catalogue=$class_catalogue->getCatalogue($id_catalogue);
-		
+		if (!$catalogue = Class_Catalogue::getLoader()->find($id_catalogue)) {
+			$this->_redirect("admin/catalogue/index");
+			return;
+		}
+
+		if ($this->isSaved($catalogue)) {
+			$this->_redirect("admin/catalogue/index");
+			return;
+		}
+
 		$this->view->titre="Modification de catalogue";
-		$this->view->id_catalogue=$id_catalogue;
 		$this->view->catalogue=$catalogue;
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->renderScript('catalogue/form.phtml');
+		$this->getHelper('ViewRenderer')->renderScript('catalogue/form.phtml');
 	}
-	
-	//----------------------------------------------------------------------------------
-	// Validation
-	//----------------------------------------------------------------------------------
-	function validationAction()
-	{
-		$id_catalogue=(int)$this->_getParam("id_catalogue");
-		$enreg=$_POST;
-		
-		// Controle des saisies
-		if(!trim($enreg["LIBELLE"])) $enreg["LIBELLE"]="** nouveau catalogue **";
-		$enreg["ANNEE_DEBUT"]=(int)$enreg["ANNEE_DEBUT"]; if($enreg["ANNEE_DEBUT"] < "1000" or $enreg["ANNEE_DEBUT"] > date("Y")) $enreg["ANNEE_DEBUT"]=false; 
-		$enreg["ANNEE_FIN"]=(int)$enreg["ANNEE_FIN"]; if($enreg["ANNEE_FIN"] < "1000" or $enreg["ANNEE_FIN"] > date("Y")) $enreg["ANNEE_FIN"]=false;
-		if($enreg["ANNEE_FIN"] and $enreg["ANNEE_FIN"] < $enreg["ANNEE_DEBUT"]) $enreg["ANNEE_FIN"]=$enreg["ANNEE_DEBUT"];
-		if(!isset($enreg["NOUVEAUTE"])) $enreg["nouveaute"]="0";
-		
-		// Ecrire
-		$class_catalogue = new Class_Catalogue();
-		$class_catalogue->ecrireCatalogue($id_catalogue,$enreg);
-		$this->_redirect("admin/catalogue/index");
+
+
+	public function isSaved($catalogue) {
+		if (!$this->_request->isPost()) 
+			return false;
+
+		return $catalogue
+			->updateAttributes($this->_request->getPost())
+			->save();
 	}
-	
+
 	//----------------------------------------------------------------------------------
 	// Suppression d'un catalogue
 	//----------------------------------------------------------------------------------
-	function deleteAction()
-	{
+	function deleteAction()	{
 		$id_catalogue=(int)$this->_getParam("id_catalogue");
-		sqlExecute("delete from catalogue where ID_CATALOGUE=$id_catalogue");
+		if ($catalogue = Class_Catalogue::getLoader()->find($id_catalogue))
+			$catalogue->delete();
+
 		$this->_redirect("admin/catalogue/index");
 	}
 }

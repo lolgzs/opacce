@@ -19,10 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_View_Helper_FileInfos extends Zend_View_Helper_Abstract {
-	/** @var array */
-	protected $_units = array('o', 'Ko', 'Mo', 'Go', 'To', 'Po');
-
-
 	/**
 	 * @param string $path
 	 * @return string
@@ -37,7 +33,8 @@ class ZendAfi_View_Helper_FileInfos extends Zend_View_Helper_Abstract {
 	 * @return string
 	 */
 	public function fileName($path) {
-		return end(explode('/', $path));
+		$parts = explode('/', $path);
+		return end($parts);
 	}
 
 
@@ -60,13 +57,8 @@ class ZendAfi_View_Helper_FileInfos extends Zend_View_Helper_Abstract {
 			return '';
 		}
 
-		$mod = 1024;
 		$size = filesize($path);
-		for ($i = 0; $size > $mod; $i++) {
-			$size /= $mod;
-		}
-
-		return ', ' . round($size, 2) . ' ' . $this->_units[$i];
+		return ', ' . $this->view->memoryFormat($size);
 	}
 }
 ?>

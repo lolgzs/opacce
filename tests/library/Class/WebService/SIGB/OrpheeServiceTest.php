@@ -35,6 +35,9 @@ class MapppedSoapClientForTesting extends Class_WebService_MappedSoapClient {
 	public function getId() {
 		return GetIdResponse::withIdResult('clong');
 	}
+
+	public function EndSession() {
+	}
 }
 
 
@@ -77,7 +80,10 @@ class OrpheeServiceGetServiceTest extends Storm_Test_ModelTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @group integration
+	 * @test 
+	 */
 	public function integrationTestNoticeWithRealServer() {
 		Class_WebService_SIGB_Orphee_Service::setSoapClientClass('Class_WebService_MappedSoapClient');
 		$orphee = Class_WebService_SIGB_Orphee_Service::getService('http://opac3.pergame.net/bibliotheque-agglo-stomer.fr/userfiles/webservices/orphee.wsdl');
@@ -112,7 +118,10 @@ abstract class OrpheeServiceTestCase extends Storm_Test_ModelTestCase {
 		
 		$this->_search_client
 			->whenCalled('__setCookie')
-			->answers(null);
+			->answers(null)
+
+			->whenCalled('EndSession')
+			->answers(new EndSessionResponse());
 
 		$this->_beforeOrpheeServiceCreate();
 		$this->_orphee = new Class_WebService_SIGB_Orphee_ServiceForTesting($this->_search_client);
@@ -169,6 +178,15 @@ class OrpheeServiceTestAutoConnectError extends OrpheeServiceTestCase {
 			->whenCalled('GetId')
 			->answers(new GetIdResponse());
 	}
+
+
+	public function tearDown() {
+		unset($this->_orphee);
+		unset($this->_henry_dupont);
+		gc_collect_cycles();
+		$this->assertFalse($this->_search_client->methodHasBeenCalled('EndSession'));
+		parent::tearDown();
+	}
 	
 	
 	/** @test */
@@ -213,6 +231,14 @@ class OrpheeServiceTestGetLstDmntWithMillenium extends OrpheeServiceTestCase {
 			->answers(GetLstDmtResponse::withResult(OrpheeFixtures::xmlGetLstDmtMillenium()));
 		
 		$this->millenium = $this->_orphee->getNotice('frOr1301700727');
+	}
+
+
+	public function tearDown() {
+		unset($this->_orphee);
+		gc_collect_cycles();
+		$this->assertTrue($this->_search_client->methodHasBeenCalled('EndSession'));
+		parent::tearDown();
 	}
 
 
@@ -566,7 +592,15 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 			->setNotice(Class_Notice::getLoader()
 									->newInstanceWithId(5)
 									->setTitrePrincipal('Harry Potter')
-									->setAuteurPrincipal('Rowling'));									
+									->setAuteurPrincipal('Rowling'));
+
+
+		$ex_chemin = Class_Exemplaire::getLoader()
+			->newInstanceWithId(32)
+			->setCodeBarres('98374')
+			->setNotice(Class_Notice::getLoader()
+									->newInstanceWithId(974898302)
+									->setTitrePrincipal('Le Chemin'));
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
 			->whenCalled('findFirstBy')
@@ -574,7 +608,12 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 
 			->whenCalled('findFirstBy')
 			->with(array('code_barres' => '123456'))
-			->answers($ex_potter);
+			->answers($ex_potter)
+
+			->whenCalled('findFirstBy')
+			->with(array('code_barres' => '98374'))
+			->answers($ex_chemin);
+;
 
 
 		$this->_search_client
@@ -763,8 +802,17 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 	 * @test 
 	 * @depends firstReservationShouldNotBeEmpty
 	 */
-	public function firstReservationNoNoticeShouldBe974898302($reservation) {	
-		$this->assertEquals('974898302', $reservation->getExemplaire()->getNoNotice());
+	public function firstReservationExemplaireOpacShouldBeLeChemin($reservation) {	
+		$this->assertEquals('Le Chemin', $reservation->getExemplaire()->getExemplaireOPAC()->getTitrePrincipal());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
+	public function firstReservationNoNoticeShouldBefrOr0974898302($reservation) {	
+		$this->assertEquals('frOr0974898302', $reservation->getExemplaire()->getNoNotice());
 	}
 
 
@@ -808,8 +856,26 @@ class OrpheeServiceGetInfoUserCarteHenryDupontTest extends OrpheeServiceTestCase
 	 * @test 
 	 * @depends firstReservationShouldNotBeEmpty
 	 */
+	public function firstReservationEtatShouldBeEnAttente($reservation) {	
+		$this->assertEquals('en attente', $reservation->getEtat());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
 	public function firstReservationRangShouldBeOne($reservation) {	
 		$this->assertEquals(1, $reservation->getRang());
+	}
+
+
+	/** 
+	 * @test 
+	 * @depends firstReservationShouldNotBeEmpty
+	 */
+	public function secondReservationRangShouldBeTwo($reservation) {	
+		$this->assertEquals(2, array_at(1, $this->emprunteur->getReservations())->getRang());
 	}
 
 

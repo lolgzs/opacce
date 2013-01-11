@@ -3,9 +3,7 @@ Class_ScriptLoader::getInstance()
 ->addStylesheet(URL_ADMIN_JS.'color_picker/jquery.vreboton.ColorPicker')
 ->addAdminScript('color_picker/jquery.vreboton.ColorPicker')
 ->addInlineStyle('div.ColorPickerDivSample {margin-top:4px; margin-right:0px}')
-->addJQueryReady('$(".colorpicker").attachColorPicker()');
-
-Class_ScriptLoader::getInstance()
+->addJQueryReady('$(".colorpicker").attachColorPicker()')
 ->addAdminScript('tag_selection')
 ->addInlineScript("	function changeBrowser(sBrowser){
 		if (sBrowser=='telephone')	{
@@ -63,7 +61,12 @@ Class_ScriptLoader::getInstance()
 
 				<tr>
 					<td class="droite"><?php echo $this->traduire('E-mail du Webmestre'); ?></td>
-					<td class="gauche"><input type="text" style="width:100%" name="mail_site" value="<?php echo $this->escape(trim($this->profil->getMailSite()));?>" maxlength="50"/></td>
+					<td class="gauche"><input type="text" style="width:100%" name="mail_site" value="<?php echo $this->escape(trim($this->profil->getMailSite()));?>" maxlength="150"/></td>
+				</tr>
+
+				<tr>
+					<td class="droite"><?php echo $this->traduire('E-mail de réception des suggestions d\'achat'); ?></td>
+					<td class="gauche"><input type="text" style="width:100%" name="mail_suggestion_achat" value="<?php echo $this->escape(trim($this->profil->getMailSuggestionAchat()));?>" maxlength="150"/></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -179,6 +182,17 @@ Class_ScriptLoader::getInstance()
 						?>
 					</td>
 				</tr>
+
+				<tr class="only_browser">
+					<td align="right"><?php echo $this->traduire('Réseaux sociaux et contact'); ?></td>
+					<td class="gauche">
+						<?php  
+              echo $this->formCheckbox(  'header_social_network', 
+							                           null,
+																				 array('checked' => $this->profil->getHeaderSocialNetwork()));
+						?>
+					</td>
+				</tr>
 			</table>
 		</fieldset>
 
@@ -202,6 +216,14 @@ Class_ScriptLoader::getInstance()
 					<td class="droite"><?php echo $this->traduire('CSS'); ?></td>
 					<td class="gauche" style="padding-left:5px">
 	          <?php echo $this->coreFiveFileInput('header_css', $this->profil->getHeaderCss(), 'css', 'File') ?>
+					</td>
+				</tr>
+
+
+				<tr class="only_browser">
+					<td class="droite"><?php echo $this->traduire('Javascript'); ?></td>
+					<td class="gauche" style="padding-left:5px">
+	          <?php echo $this->coreFiveFileInput('header_js', $this->profil->getHeaderJs(), 'js', 'File') ?>
 					</td>
 				</tr>
 
@@ -337,7 +359,7 @@ Class_ScriptLoader::getInstance()
 						<?php
 						$class_bib = new Class_Bib();
 						$combo_bib = $class_bib->getComboBib($this->profil->getIdSite(), $this->id_zone, true, 'id_site');
-						$user_login = Zend_Auth::getInstance()->getIdentity();
+            $user_login = Class_Users::getIdentity();
 						if ($user_login->ROLE_LEVEL <=4)
 						{
 							$bib = $class_bib->getBib($this->profil->getIdSite());
@@ -346,6 +368,11 @@ Class_ScriptLoader::getInstance()
 						else echo $combo_bib;
 						?>
 					</td>
+				</tr>
+				
+				<tr>
+					<td class="droite" valign="top"><?php echo $this->traduire('Sites (annexes)'); ?></td>
+					<td class="gauche"><?php echo $this->TagListeCoches("annexe","sel_annexe",$this->profil->getSelAnnexe()); ?></td>
 				</tr>
 
 				<tr>

@@ -1,17 +1,25 @@
 Smalltalk current createPackage: 'AFI' properties: #{}!
 Widget subclass: #AbstractBookNavigatorWidget
-	instanceVariableNames: 'book announcer'
+	instanceVariableNames: 'book'
 	package: 'AFI'!
 
 !AbstractBookNavigatorWidget methodsFor: 'accessing'!
 
-announcer
-	^ announcer ifNil: [announcer := Announcer new]
+book: aBook
+	book := aBook.
+    book onPageChangeDo: [:aPage|  self highlightPage: aPage].
 !
 
-book: aBook
-	book := aBook
-!
+width
+	^ self class width
+! !
+
+!AbstractBookNavigatorWidget methodsFor: 'actions'!
+
+highlightPage: aPage
+! !
+
+!AbstractBookNavigatorWidget methodsFor: 'css'!
 
 style
 	^ '
@@ -44,34 +52,14 @@ style
 	margin: 0px;
 }
 '
-!
-
-width
-	^ self class width
-! !
-
-!AbstractBookNavigatorWidget methodsFor: 'actions'!
-
-highlightPage: aPage
-! !
-
-!AbstractBookNavigatorWidget methodsFor: 'announcement'!
-
-announcePageChange: aPage
-	self announcer announce: (PageChangeAnnouncement page: aPage)
-!
-
-onPageChangeDo: aBlockWithArg
-	self announcer 
-		on: PageChangeAnnouncement 
-		do: [:aPageChangeAnnouncement| 
-			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !AbstractBookNavigatorWidget methodsFor: 'rendering'!
 
 renderOn: html
-	self subclassResponsibility
+	html style: self style.
+	self renderWidgetOn: html.
+    self highlightPage: book currentPage.
 ! !
 
 !AbstractBookNavigatorWidget class methodsFor: 'accessing'!
@@ -135,8 +123,15 @@ highlightPage: aPage
 
 !BookBookmarkNavigatorWidget methodsFor: 'rendering'!
 
-renderOn: html
-	html style: self style.
+renderPagesOn: html
+	book pagesWithTitle do: [:aPage|
+		html li
+			with: aPage title;
+			onClick: [book currentPage: aPage]
+	]
+!
+
+renderWidgetOn: html
 	html div 
 		class: 'b-navigator-bookmark b-navigator';
 		with: [ |bookmarkSearchInput |
@@ -147,13 +142,111 @@ renderOn: html
 
 			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
 		]
-!
+! !
+
+AbstractBookNavigatorWidget subclass: #BookMenuWidget
+	instanceVariableNames: 'book pageTitleBrush'
+	package: 'AFI'!
+
+!BookMenuWidget methodsFor: 'callback'!
+
+highlightPage: aPage
+	|chaptersBefore|
+    chaptersBefore := (book pagesWithTitle select: [:aPageWithTitle | aPageWithTitle pageNo <= aPage pageNo]).
+  
+	pageTitleBrush contents: (chaptersBefore ifEmpty: [book title] ifNotEmpty: [chaptersBefore last title]).
+! !
+
+!BookMenuWidget methodsFor: 'css'!
+
+style
+	^ '
+.b-menu {
+		font-size: 1.4em;
+		font-weight: bold;
+		width: 500px;
+		height: 60px;
+        z-index: 100;
+        position: relative;
+}
+
+.b-menu .b-selector {
+		width: 600px;
+		text-align: left;
+		height: 60px;
+		float:none;
+}
+
+.b-menu .b-selector .b-current {
+		height: auto;
+		text-align: left;
+		background: url(', StaticRessources default scriptsRoot, 'images/menu_off.png) no-repeat 15px center;
+		padding-left: 45px;
+        line-height: 28px;
+}
+
+.b-menu .b-selector:hover .b-current {
+		background-image: url(', StaticRessources default scriptsRoot, 'images/menu_on.png);
+}
+
+.b-menu .b-selector { color: black; }
+
+.b-menu .b-selector a { color: inherit;}
+
+.b-menu .b-selector:hover {color: black; }
+
+.b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }
+
+.b-menu .b-selector ul {
+		width: 584px;
+		top: auto;
+		max-height: 600px;
+		overflow-y: auto !!important;
+		background-color: white;
+}
+
+.b-menu .b-selector ul li { font-size: 1.2em; }
+
+.b-menu .b-selector ul li a { height: auto; }
+
+.b-menu .b-selector ul li a .b-text { float: none; }
+
+'
+! !
+
+!BookMenuWidget methodsFor: 'rendering'!
 
 renderPagesOn: html
 	book pagesWithTitle do: [:aPage|
-		html li
-			with: aPage title;
-			onClick: [self announcePageChange: aPage]
+		html li with: [
+          		html a
+					with: aPage title;
+					onClick: [book currentPage: aPage];
+                    href: '#/page/', aPage pageNo.
+  		]
+	]
+!
+
+renderWidgetOn: html
+	| selectorBrush menuJQuery menuFullHeight|
+	html div
+    	class: 'b-menu';
+        with: [
+          	selectorBrush := html div
+            	class: 'b-selector';
+                with: [
+						pageTitleBrush:=html div class: 'b-current'.
+						menuJQuery := (html ul with: [ self renderPagesOn: html ])  asJQuery.
+  				]
+       ].
+     
+    menuFullHeight := menuJQuery height.
+    menuJQuery height: 0.
+    
+    selectorBrush asJQuery click: [
+        menuJQuery height = 0 
+        	ifTrue: [ menuJQuery stop animate: #{'height' -> menuFullHeight. 'paddingBottom' -> 30} speed: 500 ]
+          	ifFalse: [menuJQuery stop animate: #{'height' -> 0. 'paddingBottom' -> 0} speed: 500 ]
 	]
 ! !
 
@@ -165,8 +258,8 @@ AbstractBookNavigatorWidget subclass: #BookThumbnailNavigatorWidget
 
 highlightPage: aPage
 	|thumbnail listItemIndex|
-        listItemIndex := 0 max: (aPage pageNo - 2).
-        thumbnail := (bookmarkList find: 'li') get: listItemIndex.
+    listItemIndex := 0 max: (aPage pageNo - 2).
+    thumbnail := (bookmarkList find: 'li') get: listItemIndex.
 	bookmarkList scrollTop: (thumbnail offsetTop - (bookmarkList height / 2)).
 	(bookmarkList find: 'li') removeClass: 'selected'.
 	(window jQuery: thumbnail) addClass: 'selected'.
@@ -278,8 +371,20 @@ style
 
 !BookThumbnailNavigatorWidget methodsFor: 'rendering'!
 
-renderOn: html
-	html style: self style.
+renderPagesOn: html
+	|cycle|
+	cycle := Cycle with: #('odd' 'even').
+
+	book pages do: [:aPage|
+		html li
+			class: cycle next;
+			with: [ 	html div: [	html div: aPage foliono.
+						 	html img src: aPage navigatorThumbnailURL] ];
+			onClick: [book currentPage: aPage]
+	]
+!
+
+renderWidgetOn: html
 	html div 
 		class: 'b-navigator-thumbnail  b-navigator';
 		with: [ |bookmarkSearchInput|
@@ -292,68 +397,1102 @@ renderOn: html
 
 			ListFilter filter: bookmarkList withInput: bookmarkSearchInput.
 	]
-!
-
-renderPagesOn: html
-	|cycle|
-	cycle := Cycle with: #('odd' 'even').
-
-	book pages do: [:aPage|
-		html li
-			class: cycle next;
-			with: [ 	html div: [	html div: aPage foliono.
-						 		html img src: aPage navigatorThumbnailURL] ];
-			onClick: [self announcePageChange: aPage]
-	]
 ! !
 
-Object subclass: #Ajax
-	instanceVariableNames: 'url settings options ajaxRequest'
+Widget subclass: #AbstractBookWidget
+	instanceVariableNames: 'book rootBrush isFullscreen downloadBrush menuJQuery pageZoomWidget pageZoomBrush pageDescriptionsBrush bookContainer loader folioBrush'
 	package: 'AFI'!
 
-!Ajax methodsFor: 'accessing'!
+!AbstractBookWidget methodsFor: 'accessor'!
 
-options
-	^ options ifNil: [options := HashedCollection new ]
+book
+	^ book
 !
 
-url: aString
-	url := aString
+book: aBook
+	book := aBook.
+!
+
+currentPage
+	^ book currentPage.
+!
+
+currentPageNo
+	^book currentPageNo.
+!
+
+height
+	^ ((book height * self width / book width) / 2) rounded
+!
+
+loader
+	^ loader
+!
+
+loader: aBibNumLoader
+	loader := aBibNumLoader
+!
+
+navigatorWidth
+	^ AbstractBookNavigatorWidget width
+!
+
+scriptsRoot
+	^ StaticRessources default scriptsRoot
+!
+
+scriptsRoot: anUrl
+		StaticRessources default scriptsRoot: anUrl
+!
+
+widgetClass
+	^ self class name, (isFullscreen 
+											ifTrue: [' fullscreen bk-widget'] 
+											ifFalse: [' bk-widget'])
+!
+
+width
+	^ (isFullscreen 
+			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
+			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
+!
+
+zoomControlWidth
+	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
 ! !
 
-!Ajax methodsFor: 'actions'!
+!AbstractBookWidget methodsFor: 'callbacks'!
 
-abort
-	ajaxRequest ifNotNil: [ajaxRequest abort]
+openPage: aPage
+	self subclassResponsibility
 !
 
-send
-	ajaxRequest := jQuery ajax: url options: options.
+reloadWidget
+	book reset.
+	rootBrush contents: [:html| self renderWidgetOn: html].
+!
+
+toggleFullscreen
+	isFullscreen := isFullscreen not.
+	self reloadWidget.
 ! !
 
-!Ajax methodsFor: 'callback'!
+!AbstractBookWidget methodsFor: 'css'!
 
-onCompleteDo: aBlock
-	"A block to be called when the request finishes (after success and error callbacks are executed). Block arguments: jqXHR, textStatus"
-	self options at: 'complete' put: aBlock
+bookStyle
+	^ '
+    
+			.bk-widget  .b-arrow div {
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				-o-transition: all 0.3s;
+			}
+
+			.bk-widget  .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}
+
+			.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}
+
+			.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }
+
+			.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}
+
+			.bk-widget .b-counter + .b-counter {float: right;}
+
+			.small>.bk-widget  .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}
+
+			.small>.bk-widget  .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }
+
+			.small>.bk-widget  .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }
+
+			.small>.bk-widget  .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}
+
+			.small>.bk-widget  .b-arrow-prev { left: -25px }
+		
+			.small>.bk-widget  .b-arrow-next { right: -25px }
+
+			.small>.bk-widget  .b-arrow { width: 25px }
+
+			.small>.bk-widget  .b-arrow  div { top: 36% }
+		
+
+	
+'
 !
 
-onErrorDo: aBlock
-	"A block to be called if the request fails.Block arguments: jqXHR, textStatus, errorThrown"
-	self options at: 'error' put: aBlock
+fullScreenStyle
+	^ '
+	body.fullscreen {
+		overflow: hidden;
+	}
+
+
+	.fullscreen.bk-widget {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		z-index: 200;
+		top: 0;
+		left: 0;
+		overflow-y: auto;
+	}
+
+	.fullscreen.bk-widget .b-menu {
+		height: 0px;
+	}
+
+	.fullscreen.bk-widget,
+	.fullscreen.bk-widget .b-menu .b-selector,
+	.fullscreen.bk-widget .b-menu .b-selector ul,
+	.fullscreen.bk-widget .b-counter {	
+		color: white;
+		background-color: black;
+	}
+
+	.fullscreen .b-zoom-fullscreen {
+		position: absolute;
+		right: 0px;
+	}
+
+	.fullscreen.bk-widget .b-download-book a {
+		position: absolute;
+		right: 60px;
+	}
+
+	.fullscreen .b-zoom-fullscreen a {
+		background: url(', self scriptsRoot, 'images/unexpand_black.png) no-repeat;
+	}
+
+	.fullscreen .b-zoom-fullscreen a:hover {
+		background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;
+	}
+
+	.fullscreen h1.title {
+		font-size: 2em;
+		color: white;
+		border-bottom: 0px;
+		margin: 5px 0px 30px 0px;
+		text-align: center;
+	}
+
+	.fullscreen 
+'
 !
 
-onSuccessDo: aBlock
-	"Set action to execute when Ajax request is successful. Pass received data as block argument. Block arguments: data, textStatus, jqXHR"
-	self options at: 'success' put: aBlock
+style
+	^ String streamContents: [:aStream|
+                                  	aStream
+                                  		nextPutAll: self bookStyle;
+                                  		nextPutAll: self zoomControlsStyle;
+						nextPutAll: self fullScreenStyle
+          ]
+!
+
+zoomControlsStyle
+	^ '
+			.b-zoom {
+			  position: fixed;
+			  top: 0px;
+			  left: 0px;
+			  width: 100%;
+			  height: 100%;
+			  display: none;
+			  z-index: 200;
+              text-align: left;
+			}
+
+			.b-zoom .page-desc {
+			  margin: 0px 5px;
+			  width: auto;
+			  color: white;
+			  width: 45%;
+			  padding-right: 20px;
+			  height: 95%;
+			  max-width:auto;
+			  overflow-y: auto;
+			  display: block;
+			  float: left;
+			  font-size: 1.3em;
+			}
+
+			.b-zoom-magnify {
+			  margin: 0px auto;
+			}
+
+			.b-zoom-magnify a,
+			.b-zoom-fullscreen a {
+				display: block;
+				width: 48px;
+				height: 48px;
+				z-index: 20;
+				position: relative;
+				cursor: pointer;
+			}
+			
+			.b-zoom-fullscreen {float: right}
+
+			.b-zoom-fullscreen a {
+				background: url(', self scriptsRoot, 'images/expand_black.png) no-repeat;
+			}
+
+			.b-zoom-fullscreen a:hover {
+				background: url(', self scriptsRoot, 'images/expand_white.png) no-repeat;
+			}
+
+			.b-download-book a {
+				float: right;
+				display: block;
+				width: 73px;
+				height: 36px;
+				margin-right: 5px;
+				margin-top: 6px;
+				z-index: 20;
+				position: relative;
+				cursor: pointer;
+				background: url(', self scriptsRoot, 'images/download_pdf_black.png) no-repeat;
+			}
+
+			.b-download-book a:hover {
+				background: url(', self scriptsRoot, 'images/download_pdf_white.png) no-repeat;
+			}
+
+			.small>.bk-widget .b-zoom-magnify a {
+				background-image: none;
+			}
+
+			.b-zoom-magnify a {
+				background: url(', self scriptsRoot, 'images/magnify_black.png) no-repeat;
+			}
+			
+			.b-zoom-magnify a:hover {
+				background-image: url(', self scriptsRoot, 'images/magnify_white.png);
+			}
+
+			.small>.bk-widget .b-zoom-magnify a:hover {
+				background-image: none;
+			}
+
+			.b-zoom-magnify a {
+				float: left;
+			}
+
+			.b-zoom-magnify a + a {
+				float: right;
+			}
+
+			.b-zoom > div {
+			  position: relative;
+			  z-index: 30;
+
+			  background-color: rgb(10,10,10);
+			  border: 10px solid rgb(50,50,50);
+
+			  background-color: rgba(10,10,10,0.8);
+			  border: 10px solid rgba(50,50,50,0.8);
+
+			  border-radius: 10px;
+			  display:none;
+			  padding: 1px;
+			  height: 100%;
+			}
+
+			.b-zoom > div > div {
+			  overflow: scroll;
+			  border-radius: 10px;
+			}
+
+			.b-zoom .iviewer {
+				height: 100%
+			}
+
+			.b-zoom .iviewer_with_text {
+			  float: left;
+			  width: 50%;
+			  margin-right: 5px;
+			}
+
+			.iviewer {
+			  backround-color: black;
+			}
+
+			.iviewer_cursor {
+			  cursor: move;
+			}
+
+			.controls div.iviewer_common {
+			  position: static !!important;		
+			  margin: 5px auto;
+			  background-color: transparent;
+			}
+
+			.controls div.iviewer_common:hover {
+				background-color: white;
+			}
+
+			.iviewer_zoom_close {
+			  background: url(', self scriptsRoot, 'images/close_black28.png);
+			}
+'
 ! !
 
-!Ajax class methodsFor: 'initialize'!
+!AbstractBookWidget methodsFor: 'descriptions'!
 
-url: aString
-	^ self new 
-		url: aString;
-		yourself
+closeDescriptions
+	pageDescriptionsBrush asJQuery fadeOut.
+! !
+
+!AbstractBookWidget methodsFor: 'external libs'!
+
+loadCSS: anUrl  
+      (HTMLCanvas onJQuery: 'head' asJQuery)  link
+																						href: self scriptsRoot, anUrl;
+																						type:'text/css';
+																						rel:'stylesheet'
+!
+
+loadIViewerJS   	
+      self
+      	loadCSS: 'iviewer/jquery.iviewer.css';
+        loadJS: 'iviewer/jquery.iviewer.min.js';
+        loadJS: 'iviewer/jquery.mousewheel.min.js'
+!
+
+loadJS: anUrl
+	 jQuery ajax: #{	
+     		'dataType' -> 'script'.
+       		'url' -> (self scriptsRoot, anUrl).
+            'cache' -> true
+     }
+! !
+
+!AbstractBookWidget methodsFor: 'initialize'!
+
+initialize
+	super initialize.
+	isFullscreen := false.
+! !
+
+!AbstractBookWidget methodsFor: 'loading'!
+
+loadBook
+	self subclassResponsibility
+! !
+
+!AbstractBookWidget methodsFor: 'rendering'!
+
+renderBook: aBook on: aBrush	
+    book := aBook.
+    
+	aBrush contents: [:html|
+		aBook pages do: [:aPage| 	aPage brush: (html div
+        		         																rel: aPage title;
+                                 														yourself)  ]	].
+	
+	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
+	
+	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
+	
+	isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle].
+!
+
+renderBookMenuOn: html
+	menuJQuery := html div
+		class: 'book-menu';
+		asJQuery.
+!
+
+renderBookNavigator
+	|navigatorDiv|
+	navigatorDiv := ('<div></div>') asJQuery.
+	navigatorDiv insertAfter: menuJQuery.
+
+	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
+    
+		navigator := aNavigatorClass new
+						book: book;
+						appendToJQuery: navigatorDiv;
+						yourself.
+		
+	]
+!
+
+renderBookOn: html
+	self subclassResponsibility
+!
+
+renderBookTitle
+	|titleDiv|
+	titleDiv := ('<h1 class="title">', book title, ' ( ', book size ,' pages ) </h1>') asJQuery.
+	titleDiv insertBefore: menuJQuery.
+!
+
+renderDevToolsOn: html
+	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
+		 [   AFIIDETools 
+					addButton: 'Reload booklet' action: [ self reloadWidget ];
+					addButton: 'Inspect booklet' action: [ self inspect ];
+					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
+!
+
+renderDownloadBookOn: html
+	downloadBrush := html div class: 'b-download-book'
+!
+
+renderFullscreenControlsOn: html
+	html div 
+		class: 'b-zoom-fullscreen';
+		with: [ html a onClick: [self toggleFullscreen] ].
+!
+
+renderOn: html
+     self renderDevToolsOn: html.
+        
+	rootBrush := html root.
+        
+	self renderWidgetOn: html.
+!
+
+renderPage: aPage class: aCssClass on: html
+	(html div
+		class: aCssClass;
+		with:[	pageZoomWidget := PageWidget new
+										page: aPage;
+										renderOn: html;
+										onCloseDo: [	self 
+														closeZoom; 
+														openDescriptions];
+                                                                               	yourself 								];
+                asJQuery) fadeIn: 'slow'.
+!
+
+renderPageDescriptionOn: html 	
+	pageDescriptionsBrush := html div 
+                                                               class: 'page-desc';
+                       											yourself.
+!
+
+renderWidgetOn: html
+	html style
+		type: 'text/css';
+		with: self style.
+        
+        
+	html div
+		class: self widgetClass; 
+		with: [	self 
+                    renderFullscreenControlsOn: html;
+					renderDownloadBookOn: html;
+                  	renderBookMenuOn: html;
+                    renderZoomControlsOn: html;
+                  	renderBookOn: html;
+                    renderPageDescriptionOn: html
+					].
+    
+	isFullscreen 
+		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
+		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
+        
+    self loadBook.
+!
+
+renderZoomControlsOn: html
+	html div
+		class: 'b-zoom-magnify';
+		with: [ 	zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
+                       		zoomLeftPageAnchor hide.
+                       
+                         	zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.
+                       		zoomRightPageAnchor hide.
+                                pageZoomBrush := html div 
+						class: 'b-zoom';
+						yourself.
+                ].
+! !
+
+!AbstractBookWidget methodsFor: 'testing'!
+
+isContainerSmall
+	^ rootBrush asJQuery width < 500
+!
+
+isRunInTestCase
+	^ self isTestCaseInContext: thisContext
+!
+
+isTestCaseInContext: aContext 
+	^ aContext home 
+		ifNil: [false]
+		ifNotNil: [ (aContext receiver isKindOf: TestCase) or: [ self isTestCaseInContext: aContext home]].
+! !
+
+AbstractBookWidget subclass: #BookMonoWidget
+	instanceVariableNames: 'zoomPageAnchor bookBrush'
+	package: 'AFI'!
+
+!BookMonoWidget methodsFor: 'callbacks'!
+
+closeZoom
+	'.b-arrow' asJQuery show.
+
+	pageZoomBrush asJQuery 
+		fadeOut: 'slow' do: [
+			pageZoomWidget := nil.
+			pageZoomBrush empty.
+                  
+			zoomPageAnchor 
+				removeClass: 'active';
+				show.
+        ]
+!
+
+goToNextPage
+	book nextPage
+!
+
+goToPreviousPage
+	book previousPage
+!
+
+openPage: aPage
+	self renderCurrentPage
+!
+
+zoomPage
+	self closeDescriptions.
+
+	 zoomPageAnchor hide.
+	'.b-arrow' asJQuery hide.
+
+
+	pageZoomBrush contents: [:html|  self renderPage: book currentPage class: 'b-left' on: html ].
+	pageZoomBrush asJQuery show.
+! !
+
+!BookMonoWidget methodsFor: 'css'!
+
+bookStyle
+	^ super bookStyle,
+    '
+.pages img {
+    margin: 10px auto; 
+    display: block;
+    cursor: pointer;
+	cursor: -moz-zoom-in;
+	cursor: -webkit-zoom-in;
+}
+
+.b-zoom-magnify {
+	position: absolute;
+}
+
+.BookMonoWidget  .b-navigator-thumbnail {
+    width: 130px;
+}
+
+.BookMonoWidget .b-navigator-thumbnail ul {
+    float: none;
+    width: 100%;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li {
+    height: auto;
+    float: none;
+    display: block;
+    margin: 10px auto;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li:hover {
+    width: auto;
+}
+
+.BookMonoWidget .b-navigator-thumbnail li.odd:hover>div,
+.BookMonoWidget .b-navigator-thumbnail li.even:hover>div,
+.BookMonoWidget .b-navigator-thumbnail ul li:first-child:hover>div,
+.BookMonoWidget .b-navigator-thumbnail li:hover {
+   	margin: 0px auto;
+}
+
+
+.BookMonoWidget {
+	font-weight: bold;
+    text-align: center;
+}
+
+.BookMonoWidget .book {
+	position: relative;
+}
+
+
+.bk-widget  .b-arrow-prev,
+.bk-widget  .b-arrow-next {
+	position: absolute;
+    height: 100%;
+    width: 74px;
+}
+
+.bk-widget  .b-arrow-prev { left: 80px; }
+
+.bk-widget  .b-arrow-next { right: 80px; }
+
+.bk-widget  .b-arrow-prev div,
+.bk-widget  .b-arrow-next div{
+    height: 170px;
+    top: 25%;
+    width: 74px;
+    position: absolute;
+}
+
+.bk-widget .b-navigator-thumbnail li.selected + li.odd img {
+    opacity: 0.6;
+}
+'
+!
+
+fullScreenStyle
+	^ super fullScreenStyle, '
+    
+    .fullscreen .book {
+    	margin: 0px 100px;
+    }
+    
+    .fullscreen .b-zoom-magnify {
+    	left: 200px;
+    }
+    
+    '
+!
+
+openDescriptions
+	pageDescriptionsBrush asJQuery hide.
+	pageDescriptionsBrush contents: [:html| 
+               		(html div asJQuery) html: book currentPage description.
+        ].
+	pageDescriptionsBrush asJQuery fadeIn.
+! !
+
+!BookMonoWidget methodsFor: 'rendering'!
+
+loadBook
+	self renderBook:book on: bookBrush.
+	book  onPageChangeDo: [:aPage| self renderCurrentPage]. 
+                                                            
+  isFullscreen ifFalse: [BookMenuWidget new
+    												book: book;
+    												appendToJQuery: menuJQuery].
+       
+	self renderCurrentPage.
+!
+
+renderBookOn: html
+	self loadIViewerJS.
+    html div
+    	class: 'book';
+    	with: [
+   			 html div 
+   		 		class: 'b-arrow-prev';
+        	    with: [html div onClick: [self goToPreviousPage]].
+         
+			html div 
+    			class: 'b-arrow-next';
+             	with: [html div onClick: [self goToNextPage]].
+	
+			bookBrush := (html div class: 'pages').
+    ].
+  
+	bookBrush onClick: [self zoomPage].
+    folioBrush := html div class:'b-counter'.
+!
+
+renderCurrentPage
+  (bookBrush asJQuery find: 'img' ) hide.
+	book currentPage renderWidth: (self width / 2) rounded height: self height.
+    self openDescriptions.
+    self  updateFolioNumbers.
+!
+
+renderZoomControlsOn: html
+	html div
+		class: 'b-zoom-magnify';
+		with: [ 	zoomPageAnchor := (html a onClick: [self zoomPage]) asJQuery.
+                        
+                        pageZoomBrush := html div 
+							class: 'b-zoom';
+							yourself.
+                ].
+!
+
+updateFolioNumbers
+ folioBrush contents: book currentPage foliono.
+! !
+
+AbstractBookWidget subclass: #BookWidget
+	instanceVariableNames: 'width bookBrush leftFolioBrush rightFolioBrush zoomLeftPageAnchor zoomRightPageAnchor afterPageChange'
+	package: 'AFI'!
+
+!BookWidget methodsFor: 'accessing'!
+
+bookletOptions
+	^ HashedCollection new 
+                               at: 'pageSelector' put:false; 
+                               at: 'chapterSelector' put: isFullscreen not; 
+                               at: 'menu' put: menuJQuery;
+                               at: 'tabs' put: false;
+                               at: 'keyboard' put: false;
+                               at: 'arrows' put: true;
+                               at: 'closed' put: true;
+                               at: 'covers' put: true;
+                               at: 'autoCenter' put: true;
+                               at: 'pagePadding' put: 0;
+                               at: 'shadows' put: true;
+			       at: 'width' put: self width;
+			       at: 'height' put: self height;
+                               at: 'manual' put: false;
+			       at: 'pageNumbers' put: false;
+                               at: 'overlays' put: false;
+                               at: 'hovers' put: false;
+			       at: 'arrowsHide' put: false;
+			       at: 'closedFrontTitle' put: book title;
+			       at: 'closedFrontChapter' put: book title;
+			       at: 'closedBackTitle' put: 'Fin';
+			       at: 'closedBackChapter' put: 'Fin';
+			       at: 'previousPageTitle' put: 'Précédent';
+			       at: 'nextPageTitle' put: 'Suivant';
+			       at: 'before' put: [:data| self beforePageChange:data];
+                   at: 'after' put: [:data|  self afterPageChange: data];
+			       at: 'hash' put: self isJQueryMobile not;
+                               yourself
+!
+
+leftPage
+	^ book pageAt: (currentPageNo - 1) ifAbsent: [Page new].
+!
+
+loader
+	^ loader ifNil: [loader := SouvignyLoader new]
+!
+
+rightPage
+	^ book pageAt: currentPageNo ifAbsent: [Page new].
+! !
+
+!BookWidget methodsFor: 'callbacks'!
+
+afterPageChange: data
+	afterPageChange ifNotNil: [afterPageChange value: data].
+!
+
+beforePageChange:data
+	self closeDescriptions.
+	self openPageNo: (data at: 'curr') + 1.
+	self closeZoom.
+!
+
+goToPageNo: pageNo
+	bookContainer asJQuery booklet:  (pageNo ).
+!
+
+openPage: aPage
+	self goToPageNo: aPage pageNo
+!
+
+openPageNo: anInteger
+	currentPageNo := anInteger.
+	book 
+		pagesNo: {anInteger - 1. anInteger} 
+		do: [:aPage| aPage renderWidth: (self width / 2) rounded height: self height].
+! !
+
+!BookWidget methodsFor: 'css'!
+
+bookStyle
+	^ '
+			.bk-widget .booklet { margin-bottom: 20px	}			
+
+			.bib-num-album {  padding: 10px }
+
+			.bk-widget .b-counter {
+			  margin-bottom: -20px;
+			  margin-top: 20px;
+			  width: 140px;
+			  text-align: left;
+			  bottom: 0px;
+			  background-color: transparent;
+			  font-weight: bold;
+			  font-size: 1.1em;
+			}
+
+			.bk-widget .b-counter + .b-counter {
+			  right: 0px;
+			  text-align: right;
+			}
+
+			.bk-widget .loading {  text-align:center	}
+			
+			.bk-widget .booklet .b-wrap-right {
+			  background-color: transparent;
+			  padding: 0px; !!important;
+			}
+
+			.bk-widget .booklet .b-wrap-left {
+			  background-color: transparent;
+			  padding: 0px; !!important;
+			}
+
+			.bk-widget .booklet .b-page-cover {  background-color: transparent; }
+
+			.bk-widget .b-menu {
+			  font-size: 1.4em;
+			  font-weight: bold;
+			  width: 820px;
+			  margin: 0 auto;
+			  height: 60px;
+			}
+
+			.bk-widget .b-menu .b-selector {
+			  width: 600px;
+			  text-align: left;
+			  height: 60px;
+			  float:none;
+			}
+
+			.bk-widget .b-menu .b-selector .b-current {
+			  height: auto;
+			  text-align: left;
+			  background: url(', self scriptsRoot, 'images/menu_off.png) no-repeat 15px center;
+			  padding-left: 45px;
+			}
+
+			.bk-widget .b-menu .b-selector:hover .b-current {
+			  background-image: url(', self scriptsRoot, 'images/menu_on.png);
+			}
+
+			.bk-widget .b-menu .b-selector { color: black; }
+
+			.bk-widget .b-menu .b-selector a { color: inherit;}
+
+			.bk-widget .b-menu .b-selector:hover {color: black; }
+
+			.bk-widget .b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }
+
+			.bk-widget .b-menu .b-selector ul {
+			  width: 584px;
+			  top: auto;
+			  max-height: 600px;
+			  overflow-y: auto !!important;
+			  background-color: white;
+			}
+
+			.bk-widget .b-menu .b-selector ul li { font-size: 1.2em; }
+
+			.bk-widget .b-menu .b-selector ul li a { height: auto; }
+
+			.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }
+
+			.bk-widget button {float: left}
+
+			.clear { 
+				clear: both;
+				height: 0px !!important;
+			}
+
+			.bk-widget .b-wrap {
+				cursor: -moz-zoom-in;
+				cursor: -webkit-zoom-in;
+			}
+'
+! !
+
+!BookWidget methodsFor: 'descriptions'!
+
+openDescriptions
+	pageDescriptionsBrush asJQuery hide.
+	pageDescriptionsBrush contents: [:html| 
+               		(html div asJQuery) html: self leftPage description.
+               		(html div asJQuery) html: self rightPage description.
+        ].
+	pageDescriptionsBrush asJQuery fadeIn.
+!
+
+updateFolioNumbers
+	leftFolioBrush contents: self leftPage foliono.
+	rightFolioBrush contents: self rightPage foliono.
+! !
+
+!BookWidget methodsFor: 'external libs'!
+
+loadBookletJSThen: aBlock
+	(window jQuery at: 'booklet')
+    	ifNil: [ self renderScriptsOn: (HTMLCanvas onJQuery: 'head' asJQuery) Then: aBlock]
+        ifNotNil: aBlock
+!
+
+renderScriptsOn: html Then: aBlock
+	self loadCSS: 'booklet/jquery.booklet.1.2.0.css'.
+     
+	jQuery ajax: #{	  'dataType' -> 'script'. 
+    								'url' -> (self scriptsRoot, 'booklet/jquery.booklet.1.2.0.min.js').
+                                    'cache' -> true.
+                                    'success' -> aBlock
+                                }.
+                                
+	self loadIViewerJS.
+	self loadJS: 'booklet/jquery.easing.1.3.js'.
+! !
+
+!BookWidget methodsFor: 'loading'!
+
+loadBookThenRenderOn: bookBrush
+	|renderBlock|
+	renderBlock := [:aBook| self renderBook:aBook on: bookBrush].
+	book 
+		ifNil: [self loader loadBookFromJSONOnSuccess: renderBlock]
+		ifNotNil: [	book reset.					
+						  renderBlock value: book].
+! !
+
+!BookWidget methodsFor: 'rendering'!
+
+loadBook
+	self loadBookThenRenderOn: bookBrush.
+	book  onPageChangeDo: [:aPage| self openPage: aPage].
+!
+
+renderBook: aBook on: aBrush
+	super renderBook: aBook on: aBrush.
+   	self loadBookletJSThen: [ 
+    		afterPageChange := nil.
+    		bookContainer asJQuery 	booklet: (self bookletOptions).
+            afterPageChange := [:data| 
+													book currentPageNo: data curr+1.
+													self updateFolioNumbers.
+													self openDescriptions. ].
+			(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
+			(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
+     ].
+!
+
+renderBookOn: html
+	bookContainer := html div.
+	bookContainer
+	    class: 'book';
+            with: [
+						leftFolioBrush := html div class: 'b-counter'.
+						rightFolioBrush := html div class: 'b-counter'.
+       	            	bookBrush := html div 
+            	       		class: 'b-load';
+             	      		with: [html div
+                      	                    	class: 'loading';
+                  	                        	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
+                   			yourself.
+                   ]
+!
+
+renderZoomControlsOn: html
+	html div
+		class: 'b-zoom-magnify';
+		with: [ 	zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
+                       		zoomLeftPageAnchor hide.
+                       
+                         	zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.
+                       		zoomRightPageAnchor hide.
+                                pageZoomBrush := html div 
+						class: 'b-zoom';
+						yourself.
+                ].
+! !
+
+!BookWidget methodsFor: 'show'!
+
+clear
+	'.bk-widget' asJQuery remove.
+!
+
+reset
+	self clear show.
+!
+
+show
+	self appendToJQuery: '.bib-num-album' asJQuery
+! !
+
+!BookWidget methodsFor: 'testing'!
+
+ifIE: aBlock ifNotIE: anotherBlock
+	self isIE ifTrue: aBlock ifFalse: anotherBlock
+!
+
+isIE
+	|ie|
+	ie := <jQuery.browser.msie>.
+	^ ie notNil.
+!
+
+isJQueryMobile
+	^ (window jQuery at: 'jqmData') isNil not
+! !
+
+!BookWidget methodsFor: 'zoom'!
+
+closeZoom
+	'.b-arrow' asJQuery show.
+
+	pageZoomBrush asJQuery 
+		fadeOut: 'slow' do: [
+			pageZoomWidget := nil.
+			pageZoomBrush empty.
+			"pageZoomBrush asJQuery show."
+                  
+			zoomLeftPageAnchor 
+				removeClass: 'active';
+				show.
+
+			zoomRightPageAnchor 
+				removeClass: 'active';
+				show.
+                  
+                 	self currentPageNo = 1 ifTrue: [zoomLeftPageAnchor hide].
+			self currentPageNo > book size ifTrue: [zoomRightPageAnchor hide].
+        ]
+!
+
+closeZoomOr: aBlock
+	pageZoomWidget ifNil: aBlock ifNotNil: [ 	self closeZoom. 
+                                                					self openDescriptions]
+!
+
+zoomLeftPage
+	self closeZoomOr: [
+          	self zoomPageNo: currentPageNo - 1 withClass: 'b-left'.
+          	zoomLeftPageAnchor addClass: 'active'.
+        ].
+!
+
+zoomPageNo: anInteger withClass: aCssClass
+	self closeDescriptions.
+
+	zoomLeftPageAnchor hide.
+        zoomRightPageAnchor hide.
+	'.b-arrow' asJQuery hide.
+
+	book pageAt: anInteger do: [:aPage| 
+                                           			pageZoomBrush contents: [:html|  self renderPage: aPage class: aCssClass on: html ].
+								pageZoomBrush asJQuery show.												 	].
+!
+
+zoomRightPage
+	self closeZoomOr: [
+          	self zoomPageNo: currentPageNo withClass: 'b-right'.
+          	zoomRightPageAnchor addClass: 'active'.
+        ].
+! !
+
+!BookWidget class methodsFor: 'initialize release'!
+
+open
+	^ self new show.
+!
+
+reset
+	^ self new reset.
 ! !
 
 Object subclass: #BibNumAlbum
@@ -401,12 +1540,14 @@ url: aString
 !BibNumAlbum methodsFor: 'loading'!
 
 load
-	bookWidget := BookWidget new 
-					loader: (BibNumLoader new
-          				              		ajax: self ajax;
-         		            		   		yourself);
-       				        scriptsRoot: self scriptsRoot;
-					appendToJQuery: self container
+	|loader|
+	loader := BibNumLoader ajax: self ajax.
+    loader loadBookFromJSONOnSuccess: [:aBook :playerClassName| |playerClass|
+    																				playerClass := (smalltalk at: playerClassName) ifNil: [BookWidget].
+    																				bookWidget := playerClass new 
+    																														book: aBook;
+       																						       							scriptsRoot: self scriptsRoot;
+																															appendToJQuery: self container]
 ! !
 
 !BibNumAlbum class methodsFor: 'instance creation'!
@@ -464,16 +1605,23 @@ buildBookFromJSon: aJSONObjectOrString
 							thumbnailURL: (aRessource at: 'thumbnail');
                              				fullImageURL: (aRessource at: 'original');
 							foliono: (aRessource at: 'foliono');
-							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail')].
+							navigatorThumbnailURL: (aRessource at: 'navigator_thumbnail');
+							downloadURL: (aRessource at: 'download')].
 	^ book
 !
 
 loadBookFromJSONOnSuccess: aBlock
 	self ajax
 		onSuccessDo: [:data| |book|
-							book := self buildBookFromJSon: data.
-							aBlock value: book];
+									book := self buildBookFromJSon: data.
+									aBlock value: book value: ((data at: 'album') at: 'player') asString];
 		send.
+! !
+
+!BibNumLoader class methodsFor: 'initialize'!
+
+ajax: anAjax
+	^ self new ajax: anAjax
 ! !
 
 BibNumLoader subclass: #SouvignyLoader
@@ -588,10 +1736,23 @@ bookClass
 ! !
 
 Object subclass: #Book
-	instanceVariableNames: 'pages title width height downloadUrl'
+	instanceVariableNames: 'pages title width height downloadUrl announcer currentPage'
 	package: 'AFI'!
 
 !Book methodsFor: 'accessing'!
+
+currentPage
+	^ currentPage ifNil: [currentPage:= self pages first]
+!
+
+currentPage: aPage
+	currentPage:=aPage.
+    self announcePageChange: aPage.
+!
+
+currentPageNo: anInteger
+	self currentPage: (self pages at: anInteger ifAbsent: [self pages last])
+!
 
 downloadUrl
 	^ downloadUrl ifNil: [downloadUrl := '']
@@ -657,8 +1818,29 @@ addPage: aPage
 	^ aPage
 !
 
+currentPageNo
+	^ self currentPage pageNo.
+!
+
 newPage
 	^ self addPage: (self class pageClass new)
+! !
+
+!Book methodsFor: 'announcing'!
+
+announcePageChange: aPage
+	self announcer announce: (PageChangeAnnouncement page: aPage)
+!
+
+announcer
+	^ announcer ifNil: [announcer := Announcer new]
+!
+
+onPageChangeDo: aBlockWithArg
+	self announcer 
+		on: PageChangeAnnouncement 
+		do: [:aPageChangeAnnouncement| 
+			aBlockWithArg value: aPageChangeAnnouncement page]
 ! !
 
 !Book methodsFor: 'enumerating'!
@@ -679,6 +1861,16 @@ pagesNo: start to: end do: aBlockWithArg
 	start to: end do: [:pageNo|
                  self pageAt: pageNo do: aBlockWithArg
          ].
+! !
+
+!Book methodsFor: 'navigating'!
+
+nextPage
+	self currentPage: self currentPage nextPage
+!
+
+previousPage
+	self currentPage: self currentPage previousPage
 ! !
 
 !Book methodsFor: 'reset'!
@@ -720,822 +1912,6 @@ title
 
 pageClass
 	^ SouvignyPage
-! !
-
-Widget subclass: #BookWidget
-	instanceVariableNames: 'book currentPageNo pageZoomBrush pageZoomWidget zoomLeftPageAnchor zoomRightPageAnchor pageDescriptionsBrush loader scriptsRoot bookContainer width rootBrush menuJQuery isFullscreen downloadBrush leftFolioBrush rightFolioBrush announcer'
-	package: 'AFI'!
-
-!BookWidget methodsFor: 'accessing'!
-
-book
-	^ book
-!
-
-bookletOptions
-	^ HashedCollection new 
-                               at: 'pageSelector' put:false; 
-                               at: 'chapterSelector' put: isFullscreen not; 
-                               at: 'menu' put: menuJQuery;
-                               at: 'tabs' put: false;
-                               at: 'keyboard' put: false;
-                               at: 'arrows' put: true;
-                               at: 'hash' put: true;
-                               at: 'closed' put: true;
-                               at: 'covers' put: true;
-                               at: 'autoCenter' put: true;
-                               at: 'pagePadding' put: 0;
-                               at: 'shadows' put: true;
-			       at: 'width' put: self width;
-			       at: 'height' put: self height;
-                               at: 'manual' put: false;
-			       at: 'pageNumbers' put: false;
-                               at: 'overlays' put: false;
-                               at: 'hovers' put: false;
-			       at: 'arrowsHide' put: false;
-			       at: 'closedFrontTitle' put: book title;
-			       at: 'closedFrontChapter' put: book title;
-			       at: 'closedBackTitle' put: 'Fin';
-			       at: 'closedBackChapter' put: 'Fin';
-			       at: 'previousPageTitle' put: 'Précédent';
-			       at: 'nextPageTitle' put: 'Suivant';
-			       at: 'before' put: [:data| self beforePageChange:data]; 
-                               at: 'after' put: [:data|  self afterPageChange: data];
-                               yourself
-!
-
-currentPage
-	^ book pageAt: self currentPageNo ifAbsent: [book pages last]
-!
-
-currentPageNo
-	^ currentPageNo ifNil: [currentPageNo := 1]
-!
-
-height
-	^ ((book height * self width / book width) / 2) rounded
-!
-
-leftPage
-	^ book pageAt: (currentPageNo - 1) ifAbsent: [Page new].
-!
-
-loader
-	^ loader ifNil: [loader := SouvignyLoader new]
-!
-
-loader: aBibNumLoader
-	loader := aBibNumLoader
-!
-
-navigatorWidth
-	^ AbstractBookNavigatorWidget width
-!
-
-rightPage
-	^ book pageAt: currentPageNo ifAbsent: [Page new].
-!
-
-scriptsRoot
-	^ scriptsRoot ifNil: [scriptsRoot := '']
-!
-
-scriptsRoot: anUrl
-	scriptsRoot := anUrl
-!
-
-widgetClass
-	^ isFullscreen 
-		ifTrue: ['fullscreen bk-widget'] 
-		ifFalse: ['bk-widget']
-!
-
-width
-	^ (isFullscreen 
-			ifTrue: [('body' asJQuery width - (2 * self navigatorWidth)) min: 900] 
-			ifFalse: [rootBrush asJQuery width])  - (2 * self zoomControlWidth)
-!
-
-zoomControlWidth
-	^  self isContainerSmall ifTrue: [30] ifFalse: [85].
-! !
-
-!BookWidget methodsFor: 'announcements'!
-
-announcePageChange: aPage
-	self announcer announce: (PageChangeAnnouncement page: aPage)
-!
-
-announcer
-	^ announcer ifNil: [announcer := Announcer new]
-!
-
-onPageChangeDo: aBlockWithArg
-	self announcer 
-		on: PageChangeAnnouncement 
-		do: [:aPageChangeAnnouncement| 
-			aBlockWithArg value: aPageChangeAnnouncement page]
-! !
-
-!BookWidget methodsFor: 'callbacks'!
-
-afterPageChange: data
-	self updateFolioNumbers.
-	self openDescriptions.
-	self announcePageChange: self currentPage.
-!
-
-beforePageChange:data
-	self closeDescriptions.
-	self openPageNo: (data basicAt: 'curr') + 1.
-	self closeZoom.
-!
-
-goToPageNo: pageNo
-	bookContainer asJQuery booklet:  (pageNo ).
-!
-
-openPage: aPage
-	self goToPageNo: aPage pageNo.
-!
-
-openPageNo: anInteger
-	currentPageNo := anInteger.
-	book 
-		pagesNo: {anInteger - 1. anInteger} 
-		do: [:aPage| aPage renderWidth: (self width / 2) rounded height: self height].
-!
-
-reloadWidget
-	rootBrush contents: [:html| self renderWidgetOn: html].
-!
-
-toggleFullscreen
-	isFullscreen := isFullscreen not.
-	self loader abort.
-	self reloadWidget.
-! !
-
-!BookWidget methodsFor: 'css'!
-
-bookStyle
-	^ '
-			.bk-widget .booklet { margin-bottom: 20px	}			
-
-			.bib-num-album {  padding: 10px }
-
-			.bk-widget .b-counter {
-			  margin-bottom: -20px;
-			  margin-top: 20px;
-			  width: 140px;
-			  text-align: left;
-			  bottom: 0px;
-			  background-color: transparent;
-			  font-weight: bold;
-			  font-size: 1.1em;
-			}
-
-			.bk-widget .b-counter + .b-counter {
-			  right: 0px;
-			  text-align: right;
-			}
-
-			.bk-widget .loading {  text-align:center	}
-			
-			.bk-widget .booklet .b-wrap-right {
-			  background-color: transparent;
-			  padding: 0px; !!important;
-			}
-
-			.bk-widget .booklet .b-wrap-left {
-			  background-color: transparent;
-			  padding: 0px; !!important;
-			}
-
-			.bk-widget .booklet .b-page-cover {  background-color: transparent; }
-
-			.bk-widget .b-menu {
-			  font-size: 1.4em;
-			  font-weight: bold;
-			  width: 820px;
-			  margin: 0 auto;
-			  height: 60px;
-			}
-
-			.bk-widget .b-menu .b-selector {
-			  width: 600px;
-			  text-align: left;
-			  height: 60px;
-			  float:none;
-			}
-
-			.bk-widget .b-menu .b-selector .b-current {
-			  height: auto;
-			  text-align: left;
-			  background: url(', self scriptsRoot, 'images/menu_off.png) no-repeat 15px center;
-			  padding-left: 45px;
-			}
-
-			.bk-widget .b-menu .b-selector:hover .b-current {
-			  background-image: url(', self scriptsRoot, 'images/menu_on.png);
-			}
-
-			.bk-widget .b-menu .b-selector { color: black; }
-
-			.bk-widget .b-menu .b-selector a { color: inherit;}
-
-			.bk-widget .b-menu .b-selector:hover {color: black; }
-
-			.bk-widget .b-menu .b-selector:hover ul { box-shadow: 2px 2px 40px rgba(2,2,0,0.8); }
-
-			.bk-widget .b-menu .b-selector ul {
-			  width: 584px;
-			  top: auto;
-			  max-height: 600px;
-			  overflow-y: auto !!important;
-			  background-color: white;
-			}
-
-			.bk-widget .b-menu .b-selector ul li { font-size: 1.2em; }
-
-			.bk-widget .b-menu .b-selector ul li a { height: auto; }
-
-			.bk-widget .b-menu .b-selector ul li a .b-text { float: none; }
-
-			.bk-widget button {float: left}
-
-			.bk-widget .booklet .b-arrow div {
-				-webkit-transition: all 0.3s;
-				-moz-transition: all 0.3s;
-				-o-transition: all 0.3s;
-			}
-
-			.bk-widget .booklet .b-arrow-next div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black.png);}
-
-			.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next.png);}
-
-			.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black.png); }
-
-			.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev.png);}
-
-			.bk-widget .b-counter + .b-counter {float: right;}
-
-			.small>.bk-widget .booklet .b-arrow-next div {background-image:url(', self scriptsRoot, 'booklet/images/arrow-next_black-small.png);}
-
-			.small>.bk-widget .booklet .b-arrow-next:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-next-small.png); }
-
-			.small>.bk-widget .booklet .b-arrow-prev div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev_black-small.png); }
-
-			.small>.bk-widget .booklet .b-arrow-prev:hover div { background-image:url(', self scriptsRoot, 'booklet/images/arrow-prev-small.png);}
-
-			.small>.bk-widget .booklet .b-arrow-prev { left: -25px }
-		
-			.small>.bk-widget .booklet .b-arrow-next { right: -25px }
-
-			.small>.bk-widget .booklet .b-arrow { width: 25px }
-
-			.small>.bk-widget .booklet .b-arrow  div { top: 36% }
-
-			.clear { 
-				clear: both;
-				height: 0px !!important;
-			}
-
-			.bk-widget .b-wrap {
-				cursor: -moz-zoom-in;
-				cursor: -webkit-zoom-in;
-			}
-'
-!
-
-fullScreenStyle
-	^ '
-	body.fullscreen {
-		overflow: hidden;
-	}
-
-
-	.fullscreen.bk-widget {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		z-index: 200;
-		top: 0;
-		left: 0;
-		overflow-y: auto;
-	}
-
-	.fullscreen.bk-widget .b-menu {
-		height: 0px;
-	}
-
-	.fullscreen.bk-widget,
-	.fullscreen.bk-widget .b-menu .b-selector,
-	.fullscreen.bk-widget .b-menu .b-selector ul,
-	.fullscreen.bk-widget .b-counter {	
-		color: white;
-		background-color: black;
-	}
-
-	.fullscreen .b-zoom-fullscreen {
-		position: absolute;
-		right: 0px;
-	}
-
-	.fullscreen.bk-widget .b-download-book a {
-		position: absolute;
-		right: 60px;
-	}
-
-	.fullscreen .b-zoom-fullscreen a {
-		background: url(', self scriptsRoot, 'images/unexpand_black.png) no-repeat;
-	}
-
-	.fullscreen .b-zoom-fullscreen a:hover {
-		background: url(', self scriptsRoot, 'images/unexpand_white.png) no-repeat;
-	}
-
-	.fullscreen h1.title {
-		font-size: 2em;
-		color: white;
-		border-bottom: 0px;
-		margin: 5px 0px 0px 0px;
-		text-align: center;
-	}
-
-	.fullscreen 
-'
-!
-
-style
-	^ String streamContents: [:aStream|
-                                  	aStream
-                                  		nextPutAll: self bookStyle;
-                                  		nextPutAll: self zoomControlsStyle;
-						nextPutAll: self fullScreenStyle
-          ]
-!
-
-zoomControlsStyle
-	^ '
-			.b-zoom {
-			  position: fixed;
-			  top: 0px;
-			  left: 0px;
-			  width: 100%;
-			  height: 100%;
-			  display: none;
-			  z-index: 200;
-			}
-
-			.b-zoom .page-desc {
-			  margin: 0px 5px;
-			  width: auto;
-			  color: white;
-			  width: 45%;
-			  padding-right: 20px;
-			  height: 95%;
-			  max-width:auto;
-			  overflow-y: auto;
-			  display: block;
-			  float: left;
-			  font-size: 1.3em;
-			}
-
-			.b-zoom-magnify {
-			  margin: 0px auto;
-			}
-
-			.b-zoom-magnify a,
-			.b-zoom-fullscreen a {
-				display: block;
-				width: 48px;
-				height: 48px;
-				z-index: 20;
-				position: relative;
-				cursor: pointer;
-			}
-			
-			.b-zoom-fullscreen {float: right}
-
-			.b-zoom-fullscreen a {
-				background: url(', self scriptsRoot, 'images/expand_black.png) no-repeat;
-			}
-
-			.b-zoom-fullscreen a:hover {
-				background: url(', self scriptsRoot, 'images/expand_white.png) no-repeat;
-			}
-
-			.b-download-book a {
-				float: right;
-				display: block;
-				width: 73px;
-				height: 36px;
-				margin-right: 5px;
-				margin-top: 6px;
-				z-index: 20;
-				position: relative;
-				cursor: pointer;
-				background: url(', self scriptsRoot, 'images/download_black.png) no-repeat;
-			}
-
-			.b-download-book a:hover {
-				background: url(', self scriptsRoot, 'images/download_white.png) no-repeat;
-			}
-
-			.small>.bk-widget .b-zoom-magnify a {
-				background-image: none;
-			}
-
-			.b-zoom-magnify a {
-				background: url(', self scriptsRoot, 'images/magnify_black.png) no-repeat;
-			}
-			
-			.b-zoom-magnify a:hover {
-				background-image: url(', self scriptsRoot, 'images/magnify_white.png);
-			}
-
-			.small>.bk-widget .b-zoom-magnify a:hover {
-				background-image: none;
-			}
-
-			.b-zoom-magnify a {
-				float: left;
-			}
-
-			.b-zoom-magnify a + a {
-				float: right;
-			}
-
-			.b-zoom > div {
-			  position: relative;
-			  z-index: 30;
-
-			  background-color: rgb(10,10,10);
-			  border: 10px solid rgb(50,50,50);
-
-			  background-color: rgba(10,10,10,0.8);
-			  border: 10px solid rgba(50,50,50,0.8);
-
-			  border-radius: 10px;
-			  display:none;
-			  padding: 1px;
-			  height: 100%;
-			}
-
-			.b-zoom > div > div {
-			  overflow: scroll;
-			  border-radius: 10px;
-			}
-
-			.b-zoom .iviewer {
-				height: 100%
-			}
-
-			.b-zoom .iviewer_with_text {
-			  float: left;
-			  width: 50%;
-			  margin-right: 5px;
-			}
-
-			.iviewer {
-			  backround-color: black;
-			}
-
-			.iviewer_cursor {
-			  cursor: move;
-			}
-
-			.controls div.iviewer_common {
-			  position: static !!important;		
-			  margin: 5px auto;
-			  background-color: transparent;
-			}
-
-			.controls div.iviewer_common:hover {
-				background-color: white;
-			}
-
-			.iviewer_zoom_close {
-			  background: url(', self scriptsRoot, 'images/close_black28.png);
-			}
-'
-! !
-
-!BookWidget methodsFor: 'descriptions'!
-
-closeDescriptions
-	pageDescriptionsBrush asJQuery fadeOut.
-!
-
-openDescriptions
-	pageDescriptionsBrush asJQuery hide.
-	pageDescriptionsBrush contents: [:html| 
-               		(html div asJQuery) html: self leftPage description.
-               		(html div asJQuery) html: self rightPage description.
-        ].
-	pageDescriptionsBrush asJQuery fadeIn.
-!
-
-updateFolioNumbers
-	leftFolioBrush contents: self leftPage foliono.
-	rightFolioBrush contents: self rightPage foliono.
-! !
-
-!BookWidget methodsFor: 'initialize'!
-
-initialize
-	super initialize.
-	isFullscreen := false.
-! !
-
-!BookWidget methodsFor: 'loading'!
-
-loadBookThenRenderOn: bookBrush
-	|renderBlock|
-	renderBlock := [:aBook| self renderBook:aBook on: bookBrush].
-	book 
-		ifNil: [self loader loadBookFromJSONOnSuccess: renderBlock]
-		ifNotNil: [	book reset.					
-					renderBlock value: book].
-! !
-
-!BookWidget methodsFor: 'rendering'!
-
-renderBook: aBook on: aBrush
-	book := aBook.
-
-	aBrush contents: [:html|
-		aBook pages do: [:aPage| 	aPage brush: (html div
-        		         								rel: aPage title;
-                                 								yourself)  ]	].
-	
-	self isContainerSmall ifTrue: [rootBrush asJQuery addClass: 'small'].
-	(bookContainer asJQuery at: 'booklet') ifNotNil: [ bookContainer asJQuery booklet: (self bookletOptions) ].
-	(rootBrush asJQuery find: '.b-wrap-left') click: [self zoomLeftPage].
-	(rootBrush asJQuery find: '.b-wrap-right, .b-page-cover') click: [self zoomRightPage].
-	
-	book downloadUrl ifNotEmpty: [downloadBrush contents: [:html| html a href: aBook downloadUrl]].
-	
-	isFullscreen ifTrue: [self renderBookNavigator; renderBookTitle]
-!
-
-renderBookMenuOn: html
-	menuJQuery := html div
-		class: 'book-menu';
-		asJQuery.
-!
-
-renderBookNavigator
-	|navigatorDiv|
-	navigatorDiv := ('<div></div>') asJQuery.
-	navigatorDiv insertAfter: menuJQuery.
-
-	{BookBookmarkNavigatorWidget. BookThumbnailNavigatorWidget} do: [:aNavigatorClass| |navigator|
-		navigator := aNavigatorClass new
-						book: book;
-						appendToJQuery: navigatorDiv;
-						onPageChangeDo: [:aPage| self openPage: aPage];
-						highlightPage: self currentPage;
-						yourself.
-
-		self onPageChangeDo: [:aPage|  navigator highlightPage: aPage].
-	]
-!
-
-renderBookOn: html
-	bookContainer := html div.
-	bookContainer
-	    class: 'book';
-            with: [	|bookBrush|
-			leftFolioBrush := html div class: 'b-counter'.
-			rightFolioBrush := html div class: 'b-counter'.
-                   	bookBrush := html div 
-                   		class: 'b-load';
-                   		with: [html div
-                                          	class: 'loading';
-                                          	with: [ html img src: self scriptsRoot, 'images/ajax-loader.gif'] ];
-                   		yourself.
-                   
-                   	self loadBookThenRenderOn: bookBrush]
-!
-
-renderBookTitle
-	|titleDiv|
-	titleDiv := ('<h1 class="title">', book title, ' ( ', book size ,' pages ) </h1>') asJQuery.
-	titleDiv insertBefore: menuJQuery.
-!
-
-renderDevToolsOn: html
-	((Smalltalk current at: 'Browser') notNil and: [self isRunInTestCase not]) ifTrue:
-		 [   AFIIDETools 
-					addButton: 'Reload booklet' action: [ self reloadWidget ];
-					addButton: 'Inspect booklet' action: [ self inspect ];
-					addButton: 'Toggle fullscreen' action: [ self toggleFullscreen ]	]
-!
-
-renderDownloadBookOn: html
-	downloadBrush := html div class: 'b-download-book'
-!
-
-renderFullscreenControlsOn: html
-	html div 
-		class: 'b-zoom-fullscreen';
-		with: [ html a onClick: [self toggleFullscreen] ].
-!
-
-renderOn: html
-        self renderDevToolsOn: html.
-	rootBrush := html root.
-	self renderWidgetOn: html.
-	"window at:'onresize' put: [self reloadWidget]."
-!
-
-renderPageDescriptionOn: html 	
-	pageDescriptionsBrush := html div 
-                                                               class: 'page-desc';
-                       						yourself.
-!
-
-renderScripts
-	|head|
-	head := 'head' asJQuery.
-	(head find: 'script[src*="booklet"]') length = 0 ifTrue: [
-		self renderScriptsOn: (HTMLCanvas onJQuery: head).
-          ].
-	isFullscreen 
-		ifTrue: ['body' asJQuery addClass: 'fullscreen'] 
-		ifFalse: ['body' asJQuery removeClass: 'fullscreen'].
-!
-
-renderScriptsOn: html
-	#( 	'booklet/jquery.booklet.1.2.0.css'
-          	'iviewer/jquery.iviewer.css' ) do: [:anUrl|
-                                                   				html link
-											href: self scriptsRoot, anUrl;
-											type:'text/css';
-											rel:'stylesheet'	].
-	html style
-		type: 'text/css';
-		with: self style.
-
-	(jQuery at: 'ui') ifNil: [ html script
-         				    	type: 'text/javascript';
-                				src: 	'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js' ]. 
-
-	#(	'booklet/jquery.easing.1.3.js'
-	  	'booklet/jquery.booklet.1.2.0.min.js' 
-          	'iviewer/jquery.iviewer.min.js'
-          	'iviewer/jquery.mousewheel.min.js'
-         	) do: [:anUrl| 
-                           html script
-                           	type: 'text/javascript';
-                                src: self scriptsRoot, anUrl]
-!
-
-renderWidgetOn: html
-	html div
-		class: self widgetClass; 
-		with: [	self 
-					renderScripts;
-                       			renderFullscreenControlsOn: html;
-					renderDownloadBookOn: html;
-                  			renderBookMenuOn: html;
-                       			renderZoomControlsOn: html;
-                  			renderBookOn: html;
-					renderPageDescriptionOn: html 	].
-!
-
-renderZoomControlsOn: html
-	html div
-		class: 'b-zoom-magnify';
-		with: [ 	zoomLeftPageAnchor := (html a onClick: [self zoomLeftPage]) asJQuery.
-                       		zoomLeftPageAnchor hide.
-                       
-                         	zoomRightPageAnchor := (html a onClick: [self zoomRightPage]) asJQuery.
-                       		zoomRightPageAnchor hide.
-                                pageZoomBrush := html div 
-						class: 'b-zoom';
-						yourself.
-                ].
-! !
-
-!BookWidget methodsFor: 'show'!
-
-clear
-	'.bk-widget' asJQuery remove.
-!
-
-reset
-	self clear show.
-!
-
-show
-	self appendToJQuery: '.bib-num-album' asJQuery
-! !
-
-!BookWidget methodsFor: 'testing'!
-
-ifIE: aBlock ifNotIE: anotherBlock
-	self isIE ifTrue: aBlock ifFalse: anotherBlock
-!
-
-isContainerSmall
-	^ rootBrush asJQuery width < 500
-!
-
-isIE
-	|ie|
-	ie := <jQuery.browser.msie>.
-	^ ie notNil.
-!
-
-isRunInTestCase
-	^ self isTestCaseInContext: thisContext
-!
-
-isTestCaseInContext: aContext 
-	^ aContext home 
-		ifNil: [false]
-		ifNotNil: [ (aContext receiver isKindOf: TestCase) or: [ self isTestCaseInContext: aContext home]].
-! !
-
-!BookWidget methodsFor: 'zoom'!
-
-closeZoom
-	'.b-arrow' asJQuery show.
-
-	pageZoomBrush asJQuery 
-		fadeOut: 'slow' do: [
-			pageZoomWidget := nil.
-			pageZoomBrush empty.
-			"pageZoomBrush asJQuery show."
-                  
-			zoomLeftPageAnchor 
-				removeClass: 'active';
-				show.
-
-			zoomRightPageAnchor 
-				removeClass: 'active';
-				show.
-                  
-                 	self currentPageNo = 1 ifTrue: [zoomLeftPageAnchor hide].
-			self currentPageNo > book size ifTrue: [zoomRightPageAnchor hide].
-        ]
-!
-
-closeZoomOr: aBlock
-	pageZoomWidget ifNil: aBlock ifNotNil: [ 	self closeZoom. 
-                                                					self openDescriptions]
-!
-
-renderPage: aPage class: aCssClass on: html
-	(html div
-		class: aCssClass;
-		with:[	pageZoomWidget := PageWidget new
-										page: aPage;
-										renderOn: html;
-										onCloseDo: [	self 
-														closeZoom; 
-														openDescriptions];
-                                                                               	yourself 								];
-                asJQuery) fadeIn: 'slow'.
-!
-
-zoomLeftPage
-	self closeZoomOr: [
-          	self zoomPageNo: currentPageNo - 1 withClass: 'b-left'.
-          	zoomLeftPageAnchor addClass: 'active'.
-        ].
-!
-
-zoomPageNo: anInteger withClass: aCssClass
-	self closeDescriptions.
-
-	zoomLeftPageAnchor hide.
-        zoomRightPageAnchor hide.
-	'.b-arrow' asJQuery hide.
-
-	book pageAt: anInteger do: [:aPage| 
-                                           			pageZoomBrush contents: [:html|  self renderPage: aPage class: aCssClass on: html ].
-								pageZoomBrush asJQuery show.												 	].
-!
-
-zoomRightPage
-	self closeZoomOr: [
-          	self zoomPageNo: currentPageNo withClass: 'b-right'.
-          	zoomRightPageAnchor addClass: 'active'.
-        ].
-! !
-
-!BookWidget class methodsFor: 'initialize release'!
-
-open
-	^ self new show.
-!
-
-reset
-	^ self new reset.
 ! !
 
 Object subclass: #Cycle
@@ -1598,7 +1974,7 @@ filter: aJQueryList withInput: aJQueryInput
 ! !
 
 Object subclass: #Page
-	instanceVariableNames: 'brush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book'
+	instanceVariableNames: 'brush imgBrush fullImageURL thumbnailURL description title rendered foliono navigatorThumbnailURL book downloadURL'
 	package: 'AFI'!
 
 !Page methodsFor: 'accessing'!
@@ -1625,6 +2001,14 @@ description
 
 description: aString
 	description := aString
+!
+
+downloadURL
+	^ downloadURL ifNil: [downloadURL := '']
+!
+
+downloadURL: aString
+	downloadURL := aString
 !
 
 foliono
@@ -1656,8 +2040,16 @@ navigatorThumbnailURL: aString
 	navigatorThumbnailURL := aString
 !
 
+nextPage
+	^book pages at: self pageNo+1 ifAbsent: [self]
+!
+
 pageNo
 	^ book pageNo: self
+!
+
+previousPage
+	^book pages at: self pageNo-1 ifAbsent: [self]
 !
 
 thumbnailURL
@@ -1696,12 +2088,13 @@ render
 
 renderWidth: width height: height
 	self isRendered ifFalse: [
-          	rendered := true.
-		brush contents: [:html| html img
+        rendered := true.
+		brush contents: [:html| imgBrush := html img
                                  				width:  width;
                                  				height:  height;
                                  				src: thumbnailURL].
-          ].
+       ].
+      imgBrush asJQuery show
 ! !
 
 !Page methodsFor: 'reset'!
@@ -1711,6 +2104,10 @@ reset
 ! !
 
 !Page methodsFor: 'testing'!
+
+ifTitleDo: aBlockClosure
+	self title='' ifFalse:  aBlockClosure.
+!
 
 isRendered
 	^ rendered ifNil: [rendered := false]
@@ -1757,7 +2154,7 @@ page: aPage
 ! !
 
 Widget subclass: #PageWidget
-	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock rotateRightControl rotation'
+	instanceVariableNames: 'page inControl outControl fitControl statusControl zeroControl closeControl closeBlock rotateRightControl rotation downloadImageControl'
 	package: 'AFI'!
 !PageWidget commentStamp!
 I display a full page with zoom controller and description!
@@ -1784,6 +2181,7 @@ initIViewer: aViewer
 	fitControl onClick: [aViewer fit].
 	zeroControl onClick: [<aViewer.set_zoom(100)>].
 	rotateRightControl onClick: [self rotateRight].
+	downloadImageControl onClick: [window open: page downloadURL].
 !
 
 rotateRight
@@ -1811,14 +2209,34 @@ style
 			  background-color: rgb(200,200,200);
 			  background-color: rgba(200,200,200,0.8);
 			  overflow: hidden;
-			  float: right;
-			  position: absolute;
-			  *position: relative;
 			  z-index: 1;
 			  text-align: center;
-			  width: 42px;
-                          right: 0px;
 			}
+            
+            .b-zoom .controls>div {
+            	height: 28px;
+                border-radius: 5px;
+                float: left;
+                margin-right: 35px;
+            }
+            
+             .b-zoom .controls>div:hover {
+             		background-color: rgba(250,250,250, 0.8);
+                    cursor: pointer;
+            }
+            
+            
+             .b-zoom .controls  .iviewer_button {
+             	margin: 0px 8px 0px 0px;
+                float: left;
+             }
+             
+             .b-zoom .controls  .iviewer_button + div{
+             	margin-top: 4px;
+                padding-right: 8px;
+                text-align: left;
+                float: left;
+             }
 '
 ! !
 
@@ -1829,17 +2247,18 @@ renderControlsOn: html
 	html div 
 		class: 'controls';
 		with: [
-          		addControl :=  [:name| html div 
-                                			class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button';
-                               				yourself].
-                  	closeControl := addControl value: 'close'.
+          		addControl :=  [:name :helpText| html div 
+                								with: [ html div  class: 'iviewer_zoom_', name, ' iviewer_common iviewer_button'.
+                                               				html div: helpText];
+                               					yourself].
+                  	closeControl := addControl value: 'close' value: 'Fermer'.
                   	closeControl onClick: [self close].
-               		inControl := addControl value: 'in'.
-          		outControl := addControl value: 'out'.
-          		zeroControl := addControl value: 'zero'.
-          		fitControl := addControl value: 'fit'.
-          		statusControl := addControl value: 'status'.
-          		rotateRightControl := addControl value: 'rotate_right'.
+               		inControl := addControl value: 'in' value: 'Agrandir'.
+          			outControl := addControl value: 'out' value: 'Réduire'.
+          			zeroControl := addControl value: 'zero' value: 'Taille originale'.
+          			fitControl := addControl value: 'fit' value: 'Taille adaptée'.
+          			rotateRightControl := addControl value: 'rotate_right' value: 'Tourner'.
+          			downloadImageControl := addControl value: 'download_image' value: 'Télécharger'.
         ].
 !
 
@@ -1855,15 +2274,36 @@ renderOn: html
 
 	iViewer iviewer: (HashedCollection new
                                                			at: 'src' put: page fullImageURL;
-                              					at: 'zoom' put: 'fit';
-                         					at: 'zoom_min' put: 10;
-                        					at: 'zoom_max' put: 400;
-	                     					at: 'ui_disabled' put: true;
-        	              					at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
-                            					at: 'onZoom' put: [:aString| self updateZoomStatus: aString];
-                              					yourself).
+                              							at: 'zoom' put: 'fit';
+                         								at: 'zoom_min' put: 10;
+                        								at: 'zoom_max' put: 400;
+	                     								at: 'ui_disabled' put: true;
+        	              								at: 'initCallback' put: [:aViewer| self initIViewer: aViewer];
+                              							yourself).
 
         (html div class: 'page-desc';  asJQuery) html: page description.
 	html div class: 'clear'.
+! !
+
+Object subclass: #StaticRessources
+	instanceVariableNames: 'scriptsRoot'
+	package: 'AFI'!
+
+!StaticRessources methodsFor: 'accessing'!
+
+scriptsRoot
+	^ scriptsRoot ifNil: [scriptsRoot := '']
+!
+
+scriptsRoot: anUrl
+	scriptsRoot := anUrl
+! !
+
+StaticRessources class instanceVariableNames: 'default'!
+
+!StaticRessources class methodsFor: 'initialize'!
+
+default
+	^ default ifNil: [default := self new]
 ! !
 

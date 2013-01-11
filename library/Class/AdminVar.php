@@ -50,24 +50,34 @@ class Class_AdminVar extends Storm_Model_Abstract {
 		'CACHE_ACTIF',
 		'WORKFLOW',
 		'BIBNUM',
-		'FORMATIONS'
+		'FORMATIONS',
+		'PCDM4_LIB',
+		'DEWEY_LIB',
+		'VODECLIC_KEY',
+		'VODECLIC_ID',
+		'OAI_SERVER',
+		'PACK_MOBILE',
+		'ARTE_VOD_LOGIN',
+		'ARTE_VOD_KEY',
+		'ARTE_VOD_SSO_KEY',
+		'BABELTHEQUE_JS',
+		'MULTIMEDIA_KEY',
+		'CSS_EDITOR',
+		'CMS_FORMULAIRES'
 	);
 
-
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
-	}
 
 	/**
 	 * @param string $name
 	 * @return mixed
 	 */
 	public static function get($name) {
-		$var = self::getLoader()->find($name);
+		$var = static::getLoader()->find($name);
 		if ($var == null)
 			return null;
 		return $var->getValeur();
 	}
+
 
 	/**
 	 * @param string $name
@@ -155,9 +165,95 @@ class Class_AdminVar extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return bool
+	 */
+	public static function isVodeclicEnabled() {
+		return ('' != self::get('VODECLIC_KEY'));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isOAIServerEnabled() {
+		return self::isModuleEnabled('OAI_SERVER');
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isPackMobileEnabled() {
+		return self::isModuleEnabled('PACK_MOBILE');
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isPlanningOuverturesEnabled() {
+		return self::isMultimediaEnabled();
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isArteVodEnabled() {
+		return (('' != self::get('ARTE_VOD_LOGIN')) && ('' != self::get('ARTE_VOD_KEY')) && ('' != self::get('ARTE_VOD_SSO_KEY')));
+	}	
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isMultimediaEnabled() {
+		return ('' != self::get('MULTIMEDIA_KEY'));
+	}
+
+
+	/**
 	 * @return array
 	 */
 	public static function getKnownVars() {
 		return self::$_knownVars;
+	}
+
+
+	/** @return bool */
+	public static function isCacheEnabled() {
+		return self::isModuleEnabled('CACHE_ACTIF');
+	}
+
+
+	/** @return bool */
+	public static function isCssEditorEnabled() {
+		return self::isModuleEnabled('CSS_EDITOR');
+	}
+
+
+	/** @return bool */
+	public static function isCmsFormulairesEnabled() {
+		return self::isModuleEnabled('CMS_FORMULAIRES');
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isEnregUtilAllowed() {
+		return !self::isModuleEnabled('INTERDIRE_ENREG_UTIL');
+	}
+
+
+	public function getValeur() {
+		return stripslashes($this->_get('valeur'));
+	}
+
+
+	public static function getBabelthequeId() {
+		$mathes = [];
+		if (preg_match('/bw_([^\.]+)\.js/', (string)self::get('BABELTHEQUE_JS'), $matches))
+			return (int)$matches[1];
 	}
 }

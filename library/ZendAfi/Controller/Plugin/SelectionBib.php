@@ -27,8 +27,10 @@ class ZendAfi_Controller_Plugin_SelectionBib extends Zend_Controller_Plugin_Abst
 //------------------------------------------------------------------------------------------------------
 // Initialise les paramètres de sélection des bibs et le comptage par id geographique
 //------------------------------------------------------------------------------------------------------
-	function preDispatch(Zend_Controller_Request_Abstract $request)
-	{
+	function preDispatch(Zend_Controller_Request_Abstract $request)	{
+		if ($request->getModuleName() != 'opac')
+			return;
+
 		// Changement de profil : on reset la selection
 		if(array_isset("id_profil", $_REQUEST)) {
 			$profil = Class_Profil::getCurrentProfil();
@@ -137,22 +139,18 @@ class ZendAfi_Controller_Plugin_SelectionBib extends Zend_Controller_Plugin_Abst
 //------------------------------------------------------------------------------------------------------
 // Comptage par id geographique et stockage dans la session
 //------------------------------------------------------------------------------------------------------
-	private function getComptage($zone,$bib)
-	{
+	private function getComptage($zone,$bib) {
 		// Clef session et requete de comptage
 		if($zone=="reset") $zone="";
-		if($zone)
-		{
+		if($zone)	{
 			$clef="z".$zone;
 			$req="select count(*) from exemplaires where id_bib in(select ID_SITE from bib_c_site where ID_ZONE='$zone')";
 		}
-		elseif($bib)
-		{
+		elseif($bib)	{
 			$clef="b".$bib;
 			$req="select count(*) from exemplaires where id_bib='$bib'";
 		}
-		else
-		{
+		else	{
 			$clef="all";
 			$req="select count(*) from exemplaires";
 		}

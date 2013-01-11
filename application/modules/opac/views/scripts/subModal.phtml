@@ -1,7 +1,8 @@
 <?php 
 $script_loader = Class_ScriptLoader::getInstance()
 								 ->addAdminStyleSheet('subModalContenu')
-								 ->addAdminScript('global');
+								 ->addAdminScript('global')
+	               ->addSkinStyleSheet('iframe');
 
 ob_start(); 
 echo $this->render($this->actionScript);

@@ -200,8 +200,21 @@ class Class_Date {
 	}
 
 
-	public function humanDate($datestr, $format='d MMMM yyyy HH:mm:ss') {
+	public static function humanDate($datestr, $format='d MMMM yyyy HH:mm:ss') {
 		$date = new Zend_Date($datestr, null, Zend_Registry::get('locale'));
 		return $date->toString($format);
 	}
+
+
+	public static function dateRange($first, $last, $step = '+1 day', $format = 'Y-m-d' ) {
+			$dates = array();
+			$current = $first;
+
+			while( $current <= $last ) {
+				$dates[] = date( $format, $current );
+				$current = strtotime( $step, $current );
+			}
+
+			return $dates;
+		}
 }

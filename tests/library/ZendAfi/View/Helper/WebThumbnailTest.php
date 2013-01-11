@@ -131,6 +131,13 @@ class WebThumbnailerTestFetchFile extends ViewHelperTestCase {
 
 		$this->thumbnailer->setBlugaWebthumb($this->bluga);
 		$this->thumbnailer->setTryTimeout(0);
+		$this->_old_cfg = Zend_Registry::get('cfg');
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('cfg', $this->_old_cfg);
+		parent::tearDown();
 	}
 
 

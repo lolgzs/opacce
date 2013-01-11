@@ -2,7 +2,7 @@ temp
 public/captcha
 userfiles/i18n
 Storm
-TAGS
+/TAGS
 local.php
 config.ini
 index.php
@@ -11,3 +11,6 @@ userfiles/bannieres/*
 userfiles/css/*
 userfiles/album/*
 jquery-1.4.4.min.js
+report
+.emacs.desktop*
+*~

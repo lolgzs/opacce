@@ -1,0 +1,15 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+<?php echo $this->timeline($this->timelineActions);?>
+
+
+<div class="workflow_step">
+	<h2><?php echo $this->_('Quel poste ?') ?></h2>
+	<ul>
+	<?php
+	foreach ($this->devices as $device)
+		echo '<li>'.$this->tagAnchor(array('device' => $device->getId()), $this->escape($device->getLibelle() . ' (' . $device->getOs() . ')')) . '</li>';
+  ?>
+  </ul>
+</div>
+
+<?php $this->closeBoite();?>

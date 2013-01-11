@@ -1,8 +1,0 @@
-<?php
-echo $this->toolbar("Recherche",$this->url_retour,false);
-
-// Liste notices
-echo $this->listeNotices($this->notices,$this->nombre,$this->page,$this->preferences);
-echo $this->pager($this->nombre,$this->preferences["liste_nb_par_page"],$this->page,$this->url);
-echo BR;
-?>

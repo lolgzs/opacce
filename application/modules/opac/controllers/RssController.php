@@ -351,7 +351,7 @@ class RssController extends Zend_Controller_Action
 
 		$catalogue=new Class_Catalogue();
 		$preferences["aleatoire"] = 0; // les dernières seulement
-		$notices=$catalogue->getNotices($preferences,"url");
+		$notices=$catalogue->getNoticesByPreferences($preferences,"url");
 
 		$entries = array();
 

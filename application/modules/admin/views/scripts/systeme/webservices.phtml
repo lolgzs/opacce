@@ -1,21 +1,18 @@
 <?php
 echo '<div class="web_services">';
 echo '<ul>';
-foreach($this->services as $id_service => $service)
-{
+foreach($this->services as $id_service => $service) {
 	echo '<li class="service"><a class="ws" href="'.BASE_URL.'/admin/systeme/webservices/id_service/'.$id_service.'"><b>'.$id_service.'</b></a>';
 	echo '<ul>';
-	$id_fonction=0;
-	foreach($service["services"] as $fonction)
-	{
+	$id_fonction = 0;
+	foreach($service["services"] as $fonction)	{
 		$id_fonction++;
 		echo '<li class="fonction"><a class="ws" href="'.BASE_URL.'/admin/systeme/webservices/id_service/'.$id_service.'/id_fonction/'.$id_fonction.'">'.str_replace("@","",$fonction).'</a>';
-		if($this->tests[$id_service][$id_fonction])
-		{
+		if (isset($this->tests[$id_service][$id_fonction]))	{
 			$texte=$this->tests[$id_service][$id_fonction];
 			//if(is_array($texte))
 			//{
-				echo '<pre style="font-size:11px;width:680px;max-height:290px;overflow:auto;background-color:#F0F0F0;padding:3px;border:1px solid #C8C8C8">';
+				echo '<pre class="resultat" style="font-size:11px;width:680px;max-height:290px;overflow:auto;background-color:#F0F0F0;padding:3px;border:1px solid #C8C8C8">';
 				print_r($texte);
 				echo '</pre>';
 			//}

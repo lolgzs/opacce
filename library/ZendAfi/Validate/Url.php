@@ -23,9 +23,10 @@ class ZendAfi_Validate_Url extends Zend_Validate_Abstract {
 	
 	protected $_messageTemplates = array(self::INVALID_URL   => "'%value%' n'est pas une URL valide");
 	
-	public function isValid($value)
-	{
-		$valueString = (string) $value;
+	public function isValid($value)	{
+		if ('' === $valueString = (string) $value)
+			return true;
+
 		$this->_setValue($valueString);
 		
 		if (!Zend_Uri::check($value)) {

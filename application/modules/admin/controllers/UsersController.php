@@ -37,7 +37,7 @@ class Admin_UsersController extends Zend_Controller_Action
 	function init()
 	{
 		// User connecté
-		$this->user = Zend_Auth::getInstance()->getIdentity();
+		$this->user = ZendAfi_Auth::getInstance()->getIdentity();
 		
 		// Zone et bib du filtre (initialisé dans le plugin DefineUrls)
 		$this->id_zone=$_SESSION["admin"]["filtre_localisation"]["id_zone"];
@@ -56,22 +56,27 @@ class Admin_UsersController extends Zend_Controller_Action
 		$this->view->titre = 'Gestion des utilisateurs';
 
 		$cls_user = new Class_Users();
-		$page=$_REQUEST["page"];
+		$page=$this->_getParam('page');
 		
 		// Recherche
-		if (($_REQUEST["recherche"]==1)	and $this->_request->isPost()){
+		$rech_user = array();
+		if (($this->_getParam('recherche') == 1)	and $this->_request->isPost()){
 			$rech_user=ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
-			$_SESSION["admin"]["rech_user"]=$rech_user;
+			$_SESSION["admin"]["rech_user"] = $rech_user;
 		}
 		
 		// Lire les users
-		$ret = $cls_user->getUsers($this->id_zone,$this->id_bib,$this->user->ROLE_LEVEL,$_SESSION["admin"]["rech_user"],$page);
+		$ret = $cls_user->getUsers($this->id_zone,
+															 $this->id_bib,
+															 $this->user->ROLE_LEVEL,
+															 isset($_SESSION["admin"]["rech_user"]) ? $_SESSION["admin"]["rech_user"] : $rech_user,
+															 $page);
 		
 		// Variables de vue
 		$this->view->users = $ret["users"];
 		$this->view->nb_par_page = $ret["nb_par_page"];
 		$this->view->nombre = $ret["nombre"];
-		$this->view->rech_user=$rech_user;
+		$this->view->rech_user = $rech_user;
 		$this->view->url=$this->_request->REQUEST_URI;
 		$this->view->page=$page;
 	}
@@ -129,7 +134,10 @@ class Admin_UsersController extends Zend_Controller_Action
 				->setIdSite($data['bib'])
 				->setIdabon($data['id_abon'])
 				->setOrdreabon($data['ordre'])
-				->setTelephone($data['telephone']);
+				->setTelephone($data['telephone'])
+				->setAdresse($data['adresse'])
+				->setVille($data['ville'])
+				->setCodePostal($data['code_postal']);
 	
 			try {
 				if ($user->save())

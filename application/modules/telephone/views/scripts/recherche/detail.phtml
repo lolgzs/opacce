@@ -1,9 +1,14 @@
 <?php
-echo $this->toolbar("Notice détaillée",$this->url_retour,true);
-echo '<h1>'.$this->titre.'</h1>';
-echo '<div class="pave">';
-$notice_html=new Class_NoticeHtml($this->notice);
-$notice_html->notice=$this->notice;
-echo $notice_html->getEntete();
-echo '</div>'.BR;
+echo $this->toolbar($this->_('Notice détaillée'),
+										array('action' => 'viewnotice'),
+										true);
 ?>
+
+<ul data-role="listview" data-inset="true">
+  <li date-theme="c">
+<?php
+  echo $this->noticeDetaillee($this->notice);
+?>
+</li></ul>
+
+

@@ -22,14 +22,11 @@
 /* Regénère un nouveau front controller pour chaque test,
  * sinon les paramètres de requête sont gardés.
  */
-
-$cfg = loadConfig();
-
-$_REQUEST["id_profil"] = $_SESSION["id_profil"] = 2;
 $_SERVER['HTTP_HOST'] = 'localhost';
 
+Zend_Registry::get('session')->id_profil = 2;
+
 $controller = Zend_Controller_Front::getInstance()
-	->setParam('noErrorHandler', true)
 	->throwExceptions(true)
 	->addModuleDirectory('application/modules')
 	->setDefaultModule('opac')
@@ -37,7 +34,8 @@ $controller = Zend_Controller_Front::getInstance()
 	->registerPlugin(new ZendAfi_Controller_Plugin_SetupLocale())
 	->registerPlugin(new ZendAfi_Controller_Plugin_DefineURLs())
 	->registerPlugin(new ZendAfi_Controller_Plugin_InitModule())
-	->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib());
+	->registerPlugin(new ZendAfi_Controller_Plugin_SelectionBib())
+	->registerPlugin(new ZendAfi_Controller_Plugin_System());
 
 $_SESSION["selection_bib"]=array("message" => 'selection bib sucks',
 																 "nb_notices" => 12345,

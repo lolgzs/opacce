@@ -29,6 +29,9 @@ class Class_ScriptLoader {
 	protected $_should_load_amber;
 	protected $_amber_files;
 	protected $_amber_ready_scripts;
+	protected $_jquery_ready_scripts;
+	protected $_is_mobile = false;
+	protected $_version_pergame_hash;
 
 	/**
 	 * @return ScriptLoader
@@ -56,15 +59,28 @@ class Class_ScriptLoader {
 	public function __construct() {
 		$this->_script_lines = array();
 		$this->_css_lines = array();
+		$this->_jquery_ready_scripts = array();
 		$this->_should_load_amber = false;
 	}
 
 
 	/**
+	 * @param boolean $with_ide load IDE in read only mode
 	 * @return ScriptLoader
 	 */
-	public function loadAmber() {
+	public function loadAmber($with_ide = false) {
 		$this->_should_load_amber = true;
+
+		if (($with_ide == true) && $this->isAmberModeDeploy())
+			$this
+				->addScript(AMBERURL.'src/js/lib/jQuery/jquery.textarea.js')
+				->addScript(AMBERURL.'src/js/lib/CodeMirror/codemirror.js')
+				->addStyleSheet(AMBERURL.'src/js/lib/CodeMirror/codemirror.css')
+				->addStyleSheet(AMBERURL.'src/js/lib/CodeMirror/amber.css')
+				->addStyleSheet(AMBERURL.'src/css/amber.css')
+				->addAmberPackage('../../src/js/IDE')
+				->addAmberPackage('../../src/js/SUnit');
+
 		return $this;
 	}
 
@@ -84,7 +100,7 @@ class Class_ScriptLoader {
 		$amber_options = sprintf('{"home":"%s", "files":%s, "deploy":%s, "ready":%s}',
 														 AMBERURL.'src/',
 														 json_encode($this->_amberAdditionalFiles($deploy)),
-														 $deploy?'true':'false',
+														 $deploy ? 'true':'false',
 														 sprintf('function(){$(function(){%s})}',
 																		 implode(';', $this->getAmberReadyScripts())));
 
@@ -131,6 +147,37 @@ class Class_ScriptLoader {
 	/**
 	 * @return ScriptLoader
 	 */
+	public function beMobile() {
+		$this->_is_mobile = true;
+		return $this;
+	}
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isMobile() {
+		return $this->_is_mobile;
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
+	public function loadJQueryMobile() {
+		$this->beMobile();
+
+		return $this
+			->addScript(BASE_URL.'/public/telephone/js/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
+			->addSkinStyleSheet('../jquerymobile/jquery.mobile-'.JQUERYMOBILE_VERSION.'.min')
+			->addSkinStyleSheet('../jQuery-Mobile-Icon-Pack/original/jqm-icon-pack-2.0-original')
+			->addSkinStyleSheet('../jQuery-Mobile-Icon-Pack/font-awesome/jqm-icon-pack-2.1.2-fa');
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
 	public function loadJQueryUI() {
 		return $this->addScript(JQUERYUI);
 	}
@@ -140,7 +187,8 @@ class Class_ScriptLoader {
 	 * @return ScriptLoader
 	 */
 	public function addJQueryReady($js) {
-		return $this->addInlineScript(sprintf("$(function(){%s});", $js));
+		$this->_jquery_ready_scripts []= $js;
+		return $this;
 	}
 
 
@@ -158,6 +206,7 @@ class Class_ScriptLoader {
 	public function addScript($file) {
 		if (false === strpos($file, '.js'))
 				$file .= '.js';
+		$file = $this->_addVersionParam($file);
 		return $this->_scriptsAddLine(sprintf('<script src="%s" type="text/javascript"></script>', $file));
 	}
 
@@ -167,6 +216,14 @@ class Class_ScriptLoader {
 	 */
 	public function addOPACScript($script) {
 		return $this->addScript(BASE_URL."/public/opac/js/".$script);
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
+	public function addPhoneScript($script) {
+		return $this->addScript(BASE_URL."/public/telephone/js/".$script);
 	}
 
 
@@ -207,7 +264,7 @@ class Class_ScriptLoader {
 			->addJQueryReady(sprintf('showNotification(%s)',
 															 json_encode(array('message' => $message, 
 																								 'autoClose' => true, 
-																								 'duration' => 2, 
+																								 'duration' => 10, 
 																								 'type' => 'information'))));
 	}
 
@@ -221,6 +278,7 @@ class Class_ScriptLoader {
 
 		if (false === strpos($file, '.css'))
 				$file .= '.css';
+		$file = $this->_addVersionParam($file);
 
 		$attributes = array_merge(array('type' => 'text/css', 
 																		'rel' => 'stylesheet', 
@@ -232,7 +290,7 @@ class Class_ScriptLoader {
 		foreach($attributes as $name => $value)
 			$html_attributes .= sprintf(' %s="%s" ', $name, $value);
 
-		return $this->cssAddLine(sprintf('<link %s />', $html_attributes));
+		return $this->cssAddLine(sprintf('<link %s>', $html_attributes));
 	}
 
 
@@ -356,8 +414,9 @@ class Class_ScriptLoader {
 	 */	
 	public function &getAmberReadyScripts() {
 		if (!isset($this->_amber_ready_scripts))
-			$this->_amber_ready_scripts = array(sprintf('smalltalk.Package._defaultCommitPathJs_("%s/opac/amber/commitJs")', BASE_URL),
-																					sprintf('smalltalk.Package._defaultCommitPathSt_("%s/opac/amber/commitSt")', BASE_URL));
+			$this->_amber_ready_scripts = array(sprintf('smalltalk.Package._defaultCommitPathJs_("%s/admin/amber/commitJs")', BASE_URL),
+																					sprintf('smalltalk.Package._defaultCommitPathSt_("%s/admin/amber/commitSt")', BASE_URL),
+																					sprintf('smalltalk.Ajax._opacBaseUrl_idProfil_("%s", "%d")', BASE_URL, Class_Profil::getCurrentProfil()->getId()));
 		return $this->_amber_ready_scripts;
 	}
 
@@ -424,8 +483,22 @@ class Class_ScriptLoader {
 	 * @return String
 	 */
 	public function javaScriptsHTML() {
-		$this->_deferredLoadAmber();
+		$this
+			->_deferredLoadAmber()
+			->_injectJQueryReadyScripts();
+
 		return	implode('',array_unique($this->_script_lines));
+	}
+
+
+	/**
+	 * @return ScriptLoader
+	 */
+	public function _injectJQueryReadyScripts() {
+		$template = $this->isMobile() ? "$(document).bind('pageinit', function(event){%s});" : "$(function(){%s});";
+		foreach ($this->_jquery_ready_scripts as $js) 
+			$this->addInlineScript(sprintf($template, $js));
+		return $this;
 	}
 
 
@@ -439,10 +512,38 @@ class Class_ScriptLoader {
 
 
 	/**
+	 * @return ScriptLoader
+	 */
+	public function loadBabeltheque() {
+		if (!$id = Class_AdminVar::getBabelthequeId())
+			return $this;
+
+		return $this->addOPACScript('babeltheque.js?bwid='.$id);
+	}
+
+
+	/**
 	 * @return String
 	 */
 	public function html() {
 		return $this->styleSheetsHTML().$this->javaScriptsHTML();
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	protected function _addVersionParam($file) {
+		return $file . ((false == strpos($file, '?')) ? '?' : '&') . 'v=' . $this->getVersionPergameHash();
+	}
+
+
+	
+	protected function getVersionPergameHash() {
+		if (null == $this->_version_pergame_hash)
+			$this->_version_pergame_hash = md5(VERSION_PERGAME);
+		return $this->_version_pergame_hash;
 	}
 }
 

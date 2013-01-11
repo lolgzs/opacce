@@ -23,14 +23,29 @@ class ModulesControllerRechercheTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$_SESSION["recherche"] = array("mode" => '');
-		$this->dispatch('/admin/modules/recherche?id_profil=2&action1=viewnotice&type_module=recherche&config=site');
+		$this->dispatch('/admin/modules/recherche?id_profil=2&action1=viewnotice&type_module=recherche&config=site', true);
 	}
 
+	
 	/** @test */
 	public function helpLinkShouldBePresent() {
     $this->assertXPath("//a[@href='https://akm.ardans.fr/AFI2/invite/listerFiche.do?idFiche=3647']//img");
 	}
+
+
+	/** @test */
+	public function ressourcesNumeriquesShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Ressources numériques');
+	}
+
+
+	/** @test */
+	public function babelthequeShouldBePresent() {
+		$this->assertXPathContentContains('//td', 'Babelthèque');
+	}
 }
+
+
 
 
 class ModulesControllerVariousConfigTest extends Admin_AbstractControllerTestCase {
@@ -40,6 +55,7 @@ class ModulesControllerVariousConfigTest extends Admin_AbstractControllerTestCas
 		$this->assertAction('auth');
 	}
 }
+
 
 
 
@@ -73,6 +89,64 @@ class ModulesControllerBibIndexTest extends Admin_AbstractControllerTestCase {
 												array("hide_news" => 1));
 		$cfg_modules = Class_Profil::getCurrentProfil()->getCfgModulesAsArray();
 		$this->assertEquals(1, $cfg_modules["bib"]["index"]["hide_news"]);
+	}
+}
+
+
+
+
+class ModulesControllerConfigRechercheResultatTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$_SESSION["recherche"] = array("mode" => '');
+	}
+
+
+	/** @test */
+	public function checkboxSuggestionAchatShouldBeCheckedByDefault() {
+		Class_Profil::getCurrentProfil()->setCfgModules([]);
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
+		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][@checked="checked"]');
+	}
+
+
+	/** @test */
+	public function withAction2ViewNoticeShouldDisplayConfigurationOfPageNotice() {
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=viewnotice');
+		$this->assertXPathContentContains('//h1', 'Propriétés d\'affichage des notices');
+	}
+}
+
+
+
+
+class ModulesControllerConfigRechercheResultatWithPreferencesTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$_SESSION["recherche"] = array("mode" => '');
+		Class_Profil::getCurrentProfil()
+			->setCfgModules(['recherche' => ['resultatsimple' => ['suggestion_achat' => 0,
+																														'zones_titre' => '200$e;200$f']]]);
+		$this->dispatch('/admin/modules/recherche?config=site&type_module=recherche&id_profil=2&action1=resultat&action2=simple', true);
+
+	}
+	
+
+	/** @test */
+	public function checkboxSuggestionAchatShouldBeUncheckedIfPrefencesSuggestionEqualsZero() {
+		$this->assertXPath('//input[@type="checkbox"][@name="suggestion_achat"][not(@checked)]');
+	}
+
+
+	/** @test */
+	public function inputZonesTitreShouldContainsZones200EandF() {
+		$this->assertXPath('//input[@name="zones_titre"][@value="200$e;200$f"]');
+	}
+
+
+	/** @test */
+	public function profilZonesTitreShouldReturnArrayWithZones() {
+		$this->assertEquals(['200$e', '200$f'], Class_Profil::getCurrentProfil()->getZonesTitre());
 	}
 }
 

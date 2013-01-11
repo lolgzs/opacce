@@ -1,22 +1,17 @@
 <?php
-echo $this->bouton('id=add_category',
-									 'picto=add.gif',
-									 'texte=' . $this->traduire('Ajouter une collection'),
-									 'url=' . $this->url(array('action' => 'add_categorie',
-																					 'id' => null))
+if (Class_AdminVar::isBibNumEnabled())
+	echo $this->bouton('id=add_category',
+										 'picto=add.gif',
+										 'texte=' . $this->traduire('Ajouter une collection'),
+										 'url=' . $this->url(array('action' => 'add_categorie',
+																							 'id' => null))
 );
 
-
-echo $this->form_import_ead;
 ?>
 
-
-
-<ul class="tree">
-	<?php
-		echo $this->partialCycle('album/_categorie.phtml',
-														 'categorie',
-														 $this->categories,
-														 array('first', 'second'));
-	?>
-</ul>
+<?php 
+echo $this->getHelper('TreeView')->renderItemWithIconeSupport()->treeView($this->categories, 
+																																				 $this->containersActions, 
+																																				 $this->itemsActions, 
+																																				 false); 
+?>

@@ -21,6 +21,8 @@
 require_once 'AbstractControllerTestCase.php';
 
 abstract class AbstractAbonneControllerPretsTestCase extends AbstractControllerTestCase {
+	protected $_old_zend_cache;
+
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
 		$account->ROLE_LEVEL = 2;
@@ -29,14 +31,35 @@ abstract class AbstractAbonneControllerPretsTestCase extends AbstractControllerT
 		$this->account = $account;
 	}
 
+
 	public function setUp() {
 		parent::setUp();
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')->whenCalled('save')->answers(true);
 		$this->florence = Class_Users::getLoader()->newInstanceWithId('123456');
 
+		$this->_old_zend_cache = Zend_Registry::get('cache');
+		Zend_Registry::set('cache', $this->zend_cache = Storm_Test_ObjectWrapper::mock());
+		$this->zend_cache
+			->whenCalled('remove')
+			->answers(true);
+	}
+
+	
+	public function tearDown() {
+		Zend_Registry::set('cache', $this->_old_zend_cache);
+		parent::tearDown();
+	}
+
+	
+	public function assertUserRemovedFromEmprunteurCache($user) {
+		$user_key = Class_WebService_SIGB_EmprunteurCache::newInstance()->keyFor($user);
+		$this->assertTrue($this->zend_cache
+											->methodHasBeenCalledWithParams('remove', array($user_key)));		
 	}
 }
+
+
 
 
 class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPretsTestCase {
@@ -80,6 +103,12 @@ class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPret
 	public function testPageIsRendered() {
 		$this->assertController('abonne');
 		$this->assertAction('prets');
+	}
+
+
+	/** @test */
+	public function cacheShouldHaveBeenCleared() {
+		$this->assertUserRemovedFromEmprunteurCache($this->florence);
 	}
 
 
@@ -133,13 +162,16 @@ class AbonneControllerPretsListTwoPretsTest extends AbstractAbonneControllerPret
 
 
 class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerPretsTestCase {
+	protected $_potter;
+
 	public function setUp() {
 		parent::setUp();
 
 		$potter = new Class_WebService_SIGB_Reservation('12', new Class_WebService_SIGB_Exemplaire(123));
-		$potter->getExemplaire()->setTitre('Potter');
+		$this->_potter = $potter->getExemplaire()->setTitre('Potter');
 		$potter->parseExtraAttributes(array('Etat' => 'Réservation émise',
-																				'Rang' => '2'));
+																				'Rang' => '2',
+																				'Bibliotheque' => 'Tombouctou'));
 
 		$emprunteur = new Class_WebService_SIGB_Emprunteur('1234', 'Florence');
 		$emprunteur->reservationsAddAll(array($potter));
@@ -157,31 +189,59 @@ class AbonneControllerPretsListReservationTest extends AbstractAbonneControllerP
 	}
 
 
-	public function testPageIsRendered() {
+	/** @test */
+	public function controllerShouldBeAbonne() {
 		$this->assertController('abonne');
+	}
+
+
+	/** @test */
+	public function cacheShouldHaveBeenCleared() {
+		$this->assertUserRemovedFromEmprunteurCache($this->florence);
+	}
+
+
+	/** @test */
+	public function actionShouldBeReservations() {
 		$this->assertAction('reservations');
 	}
 
 
-	public function testNomAffiche() {
-		$this->assertQueryContentContains("div.abonneTitre", 'FloFlo');
+	/** @test */
+	public function nomShouldBeFloFlo() {
+		$this->assertQueryContentContains('div.abonneTitre', 'FloFlo');
 	}
 
-	public function testViewTitrePotter() {
-		$this->assertXPathContentContains("//tr[2]//td", 'Potter');
+
+	/** @test */
+	public function titreShouldBePotter() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Potter');
 	}
 
-	public function testEtatIsReservationEmise() {
-		$this->assertXPathContentContains("//tr[2]//td", 'Réservation émise');
+
+	/** @test */
+	public function etatShouldBeReservationEmise() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Réservation émise');
 	}
 
-	public function testRangIsTwo() {
-		$this->assertXPathContentContains("//tr[2]//td", '2');
+
+	/** @test */
+	public function rangShouldBeTwo() {
+		$this->assertXPathContentContains('//tr[2]//td', '2');
 	}
 
-	public function testLinkDeleteReservationForPotter() {
+
+	/** @test */
+	public function linkToDeleteShouldBeAsExpected() {
 		$this->assertXPath("//tr[2]//td//a[@href='/abonne/reservations/id_delete/12']");
 	}
+
+
+	/** @test */
+	public function bibliothequeShouldBeTombouctou() {
+		$this->assertXPathContentContains('//tr[2]//td', 'Tombouctou', $this->_response->getBody());
+	}
+
 }
 
 

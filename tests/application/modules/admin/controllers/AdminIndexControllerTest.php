@@ -20,21 +20,53 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
+abstract class AdminIndexControllerTestCase extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('getIdentity')
+			->answers(Class_Users::getLoader()->newInstanceWithId(777)
+								->setLogin('sysadmin')
+								->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN)
+								->setPseudo('admin'));
+	}
+}
+
+
+
+
+class AdminIndexControllerTestBabelio extends AdminIndexControllerTestCase {
+	protected $_old_cfg;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_old_cfg = Zend_Registry::get('cfg');
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('cfg', $this->_old_cfg);
+		parent::tearDown();
+	}
+
+
 	protected function _setExpiration($expire_at) {
 		Zend_Registry::set('cfg', new Zend_Config(array('babelio' => array('expire_at' => $expire_at))));
 	}
 
 
-	public function testDefaultBabelioDisabled() {
+	/** @test */
+	public function withNullExpirationShouldBeDisabled() {
 		$this->_setExpiration(null);
 
-		$this->dispatch('/admin/index');
+		$this->dispatch('/admin/index', true);
 		$this->assertQueryContentContains('div.ligne_info b', 'Désactivé');
 		$this->assertQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testActivatedNoExpiration() {
+
+	/** @test */
+	public function withExpirationNeverShouldBeActivated() {
 		$this->_setExpiration('never');
 
 		$this->dispatch('/admin/index');
@@ -42,7 +74,9 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 		$this->assertNotQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testExpirated() {
+
+  /** @test */
+  public function withPastExpirationDateShouldBeDisabled() {
 		$yesterday = new Zend_Date();
 		$yesterday->addDay(-1);
 		$this->_setExpiration($yesterday->toString('yyyy/MM/dd'));
@@ -52,7 +86,9 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 		$this->assertQueryContentContains('div.ligne_info', 'souscrire à un abonnement');
 	}
 
-	public function testNotExpirated() {
+
+  /** @test */
+  public function withFutureExpirationDateShouldBeActivated() {
 		$tomorrow = new Zend_Date();
 		$tomorrow->addDay(1);
 		$this->_setExpiration($tomorrow->toString('yyyy/MM/dd'));
@@ -66,7 +102,7 @@ class AdminIndexControllerTestBabelio extends Admin_AbstractControllerTestCase {
 
 
 
-class AdminIndexControllerIndexActionTest extends Admin_AbstractControllerTestCase {
+class AdminIndexControllerIndexActionTest extends AdminIndexControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -74,7 +110,7 @@ class AdminIndexControllerIndexActionTest extends Admin_AbstractControllerTestCa
 			->newInstanceWithId('LANGUES')
 			->setValeur('');
 
-		$this->dispatch('/admin/index');
+		$this->dispatch('/admin/index', true);
 	}
 
 	/** @test */
@@ -98,12 +134,6 @@ class AdminIndexControllerIndexActionTest extends Admin_AbstractControllerTestCa
 	/** @test */
 	public function PATH_JAVAShouldExists() {
 		$this->assertTrue(file_exists(PATH_JAVA));
-	}
-
-
-	/** @test */
-	public function PATH_FLASHShouldExists() {
-		$this->assertTrue(file_exists(PATH_FLASH));
 	}
 }
 
@@ -129,7 +159,10 @@ class AdminIndexControllerAdminVarActionTest extends Admin_AbstractControllerTes
 	}
 }
 
-class AdminIndexControllerAdminVarEditActionTest extends Admin_AbstractControllerTestCase {
+
+
+
+class AdminIndexControllerAdminVarEditModoBlogActionTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -161,4 +194,38 @@ class AdminIndexControllerAdminVarEditActionTest extends Admin_AbstractControlle
 	}
 }
 
+
+
+
+class AdminIndexControllerAdminVarEditResaConditionActionTest extends Admin_AbstractControllerTestCase {
+	protected $_resa_condition;
+
+	public function setUp() {
+		parent::setUp();
+		
+		$this->_resa_condition = Class_AdminVar::getLoader()
+			->newInstanceWithId('RESA_CONDITION')
+			->setValeur('Mes+conditions+de+reservation');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_AdminVar')
+			->whenCalled('save')
+			->answers(true);
+	}
+
+
+	/** @test */
+	public function editResaConditionShouldDecodeItsValeur() {
+		$this->dispatch('/admin/index/adminvaredit/cle/RESA_CONDITION');
+		$this->assertXPathContentContains('//textarea', 'Mes conditions de reservation');
+	}
+
+
+	/** @test */
+	public function postResaConditionShouldEncodeItsValeur() {
+		$this->postDispatch('/admin/index/adminvaredit/cle/RESA_CONDITION', 
+												array('valeur' => 'Il faut demander'));
+		
+		$this->assertEquals('Il+faut+demander', $this->_resa_condition->getValeur());
+	}
+}
 ?>

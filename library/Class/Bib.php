@@ -50,6 +50,15 @@ class BibLoader extends Storm_Model_Loader {
 	}
 
 
+	public function findAllByIdZone($id_zone=0) {
+		$id_zone = (int)$id_zone;
+		if (!$id_zone)
+			return Class_Bib::findAllBy(array('order' => 'ville'));
+		return Class_Bib::findAllBy(array('id_zone' => $id_zone,
+																	'order' => 'ville'));
+	}
+
+
 	public function getPortail() {
 		if (!isset($this->_portail))
 			$this->_portail = $this->newInstanceWithId(0)->setLibelle('Portail');
@@ -65,28 +74,39 @@ class Class_Bib extends Storm_Model_Abstract {
 	const V_DATA = 2;
 
 	private $_dataBaseError = "Problème d'accès à  la base de données";
-	private $statut_bib = array('Invisible','N\'envoie pas de données','Envoie des données');
+	private $statut_bib = ['Invisible',
+												 'N\'envoie pas de données',
+												 'Envoie des données'];
 
   protected $_loader_class = 'BibLoader';
 	protected $_table_name = 'bib_c_site';
 	protected $_table_primary = 'ID_SITE';
-	protected $_has_many = array('profils' => array('model' => 'Class_Profil',
-																									'role' => 'bib'),
+	protected $_has_many = ['profils' => ['model' => 'Class_Profil',
+																									'role' => 'bib'],
 
-															 'article_categories' => array('model' => 'Class_ArticleCategorie',
-																														 'role' => 'bib',
-																														 'scope' => array('ID_CAT_MERE' => 0),
-																														 'order' => 'libelle'));
+													'article_categories' => ['model' => 'Class_ArticleCategorie',
+																									 'role' => 'bib',
+																									 'scope' => ['ID_CAT_MERE' => 0],
+																									 'order' => 'libelle'],
 
-	protected $_belongs_to = array('zone' => array('model' => 'Class_Zone',
-																								  'role' => 'bib',
-																								  'referenced_in' => 'id_zone'));
+													'ouvertures' => ['model' => 'Class_Ouverture',
+																					 'role' => 'bib',
+																					 'order' => ['jour', 'debut_matin'],
+																					 'dependents' => 'delete']];
 
-	protected $_default_attribute_values = array('visibilite' => 0,
-																							 'libelle' => '',
-																							 'id_zone' => 0,
-																							 'ville' => '',
-																							 'aff_zone' => '');
+	protected $_belongs_to = ['zone' => ['model' => 'Class_Zone',
+																			 'role' => 'bib',
+																			 'referenced_in' => 'id_zone'],
+
+														'int_bib' => ['model' => 'Class_IntBib',
+																					'role' => 'bib',
+																					'referenced_in' => 'id_site']];
+
+	protected $_default_attribute_values = ['visibilite' => 0,
+																					'libelle' => '',
+																					'id_zone' => 0,
+																					'ville' => '',
+																					'aff_zone' => ''];
 
 	protected $_translate;
 
@@ -98,8 +118,12 @@ class Class_Bib extends Storm_Model_Abstract {
 	}
 
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
+	public function getLieu() {
+		return Class_Lieu::getLoader()
+			->newInstance()
+			->setAdresse($this->getAdresse())
+			->setCodePostal($this->getCp())
+			->setVille($this->getVille());
 	}
 
 
@@ -188,8 +212,8 @@ class Class_Bib extends Storm_Model_Abstract {
 	//----------------------------------------------------------------------------
 	// Controle de suppression d'une bibliothèque
 	//----------------------------------------------------------------------------
-	function isBibDeletable($id_bib)
-	{
+	function isBibDeletable()	{
+		$id_bib = $this->getId();
 		$cms=fetchOne("Select count(*) from cms_categorie where ID_SITE=$id_bib");
 		$rss=fetchOne("Select count(*) from rss_categorie where ID_SITE=$id_bib");
 		$sito=fetchOne("Select count(*) from sito_categorie where ID_SITE=$id_bib");
@@ -509,6 +533,11 @@ class Class_Bib extends Storm_Model_Abstract {
 			'"label": "'.htmlspecialchars(trim($this->getLibelle())).'",'.
 			'"categories": ['.implode(",", $json_categories).'],'.
 			'"items": []}';
+	}
+
+
+	public function getSigbExemplaire($id_origine, $code_barres) {
+		return Class_IntBib::find($this->getId())->getSigbExemplaire($id_origine, $code_barres);
 	}
 }
 ?>

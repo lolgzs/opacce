@@ -1,0 +1,1 @@
+ALTER TABLE `codif_emplacement` ADD `ne_pas_afficher` TINYINT NOT NULL AFTER `regles`;

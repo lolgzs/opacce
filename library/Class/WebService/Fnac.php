@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2012, Agence Française Informatique (AFI). All rights reserved.
+ * Copyright (c) 2012, Agence FranÃ§aise Informatique (AFI). All rights reserved.
  *
  * AFI-OPAC 2.0 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
@@ -18,47 +18,87 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 : FNAC
-//////////////////////////////////////////////////////////////////////////////////////
 
-class Class_WebService_Fnac
-{
-	private $url;											// Url de base
+class Class_WebService_Fnac extends Class_WebService_Abstract {
+	private $url = 'http://www3.fnac.com/advanced/book.do?isbn=';
 
-//------------------------------------------------------------------------------------------------------
-// Constructeur
-//------------------------------------------------------------------------------------------------------
-	function __construct()
-	{
-		$this->url='http://www3.fnac.com/advanced/book.do?isbn=';
+	public function getResumes($notice) {
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		if ($resume = $this->getResume($service))
+			return array(array('source' => 'Editeur',
+												 'texte' => $resume));
+		return array();
 	}
 
 //------------------------------------------------------------------------------------------------------
-// R�sum� de l'editeur
+// Résumé de l'editeur
 //------------------------------------------------------------------------------------------------------	
-	public function getResume($isbn)
-	{
+	public function getResume($isbn) {
 		if(!$isbn) return false;
 		$isbn=str_replace("-","",$isbn);
-		
-		// Get http
-		$url=$this->url.$isbn;
-		$httpClient = Zend_Registry::get('httpClient');
-		$httpClient->setUri($url);
-		$response = $httpClient->request();
-		$data = $response->getBody();
-		
-		// Bloc editeur
-		$pos=strPos($data,"avisediteur");
-		if(!$pos) return false;
-		$pos=striPos($data,"lireLaSuite",$pos);
-		if(!$pos) return false;
-		$pos=strPos($data,">",$pos)+1;
-		$posfin=strPos($data,"</div>",$pos);
-		$resume=substr($data,$pos,($posfin-$pos));
-		//tracedebug($resume,true);
-		return $resume;
+
+		$data = self::getHttpClient()->open_url($this->url.$isbn);
+		$url_lire_la_suite = $this->getUrlLireLaSuite($data);
+
+		if (!($url_lire_la_suite && (new ZendAfi_Validate_Url())->isValid($url_lire_la_suite)))
+			return '';
+
+		$suite = self::getHttpClient()->open_url($url_lire_la_suite);
+		return strip_tags($this->extractResumeFromHTML($suite));
 	}
-	
+
+
+	public function getUrlLireLaSuite($data) {
+		$pos=striPos($data,"resume");
+		if(!$pos) 
+			return '';
+
+		$pos = strPos($data,"a href=\"",$pos)+8;
+		$posfin = strPos($data,"\"",$pos);
+		return substr($data,$pos,($posfin-$pos));
+	}
+
+
+	public function extractResumeFromHTML($html) {
+		if ($pos = striPos($html, "avisEdContent"))
+				return $this->extractLireLaSuiteDivAvisEditeurFromHTML($html);
+
+		if (!$pos = striPos($html, "laSuite bigLaSuite"))
+				return $this->extractLireLaSuiteDivFromHTML($html);
+
+		$pos = striPos($html, "img", $pos);
+		$pos = striPos($html, ">", $pos) + 1;
+
+		$posfin = strPos($html, "<p>", $pos);
+		$posfin2 = strPos($html, "</div>", $pos);
+		$posfin = $posfin < $posfin2 ? $posfin : $posfin2;
+
+		$resume = substr($html, $pos, ($posfin-$pos));
+		return trim($resume);
+	}
+
+
+	public function extractLireLaSuiteDivAvisEditeurFromHTML($html) {
+		$pos = strPos($html, "avisEdContent") + 15;
+		$posfin = strPos($html, "</div>", $pos);
+		$resume = substr($html, $pos, ($posfin-$pos));
+		return trim($resume);
+	}
+
+
+	public function extractLireLaSuiteDivFromHTML($html) {
+		$start_string = "lireLaSuite mrg_v_sm";
+		if (!$pos = striPos($html, $start_string))
+			return '';
+
+		$pos = $pos + strlen($start_string)+2;
+
+		$posfin = strPos($html, "</", $pos);
+
+		$resume = substr($html, $pos, ($posfin - $pos));
+
+		return trim($resume);
+	}
 }

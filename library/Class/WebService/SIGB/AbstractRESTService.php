@@ -25,6 +25,15 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 
 	/**
 	 * @param string $server_root
+	 * @return Class_WebService_SIGB_AbstractService
+	 */
+	public static function getService($server_root) {
+		return static::newInstance()->setServerRoot($server_root);
+	}
+
+
+	/**
+	 * @param string $server_root
 	 * @return Class_WebService_SIGB_AbstractRESTService
 	 */
 	public function setServerRoot($server_root) {
@@ -75,6 +84,7 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		return $this->getWebClient()->open_url($url);
 	}
 
+	
 	/**
 	 * @param string $xml
 	 * @param string $tag
@@ -89,6 +99,119 @@ abstract class Class_WebService_SIGB_AbstractRESTService extends Class_WebServic
 		return '';
 	}
 
+
+	public function httpGetNotice($params, $reader) {
+		$xml = $this->httpGet($params);
+
+ 		if ($notice = $reader->getNoticeFromXML($xml))
+			$this->cacheNotice($notice);
+
+		return $notice;
+	}
+
+
+	/**
+	 * @param int $id
+	 * @param Class_WeClass_WebService_SIGB*Reader $reader
+	 * @return string Class_WebService_SIGB_Notice
+	 */
+	public function ilsdiGetRecords($id, $reader) {
+		return $this->httpGetNotice(['service' => 'GetRecords', 'id' => $id],
+																$reader);
+	}
+
+
+
+	/**
+	 * @param array $params
+	 * @param Class_WebService_SIGB_AbstractILSDIPatronInfoReader $reader
+	 * @return Class_WebService_SIGB_Emprunteur
+	 */
+	public function ilsdiGetPatronInfo($params, $reader, $error_tag='error') {
+		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()->setService($this);
+		$params = array_merge(array('service' => 'GetPatronInfo'), $params);
+
+		$xml = $this->httpGet($params);
+
+		if (0 === strpos($xml, '<html>'))
+			return $emprunteur;
+
+		if ($this->_getTagData($xml, $error_tag))
+			return $emprunteur;
+
+		return $reader
+			->setEmprunteur($emprunteur)
+			->parseXML($xml)
+			->getEmprunteur();
+	}
+
+
+	/**
+	 * Authentifie un utilisateur via SIGB et si réussi affecte l'id_sigb reçu
+	 * @param $user Class_Users
+	 */
+	public function ilsdiAuthenticatePatron($user) {
+		$params = ['service' => 'AuthenticatePatron',
+			         'username' => $user->getIdabon(),
+			         'password' => $user->getPassword()];
+
+		$xml = $this->httpGet($params);
+
+		if ('' != $patronId = $this->_getTagData($xml, 'patronId'))
+			$user->setIdSigb($patronId);
+	}
+		
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	public function ilsdiHoldTitle($params, $error_tag = 'error') {
+		return $this->ilsdiAction('HoldTitle', $params, $error_tag, 'Réservation impossible');
+	}
+
+
+	/**
+	 * @param array $params
+	 */
+	public function ilsdiCancelHold($params, $error_tag='error') {
+		return $this->ilsdiAction('CancelHold', $params, $error_tag, 'Annulation impossible');
+	}
+
+
+	/**
+	 * @param array $params
+	 */
+	public function ilsdiRenewLoan($params, $error_tag='error') {
+		return $this->ilsdiAction('RenewLoan', $params, $error_tag, 'Prolongation impossible');
+	}
+	
+		
+	public function ilsdiAction($name, $params, $error_tag, $error_message) {
+		$params = array_merge(array('service' => $name), $params);
+
+		try {
+			$xml = $this->httpGet($params);
+		} catch (Exception $e) {
+			return $this->_getNetworkError();
+		}
+
+		if (0 === strpos($xml, '<html>'))
+			return $this->_getNetworkError();
+
+		if ('' != $this->_getTagData($xml, $error_tag))
+			return $this->_error($error_message);
+
+		return $this->_success();
+	}
+	
+
+	/**
+	 * @return array
+	 */
+	protected function _getNetworkError() {
+		return $this->_error('Service indisponible');
+	}
 }
 
 ?>

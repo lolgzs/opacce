@@ -1,0 +1,9 @@
+<?php
+echo $this->toolbar($this->_("Notice liées"), array('action' => 'vienotice') ,true); 
+echo '<h1>'.$this->notice->getTitrePrincipal().'</h1>';
+
+echo $this->frbr($this->notice);
+?>  
+
+
+

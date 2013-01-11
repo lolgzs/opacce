@@ -38,6 +38,13 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	private $path_ico;						
 
 
+	/** Désactivé car pose problèmes avec les liens vodeclic qui doivent être contextuels */
+	public function shouldCacheContent() {
+		return false;
+	}
+
+
+
 	/**
 	 * @return array
 	 */
@@ -227,7 +234,9 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	protected function _menuBIBNUMBuilder($menuitem) {
 		$content = '';
 
-		$album = Class_Album::getLoader()->find($menuitem["preferences"]['album_id']);
+		if (!$album = Class_Album::getLoader()->find($menuitem["preferences"]['album_id']))
+			return '';
+
 		$url_booklet = $this->view->url(array('controller' => 'bib-numerique',
 																					'action' => 'booklet',
 																					'id' => $album->getId()));
@@ -282,7 +291,8 @@ class ZendAfi_View_Helper_Accueil_MenuVertical extends ZendAfi_View_Helper_Accue
 	 * @return string
 	 */
 	private function _defaultBuilder($menuitem) {
-		$param_url = $this->_cls_menu->getUrl($menuitem["type_menu"], $menuitem["preferences"]);
+		$preferences = isset($menuitem["preferences"]) ? $menuitem["preferences"] : null;
+		$param_url = $this->_cls_menu->getUrl($menuitem["type_menu"], $preferences);
 		$url = $param_url["url"];
 		$target = ($param_url["target"] > "") ? $param_url["target"] : null;
 

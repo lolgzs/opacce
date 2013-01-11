@@ -28,7 +28,11 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
-			->setValeur('1'); //pour l'instant juste pour Camélia
+			->setValeur('1');
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur('');
 		
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_UserGroup')
 			->whenCalled('save')->answers(true)
@@ -56,8 +60,32 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 											->newInstanceWithId(5)
 											->setLibelle('Chercheurs')
 											->setUsers(array())
+											->setRights(array()),
+
+											$moderateurs_bib = Class_UserGroup::getLoader()
+											->newInstanceWithId(6)
+											->beDynamic()
+											->setLibelle('Modérateurs bib')
+											->setUsers(array())
 											->setRights(array())
+											->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::MODO_BIB),
+
+
+											Class_UserGroup::getLoader()
+											->newInstanceWithId(7)
+											->beDynamic()
+											->setLibelle('Abonnés SIGB')
+											->setUsers(array())
+											->setRights(array())
+											->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB)
 											));
+
+
+		
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
+			->whenCalled('countBy')
+			->with(['role_level' => ZendAfi_Acl_AdminControllerRoles::MODO_BIB ])
+			->answers(24000);
 	}
 }
 
@@ -67,13 +95,19 @@ abstract class Admin_UserGroupControllerTestCase extends Admin_AbstractControlle
 class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('admin/usergroup');
+		$this->dispatch('admin/usergroup', true);
 	}
 
 
 	/** @test */
 	public function aTDInFirstRowShouldContainsStagiaires() {
 		$this->assertXPathContentContains('//tr[1][@class="first"]//td', 'Stagiaires');
+	}
+
+
+	/** @test */
+	public function firstRowShouldContainsIconGroupeManual() {
+		$this->assertXPath('//tr[1][@class="first"]//img[contains(@src, "/groupe.png")]');
 	}
 
 
@@ -131,6 +165,18 @@ class Admin_UserGroupControllerIndexTest extends Admin_UserGroupControllerTestCa
 	public function titleShouldBeGestionDesGroupes() {
 		$this->assertXPathContentContains('//h1', "Gestion des groupes d'utilisateurs");
 	}
+
+	/** @test */
+	public function thirdTRShouldHaveALinkToEditMembersGroupModerateursBib24000Members() {
+		$this->assertXPathContentContains('//tr[3]//td//a[contains(@href, "admin/usergroup/editmembers/id/6")]',
+																			'24000');
+	}
+
+
+	/** @test */
+	public function thirdRowShouldContainsIconGroupeDynamique() {
+		$this->assertXPath('//tr[3]//img[contains(@src, "/groupe_dynamique.png")]');
+	}
 }
 
 
@@ -187,7 +233,7 @@ class Admin_UserGroupControllerAddPostTest extends Admin_UserGroupControllerTest
 	/** @test */
 	public function newGroupShouldBeCreatedWithLibelleIntervenants() {
 		$this->assertEquals('Intervenants', 
-												Class_UserGroup::getLoader()->getFirstAttributeForLastCallOn('save')->getLibelle());
+			Class_UserGroup::getLoader()->getFirstAttributeForLastCallOn('save')->getLibelle());
 	}
 
 
@@ -223,7 +269,7 @@ class Admin_UserGroupControllerAddPostInvalidDataTest extends Admin_UserGroupCon
 class Admin_UserGroupControllerEditGroupStagiairesTest extends Admin_UserGroupControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('admin/usergroup/edit/id/3');
+		$this->dispatch('admin/usergroup/edit/id/3', true);
 	}
 
 
@@ -249,7 +295,67 @@ class Admin_UserGroupControllerEditGroupStagiairesTest extends Admin_UserGroupCo
 	public function rightSuivreFormationShouldBeChecked() {
 		$this->assertXPath('//input[@name="rights[]"][@value="1"][@checked="checked"]');
 	}
+
+
+	/** @test */
+	public function radioButtonGroupTypeManualShouldBeSelected() {
+		$this->assertXPath('//label[text()="Manuel"]/input[@name="group_type"][@value="0"][@checked="checked"]');
+		$this->assertXPath('//label[text()="Dynamique"]/input[@name="group_type"][@value="1"][not(@checked)]');
+	}
 }
+
+
+
+
+class Admin_UserGroupControllerEditMembersGroupAbonnesSIGB extends Admin_UserGroupControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('admin/usergroup/editmembers/id/7', true);
+	}
+
+
+	/** @test */
+	public function searchFormShouldNotBeVisible() {
+		$this->assertNotXPath('//label[@for="search"]');
+	}
+
+
+	/** @test */
+	public function pageShouldNotContainsAnyLinkToDeleteAction() {
+		$this->assertNotXPath('//a[contains(@href, "delete")]');
+	}
+}
+
+
+
+
+class Admin_UserGroupControllerEditGroupModerateursBibTest extends Admin_UserGroupControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('admin/usergroup/edit/id/6', true);
+	}
+
+
+	/** @test */
+	public function radioButtonGroupTypeDynamiqueShouldBeSelected() {
+		$this->assertXPath('//label[text()="Manuel"]/input[@name="group_type"][@value="0"][not(@checked)]');
+		$this->assertXPath('//label[text()="Dynamique"]/input[@name="group_type"][@value="1"][@checked="checked"]');
+	}
+
+	
+	/** @test */
+	public function roleLevelSelectShouldHaveRoleModoBibSelected() {
+		$this->assertXPath('//select[@name="role_level"]/option[@value="0"][@label="invité"][not(@selected)]');
+		$this->assertXPath('//select[@name="role_level"]/option[@value="2"][@label="abonné identifié SIGB"][not(@selected)]');
+
+		$this->assertXPath('//select[@name="role_level"]/option[@value="3"][@label="rédacteur bibliothèque"][@selected="selected"]');
+
+		$this->assertXPath('//select[@name="role_level"]/option[@value="6"][@label="administrateur portail"][not(@selected)]');
+		
+		$this->assertNotXPath('//select[@name="role_level"]/option[@value="7"]');
+	}
+}
+
 
 
 
@@ -260,7 +366,7 @@ class Admin_UserGroupControllerEditMembersGroupStagiairesTest extends Admin_User
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('findAll')
 			->with("select bib_admin_users.* from bib_admin_users ".
-						 "where (nom like '%spid%' or prenom like '%spid%' or login like '%spid%') ".
+						 "where (nom like 'spid%' or login like 'spid%') ".
  						 "order by nom, prenom, login limit 500")
 			->answers(array($this->_spiderman));
 
@@ -320,6 +426,7 @@ class Admin_UserGroupControllerAddMemberSupermanGroupStagiairesTest extends Admi
 		$this->postDispatch('/admin/usergroup/editmembers/id/3',
 												array('users' => array(56)));
 	}
+
 
 	/** @test */
 	public function groupStagiairesShouldIncludeSuperman() {
@@ -389,6 +496,26 @@ class Admin_UserGroupControllerEditStagiairesPostDataTest extends Admin_UserGrou
 	/** @test */
 	public function responseShouldRedirectToDefaultAction() {
 		$this->assertRedirectTo('/admin/usergroup');
+	}
+}
+
+
+
+
+class Admin_UserGroupControllerEditStagiairesWithNotDataRightsInPostTest extends Admin_UserGroupControllerTestCase {
+	protected $_group;
+	public function setUp() {
+		parent::setUp();
+		/* Test non-régression: Avec les multicheckbox de zend, si aucune case n'est cochée, le data n'est pas posté */
+		$this->postDispatch('admin/usergroup/edit/id/3',
+												array('libelle' => 'étudiants'));
+		$this->_group = Class_UserGroup::getLoader()->find(3);
+	}
+
+
+	/** @test */
+	public function groupRightsShouldBeEmpty() {
+		$this->assertEquals([], $this->_group->getRights());
 	}
 }
 

@@ -23,7 +23,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class UsersLoader extends Storm_Model_Loader {
-	public function findAllLike($search, $by_right = 0) {
+	public function findAllLike($search, $by_right = 0, $limit = 500) {
 		$sql_template = 'select bib_admin_users.* from bib_admin_users ';
 
 		if ($by_right)
@@ -35,12 +35,33 @@ class UsersLoader extends Storm_Model_Loader {
 			$sql_template .= 'where ';
 
 		$sql_template .=
-				'(nom like \'%2$s\' or prenom like \'%2$s\' or login like \'%2$s\') '.
-				'order by nom, prenom, login limit 500';
+				'(nom like \'%2$s\' or login like \'%2$s\') '.
+				'order by nom, prenom, login limit '.$limit;
 
-		$like = '%'.strtolower($search).'%';
+		$like = strtolower($search).'%';
 
-		return Class_Users::getLoader()->findAll(sprintf($sql_template, $by_right, $like));
+		$all_users = Class_Users::findAll(sprintf($sql_template, $by_right, $like));
+
+		if (!$by_right || count($all_users) >= $limit)
+			return $all_users;
+
+		$groups = Class_UserGroup::findAllBy(['where' => sprintf('rights_token & %1$d = %1$d', $by_right),
+																					'group_type' => Class_UserGroup::TYPE_DYNAMIC]);
+
+		foreach($groups as $group) {
+			$nb_users_to_fetch = $limit - count($all_users);
+			if ($nb_users_to_fetch <= 0)
+				break;
+
+			$params = ['role_level' => $group->getRoleLevel(), 
+								 'limit' => $nb_users_to_fetch,
+								 'where' => sprintf('(nom like \'%1$s\' or prenom like \'%1$s\' or login like \'%1$s\')', $like),
+								 'order' => ['nom','prenom', 'login']];
+			$all_users = array_merge($all_users,
+															 Class_Users::findAllBy($params));
+		}
+
+		return $all_users;
 	}
 
 
@@ -64,10 +85,18 @@ class UsersLoader extends Storm_Model_Loader {
 	 * @return Class_Users
 	 */
 	public function getIdentity() {
-		if (!$user = Zend_Auth::getInstance()->getIdentity())
+		if (!$user = ZendAfi_Auth::getInstance()->getIdentity())
 			return null;
 
 		return $this->find($user->ID_USER);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasIdentity() {
+		return null != $this->getIdentity();
 	}
 
 
@@ -105,14 +134,6 @@ class UsersLoader extends Storm_Model_Loader {
 			return false;
 		return $user->canAccessAllBibs();
 	}
-
-
-
-	public function getIdentityName() {
-		if (!$user = $this->getIdentity())
-			return '';
-		return $user->getNomAff();
-	}
 }
 
 
@@ -120,49 +141,69 @@ class Class_Users extends Storm_Model_Abstract {
 	protected $_table_name = 'bib_admin_users';
 	protected $_table_primary = 'ID_USER';
   protected $_loader_class = 'UsersLoader';
-	protected $_has_many = array('subscriptions' => array('model' => 'Class_NewsletterSubscription',
-																												'role' => 'user',
-																												'dependents' => 'delete'),
+	protected $_has_many = [
+		'subscriptions' => ['model' => 'Class_NewsletterSubscription',
+												'role' => 'user',
+												'dependents' => 'delete'],
 
-															 'newsletters' => array('through' => 'subscriptions'),
+		'newsletters' => ['through' => 'subscriptions'],
 
-															 'avis' => array('model' => 'Class_AvisNotice',
-																							 'role' => 'user',
-																							 'order' => 'date_avis desc'),
+		'avis' => ['model' => 'Class_AvisNotice',
+							 'role' => 'user',
+							 'order' => 'date_avis desc'],
 
-															 'paniers' => array('model' => 'Class_PanierNotice',
-																									'role' => 'user'),
+		'avis_articles' => ['model' => 'Class_Avis',
+												'role' => 'auteur',
+												'order' => 'date_avis desc'],
 
-															 'session_formation_inscriptions' => array('model' => 'Class_SessionFormationInscription',
-																																				 'role' => 'stagiaire'),
+		'paniers' => ['model' => 'Class_PanierNotice',
+									'role' => 'user'],
 
-															 'session_formations' => array('through' => 'session_formation_inscriptions'),
+		'session_formation_inscriptions' => ['model' => 'Class_SessionFormationInscription',
+																				 'role' => 'stagiaire'],
 
-															 'formations' => array('through' => 'session_formation_inscriptions'),
+		'session_formations' => ['through' => 'session_formation_inscriptions'],
 
-															 'session_formation_interventions' => array('model' => 'Class_SessionFormationIntervention',
-																																					'role' => 'intervenant'),
+		'formations' => ['through' => 'session_formation_inscriptions'],
 
-															 'session_interventions' => array('through' => 'session_formation_interventions'),
+		'session_formation_interventions' => ['model' => 'Class_SessionFormationIntervention',
+																					'role' => 'intervenant'],
 
-															 'user_group_memberships' => array('model' => 'Class_UserGroupMembership',
-																																 'role' => 'user'),
+		'session_interventions' => ['through' => 'session_formation_interventions'],
 
-															 'user_groups' => array('through' => 'user_group_memberships')
-															 );
+		'user_group_memberships' => ['model' => 'Class_UserGroupMembership',
+																 'role' => 'user'],
+
+		'user_groups' => ['through' => 'user_group_memberships'],
+
+		'formulaires' => ['model' => 'Class_Formulaire',
+											'role' => 'user',
+											'order' => 'date_creation desc'],
+
+	];
 
 
 	protected $_belongs_to = array('bib' => array('model' => 'Class_Bib',
-																								 'referenced_in' => 'id_site'),
-																  'zone' => array('through' => 'bib'));
+																								'referenced_in' => 'id_site'),
+																 'int_bib' => array('model' => 'Class_IntBib',
+																										'referenced_in' => 'id_site'),
+																 'zone' => array('through' => 'bib'));
 
 	protected $_default_attribute_values = array('id_site' => 0,
+																							 'role' => 'invite',
 																							 'role_level' => 0,
 																							 'idabon' => '',
 																							 'date_fin' => '',
 																							 'naissance' => '',
 																							 'date_debut' => 0,
-																							 'telephone' => ''
+																							 'telephone' => '',
+																							 'mail' => '',
+																							 'nom' => '',
+																							 'prenom' => '',
+																							 'adresse' => '',
+																							 'code_postal' => '',
+																							 'ville' => '',
+																							 'id_sigb' => null
 																							 );
 
 	protected $_translate;
@@ -173,11 +214,12 @@ class Class_Users extends Storm_Model_Abstract {
 		$this->_translate = Zend_Registry::get('translate');
 	}
 
-	/**
-	 * @return UsersLoader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
+
+	public static function currentUserId() {
+		if (!$user = self::getLoader()->getIdentity())
+			return 0;
+
+		return $user->getId();
 	}
 
 
@@ -187,13 +229,21 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	public function isAbonne() {
-		return ($this->getDateDebut() != null  &&
-						$this->getDateFin() != null);
+		return $this->getRoleLevel() == ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB;
 	}
+
 
 	public function isBibliothequaire() {
 		return $this->getRoleLevel() >= ZendAfi_Acl_AdminControllerRoles::MODO_BIB;
 	}
+
+
+	public function getLibelleBib() {
+		if (!$bib = $this->getBib())
+			return '';
+		return $bib->getLibelle();
+	}
+
 
 	/**
 	 * @return bool
@@ -214,6 +264,22 @@ class Class_Users extends Storm_Model_Abstract {
 	 */
 	public function isAdmin() {
 		return $this->getRoleLevel() >= ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isSuperAdmin() {
+		return $this->getRoleLevel() >= ZendAfi_Acl_AdminControllerRoles::SUPER_ADMIN;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isAdminBib() {
+		return $this->getRoleLevel() == ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
 	}
 
 
@@ -254,6 +320,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 * @return bool
 	 */
 	public function isAbonnementValid() {
+		if (! $this->isAbonne()) return false;
 		if (! $this->hasDateFin()) return true;
 		return ($this->getDateFin() >= date("Y-m-d"));
 	}
@@ -300,7 +367,7 @@ class Class_Users extends Storm_Model_Abstract {
 	 */
 	public function getGroupes(){
 		$groupes=array();
-		if ($this->getAge()>= 18) 
+		if ($this->getAge()>= 18)
 			$groupes[]='adulte';
 		else if($this->hasNaissance()) 
 			$groupes[]='mineur';
@@ -309,6 +376,27 @@ class Class_Users extends Storm_Model_Abstract {
 			$groupes[]='abonne';
 		$groupes[]=$this->getLibelleRole();
 		return $groupes;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getUserGroupsLabels() {
+		$labels = $this->getGroupes();
+		foreach ($this->getUserGroups() as $group)
+			$labels[] = $group->getLibelle();
+		return $labels;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getUserGroups() {
+		return array_merge(parent::_get('user_groups'), 
+											 Class_UserGroup::findAllBy(['role_level' => $this->getRoleLevel(),
+																									 'group_type' => Class_UserGroup::TYPE_DYNAMIC]));
 	}
 
 	
@@ -331,6 +419,14 @@ class Class_Users extends Storm_Model_Abstract {
 
 
 	/**
+	 * @return int
+	 */
+	public function getRole() {
+		return ZendAfi_Acl_AdminControllerRoles::getNomRole($this->getRoleLevel());
+	}
+
+
+	/**
 	 * @return array
 	 */
 	public function getTitresNewsletters() {
@@ -342,6 +438,7 @@ class Class_Users extends Storm_Model_Abstract {
 
 		return $titres;
 	}
+
 
 
 	/**
@@ -416,6 +513,10 @@ class Class_Users extends Storm_Model_Abstract {
 				$cond[]="ID_SITE in($inSql)";
 			}
 		}
+		
+		$recherche = array_merge(array('role' => '', 'login' => '', 'nom' => ''),
+														 $recherche);
+
 		if($recherche["role"]>"") $cond[]="ROLE_LEVEL=".$recherche["role"];
 		else $cond[]="ROLE_LEVEL<=$role_level";
 		if($recherche["login"]) $cond[]="LOGIN like '".addslashes($recherche["login"])."%'";
@@ -605,32 +706,31 @@ class Class_Users extends Storm_Model_Abstract {
 	//------------------------------------------------------------------------------------------------------
 	// Mot de passe oublié
 	//------------------------------------------------------------------------------------------------------
-	function lostpass($user)
-	{
-		if(!trim($user)) $error=1;
-		else
-		{
-			$enreg=fetchEnreg("Select * from bib_admin_users where LOGIN='$user'");
-			if(!$enreg) $enreg=fetchEnreg("Select * from bib_admin_users_non_valid where LOGIN='$user'");
-			if(!$enreg["LOGIN"]) $error=2;
-			if(!$error and !$enreg["MAIL"]) $error=4;
-		}
-		if($error) $ret["error"]= $error;
-		else
-		{
-			// envoi du mail
-			$message_mail.=sprintf("<h3>%s</h3>".BR,
-														 $this->_translate->_('Vous avez fait une demande de mot de passe sur le portail.'));
-			$message_mail.=$this->_translate->_("Votre identifiant : %s", "<b>".$enreg["LOGIN"].'</b>'.BR);
-			$message_mail.=$this->_translate->_("Votre mot de passe : %s", "<b>".$enreg["PASSWORD"].'</b>'.BR.BR);
-			$message_mail.=sprintf("<h3>%s</h3>".BR, $this->_translate->_('Bonne navigation sur le portail'));
-			$mail=new Class_Mail();
-			$erreur=$mail->sendMail(Class_Profil::getCurrentProfil()->getTitreSite(), $message_mail, $enreg["MAIL"]);
+	function lostpass($user) {
+		if(!trim($user)) 
+			return array('error' => 1);
 
-			if($erreur) $ret["message_mail"]='<p class="error">'.$erreur.'</p>';
-			else  $ret["message_mail"]=$this->_translate->_("Un mail vient de vous être envoyé avec vos paramètres de connexion.");
-		}
-		return $ret;
+		$enreg=fetchEnreg("Select * from bib_admin_users where LOGIN='$user'");
+		if (!$enreg) $enreg=fetchEnreg("Select * from bib_admin_users_non_valid where LOGIN='$user'");
+		if (!$enreg["LOGIN"]) 
+			return array('error' => 2);
+
+		if (!$enreg["MAIL"]) 
+			return array('error' => 4);
+	
+		// envoi du mail
+		$message_mail = sprintf("%s\n\n",
+														$this->_translate->_('Vous avez fait une demande de mot de passe sur le portail.'));
+		$message_mail .= $this->_translate->_("Votre identifiant : %s\n", $enreg["LOGIN"]);
+		$message_mail .= $this->_translate->_("Votre mot de passe : %s\nn", $enreg["PASSWORD"]);
+		$message_mail .= sprintf("%s\n\n", $this->_translate->_('Bonne navigation sur le portail'));
+		$mail = new Class_Mail();
+		$erreur = $mail->sendMail(Class_Profil::getCurrentProfil()->getTitreSite(), $message_mail, $enreg["MAIL"]);
+
+		if($erreur) 
+			return array('message_mail' => '<p class="error">'.$erreur.'</p>');
+			
+		return array('message_mail' => $this->_translate->_("Un mail vient de vous être envoyé avec vos paramètres de connexion."));
 	}
 
 	//------------------------------------------------------------------------------------------------------
@@ -654,7 +754,16 @@ class Class_Users extends Storm_Model_Abstract {
 		if ($user->PRENOM) 
 			return $user->PRENOM;
 
+
 		return $user->LOGIN;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getNomComplet() {
+		return $this->getNomAff(null, true);
 	}
 
 
@@ -725,25 +834,25 @@ class Class_Users extends Storm_Model_Abstract {
 		if (isset($this->_fiche_sigb))
 			return $this->_fiche_sigb;
 
-		$cls_comm = new Class_CommSigb();
-		$type_comm = $cls_comm->getTypeComm($user->ID_SITE);
-
-		if ($type_comm) {
-			if ($user->IDABON) {
-				$ret=$cls_comm->ficheAbonne($user);
-			} else {
-				$ret["message"] = $this->_translate->_("Vous devez vous connecter en tant qu'abonné de la bibliothèque pour obtenir plus d'informations.");
-			}
-		}
+		if (!$user->getIdabon())
+			$ret = ["message" => $this->_translate->_("Vous devez vous connecter en tant qu'abonné de la bibliothèque pour obtenir plus d'informations.")];
+		else
+			$ret = (new Class_CommSigb())->ficheAbonne($user);
 
 		if (!isset($ret['fiche']))
 			$ret['fiche'] = Class_WebService_SIGB_Emprunteur::nullInstance();
 
 		$ret["nom_aff"] = $this->getNomAff($user->ID_USER, true);
-		$ret["type_comm"] = $type_comm;
 
 		$this->_fiche_sigb = $ret;
 		return $ret;
+	}
+
+
+	public function getSIGBComm() {
+		if (null == $int_bib = $this->getIntBib())
+			return null;
+		return $int_bib->getSIGBComm();
 	}
 
 
@@ -759,14 +868,34 @@ class Class_Users extends Storm_Model_Abstract {
 	}
 
 
-	/* Hook AbstractModel::save
+	public function getFutureMultimediaHolds() {
+		return Class_Multimedia_DeviceHold::getLoader()->getFutureHoldsOfUser($this);
+	}
+
+
+	public function setNom($nom) {
+		if (null === $nom)
+			$nom = '';
+		return parent::_set('nom', $nom);
+	}
+
+
+	public function setPrenom($prenom) {
+		if (null === $prenom)
+			$prenom = '';
+		return parent::_set('prenom', $prenom);
+	}
+
+
+	/**
+	 * Hook AbstractModel::save
 	 * Sauvegarde des données compte lecteur sur le SIGB
 	 */
 	public function afterSave() {
 		if (!isset($this->_fiche_sigb)) return;
 
 		$fiche = $this->_fiche_sigb;
-		if ($fiche['type_comm'] != Class_CommSigb::COM_OPSYS)
+		if ($fiche['type_comm'] != Class_IntBib::COM_OPSYS)
 			return;
 
 		$emprunteur = $fiche['fiche'];
@@ -776,5 +905,128 @@ class Class_Users extends Storm_Model_Abstract {
 			->setEMail($this->getMail())
 			->setPassword($this->getPassword())
 			->save();
+	}
+
+
+	/**
+	 * @param $day string YYYY-MM-DD formatted
+	 * @return string const error type @see Class_Multimedia_DeviceHold
+	 */
+	public function getMultimediaQuotaErrorForDay($day) {
+		// chargements des quotas les plus avantageux pour l'utilisateur selon ses groupes
+		$max_day = $max_week = $max_month = 0;
+		$quotaNames = array('day', 'week', 'month');
+		foreach ($this->getUserGroups() as $group) {
+			foreach ($quotaNames as $name) {
+				$quotaName = 'max_' . $name;
+				$methodName = 'getMax' . ucfirst($name);
+				$value = (int)$group->$methodName();
+				if (${$quotaName} < $value)
+					${$quotaName} = $value;
+			}
+		}
+
+		// si un seul des quotas est resté à 0, on n'a aucun droit
+		if (in_array(0, array($max_day, $max_week, $max_month)))
+			return Class_Multimedia_DeviceHold::QUOTA_NONE;
+
+		if ($max_day <= $this->getMultimediaHoldDurationForDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_DAY;
+
+		if ($max_week <= $this->getMultimediaHoldDurationForWeekOfDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_WEEK;
+
+		if ($max_month <= $this->getMultimediaHoldDurationForMonthOfDay($day))
+			return Class_Multimedia_DeviceHold::QUOTA_MONTH;
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForDay($day) {
+		$start = strtotime($day);
+		$end = strtotime('+1 day', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForWeekOfDay($day) {
+		$start = strtotime('previous monday', strtotime($day));
+		$end = strtotime('next monday', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+	/**
+	 * @param $day string
+	 * @return int minutes
+	 */
+	public function getMultimediaHoldDurationForMonthOfDay($day) {
+		$start = strtotime('first day of this month', strtotime($day));
+		$end = strtotime('first day of next month', $start);
+
+		return (int) Class_Multimedia_DeviceHold::getLoader()
+				->getDurationForUserBetweenTimes($this, $start, $end);
+	}
+
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beAbonneSIGB() {
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB);
+	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beInvite() {
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::INVITE);
+	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function beAdminPortail() {
+		return $this->changeRoleTo(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL);
+	}
+
+
+	/**
+	 * return Class_Users
+	 */
+	public function changeRoleTo($role) {
+		return $this
+			->setRoleLevel($role)
+			->setRole(ZendAfi_Acl_AdminControllerRoles::getNomRole($role));
+	}
+
+
+	
+	/**
+	 * return StdClass
+	 */
+	public function toStdClass() {
+		$result = new StdClass();
+
+		$fields = $this->toArray();
+		foreach($fields as $field => $value) {
+			$prop_name = strtoupper($field);
+			$result->$prop_name = $value;
+		}
+		return $result;
 	}
 }

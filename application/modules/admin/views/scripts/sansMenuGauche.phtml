@@ -3,7 +3,17 @@
 <body>
 		<div class="main" align="center">
 			<div id='banniere'><img src="<?php echo URL_ADMIN_IMG?>portailbandeauafi.png" width="990" alt="bannière" /></div>
-			<div class="barre_nav"></div>
+			<div class="menu barre_nav">
+				<ul>
+					<li>
+					<?php 
+						echo $this->tagImg(URL_ADMIN_IMG.'picto/profils_16.png');
+						echo $this->tagAnchor(['module' => 'opac', 'controller' => 'index', 'action' => 'index', 'id_profil' => 1],
+																	$this->_('Retour au site'));
+					 ?>
+					 </li>
+				</ul>
+      </div>
 			<div class="modules" style="width:100%">
 				<h1><?php echo $this->traduire($this->titre) ?></h1> 
 				<?php	echo $this->render($this->actionScript); ?>

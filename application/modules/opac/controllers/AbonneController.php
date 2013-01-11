@@ -18,27 +18,26 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  OPAC3: ABONNE
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class AbonneController extends ZendAfi_Controller_Action {
+	use Trait_Translator;
 
-class AbonneController extends Zend_Controller_Action
-{
-	private $_user = null;								// Le user connecté
+	protected $_user = null;								// Le user connecté
 
-//------------------------------------------------------------------------------------------------------
-// Initialisation controller
-//------------------------------------------------------------------------------------------------------
-	function init()	{
+	public function init()	{
+		parent::init();
+
 		if ("authenticate" == $this->getRequest()->getActionName())
 				return;
-		
-		$user = Zend_Auth::getInstance();
-		if (!$user->hasIdentity()) {
-			$this->_redirect('opac/auth/login');
-		}	else {
-			$this->_user = Zend_Auth::getInstance()->getIdentity();
-		}
+
+		$this->_user = Class_Users::getLoader()->getIdentity();
+			
+		$this->clearEmprunteurCache();
+	}
+
+
+	protected function clearEmprunteurCache() {
+		if (in_array($this->getRequest()->getActionName(), array('prets', 'reservations', 'fiche')))
+			Class_WebService_SIGB_EmprunteurCache::newInstance()->remove($this->_user);
 	}
 
 
@@ -50,14 +49,14 @@ class AbonneController extends Zend_Controller_Action
 	public function formationsAction() {
 		$this->sessions_inscrit = array();
 		$this->view->formations_by_year = Class_Formation::indexByYear(Class_Formation::getLoader()->findAll());
-		$this->view->user = Class_Users::getLoader()->getIdentity();
+		$this->view->user = $this->_user;
 	}
 
 
 	public function inscriresessionAction() {
 		if (($session = Class_SessionFormation::getLoader()->find((int)$this->_getParam('id'))) && 
 				!$session->isInscriptionClosed()) {
-			$session->addStagiaire(Class_Users::getLoader()->getIdentity());
+			$session->addStagiaire($this->_user);
 
 			if (!$session->save())
 				$this->_helper->notify(implode('<br/>', $session->getErrors()));
@@ -80,9 +79,8 @@ class AbonneController extends Zend_Controller_Action
 			return;
 		}
 
-		$user = Class_Users::getLoader()->getIdentity();
-		$user->removeSessionFormation($session);
-		if ($user->save()) {
+		$this->_user->removeSessionFormation($session);
+		if ($this->_user->save()) {
 			$this->_helper->notify(sprintf('Vous n\'êtes plus inscrit à la session du %s de la formation %s',
 																		 $this->view->humanDate($session->getDateDebut(), 'd MMMM YYYY'),
 																		 $session->getLibelleFormation()));
@@ -92,6 +90,47 @@ class AbonneController extends Zend_Controller_Action
 	}
 
 
+	public function subscribeNewsletterAction() {
+		$this->_stayOnPage();
+		
+		if (!$newsletter = Class_Newsletter::find((int)$this->_getParam('id'))) {
+			$this->_helper->notify('Newsletter non trouvée');
+			return;
+		}
+
+		
+		$this->_user->addNewsletter($newsletter);
+
+		if ($this->_user->save()) {
+			$this->_helper->notify(sprintf('Vous êtes inscrit à la liste de diffusion: %s',
+																		 $newsletter->getTitre()));
+																		 };
+		
+	}
+
+
+	public function unsubscribeNewsletterAction() {
+	
+		$this->_stayOnPage();
+		if (!$newsletter = Class_Newsletter::find((int)$this->_getParam('id'))) {
+			$this->_helper->notify('Newsletter non trouvée');
+			return;
+		}
+
+		
+		$this->_user->removeNewsletter($newsletter);
+
+		if ($this->_user->save()) {
+			$this->_helper->notify(sprintf('Vous êtes désinscrit de la liste de diffusion: %s',
+																		 $newsletter->getTitre()));
+																		 };
+
+
+
+	}
+
+
+
 	public function detailsessionAction() {
 		if (!$session = Class_SessionFormation::getLoader()->find((int)$this->_getParam('id')))
 			$this->_redirect('/abonne/formations');
@@ -99,26 +138,19 @@ class AbonneController extends Zend_Controller_Action
 		$this->view->session = $session;
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Voir ses avis
-//------------------------------------------------------------------------------------------------------
+
 	public function viewavisAction(){
-		$this->_redirect('blog/viewauteur/id/'.$this->_user->ID_USER);
+		$this->_redirect('blog/viewauteur/id/'.$this->_user->getId());
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Donner son avis
-//------------------------------------------------------------------------------------------------------
 
-	private function handleAvis($readSourceMethod, $writeAvisMethod)
-	{
+	private function handleAvis($readSourceMethod, $writeAvisMethod) {
 		$cls_user= new Class_Users();
 
 		$avis = new Class_Avis();
 
 		// Validation du formulaire
-		if ($this->_request->isPost())
-		{
+		if ($this->_request->isPost()) {
 			// Bornage du texte
 			$longueur_min = Class_AdminVar::get("AVIS_MIN_SAISIE");
 			$longueur_max = Class_AdminVar::get("AVIS_MAX_SAISIE");
@@ -143,9 +175,9 @@ class AbonneController extends Zend_Controller_Action
 			else
 			{
 				if(strlen($avisTexte)< $longueur_min or strlen($avisTexte) > $longueur_max)
-					$this->view->message = $this->view->_("L'avis doit avoir une longueur comprise entre %d et %d caractères", $longueur_min, $longueur_max);
+					$this->view->message = $this->_("L'avis doit avoir une longueur comprise entre %d et %d caractères", $longueur_min, $longueur_max);
 				else
-					$this->view->message = $this->view->_('Il faut compléter tous les champs.');
+					$this->view->message = $this->_('Il faut compléter tous les champs.');
 				$this->view->avisSignature = $avisSignature;
 				$this->view->avisEntete = $avisEntete;
 				$this->view->avisTexte = $avisTexte;
@@ -180,24 +212,23 @@ class AbonneController extends Zend_Controller_Action
 
 	protected function _renderRefreshOnglet() {
 		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
+		$js = 'location.reload()';
 		if (array_key_exists('onglets', $_SESSION))
-			$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		else
-			$this->getResponse()->setBody("<script>window.top.hidePopWin(false); window.top.location.reload();</script>");
+			$js = "refreshOnglet('" . $_SESSION["onglets"]["avis"] . "')";
+		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top." . $js. ";</script>");
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setNoRender();
 	}
 
 
-	function avisAction()	{
+	public function avisAction()	{
 		$id_notice = $this->_request->getParam('id_notice', 0);
 		$this
 			->getHelper('ViewRenderer')
 			->setLayoutScript('subModal.phtml');
 
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
 		$notice = Class_Notice::getLoader()->find($id_notice);
-		$avis = $user->getFirstAvisByIdNotice($id_notice);
+		$avis = $this->_user->getFirstAvisByIdNotice($id_notice);
 
 		if ($this->_request->isPost()) {
 			if ($avis == null)
@@ -207,13 +238,13 @@ class AbonneController extends Zend_Controller_Action
 				->setEntete($this->_request->getParam('avisEntete'))
 				->setAvis($this->_request->getParam('avisTexte'))
 				->setNote($this->_request->getParam('avisNote'))
-				->setUser($user)
+				->setUser($this->_user)
 				->setClefOeuvre($notice->getClefOeuvre())
 				->setStatut(0);
 
 
 			if ($avis->save()) {
-				$user
+				$this->_user
 					->setPseudo($this->_request->getParam('avisSignature'))
 					->save();
 				$this->_renderRefreshOnglet();
@@ -229,55 +260,18 @@ class AbonneController extends Zend_Controller_Action
 			$this->view->avisTexte = $avis->getAvis();
 			$this->view->avisNote = $avis->getNote();
 		}
-		$this->view->avisSignature = $user->getNomAff();
+		$this->view->avisSignature = $this->_user->getNomAff();
 		$this->view->id_notice = $id_notice;
 	}
 
 
-	function avissupprimerAction()
-	{
-		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->ID_USER;
-		$avis = new Class_Avis();
-		$avis->supprimerAvis($id_user,$id_notice);
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->setNoRender();
-	}
-
-
-//------------------------------------------------------------------------------------------------------
-// AVIS CMS
-//------------------------------------------------------------------------------------------------------
-	function cmsavisAction()
-	{
+	public function cmsavisAction()	{
 		$this->handleAvis('getCmsAvisById', 'ecrireCmsAvis');
 	}
 
 
-	function aviscmssupprimerAction()
-	{
-		$id_notice = $this->_request->getParam('id', 0);
-		$id_user=$this->_user->ID_USER;
-		$avis = new Class_Avis();
-		$avis->supprimerCmsAvis($id_user,$id_notice);
-
-		$this->getResponse()->setHeader('Content-Type', 'text/html;charset=utf-8');
-		$this->getResponse()->setBody("<script>window.top.hidePopWin(false);window.top.refreshOnglet('".$_SESSION["onglets"]["avis"]."');</script>");
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->setNoRender();
-	}
-
-//------------------------------------------------------------------------------------------------------
-// Proposer des tags
-//------------------------------------------------------------------------------------------------------
-	function tagnoticeAction()
-	{
-
-		if ($this->_request->isPost())
-		{
+	public function tagnoticeAction() {
+		if ($this->_request->isPost()) {
 			$filter = new Zend_Filter_StripTags();
 			$abonneTag1 = trim($filter->filter($this->_request->getPost('abonneTag1')));
 			$abonneTag2 = trim($filter->filter($this->_request->getPost('abonneTag2')));
@@ -314,105 +308,31 @@ class AbonneController extends Zend_Controller_Action
 		}
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Fiche abonné
-//------------------------------------------------------------------------------------------------------
-	function ficheAction()
-	{
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-		$abonnement = '';
-		$nb_prets = '';
-		$nb_resas = '';
-		$nb_retards = '';
-		$nb_paniers = '';
-		$user_info_popup_url = null;
-		$error = '';
 
-		// Dates d'abonnement
-		if ($user->isAbonne()) {
-			$date_fin=formatDate($user->getDateFin(),"1");
-			if($user->isAbonnementValid())
-				$abonnement = $this->view->_("Votre abonnement est valide jusqu'au %s.", $date_fin);
-			else
-				$abonnement = $this->view->_("Votre abonnement est terminé depuis le %s.", $date_fin);
+	public function ficheAction() {
+		$fiche_sigb = $this->_user->getFicheSigb();
 
-		}
-		// Fiche abonné sigb
-		$fiche_sigb = $user->getFicheSigb();
-		if(array_key_exists("fiche", $fiche_sigb)) {
-			$nb_retards = $fiche_sigb["fiche"]->getNbPretsEnRetard();
-			$str_retards = $nb_retards ? $this->view->_('(%d en retard)', $nb_retards) : '';
-
-			$nb_prets = $fiche_sigb["fiche"]->getNbEmprunts();
-			$nb_prets = $this->view->_plural($nb_prets,
-																			 "Vous n'avez aucun prêt en cours.",
-																			 "Vous avez %d prêt en cours",
-																			 "Vous avez %d prêts en cours",
-																			 $nb_prets);
-			$nb_prets = sprintf("<a href='%s/abonne/prets'>%s %s</a>", BASE_URL, $nb_prets, $str_retards);
-
-			$nb_resas = $fiche_sigb["fiche"]->getNbReservations();
-			$nb_resas = $this->view->_plural($nb_resas,
-																			 "Vous n'avez aucune réservation en cours.",
-																			 "Vous avez %d réservation en cours",
-																			 "Vous avez %d réservations en cours",
-																			 $nb_resas);
-			$nb_resas = sprintf("<a href='%s/abonne/reservations'>%s</a>", BASE_URL, $nb_resas);
-
-			try {
-				$user_info_popup_url = $fiche_sigb["fiche"]->getUserInformationsPopupUrl($user);
-			} catch (Exception $e) {
-				$error = sprintf('Erreur VSmart: %s', $e->getMessage());
-			}
-		}
-
-		if(array_key_exists("erreur", $fiche_sigb))
-			$error = $fiche_sigb["erreur"];
-			
-
-		// Paniers
-		$nb_paniers=count($user->getPaniers());
-		$nb_paniers = $this->view->_plural($nb_paniers,
-																			 "Vous n'avez aucun panier de notices.",
-																			 "Vous avez %d panier de notices",
-																			 "Vous avez %d paniers de notices",
-																			 $nb_paniers);
-		$nb_paniers = sprintf("<a href='%s/panier'>%s</a>", BASE_URL, $nb_paniers);
-
-		// Variables de vue
-		$this->view->user = $user;
-		$this->view->fiche = $fiche_sigb;
-		$this->view->abonnement = $abonnement;
-		$this->view->nb_prets = $nb_prets;
-		$this->view->nb_resas = $nb_resas;
-		$this->view->nb_paniers = $nb_paniers;
-		$this->view->user_info_popup_url = $user_info_popup_url;
-		$this->view->error = $error;
-	}
-
-//------------------------------------------------------------------------------------------------------
-// Liste des prets en cours
-//------------------------------------------------------------------------------------------------------
-	function pretsAction()
-	{
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->error = isset($fiche_sigb['erreur']) ? $fiche_sigb["erreur"] : '';
+		$this->view->user = $this->_user;
 	}
 
 
-	function prolongerpretAction() {
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
+	public function pretsAction()	{
+		$this->view->fiche = $this->_user->getFicheSigb();
+		$this->view->user = $this->_user;
+	}
 
+
+	public function prolongerpretAction() {
 		$id_pret = $this->_request->getParam('id_pret');
 		$cls_comm = new Class_CommSigb();
 
-		$result = $cls_comm->prolongerPret($user, $id_pret);
+		$result = $cls_comm->prolongerPret($this->_user, $id_pret);
 
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->fiche = $this->_user->getFicheSigb();
 
 		if ($result['statut'] == 1) {
-			$this->view->fiche['message'] = $this->view->_('Prêt prolongé');
+			$this->view->fiche['message'] = $this->_('Prêt prolongé');
 		} else {
 			$this->view->fiche['erreur'] = $result['erreur'];
 		}
@@ -420,20 +340,16 @@ class AbonneController extends Zend_Controller_Action
 		$this->renderScript('abonne/prets.phtml');
 	}
 
-//------------------------------------------------------------------------------------------------------
-// Liste des reservations en cours
-//------------------------------------------------------------------------------------------------------
-	function reservationsAction()	{
-		// Communication sigb
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
 
+	public function reservationsAction()	{
 		// Mode Suppression
 		if (null !== ($delete = $this->_getParam('id_delete'))) {
 			$cls_comm = new Class_CommSigb();
 			$statut_suppr = $cls_comm->supprimerReservation($this->_user, $delete);
 		}
 
-		$this->view->fiche = $user->getFicheSigb();
+		$this->view->fiche = $this->_user->getFicheSigb();
+		$this->view->user = $this->_user;
 	}
 
 
@@ -447,10 +363,10 @@ class AbonneController extends Zend_Controller_Action
 			->setAttrib('id', 'user')
 			->setAttrib('autocomplete', 'off');
 
-		$textfields = array('nom' => $this->view->_('Nom'),
-												'prenom' => $this->view->_('Prénom'),
-												'pseudo' => $this->view->_('Pseudo'),
-												'mail' => $this->view->_('E-Mail'));
+		$textfields = array('nom' => $this->_('Nom'),
+												'prenom' => $this->_('Prénom'),
+												'pseudo' => $this->_('Pseudo'),
+												'mail' => $this->_('E-Mail'));
 
 		foreach($textfields	as $field => $label) {
 			$element = $form
@@ -466,22 +382,22 @@ class AbonneController extends Zend_Controller_Action
 
 		$new_password = new Zend_Form_Element_Password('password');
 		$new_password
-			->setLabel($this->view->_('Nouveau mot de passe'))
+			->setLabel($this->_('Nouveau mot de passe'))
 			->addValidator('Identical',
 										 false,
 										 array('token' => $this->_request->getParam('confirm_password'),
-													 'messages' => array('missingToken' => $this->view->_('Vous devez confirmer le mot de passe'),
-																							 'notSame' => $this->view->_('Les mots de passe ne correspondent pas'))))
+													 'messages' => array('missingToken' => $this->_('Vous devez confirmer le mot de passe'),
+																							 'notSame' => $this->_('Les mots de passe ne correspondent pas'))))
 			->addValidator('StringLength', false, array(4,24));
 
 		$confirm_password = new Zend_Form_Element_Password('confirm_password');
 		$confirm_password
-			->setLabel($this->view->_('Confirmez le mot de passe'))
+			->setLabel($this->_('Confirmez le mot de passe'))
 			->addValidator('Identical',
 										 false,
 										 array('token' => $this->_request->getParam('password'),
-													 'messages' => array('missingToken' => $this->view->_('Vous devez saisir un mot de passe'),
-																							 'notSame' => $this->view->_('Les mots de passe ne correspondent pas'))))
+													 'messages' => array('missingToken' => $this->_('Vous devez saisir un mot de passe'),
+																							 'notSame' => $this->_('Les mots de passe ne correspondent pas'))))
 			->setValue($user->getPassword());
 
 
@@ -491,7 +407,7 @@ class AbonneController extends Zend_Controller_Action
 
 		/* Abonnements aux newsletters*/
 		$subscriptions = new Zend_Form_Element_MultiCheckbox('subscriptions');
-		$subscriptions->setLabel($this->view->_("Abonnement aux lettres d'information"));
+		$subscriptions->setLabel($this->_("Abonnement aux lettres d'information"));
 
 
 		$newsletters = Class_Newsletter::getLoader()->findAll();
@@ -509,16 +425,15 @@ class AbonneController extends Zend_Controller_Action
 
 
 		$form
-			->addElement('submit', 'submit', array('label' => $this->view->_('Enregistrer')))
+			->addElement('submit', 'submit', array('label' => $this->_('Enregistrer')))
 			->populate($user->toArray());
 
 		return $form;
 	}
 
 
-	function editAction() {
-		$user = Class_Users::getLoader()->find($this->_user->ID_USER);
-		$form = $this->_userForm($user);
+	public function editAction() {
+		$form = $this->_userForm($this->_user);
 
 		if ($this->getRequest()->isPost() && $form->isValid($_POST)) {
 			$newsletters = array();
@@ -530,9 +445,9 @@ class AbonneController extends Zend_Controller_Action
 			try {
 				$password = $this->_request->getParam('password');
 				if (empty($password))
-					$password = $user->getPassword();
+					$password = $this->_user->getPassword();
 
-				$user
+				$this->_user
 					->updateSIGBOnSave()
 					->setNom($this->_request->getParam('nom'))
 					->setPrenom($this->_request->getParam('prenom'))
@@ -553,29 +468,344 @@ class AbonneController extends Zend_Controller_Action
 		$this->view->help = nl2br(Class_AdminVar::get('AIDE_FICHE_ABONNE'));
 	}
 	
-	public function authenticateAction(){
+
+	public function newslettersAction() {
+
+		/*		$newsletters = array();
+		
+		$newsletters_id = $this->_request->getParam('subscriptions', array());
+		foreach($newsletters_id as $nl_id)
+		$newsletters []= Class_Newsletter::getLoader()->find($nl_id);
+
+		$this->_user
+		->setNewsletters($newsletters) */
+		
+	}
+	
+
+	public function subscribeAction() {
+
+		/*		$newsletters = array();
+		
+		$newsletters_id = $this->_request->getParam('subscriptions', array());
+		foreach($newsletters_id as $nl_id)
+		$newsletters []= Class_Newsletter::getLoader()->find($nl_id);
+
+		$this->_user
+		->setNewsletters($newsletters) */
+		
+	}
+	
+
+
+	public function authenticateAction() {
 		$this->getHelper('ViewRenderer')->setNoRender();
+		
 		$response = new StdClass();
-		
-		$login = $this->_getParam('login');
-		$password = $this->_getParam('password');
-		
-		$user = Class_Users::getLoader()->findFirstBy(array('login' => $login));
-		
-		if(!$user )
-			$response->error = 'UserNotFound';
-		else if (($user->getPassword() !== $password)) 
-			$response->error = 'PasswordIsWrong';
-		else if (!$user->isAbonnementValid()) 
-			$response->error='SubscriptionExpired';
-		else {
-			foreach(array('id', 'login', 'password', 'nom', 'prenom') as $attribute) {
+		$response->auth = 0;
+		$response->until = '';
+
+		$request = Class_Multimedia_AuthenticateRequest::newWithRequest($this->_request);
+
+		if ($user = $request->getUser()) {
+			foreach (array('id', 'login', 'password', 'nom', 'prenom') as $attribute)
 				$response->$attribute = $user->$attribute;
-			}
-			$response->groupes=$user->getGroupes();
-			$response->date_naissance=$user->getDateNaissanceIso8601();
+
+			$response->groupes = $user->getUserGroupsLabels();
+			$response->date_naissance = $user->getDateNaissanceIso8601();
 		}
-				
+
+		if ($request->isValid()) {
+			$response->auth = 1;
+			$response->until = date('c', $request->getCurrentHoldEnd());
+		} else {
+			$response->error = $request->getError();
+		} 
+
+
 		$this->_response->setBody(json_encode($response));
 	}
+
+
+	public function multimediaHoldLocationAction() {
+		$bean = Class_Multimedia_ReservationBean::newInSession();
+
+		if (null != $this->_getParam('location')) {
+			$bean->location = $this->_getParam('location');
+			$this->_redirect('/abonne/multimedia-hold-day');
+			return;
+		}
+
+		$this->view->locations = array_filter(Class_Multimedia_Location::findAllBy(['order' => 'libelle']),
+																					function($location) {
+																							return $location->numberOfOuvertures() > 0;});
+		$this->view->timelineActions = $this->_getTimelineActions('location');
+	}
+
+
+	public function multimediaHoldDayAction() {
+		$bean = Class_Multimedia_ReservationBean::current();
+
+		/* Vérification du quota sur le jour choisi */
+		$day = $this->_getParam('day');
+		$quotaErrorType = null;
+		if (null != $day) {
+			$quotaErrorType = $this->_user->getMultimediaQuotaErrorForDay($day);
+			switch ($quotaErrorType) {
+			  case Class_Multimedia_DeviceHold::QUOTA_NONE:
+					$this->view->quotaError = $this->_('Vous n\'êtes pas autorisé à effectuer une réservation');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_DAY:
+					$this->view->quotaError = $this->_('Quota déjà atteint ce jour, choisissez un autre jour.');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_WEEK:
+					$this->view->quotaError = $this->_('Quota déjà atteint cette semaine, choisissez une autre semaine.');
+					break;
+			  case Class_Multimedia_DeviceHold::QUOTA_MONTH:
+					$this->view->quotaError = $this->_('Quota déjà atteint ce mois, choisissez un autre mois.');
+					break;
+			}
+		}
+				
+		/* Choix valide, passage à l'écran suivant */
+		if (null != $day && null == $quotaErrorType) {
+			$bean->day = $day;
+			$this->_redirect('/abonne/multimedia-hold-hours');
+			return;
+		}
+		
+		$this->getRequest()->setParam('day', 0);
+		if (!$bean->isCurrentStateValidForRequest($this->getRequest())) {
+			$this->_redirect('/abonne/'.$bean->currentState());
+			return;
+		}
+
+		/* Rendu du calendrier avec les jours sélectionnables */
+		$location = $bean->getLocation();
+		$this->view->minDate = $location->getMinDate();
+		$this->view->maxDate = $location->getMaxDate();
+		$holidayStamps = array_map(
+			function($item) {return $item * 1000;},
+			array_merge(
+				Class_Date_Holiday::getTimestampsForYear(),
+				Class_Date_Holiday::getTimestampsForYear(date('Y') + 1)
+			)
+		);
+
+		$js_opened_days = implode(',', array_map(
+																						 function ($day) { return '"'.$day.'"'; }, 
+																						 $location->getHoldableDays()));
+
+
+		$beforeShowDay = 'var result = [true, \'\'];
+		var stamps = [' . implode(', ', $holidayStamps) . '];
+		$.each(stamps, function(i, stamp) {
+			var holiday = new Date();
+			holiday.setTime(stamp);
+			if (date.getDate() == holiday.getDate()
+				&& date.getMonth() == holiday.getMonth()
+				&& date.getFullYear() == holiday.getFullYear()) {
+			  result[0] = false;
+			  return result;
+			}
+		});
+		if (-1 == $.inArray($.datepicker.formatDate(\'yy-mm-dd\', date), 
+                        [' . $js_opened_days . '])) {
+			result[0] = false;
+		}
+	  return result;';
+
+		$this->view->beforeShowDay = $beforeShowDay;
+		$this->view->timelineActions = $this->_getTimelineActions('day');
+	}
+
+
+	public function multimediaHoldHoursAction() {
+		if (!$bean = $this->_getDeviceHoldBean())
+			return;
+
+		$location = $bean->getLocation();
+		if ($this->_getParam('time') && $this->_getParam('duration')) {
+			$holdLoader = Class_Multimedia_DeviceHold::getLoader();
+			$start = $holdLoader->getTimeFromDayAndTime($bean->day, $this->_getParam('time'));
+			$end = $holdLoader->getTimeFromStartAndDuration($start, $this->_getParam('duration'));
+
+			if (0 < $holdLoader->countBetweenTimesForUser($start, $end, $this->_user)) {
+				$this->view->error = $this->_('Vous avez déjà une réservation dans ce créneau horaire');
+			}
+
+			if ($start < $location->getMinTimeForDate($bean->day)
+				|| $end > $location->getMaxTimeForDate($bean->day)) {
+				$this->view->error = $this->_('Ce créneau n\'est pas dans les heures d\'ouverture.');
+			}
+
+			if (!$this->view->error) {
+				$bean->time = $this->_getParam('time');
+				$bean->duration = (int)$this->_getParam('duration');
+				$this->_redirect('/abonne/multimedia-hold-group');
+				return;
+			}
+		}
+		
+		$this->view->timelineActions = $this->_getTimelineActions('hours');
+		$this->view->form = $this->multimediaHoldHoursForm($bean, $location);
+	}
+
+
+	public function multimediaHoldHoursForm($bean, $location) {
+		return $this->view
+			->newForm(['id' => 'hold-hours'])
+			->setMethod('get')
+			->addElement('select', 'time', ['label' => $this->_('À partir de quelle heure ?'),
+																			'multiOptions' => $location->getStartTimesForDate($bean->day)])
+			->addElement('select', 'duration', ['label' => $this->_('Pour quelle durée ?'),
+																					'multiOptions' => $location->getDurations()])
+			->addDisplayGroup(['time', 'duration'], 'choix', ['legend' => ''])
+			->addElement('submit', 'submit', ['label' => $this->_('Choisir')]);
+	}
+
+
+	public function multimediaHoldGroupAction() {
+		if (!$bean = $this->_getDeviceHoldBean())
+			return;
+
+		$this->view->groups = $bean->getGroups();
+		$this->view->timelineActions = $this->_getTimelineActions('group');
+	}
+
+
+	public function multimediaHoldDeviceAction() {
+		if (!$bean = $this->_getDeviceHoldBean())
+			return;
+
+		$this->view->timelineActions = $this->_getTimelineActions('device');
+		$this->view->devices = $bean->getGroup()->getHoldableDevicesForDateTimeAndDuration($bean->day,
+																																											 $bean->time,
+																																											 $bean->duration);
+	}
+
+
+	public function multimediaHoldConfirmAction() {
+		if (!$bean = $this->_getDeviceHoldBean())
+			return;
+
+		if ($this->_getParam('validate')) {
+			$hold = Class_Multimedia_DeviceHold::getLoader()->newFromBean($bean);
+			$hold->save();
+			$this->_redirect('/abonne/multimedia-hold-view/id/' . $hold->getId());
+			return;
+		}
+
+		$this->view->timelineActions = $this->_getTimelineActions('confirm');
+		$this->view->location = $bean->getLocation()->getLibelleBib();
+		$this->view->day = strftime('%d %B %Y', strtotime($bean->day));
+		$this->view->time = str_replace(':', 'h', $bean->time);
+		$this->view->duration = $bean->duration . 'mn';
+
+		$device = $bean->getDevice();
+		$this->view->device = $device->getLibelle() . ' - ' . $device->getOs();
+	}
+
+
+	public function multimediaHoldViewAction() {
+		if (null == ($hold = Class_Multimedia_DeviceHold::find((int)$this->_getParam('id')))) {
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+
+		if ($this->_user != $hold->getUser()) {
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+
+		if ($this->_getParam('delete')) {
+			$hold->delete();
+			$this->_redirect('/abonne/fiche');
+			return;
+		}
+			
+		$this->view->location = $hold->getLibelleBib();
+		$this->view->day = strftime('%d %B %Y', $hold->getStart());
+		$this->view->time = strftime('%Hh%M', $hold->getStart());
+		$this->view->duration = (($hold->getEnd() - $hold->getStart()) / 60)  . 'mn';
+		$this->view->device = $hold->getLibelleDevice() . ' - ' . $hold->getOs();
+	}
+		
+
+	/**
+	 * @param $current string
+	 * @return array
+	 */
+	protected function _getTimelineActions($current) {
+		$knownActions = ['location' => $this->_('Lieu'),
+										 'day' => $this->_('Jour'),
+										 'hours' => $this->_('Horaires'),
+										 'group' => $this->_('Secteur'),
+										 'device' => $this->_('Poste'),
+										 'confirm' => $this->_('Confirmation')];
+
+		$actions = array();
+		foreach ($knownActions as $knownAction => $label) {
+			$action = $this->_getTimelineActionWithNameAndAction($label, $knownAction);
+			if ($current == $knownAction)
+				$action[ZendAfi_View_Helper_Timeline::CURRENT] = true;
+			$actions[] = $action;
+		}
+		return $actions;
+	}
+
+
+	/** @return array */
+	protected function _getTimelineActionWithNameAndAction($name, $action) {
+		return array(ZendAfi_View_Helper_Timeline::LABEL => $name,
+			           ZendAfi_View_Helper_Timeline::CURRENT => false,
+			           ZendAfi_View_Helper_Timeline::URL => $this->view->url(array('controller' => 'abonne',
+										                                                         'action' => 'multimedia-hold-' . $action),
+									                                                     null, true));
+	}
+
+
+	/** @return stdClass */
+	protected function _getDeviceHoldBean() {
+		$bean = Class_Multimedia_ReservationBean::current();
+		if (!$bean->isCurrentStateValidForRequest($this->getRequest())) {
+			$this->_redirect('/abonne/'.$bean->currentState());
+			return null;
+		}
+
+		return $bean;
+	}
+
+
+	public function suggestionAchatAction() {
+		if (Class_SuggestionAchat::find($this->_getParam('id'))) {
+			$this->_forward('suggestion-achat-ok');
+			return;
+		}
+			
+		$form = new ZendAfi_Form_SuggestionAchat();
+
+		if ($this->_request->isPost()) {
+			$post = $this->_request->getPost();
+			unset($post['submit']);
+			$suggestion = (new Class_SuggestionAchat())
+				->updateAttributes($post)
+				->setUserId(Class_Users::currentUserId());
+
+			if ($form->isValid($suggestion)) {
+				$suggestion->save();
+				try {
+					$suggestion->sendMail('noreply@'.$this->_request->getHttpHost());
+				} catch (Zend_Mail_Exception $e) {
+					$this->_helper->notify($this->_('Aucun courriel envoyé: le profil n\'est pas configuré'));
+				}
+				$this->_redirect('/opac/abonne/suggestion-achat/id/'.$suggestion->getId());
+			}
+		}
+
+		$this->view->form = $form;
+	}
+
+
+	public function suggestionAchatOkAction() {	}
 }

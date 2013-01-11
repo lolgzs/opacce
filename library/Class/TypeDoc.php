@@ -20,6 +20,8 @@
  */
 
 class TypeDocLoader {
+	protected $_all_instances;
+
 	public function newInstance() {
 		return new Class_TypeDoc();
 	}
@@ -38,7 +40,16 @@ class TypeDocLoader {
 	}
 
 
+	public function reset() {
+		$this->_all_instances = null;
+		return $this;
+	}
+
+
 	public function findAll() {
+		if (isset($this->_all_instances))
+			return $this->_all_instances;
+
 		$types_docs = Class_CosmoVar::getLoader()->find('types_docs');
 
 		$lines = explode("\r\n", $types_docs->getListe());
@@ -49,7 +60,13 @@ class TypeDocLoader {
 			$instances [$instance->getId()]= $instance;
 		}
 
-		return $instances;
+		$default_types = Class_TypeDoc::getDefaultTypeDocs();
+		foreach($default_types as $id => $label) {
+			if (!isset($instances[$id]))
+				$instances[$id] = Class_TypeDoc::newWithLabel($label)->setId($id);
+		}
+		
+		return $this->_all_instances = $instances;
 	}
 
 
@@ -99,20 +116,42 @@ class TypeDocLoader {
 	}
 
 
-
 	protected function _saveSerialized($serialized) {
+		$this->reset();
 		return Class_CosmoVar::getLoader()
 			->find('types_docs')
 			->setListe(implode("\r\n", $serialized))
 			->save();
+	}
+
+
+	public function findUsedTypeDocIds() {
+		$rows = Class_Notice::getTable()->getAdapter()->fetchAll('select distinct(type_doc) from notices');
+		return array_map(function($row){return $row['type_doc'];},
+										 $rows);
 	}
 }
 
 
 class Class_TypeDoc extends Storm_Model_Abstract {
   protected $_loader_class = 'TypeDocLoader';
+	const LIVRE = 1;
+	const PERIODIQUE = 2;
+	const DISQUE = 3;
+	const DVD = 4;
 	const LIVRE_NUM = 100;
 	const DIAPORAMA = 101;
+	const EPUB = 102;
+	const OAI = 103;
+	const ARTEVOD = 104;
+
+	public static function getDefaultTypeDocs() {
+		return [self::LIVRE_NUM => 'Livres numérisés',
+			      self::DIAPORAMA => 'Diaporamas',
+						self::EPUB => 'E-Books',
+						self::OAI => 'OAI',
+			      self::ARTEVOD => 'Arte VOD'];
+	}
 
 
 	/**
@@ -122,14 +161,6 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 	public static function newWithLabel($label) {
 		$instance = new self();
 		return $instance->setLabel($label);
-	}
-
-
-	/**
-	 * @return Storm_Model_Loader
-	 */
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
 	}
 
 
@@ -166,6 +197,14 @@ class Class_TypeDoc extends Storm_Model_Abstract {
 				$for_album[$id] = $label;
 		}
 		return $for_album;
+	}
+
+
+	/**
+	 * return int identifiant type doc codifié Pergame
+	 */
+	public function toPergame() {
+		return $this->getId();
 	}
 }
 

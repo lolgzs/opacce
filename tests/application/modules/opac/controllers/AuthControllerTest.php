@@ -24,13 +24,21 @@ abstract class PortailWithOneLoginModuleTestCase extends AbstractControllerTestC
 	public function setUp() {
 		parent::setUp();
 
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_IntBib')
+			->whenCalled('findAllBy')
+			->answers([]);
+
 		$cfg_accueil = array('modules' => array(4 => array('division' => '4',
 																									'id_module' => 4,
 																									'type_module' => 'LOGIN',
 																									'preferences' => array(
 																											'titre'	=> 'Se connecter',
 																											'identifiant' => 'Numéro de carte',
-																											'mot_de_passe'=> 'Année de naissance'))),
+																											'mot_de_passe'=> 'Année de naissance',
+																											'identifiant_exemple' => 'jj-mm-aaaa',
+																											'mot_de_passe_exemple' => '1983',
+																											'lien_connexion' => 'please, log me',
+																											'lien_mot_de_passe_oublie' => 'me rappelle plus'))),
 												 'options' => 	array());
 
 		Class_Profil::getCurrentProfil()
@@ -117,6 +125,20 @@ class AuthControllerAbonneSIGBLoggedTest extends PortailWithOneLoginModuleTestCa
 
 
 
+class AuthControllerAbonneSIGBLoggedLogoutTest extends PortailWithOneLoginModuleTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/opac/auth/logout');
+	}
+
+	/** @test */
+	public function answerShouldRedirectToRoot() {
+		$this->assertRedirectTo('/');
+	}
+}
+
+
+
 
 abstract class AuthControllerNobodyLoggedTestCase extends PortailWithOneLoginModuleTestCase {
 	protected function _loginHook($account) {
@@ -128,15 +150,16 @@ abstract class AuthControllerNobodyLoggedTestCase extends PortailWithOneLoginMod
 }
 
 
-class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControllerNobodyLoggedTestCase {
-	public function setUp() {
-		$interdire_enregistrement = new Class_AdminVar();
-		$interdire_enregistrement
-			->setId('INTERDIRE_ENREG_UTIL')
-			->setValeur(0);
-		Class_AdminVar::getLoader()->cacheInstance($interdire_enregistrement);
 
+
+class AuthControllerNobodyLoggedAndRegistrationAllowedBoiteLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
 		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(0);
+
 		$this->dispatch('/opac/');
 	}
 
@@ -144,13 +167,13 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 	public function testLinkSeConnecter() {
 		$this->assertXPath('//div[@id="boite_login"]//a[contains(@onclick, "submit")]');
 		$this->assertXPathContentContains('//div[@id="boite_login"]//a[contains(@onclick, "submit")]',
-																			'Se connecter');
+																			'please, log me');
 	}
 
 	public function testLinkLostPassword() {
 		$this->assertXPath('//div[@id="boite_login"]//a[contains(@href, "auth/lostpass")]');
 		$this->assertXPathContentContains('//div[@id="boite_login"]//a[contains(@href, "auth/lostpass")]',
-																			'Mot de passe oublié ?');
+																			'me rappelle plus');
 	}
 
 	public function testLinkSenregistrer() {
@@ -169,6 +192,18 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 
 
 	/** @test */
+	public function inputIdentifiantShouldHavePlaceHolderJJ_MM_AAAA() {
+		$this->assertXPath('//input[@name="username"][@placeholder="jj-mm-aaaa"]');
+	}
+
+
+	/** @test */
+	public function inputPasswordShouldHavePlaceHolder1983() {
+		$this->assertXPath('//input[@name="password"][@placeholder="1983"]');
+	}
+
+
+	/** @test */
 	function headShouldContainsAbonnesJS() {		
 		$this->assertXPath('//head//script[contains(@src,"public/opac/js/abonne.js")]', $this->_response->getBody());
 	}
@@ -183,6 +218,33 @@ class AuthControllerNobodyLoggedAndRegistrationAllowedTest extends AuthControlle
 	/** @test */
 	function headShouldContainsJQuery() {
 		$this->assertXPath('//head//script[contains(@src, "jquery")]');
+	}
+}
+
+
+
+
+class AuthControllerNobodyLoggedAndRegistrationAllowedAjaxLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(0);
+
+		$this->dispatch('/opac/auth/ajaxlogin', true);
+	}
+
+
+	public function testLinkLostPassword() {
+		$this->assertXPath('//div//a[contains(@onclick, "getUsername")]');
+	}
+
+	
+	public function testLinkSenregistrer() {
+		$this->assertXPath('//div//a[contains(@href, "auth/register")]');
+		$this->assertXPathContentContains('//div//a[contains(@href, "auth/register")]',
+																			"S'enregistrer");
 	}
 }
 
@@ -216,10 +278,41 @@ class AuthControllerNobodyLoggedAndNoRegistrationTest extends AuthControllerNobo
 
 
 
+class AuthControllerNobodyLoggedAndNoRegistrationAllowedAjaxLoginTest extends AuthControllerNobodyLoggedTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('INTERDIRE_ENREG_UTIL')
+			->setValeur(1);
+
+		$this->dispatch('/opac/auth/ajaxlogin', true);
+	}
+
+
+	public function testLinkLostPassword() {
+		$this->assertXPath('//div//a[contains(@onclick, "getUsername")]');
+	}
+
+	
+	public function testNoLinkSenregistrer() {
+		$this->assertNotXPath('//div//a[contains(@href, "auth/register")]');
+	}
+
+
+	/** @test */
+	public function iframeCssShouldIncluded() {
+		$this->assertXPath('//link[contains(@href, "iframe.css")]');
+	}
+}
+
+
+
+
 class AuthControllerAdminIsLoggedTest extends PortailWithOneLoginModuleTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
-		$account->ROLE_LEVEL = 7;
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
 		$account->ID_USER = "1";
 		$account->PSEUDO = "sysadm";
 	}
@@ -229,7 +322,7 @@ class AuthControllerAdminIsLoggedTest extends PortailWithOneLoginModuleTestCase 
 		$this->sysadm = new Class_Users();
 		$this->sysadm
 			->setPseudo('sysadm')
-			->setRoleLevel(3)
+			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL)
 			->setRole('super_admin')
 			->setLogin('sysadm')
 			->setPassword('pafgjl')
@@ -305,7 +398,10 @@ class AuthControllerPostTest extends AuthControllerNobodyLoggedTestCase {
 	}
 
 
-	/** @test */
+	/** 
+	 * @test 
+	 * @group integration
+	 */
 	public function validAuthenticationShouldRedirect()	{
 		$user = Class_Users::getLoader()->findFirstBy(array());
 
@@ -317,5 +413,51 @@ class AuthControllerPostTest extends AuthControllerNobodyLoggedTestCase {
 	}
 }
 
+
+
+
+class AuthControllerPostSimpleTest extends AuthControllerNobodyLoggedTestCase {
+	protected $_auth;
+
+	public function setUp() {
+		parent::setUp();
+		$this->_auth = Storm_Test_ObjectWrapper::mock()
+			->whenCalled('authenticateLoginPassword')
+			->answers(false)
+			->whenCalled('hasIdentity')
+			->answers(false)
+			->whenCalled('getIdentity')
+			->answers(null);
+		
+		ZendAfi_Auth::setInstance($this->_auth);
+	}
+
+	/** @test */
+	public function withSuccessfulAuthenticationResponseShouldBeARedirect() {
+		$this->_auth
+			->whenCalled('authenticateLoginPassword')
+			->with('foo', 'bar')
+			->answers(true);
+
+		$this->postDispatch('/opac/auth/login',
+												['username' => 'foo', 'password' => 'bar']);
+
+		$this->assertRedirect();
+	}
+
+
+	/** @test */
+	public function withAuthenticationFailureResponseShouldNotBeARedirect() {
+		$this->postDispatch('/opac/auth/login',
+												['username' => 'foo', 'password' => 'bar']);
+
+		$this->assertNotRedirect();
+	}
+
+	public function tearDown() {
+		ZendAfi_Auth::setInstance(null);
+		parent::tearDown();
+	}
+}
 
 ?>

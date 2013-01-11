@@ -18,59 +18,13 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-class Class_WebService_SIGB_Nanook_PatronInfoReader {
-	/** @var Class_WebService_SIGB_Emprunteur */
-	protected $_emprunteur;
-
-	/** @var Class_WebService_XMLParser */
-	protected $_xml_parser;
-
-	/** @var Class_WebService_SIGB_ExemplaireOperation */
-	protected $_currentHold;
-
-	/** @var Class_WebService_SIGB_ExemplaireOperation */
-	protected $_currentLoan;
-
-
+class Class_WebService_SIGB_Nanook_PatronInfoReader extends Class_WebService_SIGB_AbstractILSDIPatronInfoReader{
 	/**
 	 * @return Class_WebService_SIGB_Nanook_PatronInfoReader
 	 */
 	public static function newInstance() {
 		return new self();
 	}
-
-
-	/**
-	 * @param Class_WebService_SIGB_Emprunteur $emprunteur
-	 * @return Class_WebService_SIGB_Nanook_PatronInfoReader
-	 */
-	public function setEmprunteur($emprunteur) {
-		$this->_emprunteur = $emprunteur;
-		return $this;
-	}
-
-
-	/**
-	 * @return Class_WebService_SIGB_Emprunteur
-	 */
-	public function getEmprunteur() {
-		return $this->_emprunteur;
-	}
-
-
-	/**
-	 * @param string $xml
-	 * @return Class_WebService_SIGB_Nanook_PatronInfoReader
-	 */
-	public function parseXML($xml) {
-		$this->_xml_parser = Class_WebService_XMLParser::newInstance()
-														->setElementHandler($this);
-
-		$this->_xml_parser->parse($xml);
-
-		return $this;
-	}
-
 
 	/**
 	 * @param string $data
@@ -81,52 +35,23 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader {
 
 
 	/**
-	 * @param string $data
+	 * @param $data string
 	 */
-	public function endLastName($data) {
-		$this->getEmprunteur()->setNom($data);
+	public function endEndDate($data) {
+		if ($data && 'null' != $data)
+			$this->getEmprunteur()->setEndDate($data);
 	}
 
 
 	/**
-	 * @param string $data
+	 * @param $data string
 	 */
-	public function endFirstName($data) {
-		$this->getEmprunteur()->setPrenom($data);
+	public function endMail($data) {
+		if ($data && 'null' != $data)
+			$this->getEmprunteur()->setEmail($data);
 	}
 
-
-	/**
-	 * @param array $attributes
-	 */
-	public function startLoan($attributes) {
-		$this->_currentLoan = Class_WebService_SIGB_Emprunt::newInstanceWithEmptyExemplaire();
-	}
-
-
-	/**
-	 * @param string $data
-	 */
-	public function endLoan($data) {
-		$this->getEmprunteur()->empruntsAdd($this->_currentLoan);
-	}
-
-
-	/**
-	 * @param array $attributes
-	 */
-	public function startHold($attributes) {
-		$this->_currentHold = Class_WebService_SIGB_Reservation::newInstanceWithEmptyExemplaire();
-	}
-
-
-	/**
-	 * @param string $data
-	 */
-	public function endHold($data) {
-		$this->getEmprunteur()->reservationsAdd($this->_currentHold);
-	}
-
+		
 	/**
 	 * @param string $data
 	 */
@@ -137,29 +62,12 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader {
 		}
 	}
 
-
 	/**
 	 * @param string $data
 	 */
 	public function endItemId($data) {
 		$this->_getCurrentOperation()->setId($data);
 		$this->_getCurrentOperation()->getExemplaire()->setId($data);
-	}
-
-
-	/**
-	 * @param string $data
-	 */
-	public function endTitle($data) {
-		$this->_getCurrentOperation()->getExemplaire()->setTitre($data);
-	}
-
-
-	/**
-	 * @param string $data
-	 */
-	public function endAuthor($data) {
-		$this->_getCurrentOperation()->getExemplaire()->setAuteur($data);
 	}
 
 
@@ -179,22 +87,22 @@ class Class_WebService_SIGB_Nanook_PatronInfoReader {
 	}
 
 
-	/**
-	 * @param string $data
+	/** 
+	 * @param string $data 
 	 */
-	public function endPriority($data) {
-		$this->_getCurrentOperation()->setRang($data);
+	public function endAvailable($data) {
+		if (1 == (int)$data)
+			$this->_currentHold->setEtat('Disponible');
 	}
 
-	/**
-	 * @return Class_WebService_SIGB_ExemplaireOperation
-	 */
-	protected function _getCurrentOperation() {
-		if ($this->_xml_parser->inParents('loan'))
-			return $this->_currentLoan;
 
-		if ($this->_xml_parser->inParents('hold'))
-			return $this->_currentHold;
+	/**
+	 * @paran string $data
+	 */
+	public function endAvailabilityDate($data) {
+		if ('' != $data)
+			$this->_currentHold->setEtat('Pas disponible avant le ' . $data);
 	}
+
 }
 ?>

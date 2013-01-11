@@ -63,18 +63,46 @@ class Class_AlbumCategorie extends Storm_Model_Abstract {
 																														  'referenced_in' => 'parent_id'));
 
 	protected $_has_many = array('sous_categories' => array('model' => 'Class_AlbumCategorie',
-																													 'role' => 'parent',
-																													 'dependents' => 'delete'),
+																													'role' => 'parent',
+																													'dependents' => 'delete'),
 
-                                 'albums' => array('model' => 'Class_Album',
-                                                   'role' => 'categorie',
-																									 'dependents' => 'delete'));
+															 'albums' => array('model' => 'Class_Album',
+																								 'role' => 'categorie',
+																								 'dependents' => 'delete'));
 
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
 
+
+	public function hasChildren() {
+		return $this->hasAlbums() or $this->hasSousCategories();
+	}
+
+
+	public function hasAlbums() {
+		return 0 < $this->numberOfAlbums();
+	}
+
+
+	public function getChildrenCount() {
+		return $this->numberOfAlbums();
+	}
+		
+
+	public function hasNoChild() {
+		return !$this->hasChildren();
+	}
+
+	public function getItems() {
+		return Class_Album::getLoader()->getItemsOf($this->getId());
+	}
+
+	public function isNew() {
+		return parent::isNew() || 0 == $this->getId();
+	}
+	
 
 	/**
 	 * @param array $datas

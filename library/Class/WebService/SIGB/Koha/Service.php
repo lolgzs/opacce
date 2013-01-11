@@ -48,19 +48,11 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
 	public function getEmprunteur($user) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_patron = $this->httpGet(array('service' => 'GetPatronInfo',
-																			 'patron_id' => $emprunteur_id,
-																			 'show_contact' => 0,
-																			 'show_loans' => 1,
-																			 'show_holds' => 1));
-
-		return Class_WebService_SIGB_Koha_PatronInfoReader
-			::newInstance()
-			->setEmprunteur(Class_WebService_SIGB_Emprunteur::newInstance()->setService($this))
-			->parseXML($xml_patron)
-			->getEmprunteur();
+		return $this->ilsdiGetPatronInfo(array('patron_id' => $this->_authenticate($user),
+																					 'show_contact' => 0,
+																					 'show_loans' => 1,
+																					 'show_holds' => 1),
+																		 Class_WebService_SIGB_Koha_PatronInfoReader::newInstance());
 	}
 
 
@@ -71,17 +63,11 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_cancel = $this->httpGet(array('service' => 'HoldTitle',
-																			 'patron_id' => $emprunteur_id,
+		return $this->ilsdiHoldTitle(
+																 array('patron_id' => $this->_authenticate($user),
 																			 'bib_id' => $exemplaire->getIdOrigine(),
-																			 'request_location' => '127.0.0.1'));
-
-		if ($code = $this->_getTagData($xml_cancel, 'code'))
-			return $this->_error('Réservation impossible');
-
-		return $this->_success();
+																			 'request_location' => '127.0.0.1'),
+																 'code');
 	}
 
 
@@ -91,6 +77,7 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function supprimerReservation($user, $reservation_id) {
+
 		$emprunteur_id = $this->_authenticate($user);
 
 		$xml_cancel = $this->httpGet(array('service' => 'CancelHold',
@@ -112,31 +99,16 @@ class Class_WebService_SIGB_Koha_Service extends Class_WebService_SIGB_AbstractR
 	 * @return array
 	 */
 	public function prolongerPret($user, $pret_id) {
-		$emprunteur_id = $this->_authenticate($user);
-
-		$xml_renew = $this->httpGet(array('service' => 'RenewLoan',
-																			'patron_id' => $emprunteur_id,
-																			'item_id' => $pret_id));
-
-		if (!$this->_getTagData($xml_renew, 'message'))
-			return $this->_success();
-
-		return $this->_error('Prolongation impossible');
+		return $this->ilsdiRenewLoan(array(
+																			 'patron_id'	=> $this->_authenticate($user),
+																			 'item_id'		=> $pret_id),
+																 'message');
 	}
 
 
 	public function getNotice($id) {
-		$xml = $this->httpGet(array('service' => 'GetRecords',
-																'id' => $id));
-
- 		$notice = Class_WebService_SIGB_Koha_GetRecordsResponseReader
-			::newInstance()
-			->getNoticeFromXML($xml);
-
-		if ($notice)
-			$this->cacheNotice($notice);
-
-		return $notice;
+		return $this->ilsdiGetRecords($id, 
+																	Class_WebService_SIGB_Koha_GetRecordsResponseReader::newInstance());
 	}
 }
 

@@ -1,0 +1,10 @@
+<?php echo $this->toolbar($this->_('Réservations'));?>
+<?php echo $this->partial('abonne/identity.phtml', array('user' => $this->user));?>
+<ul data-role="listview" data-inset="true">
+<?php 
+foreach ($this->fiche["fiche"]->getReservations() as $reservation) {
+	echo sprintf('<li>%s</li>',
+							 $reservation->getTitre());
+}
+?>
+</ul>

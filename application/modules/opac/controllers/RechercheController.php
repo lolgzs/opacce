@@ -47,11 +47,13 @@ class RechercheController extends Zend_Controller_Action
 		}
 
 		// tri du résultat
-		if($tri = $this->_request->getParam("tri"))
-		{
+		if ($tri = $this->_getParam("tri")) {
 			unset($_SESSION["recherche"]["resultat"]);
-			$_SESSION["recherche"]["selection"]["tri"] = $this->_request->getParam("tri");
+			$_SESSION["recherche"]["selection"]["tri"] = $tri;
 		}
+
+		if (!isset($_SESSION["recherche"]["selection"]["tri"]))
+			$_SESSION["recherche"]["selection"]["tri"] = '*';
 
 		// elargir recherche par annexe
 		if($this->_getParam("annexe")=="reset") {
@@ -73,13 +75,14 @@ class RechercheController extends Zend_Controller_Action
 		}
 
 		// Facettes
-		if($this->_getParam("facette"))
-		{
-			if($_REQUEST["facette"]=="reset") unset($_SESSION["recherche"]["selection"]["facette"]);
+		if ($this->_getParam("facette")) {
+			if ($this->_getParam("facette") =="reset") 
+				unset($_SESSION["recherche"]["selection"]["facette"]);
 			else
 			{
-				$facette="[".$_REQUEST["facette"]."]";
-				if(strpos($_SESSION["recherche"]["selection"]["facette"],$facette) === false) $_SESSION["recherche"]["selection"]["facette"].=" ".$facette;
+				$facette="[".$this->_getParam("facette")."]";
+				if(strpos($_SESSION["recherche"]["selection"]["facette"],$facette) === false) 
+					$_SESSION["recherche"]["selection"]["facette"].=" ".$facette;
 			}
 			unset($_SESSION["recherche"]["resultat"]);
 		}
@@ -88,41 +91,58 @@ class RechercheController extends Zend_Controller_Action
 		if ($this->_getParam("bib_select")) unset($_SESSION["recherche"]["resultat"]);
 		unset($_SESSION["recherche"]["selection"]["selection_bib"]);
 
-		if (array_key_exists("id_bibs", $_SESSION["selection_bib"]))
-		{
+		if (!isset($_SESSION['selection_bib']))
+			$_SESSION['selection_bib'] = array();
+
+		if (array_key_exists("id_bibs", $_SESSION["selection_bib"])) {
 			$bibs=explode(",",$_SESSION["selection_bib"]["id_bibs"]);
 			if (!array_key_exists("recherche", $_SESSION))
 				$_SESSION["recherche"] = array("selection" => array("selection_bib" => array()),
 																			 "mode" => "",
 																			 "retour_notice" => "");
 
-			foreach($bibs as $bib) $_SESSION["recherche"]["selection"]["selection_bib"].=" B".$bib;
+			$_SESSION["recherche"]["selection"]["selection_bib"] = '';
+			foreach($bibs as $bib) 
+				$_SESSION["recherche"]["selection"]["selection_bib"] .=" B".$bib;
 		}
 
-		// Selection de sections liee au profil
+		// Selection de types de docs lies au profil
 		if($profil->getSelTypeDoc() and !$_SESSION["recherche"]["selection"]["type_doc"]) $_SESSION["recherche"]["selection"]["type_doc"]=str_replace(";",",",$profil->getSelTypeDoc());
 
-		// Selection de types de docs liee au profil
+		// Selection de annexes liees au profil
+		unset($_SESSION["recherche"]["selection"]["selection_annexe"]);
+		if($profil->getSelAnnexe()) $_SESSION["recherche"]["selection"]["selection_annexe"]=str_replace(";",",",$profil->getSelAnnexe());
+
+		// Selection de sections liees au profil
 		unset($_SESSION["recherche"]["selection"]["selection_sections"]);
 		if($profil->getSelSection())	{
 			$sections=explode(",",$profil->getSelSection());
 			foreach($sections as $section)
 				$_SESSION["recherche"]["selection"]["selection_sections"].=" S".$section;
 		}
-		if (!array_key_exists("recherche", $_SESSION)) $_SESSION["recherche"] = array("mode" => null, "retour_notice" => null);
+		if (!array_key_exists("recherche", $_SESSION)) 
+			$_SESSION["recherche"] = array("mode" => null, "retour_notice" => null);
 
 		// Urls retour
-		if(!$_SESSION["recherche"]["mode"])
-		$_SESSION["recherche"]["mode"]=$this->_request->action;
-		if($_SESSION["recherche"]["mode"]=="rebond") $_SESSION["recherche"]["mode"]="simple";
-		$this->view->url_retour=BASE_URL."/opac/recherche/".$_SESSION["recherche"]["mode"];
+		if (!isset($_SESSION["recherche"]['mode']))
+			$_SESSION["recherche"]["mode"] = $this->_request->getActionName();
+
+		if ($_SESSION["recherche"]["mode"]=="rebond") 
+			$_SESSION["recherche"]["mode"]="simple";
+
+		$this->view->url_retour=BASE_URL."/opac/recherche/" . $_SESSION["recherche"]["mode"];
 		$this->view->url_facette=$this->view->url_retour;
-		if($_SESSION["recherche"]["retour_notice"]) $this->view->url_retour_notice=$_SESSION["recherche"]["retour_notice"];
+		if (isset($_SESSION["recherche"]["retour_notice"])) 
+			$this->view->url_retour_notice=$_SESSION["recherche"]["retour_notice"];
 		$_SESSION["recherche"]["retour_notice"] = null;
 
 		// Préférences
 		$current_module=$this->_getParam("current_module");
 		$this->preferences=$current_module["preferences"];
+
+		$simple_ou_avancee = $this->_request->getActionName() == 'avancee' ? 'avancee' : 'simple';
+		$this->view->url_retour_recherche_initiale = $this->view->url(['action' => $simple_ou_avancee]).'?statut=saisie';
+		$this->view->url_nouvelle_recherche = $this->view->url(['action' => $simple_ou_avancee]).'?statut=reset';
 	}
 
 
@@ -131,57 +151,85 @@ class RechercheController extends Zend_Controller_Action
 			$this->liste=new Class_ListeNotices($this->preferences["liste_nb_par_page"],
 																					$this->preferences["liste_codes"]);
 
-		return $this->liste->getListe($req);
+		return $this->liste->getListe($req, $this->_getParam('page', 1));
 	}
 
 //------------------------------------------------------------------------------------------------------
 // INDEX
 //------------------------------------------------------------------------------------------------------
-	function indexAction()
-	{
-		$this->_redirect('opac/recherche/simple?statut=reset');
+	function indexAction()	{
+		if (!$expression = $this->_getParam('q')) {
+			$this->_redirect('opac/recherche/simple?statut=reset');
+			return;
+		}
+
+		$ret = $this->moteur->lancerRechercheSimple(['expressionRecherche' => $expression]);
+
+		if ($ret["statut"]=="erreur") {
+			$ret['nombre'] = 0;
+			$ret['page_cours'] = 0;
+			$this->view->liste = $ret;
+			$this->view->resultat = $ret;
+			$this->_redirect('opac/recherche/simple?statut=reset');
+			return;
+		}
+
+		$facettes = $this->moteur->getFacettes($ret["req_facettes"], $this->preferences);
+		$this->view->liste = $this->_getListNotices($ret["req_liste"]);
+		$this->view->resultat = array_merge($facettes, $ret, ['page_cours' => 1]);
+		$this->view->url_tri = BASE_URL."/recherche/simple";
+		$this->view->texte_selection = $expression;
+		$this->view->current_module['preferences'] = array_merge($this->view->current_module['preferences'],
+																														 ['liste_format' => 3, 'liste_nb_par_page' => 10]);
+		$this->renderScript('recherche/resultatRecherche.phtml');
 	}
 
-//------------------------------------------------------------------------------------------------------
-// RECHERCHE SIMPLE
-//------------------------------------------------------------------------------------------------------
-	function simpleAction()
-	{
+
+	public function simpleAction() {
     // Dernier mode de recherche
-		$_SESSION["recherche"]["mode"]="simple";
-		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
-		if($this->view->statut == "saisie") return;
+		$_SESSION["recherche"]["mode"] = 'simple';
+		$_SESSION["recherche"]["retour_liste"] = $this->view->url(['controller' => 'recherche', 'action' => 'simple'], null, true);
+
+		if ($this->view->statut == "saisie") return;
 
 		// Lancer la recherche
-		$this->view->texte_selection=$this->getTexteSelection();
-		if($_REQUEST["pertinence"] == 1) $_SESSION["recherche"]["selection"]["pertinence"]=true;
- 		if(!$_SESSION["recherche"]["resultat"])
- 		{
-			if (!$criteres = $_SESSION["recherche"]["selection"])
-			$criteres = array();
- 			$ret=$this->moteur->lancerRechercheSimple($criteres);
-			if($ret["statut"]=="erreur")
-			{
-				$ret["nombre"]=0;
-				$this->view->liste=$ret;
-				return false;
+		$this->view->texte_selection = $this->getTexteSelection();
+
+		$_SESSION["recherche"]["selection"]["pertinence"] = (1 == $this->_getParam('pertinence', 0));
+
+ 		if (!isset($_SESSION["recherche"]["resultat"])) {
+			$criteres = (isset($_SESSION['recherche']['selection'])) ?
+				$_SESSION['recherche']['selection'] :
+				array();
+
+			$ret = $this->moteur->lancerRechercheSimple($criteres);
+
+			if ($ret["statut"]=="erreur") {
+				$ret['nombre'] = 0;
+				$ret['page_cours'] = 0;
+				$this->view->liste = $ret;
+				$this->view->resultat = $ret;
+				return;
 			}
-			// Histo recherche
+
 			$this->addHistoRecherche(1,$_SESSION["recherche"]["selection"]);
-			// Facettes et tags
-			$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
-			// Mettre les elements dans la session
-			$_SESSION["recherche"]["resultat"]=array_merge($facettes,$ret);
+			$facettes = $this->moteur->getFacettes($ret["req_facettes"], $this->preferences);
+			$_SESSION["recherche"]["resultat"] = array_merge($facettes, $ret);
+			$this->_redirect('/recherche/simple');
+			return;
 		}
 
 		// Get de la liste
-		$this->view->liste=$this->_getListNotices($_SESSION["recherche"]["resultat"]["req_liste"]);
+		$this->view->liste = $this->_getListNotices($_SESSION["recherche"]["resultat"]["req_liste"]);
 
 		// Variables viewer
-		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
-		$this->view->url_tri=BASE_URL."/recherche/simple";
+		$this->view->resultat = $_SESSION["recherche"]["resultat"];
+		$this->view->resultat["page_cours"] = $this->_getParam('page');
+		$this->view->url_tri = BASE_URL."/recherche/simple";
+		$this->view->is_pertinence = $_SESSION["recherche"]["selection"]["pertinence"];
+		$this->view->tri = $_SESSION["recherche"]["selection"]["tri"];
 	}
+
 
 //------------------------------------------------------------------------------------------------------
 // RECHERCHE AVANCEE
@@ -206,10 +254,10 @@ class RechercheController extends Zend_Controller_Action
 
 		// Lancer la recherche
 		$this->view->texte_selection=$this->getTexteSelection();
- 		if(!$_SESSION["recherche"]["resultat"])
+ 		if(!isset($_SESSION["recherche"]["resultat"]))
  		{
  			$ret=$this->moteur->lancerRechercheAvancee($_SESSION["recherche"]["selection"]);
-			if($ret["statut"]=="erreur")
+			if (isset($ret['statut']) && ($ret['statut']=='erreur'))
 			{
 				$ret["nombre"]=0;
 				$this->view->liste=$ret;
@@ -229,7 +277,7 @@ class RechercheController extends Zend_Controller_Action
 
 		// Variables viewer
 		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
+		$this->view->resultat["page_cours"] = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -264,32 +312,54 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // AFFICHAGE NOTICE
 //------------------------------------------------------------------------------------------------------
-	function viewnoticeAction()
-	{
+	public function viewnoticeAction() {
 		unset($_SESSION["recherche"]["rebond"]);
-		$_SESSION["recherche"]["retour_notice"]=$this->_request->REQUEST_URI;
+		if ((new Zend_Controller_Request_Http($this->view->absoluteUrl($this->_request->REQUEST_URI)))->getModuleName() !== 'admin')
+				$_SESSION["recherche"]["retour_notice"] = $this->_request->REQUEST_URI;
+
+		$id_notice = (int)$this->_getParam('id');
+		$clef_alpha = $this->_getParam('clef');
+
+		if ($clef_alpha && ($notices = Class_Notice::getLoader()->getAllNoticesByClefAlpha($clef_alpha))) {
+			if (!$id_notice && (count($notices) > 1)) {
+				$query = implode(' ', array_filter(array_slice(explode('-', $clef_alpha), 0, 3)));
+				$this->_redirect('/opac/recherche?'.http_build_query(['q' => $query]));
+				return;
+			}
+			$id_notice = $notices[0]->getId();
+		}
+
+		if (!$notice = Class_Notice::find($id_notice)) {
+			$this->_redirect('opac/recherche/simple');
+			return;
+		}
+
+		$current_module = $this->_getParam('current_module');
+		$current_module['preferences'] = $this->preferences = Class_Profil::getCurrentProfil()->getCfgModulesPreferences('recherche', 
+																																																										 'viewnotice', 
+																																																										 $notice->getTypeDoc());
+		$current_module['action2'] = $notice->getTypeDoc();
+		$this->view->current_module = $current_module;
+		$this->_request->setParam('current_module', $current_module);
+
+		$this->view->notice = $notice;
+		$this->view->preferences = $this->preferences;
 
 		if (array_isset('retour_liste', $_SESSION["recherche"]))
-			$this->view->url_retour=$_SESSION["recherche"]["retour_liste"];
+			$this->view->url_retour = $_SESSION["recherche"]["retour_liste"];
 
-		// Lire la notice
-		$id_notice=intVal($this->_request->id);
-		$oNotice=new Class_Notice();
-		$this->view->notice=$oNotice->getNoticeDetail($id_notice,$this->preferences);
-		if(!$this->view->notice) $this->_redirect('opac/recherche/simple');
-		$this->view->url_img=Class_WebService_Vignette::getUrl($this->view->notice["id_notice"],false);
+		$this->view->display_modifier_vignette_link = Class_Users::isCurrentUserCanAccesBackend() && $notice->isVignetteUpdatableToCacheServer();
 
 		// Pour les reseaux sociaux
-		$this->view->titreAdd(strip_tags($this->view->notice["titre_principal"]));
-		if($this->view->notice["auteur_principal"] > "") $this->view->nomSite.=" / " . $this->view->notice["auteur_principal"];
+		$this->view->titreAdd(strip_tags($this->view->notice->getTitrePrincipal()));
+		if ($auteur = $this->view->notice->getAuteurPrincipal()) 
+			$this->view->nomSite .= " / " . $auteur;
 
 		// Picto du genre
-		$genre=$oNotice->getChampNotice("G", $this->view->notice["facettes"]);
-		if($genre)
-		{
-			$picto_genre=fetchOne("select picto from codif_genre where id_genre=".$genre[0]["id"]);
-			if($picto_genre == "_vide.gif") $picto_genre="";
-			$this->view->picto_genre=$picto_genre;
+		if (($genres = $notice->getChampNotice("G", $notice->getFacettes()))
+				&& ($genre = Class_CodifGenre::find($genres[0]['id']))
+				&& ('_vide.gif' != $genre->getPicto()))	{
+				$this->view->picto_genre = $genre->getPicto();
 		}
 
 		// Url panier
@@ -298,6 +368,8 @@ class RechercheController extends Zend_Controller_Action
 		// Stats visualisation
 		$stat=new  Class_StatsNotices();
 		$stat->addStatVisu($id_notice);
+
+		Class_ScriptLoader::getInstance()->loadBabeltheque();
 	}
 
 
@@ -317,111 +389,134 @@ class RechercheController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 // LIEN REBONDISSANT
 //------------------------------------------------------------------------------------------------------
-	function rebondAction()
-	{
+	function rebondAction()	{
 		// Lancer la recherche
- 		$code=$_REQUEST["code_rebond"];
+ 		$code = $this->_getParam('code_rebond');
+		$_SESSION["recherche"]["mode"]="rebond";
  		$_SESSION["recherche"]["selection"]["code_rebond"]=$code;
  		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
 
- 		$this->view->texte_selection=$this->getTexteSelection();
  		$ret=$this->moteur->lancerRechercheRebond($_SESSION["recherche"]["selection"]);
-		if($ret["statut"]=="erreur")
-		{
-			$ret["nombre"]=0;
-			$this->view->liste=$ret;
-			return false;
+		if($ret["statut"]=="erreur") {
+			$this->view->liste = $ret;
+			$this->view->resultat = $ret;
+		} else {
+			// Facettes et tags
+			$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
+
+			// Mettre les elements dans la session
+			$resultat = array_merge($facettes,$ret);
+			$_SESSION["recherche"]["resultat"] = $resultat;
+			$this->view->resultat = $resultat;
+			$this->view->liste=$this->_getListNotices($ret["req_liste"]);
 		}
 
-		// Facettes et tags
-		$facettes=$this->moteur->getFacettes($ret["req_facettes"],$this->preferences);
+		$this->view->resultat["url_retour"] = isset($this->view->resultat["url_retour"]) 
+			? $this->view->resultat["url_retour"]."?code_rebond=".$code
+			: $this->view->url(['action' => 'simple']);
 
-		// Mettre les elements dans la session
-		$_SESSION["recherche"]["resultat"]=array_merge($facettes,$ret);
+		$this->view->resultat["page_cours"] = $this->_getParam('page');
+ 		$this->view->texte_selection = $this->getTexteSelection();
+		$this->view->url_facette = BASE_URL."/opac/recherche/rebond?code_rebond=".$code;
 
-		// Get de la liste
-		$this->view->liste=$this->_getListNotices($ret["req_liste"]);
-
-		// Variables viewer
-		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["url_retour"].="?code_rebond=".$code;
-		$this->view->url_facette=BASE_URL."/opac/recherche/rebond?code_rebond=".$code;
-		$this->view->resultat["page_cours"]=$_REQUEST["page"];
+		$params = $this->_request->getParams();
+    $this->view->tri = isset($params['tri']) ? $params['tri'] : '*';
+		unset($params['tri']);
+		unset($params['current_module']);
+		$this->view->url_retour = $this->view->url($params);
 	}
 
-//------------------------------------------------------------------------------------------------------
-// CALCUL DU TEXTE DES CRITERES DE SELECTION
-//------------------------------------------------------------------------------------------------------
-	private function getTexteSelection()
-	{
-		$mode=$_SESSION["recherche"]["mode"];
-		$rech=$_SESSION["recherche"]["selection"];
+
+	private function getTexteSelection() {
+		$mode = $_SESSION["recherche"]["mode"];
+		$rech = $_SESSION["recherche"]["selection"];
 
 		// facettes
-		if($rech["facette"])
-		{
-			$items=explode(" ",$rech["facette"]);
-			foreach($items as $item)
-			{
-				$item=str_replace("[","",$item);
-				$item=str_replace("]","",$item);
-				if(!trim($item)) continue;
-				if($facette) $facette.=", ";
-				if($item[0]=="T") $item[0]="t";
-				$facette.=Class_Codification::getNomChamp($item). ' = ';
-				$facette.= Class_Codification::getLibelleFacette($item);
+		$facette = null;
+		if (isset($rech['facette'])) {
+			$items = explode(" ",$rech["facette"]);
+			foreach ($items as $item) {
+				$item = str_replace("[", "", $item);
+				$item = str_replace("]", "", $item);
+				if (!trim($item)) continue;
+				if ($facette) 
+					$facette .= ', ';
+				if ($item[0] == "T")
+					$item[0] = "t";
+
+				$facette .= Class_Codification::getNomChamp($item). ' = ';
+				$facette .= Class_Codification::getLibelleFacette($item);
 			}
-			$facette=BR.$this->view->_("Facettes : %s", $facette);
+
+			$facette = BR . $this->view->_("Facettes : %s", $facette);
 		}
 
 		// Rebond
-		if($rech["code_rebond"])
-		{
-			$texte=Class_Codification::getNomChamp($rech["code_rebond"])." : ";
-			$texte.=Class_Codification::getLibelleFacette($rech["code_rebond"]);
-			if($rech["type_doc"]) $texte.=BR.$this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+		if(isset($rech["code_rebond"])) {
+			$texte = Class_Codification::getNomChamp($rech["code_rebond"]) . " : ";
+			$texte .= Class_Codification::getLibelleFacette($rech["code_rebond"]);
+			if (isset($rech["type_doc"])) 
+				$texte .= BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T" . $rech["type_doc"]));
+			return $texte . $facette;
 		}
 
 		// Recherche simple
-		elseif($mode == "simple")
-		{
-			$texte="Recherche : ". $rech["expressionRecherche"];
-			if($rech["type_doc"]) $texte.=$this->view->_(", type de document: %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
-			if($rech["annexe"])
-			{
-				if(!$texte)$texte="  "; else $texte.=BR;
-				$texte.=$this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
-				$texte.='&nbsp;&raquo;&nbsp;<a href="'.BASE_URL.'/recherche/simple?annexe=reset">Elargir la recherche à tous les sites</a>';
+		if ('simple' == $mode) {
+			$texte = "Recherche : ". $rech["expressionRecherche"];
+
+			if (isset($rech["type_doc"]) && $rech['type_doc']) 
+				$texte .= $this->view->_(", type de document: %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+
+			if (isset($rech["annexe"]) && $rech['annexe'])	{
+				$texte .= BR;
+				$texte .= $this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
+				$texte .= '&nbsp;&raquo;&nbsp;<a href="' . $this->view->url(). '?annexe=reset">Elargir la recherche à tous les sites</a>';
 			}
+			return $texte . $facette;
 		}
+
 		// Recherche avancee
-		elseif($mode=="avancee")
-		{
-			$operateur=array("and" => $this->view->_(" et "), "or" => $this->view->_(" ou "),"and not" => $this->view->_(" sauf "));
-			if($rech["type_recherche"]=="commence") $signe =$this->view->_(" commence par :"); else $signe =$this->view->_(" contient :");
-			if($rech["rech_titres"]) $texte=$this->view->_(", Titre").$signe.$rech["rech_titres"];
-			if($rech["rech_auteurs"]) $texte.= ", ".$operateur[$rech["operateur_auteurs"]]."Auteur".$signe.$rech["rech_auteurs"];
-			if($rech["rech_matieres"]) $texte.= ", ".$operateur[$rech["operateur_matieres"]]."Sujet".$signe.$rech["rech_matieres"];
-			if($rech["rech_dewey"]) $texte.= ", ".$operateur[$rech["operateur_dewey"]]."Dewey /pcdm4".$signe.$rech["rech_dewey"];
-			if($rech["rech_editeur"]) $texte.= ", ".$operateur[$rech["operateur_editeur"]]."Editeur".$signe.$rech["rech_editeur"];
-			if($rech["rech_collection"]) $texte.= ", ".$operateur[$rech["operateur_collection"]]."Collection".$signe.$rech["rech_collection"];
-			if($rech["type_doc"]) $texte.=BR.$this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
-			if($rech["annexe"])
-			{
-				if(!$texte)$texte="  "; else $texte.=BR;
-				$texte.=$this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
-				$texte.='&nbsp;&raquo;&nbsp;<a href="'.BASE_URL.'/recherche/avancee?annexe=reset">Elargir la recherche à tous les sites</a>';
+		$texte = '';
+		if ('avancee' == $mode) {
+			$operateur = array("and" => $this->view->_(" et "), 
+												 "or" => $this->view->_(" ou "),
+												 "and not" => $this->view->_(" sauf "));
+
+			$signe = (isset($rech["type_recherche"]) && ($rech["type_recherche"]=="commence")) ? 
+				$this->view->_(" commence par :"):
+				$this->view->_(" contient :");
+
+			if (isset($rech["rech_titres"])) 
+				$texte .= $this->view->_(", Titre") . $signe . $rech["rech_titres"];
+			if (isset($rech["rech_auteurs"])) 
+				$texte .= ", " . $operateur[$rech["operateur_auteurs"]] . "Auteur" . $signe . $rech["rech_auteurs"];
+			if (isset($rech["rech_matieres"])) 
+				$texte .= ", " . $operateur[$rech["operateur_matieres"]] . "Sujet" . $signe . $rech["rech_matieres"];
+			if (isset($rech["rech_dewey"]))
+				$texte .= ", " . $operateur[$rech["operateur_dewey"]] . "Dewey /pcdm4" . $signe . $rech["rech_dewey"];
+			if (isset($rech["rech_editeur"]))
+				$texte.= ", ". $operateur[$rech["operateur_editeur"]] . "Editeur" . $signe . $rech["rech_editeur"];
+			if (isset($rech["rech_collection"]))
+				$texte.= ", " . $operateur[$rech["operateur_collection"]] . "Collection" . $signe . $rech["rech_collection"];
+			if (isset($rech["type_doc"]))
+				$texte .= '  ' . BR . $this->view->_("Type de document : %s", Class_Codification::getLibelleFacette("T".$rech["type_doc"]));
+
+			if (isset($rech["annexe"])) {
+				if ($texte) 
+					$texte .= BR;
+				$texte .= $this->view->_("Site : %s", Class_Codification::getLibelleFacette("Y".$rech["annexe"]));
+				$texte .= '&nbsp;&raquo;&nbsp;<a href="'. $this->view->url() . '?annexe=reset">Elargir la recherche à tous les sites</a>';
 			}
-			if($rech["annee_debut"] and $rech["annee_fin"])
-			{
-				$texte.=BR.$this->view->_("Documents parus ");
-				if($rech["annee_debut"] == $rech["annee_fin"])$texte.="en ".$rech["annee_debut"];
-				else $texte.=$this->view->_("entre %s et %s", $rech["annee_debut"], $rech["annee_fin"]);
+
+			if (isset($rech["annee_debut"]) && isset($rech["annee_fin"])) {
+				$texte .= BR . $this->view->_("Documents parus ");
+				$texte .= ($rech["annee_debut"] == $rech["annee_fin"]) ?
+					"en " . $rech["annee_debut"] :
+					$this->view->_("entre %s et %s", $rech["annee_debut"], $rech["annee_fin"]);
 			}
-			$texte=substr($texte,2);
+			$texte = substr($texte,2);
 		}
-		$texte.=$facette;
-		return $texte;
+		return $texte . $facette;
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -511,11 +606,10 @@ class RechercheController extends Zend_Controller_Action
 				$messages []= $this->view->_("Le code anti-spam est incorrect.");
 			$errorMessage = implode(',', $messages);
 
-			if($errorMessage=="")
-			{
+			if($errorMessage=="")	{
 				// Stats réservation
-				$stat=new Class_StatsNotices();
-				$stat->addStatReservation($id_notice);
+				//$stat=new Class_StatsNotices();
+				//$stat->addStatReservation($id_notice);
 
 				$class_notice = new Class_Notice();
 				$notice = $class_notice->getNotice($id_notice,"TAE");
@@ -537,13 +631,26 @@ class RechercheController extends Zend_Controller_Action
 				$messages []= utf8_decode($demande);
 				$message = implode("\r\n", $messages);
 
-				ini_set('sendmail_from', 'nobody@afi-sa.net');
-				// Pour la bib
-				$header = "From: ". utf8_decode($user_name) . " <" . $user_mail . ">\r\n";
-				mail($mail_bib, utf8_decode($this->view->_("Demande de réservation de document")), $message, $header);
-				// Pour le user
-				$header_user = "From: Calice68 <nobody@calice68.fr>\r\n";
-				mail($user_mail, utf8_decode($this->view->_("Demande de réservation de document")), $message_user.$message, $header_user);
+				//pour la bibliothèque
+				$mail = new ZendAfi_Mail('utf8');
+				$mail
+					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
+					->setBodyText($message)
+					->setFrom($user_mail,
+										$user_name)
+					->addTo($mail_bib)
+					->send();
+
+				//pour l'utilisateur
+				$mail = new ZendAfi_Mail('utf8');
+				$mail
+					->setSubject(utf8_decode($this->view->_("Demande de réservation de document")))
+					->setBodyText($message_user.$message)
+					->setFrom('nobody@noreply.fr',
+										Class_Bib::getLoader()->find($id_bib)->getLibelle())
+					->addTo($user_mail)
+					->send();
+
 				$this->_redirect('opac/recherche/viewnotice/id/'.$id_notice."?type_doc=".$notice["type_doc"]);
 			}
 			else
@@ -616,5 +723,33 @@ class RechercheController extends Zend_Controller_Action
 
 		print(json_encode($message));
 		exit;
+	}
+
+
+	public function reservationPickupAjaxAction() {
+		$this->getHelper('ViewRenderer')->setLayoutScript('iframe.phtml');
+		Class_ScriptLoader::getInstance()
+			->loadJQuery()
+			->addAdminScript('onload_utils')
+			->addOPACStyleSheet('global')
+			->addSkinStyleSheet('global');
+
+		$annexes = Class_CodifAnnexe::findAllByPickup();
+
+		$form = $this->view->newForm(array('id' => 'pickup',
+																			 'class' => 'zend_form'))
+			->setMethod(Zend_Form::METHOD_POST)
+			->addElement('Radio', 'code_annexe', array('required' => true,
+																								 'allowEmpty' => false))
+			->addDisplayGroup(array('code_annexe'), 'group', array('legend' => 'Site de retrait'))
+			->addElement('Submit', 'Valider', array('onclick' => 'javascript:parent.reservationPickupAjaxConfirm(this.form);return false;'))
+			->addElement('Submit', 'Annuler', array('onclick' => 'javascript:parent.reservationPickupAjaxCancel();return false;'));
+			
+		$radio = $form->getElement('code_annexe');
+		foreach ($annexes as $annexe)
+			$radio->addMultiOption($annexe->getCode(), $annexe->getLibelle());
+		$radio->setValue($this->_getParam('code_annexe'));
+
+		$this->view->form = $form;
 	}
 }

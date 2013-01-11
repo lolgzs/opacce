@@ -32,55 +32,43 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$controller = $this->_request->getControllerName();
 		$action = $this->_request->getActionName();
 		$session = Zend_Registry::get('session');
+
+		$auth = ZendAfi_Auth::getInstance();
 		
 		if (isset($session->baseUrl))
 		{
 			if($session->baseUrl != BASE_URL)
 			{
 				$session->baseUrl = BASE_URL;
-				Zend_Auth::getInstance()->clearIdentity();
+				$auth->clearIdentity();
 			}
 		}
-		$auth = Zend_Auth::getInstance();
+
 		
 		// Entree dans fonctions admin
-		if ($module == 'admin' and $controller != 'error')
-		{
-			$acl = new ZendAfi_Acl_AdminControllerRoles();
-	    // Un user est connecté
-	    if($auth->hasIdentity())
-			{
-				$resource = $controller;
-				$role = $auth->getIdentity()->ROLE;		
-				
-				// si la resource n'existe pas dans ZendAfi_Acl_AdminControllerRoles
-				if (!$acl->has($resource)) $resource = null;
-				
-				// Test du role et redirection vers opac si pas autorisé
-				if (!$acl->isAllowed($role, $resource))
-				{
-	        $module = 'opac';
-					$controller = 'index';
-					$action = 'index';
-				}
-			}
-			// User non connecté on redirige vers le login
-			else
-			{ 
-				$module = 'admin';
+		if ($module == 'admin' and $controller != 'error')	{
+			Zend_Controller_Front::getInstance()
+				->getPlugin('Zend_Controller_Plugin_ErrorHandler')
+				->setErrorHandlerModule('admin');
+
+			if (!$user = Class_Users::getIdentity()) {
 				$controller = 'auth';
 				$action = 'login';
-			}
-		}
-		
-		// Entree dans opac on teste si le site a été désactivé
-		else 
-		{		
-			if (Class_AdminVar::get("SITE_OK") == "0" and $module == 'opac')
-			{
+			} else if (!$this->userCanAccessAdminPage($user)) {
 				$module = 'opac';
 				$controller = 'index';
+				$action = 'index';
+			}
+		} else 	{		
+		// Entree dans opac on teste si le site a été désactivé
+			if (Class_AdminVar::get("SITE_OK") == "0" and $module == 'opac')	{
+				$controller = 'index';
 				$action = 'sitedown';
+			}
+
+			if ((!$user = Class_Users::getIdentity()) && ($controller == "abonne" && $action !== "authenticate")) {
+				$controller = 'auth';
+				$action = 'login';
 			}
 		}
 		
@@ -89,4 +77,19 @@ class ZendAfi_Controller_Plugin_AdminAuth extends Zend_Controller_Plugin_Abstrac
 		$request->setControllerName($controller);
 		$request->setActionName($action);
 	}
+
+
+	protected function userCanAccessAdminPage($user) {
+		$acl = new ZendAfi_Acl_AdminControllerRoles();
+		$resource = $this->_request->getControllerName();
+		$role = $user->getRole();
+
+		// si la resource n'existe pas dans ZendAfi_Acl_AdminControllerRoles
+		if (!$acl->has($resource)) $resource = null;
+				
+		// Test du role et redirection vers opac si pas autorisé
+		return $acl->isAllowed($role, $resource);
+	}
 }
+
+?>

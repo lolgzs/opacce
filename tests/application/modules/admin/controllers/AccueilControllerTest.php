@@ -20,6 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
+
 class AccueilControllerBoite2ColTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -39,7 +40,7 @@ class AccueilControllerBoite2ColTest extends Admin_AbstractControllerTestCase {
 		$this->assertTrue($this->profil_biologie->isValid());
 
 		$this->request_url = '/admin/accueil/conteneur2colonnes?id_profil=34&id_module=3&type_module=CONTENEUR_DEUX_COLONNES&config=accueil';
-		$this->dispatch($this->request_url);
+		$this->dispatch($this->request_url, true);
 	}
 
 
@@ -202,6 +203,7 @@ class AccueilControllerLangueConfigurationTest extends Admin_AbstractControllerT
 
 
 
+
 class AccueilControllerBibliothequeNumeriqueTest extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -346,6 +348,12 @@ class AccueilControllerConfigCalendrierTest extends Admin_AbstractControllerTest
 	function checkBoxDisplayNextEventShouldBeChecked() {
 		$this->assertXPath('//input[@type="checkbox"][@name="display_next_event"][@checked="checked"]');
 	}
+
+
+	/** @test */
+	public function inputNbEventsShouldDisplayThree() {
+		$this->assertXPath("//input[@name='nb_events'][@value='3']");
+	}
 }
 
 
@@ -442,3 +450,119 @@ class AccueilControllerConfigRSSDefaultsTest extends Admin_AbstractControllerTes
 		$this->assertXPath("//input[@name='nb_aff'][@value='2']");
 	}
 }
+
+
+
+
+class AccueilControllerConfigBoiteLoginTest extends Admin_AbstractControllerTestCase  {
+	public function setUp() {
+		parent::setUp();
+		Class_Profil::getCurrentProfil()
+			->updateModuleConfigAccueil(25,
+																	array('type_module' => 'LOGIN',
+																				'division' => 4,
+																				'id_module' => 32,
+																				'preferences' => array()));		
+		$this->dispatch('/admin/accueil/login?config=accueil&type_module=LOGIN&id_module=32');
+	}
+
+
+	/** @test */
+	public function inputTitreShouldBeSeConnecter() {
+		$this->assertXPath('//input[@name="titre"][@value="Se connecter"]');
+	}
+
+
+	/** @test */
+	public function inputIdentifiantExempleShouldBeEmpty() {
+		$this->assertXPath('//input[@name="identifiant_exemple"][@value=""]');
+	}
+
+
+	/** @test */
+	public function inputMotDePasseExempleShouldBeEmpty() {
+		$this->assertXPath('//input[@name="mot_de_passe_exemple"][@value=""]');
+	}
+
+
+	/** @test */
+	public function inputLibelleLienConnexion() {
+		$this->assertXPath('//input[@name="lien_connexion"][@value="» Se connecter"]');
+	}
+
+
+	/** @test */
+	public function inputLibelleLienMotDePasseOublie() {
+		$this->assertXPath('//input[@name="lien_mot_de_passe_oublie"][@value="» Mot de passe oublié ?"]');
+	}
+}
+
+
+
+
+abstract class AccueilControllerConfigBoiteKiosqueProfilLognesTestCase extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_Bib::newInstanceWithId(3)
+			->setLibelle('Lognes');
+
+		Class_Profil::getCurrentProfil()
+			->updateModuleConfigAccueil(25,
+																	array('type_module' => 'KIOSQUE',
+																				'division' => 4,
+																				'id_module' => 32,
+																				'preferences' => array()))
+			->setIdSite(3);
+		$this->dispatch('/admin/accueil/kiosque?config=accueil&type_module=KIOSQUE&id_module=32', true);
+	}
+}
+
+
+
+
+class AccueilControllerConfigBoiteKiosqueProfilLognesAsAdminPortailTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase {
+	/** @test */
+	public function selectStyleListeShouldContainsOptGroupObjetsJS() {
+		$this->assertXPath('//select[@name="style_liste"]//optgroup[@label="Objets javascript"]');
+	}
+
+
+	/** @test */
+	public function selectStyleListeShouldContainsOptGroupObjetsFlash() {
+		$this->assertXPath('//select[@name="style_liste"]//optgroup[@label="Objets flash"]');
+	}
+	
+}
+
+
+
+class AccueilControllerConfigBoiteKiosqueAsAdminBibLognesTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase  {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ID_SITE = 3;
+	}
+
+
+	/** @test */
+	public function pageShouldBeVisible() {
+		$this->assertXPath('//select[@name="style_liste"]');
+	}
+}
+
+
+
+class AccueilControllerConfigBoiteKiosqueAsAdminBibOtherSiteTest extends AccueilControllerConfigBoiteKiosqueProfilLognesTestCase  {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ID_SITE = 5;
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToPageAccueil() {
+		$this->assertRedirect();
+	}
+}
+
+?>

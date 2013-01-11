@@ -2,8 +2,9 @@
 echo $this->partial('album/_album_panel.phtml', 
 										array('album' => $this->album));
 
-echo sprintf('Poids de la première vignette: %d ko (essayez de garder une valeur inférieure à 50ko)',
-						 round($this->album->getFirstThumbnailSize()/1000));
+if ($this->form)
+	echo sprintf('Poids de la première vignette: %d ko (essayez de garder une valeur inférieure à 50ko)',
+							 round($this->album->getFirstThumbnailSize()/1000));
 
 echo $this->renderForm($this->form);
 

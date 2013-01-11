@@ -30,7 +30,7 @@ class AvisNoticeLoader extends Storm_Model_Loader {
 		$preferences["avec_avis"] = 1; //seulement les notices avec avis
 
 		$catalogue = new Class_Catalogue();
-		$notices = $catalogue->getNotices($preferences);
+		$notices = $catalogue->getNoticesByPreferences($preferences);
 
     if (count($notices) == 0) {
 			//on ne doit retourner aucun avis
@@ -76,6 +76,11 @@ class AvisNoticeLoader extends Storm_Model_Loader {
 			->select()
 			->order('DATE_AVIS DESC');
 
+		$preferences = array_merge(array('id_panier' => 0,
+																		 'id_catalogue' => 0,
+																		 'abon_ou_bib' => 'all'),
+															 $preferences);
+
 		$id_panier = $preferences['id_panier'];
 		$id_catalogue = $preferences['id_catalogue'];
 		$abon_ou_bib = $preferences['abon_ou_bib'];
@@ -97,9 +102,10 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 	protected $_table_primary = 'ID';
 	protected $_belongs_to = array('user' => array('model' => 'Class_Users',
 																								  'referenced_in' => 'id_user'));
+	protected $_default_attribute_values = array('statut' => 0);
+
 	protected $_notices;
 
-	
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
 	}
@@ -199,13 +205,26 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 		return $user->getNomAff();
 	}
 
+
 	public function isWrittenByBibliothequaire() {
 		return $this->getAbonOuBib() == 1;
 	}
 
+
+	public function beWrittenByBibliothecaire() {
+		return $this->setAbonOuBib(1);
+	}
+
+
 	public function isWrittenByAbonne() {
 		return $this->getAbonOuBib() == 0;
 	}
+
+
+	public function beWrittenByAbonne() {
+		return $this->setAbonOuBib(0);
+	}
+
 
 	public function setModerationOK() {
 		$this->setStatut(1);
@@ -266,6 +285,12 @@ class Class_AvisNotice  extends Storm_Model_Abstract {
 			$this->setAbonOuBib(0);
 	}
 
+	
+	public function getUrlVignette() {
+		if (!$notice = $this->getFirstNotice())
+			return '';
+		return $notice->getUrlVignette();
+	}
 
 }
 

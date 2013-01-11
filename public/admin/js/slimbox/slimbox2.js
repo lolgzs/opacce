@@ -1,14 +1,14 @@
 /*!
-	Slimbox v2.03 - The ultimate lightweight Lightbox clone for jQuery
-	(c) 2007-2009 Christophe Beyls <http://www.digitalia.be>
+	Slimbox v2.04 - The ultimate lightweight Lightbox clone for jQuery
+	(c) 2007-2010 Christophe Beyls <http://www.digitalia.be>
 	MIT-style license.
 */
 
 (function($) {
 
 	// Global variables, accessible to Slimbox only
-	var win = $(window), options, images, activeImage = -1, activeURL, prevImage, nextImage, compatibleOverlay, middle, centerWidth, centerHeight, ie6 = !window.XMLHttpRequest,
-		operaFix = window.opera && (document.compatMode == "CSS1Compat") && ($.browser.version >= 9.3), documentElement = document.documentElement,
+	var win = $(window), options, images, activeImage = -1, activeURL, prevImage, nextImage, compatibleOverlay, middle, centerWidth, centerHeight,
+		ie6 = !window.XMLHttpRequest, hiddenElements = [], documentElement = document.documentElement,
 
 	// Preload images
 	preload = {}, preloadPrev = new Image(), preloadNext = new Image(),
@@ -66,8 +66,7 @@
 			closeKeys: [27, 88, 67],		// Array of keycodes to close Slimbox, default: Esc (27), 'x' (88), 'c' (67)
 			previousKeys: [37, 80],			// Array of keycodes to navigate to the previous image, default: Left arrow (37), 'p' (80)
 			nextKeys: [39, 78],			// Array of keycodes to navigate to the next image, default: Right arrow (39), 'n' (78)
-			onOpen:function(){},						// Evenement quand l'image est chargée
-			onClose:function(){}            // Evenement quand ca ferme
+			onClose: function() {}  //close callback
 		}, _options);
 
 		// The function is called for a single image, with URL and Title as first two arguments
@@ -76,7 +75,7 @@
 			startImage = 0;
 		}
 
-		middle = win.scrollTop() + ((operaFix ? documentElement.clientHeight : win.height()) / 2);
+		middle = win.scrollTop() + (win.height() / 2);
 		centerWidth = options.initialWidth;
 		centerHeight = options.initialHeight;
 		$(center).css({top: Math.max(0, middle - (centerHeight / 2)), width: centerWidth, height: centerHeight, marginLeft: -centerWidth/2}).show();
@@ -84,7 +83,6 @@
 		if (compatibleOverlay) overlay.style.position = "absolute";
 		$(overlay).css("opacity", options.overlayOpacity).fadeIn(options.overlayFadeDuration);
 		position();
-		objects_visibility = [];
 		setup(1);
 
 		images = _images;
@@ -111,7 +109,8 @@
 
 		var links = this;
 
-		return links.unbind("click").click(function() {
+		return links.unbind("click").click(function(event) {
+			event.stopImmediatePropagation();
 			// Build the list of images that will be displayed
 			var link = this, startIndex = 0, filteredLinks, i = 0, length;
 			filteredLinks = $.grep(links, function(el, i) {
@@ -134,18 +133,23 @@
 	*/
 
 	function position() {
-		var l = win.scrollLeft(), w = operaFix ? documentElement.clientWidth : win.width();
+		var l = win.scrollLeft(), w = win.width();
 		$([center, bottomContainer]).css("left", l + (w / 2));
 		if (compatibleOverlay) $(overlay).css({left: l, top: win.scrollTop(), width: w, height: win.height()});
 	}
 
-
 	function setup(open) {
-		$("object").add(ie6 ? "select" : "embed").each(function(index, el) {
-			if (open) 
-					objects_visibility[el] = el.style.visibility;
-			el.style.visibility = open ? "hidden" : objects_visibility[el];
-		});
+		if (open) {
+			$("object").add(ie6 ? "select" : "embed").each(function(index, el) {
+				hiddenElements[index] = [el, el.style.visibility];
+				el.style.visibility = "hidden";
+			});
+		} else {
+			$.each(hiddenElements, function(index, el) {
+				el[0].style.visibility = el[1];
+			});
+			hiddenElements = [];
+		}
 		var fn = open ? "bind" : "unbind";
 		win[fn]("scroll resize", position);
 		$(document)[fn]("keydown", keyDown);
@@ -218,7 +222,6 @@
 		if (nextImage >= 0) $(nextLink).show();
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		bottomContainer.style.visibility = "";
-		options.onOpen();
 	}
 
 	function stop() {
@@ -234,9 +237,8 @@
 			activeImage = prevImage = nextImage = -1;
 			$(center).hide();
 			$(overlay).stop().fadeOut(options.overlayFadeDuration, setup);
-			options.onClose();
 		}
-
+		options.onClose();
 		return false;
 	}
 

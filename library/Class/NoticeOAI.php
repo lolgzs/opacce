@@ -18,9 +18,6 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 :	Notice OAI
-//////////////////////////////////////////////////////////////////////////////////////////
 
 class TableNoticesOAI extends Zend_Db_Table_Abstract {
     protected $_name = 'oai_notices';
@@ -38,15 +35,28 @@ class TableNoticesOAI extends Zend_Db_Table_Abstract {
 class Class_NoticeOAI extends Storm_Model_Abstract {
 	protected $_table_name = 'oai_notices';
 	protected $_belongs_to = array('entrepot' => array('model' => 'Class_EntrepotOAI',
-																										  'referenced_in' => 'id_entrepot'));
-
+																										 'referenced_in' => 'id_entrepot'));
+	
 	protected $_table_notices;
 	protected $_oai_service;
 	protected $_entrepot_oai;
+	protected $_default_attribute_values = array('data' => '', 
+																							 'date' => '');
 
 
 	public static function getLoader() {
 		return self::getLoaderFor(__CLASS__);
+	}
+
+
+	public static function findNoticesByExpression($expression) {
+		$instance = new self();
+		$requetes = $instance->recherche(array('expressionRecherche' => $expression));
+
+		if (isset($requetes['erreur']))
+			throw new Class_SearchException($requetes['erreur']);
+
+		return $instance->getPageResultat($requetes['req_liste']);
 	}
 
 
@@ -72,16 +82,34 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 
 	public function getDataAsArray() {
-		return unserialize($this->getData());
+		if ($datas = unserialize($this->getData()))
+			return $datas;
+		return array();
 	}
 
 
 	public function getTitre() {
-	  $datas = $this->getDataAsArray();
-		if (array_key_exists('titre', $datas))
-			 return $datas['titre'];
-		return '';
+		if ($titre = $this->TITRE)
+			return $titre;
+
+		return $this->extractData('titre');
   }
+
+
+	public function getAuteur() {
+		return $this->extractData('auteur');
+	}
+
+
+	public function getEditeur() {
+		return $this->extractData('editeur');
+	}
+
+
+	public function extractData($name) {
+	  $datas = $this->getDataAsArray();
+		return isset($datas[$name]) ? $datas[$name] : '';
+	}
 
 
 	public function resumeHarvest($entrepot_oai, $resumptionToken) {
@@ -165,8 +193,7 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	//------------------------------------------------------------------------------------------------------
 	// LISTE DES ENTREPOTS QUI ONT DES NOTICES
 	//------------------------------------------------------------------------------------------------------
-	public function getEntrepots()
-	{
+	public function getEntrepots(){
 		$liste=fetchAll("select distinct(id_entrepot) from oai_notices");
 		if(!$liste) return false;
 		$ret['']="** toutes **";
@@ -182,27 +209,21 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 	//------------------------------------------------------------------------------------------------------
 	// RECHERCHE
 	//------------------------------------------------------------------------------------------------------
-	public function recherche($rech)
-	{
+	public function recherche($rech)	{
 		$translate = Zend_Registry::get('translate');
 		$ix = new Class_Indexation();
-
-		// Entrepot
-		$id_entrepot=$criteres["id_oai"];
+		$ret = array('nb_mots' => 0);
 
 		// Analyse de l'expression
 		$mots=$ix->getMots($rech["expressionRecherche"]);
 		$recherche="";
-		foreach($mots as $mot)
-		{
-			$mot=$ix->getExpressionRecherche($mot);
-			if($mot)
-			{
+		foreach($mots as $mot)	{
+			if($mot = $ix->getExpressionRecherche($mot))	{
 				$ret["nb_mots"]++;
-				if($pertinence == true) $recherche.=" ".$mot;
-				else $recherche.=" +".$mot;
+				$recherche.=" +".$mot;
 			}
 		}
+
 		$recherche=trim($recherche);
 		if(!$recherche)  {
 			$ret["statut"]="erreur"; 
@@ -210,10 +231,11 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 			return $ret;}
 
 		// Constitution des requetes
-		if($pertinence == true) $against=" AGAINST('".$recherche."')";
-		else $against=" AGAINST('".$recherche."' IN BOOLEAN MODE)";
-		$where="Where MATCH(recherche)";
-		if($rech["id_entrepot"]>'') $conditions=" and id_entrepot=".$rech["id_entrepot"];
+		$against = " AGAINST('".$recherche."' IN BOOLEAN MODE)";
+		$where = 'where MATCH(recherche)';
+		$conditions = '';
+		if (isset($rech["id_entrepot"]))
+			$conditions = " and id_entrepot=".$rech["id_entrepot"];
 
 		$order_by=" order by alpha_titre";
 		$req_liste = "select id from oai_notices ".$where.$against.$conditions.$order_by;
@@ -221,8 +243,7 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 
 		// Lancer les requetes
 		$nb=fetchOne($req_comptage);
-		if(!$nb)
-		{
+		if(!$nb) {
 			$ret["statut"]="erreur";
 			$ret["erreur"]=$translate->_("Aucun résultat trouvé");
 			return $ret;
@@ -235,46 +256,65 @@ class Class_NoticeOAI extends Storm_Model_Abstract {
 //------------------------------------------------------------------------------------------------------
 // Execute une requete notices et rend 1 page
 //------------------------------------------------------------------------------------------------------
-	public function getPageResultat($req)
-	{
+	public function getPageResultat($req, $page = 1)	{
 		// Nombre par page
 		$this->nb_par_page=10;
 
 		// Calcul de la limite
-		$page=intval($_REQUEST["page"]);
-		if(!$page) $page=1;
-		if(strpos($req," LIMIT ") === false)
-		{
+		$page = (int)$page ? (int)$page : 1;
+		$debut_limit = $fin_limit = 0;
+
+		if(strpos($req," LIMIT ") === false) {
 			$limit = ($page-1) * $this->nb_par_page;
 			$limit = " LIMIT ".$limit.",". $this->nb_par_page;
 			$req.=$limit;
 		}
-		else
-		{
+		else {
 			$debut_limit=($page-1) * $this->nb_par_page;
 			$fin_limit=$this->nb_par_page;
 		}
 
 		// Execute la requete
-		$ids=fetchAll($req);
-		if($fin_limit) $ids=array_slice ($ids, $debut_limit, $fin_limit);
-		foreach($ids as $lig)
-		{
-			$ret[]=$this->getNotice($lig["id"]);
-		}
-		return $ret;
+		$rows = fetchAll($req);
+
+		if($fin_limit)
+			$rows =array_slice ($rows, $debut_limit, $fin_limit);
+
+		$ids = array();
+		foreach($rows as $row)
+			$ids []= $row['id'];
+
+		return Class_NoticeOAI::getLoader()->findAllBy(array('id' => $ids));
 	}
 
 	//------------------------------------------------------------------------------------------------------
 	// Rend les elements d'une notice affichable
 	//------------------------------------------------------------------------------------------------------
-	public function getNotice($id_notice)
-	{
+	public function getNotice($id_notice)	{
 		$enreg=fetchEnreg("select * from oai_notices where id=$id_notice");
 		$data=unserialize($enreg["data"]);
 		$data["id"] = $enreg["id"];
 		$data["source"]=$enreg["id_entrepot"];
 		return $data;
+	}
+
+
+	public function getLibelleEntrepot() {
+		if ($this->hasEntrepot())
+			return $this->getEntrepot()->getLibelle();
+		return '';
+	}
+
+
+	public function isGallica() {
+		return $this->getEntrepot()->isGallica();
+	}
+
+ 
+	public function getGallicaArkId() {
+		if (!$this->isGallica())
+			return '';
+		return array_last(explode('/', $this->getIdOai()));
 	}
 }
 

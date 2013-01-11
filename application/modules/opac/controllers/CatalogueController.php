@@ -36,7 +36,7 @@ class CatalogueController extends Zend_Controller_Action
 		$this->catalogue = new Class_Catalogue();
 		
 		// Reset session
-		if($_REQUEST["reset"] == "true") 
+		if (isset($_REQUEST["reset"]) && ($_REQUEST["reset"] == "true"))
 		{
 			unset($_REQUEST["reset"]);
 			unset($_SESSION["recherche"]);
@@ -45,8 +45,8 @@ class CatalogueController extends Zend_Controller_Action
 		// Facettes
 		if(array_isset("facette", $_REQUEST)) 
 		{
-			$facette=$_REQUEST["facette"].";";
-			$facettes=$_REQUEST["facettes"];
+			$facette = $_REQUEST["facette"].";";
+			$facettes = isset($_REQUEST["facettes"]) ? $_REQUEST["facettes"] : '';
 			if(strpos($facettes,$facette) === false) $facettes.=" ".$facette;
 			$_REQUEST["facettes"]=$facettes;
 			unset($_REQUEST["page"]);
@@ -82,12 +82,10 @@ class CatalogueController extends Zend_Controller_Action
 		if (!array_isset("recherche", $_SESSION)) $_SESSION["recherche"] = array();
 
 		// Get requetes
-		if (!array_isset("resultat", $_SESSION["recherche"]))
-		{
+		if (!array_isset("resultat", $_SESSION["recherche"]))		{
 			$ret=$this->catalogue->getRequetes($_REQUEST,false);
 			
-			if (array_isset("req_comptage", $ret))
-			{
+			if (array_isset("req_comptage", $ret)) {
 				$ret["nombre"]=fetchOne($ret["req_comptage"]);
 				if($_REQUEST["nb_notices"]) if($ret["nombre"] > $_REQUEST["nb_notices"]) $ret["nombre"]=$_REQUEST["nb_notices"];
 				$facettes = $moteur->getFacettes($ret["req_facettes"],$this->preferences);
@@ -98,10 +96,11 @@ class CatalogueController extends Zend_Controller_Action
 
 		// Variables viewer
 		$_SESSION["recherche"]["retour_liste"]=$this->view->url_retour;
+		$page = $this->_getParam('page', 1);
 		$this->view->titre=$_REQUEST["titre"];
-		$this->view->liste=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"]);
+		$this->view->liste=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"], $page);
 		$this->view->resultat=$_SESSION["recherche"]["resultat"];
-		$this->view->resultat["page_cours"]=array_isset("page", $_REQUEST) ? $_REQUEST["page"] : 1;
+		$this->view->resultat["page_cours"]=$page;
 		$this->view->url_facette=$this->view->url_retour;
 		$this->view->texte_selection=$this->getTexteSelection();
 	}
@@ -111,6 +110,7 @@ class CatalogueController extends Zend_Controller_Action
 //------------------------------------------------------------------------------------------------------
 	private function getTexteSelection()
 	{
+		$facette = '';
 		// facettes
 		if(array_isset("facettes", $_REQUEST))
 		{

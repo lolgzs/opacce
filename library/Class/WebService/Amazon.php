@@ -166,15 +166,25 @@ class Class_WebService_Amazon
 //------------------------------------------------------------------------------------------------------
 // Résumés et analyses
 //------------------------------------------------------------------------------------------------------
-	function rend_analyses($isbn)
-	{
-		if(!trim($isbn)) return false;
+	public function getResumes($notice) {
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		return $this->rend_analyses($service);
+	}
+
+
+	function rend_analyses($isbn)	{
+		if(!trim($isbn)) 
+			return array();
+
 		$req=$this->req_isbn($isbn)."&ResponseGroup=Medium";
-		if(!$this->requete($req)) return false;
+		if (!$this->requete($req)) 
+			return array();
+
 		$item=$this->xml->getNode("EditorialReviews");
 		$item=$this->xml->get_child_node($item,"EditorialReview");
-		while( $item )
-		{
+		while( $item )	{
 			$index=count($avis);
 			$avis[$index]["source"]=$this->xml->get_child_value($item,"source");
 			$avis[$index]["texte"]=utf8_encode($this->xml->get_child_value($item,"content"));

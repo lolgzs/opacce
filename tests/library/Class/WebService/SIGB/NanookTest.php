@@ -57,13 +57,12 @@ class NanookGetServiceTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http://localhost:8080/afi_Nanook/ilsdi/',
 												$this->service->getServerRoot());
 	}
-
 }
 
 
 
 
-abstract class NanookTestCase extends PHPUnit_Framework_TestCase {
+abstract class NanookTestCase extends Storm_Test_ModelTestCase {
 	/** @var PHPUnit_Framework_MockObject_MockObject */
 	protected $_mock_web_client;
 
@@ -71,11 +70,23 @@ abstract class NanookTestCase extends PHPUnit_Framework_TestCase {
 	protected $_service;
 
 	public function setUp() {
-		$this->_mock_web_client = $this->getMock('Class_WebService_SimpleWebClient');
+		parent::setUp();
+
+		$this->_mock_web_client = Storm_Test_ObjectWrapper::on(new Class_WebService_SimpleWebClient());
 
 		$this->_service = Class_WebService_SIGB_Nanook_Service::newInstance()
 			->setServerRoot('http://localhost:8080/afi_Nanook/ilsdi/')
 			->setWebClient($this->_mock_web_client);
+
+		$annexe_cran = Class_CodifAnnexe::getLoader()->newInstanceWithId(3)
+								->setLibelle('Annexe Cran-Gevrier')
+								->setIdBib(3)
+			          ->setCode(10);
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CodifAnnexe')
+			->whenCalled('findFirstBy')->answers(null)
+			->whenCalled('findFirstBy')->with(array('id_bib' => 3))->answers($annexe_cran)
+			->whenCalled('findFirstBy')->with(array('code' => 10))->answers($annexe_cran);
 	}
 }
 
@@ -83,18 +94,6 @@ abstract class NanookTestCase extends PHPUnit_Framework_TestCase {
 
 
 abstract class NanookServiceErrorTestCase extends NanookTestCase {
-	/** @test */
-	public function getEmprunteurShouldReturnEmptyEmprunteur() {
-		$emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
-																								 ->newInstance()
-																								 ->setIdSigb(1));
-		$this->assertNotNull($emprunteur);
-		$this->assertEmpty($emprunteur->getReservations());
-		$this->assertEmpty($emprunteur->getPretsEnRetard());
-		$this->assertEmpty($emprunteur->getEmprunts());
-	}
-
-
 	/** @test */
 	public function reserverExemplaireShouldReturnFailure() {
 		$this->assertEquals(
@@ -138,11 +137,10 @@ class NanookNoConnectionTest extends NanookServiceErrorTestCase {
 		parent::setUp();
 
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
-			->will($this->throwException(
-				new Zend_Http_Client_Adapter_Exception('Unable to connect')
-			));
+			->whenCalled('open_url')
+			->willDo(function () {
+				throw new Zend_Http_Client_Adapter_Exception('Unable to connect');
+			});
 	}
 }
 
@@ -154,9 +152,19 @@ class NanookHtmlResponseTest extends NanookServiceErrorTestCase {
 		parent::setUp();
 
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
-			->will($this->returnValue(NanookFixtures::htmlTomcatError()));
+			->whenCalled('open_url')
+			->answers(NanookFixtures::htmlTomcatError());
+	}
+
+	/** @test */
+	public function getEmprunteurShouldReturnEmptyEmprunteur() {
+		$emprunteur = $this->_service->getEmprunteur(Class_Users::getLoader()
+																								 ->newInstance()
+																								 ->setIdSigb(1));
+		$this->assertNotNull($emprunteur);
+		$this->assertEmpty($emprunteur->getReservations());
+		$this->assertEmpty($emprunteur->getPretsEnRetard());
+		$this->assertEmpty($emprunteur->getEmprunts());
 	}
 }
 
@@ -174,10 +182,9 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 		Class_Profil::getCurrentProfil()->setCfgNotice(array('exemplaires' => array()));
 
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetRecords/id/9842')
-			->will($this->returnValue(NanookFixtures::xmlGetRecordLiliGrisbiAndCo()));
+			->answers(NanookFixtures::xmlGetRecordLiliGrisbiAndCo());
 
 		$this->_notice = $this->_service->getNotice('9842');
 
@@ -197,8 +204,8 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 
 
 	/** @test */
-	public function getExemplairesShouldReturnAnArrayWithSizeTwo() {
-		$this->assertEquals(2, count($this->_notice->getExemplaires()));
+	public function noticeShouldHaveSixItems() {
+		$this->assertEquals(6, count($this->_notice->getExemplaires()));
 	}
 
 
@@ -261,7 +268,7 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 	/** @test */
 	public function secondExemplaireShouldBeEnPret() {
 		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_EN_PRET,
-														$this->_notice->exemplaireAt(1)->getDisponibilite());
+												$this->_notice->exemplaireAt(1)->getDisponibilite());
 	}
 
 
@@ -274,7 +281,40 @@ class NanookGetNoticeLiliGrisbiAndCoTest extends NanookTestCase {
 	/** @test */
 	public function secondExemplaireDateRetourShouldBe12012029() {
 		$this->assertEquals('12/01/2029',
-																$this->_notice->exemplaireAt(1)->getDateRetour());
+												$this->_notice->exemplaireAt(1)->getDateRetour());
+	}
+
+
+	/** @test */
+	public function thirdExemplaireBibliothequeShouldBeCran() {
+		$this->assertEquals('Annexe Cran-Gevrier', $this->_notice->exemplaireAt(2)->getBibliotheque());
+	}
+
+
+	/** @test */
+	public function thirdExemplaireCodeAnnexeShouldBeThree() {
+		$this->assertEquals(3, $this->_notice->exemplaireAt(2)->getCodeAnnexe());
+	}
+
+
+	/** @test */
+	public function fourthExemplaireShouldBeEnTransit() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_TRANSIT,
+			                  $this->_notice->exemplaireAt(3)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function fiftExemplaireShouldBeDejaReserve() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_DEJA_RESERVE,
+			                  $this->_notice->exemplaireAt(4)->getDisponibilite());
+	}
+
+
+	/** @test */
+	public function sixthExemplaireShouldBeEnCommande() {
+		$this->assertEquals(Class_WebService_SIGB_Exemplaire::DISPO_EN_COMMANDE,
+			                  $this->_notice->exemplaireAt(5)->getDisponibilite());
 	}
 }
 
@@ -285,10 +325,9 @@ class NanookGetNoticeWithErrorTest extends NanookTestCase {
 	/** @test */
 	public function noticeShouldBeNull() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetRecords/id/666')
-			->will($this->returnValue(NanookFixtures::xmlGetRecordError()));
+			->answers(NanookFixtures::xmlGetRecordError());
 
 		$this->assertNull($this->_service->getNotice('666'));
 	}
@@ -306,10 +345,9 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 		parent::setUp();
 
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/1')
-			->will($this->returnValue(NanookFixtures::xmlGetPatronChristelDelpeyroux()));
+			->answers(NanookFixtures::xmlGetPatronChristelDelpeyroux());
 
 		$this->_emprunteur = $this->_service->getEmprunteur(
 														Class_Users::getLoader()
@@ -345,6 +383,18 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 		$this->assertEquals('Christel', $this->_emprunteur->getPrenom());
 	}
 
+
+	/** @test */
+	public function endDateShouldBe2012December21() {
+		$this->assertEquals('2012-12-21', $this->_emprunteur->getEndDate());
+	}
+
+
+	/** @test */
+	public function mailShouldBeCdelpeyrouxAtServerDotCom() {
+		$this->assertEquals('cdelpeyroux@server.com', $this->_emprunteur->getEmail());
+	}
+		
 
 	/** @test */
 	public function nbEmpruntsShouldBeThree() {
@@ -486,6 +536,12 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 
 
 	/** @test */
+	public function firstReservationEtatShouldBePasDisponibleAvantLe15Juin2012() {
+		$this->assertEquals('Pas disponible avant le 15/06/2012', 
+												$this->_emprunteur->getReservationAt(0)->getEtat());
+	}
+
+	/** @test */
 	public function secondReservationIdShouldBe14586() {
 		$this->assertEquals('14586', $this->_emprunteur->getReservationAt(1)->getId());
 	}
@@ -516,6 +572,12 @@ class NanookGetEmprunteurChristelDelpeyrouxTest extends NanookTestCase {
 	public function secondReservationRangShouldBeFourtyNine() {
 		$this->assertEquals('49', $this->_emprunteur->getReservationAt(1)->getRang());
 	}
+
+
+	/** @test */
+	public function secondReservationEtatShouldBeDisponible() {
+		$this->assertEquals('Disponible', $this->_emprunteur->getReservationAt(1)->getEtat());
+	}
 }
 
 
@@ -525,10 +587,9 @@ class NanookGetEmprunteurWithErrorTest extends NanookTestCase {
 	/** @test */
 	public function emprunteurShouldBeEmpty() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/666')
-			->will($this->returnValue(NanookFixtures::xmlGetPatronError()));
+			->answers(NanookFixtures::xmlGetPatronError());
 
 		$emprunteur = $this->_service->getEmprunteur(
 																								 Class_Users::getLoader()
@@ -544,15 +605,74 @@ class NanookGetEmprunteurWithErrorTest extends NanookTestCase {
 
 
 
+class NanookGetEmprunteurWithoutIdSigbTest extends NanookTestCase {
+	/** @test */
+	public function shouldAuthenticate() {
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/AuthenticatePatron/username/90175000410218/password/1989')
+			->answers(NanookFixtures::xmlAuthenticatePatronChristelDelpeyroux())
+
+			->whenCalled('open_url')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/1')
+			->answers(NanookFixtures::xmlGetPatronError());
+				
+		$emprunteur = $this->_service->getEmprunteur($user = Class_Users::newInstance()
+			                                                     ->setIdabon('90175000410218')
+			                                                     ->setPassword('1989'));
+
+		$this->assertNotNull($emprunteur);
+		$this->assertEquals(1, $user->getIdSigb());
+	}
+}
+
+
+
+class NanookGetEmprunteurPBTest extends NanookTestCase {
+	/** @var Class_WebService_SIGB_Emprunteur */
+	protected $_emprunteur;
+
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->_mock_web_client
+			->whenCalled('open_url')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/GetPatronInfo/patronId/555')
+			->answers(NanookFixtures::xmlGetPatronPB());
+
+		$this->_emprunteur = $this->_service->getEmprunteur(
+														Class_Users::getLoader()
+															->newInstance()
+															->setIdSigb(555)
+													);
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Exemplaire')
+			->whenCalled('findFirstBy')
+			->answers(null);
+	}
+
+
+	/** @test */
+	public function endDateShouldBeNull() {
+		$this->assertNull($this->_emprunteur->getEndDate());
+	}
+
+
+	/** @test */
+	public function mailShouldBeNull() {
+		$this->assertNull($this->_emprunteur->getEmail());
+	}
+}
+
+
 
 class NanookOperationsTest extends NanookTestCase {
 	/** @test */
 	public function prolongerPretShouldReturnSuccessIfNoErrors() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/RenewLoan/patronId/1/itemId/196895')
-			->will($this->returnValue(NanookFixtures::xmlRenewLoanSucces()));
+			->answers(NanookFixtures::xmlRenewLoanSucces());
 
 		$this->assertEquals(
 			array('statut' => true, 'erreur' => ''),
@@ -567,10 +687,9 @@ class NanookOperationsTest extends NanookTestCase {
 	/** @test */
 	public function prolongerPretShouldReturnFailureIfErrors() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/RenewLoan/patronId/1/itemId/196895')
-			->will($this->returnValue(NanookFixtures::xmlRenewLoanError()));
+			->answers(NanookFixtures::xmlRenewLoanError());
 
 		$this->assertEquals(
 			array('statut' => false, 'erreur' => 'Prolongation impossible'),
@@ -583,18 +702,17 @@ class NanookOperationsTest extends NanookTestCase {
 
 
 	/** @test */
-	public function reserverExemplaireShouldReturnSuccessIfNoErrors() {
+	public function reserverExemplaireOnExistingAnnexeWithNoErrorsShouldReturnSuccess() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
-			->with('http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/Site+Principal')
-			->will($this->returnValue(NanookFixtures::xmlHoldTitleSuccess()));
+			->whenCalled('open_url')
+			->with('http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/10')
+			->answers(NanookFixtures::xmlHoldTitleSuccess());
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
 												$this->_service->reserverExemplaire(
 													Class_Users::getLoader()->newInstance()	->setIdSigb('1'),
 													Class_Exemplaire::getLoader()->newInstance()->setIdOrigine('196895'),
-													'Site Principal'
+													'3'
 												));
 	}
 
@@ -602,10 +720,9 @@ class NanookOperationsTest extends NanookTestCase {
 	/** @test */
 	public function reserverExemplaireShouldReturnFailureIfErrors() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/HoldTitle/bibId/196895/patronId/1/pickupLocation/Site+Principal')
-			->will($this->returnValue(NanookFixtures::xmlHoldTitleError()));
+			->answers(NanookFixtures::xmlHoldTitleError());
 
 		$this->assertEquals(array('statut' => false, 'erreur' => 'Réservation impossible'),
 												$this->_service->reserverExemplaire(
@@ -619,14 +736,13 @@ class NanookOperationsTest extends NanookTestCase {
 	/** @test */
 	public function supprimerReservationShouldReturnSuccessIfNoErrors() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/CancelHold/patronId/1/itemId/196895')
-			->will($this->returnValue(NanookFixtures::xmlCancelHoldSuccess()));
+			->answers(NanookFixtures::xmlCancelHoldSuccess());
 
 		$this->assertEquals(array('statut' => true, 'erreur' => ''),
 												$this->_service->supprimerReservation(
-													Class_Users::getLoader()->newInstance()	->setIdSigb('1'),
+													Class_Users::getLoader()->newInstance()->setIdSigb('1'),
 													'196895'
 												));
 	}
@@ -635,10 +751,9 @@ class NanookOperationsTest extends NanookTestCase {
 	/** @test */
 	public function supprimerReservationShouldReturnFailureIfErrors() {
 		$this->_mock_web_client
-			->expects($this->once())
-			->method('open_url')
+			->whenCalled('open_url')
 			->with('http://localhost:8080/afi_Nanook/ilsdi/service/CancelHold/patronId/1/itemId/196895')
-			->will($this->returnValue(NanookFixtures::xmlCancelHoldError()));
+			->answers(NanookFixtures::xmlCancelHoldError());
 
 		$this->assertEquals(array('statut' => false, 'erreur' => 'Annulation impossible'),
 												$this->_service->supprimerReservation(

@@ -1,23 +1,68 @@
 <?php
-echo $this->toolbar("Exemplaires",$this->url_retour,true);
-echo '<h1>'.$this->titre.'</h1>';
-if($this->exemplaires)
-{
-	$num=0;
-	foreach($this->exemplaires as $ex)
-	{
-		echo '<div class="pave">';
-		echo '<table>';
-		echo '<tr><td colspan="2"><b>n° '.++$num.'</b></td></tr>';
-		echo '<tr><td align="right">Bibliothèque : </td><td>'.trim(fetchOne("select LIBELLE from bib_c_site where ID_SITE='".$ex["id_bib"]."'")).'</td></tr>';
-		echo '<tr><td align="right">Nombre : </td><td>'.$ex["count(*)"].' ex.</td></tr>';
-		echo '<tr><td align="right">Situé en : </td><td>'.$ex["cote"].'</td></tr>';
-		echo '<tr><td align="right">Disponibilité : </td><td>'."non connue".'</td></tr>';
-			//$html.='<td class="exemplaires" style="text-align:center;"><a href="'.BASE_URL.'/bib/mapview?id='.$ex["id_bib"].'&r=notice"><img src="'.URL_ADMIN_IMG.'picto/website.gif" border="0" alt="Voir le plan" title="Voir le plan"/></a></td>';
-			//$html.='<td class="exemplaires" style="text-align:center;"><a href="'.BASE_URL.'/recherche/reservation?b='.$ex["id_bib"].'&amp;n='.$id_notice.'&amp;cote='.$ex["cote"].'"><img src="'.URL_IMG.'resa.gif" border="0" alt="Réserver" title="Réserver"/></a></td>';
-		echo '</table>';
-		echo '</div>';
-	}
-}
-echo BR;
+echo $this->toolbar($this->_("Exemplaires"), 
+										array('action' => 'viewnotice'), 
+										false);
 ?>
+<h1><?php echo $this->escape($this->notice->getTitrePrincipal());?></h1>
+<?php 
+if (0 == count($exemplaires = $this->notice->getExemplaires())) 
+	echo $this->_('Aucun exemplaire.');
+
+$num = 0;
+foreach ($exemplaires as $exemplaire) {
+	$sigb_exemplaire = $exemplaire->getSigbExemplaire();
+?>
+<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+	<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+		<table style="font-weight:normal;">
+		<tr><td colspan="2"><strong><?php echo $this->_('n°') . ' ' . ++$num;?></strong></td></tr>
+		<tr>
+			<td align="right"><?php echo $this->_('Bibliothèque');?> : </td>
+			<td><?php echo $this->escape($exemplaire->getBib()->getLibelle());?></td>
+		</tr>
+		<?php if ($cote = $exemplaire->getCote()) { ?>
+		<tr>
+			<td align="right"><?php echo $this->_('Cote');?> : </td>
+			<td><?php echo $this->escape($cote);?></td>
+		</tr>
+		<?php	} ?>
+		<tr>
+			<td align="right"><?php echo $this->_('Disponibilité');?> : </td>
+			<td><?php 
+				echo ($sigb_exemplaire) ? $sigb_exemplaire->getDisponibilite() : $this->_('non connue');
+			?></td>
+		</tr>
+	</table>
+	</li>
+	<li class="ui-li ui-li-static ui-body-c ui-corner-bottom">
+		<div class="ui-grid-a">
+			<div class="ui-block-a">
+				<a href="<?php 
+				  echo $this->url(array('controller' => 'recherche',
+					                      'action' => 'bibliotheque',
+																'id' => $exemplaire->getBib()->getId()),
+												 null, true);?>" 
+				  data-role="button" data-mini="true" data-icon="info"><?php echo $this->_('Horaires');?></a>
+			</div>
+			<div class="ui-block-b">
+				<?php 
+				if (Class_AdminVar::isPackMobileEnabled()
+						&& (!$exemplaire->getBib()->getInterdireResa())
+						&& $sigb_exemplaire
+						&& $sigb_exemplaire->isReservable()) { ?>
+				<a href="<?php 
+					echo $this->url(array('controller' => 'recherche',
+																'action' => 'reservation',
+																'b' => $exemplaire->getBib()->getId(),
+																'e' => $exemplaire->getId(),
+																'a' => $sigb_exemplaire->getCodeAnnexe()), 
+												 null, true);?>"
+				data-role="button" data-mini="true" data-icon="arrow-r"
+				data-iconpos="right" data-ajax="false" rel="external"><?php echo $this->_('Réserver');?></a>
+				<?php	} ?>
+			</div>
+		</div>
+	</li>
+</ul>
+<br>
+<?php	} ?>

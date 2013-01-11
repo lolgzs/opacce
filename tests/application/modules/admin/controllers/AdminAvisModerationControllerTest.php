@@ -205,13 +205,13 @@ class AdminAvisModerationControllerCmsTest extends Admin_AbstractControllerTestC
 		Zend_Registry::set('sql', $this->mock_sql);
 
 		$this->mock_sql
-			->expects($this->at(1))
+			->expects($this->at(0))
 			->method('fetchAll')
 			->with("Select * from cms_avis Where STATUT=0 AND ABON_OU_BIB=0 order by DATE_AVIS DESC")
 			->will($this->returnValue(array()));
 
 		$this->mock_sql
-			->expects($this->at(2))
+			->expects($this->at(1))
 			->method('fetchAll')
 			->with("Select * from cms_avis Where STATUT=0 AND ABON_OU_BIB=1 order by DATE_AVIS DESC")
 			->will($this->returnValue(array()));

@@ -35,7 +35,10 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 											'logo_gauche_img' => '/userfiles/mabib.png',
 											'logo_gauche_link' => 'http://mabib.fr',
 											'logo_droite_img' => '/userfiles/macommune.png',
-											'logo_droite_link' => 'http://macommune.fr');
+											'logo_droite_link' => 'http://macommune.fr',
+											'header_social_network' => true,
+											'header_css' => '/userfiles/css/my.css',
+											'header_js' => '/userfiles/js/my.js');
 
 		$cfg_notice = array('exemplaires' => array('grouper' => 1,
 																							 'section' => 1,
@@ -59,6 +62,7 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 			->setCfgSite(ZendAfi_Filters_Serialize::serialize($cfg_site))
 			->setCfgNotice($cfg_notice)
 			->setMailSite('tintin@herge.be')
+			->setMailSuggestionAchat('suggestion@herge.be')
 			->setHauteurBanniere(150)
 			->setBoiteLoginInBanniere(true);
 
@@ -67,7 +71,7 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 			::onLoaderOfModel('Class_Profil')
 			->whenCalled('save')->answers(true)->getWrapper();
 
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
 	}
 }
 
@@ -76,6 +80,8 @@ abstract class Admin_ProfilControllerProfilJeunesseTestCase extends Admin_Abstra
 class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControllerProfilJeunesseTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()->whenCalled('fileExists')->answers(true));
 		$this->dispatch('/admin/profil/edit/id_profil/5');
 	}
 
@@ -108,6 +114,18 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 	/** @test */
 	public function textInputHeaderImgShouldContainsPathToJeunessePng() {
 		$this->assertXPath("//input[@type='text'][@name='header_img'][@value='/public/jeunesse.png']");
+	}
+
+
+	/** @test */
+	public function textInputHeaderCssShouldContainsPathToMyCss() {
+		$this->assertXPath("//input[@type='text'][@name='header_css'][@value='/userfiles/css/my.css']");
+	}
+
+
+	/** @test */
+	public function textInputHeaderJsShouldContainsPathToMyJs() {
+		$this->assertXPath("//input[@type='text'][@name='header_js'][@value='/userfiles/js/my.js']");
 	}
 
 
@@ -167,6 +185,10 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 		$this->assertXPath("//input[@type='checkbox'][@name='liens_sortants_off'][@checked='checked']");
 	}
 
+	/** @test */
+	public function checkBoxHeaderSocialNetworkBeChecked() {
+		$this->assertXPath("//input[@type='checkbox'][@name='header_social_network'][@checked='checked']");
+	}
 
 	/** @test */
 	public function skinListShouldContainOriginal() {
@@ -177,6 +199,13 @@ class Admin_ProfilControllerEditProfilJeunesseTest extends Admin_ProfilControlle
 	public function skinAstrolabeShouldBeSelected() {
 		$this->assertXPath("//select[@name='skin']/option[@value='modele'][@selected='selected']");
 	}
+
+
+	/** @test */
+	public function mailSuggestionAchatsShouldContainsSuggestionAtHergeDotBe() {
+		$this->assertXPath("//input[@type='text'][@name='mail_suggestion_achat'][@value='suggestion@herge.be']");
+	}
+
 
 	/** @test */
 	public function mailSiteShouldContainsTintinAtHergeDotBe() {
@@ -308,17 +337,17 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('1');
-		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit', true);
 		$this->assertXPathContentContains('//option', 'Formations');
 	}
 
 
 	/** @test */
-	public function withModuleFormationDisabledComboMenuShouldContainsFormations() {
+	public function withModuleFormationDisabledComboMenuShouldNotContainsFormations() {
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('0');
-		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit',true);
 		$this->assertNotXPathContentContains('//option', 'Formations');
 	}
 
@@ -334,7 +363,7 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 
 
 	/** @test */
-	public function withBibNumberiqueDisabledComboMenuShouldContainsLienVersUnAlbum() {
+	public function withBibNumberiqueDisabledComboMenuShouldNotContainsLienVersUnAlbum() {
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('BIBNUM')
 			->setValeur('0');
@@ -342,6 +371,25 @@ class Admin_ProfilControllerProfilJeunesseTestMenusMaj extends Admin_ProfilContr
 		$this->assertNotXPathContentContains('//option', 'Lien vers un album');
 	}
 
+
+	/** @test */
+	public function withMultimediaEnabledComboMenuShouldContainsReserverPosteMultimedia() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur('I love multimedia');
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->assertXPathContentContains('//option', 'Réserver un poste multimédia');
+	}
+
+
+	/** @test */
+	public function withMultimediaDisabledComboMenuShouldNotContainsReserverPosteMultimedia() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MULTIMEDIA_KEY')
+			->setValeur(null);
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+		$this->assertNotXPathContentContains('//option', 'Réserver un poste multimédia');
+	}
 }
 
 
@@ -416,7 +464,7 @@ class Admin_ProfilControllerEditProfilVideTest extends Admin_AbstractControllerT
 																			"public");
 
 		foreach(array('0' => 'invité',
-									'1' => 'abonné',
+//									'1' => 'abonné',
 									'2' => 'abonné identifié SIGB',
 									'3' => 'rédacteur bibliothèque',
 									'4' => 'administrateur bibliothèque',
@@ -425,7 +473,8 @@ class Admin_ProfilControllerEditProfilVideTest extends Admin_AbstractControllerT
 		$this->assertXPathContentContains("//select[@name='access_level']//option[@value='$level']",
 																			$label);
 
-		$this->assertNotXPath("//select[@name='access_level']//option[@value='7']");
+		$this->assertNotXPath("//select[@name='access_level']//option[@value='1']");
+    $this->assertNotXPath("//select[@name='access_level']//option[@value='7']");
 	}
 
 
@@ -587,6 +636,7 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 		$this->profil_portail = Class_Profil::getLoader()
 			->newInstanceWithId(1)
 			->setBrowser('opac')
+			->setHeaderCss('/userfiles/portail.css')
 			->setCommentaire('Commentaire du portail')
 			->setTitreSite('Médiathèque de Melun');
 
@@ -632,73 +682,9 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 
 
 	/** @test */
-	public function postingValidDataShouldResultInProfilToBeValid() {
-		$wrapper = Storm_Test_ObjectWrapper
-			::onLoaderOfModel('Class_Profil')
-			->whenCalled('save')
-			->answers(true)
-			->getWrapper();
-
-		$data = array(	'libelle' => "Histoire",
-										'id_site' => 1,
-										'nb_divisions' => 2,
-										'largeur_division1' => 400,
-										'marge_division1' => 5,
-										'largeur_division2' => 500,
-										'marge_division2' => 8,
-										'largeur_site' => 900,
-										'access_level' => 6);
-
-		$this
-			->getRequest()
-			->setMethod('POST')
-			->setPost($data);
-		$this->dispatch('/admin/profil/add');
-
-		$new_profil = $wrapper->getFirstAttributeForLastCallOn('save');
-		$this->assertTrue($new_profil->isValid());
-
-		$this->assertRedirectTo('/admin/profil/edit/id_profil/'.$new_profil->getId()); // id_site=1 => par défaut
-
-		return $new_profil;
+	public function inputHeaderCssShouldBeEmpty() {
+		$this->assertXPath("//input[@type='text'][@name='header_css'][@value='']");
 	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getNbDivisionsShouldReturnTwo($profil) {
-		$this->assertEquals(2, $profil->getNbDivisions());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getLibelleShouldReturnHistoire($profil) {
-		$this->assertEquals("Histoire", $profil->getLibelle());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getAccessLevelShouldReturnSix($profil) {
-		$this->assertEquals(6, $profil->getAccessLevel());
-	}
-
-
-	/**
-	 * @depends postingValidDataShouldResultInProfilToBeValid
-	 * @test
-	 */
-	public function getLargeurSiteShouldReturnNineHundred($profil) {
-		$this->assertEquals(900, $profil->getLargeurSite());
-	}
-
 
 
 	/** @test */
@@ -726,6 +712,100 @@ class Admin_ProfilControllerAddProfilHistoireTest extends Admin_AbstractControll
 
 
 
+
+class Admin_ProfilControllerProfilPostAddTest extends Admin_ProfilControllerProfilJeunesseTestCase {
+	protected $_new_profil;
+
+	public function setUp() {
+		parent::setUp();
+		$wrapper = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('save')
+			->willDo(function($model) {
+					$model->setId(456); 
+					return true;
+				});
+
+		$data = array(	'libelle' => "Histoire",
+										'id_site' => 1,
+										'nb_divisions' => 2,
+										'largeur_division1' => 400,
+										'marge_division1' => 5,
+										'largeur_division2' => 500,
+										'marge_division2' => 8,
+										'largeur_site' => 900,
+										'access_level' => 6);
+
+		$this
+			->getRequest()
+			->setMethod('POST')
+			->setPost($data);
+		$this->dispatch('/admin/profil/add');
+
+		$this->_new_profil = $wrapper->getFirstAttributeForLastCallOn('save');
+	}
+
+
+	/** @test */
+	public function newProfilShouldBeValid() {
+		$this->assertTrue($this->_new_profil->isValid());
+	}
+
+
+	/** @test */
+	public function responseShouldRedirectToEditNewProfil() {
+		$this->assertRedirectTo('/admin/profil/edit/id_profil/456');
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getNbDivisionsShouldReturnTwo() {
+		$this->assertEquals(2, $this->_new_profil->getNbDivisions());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getLibelleShouldReturnHistoire() {
+		$this->assertEquals("Histoire", $this->_new_profil->getLibelle());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getAccessLevelShouldReturnSix() {
+		$this->assertEquals(6, $this->_new_profil->getAccessLevel());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getLargeurSiteShouldReturnNineHundred() {
+		$this->assertEquals(900, $this->_new_profil->getLargeurSite());
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function currentProfilShouldBeNewProfil() {
+		$this->assertEquals(456, Class_Profil::getCurrentProfil()->getId());
+	}
+
+	
+	/** @test */
+	public function sessionIdProfilShould456() {
+		$this->assertEquals(456, Zend_Registry::get('session')->id_profil);
+	}
+}
+
+
+
+
 abstract class Admin_ProfilControllerProfilJeunesseWithPagesTestCase extends Admin_ProfilControllerProfilJeunesseTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -741,7 +821,6 @@ abstract class Admin_ProfilControllerProfilJeunesseWithPagesTestCase extends Adm
 			->newInstanceWithId(23)
 			->setParentId($this->profil_jeunesse->getId())
 			->setLibelle('Musique');
-
 
 		$this->profil_jeunesse->setSubProfils(array($this->page_jeux,
 																								$this->page_musique));
@@ -759,6 +838,7 @@ abstract class Admin_ProfilControllerProfilPanelTest extends Admin_ProfilControl
 	/** @test	 */
 	public function profilsPanelShouldIncludeProfilJeunesse() {
 		$this->assertXPathContentContains("//div[contains(@class, 'profils')]//div", "Jeunesse");
+		$this->assertXPath("//div[contains(@class, 'profils')]//div[preceding-sibling::div[contains(text(), 'Jeunesse')]]//a[contains(@href, 'profil/deep_copy/id_profil/5')]");
 	}
 
 
@@ -819,21 +899,25 @@ class Admin_ProfilControllerEditProfilJeunesseWithPagesTest extends Admin_Profil
 
 
 
+
 class Admin_ProfilControllerEditAccueilPageMusiqueTest extends Admin_ProfilControllerProfilPanelTest  {
 	public function setUp() {
 		parent::setUp();
 		$this->dispatch('/admin/profil/accueil/id_profil/23');
 	}
 
+
 	/** @test */
 	public function libelleFieldShouldBeVisible() {
 		$this->assertXPath("//input[@type='text'][@name='libelle'][@value='Musique']");
 	}
 
+
 	/** @test */
 	public function pageMusiqueShouldHaveClassSelected() {
 		$this->assertXPathContentContains("//div[contains(@class, 'profils')]//li[2][@class='selected']//div", "Musique");
 	}
+
 
 	/** @test */
 	public function pageJeuxShouldNotHaveClassSelected() {
@@ -1009,10 +1093,31 @@ class Admin_ProfilControllerCopyProfilJeunesseTest extends Admin_ProfilControlle
 	public function libelleShouldBeAccueilCopie() {
 		$this->assertEquals('Accueil - copie', $this->new_page->getLibelle());
 	}
+}
 
-	/** @nontest */
-	public function libelleShouldBeProfilJeunesse() {
-		$this->assertEquals('Profil Jeunesse', $this->new_page->getLibelle());
+
+
+
+class Admin_ProfilControllerDeepCopyProfilJeunesseTest extends Admin_ProfilControllerProfilJeunesseWithPagesTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		$id = 500;
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('findAllBy')
+			->answers([])
+			->whenCalled('save')
+			->willDo(function ($model) use (&$id) {
+					$model->setId($id++);
+				} );
+
+		$this->dispatch('/admin/profil/deep_copy/id_profil/5', true);
+	}
+
+
+	/** @test */
+	public function assertRedirectToEditProfilId100() {
+		$this->assertRedirect('admin/profil/edit/id_profil/500');
 	}
 }
 
@@ -1069,4 +1174,54 @@ class Admin_ProfilControllerGenresActionTest extends Admin_AbstractControllerTes
 	function actionShouldBeGenres() {
 		$this->assertAction('genres');
 	}
+
 }
+
+/**
+ *  [[file:~/afi/afi-opac3/application/modules/admin/controllers/ProfilController.php::public%20function%20menusmajAction()%20{][Action menusmaj]]
+ */
+class Admin_ProfilControllerEditMenuHorizontalTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+		$cfg_menus = array(
+											 'H' => array( 
+																		"libelle" => "Menu horizontal",
+																		"picto" => "vide.gif",
+																		"menus" => array(array('type_menu' => 'MENU',
+																													 'libelle' => 'Pratique',
+																													 'picto' => 'bookmark.png'))),
+											 'V' => array(
+																		"libelle" => "Menu vertical",
+																		"picto" => "vide.gif"));
+
+		$this->profil_jazz = Class_Profil::newInstanceWithId(5, [ 'browser' => 'opac',
+																															'libelle' => 'Jazz pour tous',
+																															'cfg_menus' => $cfg_menus ]);
+		$this->dispatch('admin/profil/menusmaj/id_profil/5/id_menu/H/mode/edit');
+	}
+
+
+	/** @test */
+	public function tdShouldContainsPratique() {
+		$this->assertXPathContentContains("//td/span","Pratique");
+	}
+
+	/** @test */
+	public function selectOptionShouldContainsMenu() {
+		$this->assertXPathContentContains("//td/select/option","Menu");
+	}
+
+	/** @test */
+	public function selectOptgroupShouldContainsModulesInformations() {
+		$this->assertXPath("//td//optgroup[@label='Modules informations']",$this->_response->getBody());
+	}
+
+
+  /** @test */
+  public function selectOptionShouldContainsBoiteTags() {
+		$this->assertXPathContentContains("//td//select//option", "Nuage de tags");
+	}
+}
+
+
+?>

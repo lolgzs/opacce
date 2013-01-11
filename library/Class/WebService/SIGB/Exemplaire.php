@@ -20,12 +20,15 @@
  */
 
 class Class_WebService_SIGB_Exemplaire {
-	const DISPO_EN_PRET = "En prêt";
-	const DISPO_LIBRE = "Disponible";
-	const DISPO_INDISPONIBLE = "Indisponible";
-	const DISPO_PERDU = "Perdu";
-	const DISPO_PILONNE = "Pilonné";
-	const DISPO_ENDOMMAGE = "Endommagé";
+	const DISPO_EN_PRET = 'En prêt';
+	const DISPO_LIBRE = 'Disponible';
+	const DISPO_INDISPONIBLE = 'Indisponible';
+	const DISPO_PERDU = 'Perdu';
+	const DISPO_PILONNE = 'Pilonné';
+	const DISPO_ENDOMMAGE = 'Endommagé';
+	const DISPO_TRANSIT = 'En transit';
+	const DISPO_DEJA_RESERVE = 'Réservé';
+	const DISPO_EN_COMMANDE = 'En commande';
 
 
 	protected $id;
@@ -47,6 +50,8 @@ class Class_WebService_SIGB_Exemplaire {
 	protected $_exemplaire_opac;
 	protected $_disponibiliteLabel;
 	protected $_isEnPret;
+	protected $_cote;
+	protected $_emplacement;
 
 
 	public static function newInstance() {
@@ -70,6 +75,7 @@ class Class_WebService_SIGB_Exemplaire {
 
 	public function setNotice($notice){
 		$this->notice = $notice;
+		return $this;
 	}
 
 
@@ -88,11 +94,19 @@ class Class_WebService_SIGB_Exemplaire {
 	 * @return Class_Exemplaire
 	 */
 	public function getExemplaireOPAC() {
-		if (!isset($this->_exemplaire_opac) and $this->getNoNotice())
-			$this->_exemplaire_opac = Class_Exemplaire::getLoader()
-				->findFirstBy(array('id_origine' => $this->getNoNotice()));
+		if (isset($this->_exemplaire_opac))
+			return $this->_exemplaire_opac;
+		
+		if ($no_notice = $this->getNoNotice())
+			$params = array('id_origine' => $no_notice);
+		
+		if ($this->code_barre)
+			$params = array('code_barres' => $this->code_barre);
 
-		return $this->_exemplaire_opac;
+		if (!isset($params))
+			return null;
+		
+		return $this->_exemplaire_opac = Class_Exemplaire::getLoader()->findFirstBy($params);
 	}
 
 
@@ -215,6 +229,28 @@ class Class_WebService_SIGB_Exemplaire {
 	}
 
 
+	public function setCote($cote) {
+		$this->_cote = $cote;
+		return $this;
+	}
+
+
+	public function getCote() {
+		return $this->_cote;
+	}
+
+
+	public function setEmplacement($emplacement) {
+		$this->_emplacement = $emplacement;
+		return $this;
+	}
+
+
+	public function getEmplacement() {
+		return $this->_emplacement;
+	}
+
+
 	public function getId(){
 		return $this->id;
 	}
@@ -250,10 +286,18 @@ class Class_WebService_SIGB_Exemplaire {
 	}
 
 
+	public function setDisponibiliteEnTransit() {
+		return $this->setDisponibilite(self::DISPO_TRANSIT);
+	}
+
+
 	public function getLibelleDispoEnPret() {
-		$tmp=Class_Profil::getCurrentProfil()->getCfgNoticeAsArray();
+		if (!$tmp = Class_Profil::getCurrentProfil()->getCfgNoticeAsArray())
+			return self::DISPO_EN_PRET;
+
 		if (array_isset("en_pret", $tmp["exemplaires"]))
 			 return $tmp["exemplaires"]["en_pret"];
+
 		return self::DISPO_EN_PRET;
 	}
 
@@ -284,6 +328,18 @@ class Class_WebService_SIGB_Exemplaire {
 
 	public function setDisponibiliteEndommage()	{
 		$this->setDisponibilite(self::DISPO_ENDOMMAGE);
+		return $this;
+	}
+
+
+	public function setDisponibiliteDejaReserve() {
+		$this->setDisponibilite(self::DISPO_DEJA_RESERVE);
+		return $this;
+	}
+
+
+	public function setDisponibiliteEnCommande() {
+		$this->setDisponibilite(self::DISPO_EN_COMMANDE);
 		return $this;
 	}
 

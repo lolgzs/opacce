@@ -66,7 +66,6 @@ class AdminVarTestGet extends AdminVarTestCase {
 	}
 
 
-
 	/** @test */
 	public function withoutLanguesVarsGetLanguesShouldReturnEmptyArray() {
 		$this->_onLoaderFindReturns('LANGUES', null);
@@ -113,7 +112,19 @@ class AdminVarTestGet extends AdminVarTestCase {
 		$this->assertFalse(Class_AdminVar::isWorkflowEnabled());
 	}
 
+
+	/** @test */
+	public function getVarShouldStripSlashes() {
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('GOOGLE_ANALYTICS')
+			->setValeur(addslashes('<script type="text/javascript">\'test\''));
+		$this->assertEquals('<script type="text/javascript">\'test\'',
+												Class_AdminVar::get('GOOGLE_ANALYTICS'));
+	}
 }
+
+
+
 
 class AdminVarTestSet extends AdminVarTestCase {
 	/** @test */
@@ -139,7 +150,28 @@ class AdminVarTestSet extends AdminVarTestCase {
 		Class_AdminVar::set('DUMMY_ADMIN_VAR', 'another value');
 
 		$this->assertEquals('another value', Class_AdminVar::get('DUMMY_ADMIN_VAR'));
+	}
+}
 
+
+
+
+class AdminVarBabelthequeTest extends Storm_Test_ModelTestCase {
+	/** @test */
+	public function babelthequeIdShouldBeExtractedFromVarBabelthequeJS() {
+		Class_AdminVar::newInstanceWithId('BABELTHEQUE_JS')
+			->setValeur('http://www.babeltheque.com/bw_85.js');
+
+		$this->assertEquals('85',  Class_AdminVar::getBabelthequeId());
+	}
+
+
+	/** @test */
+	public function babelthequeIdShouldReturnNullIfNotSet() {
+		Class_AdminVar::newInstanceWithId('BABELTHEQUE_JS')
+			->setValeur('');
+
+		$this->assertEquals(null,  Class_AdminVar::getBabelthequeId());
 	}
 }
 

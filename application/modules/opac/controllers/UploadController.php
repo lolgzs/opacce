@@ -89,7 +89,7 @@ class UploadController extends Zend_Controller_Action
 			elseif($taille > $this->_getParam("poids") ) 
 				$erreur=$this->view->_("L'image que vous avez sélectionnée est trop volumiseuse. Taille maximum : %d ko", $this->_getParam("poids"));
 			else	{
-				$path_img = "/userfiles/".$this->_getParam("path").'/'.$fic["name"];
+				$path_img = "/userfiles/".urldecode($this->_getParam("path")).'/'.$fic["name"];
 				// Controle extension de l'image
 				$adresse_img=getcwd().$path_img;
 
@@ -153,3 +153,5 @@ class UploadController extends Zend_Controller_Action
 		exit;
 	}
 }
+
+?>

@@ -18,309 +18,189 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
+require_once ROOT_PATH.'application/modules/opac/controllers/RechercheController.php';
 
-class Telephone_RechercheController extends Zend_Controller_Action
-{
-	private $liste;																// Instance de la classe de liste de notices
-	private $preferences;													// Préférences pour la liste du résultat
-	private $id_notice;														// Id_notice pour les fonctions d'affichage des notices
-	private $cls_notice;													// instance de la classe notice pour les fonctions d'affichage des notices
-	private $service_afi;													// Web service afi actif ou pas
- 
-//------------------------------------------------------------------------------------------------------
-// Initialisation du controler
-//------------------------------------------------------------------------------------------------------
-	function init()
-	{
-		// Formulaire de recherche
-		if ($this->_request->isPost())
-		{
-			unset($_SESSION["recherche"]);
-			$filter = new Zend_Filter_StripTags();
-			foreach($_POST as $critere => $valeur) $_SESSION["recherche"]["selection"][$critere] = trim($filter->filter($this->_request->getPost($critere, false)));
-		}
+class Telephone_RechercheController extends RechercheController {
+  use Trait_Translator;
 
-		// Pour les fonctions des notices
-		$id_notice=$this->_getParam("id_notice");
-		if(!$id_notice) $id_notice=$this->_getParam("id");
-		if($id_notice)
-		{
-			$this->id_notice=$id_notice;
-			$this->cls_notice=new Class_Notice();
-			$this->view->url_retour=$_SESSION["recherche"]["retour_notice"];
-		}
+  public function viewnoticeAction()  {
+    $notice = Class_Notice::find($this->_getParam('id'));
 
-		// Préférences
-		$current_module=$this->_getParam("current_module");
-		$this->preferences=$current_module["preferences"];
-		$this->liste=new Class_ListeNotices(
-																				$this->preferences["liste_nb_par_page"], 
-																				$this->preferences["liste_codes"]); 
+    $actions = [$this->_('Description du document') =>	['action' => 'detail'],
+		$this->_('Où le trouver ?') => ['action' => 'exemplaires'],
+		$this->_('Critiques') => ['action' => 'avis'],
+		$this->_('Résumé') =>  ['action' => 'resume'],
+		$this->_('Vidéos associées') =>	 ['action' => 'videos'],
+		$this->_('Rebondir dans le catalogue') =>  ['action' => 'tags'],
+		$this->_('Biographie de l\'auteur') => ['action' => 'biographie'],
+		$this->_('Documents similaires') => ['action' => 'similaires'],
+		$this->_('Notices liées') => ['action' => 'frbr']
+    ];
 
-		// Test services afi
-		$this->service_afi=fetchOne("select valeur from variables where clef ='url_services'");
-	}
-	
-//-------------------------------------------------------------------------------
-// Index pour trapper les modules en construction
-//-------------------------------------------------------------------------------
-function indexAction()
-{
-	$this->view->url_retour=$_SESSION["recherche"]["retour_notice"];
-}
+    if ($notice->isLivreNumerique())
+      $actions[$this->_('Feuilleter le livre')] = ['action' => 'ressourcesnumeriques',
+						   'attribs' => ['data-ajax' => 'false']];
+
+    if ($notice->isArteVOD())
+      $actions[$this->_('Bande-annonce')] = ['action' => 'ressourcesnumeriques',
+					     'attribs' => ['data-ajax' => 'false']];
+
+    $this->view->notice = $notice;
+    $this->view->actions = $actions;
+  }
 
 
-public function baseUrl() {
-	return $this->view->url(array(), null, true);
-}
+  public function grandeimageAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
 
-//-------------------------------------------------------------------------------
-// Lancer une recherche
-//-------------------------------------------------------------------------------
-	function lancerAction()
-	{
-		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
-		if(!$_SESSION["recherche"]["resultat"])
-		{
-			$moteur=new Class_MoteurRecherche();
-			$ret=$moteur->lancerRechercheSimple($_SESSION["recherche"]["selection"]);
-			if($ret["statut"]=="erreur")
-			{
-				$ret["nombre"]=0;
-				$this->view->liste=$ret;
-				$this->view->url_retour=$this->baseUrl();
-				return false;
-			}
-			$_SESSION["recherche"]["resultat"]=$ret;
-		}
+  public function exemplairesAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-		$this->view->notices=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"]);
-		$this->view->page=$_REQUEST["page"];
-		$this->view->url_retour=$this->view->url(array(), null, true);
-		$this->view->url=$this->view->url(array('controller' => 'recherche',
-																						'action' => 'lancer'));
-		$this->view->nombre=$_SESSION["recherche"]["resultat"]["nombre"];
-		$this->view->preferences=$this->preferences;
-	}
 
-	//-------------------------------------------------------------------------------
-	// Lancer recherche rebonbissante
-	//-------------------------------------------------------------------------------
-	function rebondAction()
-	{
-		$_SESSION["recherche"]["retour_liste"]=$this->_request->REQUEST_URI;
-		$code=$_REQUEST["code_rebond"];
-		$_SESSION["recherche"]["selection"]["code_rebond"]=$code;
+  public function avisAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-		$moteur=new Class_MoteurRecherche();
-		$ret=$moteur->lancerRechercheRebond($_SESSION["recherche"]["selection"]);
-		if($ret["statut"]=="erreur")
-		{
-			$ret["nombre"]=0;
-			$this->view->liste=$ret;
-			$this->view->url_retour=$this->baseUrl();
-			$viewRenderer = $this->getHelper('ViewRenderer');
-			$viewRenderer->renderScript('recherche/lancer.phtml');
-			return false;
-		}
-		$_SESSION["recherche"]["resultat"]=$ret;
 
-		$this->view->notices=$this->liste->getListe($_SESSION["recherche"]["resultat"]["req_liste"]);
-		$this->view->page=$_REQUEST["page"];
-		$this->view->url_retour=$this->baseUrl();
-		$this->view->url=$this->view->url(array('controller' => 'recherche',
-																						'action' => 'rebond'))."?code_rebond=".$_SESSION["recherche"]["selection"]["code_rebond"];
-		$this->view->nombre=$_SESSION["recherche"]["resultat"]["nombre"];
-		$this->view->preferences=$this->preferences;
+  public function detailAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-		// Rendre la vue liste
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->renderScript('recherche/lancer.phtml');
-	}
 
-//-------------------------------------------------------------------------------
-// Afficher une notice
-//-------------------------------------------------------------------------------
-	function viewnoticeAction()
-	{
-		$_SESSION["recherche"]["retour_notice"]=$this->_request->REQUEST_URI;
-		$this->view->notice=$this->cls_notice->getNoticeDetail($this->id_notice, $this->preferences);
-		$this->view->url_image=Class_WebService_Vignette::getUrl($this->id_notice,false);
-		$this->view->url_retour=$_SESSION["recherche"]["retour_liste"];
-	}
+  public function ressourcesnumeriquesAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-//------------------------------------------------------------------------------------------------------
-// Rend le flux de la vignette (ajax)
-//------------------------------------------------------------------------------------------------------
-	function vignetteAction()
-	{
-		// Désactiver le renderer
-		$viewRenderer = $this->getHelper('ViewRenderer');
-		$viewRenderer->setNoRender();
 
-		// Envoyer l'image
-		$img=new Class_WebService_Vignette();
-		$img->getFluxImage($_REQUEST["clef"],$this->id_notice);
-	}
-//------------------------------------------------------------------------------------------------------
-// Notice : Grande image
-//------------------------------------------------------------------------------------------------------
-	function grandeimageAction()
-	{
-		$notice=$this->cls_notice->getNotice($this->id_notice,"T");
-		$this->view->titre=$notice["T"];
-		$this->view->url_image=$this->_getParam("url");
-	}
+  public function reservationAction() {
+    if (!Class_Users::getLoader()->getIdentity()) {
+      $this->_setLastReservationParamsAndGotoLogin();
+      return;
+    }
 
-//------------------------------------------------------------------------------------------------------
-// Notice détaillée
-//------------------------------------------------------------------------------------------------------
-	function detailAction()
-	{
-		$notice=$this->cls_notice->getNotice($this->id_notice,"T");
-		$this->view->titre=$notice["T"];
-		$this->view->notice=$this->cls_notice->getTousChamps($this->id_notice);
-	}
+    $this->_loadReservationParamsFromSession();
 
-//------------------------------------------------------------------------------------------------------
-// Notice : Avis
-//------------------------------------------------------------------------------------------------------
-	function avisAction()	{
-		// Lire la notice
-		$notice = Class_Notice::getLoader()->find($this->id_notice);
-		$all_avis = $notice->getAllAvisPerSource();
+    if (Class_CosmoVar::isSiteRetraitResaEnabled()
+	&& !$this->_getParam('pickup')) {
+      $this->_redirect(sprintf('/recherche/pickup-location/b/%s/e/%s/a/%s',
+			       urlencode($this->_getParam('b')),
+			       urlencode($this->_getParam('e')),
+			       urlencode($this->_getParam('a'))));
+      return;
+    }
 
-		$source_visible = $this->_getParam("source");
-		if (!array_key_exists($source_visible, $all_avis)) 
-			foreach ($all_avis as $source => $avis)
-				if ($avis["nombre"] > 0) {
-					$source_visible = $source;
-					break;
-				}
-		
+    $ret = Class_CommSigb::getInstance()
+      ->reserverExemplaire($this->_getParam('b'), 
+			   $this->_getParam('e'), 
+			   ($this->_getParam('pickup')) ? $this->_getParam('pickup') : $this->_getParam('a'));
 
-		$this->view->notice = $notice;
-		$this->view->avis = $notice->getAllAvisPerSource();
-		$this->view->source_visible = $source_visible;
-	}
+    if (isset($ret["erreur"]) && '' != $ret['erreur']) {
+      $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+      $this->view->message = $ret['erreur'];
+      return;
+    }
 
-//------------------------------------------------------------------------------------------------------
-// Notice : Exemplaires
-//------------------------------------------------------------------------------------------------------
-	function exemplairesAction()
-	{
-		$notice=$this->cls_notice->getNotice($this->id_notice,"T");
-		$this->view->titre=$notice["T"];
-		$this->view->exemplaires = fetchAll("Select id_bib,cote,count(*) from exemplaires where id_notice=".$this->id_notice." group by 1,2" );
-	}
+    if (isset($ret["popup"]) && '' != $ret['popup'])	{
+      $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+      $this->view->message = $this->view->_('Réservation en ligne non supportée pour cette bibliothèque.');
+      return;
+    }
 
-//------------------------------------------------------------------------------------------------------
-// Notice : résumés
-//------------------------------------------------------------------------------------------------------
-	function resumeAction()
-	{
-		// Lire la notice
-		$notice=$this->cls_notice->getNotice($this->id_notice,"T");
+    $this->_redirect('/abonne/fiche');
+  }
 
-		// Si isbn ou ean
-		if($notice["id_service"])
-		{
-			// resume interne
-			$resume=$this->cls_notice->getChampNotice("R");
-			if($resume)
-			{
-				$lig["source"]="notice interne";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
 
-			// Amazon
-			$amazon=new Class_WebService_Amazon();
-			$ret=$amazon->rend_analyses($notice["id_service"]);
-			if($ret) foreach($ret as $item) $avis[]=$item;
+  public function pickupLocationAction() {
+    $this->_loadUrlRetourForExemplaire($this->_getParam('e'));
+    $this->view->annexes = Class_CodifAnnexe::findAllByPickup();
+  }
 
-			// Fnac
-			$fnac=new Class_WebService_Fnac();
-			$resume = $fnac->getResume($notice["id_service"]);
-			if($resume)
-			{
-				$lig["source"]="Editeur";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-		}
 
-		// Resumé premiere
-		if($notice["type_doc"]==4)
-		{
-			$premiere=new Class_WebService_Premiere();
-			$resume=$premiere->get_resume($notice["T"]);
-			if($resume)
-			{
-				$lig["source"]="Premiere.fr";
-				$lig["texte"]=$resume;
-				$avis[]=$lig;
-			}
-		}
-		$this->view->notice=$notice;
-		$this->view->avis=$avis;
-	}
+  public function resumeAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-	//------------------------------------------------------------------------------------------------------
-	// Tags utilisateur
-	//------------------------------------------------------------------------------------------------------
-	function tagsAction()
-	{
-		$notice = $this->cls_notice->getNotice($this->id_notice,"T");
 
-		$notice_html = new Class_NoticeHtml($this->notice);
-		$notice_html->notice = $notice;
+  public function videosAction() {
+    $notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+    $video = Class_WebService_AllServices::runServiceAfiVideo(array('titre' => $notice->getTitrePrincipal(),
+								    'auteur' => $notice->getAuteurPrincipal()));
+    $video_id = null;
+    if ($html = $video['video']) {
+      if (1==preg_match('/value=\"([^\"\&]+)/', $html, $matches)) {
+	$parts = explode('/', $matches[1]);
+	$video_id = end($parts);
+      }
+    }
 
-		$tags = $notice_html->getTags($this->cls_notice->getTags($this->id_notice),
-																	$this->notice["id_notice"]);
+    $this->view->notice = $notice;
+    $this->view->video_id = $video_id;
+  }
 
-		//si on est en mode embed / telephone
-		$route_name = $this->getHelper('ViewRenderer')->getRouteName();
-		$tags=str_replace("/opac/",
-											sprintf("/%s/", $route_name),
-											$tags);
 
-		$this->view->notice=$notice;
-		$this->view->tags=$tags;
-	}
+  public function tagsAction() {
+    $notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+    $notice_html = new Class_NoticeHtml();
+    $this->view->tags = $notice_html->getTags($notice->getTags(), $notice->getId());
+    $this->view->notice = $notice;
+  }
 
-	//------------------------------------------------------------------------------------------------------
-	// Biographie
-	//------------------------------------------------------------------------------------------------------
-	function biographieAction()
-	{
-		$notice_html=new Class_NoticeHtml($this->notice);
-		$notice=$this->cls_notice->getNotice($this->id_notice,"TA");
-		if(!$notice["A"]) $html.=$notice_html->getNonTrouve("Cette notice n'a pas d'auteur",true);
-		else if($this->service_afi > "")
-		{
-			$args=array("auteur" => $notice["A"]);
-			$data=Class_WebService_AllServices::runServiceAfi(8,$args);
-			$html=$notice_html->getBiographie($data,$notice);
-		}
-		else $html= $html=$notice_html->getNonTrouve("Service non disponible");
 
-		$this->view->notice=$notice;
-		$this->view->html=$html;
-	}
+  public function biographieAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+  }
 
-	//------------------------------------------------------------------------------------------------------
-	// Notices similaires
-	//------------------------------------------------------------------------------------------------------
-	function similairesAction()	{
-		$notice_html=new Class_NoticeHtml($this->notice);
 
-		$notices=$this->cls_notice->getNoticesSimilaires($this->id_notice);
-		$html=$notice_html->getListeNotices($notices, $this->view, $this->view->url(array(), null, true));
-		
-		$this->view->notice=$this->cls_notice->getNotice($this->id_notice,"T");
-		$this->view->html=$html;
-	}
+  public function similairesAction() {
+    $notice = Class_Notice::getLoader()->find($this->_getParam('id'));
+    $this->view->notices = $notice->getNoticesSimilaires($notice->getId());
+    $this->view->preferences = array('liste_codes' => 'TA');
+    $this->view->notice = $notice;
+  }
 
-}
+
+  public function frbrAction() {
+    $this->view->notice = Class_Notice::getLoader()->find($this->_getParam('id'));   
+  }
+
+
+
+  public function bibliothequeAction() {
+    $this->view->bib = Class_Bib::getLoader()->find($this->_getParam('id'));
+  }
+
+
+
+
+
+  protected function _loadUrlRetourForExemplaire($id_exemplaire) {
+    $exemplaire = Class_Exemplaire::getLoader()->find($id_exemplaire);
+    $this->view->url_retour = $this->view->url(array('controller' => 'recherche',
+						     'action' => 'exemplaires',
+						     'id' => $exemplaire->getNotice()->getId()),
+					       null, true);
+  }
+
+
+  protected function _setLastReservationParamsAndGotoLogin() {
+    $exemplaire = Class_Exemplaire::getLoader()->find($this->_getParam('e'));
+    Zend_Registry::get('session')->lastReservationParams = array('b' => $this->_getParam('b'),
+								 'e' => $this->_getParam('e'),
+								 'a' => $this->_getParam('a'));
+    $this->_redirect('/auth/login-reservation/id/' . urlencode($exemplaire->getNotice()->getId()));
+  }
+
+
+  protected function _loadReservationParamsFromSession() {
+    if (!$params = Zend_Registry::get('session')->lastReservationParams)
+      return;
+
+    $this->_request
+      ->setParam('b', $params['b'])
+      ->setParam('e', $params['e'])
+      ->setParam('a', $params['a']);
+  }}
+  

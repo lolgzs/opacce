@@ -24,12 +24,48 @@
  */
 
 class Class_IntBib extends Storm_Model_Abstract {
+	const COM_PERGAME = 1;
+	const COM_OPSYS = 2;
+	const COM_VSMART = 4;
+	const COM_KOHA = 5;
+	const COM_CARTHAME = 6;
+	const COM_NANOOK = 7;
+	const COM_ORPHEE = 8;
+	const COM_MICROBIB = 9;
+	const COM_BIBLIXNET = 10;
+	const COM_DYNIX = 11;
+	
+
+
+
+	protected static $COM_CLASSES = [self::COM_PERGAME => 'Class_WebService_SIGB_Pergame',
+																	 self::COM_OPSYS => 'Class_WebService_SIGB_Opsys',
+																	 self::COM_VSMART => 'Class_WebService_SIGB_VSmart',
+																	 self::COM_KOHA => 'Class_WebService_SIGB_Koha',
+																	 self::COM_CARTHAME => 'Class_WebService_SIGB_Carthame',
+																	 self::COM_NANOOK => 'Class_WebService_SIGB_Nanook',
+																	 self::COM_ORPHEE => 'Class_WebService_SIGB_Orphee',
+																	 self::COM_MICROBIB => 'Class_WebService_SIGB_Microbib',
+																	 self::COM_BIBLIXNET => 'Class_WebService_SIGB_BiblixNet',
+																	 self::COM_DYNIX => 'Class_WebService_SIGB_Dynix'];
+
 	protected $_table_name = 'int_bib';
 	protected $_table_primary = 'id_bib';
 
+	protected $_belongs_to = ['bib' => ['model' => 'Class_IntBib',
+																			'role' => 'int_bib',
+																			'referenced_in' => 'id_bib']];
 
-	public static function getLoader() {
-		return self::getLoaderFor(__CLASS__);
+	protected $_default_attribute_values = ['comm_params' => ''];
+
+
+	public static function allCommSigbCodes() {
+		return array_keys(self::$COM_CLASSES);
+	}
+
+
+	public static function findAllWithWebServices() {
+		return Class_IntBib::findAllBy(['comm_sigb' => Class_IntBib::allCommSigbCodes()]);
 	}
 
 
@@ -43,7 +79,33 @@ class Class_IntBib extends Storm_Model_Abstract {
 
 
 	public function getCommParamsAsArray() {
-		return ZendAfi_Filters_Serialize::unserialize($this->getCommParams());
+		$a = ZendAfi_Filters_Serialize::unserialize($this->getCommParams());
+		if (!is_array($a))
+			return [];
+		return $a;
+	}
+
+
+	public function getModeComm() {
+		return array_merge($this->getCommParamsAsArray(),
+											 ['id_bib' => $this->getId(),
+												'type' => $this->getCommSigb()]);
+	}
+
+
+	public function getSIGBComm() {
+		$type_comm = $this->getCommSigb();
+		if (!isset(self::$COM_CLASSES[$type_comm]))
+			return null;
+
+		$comm = call_user_func([self::$COM_CLASSES[$type_comm], 'getService'], 
+												 $this->getModeComm());
+		return $comm;
+	}
+
+
+	public function getSigbExemplaire($id_origine, $code_barres) {
+		return $this->getSIGBComm()->getExemplaire($id_origine, $code_barres);
 	}
 }
 

@@ -20,23 +20,6 @@
  */
 class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_AbstractRESTService {
 	/**
-	 * @return Class_Webservice_SIGB_Nanook_Service
-	 */
-	public static function newInstance() {
-		return new self();
-	}
-
-
-	/**
-	 * @param string $server_root
-	 * @return Class_Webservice_SIGB_Nanook_Service
-	 */
-	public static function getService($server_root) {
-		return self::newInstance()->setServerRoot($server_root);
-	}
-
-
-	/**
 	 * @param string $server_root
 	 * @return Class_WebService_SIGB_AbstractRESTService
 	 */
@@ -46,34 +29,15 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 		return parent::setServerRoot($server_root);
 	}
 
-
+	
 	/**
 	 * @param Class_Users $user
 	 * @return Class_WebService_SIGB_Emprunteur
 	 */
 	public function getEmprunteur($user) {
-		$emprunteur = Class_WebService_SIGB_Emprunteur::newInstance()
-			->setService($this);
-
-		try {
-			$xml = $this->httpGet(array('service' => 'GetPatronInfo',
-																	'patronId' => $user->getIdSigb()));
-		} catch (Exception $e) {
-			return $emprunteur;
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $emprunteur;
-
-		if ($this->_getTagData($xml, 'error'))
-			return $emprunteur;
-
-
-		return Class_WebService_SIGB_Nanook_PatronInfoReader
-							::newInstance()
-							->setEmprunteur($emprunteur)
-							->parseXML($xml)
-							->getEmprunteur();
+		$this->_authenticate($user);
+		return $this->ilsdiGetPatronInfo(array('patronId' => $user->getIdSigb()),
+																		 Class_WebService_SIGB_Nanook_PatronInfoReader::newInstance());
 	}
 
 
@@ -83,23 +47,15 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @param string $code_annexe
 	 * @return array
 	 */
-	public function reserverExemplaire($user, $exemplaire, $code_annexe) {
-		try {
-			$xml = $this->httpGet(array('service'					=> 'HoldTitle',
-																	'bibId'						=> $exemplaire->getIdOrigine(),
-																	'patronId'        => $user->getIdSigb(),
-																	'pickupLocation'	=> $code_annexe));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
+	public function reserverExemplaire($user, $exemplaire, $code_bib_or_annexe) {
+		$code_annexe = $code_bib_or_annexe;
+		if ($annexe = Class_CodifAnnexe::getLoader()->findFirstBy(array('id_bib' => $code_bib_or_annexe)))
+			$code_annexe = $annexe->getCode();
 
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Réservation impossible');
-
-		return $this->_success();
+		return $this->ilsdiHoldTitle(
+																 array('bibId'					=> $exemplaire->getIdOrigine(),
+																			 'patronId'       => $user->getIdSigb(),
+																			 'pickupLocation'	=> $code_annexe));
 	}
 
 
@@ -109,21 +65,9 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @return array
 	 */
 	public function supprimerReservation($user, $reservation_id) {
-		try {
-			$xml = $this->httpGet(array('service'		=> 'CancelHold',
-																	'patronId'	=> $user->getIdSigb(),
-																	'itemId'		=> $reservation_id));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Annulation impossible');
-
-		Return $this->_success();
+		return $this->ilsdiCancelHold(array(
+																				'patronId'	=> $user->getIdSigb(),
+																				'itemId'		=> $reservation_id));
 	}
 
 
@@ -133,21 +77,9 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 * @return array
 	 */
 	public function prolongerPret($user, $pret_id) {
-		try {
-			$xml = $this->httpGet(array('service'		=> 'RenewLoan',
-																	'patronId'	=> $user->getIdSigb(),
-																	'itemId'		=> $pret_id));
-		} catch (Exception $e) {
-			return $this->_getNetworkError();
-		}
-
-		if (0 === strpos($xml, '<html>'))
-			return $this->_getNetworkError();
-
-		if ('' != $this->_getTagData($xml, 'error'))
-			return $this->_error('Prolongation impossible');
-
-		return $this->_success();
+		return $this->ilsdiRenewLoan(array(
+																			 'patronId'	=> $user->getIdSigb(),
+																			 'itemId'		=> $pret_id));
 	}
 
 
@@ -157,22 +89,11 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 	 */
 	public function getNotice($id) {
 		try {
-			$xml = $this->httpGet(array('service' => 'GetRecords',
-																	'id' => $id));
+			return $this->ilsdiGetRecords($id, 
+				Class_WebService_SIGB_Nanook_GetRecordsResponseReader::newInstance());
 		} catch (Exception $e) {
 			return;
 		}
-
-		if (0 === strpos($xml, '<html>'))
-			return;
-
-		$notice = Class_WebService_SIGB_Nanook_GetRecordsResponseReader
-								::newInstance()	->getNoticeFromXML($xml);
-
-		if ($notice)
-			$this->cacheNotice($notice);
-
-		return $notice;
 	}
 
 
@@ -192,10 +113,13 @@ class Class_Webservice_SIGB_Nanook_Service extends Class_WebService_SIGB_Abstrac
 
 
 	/**
-	 * @return array
+	 * @param $user Class_Users
 	 */
-	protected function _getNetworkError() {
-		return $this->_error('Service indisponible');
+	protected function _authenticate($user) {
+		if (null != $user->getIdSigb())
+			return;
+
+		$this->ilsdiAuthenticatePatron($user);
 	}
 }
 ?>

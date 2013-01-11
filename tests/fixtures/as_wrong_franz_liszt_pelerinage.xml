@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lfm status="ok">
+<results for="LES ANNEES DE PELERINAGE" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+<opensearch:Query role="request" searchTerms="LES ANNEES DE PELERINAGE" startPage="1" />
+<opensearch:totalResults>3</opensearch:totalResults>
+<opensearch:startIndex>0</opensearch:startIndex>
+<opensearch:itemsPerPage>30</opensearch:itemsPerPage><albummatches>
+<album>
+    <name>Franz Liszt Les Annees De Pelerinage, 1 La Suiss</name>
+    <artist>Carole Carniel</artist>
+    <id>23371426</id>
+    <url>http://www.last.fm/music/Carole+Carniel/Franz+Liszt+Les+Annees+De+Pelerinage,+1+La+Suiss</url>
+    <image size="small">http://userserve-ak.last.fm/serve/34s/32705351.jpg</image>
+    <image size="medium">http://userserve-ak.last.fm/serve/64s/32705351.jpg</image>
+    <image size="large">http://userserve-ak.last.fm/serve/126/32705351.jpg</image>
+    <image size="extralarge">http://userserve-ak.last.fm/serve/300x300/32705351.jpg</image>
+    <streamable>1</streamable>
+            <mbid></mbid>
+    </album>
+<album>
+    <name>Liszt : Les Annees De Pelerinage - Ciccolini</name>
+    <artist>Franz Liszt</artist>
+    <id>3433614</id>
+    <url>http://www.last.fm/music/Franz+Liszt/Liszt+:+Les+Annees+De+Pelerinage+-+Ciccolini</url>
+    <image size="small">http://media.virginmega.fr/Covers/Large/EMI/0724356943452.jpg</image>
+    <image size="medium">http://media.virginmega.fr/Covers/Large/EMI/0724356943452.jpg</image>
+    <image size="large">http://media.virginmega.fr/Covers/Large/EMI/0724356943452.jpg</image>
+    <image size="extralarge">http://media.virginmega.fr/Covers/Large/EMI/0724356943452.jpg</image>
+    <streamable>0</streamable>
+            <mbid></mbid>
+    </album>
+<album>
+    <name>Liszt: Les années de pélerinage - Première année: Suisse / Berlioz: Symphonie Fantastique, Transcription Piano par Liszt</name>
+    <artist>Roger Muraro</artist>
+    <id>260426070</id>
+    <url>http://www.last.fm/music/Roger+Muraro/Liszt:+Les+ann%C3%A9es+de+p%C3%A9lerinage+-+Premi%C3%A8re+ann%C3%A9e:+Suisse+%2F+Berlioz:+Symphonie+Fantastique,+Transcription+Piano+par+Liszt</url>
+    <image size="small">http://userserve-ak.last.fm/serve/34s/67535144.jpg</image>
+    <image size="medium">http://userserve-ak.last.fm/serve/64s/67535144.jpg</image>
+    <image size="large">http://userserve-ak.last.fm/serve/126/67535144.jpg</image>
+    <image size="extralarge">http://userserve-ak.last.fm/serve/300x300/67535144.jpg</image>
+    <streamable>0</streamable>
+            <mbid></mbid>
+    </album>
+</albummatches>
+</results></lfm>

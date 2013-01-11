@@ -1,18 +1,4 @@
 Smalltalk current createPackage: 'Kernel-Tests' properties: #{}!
-TestCase subclass: #ArrayTest
-	instanceVariableNames: ''
-	package: 'Kernel-Tests'!
-
-!ArrayTest methodsFor: 'testing'!
-
-testFirstN
-	self assert: {1. 2. 3} equals: ({1. 2. 3. 4. 5} first: 3).
-!
-
-testIfEmpty
-	self assert: 'zork' equals: ( '' ifEmpty: ['zork'] )
-! !
-
 TestCase subclass: #BlockClosureTest
 	instanceVariableNames: ''
 	package: 'Kernel-Tests'!
@@ -98,6 +84,24 @@ testEquality
 	self assert: true yourself = true yourself
 !
 
+testIdentity
+	"We're on top of JS...just be sure to check the basics!!"
+
+	self deny: 0 == false. 
+	self deny: false == 0.
+	self deny: '' == false.
+	self deny: false == ''.
+
+	self assert: true == true.
+	self deny: false == true.
+	self deny: true == false.
+	self assert: false == false.
+
+	"JS may do some type coercing after sending a message"
+	self assert: true yourself == true.
+	self assert: true yourself == true yourself
+!
+
 testIfTrueIfFalse
  
 	self assert: (true ifTrue: ['alternative block']) = 'alternative block'.
@@ -146,6 +150,12 @@ testLogicKeywords
 		assert: (false or: [ 1 > 0 ]); 
 		assert: ((1 > 0) or: [ false ]); 
 		assert: ((1 > 0) or: [ 1 > 2 ])
+!
+
+testNonBooleanError
+	|b|
+    b := < '' >.
+    self should: [nonBoolean ifTrue: [] ifFalse: []] raise: NonBooleanReceiver
 ! !
 
 TestCase subclass: #ClassBuilderTest
@@ -175,9 +185,176 @@ testInstanceVariableNames
 	self assert: (builder instanceVariableNamesFor: '  hello   world   ') equals: #('hello' 'world')
 ! !
 
-TestCase subclass: #DictionaryTest
+TestCase subclass: #CollectionTest
 	instanceVariableNames: ''
 	package: 'Kernel-Tests'!
+
+!CollectionTest methodsFor: 'accessing'!
+
+collection
+	^ self collectionClass withAll: self defaultValues
+!
+
+collectionClass
+	^ self class collectionClass
+!
+
+collectionWithDuplicates
+	^ self collectionClass withAll: #('a' 'b' 'c' 1 2 1 'a')
+!
+
+defaultValues
+	^ #(1 2 3 -4)
+! !
+
+!CollectionTest methodsFor: 'convenience'!
+
+assertSameContents: aCollection 	as: anotherCollection
+	self assert: aCollection size = anotherCollection size.
+	aCollection do: [ :each |
+		self assert: (aCollection occurrencesOf: each) = (anotherCollection occurrencesOf: each) ]
+! !
+
+!CollectionTest methodsFor: 'testing'!
+
+isCollectionReadOnly
+	^ false
+! !
+
+!CollectionTest methodsFor: 'tests'!
+
+testAsArray
+	self 
+		assertSameContents: self collection 
+		as: self collection asArray
+!
+
+testAsOrderedCollection
+	self 
+		assertSameContents: self collection 
+		as: self collection asOrderedCollection
+!
+
+testAsSet
+	| c set |
+	c := self collectionWithDuplicates.
+	set := c asSet.
+	self assert: set size = 5.
+	c do: [ :each |
+		self assert: (set includes: each) ]
+!
+
+testCollect
+	| newCollection |
+	newCollection :=  #(1 2 3 4).
+	self 
+		assertSameContents: (self collection collect: [ :each |
+			each abs ])
+		as: newCollection
+!
+
+testDetect
+	self assert: (self collection detect: [ :each | each < 0 ]) = -4.
+	self 
+		should: [ self collection detect: [ :each | each = 6 ] ]
+		raise: Error
+!
+
+testDo
+	| newCollection |
+	newCollection := OrderedCollection new.
+	self collection do: [ :each |
+		newCollection add: each ].
+	self 
+		assertSameContents: self collection 
+		as: newCollection
+!
+
+testIfEmptyifNotEmpty
+	|empty nonEmpty|
+	empty := #().
+    nonEmpty := #(1 2 3).
+	self assert: (empty ifEmpty: [true] ifNotEmpty: [false]).
+	self assert: (nonEmpty ifEmpty: [false] ifNotEmpty: [true]).
+!
+
+testIsEmpty
+	self assert: self collectionClass new isEmpty.
+	self deny: self collection isEmpty
+!
+
+testSelect
+	| newCollection |
+	newCollection := #(2 -4).
+	self 
+		assertSameContents: (self collection select: [ :each |
+			each even ])
+		as: newCollection
+!
+
+testSize
+	self assert: self collectionClass new size = 0.
+	self assert: self collection size = 4
+! !
+
+!CollectionTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ nil
+! !
+
+!CollectionTest class methodsFor: 'testing'!
+
+isAbstract
+	^ self collectionClass isNil
+! !
+
+CollectionTest subclass: #HashedCollectionTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!HashedCollectionTest methodsFor: 'accessing'!
+
+collection
+	^ #{ 'a' -> 1. 'b' -> 2. 'c' -> 3. 'd' -> -4 }
+!
+
+collectionWithDuplicates
+	^ #{ 'a' -> 1. 'b' -> 2. 'c' -> 3. 'd' -> -4. 'e' -> 1. 'f' -> 2. 'g' -> 10 }
+! !
+
+!HashedCollectionTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ HashedCollection
+! !
+
+HashedCollectionTest subclass: #DictionaryTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!DictionaryTest methodsFor: 'accessing'!
+
+collection
+	^ Dictionary new
+		at: 1 put: 1;
+		at: 'a' put: 2;
+		at: true put: 3;
+		at: 4 put: -4;
+		yourself
+!
+
+collectionWithDuplicates
+	^ Dictionary new
+		at: 1 put: 1;
+		at: 'a' put: 2;
+		at: true put: 3;
+		at: 4 put: -4;
+		at: 'b' put: 1;
+		at: 3 put: 3;
+		at: false put: 12;
+		yourself
+! !
 
 !DictionaryTest methodsFor: 'tests'!
 
@@ -221,6 +398,44 @@ testEquality
 	self deny: d1 = d2.
 !
 
+testIfAbsent
+
+	| d visited |
+	visited := false.
+	d := Dictionary new.
+
+	d at: 'hello' ifAbsent: [ visited := true ].
+	self assert: visited.
+!
+
+testIfPresent
+
+	| d visited absent |
+	visited := false.
+	d := Dictionary new.
+	d at: 'hello' put: 'world'.
+
+	d at: 'hello' ifPresent: [ :value | visited := value ].
+	self assert: visited = 'world'.
+
+	absent := d at: 'bye' ifPresent: [ :value | visited := value ].
+	self assert: absent isNil.
+!
+
+testIfPresentIfAbsent
+
+	| d visited |
+	visited := false.
+	d := Dictionary new.
+	d at: 'hello' put: 'world'.
+
+	d at: 'hello' ifPresent: [ :value | visited := value ] ifAbsent: [ visited := true ].
+	self assert: visited = 'world'.
+
+	d at: 'buy' ifPresent: [ :value | visited := value ] ifAbsent: [ visited := true ].
+	self assert: visited.
+!
+
 testKeys
 	| d |
 
@@ -234,7 +449,7 @@ testKeys
 
 testPrintString
 	self
-		assert: 'a Dictionary(''firstname'' -> ''James'' , ''lastname'' -> ''Bond'')' 
+		assert: 'a Dictionary(''firstname''->''James'' , ''lastname''->''Bond'')' 
 		equals: (Dictionary new 
                          	at:'firstname' put: 'James';
                         	at:'lastname' put: 'Bond';
@@ -301,6 +516,313 @@ testValues
 	self assert: d values = #(2 3 4)
 ! !
 
+!DictionaryTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ Dictionary
+! !
+
+CollectionTest subclass: #SequenceableCollectionTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!SequenceableCollectionTest methodsFor: 'tests'!
+
+testAt
+	self assert: (self collection at: 4) = -4.
+	self should: [ self collection at: 5 ] raise: Error
+!
+
+testAtIfAbsent
+	self assert: (self collection at: (self collection size + 1) ifAbsent: [ 'none' ]) = 'none'
+! !
+
+SequenceableCollectionTest subclass: #ArrayTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!ArrayTest methodsFor: 'testing'!
+
+testAtIfAbsent
+	| array |
+	array := #('hello' 'world').
+	self assert: (array at: 1) equals: 'hello'.
+	self assert: (array at: 2) equals: 'world'.
+	self assert: (array at: 2 ifAbsent: ['not found']) equals: 'world'.
+	self assert: (array at: 0 ifAbsent: ['not found']) equals: 'not found'.
+	self assert: (array at: -10 ifAbsent: ['not found']) equals: 'not found'.
+	self assert: (array at: 3 ifAbsent: ['not found']) equals: 'not found'.
+!
+
+testFirstN
+	self assert: {1. 2. 3} equals: ({1. 2. 3. 4. 5} first: 3).
+!
+
+testIfEmpty
+	self assert: 'zork' equals: ( '' ifEmpty: ['zork'] )
+!
+
+testPrintString
+	| array |
+	array := Array new.
+	self assert: 'a Array ()' equals: ( array printString ).
+	array add: 1; add: 3.
+	self assert: 'a Array (1 3)' equals: ( array printString ).
+	array add: 'foo'.
+	self assert: 'a Array (1 3 ''foo'')' equals: ( array printString ).
+	array remove: 1; remove: 3.
+	self assert: 'a Array (''foo'')' equals: ( array printString ).
+	array addLast: 3.
+	self assert: 'a Array (''foo'' 3)' equals: ( array printString ).
+	array addLast: 3.
+	self assert: 'a Array (''foo'' 3 3)' equals: ( array printString ).
+! !
+
+!ArrayTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ Array
+! !
+
+SequenceableCollectionTest subclass: #StringTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!StringTest methodsFor: 'accessing'!
+
+collection
+	^'hello'
+!
+
+collectionWithDuplicates
+	^ 'abbaerte'
+! !
+
+!StringTest methodsFor: 'tests'!
+
+testAddRemove
+	self should: ['hello' add: 'a'] raise: Error.
+	self should: ['hello' remove: 'h'] raise: Error
+!
+
+testAsArray
+	self assert: 'hello' asArray = #('h' 'e' 'l' 'l' 'o').
+!
+
+testAt
+	self assert: ('hello' at: 1) = 'h'.
+	self assert: ('hello' at: 5) = 'o'.
+	self assert: ('hello' at: 6 ifAbsent: [nil]) = nil
+!
+
+testAtPut
+	"String instances are read-only"
+	self should: ['hello' at: 1 put: 'a'] raise: Error
+!
+
+testCollect
+	| newCollection |
+	newCollection := 'hheelllloo'.
+	self 
+		assertSameContents: (self collection collect: [ :each |
+			each, each ])
+		as: newCollection
+!
+
+testCopyWithoutAll
+	self 
+		assert: 'hello world' 
+		equals: ('*hello* *world*' copyWithoutAll: '*')
+!
+
+testDetect
+	self assert: (self collection detect: [ :each | each = 'h' ]) = 'h'.
+	self 
+		should: [ self collection detect: [ :each | each = 6 ] ]
+		raise: Error
+!
+
+testEquality
+	self assert: 'hello' = 'hello'.
+	self deny: 'hello' = 'world'.
+
+	self assert: 'hello'  = 'hello' yourself.
+	self assert: 'hello' yourself = 'hello'.
+
+	"test JS falsy value"
+	self deny: '' = 0
+!
+
+testIdentity
+	self assert: 'hello' == 'hello'.
+	self deny: 'hello' == 'world'.
+
+	self assert: 'hello' == 'hello' yourself.
+	self assert: 'hello' yourself == 'hello'.
+
+	"test JS falsy value"
+	self deny: '' == 0
+!
+
+testIncludesSubString
+	self assert: ('amber' includesSubString: 'ber').
+	self deny: ('amber' includesSubString: 'zork').
+!
+
+testJoin
+	self assert: 'hello,world' equals: (',' join: #('hello' 'world'))
+!
+
+testSelect
+	| newCollection |
+	newCollection := 'o'.
+	self 
+		assertSameContents: (self collection select: [ :each |
+			each = 'o' ])
+		as: newCollection
+!
+
+testSize
+	self assert: 'smalltalk' size equals: 9.
+	self assert: '' size equals: 0
+!
+
+testStreamContents
+	self 
+		assert: 'hello world' 
+		equals: (String streamContents: [ :aStream | 
+			aStream 
+				nextPutAll: 'hello'; space; 
+				nextPutAll: 'world' ])
+! !
+
+!StringTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ String
+! !
+
+SequenceableCollectionTest subclass: #SymbolTest
+	instanceVariableNames: ''
+	package: 'Kernel-Tests'!
+
+!SymbolTest methodsFor: 'accessing'!
+
+collection
+	^ #hello
+!
+
+collectionWithDuplicates
+	^ #phhaaarorra
+! !
+
+!SymbolTest methodsFor: 'tests'!
+
+testAsString
+	self assert: #hello asString equals: 'hello'
+!
+
+testAsSymbol
+	self assert: #hello == #hello asSymbol
+!
+
+testAt
+	self assert: (#hello at: 1) = 'h'.
+	self assert: (#hello at: 5) = 'o'.
+	self assert: (#hello at: 6 ifAbsent: [nil]) = nil
+!
+
+testAtPut
+	"Symbol instances are read-only"
+	self should: ['hello' at: 1 put: 'a'] raise: Error
+!
+
+testCollect
+	| newCollection |
+	newCollection := #hheelllloo.
+	self 
+		assertSameContents: (self collection collect: [ :each |
+			each, each ])
+		as: newCollection
+!
+
+testComparing
+	self assert: #ab > #aa.
+	self deny: #ab > #ba.
+
+	self assert: #ab < #ba.
+	self deny: #bb < #ba.
+
+	self assert: #ab >= #aa.
+	self deny: #ab >= #ba.
+
+	self assert: #ab <= #ba.
+	self deny: #bb <= #ba
+!
+
+testCopying
+	self assert: #hello copy == #hello.
+	self assert: #hello deepCopy == #hello
+!
+
+testDetect
+	self assert: (self collection detect: [ :each | each = 'h' ]) = 'h'.
+	self 
+		should: [ self collection detect: [ :each | each = 'z' ] ]
+		raise: Error
+!
+
+testEquality
+	self assert: #hello = #hello.
+	self deny: #hello = #world.
+
+	self assert: #hello  = #hello yourself.
+	self assert: #hello yourself = #hello.
+
+	self deny: #hello  = 'hello'.
+	self deny: 'hello' = #hello.
+!
+
+testIdentity
+	self assert: #hello == #hello.
+	self deny: #hello == #world.
+
+	self assert: #hello  = #hello yourself.
+	self assert: #hello yourself = #hello asString asSymbol
+!
+
+testIsEmpty
+	self deny: self collection isEmpty.
+	self assert: '' asSymbol isEmpty
+!
+
+testIsSymbolIsString
+	self assert: #hello isSymbol.
+	self deny: 'hello' isSymbol.
+	self deny: #hello isString.
+	self assert: 'hello' isString
+!
+
+testSelect
+	| newCollection |
+	newCollection := 'o'.
+	self 
+		assertSameContents: (self collection select: [ :each |
+			each = 'o' ])
+		as: newCollection
+!
+
+testSize
+	self assert: #a size equals: 1.
+	self assert: #aaaaa size equals: 5
+! !
+
+!SymbolTest class methodsFor: 'accessing'!
+
+collectionClass
+	^ Symbol
+! !
+
 TestCase subclass: #JSObjectProxyTest
 	instanceVariableNames: ''
 	package: 'Kernel-Tests'!
@@ -308,7 +830,7 @@ TestCase subclass: #JSObjectProxyTest
 !JSObjectProxyTest methodsFor: 'accessing'!
 
 jsObject
-	<return jsObject = {a: 1, b: function() {return 2;}, c: function(object) {return object;}}>
+	<return jsObject = {a: 1, b: function() {return 2;}, c: function(object) {return object;}, d: ''}>
 ! !
 
 !JSObjectProxyTest methodsFor: 'tests'!
@@ -325,13 +847,7 @@ testMessageSend
 !
 
 testMethodWithArguments
-	self deny: ('body' asJQuery hasClass: 'amber').
-
-	'body' asJQuery addClass: 'amber'.
-	self assert: ('body' asJQuery hasClass: 'amber').
-
-	'body' asJQuery removeClass: 'amber'.
-	self deny: ('body' asJQuery hasClass: 'amber').
+	self assert: (self jsObject c: 1) equals: 1
 !
 
 testPrinting
@@ -339,23 +855,22 @@ testPrinting
 !
 
 testPropertyThatReturnsEmptyString
-	<document.location.hash = ''>.
-	self assert: '' equals: document location hash.
+	| object |
 
-	document location hash: 'test'.
-	self assert: '#test' equals: document location hash.
+	object := self jsObject.
+	self assert: '' equals: object d.
+
+	object d: 'hello'.
+	self assert: 'hello' equals: object d
 !
 
 testYourself
-	|body|
-	body := 'body' asJQuery
-				addClass: 'amber';
-				yourself.
+	| object |
+	object := self jsObject
+		d: 'test';
+		yourself.
 
-	self assert: (body hasClass: 'amber').
-
-	body removeClass: 'amber'.
-	self deny: (body hasClass: 'amber').
+	self assert: object d equals: 'test'
 ! !
 
 TestCase subclass: #NumberTest
@@ -363,6 +878,11 @@ TestCase subclass: #NumberTest
 	package: 'Kernel-Tests'!
 
 !NumberTest methodsFor: 'tests'!
+
+testAbs
+	self assert: 4 abs = 4.
+	self assert: -4 abs = 4
+!
 
 testArithmetic
 	
@@ -559,7 +1079,9 @@ testIdentity
 	| o |
 	o := Object new.
 	self deny: o == Object new.
-	self assert: o == o
+	self assert: o == o.
+	self assert: o yourself == o.
+	self assert: o == o yourself
 !
 
 testIfNil
@@ -584,7 +1106,11 @@ testInstVars
 testNilUndefined
 	"nil in Smalltalk is the undefined object in JS"
 
-	self assert: nil = undefined
+	| notDefined |
+    
+    <notDefined = undefined>.
+
+	self assert: nil = notDefined
 !
 
 testYourself
@@ -764,6 +1290,22 @@ testAt
 	self should: [Set new at: 1 put: 2] raise: Error
 !
 
+testPrintString
+	| set |
+	set := Set new.
+	self assert: 'a Set ()' equals: ( set printString ).
+	set add: 1; add: 3.
+	self assert: 'a Set (1 3)' equals: ( set printString ).
+	set add: 'foo'.
+	self assert: 'a Set (1 3 ''foo'')' equals: ( set printString ).
+	set remove: 1; remove: 3.
+	self assert: 'a Set (''foo'')' equals: ( set printString ).
+	set add: 3.
+	self assert: 'a Set (''foo'' 3)' equals: ( set printString ).
+	set add: 3.
+	self assert: 'a Set (''foo'' 3)' equals: ( set printString ).
+!
+
 testSize
 	self assert: Set new size equals: 0.
 	self assert: (Set withAll: #(1 2 3 4)) size equals: 4.
@@ -783,146 +1325,6 @@ testUnicity
 	self assert: set size = 2.
 
 	self assert: set asArray equals: #(21 'hello')
-! !
-
-TestCase subclass: #StringTest
-	instanceVariableNames: ''
-	package: 'Kernel-Tests'!
-
-!StringTest methodsFor: 'tests'!
-
-testAddRemove
-	self should: ['hello' add: 'a'] raise: Error.
-	self should: ['hello' remove: 'h'] raise: Error
-!
-
-testAsArray
-	self assert: 'hello' asArray = #('h' 'e' 'l' 'l' 'o').
-!
-
-testAt
-	self assert: ('hello' at: 1) = 'h'.
-	self assert: ('hello' at: 5) = 'o'.
-	self assert: ('hello' at: 6 ifAbsent: [nil]) = nil
-!
-
-testAtPut
-	"String instances are read-only"
-	self should: ['hello' at: 1 put: 'a'] raise: Error
-!
-
-testCopyWithoutAll
-	self 
-		assert: 'hello world' 
-		equals: ('*hello* *world*' copyWithoutAll: '*')
-!
-
-testEquality
-	self assert: 'hello' = 'hello'.
-	self deny: 'hello' = 'world'.
-
-	self assert: 'hello'  = 'hello' yourself.
-	self assert: 'hello' yourself = 'hello'.
-
-	"test JS falsy value"
-	self deny: '' = 0
-!
-
-testIncludesSubString
-	self assert: ('amber' includesSubString: 'ber').
-	self deny: ('amber' includesSubString: 'zork').
-!
-
-testJoin
-	self assert: 'hello,world' equals: (',' join: #('hello' 'world'))
-!
-
-testSize
-	self assert: 'smalltalk' size equals: 9.
-	self assert: '' size equals: 0
-!
-
-testStreamContents
-	self 
-		assert: 'hello world' 
-		equals: (String streamContents: [:aStream| aStream 
-                                                 					nextPutAll: 'hello'; space; 
-                                                 					nextPutAll: 'world'])
-! !
-
-TestCase subclass: #SymbolTest
-	instanceVariableNames: ''
-	package: 'Kernel-Tests'!
-
-!SymbolTest methodsFor: 'tests'!
-
-testAsString
-	self assert: #hello asString equals: 'hello'
-!
-
-testAsSymbol
-	self assert: #hello == #hello asSymbol
-!
-
-testAt
-	self assert: (#hello at: 1) = 'h'.
-	self assert: (#hello at: 5) = 'o'.
-	self assert: (#hello at: 6 ifAbsent: [nil]) = nil
-!
-
-testAtPut
-	"Symbol instances are read-only"
-	self should: ['hello' at: 1 put: 'a'] raise: Error
-!
-
-testComparing
-	self assert: #ab > #aa.
-	self deny: #ab > #ba.
-
-	self assert: #ab < #ba.
-	self deny: #bb < #ba.
-
-	self assert: #ab >= #aa.
-	self deny: #ab >= #ba.
-
-	self assert: #ab <= #ba.
-	self deny: #bb <= #ba
-!
-
-testCopying
-	self assert: #hello copy == #hello.
-	self assert: #hello deepCopy == #hello
-!
-
-testEquality
-	self assert: #hello = #hello.
-	self deny: #hello = #world.
-
-	self assert: #hello  = #hello yourself.
-	self assert: #hello yourself = #hello.
-
-	self deny: #hello  = 'hello'.
-	self deny: 'hello' = #hello.
-!
-
-testIdentity
-	self assert: #hello == #hello.
-	self deny: #hello == #world.
-
-	self assert: #hello  = #hello yourself.
-	self assert: #hello yourself = #hello asString asSymbol
-!
-
-testIsSymbolIsString
-	self assert: #hello isSymbol.
-	self deny: 'hello' isSymbol.
-	self deny: #hello isString.
-	self assert: 'hello' isString
-!
-
-testSize
-	self assert: #a size equals: 1.
-	self assert: #aaaaa size equals: 5
 ! !
 
 TestCase subclass: #UndefinedTest

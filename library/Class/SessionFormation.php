@@ -22,7 +22,9 @@
 class Class_SessionFormation extends Storm_Model_Abstract {
 	protected $_table_name = 'sessions_formation';
 
-	protected $_belongs_to = array('formation' => array('model' => 'Class_Formation'));
+	protected $_belongs_to = array(
+																 'formation' => array('model' => 'Class_Formation'),
+																 'lieu' => array('model' => 'Class_Lieu'));
 	protected $_has_many = array(
 															 'session_formation_inscriptions' => array('model' => 'Class_SessionFormationInscription',
 																																				 'role' => 'session_formation',
@@ -43,10 +45,10 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 																							 'cout' => 0,
 																							 'duree' => 0,
 																							 'date_debut' => '',
+																							 'date_fin' => '',
 																							 'date_limite_inscription' => null,
 																							 'contenu' => '',
 																							 'objectif' => '',
-																							 'lieu' => '',
 																							 'horaires' => '',
 																							 'is_annule' => false);
 
@@ -57,6 +59,13 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 
 	public function getAnnee() {
 		return array_first(explode('-', $this->getDateDebut()));
+	}
+
+	
+	public function getLibelleLieu() {
+		if ($this->hasLieu())
+			return $this->getLieu()->getLibelle();
+		return '';
 	}
 
 
@@ -108,6 +117,12 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 	}
 
 
+	public function getDateFin() {
+		$date = parent::_get('date_fin');
+		return $date ? $date : null; //pour ne pas retourner chaine vide, probleme zend_form
+	}
+
+
 	public function getDateLimiteInscription() {
 		$date = parent::_get('date_limite_inscription');
 		if ('0000-00-00' == $date)
@@ -134,6 +149,10 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 		$this->checkAttribute('date_limite_inscription',
 													Class_Date::isEndDateAfterStartDateNotEmpty($this->getDateLimiteInscription(), $this->getDateDebut()),
 													"La date limite d'inscription doit être inférieure ou égale à la date de début");
+
+		$this->checkAttribute('date_fin',
+													Class_Date::isEndDateAfterStartDate($this->getDateDebut(), $this->getDateFin()),
+													"La date de fin doit être supérieure ou égale à la date de début");
 	}
 
 
@@ -152,6 +171,11 @@ class Class_SessionFormation extends Storm_Model_Abstract {
 	/** @return string */
 	public function getDateDebutTexte() {
 		return Class_Date::humanDate($this->getDateDebut(), 'd MMMM yyyy');
+	}
+
+	/** @return string */
+	public function getDateFinTexte() {
+		return Class_Date::humanDate($this->getDateFin(), 'd MMMM yyyy');
 	}
 }
 

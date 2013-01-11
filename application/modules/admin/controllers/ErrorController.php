@@ -18,50 +18,11 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-
-class Admin_ErrorController extends Zend_Controller_Action
-{
-
-    function indexAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Erreur";
-        
-    }
-    
-    function privilegesAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Vous n'avez pas les privilèges appropriés";
-    }
-    
-    function databaseAction()
-    {	
-        $this->view->title = "Erreur";
-        $this->view->message = "Problème d'accès à la base de données";
-    }
-    
-    function bibAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Il y a encore des utilisateurs attachés à cette bibliothèque, suppression interdite";
-    }
-    
-    function zoneAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Il y a encore des bibliothèques attachées à ce territoire , suppression interdite";
-    }
-    
-    function cmsAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Il y a encore des objets attachées à cette catégorie , opération interdite";
-    }
-    
-    function rssAction()
-    {
-        $this->view->title = "Erreur";
-        $this->view->message = "Il y a encore des objets attachées à cette catégorie , opération interdite";
-    }
+class Admin_ErrorController extends Zend_Controller_Action {
+	public function errorAction() {
+		$this->view->titre = 'Une erreur est survenue';
+		$this->view->errors = $this->_getParam('error_handler');
+		$this->view->database = array_at('dbname',
+																		 Zend_Db_Table::getDefaultAdapter()->getConfig());
+	}
 }

@@ -162,7 +162,8 @@ class ZendAfi_View_Helper_Admin_ImageViewersOptions extends ZendAfi_View_Helper_
 	private function _ensureOneStyle() {
 		if (!array_key_exists('style_liste', $this->_preferences)
 				|| ('' == $this->_preferences['style_liste'])) {
-			$first = reset(array_keys($this->_styles[self::STYLE_TYPE_JAVA]));
+			$keys = array_keys($this->_styles[self::STYLE_TYPE_JAVA]);
+			$first = reset($keys);
 			$this->_preferences['style_liste'] = $first;
 		}
 	}

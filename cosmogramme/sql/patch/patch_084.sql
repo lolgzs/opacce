@@ -1,0 +1,1 @@
+alter table album add column notes text;

@@ -47,11 +47,14 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 		if (array_isset('division', $params))
 			$this->division = $params["division"];
 
-		$this->preferences=$params["preferences"];
-		if (!$this->preferences) {
-			$cls=new Class_Systeme_ModulesAccueil();
-			$this->preferences=$cls->getValeursParDefaut($this->type_module);
-		}
+		$modules_accueil = new Class_Systeme_ModulesAccueil();
+	
+		$this->preferences = $params["preferences"];
+		if (!$this->preferences) 
+			$this->preferences = $modules_accueil->getValeursParDefaut($this->type_module);
+
+		$this->preferences = array_merge($modules_accueil->getValeursParDefaut($this->type_module), 
+																		 $this->preferences);
 	}
 
 
@@ -65,7 +68,7 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 		if (Class_Users::getLoader()->isCurrentUserAdmin())
 			return false;
 
-		return Class_AdminVar::get('CACHE_ACTIF') == '1';
+		return Class_AdminVar::isCacheEnabled();
 	}
 
 
@@ -75,10 +78,16 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 
 	// Calcul la clé qui référence le cache()
 	public function getCacheKey() {
-		return md5(serialize(array($this->id_module,
+		return md5(serialize(array(BASE_URL,
+															 $this->id_module,
 															 Class_Profil::getCurrentProfil()->getId(),
 															 $this->getLocale(),
 															 $this->preferences)));
+	}
+
+
+	public function getPreferences() {
+		return $this->preferences;
 	}
 
 
@@ -130,10 +139,11 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 //---------------------------------------------------------------------
 	protected function getHtmlArray()
 	{
-		return array("TITRE" => $this->titre,
-								 "CONTENU" => $this->getFonctionAdmin().$this->contenu,
-								 "MESSAGE" => $this->message,
-								 "RSS" => $this->rss_interne);
+		return ["TITRE" => $this->titre,
+						"CONTENU" => $this->getFonctionAdmin().$this->contenu,
+						"MESSAGE" => $this->message,
+						"RSS" => $this->rss_interne,
+						"TYPE_MODULE" => strtolower($this->type_module)];
 	}
 
 //---------------------------------------------------------------------
@@ -219,7 +229,15 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	}
 
 
+	public function isBoiteVisible() {
+		return true;
+	}
+
+
 	public function getBoite() {
+		if (!$this->isBoiteVisible())
+			return '';
+
 		$this->_beforeCache();
 
 		$key = $this->getCacheKey();
@@ -246,7 +264,7 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	{
 		// Fil rss interne
 		if (array_isset('RSS', $html_array))
-			$html_array["RSS"]= sprintf('<a href="%s" target="_blank"><img src="%s" border="0" alt="%s"/></a>',
+			$html_array["RSS"]= sprintf('<a href="%s" target="_blank"><img src="%s" style="border:0px" alt="%s"/></a>',
 																	$html_array["RSS"],
 																	URL_IMG.'rss.gif',
 																	$this->translate()->_('flux RSS de la boite %s',
@@ -365,25 +383,8 @@ class ZendAfi_View_Helper_Accueil_Base extends ZendAfi_View_Helper_BaseHelper {
 	 * @return ZendAfi_View_Helper_Accueil_BibNumerique
 	 */
 	public function renderSlideShowScriptsOn($script_loader, $selector, $options=null) {
-		$cycle_options = array('pause' => 1, 
-													 'fx' => 'fade');
-		if (array_isset('op_transition', $this->preferences) 
-				&& in_array($this->preferences['op_transition'], 
-										array('fade', 'shuffle', 'scrollHorz')))
-			$cycle_options['fx'] = $this->preferences['op_transition'];
-
-		if (array_isset('op_timeout', $this->preferences))
-			$cycle_options['timeout'] = 1000 * $this->preferences['op_timeout'];
-
-		if ($options)
-			$cycle_options = array_merge($cycle_options, $options);
-
-		$script_loader
-			->addScript(URL_JAVA . 'diaporama/jquery.cycle.all.min')
-			->addJQueryReady(sprintf(
-										 '$(\'%s\').cycle(%s);',
-										 $selector,
-										 json_encode($cycle_options)));
-		return $this;
+		$this->view->getHelper('TagSlideshow')
+			->setPreferences($this->preferences)
+			->renderSlideShowScriptsOn($script_loader, $selector, $options);
 	}
 }

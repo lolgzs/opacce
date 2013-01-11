@@ -27,6 +27,16 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	protected $_album;
 
 
+	public static function getTransitionDefinitions() {
+		return array('fade' => 'Transparence',
+								 'shuffle' => 'Mélange',
+								 'scrollHorz' => 'Défilement horizontal',
+								 'scrollVert' => 'Défilement vertical',
+								 'curtainX' => 'Rideau horizontal',
+								 'curtainY' => 'Rideau vertical');
+	}
+
+
 	public function setPreferences($preferences) {
 		if (null == $preferences)
 			$this->_preferences = $this->_default_preferences;
@@ -59,11 +69,13 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 		if (!$this->_album)
 			return $this;
 
-		return $this->renderSlideShowScriptsOn(
+		return $this->renderSlideShowScriptsOn(Class_ScriptLoader::getInstance(),
 																					 sprintf('div.slideshow-%d .medias',
 																									 $this->_album->getId()),
 																					 array('width' => $this->_preferences['op_largeur_img'],
-																								 'height' => $this->_preferences['op_hauteur_boite']));
+																								 'height' => $this->_preferences['op_hauteur_boite'],
+																								 'fit' => true,
+																								 'aspect' => true));
 	}
 
 
@@ -71,11 +83,14 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	 * @param Class_Album $album
 	 * @return ZendAfi_View_Helper_Accueil_BibNumerique
 	 */
-	public function renderSlideShowScriptsOn($selector, $options=null) {
+	public function renderSlideShowScriptsOn($script_loader, $selector, $options=null) {
 		$cycle_options = array('pause' => 1, 
-													 'fx' => 'fade');
-		if (array_isset('op_transition', $this->_preferences) 
-				&& in_array($this->_preferences['op_transition'], array('fade', 'shuffle', 'scrollHorz')))
+													 'fx' => 'fade',
+													 'animIn' => array('opacity' =>  1),
+													 'animOut' => array('opacity' =>  0),
+													 );
+		if (array_isset('op_transition', $this->_preferences)
+				&& in_array($this->_preferences['op_transition'], array_keys(self::getTransitionDefinitions())))
 			$cycle_options['fx'] = $this->_preferences['op_transition'];
 
 		if (array_isset('op_timeout', $this->_preferences))
@@ -84,10 +99,22 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 		if ($options)
 			$cycle_options = array_merge($cycle_options, $options);
 
-		Class_ScriptLoader::getInstance()
+		$script_loader
 			->addScript(URL_JAVA . 'diaporama/jquery.cycle.all.min')
 			->addJQueryReady(sprintf(
-										 '$(\'%s\').cycle(%s);',
+															 '$(\'%s\').cycle(%s);
+                                var container = $(\'%1$s\').parent();
+                                container.addClass(\'slideshow\');
+										            container.prepend(\'<div class="controls"><a href="#"></a><a href="#"></a></div>\');
+                                container.find(\'.controls a:first-child\').click( 
+                                                                  function(event){ 
+                                                                         event.preventDefault(); 
+                                                                         $(\'%1$s\').cycle(\'prev\') } );
+                                container.find(\'.controls a + a\').click(
+                                                                  function(event){
+                                                                         event.preventDefault(); 
+                                                                         $(\'%1$s\').cycle(\'next\') } );
+                                container.find(\'.controls a\').css(\'top\', (container.parent().height()/3)+\'px\')',
 										 $selector,
 										 json_encode($cycle_options)))
 			->loadPrettyPhoto();
@@ -104,7 +131,7 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 
 		$html = sprintf('<div class="slideshow slideshow-%d">'.
 										  '<h2></h2>'.
-										    '<div class="medias">%s</div>'.
+									    '<div class="medias">%s</div>'.
 										  '<p></p>'.
 										'</div>', 
 										$this->_album->getId(),
@@ -129,12 +156,20 @@ class ZendAfi_View_Helper_TagSlideshow extends Zend_View_Helper_HtmlElement {
 	 * @return string
 	 */
 	protected function _renderMedia($media) {
-		$content = $this->view->tagImg($this->view->url(array('controller' => 'bib-numerique',
-																													'action' => 'thumbnail',
-																													'width' => $media->getAlbum()->getThumbnailWidth(),
-																													'id' => $media->getId()),
-																										null,
-																										true), 
+		$params = array('width' => (int)$media->getAlbum()->getThumbnailWidth(),
+										'id' => (int)$media->getId());
+
+		if ($media->isThumbnailExistsForParams($params))
+			$url_media = $media->getThumbnailUrlForParams($params);
+		else
+			$url_media = $this->view->url(array('controller' => 'bib-numerique',
+																					'action' => 'thumbnail',
+																					'width' => $media->getAlbum()->getThumbnailWidth(),
+																					'id' => $media->getId()),
+																		null,
+																		true);
+
+		$content = $this->view->tagImg($url_media, 
 																	 array('style' => sprintf('width: %spx',  
 																														$this->_preferences['op_largeur_img']),
 																				 'title' => htmlspecialchars($media->getTitre()),

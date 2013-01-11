@@ -1,0 +1,20 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+
+<?php echo $this->timeline($this->timelineActions);?>
+
+<div class="workflow_step">
+	<h2><?php echo $this->_('À quel endroit ?');?></h2>
+
+	<ul>
+	<?php 
+	foreach ($this->locations as $location) {
+		echo '<li>'.$this->tagAnchor(array('location' => $location->getId()),
+																 $this->escape($location->getLibelleBib())).'</li>';
+	} 
+	?>
+	</ul>
+</div>
+
+<?php $this->closeBoite();?>
+
+<?php echo $this->abonne_RetourFiche(); ?>

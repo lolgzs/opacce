@@ -25,8 +25,8 @@
 //										3=liste vignette
 //										4= Liste images bookflip
 //////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
-{
+
+class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper {
 	/**
 	 * @param array $notices
 	 * @param int $nombre_resultats
@@ -60,29 +60,19 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 		$html.='</td>';
 
 		// combo tri
-		if($url)
-		{
-			$onchange="var tri=$('#tri').val();document.location='".$url."?tri='+tri;";
+		if($url)	{
+			$onchange="var tri=$('#tri').val();document.location='".$url.(strpos($url, '?') ? '&' : '?')."tri='+tri;";
 			$html.='<td align="right">Trier&nbsp;par </td>';
 			$html.='<td style="padding-right:10px">';
-			$html.='<select id="tri" name="tri" onchange="'.$onchange.'">';
-			$html.='<option value="*">pertinence</option>';
-			$html.='<option value="alpha_titre"';
-			if($tri== "alpha_titre") $html.='selected="selected"';
-			$html.='>Titre</option>';
-			$html.='<option value="alpha_auteur,alpha_titre"';
-			if($tri == "alpha_auteur,alpha_titre") $html.='selected="selected"';
-			$html.='>Auteur et titre</option>';
-			$html.='<option value="annee desc"';
-			if($tri == "annee desc") $html.='selected="selected"';
-			$html.='>Année de publication</option>';
-			$html.='<option value="type_doc,alpha_titre"';
-			if($tri == "type_doc,alpha_titre") $html.='selected="selected"';
-			$html.='>Type de document</option>';
-			$html.='<option value="date_creation desc"';
-			if($tri == "date_creation desc") $html.='selected="selected"';
-			$html.='>Date de nouveauté</option>';
-			$html.='</select></td>';
+
+			$html.=$this->view->formSelect('tri', 
+																		 $tri, 
+																		 ['onchange' => $onchange], 
+																		 ['*' => $this->view->_('Pertinence'),
+																		  'alpha_titre' => $this->view->_('Titre et auteur'),
+																			'annee desc' => $this->view->_('Année de publication'),
+																			'type_doc,alpha_titre' => $this->view->_('Type de document'),
+																			'date_creation desc' => $this->view->_('Date de nouveauté')]);
 		}
 
 		$html.=' <td align="right">page&nbsp;'.$page.'</td>';
@@ -131,7 +121,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 				if($champ=="T") 
 					$html.= sprintf('<td class="%s"><a href="%s">%s</a></td>',
 													$style_css,
-													$this->urlNotice($notice["id_notice"], $notice["type_doc"]),
+													$this->view->urlNotice($notice),
 													$notice["T"]);
 
 				else $html.='<td class="'. $style_css .'" '.$align.'>'.$notice[$champ].'</td>';
@@ -141,14 +131,6 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 		}
 		$html.='</table>';
 		return $html;
-	}
-
-
-	public function urlNotice($id, $type_doc) {
-		return $this->view->url(array('controller' => 'recherche', 
-																	 'action' => 'viewnotice', 
-																	 'id' => $id, 
-																	 'type_doc' => $type_doc));
 	}
 
 
@@ -212,13 +194,12 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 	{
 
 		$lig=0;
-		foreach($data as $notice)
-		{
+		$html = '';
+		foreach($data as $notice)	{
+			$cls_notice = Class_Notice::find($notice["id_notice"]);
 			// calcul url en fonction du type de doc
 			if($notice["type_doc"]>7 and $notice["type_doc"]<11)
 			{
-				$cls_notice=new Class_Notice();
-				$cls_notice->getNotice($notice["id_notice"]);
 				$id_ressource=$cls_notice->getChamp856b();
 				switch($notice["type_doc"])
 				{
@@ -228,14 +209,14 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 				}
 			}
 			else 
-				$url_notice = $this->urlNotice($notice["id_notice"], $notice["type_doc"]); 
+				$url_notice = $this->view->urlNotice($notice); 
 
 			// style selon parité des lignes
 			if($lig % 2) $style_css="listeImpaire"; else $style_css="listePaire";
 			$html.='<div class="liste_vignette"><table width="100%" cellspacing="0" border="0">';
 
 			// Image
-			$notice["titre_principal"]=$notice["T"];
+			$notice["titre_principal"]=$cls_notice->getTitreEtSousTitre();
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"]);
 			$html.=sprintf('<tr><td class="%s" width="100px" style="vertical-align:top"><a href="%s"><img src="%s" border="0" width="90px" alt="%s" title="%s"/></a></td>',
@@ -247,10 +228,10 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 
 			// Titre / auteur principal
 			$html.='<td class="'. $style_css .'" style="text-align:left;vertical-align:top;width:100%">';
+			$html.='<div style="float:right; width:auto">'.$this->view->notice_LienReserver($notice["id_notice"]).'</div>';
 			$html.='<a href="'.$url_notice.'">';
-			$html.=$notice["T"].BR.$notice["A"];
+			$html.=$notice["titre_principal"].BR.$notice["A"];
 			$html.='</a>';
-
 			// Type de document
 			$html.=BR.'<table cellspacing="0" style="border-color:#bfbfbf;border-left:none;border-right:none;border-bottom:none;border-top:1px solid;width:100%;margin-top:5px">';
 			$html.=sprintf('<tr><td class="%s">%s</td>',
@@ -290,7 +271,7 @@ class ZendAfi_View_Helper_ListeNotices extends ZendAfi_View_Helper_BaseHelper
 			$notice["titre_principal"]=$notice["T"];
 			$notice["auteur_principal"]=$notice["A"];
 			$img=Class_WebService_Vignette::getUrl($notice["id_notice"],true);
-			$url = $this->urlNotice($notice["id_notice"], $notice["type_doc"]); 
+			$url = $this->view->urlNotice($notice); 
 			//$url='javascript:document.getElementById(\'Nnotice\').style.display=\'block\';getNoticeAjax(\'N'.$notice["id_notice"].'\',\'Nnotice\')';
 			if($images) $images.=",";
 			$images.='"'.$img["vignette"].'","'.$url.'"';

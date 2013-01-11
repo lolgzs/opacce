@@ -22,8 +22,9 @@
 // OPAC3 : Surcharge de la class Zend_View
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class ZendAfi_Controller_Action_Helper_View extends Zend_View
-{
+class ZendAfi_Controller_Action_Helper_View extends Zend_View {
+	use Trait_Translator;
+
 	private $ouverture_boite;					// Html du haut de la boite
 	private $fermeture_boite;					// Html du bas de la boite
 
@@ -37,45 +38,12 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 		$this->setEscape('htmlentities');
 
 		$this->doctype('XHTML1_TRANSITIONAL');
-
-		// Traducteur et user connecté
-		$this->translate = Zend_Registry::get('translate');
-
 	}
 
-	/**
-	 * @param string $libelle
-	 * @return string
-	 */
-	public function traduire($libelle)	{
-		return $this->_($libelle);
-	}
 
-	/**
-	 * @return Zend_Translate
-	 */
-	public function _translate() {
-		if (!$this->translate)
-			$this->translate = Zend_Registry::get('translate');
-		return $this->translate;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function _()	{
-		$args = func_get_args();
-		if ('' == $args[0]) 
-			return '';
-		return call_user_func_array(array($this->_translate(), '_'), $args);
-  }
-
-	/**
-	 * @return string
-	 */
-	public function _plural()	{
-		$args = func_get_args();
-		return call_user_func_array(array($this->_translate(), 'plural'), $args);
+	public function setModuleControllerActionNames($module, $controller, $action) {
+		$this->bodyParam = sprintf('class="%s_%s"',
+															 $controller, $action);
 	}
 
 
@@ -179,6 +147,8 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 			$titre = $this->_($titre);
 		$html=str_replace("[=TITRE=]", $titre, $this->ouverture_boite);
 		print($html);
+
+		$this->titreAdd(strip_tags($titre));
 	}
 
 //------------------------------------------------------------------------------------------------------
@@ -209,14 +179,7 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 
 
 	public function newForm($options = null) {
-		$form = new Zend_Form($options);
-		$form
-			->getPluginLoader(Zend_Form::ELEMENT)
-			->addPrefixPath('ZendAfi_Form_Element', 'ZendAfi/Form/Element');
-		$form
-			->getPluginLoader(Zend_Form::DECORATOR)
-			->addPrefixPath('ZendAfi_Form_Decorator', 'ZendAfi/Form/Decorator');
-		return $form;
+		return ZendAfi_Form::newWithOptions($options);
 	}
 
 
@@ -230,3 +193,5 @@ class ZendAfi_Controller_Action_Helper_View extends Zend_View
 		return $file_element;
 	}
 }
+
+?>

@@ -1,6 +1,6 @@
 Object subclass: #FileServer
-	instanceVariableNames: 'path http fs url port basePath sys'
-	category: 'FileServer'!
+	instanceVariableNames: 'path http fs url port basePath util'
+	package: 'FileServer'!
 
 !FileServer methodsFor: 'accessing'!
 
@@ -23,8 +23,17 @@ initialize
 	path := self require: 'path'.
 	http := self require: 'http'.
 	fs := self require: 'fs'.
-	sys := self require: 'sys'.
+	util := self require: 'util'.
 	url := self require: 'url'
+!
+
+checkDirectoryLayout
+	(path existsSync: self basePath, 'index.html') ifFalse: [
+		console warn: 'Warning: project directory does not contain index.html'].
+	(path existsSync: self basePath, 'st') ifFalse: [
+		console warn: 'Warning: project directory is missing an "st" directory'].
+	(path existsSync: self basePath, 'js') ifFalse: [
+		console warn: 'Warning: roject directory is missing a "js" directory'].
 ! !
 
 !FileServer methodsFor: 'private'!
@@ -48,9 +57,14 @@ respondNotFoundTo: aResponse
 !
 
 handleRequest: aRequest respondTo: aResponse
+
 	aRequest method = 'PUT'
-		ifTrue: [self handlePUTRequest: aRequest respondTo: aResponse]
-		ifFalse: [self handleGETRequest: aRequest respondTo: aResponse]
+		ifTrue: [self handlePUTRequest: aRequest respondTo: aResponse].
+	aRequest method = 'GET'
+		ifTrue:[self handleGETRequest: aRequest respondTo: aResponse].
+	aRequest method = 'OPTIONS'
+		ifTrue:[self handleOPTIONSRequest: aRequest respondTo: aResponse]
+
 !
 
 handleGETRequest: aRequest respondTo: aResponse
@@ -64,15 +78,33 @@ handleGETRequest: aRequest respondTo: aResponse
 !
 
 handlePUTRequest: aRequest respondTo: aResponse
-	| stream |
-	stream := fs createWriteStream: '.', aRequest url.
+	| file stream |
+	file := '.', aRequest url.
+	stream := fs createWriteStream: file.
+	stream on: 'error' do: [:error |
+		"TODO: notify Amber about the error, otherwise the user might not notice and lose his work."
+		console warn: 'Error creating WriteStream for file ', file.
+		console warn: '    Did you forget to create the necessary js/ or st/ directory in your project?'.
+		console warn: '    The exact error is: ', error].
+	stream writable ifFalse: [
+		console log: 'Could not write to ', file.
+		^nil].
+        aRequest setEncoding: 'utf8'.
+        aRequest on: 'data' do: [:data | stream write: data].
 
-	aRequest setEncoding: 'utf8'.
-	aRequest on: #data do: [:data | stream write: data].
+        aRequest on: 'end' do: [
+                stream end.
+                self respondOKTo: aResponse]
 
-	aRequest on: #end do: [
-		stream end.
-		self respondOKTo: aResponse]
+!
+
+handleOPTIONSRequest: aRequest respondTo: aResponse
+	aResponse writeHead: 200 options: #{'Access-Control-Allow-Origin' -> '*'.
+					'Access-Control-Allow-Methods' -> 'GET, PUT, POST, DELETE, OPTIONS'.
+					'Access-Control-Allow-Headers' -> 'Content-Type, Accept'.
+					'Content-Length' -> 0.
+					'Access-Control-Max-Age' -> 10}.
+	aResponse end
 !
 
 respondFileNamed: aFilename to: aResponse
@@ -84,13 +116,17 @@ respondFileNamed: aFilename to: aResponse
 
 	fs readFile: filename do: [:ex :file |
 		ex notNil 
-			ifTrue: [self respondInternalErrorTo: aResponse]
+			ifTrue: [
+				console log: filename, ' does not exist'.
+				self respondInternalErrorTo: aResponse]
 			ifFalse: [
-        			type := self class mimeTypeFor: filename.
+				type := self class mimeTypeFor: filename.
+				type = 'application/javascript'
+					ifTrue: [ type:=type,';charset=utf-8' ].
 				aResponse 
-                          		writeHead: 200 options:  #{'Content-Type' -> type};
-					write: file binary: 'binary';
-                          		end]]
+					writeHead: 200 options:  #{'Content-Type' -> type};
+					write: file encoding: 'binary';
+					end]]
 !
 
 respondInternalErrorTo: aResponse
@@ -102,8 +138,9 @@ respondInternalErrorTo: aResponse
 
 respondOKTo: aResponse
 	aResponse 
-		writeHead: 200 options: #{'Content-Type' -> 'text/plain'};
-		end
+		writeHead: 200 options: #{'Content-Type' -> 'text/plain'. 'Access-Control-Allow-Origin' -> '*'}.
+	aResponse end.
+					
 ! !
 
 !FileServer methodsFor: 'starting'!
@@ -115,8 +152,10 @@ startOn: aPort
 
 start
 	(http createServer: [:request :response |
-	 	self handleRequest: request respondTo: response]) listen: self port.
-	console log: 'Starting file server on port ', self port asString
+	      self handleRequest: request respondTo: response])
+	      on: 'error' do: [:error | console log: 'Error starting server: ', error];
+	      on: 'listening' do: [console log: 'Starting file server on port ', self port asString];
+	      listen: self port.
 ! !
 
 FileServer class instanceVariableNames: 'port mimeTypes'!
@@ -556,6 +595,16 @@ mimeTypeFor: aString
 !FileServer class methodsFor: 'initialization'!
 
 main
-	^self new startOn: self port
+	| fileServer arguments portOption port|
+	fileServer := self new.
+	fileServer checkDirectoryLayout.
+
+	arguments := process argv.
+	portOption := arguments at: 3 ifAbsent: [nil].
+	port := arguments at: 4 ifAbsent: [nil].
+	('-p' = portOption and: [port notNil]) ifTrue: [
+		fileServer port: port.
+	].
+	^fileServer start
 ! !
 

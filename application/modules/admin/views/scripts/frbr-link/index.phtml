@@ -1,0 +1,46 @@
+<?php
+echo $this->bouton('id=manage_types',
+									 'picto=fonctions_admin.png',
+									 'texte=' . $this->_('Gérer les types de relation'),
+	                 'url=' . $this->url(['controller' => 'frbr-linktype', 'id' => null]),
+	                 'largeur=250px;'
+									 );
+
+echo $this->bouton('id=add_link',
+									 'picto=add.gif',
+									 'texte=' . $this->_('Ajouter une relation'),
+	                 'url=' . $this->url(['action' => 'add', 'id' => null]),
+	                 'largeur=250px;'
+									 );
+
+$label = function ($model, $attrib) {
+	if ($notice = $model->{'get'. ucfirst($attrib) . 'Notice'}()) {
+		return '<a href="' . $model->{'get' . ucfirst($attrib)}() . '" onclick="window.open(this.href);return false;">' . $notice->getTitrePrincipal() . '</a>'
+					 . '<br>' . $notice->getAuteurPrincipal();
+	}
+
+	$value = $model->callGetterByAttributeName($attrib);
+	if (40 < mb_strlen($value))
+		$value = mb_substr($value, 0, 40) . '...';
+	return $value;
+};
+
+echo $this->tagModelTable($this->relations, 
+													
+													[$this->_('Objet A'), $this->_('Relation'), $this->_('Objet B')],
+
+													['source', 'link_complete_label', 'target'],
+
+													[ ['action' => 'edit', 'content' => $this->boutonIco('type=edit')],
+														['action' => 'delete', 'content' => $this->boutonIco('type=del')] ],
+
+	                        'relations',
+
+	                        null,
+	
+	                        ['source' => $label,
+													 'target' => $label,
+													 'link_complete_label' => function($model, $attrib) {
+															 return '<pre>' . $model->callGetterByAttributeName($attrib) . '</pre>';
+													 },]);
+?>

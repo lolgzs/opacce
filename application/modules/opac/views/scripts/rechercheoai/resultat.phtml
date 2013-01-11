@@ -14,20 +14,25 @@ else
   else 
     $texte=$this->_("%s notices trouvées", $this->nombre);
 	echo BR.'<div class="liste_vignette">'.$texte.'</div>';
-	foreach($this->notices as $notice)
-	{
+	foreach($this->notices as $notice) {
 		echo '<div class="liste_vignette"><table width="100%">';
-		echo '<tr><td align="right" style="width:10%" valign="top">Titre : </td><td><a href="'.$this->url(array('action' => 'viewnotice', 'id' => $notice["id"])).'" target="_blank">'.$notice["titre"].'</a></td></tr>';
+		echo '<tr><td align="right" style="width:10%" valign="top">Titre : </td><td><a href="'.$this->url(array('action' => 'viewnotice', 'id' => $notice->getId())).'" target="_blank">'.$notice->getTitre().'</a></td></tr>';
 
     $line_format = '<tr><td align="right"  valign="top">%s</td><td>%s</td></tr>';
-		if($notice["auteur"]) printf($line_format, $this->_('Auteur :'), $notice["auteur"]);
-		if($notice["editeur"]) printf($line_format, $this->_('Editeur :'), $notice["editeur"]);
-		if($notice["date"]) printf($line_format, $this->_('Publié en :'), $notice["date"]);
 
-    //P.... de b.... de m..... faudrait arrêter d'écrire de la m..... quand même...... Laurent
-    printf($line_format, $this->_('Source :'), fetchOne("select libelle from oai_entrepots where id=".$notice["source"]));
+		if ($notice->hasAuteur()) 
+			printf($line_format, $this->_('Auteur :'), $notice->getAuteur());
+
+		if ($notice->hasEditeur()) 
+			printf($line_format, $this->_('Editeur :'), $notice->getEditeur());
+
+		if($notice->hasDate()) 
+			printf($line_format, $this->_('Publié en :'), $notice->getDate());
+
+    printf($line_format, $this->_('Source :'), $notice->getLibelleEntrepot());
 		echo '</table></div>';
 	 }
-	 echo '<br/><div style="width:100%;text-align:center;">'.$this->pager($this->nombre,10,$this->page,$this->url_retour).'</div>';
+
+	echo '<br/><div style="width:100%;text-align:center;">'.$this->pager($this->nombre,10,$this->page,$this->url_retour).'</div>';
 }
 ?>

@@ -1,0 +1,95 @@
+/* Pour l'instant juste un backup */
+
+
+/* Perso AFI */
+/* Tags */
+#BW_etiquettes nobr {
+  white-space: normal;
+}
+
+#BW_etiquettes nobr {
+  white-space: normal;
+}
+
+
+#BW_etiquettes,
+#BW_etiquettes ul, 
+#BW_etiquettes ol {
+  display: inline;
+  float: none;
+}
+
+#BW_etiquettes a,
+#BW_etiquettes a:visited {
+  color: rgb(221,143,0);
+}
+
+#BW_etiquettes ol {
+  padding: 0px;
+}
+  
+#BW_etiquettes h2 {
+  display: none;
+}
+
+/* Avis */
+#BW_critiques h2,
+#BW_notes h2 {
+  display: inline;
+}
+
+#BW_critiques h2 {
+  font-size: 11px;
+  margin-right: 5px;
+}
+
+
+#BW_critiques_pro h2 {
+  display: none;
+}
+
+#BW_notes {
+  padding: 0px 21px 0px 0px;
+  clear: none;
+}
+
+#BW_critiques {
+  padding: 0px;
+}
+
+#BW_critiques br,
+#BW_critiques_pro br {
+  display: none;
+}
+
+#BW_notes img {
+  vertical-align: middle;
+}
+
+/* Citations */
+#BW_citations {
+  padding: 15px 0px 0px 0px;
+}
+
+#BW_citations h2 {
+  font-weight: bold;
+  padding: 5px;
+  color: #476777;
+  background-color: #DFE7EF;
+  font-size: 13px;
+}
+
+/* Vidéos */
+#BW_videos h2 { 
+  display: none; 
+}
+
+.BW_vignette_vid {
+  width: 500px;
+  margin: 15px auto 5px auto;
+  display: block;
+}
+
+#BW_videos br {
+  display: none;
+}

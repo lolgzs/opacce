@@ -24,6 +24,10 @@ class IndexController extends Zend_Controller_Action {
 		// Mettre le layout
 		$viewRenderer = $this->getHelper('ViewRenderer');
 		$viewRenderer->setLayoutScript('portail.phtml');
+
+		if (array_keys($this->getRequest()->getParams()) == ['controller', 'action', 'module', 'current_module', 'q']) {
+			$this->_redirect('recherche?'.http_build_query(['q' => $this->_getParam('q')]));
+		}
 	}
 
 
@@ -46,15 +50,16 @@ class IndexController extends Zend_Controller_Action {
 
 
 	public function shareAction() {
-		$this->_helper->getHelper('viewRenderer')
-			->setNoRender();
+		$this->_helper->getHelper('viewRenderer')->setNoRender();
 
-		$profil = Class_Profil::getCurrentProfil();
+		$url = urldecode($this->_getParam('url'));
+		$url .= (false === strpos($url, '?')) ? '?' : '&amp;';
+		$url .= 'id_profil='. Class_Profil::getCurrentProfil()->getId();
 
 		$rs = new Class_WebService_ReseauxSociaux();
 		$body = sprintf("window.open('%s','_blank','location=yes, width=800, height=410')",
 										$rs->getUrl($this->_getParam('on'), 
-																$this->view->url(array('id_profil' => $profil->getId()), null, true),
+																$url,
 																urldecode($this->_getParam('titre'))));
 
 		$this->getResponse()->setHeader('Content-Type', 'application/javascript; charset=utf-8');
@@ -69,18 +74,15 @@ class IndexController extends Zend_Controller_Action {
 				$this->_sendFormulaireContact();
 				$this->_redirect('index/formulairecontactsent');
 			}	catch (Exception $e) {
-				$this->_redirect('index/formulairecontacterror');
+				$this->view->error = $e->getMessage();
 			}
-			return;
-		} 
+		}
 
 		$this->view->form = $form;
 	}
 
 
 	public function formulairecontactsentAction() {}
-
-	public function formulairecontacterrorAction() {}
 
 
 	protected function _formulaireContact() {
@@ -173,11 +175,11 @@ class IndexController extends Zend_Controller_Action {
 
 	protected function _sendFormulaireContact() {
 			if (!$mail_address = Class_Profil::getCurrentProfil()->getMailSiteOrPortail())
-				throw new Exception($this->view->_("Erreur à l'envoi du mail: destinataire non configuré"));
+				throw new Exception($this->view->_("destinataire non configuré. Vérifiez les paramètres du profil, champ 'E-mail du webmestre'"));
 
-			$data = ZendAfi_Filters_Post::filterStatic($this->_request->getPost());
+			$data = $this->_request->getPost();
 
-			$mail = new Zend_Mail('utf8');
+			$mail = new ZendAfi_Mail('utf8');
 			$mail
 				->setFrom('no-reply@'.$this->_request->getHttpHost())
 				->addTo($mail_address)

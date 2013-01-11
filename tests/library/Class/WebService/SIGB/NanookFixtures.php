@@ -103,6 +103,46 @@ class NanookFixtures {
 										<locationLabel>Cran-Gevrier</locationLabel>
 										<locationId>2</locationId>
 								</item>
+								<item>
+										<barcode>L-072669</barcode>
+										<itemId>10718</itemId>
+										<available>0</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate>2029-01-15</dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
+						    <item>
+										<barcode>L-072670</barcode>
+										<itemId>10720</itemId>
+										<available>InTransit</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
+						    <item>
+										<barcode>L-072671</barcode>
+										<itemId>10722</itemId>
+										<available>AlreadyHold</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
+						    <item>
+										<barcode>L-072672</barcode>
+										<itemId>10724</itemId>
+										<available>Ordered</available>
+										<holdable>1</holdable>
+										<visible>1</visible>
+										<dueDate></dueDate>
+										<locationLabel>Annexe Cran-Gevrier</locationLabel>
+										<locationId>10</locationId>
+								</item>
 						</items>
 				</record>
 		</GetRecords>';
@@ -125,6 +165,8 @@ class NanookFixtures {
   <patronId>1</patronId>
   <lastName>DELPEYROUX</lastName>
   <firstName>Christel</firstName>
+	<endDate>2012-12-21</endDate>
+	<mail>cdelpeyroux@server.com</mail>
   <loans>
     <loan>
       <bibId>117661</bibId>
@@ -159,6 +201,7 @@ class NanookFixtures {
       <author>Natha Caputo</author>
       <locationLabel>Site Principal</locationLabel>
 			<priority>1</priority>
+      <availabilityDate>15/06/2012</availabilityDate>
     </hold>
     <hold>
       <bibId>12501</bibId>
@@ -167,6 +210,7 @@ class NanookFixtures {
       <author>Olympe Bhêly-Quénum</author>
       <locationLabel>Site Principal</locationLabel>
 			<priority>49</priority>
+      <available>1</available>
     </hold>
     <hold>
       <bibId>19954</bibId>
@@ -180,6 +224,19 @@ class NanookFixtures {
 	}
 
 
+
+	/** @return string */
+	public static function xmlGetPatronPB() {
+		return '<?xml version="1.0" encoding="utf-8"?>
+<GetPatronInfo>
+  <patronId>555</patronId>
+  <lastName>Barroca</lastName>
+  <firstName>Patrick</firstName>
+	<endDate>null</endDate>
+	<mail>null</mail>
+</GetPatronInfo>';
+  }
+				
 	/**
 	 * @return string
 	 */
@@ -204,5 +261,14 @@ class NanookFixtures {
 				<h3>Apache Tomcat/6.0.32</h3>
 			</body>
 		</html>';
+	}
+
+
+	/** @return string */
+	public static function xmlAuthenticatePatronChristelDelpeyroux() {
+		return '<?xml version="1.0" encoding="utf-8"?>
+<AuthenticatePatron>
+  <patronId>1</patronId>
+</AuthenticatePatron>';
 	}
 }

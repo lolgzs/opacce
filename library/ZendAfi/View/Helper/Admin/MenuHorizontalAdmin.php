@@ -26,7 +26,7 @@ class ZendAfi_View_Helper_Admin_MenuHorizontalAdmin extends ZendAfi_View_Helper_
 		$menus = array(array("icon" => "icon_home.gif",
 												 "label" => $this->translate()->_("Accueil"),
 												 "url" => "/admin"),
-									 array("icon" => "go_back.png",
+									 array("icon" => "profils_16.png",
 												 "label" => $this->translate()->_("Retour au site"),
 												 "url" => "?id_profil=".Class_Profil::getCurrentProfil()->getId()),
 									 array("icon" => "deconnexion.png",
@@ -50,7 +50,7 @@ class ZendAfi_View_Helper_Admin_MenuHorizontalAdmin extends ZendAfi_View_Helper_
 
 			$class_selected = '';
 			if (array_key_exists('REQUEST_URI', $_SERVER)
-					and $_SERVER['REQUEST_URI'] == $target_url) {
+				  and (0 === strpos($_SERVER['REQUEST_URI'], $target_url))) {
 				$class_selected = 'class="selected"';
 			}
 

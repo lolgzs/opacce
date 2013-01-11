@@ -1,0 +1,7 @@
+<?php
+if ($this->profil->hasHeaderImg() 
+		&& 'index' == Zend_Controller_Front::getInstance()->getRequest()->getControllerName())
+	echo sprintf('<img src="%s" style="width:100%%" alt="%s">',
+							 $this->profil->getHeaderImg(),
+							 $this->_('Bannière'));
+?>

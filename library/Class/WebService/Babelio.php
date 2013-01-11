@@ -83,7 +83,7 @@ class Class_WebService_Babelio {
 	public function requete($isbn) {
 		$isbn = str_replace('-', '', (string)$isbn);
 		$url = $this->_baseUrl . $isbn . $this->_getAuth();
-		
+
 		try {
 			$httpClient = $this->getHttpClient();
 			$httpClient->setUri($url);
@@ -190,6 +190,16 @@ class Class_WebService_Babelio {
 								 "note" => Class_AvisNotice::getNoteAverage($liste_avis));
 	}
 
+
+	public function getResumes($notice) {
+		if (!$service = $notice->getIsbnOrEan())
+			return array();
+
+		if ($resume = $this->getCitations($service))
+			return array(array('source' => 'Babelio (citations)',
+												 'texte' => $resume));
+		return array();
+	}
 
 	/**
 	 * @param string $isbn

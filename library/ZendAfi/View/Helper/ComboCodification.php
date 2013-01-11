@@ -18,64 +18,79 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-//////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Renvoie le html pour les combos de codifications
-//////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_ComboCodification extends ZendAfi_View_Helper_BaseHelper {    
-	function ComboCodification($type,$valeur_select,$events="") {
+
+class ZendAfi_View_Helper_ComboCodification extends ZendAfi_View_Helper_BaseHelper {
+	const TYPE_DOC = 'type_doc';
+	const SECTION = 'section';
+	
+	public function ComboCodification($type, $valeur_select, $events = '') {
 		$profil = Class_Profil::getCurrentProfil();
 		
-		// Type de document
-		if($type=="type_doc")
-		{
-			$name="type_doc";
-			$id="select_type_doc";
-			// Selection liée au profil
-			if($profil->getSelTypeDoc())
-				$controle=";".$profil->getSelTypeDoc().";";
-
-			$data=fetchOne("Select liste from variables where clef='types_docs'");
-			$v=split(chr(13).chr(10),$data);
-			$items[]=array("value"=>"","libelle"=>"tous");
-			$controle = '';
-			for($i=0; $i < count($v); $i++)
-			{
-				$elem=split(":",$v[$i]);
-				if($controle) if(strpos($controle,';'.$elem[0].';')=== false) continue;
-				if($elem[0]) $items[]=array("value" => $elem[0],"libelle" => $elem[1]);
-			}
+		if (self::TYPE_DOC == $type) {
+			$name = 'type_doc';
+			$id = 'select_type_doc';
+			$items = $this->getTypeDocs();
 		}
 
-		// Section
-		if($type=="section")
-		{
-			$name="section";
-			$id="select_section";
-			// Selection liée au profil
-			if($profil->getSelSection()) 
-				$controle=";".$profil->getSelSection().";";
+		if (self::SECTION == $type) {
+			$name = 'section';
+			$id = 'select_section';
 
-			$data=fetchAll("Select id_section,libelle from codif_section order by libelle");
-			$items[]=array("value"=>"","libelle"=> $this->translate()->_("toutes"));
+			if ($profil->getSelSection())
+				$controle = ';' . $profil->getSelSection() . ';';
+
+			$data = fetchAll('Select id_section,libelle from codif_section order by libelle');
+			$items[] = array('value' => '', 'libelle' => $this->translate()->_('toutes'));
 			$controle = '';
-			for($i=0; $i < count($data); $i++)
-			{
-				$code=$data[$i]["id_section"];
-				$libelle=$data[$i]["libelle"];
-				if($controle) if(strpos($controle,';'.$code.';')=== false) continue;
-				if($code) $items[]=array("value" => $code,"libelle" => $libelle);
+			for ($i = 0; $i < count($data); $i++) {
+				$code = $data[$i]["id_section"];
+				$libelle = $data[$i]["libelle"];
+				if ($controle && (strpos($controle,';'.$code.';') === false))
+					continue;
+				if ($code)
+					$items[] = array("value" => $code, "libelle" => $libelle);
 			}
 		}
 
 		// Composer le html
-		if($events > "") $events=" ".$events;
-		$combo='<select id="'.$id.'" name="'.$name.'"'.$events.' class="typeDoc">';
-		foreach($items as $item)
-		{
-			if($valeur_select==$item["value"]) $selected=" selected='selected'"; else $selected="";
-			$combo.='<option value="'.$item["value"].'"'.$selected.'>'.stripSlashes($item["libelle"]).'</option>';
+		if ('' != $events)
+			$events = ' ' . $events;
+		$combo = '<select id="' . $id . '" name="' . $name . '"' . $events . ' class="typeDoc">';
+		foreach ($items as $item) {
+			$selected = ($valeur_select == $item["value"]) ? ' selected="selected"': '';
+			$combo .= '<option value="' . $item["value"] . '"' . $selected.'>' . stripSlashes($item["libelle"]) . '</option>';
 		}
-		$combo.='</select>';
+		$combo .= '</select>';
 		return $combo;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getTypeDocs() {
+		$items[] = array('value' => '', 'libelle' => $this->view->_('tous'));
+
+		$used_ids = Class_TypeDoc::findUsedTypeDocIds();
+		$types = array_filter(Class_TypeDoc::findAll(), 
+													function ($type_doc) use ($used_ids) {
+														return in_array($type_doc->getId(),
+																						$used_ids);
+													});
+
+		$profil = Class_Profil::getCurrentProfil();
+
+		$filter = array();
+		if ($selection = $profil->getSelTypeDoc()) {
+			$filter = explode(';', $selection);			
+		}
+
+		foreach ($types as $type) {
+			if (0 < count($filter) && !in_array($type->getId(), $filter))
+				continue;
+				$items[] = array('value' => $type->getId(), 'libelle' => $type->getLabel());
+		}
+
+		return $items;
 	}
 }

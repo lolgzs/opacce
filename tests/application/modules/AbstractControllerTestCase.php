@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase {
+	use Storm_Test_THelpers;
+
 	protected $_registry_sql;
 
 	//permet d'authentifier sur la partie admin avant test
@@ -70,15 +72,11 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		$account->username     = 'AutoTest' . time();
 		$account->password     = md5( 'password' );
 		$account->ID_USER      = 666;
-		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB;
+		$account->ROLE_LEVEL   = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
 		$account->ROLE         = "admin_portail";
 		$account->ID_SITE      = 1;
 		$account->confirmed    = true;
 		$account->enabled      = true;
-
-		Class_Users::getLoader()
-			->newInstanceWithId(666)
-			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_BIB);
 
 		Class_Bib::getLoader()
 			->newInstanceWithId(1)
@@ -86,13 +84,18 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 
 		$this->_loginHook($account);
 
-		Zend_Auth::getInstance()->getStorage()->write($account);
+		$user = Class_Users::getLoader()
+			->newInstanceWithId(666)
+			->setLogin($account->username)
+			->setRoleLevel($account->ROLE_LEVEL)
+			->setIdSite($account->ID_SITE);
+
+		ZendAfi_Auth::getInstance()->getStorage()->write($account);
 	}
 
 
 	public function setUp() {
 		$this->_registry_sql = Zend_Registry::get('sql');
-
 		Class_ScriptLoader::resetInstance();
 
 		$this->_initMockProfil();
@@ -100,23 +103,33 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 		parent::setUp();
 
 		$this->_login();
-
-		Class_AdminVar::getLoader()
+		
+		$admin_var_loader = Class_AdminVar::getLoader();
+		$admin_var_loader
 			->newInstanceWithId('WORKFLOW')
 			->setValeur(0);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('LANGUES')
 			->setValeur(null);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('CACHE_ACTIF')
 			->setValeur(0);
 
-		Class_AdminVar::getLoader()
+		$admin_var_loader
 			->newInstanceWithId('BIBNUM')
 			->setValeur(1);
+
+		$admin_var_loader
+			->newInstanceWithId('OAI_SERVER')
+			->setValeur(1);	
+
+		$admin_var_loader
+			->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
 	}
+
 
 	public function tearDown() {
 		Storm_Model_Abstract::unsetLoaders();
@@ -148,7 +161,7 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 			->setMethod('POST')
 			->setPost($data);
 
-		return $this->dispatch($url);
+		return $this->dispatch($url, true);
 	}
 
 	/**
@@ -161,6 +174,31 @@ abstract class AbstractControllerTestCase extends Zend_Test_PHPUnit_ControllerTe
 			if ($header['name'] = 'Location')
 				return $header['value'];
 		return null;
+	}
+
+
+
+	public function dispatch($url = null, $throw_exceptions = false) {
+		// redirector should not exit
+		$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+		$redirector->setExit(false);
+
+		// json helper should not exit
+		$json = Zend_Controller_Action_HelperBroker::getStaticHelper('json');
+		$json->suppressExit = true;
+
+		$request    = $this->getRequest();
+		if (null !== $url) {
+			$request->setRequestUri($url);
+		}
+		$request->setPathInfo(null);
+		$controller = $this->getFrontController();
+		$this->frontController
+			->setRequest($request)
+			->setResponse($this->getResponse())
+			->throwExceptions($throw_exceptions)
+			->returnResponse(false);
+		$this->frontController->dispatch();
 	}
 }
 

@@ -1,0 +1,107 @@
+<?php echo $this->toolbar($this->_('Fiche abonné')); ?>
+<?php echo $this->partial('abonne/identity.phtml', array('user' => $this->user));?>
+
+<?php if ($this->messages) { ?>
+<div data-role="navbar" data-iconpos="left">
+	<ul>
+		<?php foreach($this->messages as $message) { ?>
+		<li><a href="#" data-icon="info" data-theme="a"><?php echo $this->escape($message);?></a></li>
+		<?php } ?>
+	</ul>
+</div>
+<?php } ?>
+
+<?php 
+if ($this->user->isAbonne()) {
+	$date_fin = formatDate($this->user->getDateFin(), '1');
+  $message = ($this->user->isAbonnementValid()) ?
+		"Votre abonnement est valide jusqu'au %s." :
+		"Votre abonnement est terminé depuis le %s.";
+?>
+<ul data-role="listview">
+	<li data-role="list-divider"><?php echo $this->_('Abonnement');?></li>
+	<li><?php echo $this->_($message, $date_fin);?></li>
+</ul>
+<?php } ?>
+
+
+<?php 
+$fiche_sigb = $this->user->getFicheSigb();
+
+if (array_key_exists("erreur", $fiche_sigb)) { ?>
+<div data-role="navbar" data-iconpos="left">
+	<ul>
+		<li><a href="#" data-icon="alert" data-theme="a"><?php echo $this->escape($fiche_sigb["erreur"]);?></a></li>
+	</ul>
+</div>
+<?php } ?>
+
+<?php if (array_key_exists("message", $fiche_sigb)) { ?>
+<div data-role="navbar" data-iconpos="left">
+	<ul>
+		<li><a href="#" data-icon="info" data-theme="a"><?php echo $this->escape($fiche_sigb["message"]);?></a></li>
+	</ul>
+</div>
+<?php } ?>
+
+<?php 
+if (array_key_exists("fiche", $fiche_sigb)) {
+	$nb_retards = $fiche_sigb["fiche"]->getNbPretsEnRetard();
+	$nb_prets = $fiche_sigb["fiche"]->getNbEmprunts();
+	$nb_resas = $fiche_sigb["fiche"]->getNbReservations();
+?>
+
+<ul data-role="listview" data-split-icon="forward">
+	<li data-role="list-divider"><?php echo $this->_('Prêts');?>
+	  <span class="ui-li-count"><?php echo $nb_prets;?></span></li>
+<?php if (0 < $nb_prets) { ?>
+	<?php foreach($fiche_sigb['fiche']->getEmprunts() as $emprunt) {
+	  $class_retard = $emprunt->enRetard() ? 'pret_en_retard"' : '';?>
+	<li data-icon="false">
+		<a <?php echo $emprunt->enRetard() ? 'style="color:red;"' : '';?> 
+		  href="<?php echo $this->url(array('controller' => 'recherche',
+			                                 'action' => 'viewnotice',
+																			 'id' => $emprunt->getNoticeOPACId()));?>">
+		  <h3><?php echo $emprunt->getTitre();?></h3>
+			<p><strong><?php echo $this->escape($emprunt->getAuteur());?></strong></p>
+			<p><strong><?php echo $this->escape($emprunt->getBibliotheque());?></strong></p>
+			<p><strong><?php echo $this->_('Retour prévu');?> <?php echo $emprunt->getDateRetour();?></strong></p>
+		</a>
+	  <?php if ($emprunt->isRenewable()) { ?>
+	  <a href="<?php echo $this->url(array('action' => 'prolongerpret',
+		                                     'id_pret' => $emprunt->getId()));?>" 
+		   data-theme="c"><?php echo $this->_('Prolonger');?></a>
+		<?php } ?>
+	</li>
+	<?php } ?>
+<?php } else { ?>
+  <li><?php echo $this->_('Vous n\'avez aucun prêt en cours');?></li>
+<?php } ?>
+</ul>
+
+<ul data-role="listview" data-split-icon="delete">
+	<li data-role="list-divider"><?php echo $this->_('Réservations');?>
+	  <span class="ui-li-count"><?php echo $nb_resas;?></span></li>
+<?php if (0 < $nb_resas) { ?>
+	<?php foreach($fiche_sigb['fiche']->getReservations() as $reservation) { ?>
+	<li data-icon="false">
+		<a href="<?php echo $this->url(array('controller' => 'recherche',
+		                                    'action' => 'viewnotice',
+																				'id' => $reservation->getNoticeOPACId()));?>">
+		  <h3><?php echo $reservation->getTitre();?></h3>
+			<p><strong><?php echo $this->escape($reservation->getAuteur());?></strong></p>
+			<p><strong><?php echo $this->escape($reservation->getBibliotheque());?></strong></p>
+			<p><?php echo $this->_('Etat') . ' : ' . $this->escape($reservation->getEtat());?>, 
+			   <?php echo $this->_('Rang') . ' : ' . $this->escape($reservation->getRang());?></p>
+		</a>
+	  <a href="<?php echo $this->url(array('action' => 'cancel-hold',
+		                                     'id' => $reservation->getId()));?>"
+		   data-rel="dialog" data-theme="c" data-position="notext">
+			 <?php echo $this->_('Supprimer cette réservation');?></a>
+	</li>
+	<?php } ?>
+<?php } else { ?>
+  <li><?php echo $this->_('Vous n\'avez aucune réservation en cours');?></li>
+<?php } ?>
+</ul>
+<?php } ?>

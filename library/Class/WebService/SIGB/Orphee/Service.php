@@ -32,6 +32,7 @@ class Class_WebService_SIGB_Orphee_Service extends Class_WebService_SIGB_Abstrac
 		return new $soap_class($wsdl, $options);
 	}
 
+
 	public static function setSoapClientClass($soap_class) {
 		self::$SOAP_CLIENT_CLASS = $soap_class;
 	}
@@ -55,8 +56,21 @@ class Class_WebService_SIGB_Orphee_Service extends Class_WebService_SIGB_Abstrac
 		$this->connect();
 	}
 
+	public function __destruct(){
+		$this->disconnect();
+	}
+
+
+	public function disconnect() {
+		if ($this->isConnected())
+			$this->_search_client->EndSession(new EndSession());
+	}
+
 
 	public function getSearchClient() {
+		if ($this->isConnected())
+			return $this->_search_client;
+
 		try {
 			$this->_search_client = self::newSoapClient($this->_wsdl, $this->_soap_options);
 			$result = $this->_search_client->GetId(new GetId());
@@ -361,7 +375,7 @@ class GetLstPret {
 		$instance = new self();
 		$instance->adh = $adh;
 		$instance->scrit = '';
-		$instance->nb_res = 10;
+		$instance->nb_res = -1;
 		$instance->export = 0;
 		return $instance;
 	}
@@ -516,6 +530,16 @@ class ProlongePretResponse {
 		return Class_WebService_SIGB_Orphee_XMLFilter::filter($this->ProlongePretResult);
 	}
 }
+
+
+
+
+class EndSession {
+}
+
+class EndSessionResponse {
+}
+
 
 
 ?>

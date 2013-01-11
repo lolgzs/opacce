@@ -1,0 +1,26 @@
+<?php
+echo $this->bouton('id=add',
+									 'picto=add.gif',
+									 'texte=' . $this->_('Déclarer un nouveau lieu'),
+									 'url=' . $this->url(array('action' => 'add',
+																						 'id' => null))
+									 );
+?>
+
+<table class="lieux">
+	<thead>
+		<tr class="soustitre">
+			<td>Carte</td>
+			<td>Libellé</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+<?php
+	 echo $this->partialCycle('lieu/_lieu.phtml',
+														'lieu',
+														$this->lieux,
+														array('first', 'second'));
+?>
+	</tbody>
+</table>

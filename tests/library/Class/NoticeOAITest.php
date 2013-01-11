@@ -40,6 +40,8 @@ class MockTableNoticesOAI {
 }
 
 
+
+
 class OAINoticeTestHarverstWithOneRecord extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->mockTableNotices = new MockTableNoticesOAI();
@@ -122,6 +124,8 @@ class OAINoticeTestHarverstWithOneRecord extends PHPUnit_Framework_TestCase {
 }
 
 
+
+
 class OAINoticeTestResume extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->noticeOAI = new Class_NoticeOAI();
@@ -193,4 +197,6 @@ class OAINoticeTestResume extends PHPUnit_Framework_TestCase {
 												$this->noticeOAI->resumeHarvest($this->entrepot, $token));
 	}
 }
+
+
 ?>

@@ -1,0 +1,1 @@
+alter table oai_notices modify column id_oai varchar(255);

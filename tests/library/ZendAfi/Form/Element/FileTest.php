@@ -19,10 +19,23 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
 class ZendAfi_Form_Element_FileTest extends PHPUnit_Framework_TestCase {
+	protected $_element;
+
+	public function setUp() {
+		$this->_element = new ZendAfi_Form_Element_File('fichier');
+	}
+
+
 	/** @test */
 	public function instanceShouldHaveFileDecorartor() {
-		$element = new ZendAfi_Form_Element_File('fichier');
 		$this->assertInstanceOf('ZendAfi_Form_Decorator_File',
-																								$element->getDecorator('File'));
+														$this->_element->getDecorator('File'));
+	}
+
+
+	/** @test */
+	public function instanceShouldHaveLabelDecorator() {
+		$this->assertInstanceOf('Zend_Form_Decorator_Label',
+			                      $this->_element->getDecorator('label'));
 	}
 }

@@ -23,12 +23,6 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	protected $enRetard;
 	protected $renewable = true;
 
-	/**
-	 * @return Class_WebService_SIGB_Emprunt
-	 */
-	public static function newInstanceWithEmptyExemplaire() {
-		return new self(null, new Class_WebService_SIGB_Exemplaire(null));
-	}
 
 	/**
 	 * @return string
@@ -61,9 +55,9 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 
 
 	public function onParseAttributes() {
-		$this->setDateRetour($this->getAttribute('Dateretourprevue'));
-		if ($this->getDateRetour() == '')
-			$this->setDateRetour($this->getAttribute('Retour prévu'));
+		if (!$date_retour = $this->getAttribute('retour'))
+			$date_retour = $this->getAttribute('rendre');
+		return $this->setDateRetour($date_retour);
 	}
 
 	/**
@@ -71,7 +65,7 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	 */
 	public function enRetard() {
 		if (!isset($this->enRetard)) {
-			$this->enRetard = ($this->getDateRetourTimestamp() <= time());
+			$this->enRetard = ($this->getDateRetourTimestamp() <= strtotime('Yesterday'));
 		}
 
 		return $this->enRetard;
@@ -82,6 +76,15 @@ class Class_WebService_SIGB_Emprunt extends Class_WebService_SIGB_ExemplaireOper
 	 */
 	public function setEnRetard($enRetard) {
 		$this->enRetard = $enRetard;
+		return $this;
+	}
+	
+	/**
+	 * @param bool $renewable
+	 */
+	public function setRenewable($renewable) {
+		$this->renewable = $renewable;
+		return $this;
 	}
 
 

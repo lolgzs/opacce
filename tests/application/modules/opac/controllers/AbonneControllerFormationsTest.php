@@ -31,6 +31,9 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 	protected $_session_java_fevrier;
 	protected $_session_java_septembre;
 	protected $_session_python_juillet;
+	protected $_gallice_cafe;
+	protected $_bib_romains;
+	protected $_bonlieu;
 
 	protected function _loginHook($account) {
 		$account->ROLE = "abonne_sigb";
@@ -45,6 +48,21 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('FORMATIONS')
 			->setValeur('1');
+
+		$this->_gallice_cafe = Class_Lieu::getLoader()
+													->newInstanceWithId(98)
+													->setLibelle('Gallice');
+
+		$this->_bib_romains = Class_Lieu::getLoader()
+													->newInstanceWithId(99)
+													->setLibelle('Bibliothèque des romains');
+
+		$this->_bonlieu = Class_Lieu::getLoader()
+													->newInstanceWithId(100)
+													->setLibelle('Bonlieu')
+													->setAdresse("1, rue Jean-Jaures\nBP 294")
+													->setCodePostal(74007)
+													->setVille('Annecy');
 
 		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Users')
 			->whenCalled('save')->answers(true);
@@ -65,7 +83,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(1)
 																																	->setEffectifMax(10)
 																																	->setStagiaires(array())
-																																	->setLieu('Gallice')
+																																	->setLieu($this->_gallice_cafe)
 																																	->setDateDebut('2009-01-17'),
 
 
@@ -75,7 +93,7 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(1)
 																																	->setEffectifMax(10)
 																																	->setStagiaires(array())
-																																	->setLieu('Gallice')
+																																	->setLieu($this->_gallice_cafe)
 																																	->setDateDebut('2023-07-12')
 																																	)),
 
@@ -96,8 +114,9 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMin(2)
 																																	->setEffectifMax(5)
 																																	->setStagiaires(array())
-																																	->setLieu('Bonlieu')
+																																	->setLieu($this->_bonlieu)
 																																	->setDateDebut('2022-02-17') 
+																																	->setDateFin('2022-02-19')
 																																	->setDateLimiteInscription('2022-02-15'),
 
 
@@ -123,13 +142,18 @@ abstract class AbstractAbonneControllerFormationsTestCase extends AbstractContro
 																																	->setEffectifMax(22)
 																																	->setDuree(8)
 																																	->setHoraires('8h-12h, 14h-18h')
-																																	->setLieu('Bibliothèque des romains')
+																																	->setLieu($this->_bib_romains)
 																																	->setIntervenants( array(Class_Users::getLoader()
 																																													 ->newInstanceWithId(76)
-																																													 ->setLogin('jpp'),
+																																													 ->setLogin('jpp')
+																																													 ->setPrenom('Jean-Paul')
+																																													 ->setNom('Pirant'),
+
 																																													 Class_Users::getLoader()
 																																													 ->newInstanceWithId(77)
-																																													 ->setLogin('cm')) ) ))
+																																													 ->setLogin('cc')
+																																													 ->setPrenom('Christophe')
+																																													 ->setNom('Cerisier')) ) ))
 																						 ));
 
 		$this->_amadou = Class_Users::getLoader()
@@ -169,32 +193,20 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 	}	
 
 	/** @test */
-	function aListItemShouldContainsLearnJava() {
-		$this->assertXPathContentContains('//li//div', 'Learn Java');
+	function aH2ShouldContainsLearnJava() {
+		$this->assertXPathContentContains('//h2', 'Learn Java');
 	}
 
 
 	/** @test */
-	function aListItemForDescriptionShouldContainsIfYouWantTo() {
-		$this->assertXPathContentContains('//li//div', 'If you want to');
+	function aDivForDescriptionShouldContainsIfYouWantTo() {
+		$this->assertXPathContentContains('//div', 'If you want to');
 	}
 
 
 	/** @test */
-	function aListItemShouldContainsLearnPython() {
-		$this->assertXPathContentContains('//ul//li', 'Learn Python');
-	}
-
-
-	/** @test */
-	function aH2ShouldContains2022() {
-		$this->assertXPathContentContains('//h2', '2022');
-	}
-
-
-	/** @test */
-	function aH2ShouldContains2023() {
-		$this->assertXPathContentContains('//h2', '2023');
+	function aH2ShouldContainsLearnPython() {
+		$this->assertXPathContentContains('//h2', 'Learn Python');
 	}
 
 
@@ -218,60 +230,60 @@ class AbonneControllerFormationsListTest extends AbstractAbonneControllerFormati
 
 	/** @test */
 	function session_juillet_smalltalk_ShouldNotDisplayLimiteAsNotSet() {
-		$this->assertNotXPathContentContains('//li[@class="session_12"]', 'Limite:');
+		$this->assertNotXPathContentContains('//td[@class="session_12"]', 'Limite:');
 	}
 
 
 
 	/** @test */
 	function session_fevrier_17_ShouldBeDisplayedUnderLearnJavaInSecondPosition() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]', 'février, 17');
+		$this->assertXPathContentContains('//tr[2]//td', '17 février 2022 au 19 février 2022', $this->_response->getBody());
 	}
 
 
 	/** @test */
 	function session_fevrier_17_lieuBonlieuShouldBeDisplayed() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]', 'Bonlieu');
+		$this->assertXPathContentContains('//tr[2]//td', 'Bonlieu');
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldHaveLinkForInscrire() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//a[contains(@href, "abonne/inscrire_session/id/31")]',
+		$this->assertXPathContentContains('//tr[2]//a[contains(@href, "abonne/inscrire_session/id/31")]',
 																			"S'inscrire");
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldDisplayDateLimite15Fevrier() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]',
+		$this->assertXPathContentContains('//tr[2]',
 																			"Limite: 15 février 2022");
 	}
 
 
 	/** @test */
 	function session_fevrier_17_ShouldHaveLinkForDetailSessionFormation() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//a[contains(@href, "abonne/detail_session/id/31")]', 
+		$this->assertXPathContentContains('//tr[2]//a[contains(@href, "abonne/detail_session/id/31")]', 
 																			'Détails de la session');
 	}
 
 
 	/** @test */
 	function session_mars_27_ShouldBeDisplayedUnderLearnJavaInFirstPosition() {
-		$this->assertXPathContentContains('//ul//li//ul//li[1]', 'mars, 27');
+		$this->assertXPathContentContains('//tr[1]', '27 mars 2022');
 	}
 
 
 	/** @test */
 	function session_septembre_java_ShouldBeAnnule() {
-		$this->assertXPathContentContains('//ul//li//ul//li', 'septembre, 27 (Annul');
+		$this->assertXPathContentContains('//tr//td[contains(text(), "Annul")]//span', '27 septembre 2022');
 	}
 
 
 
 	/** @test */
 	function session_python_juillet_ShouldHaveLinkForDesinscrire() {
-		$this->assertXPathContentContains('//ul//li//ul//li//a[contains(@href, "abonne/desinscrire_session/id/121")]',
+		$this->assertXPathContentContains('//tr//a[contains(@href, "abonne/desinscrire_session/id/121")]',
 																			"Se désinscrire");
 	}
 
@@ -440,7 +452,7 @@ class AbonneControllerFormationsSessionJavaFevrierFullListTest extends AbonneCon
 
 	/** @test */
 	public function sessionShouldDisplayFull() {
-		$this->assertXPathContentContains('//ul//li//ul//li[2]//span', 'Effectif maximum atteint');
+		$this->assertXPathContentContains('//tr[2]//span', 'Effectif maximum atteint');
 	}
 }
 
@@ -551,6 +563,21 @@ class AbonneControllerFormationsSessionFevrierJavaTest extends AbstractAbonneCon
 		$this->assertXPathContentContains('//dl/dd', 'minimum: 2, maximum: 5, actuel: 0');
 	}
 
+
+	/** @test */
+	function ddShouldContainsAdresseBonlieu() {
+		$this->assertXPathContentContains('//dd', 'Bonlieu');
+		$this->assertXPathContentContains('//dd', '1, rue Jean-Jaures');
+		$this->assertXPathContentContains('//dd', '74007 Annecy');
+	}
+
+
+	/** @test */
+	function ddShouldContainsGoogleMap() {
+		$this->assertXPath('//dd//img[@src="http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=15&size=300x300&center=1%2C+rue+Jean-Jaures%0ABP+294%2C74007%2CAnnecy%2CFRANCE&markers=1%2C+rue+Jean-Jaures%0ABP+294%2C74007%2CAnnecy%2CFRANCE"]',
+											 $this->_response->getBody());
+	}
+
 }
 
 
@@ -570,7 +597,7 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 
 	/** @test */
 	public function titleShouldBeFormationLearnPython_SessionDu21Juillet2023() {
-		$this->assertXPathContentContains('//h1', 'Formation Learn Python: session du 21 juillet 2023');
+		$this->assertXPathContentContains('//h1[contains(text(), "Learn Python")]//span', '21 juillet 2023');
 	}
 
 
@@ -590,12 +617,6 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 	/** @test */
 	public function ddShouldContainsContenu() {
 		$this->assertXPathContentContains('//dl[@class="session_formation"]//dd', 'Introduction a la syntaxe');
-	}
-
-
-	/** @test */
-	public function ddShouldContainsObjectif() {
-		$this->assertXPathContentContains('//dl/dd', 'Ecrire un premier programme');
 	}
 
 
@@ -624,13 +645,13 @@ class AbonneControllerFormationsSessionJuilletPythonDetailTest extends AbstractA
 
 	/** @test */
 	public function ddIntervenantsShouldContainsJpp() {
-		$this->assertXPathContentContains('//dd//li', 'jpp');
+		$this->assertXPathContentContains('//dd//li', 'Pirant, Jean-Paul');
 	}
 
 
 	/** @test */
-	public function ddIntervenantsShouldContainsCm() {
-		$this->assertXPathContentContains('//dd//li', 'cm');
+	public function ddIntervenantsShouldContainsCc() {
+		$this->assertXPathContentContains('//dd//li', 'Cerisier, Christophe');
 	}
 }
 

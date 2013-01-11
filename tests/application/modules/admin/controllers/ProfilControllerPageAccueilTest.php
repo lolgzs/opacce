@@ -20,7 +20,7 @@
  */
 require_once 'AdminAbstractControllerTestCase.php';
 
-class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractControllerTestCase {
+abstract class Admin_ProfilControllerPageAccueilJeunesseTestCase extends Admin_AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
@@ -37,16 +37,45 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 																																								'only_img' => 1)),
 																						'6' => array('division' => 2,
 																												 'type_module' => 'CRITIQUES',
-																												 'preferences' => array())));
+																												 'preferences' => array()),
+
+																						'8' => array('division' => 1,
+																												 'type_module' => 'RESERVATIONS',
+																												 'preferences' => array()),
+
+																						'9' => array('division' => 1,
+																												 'type_module' => 'PRETS',
+																												 'preferences' => array()),
+
+																						'10' => array('division' => 1,
+																												 'type_module' => 'NEWSLETTERS',
+																												 'preferences' => array()),
+
+																						'11' => array('division' => 1,
+																												 'type_module' => 'FORMATIONS',
+																												 'preferences' => array()),
+
+																						'12' => array('division' => 1,
+																												 'type_module' => 'MULTIMEDIA',
+																												 'preferences' => array()),
 
 
-		$this->profil_jeunesse = new Class_Profil();
-		$this->profil_jeunesse
-			->setId(7)
-			->setLibelle('Profil Jeunesse')
-			->setCfgAccueil($cfg_accueil);
+																						'666' => array('division' => 1,
+																													 'type_module' => 'WRONG',
+																													 'preferences' => array())));
 
-		Class_Profil::getLoader()->cacheInstance($this->profil_jeunesse);
+
+		$this->profil_jeunesse = Class_Profil::newInstanceWithId(7)
+		                         ->setLibelle('Profil Jeunesse')
+														 ->setCfgAccueil($cfg_accueil);
+
+	}
+}
+
+
+class Admin_ProfilControllerPageAccueilJeunesseTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setUp() {
+		parent::setUp();
 
 		$this->profil_wrapper = Storm_Test_ObjectWrapper
 			::onLoaderOfModel('Class_Profil')
@@ -58,14 +87,36 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 			->getWrapper();
 
 
-		Zend_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
-		$this->dispatch('/admin/profil/accueil/id_profil/7');
+		ZendAfi_Auth::getInstance()->getIdentity()->ROLE_LEVEL = 7;
+		$this->dispatch('/admin/profil/accueil/id_profil/7', true);
 	}
 
 
 	/** @test */
 	public function formActionUrlShouldBeOnIdProfilSeven() {
-		$this->assertXPath("//form[contains(@action, 'profil/accueil/id_profil/7')]");
+		$this->assertXPath('//form[contains(@action, "profil/accueil/id_profil/7")]');
+	}
+
+
+	/** @test */
+	public function boitePretsShouldBeAvailable() {
+		$this->assertXPathContentContains('//ul[@id="allItems"]/li[@id="PRETS"]','Prêts');
+	}
+
+	/** @test */
+	public function boitePretsShouldBeInDivisionOne() {
+		$this->assertXPath('//ul[@id="box1"]/li[@id="PRETS"][@id_module="9"]//img[contains(@onclick,"accueil/prets")]');
+	}
+
+
+	/** @test */
+	public function boiteReservationsShouldBeAvailable() {
+		$this->assertXPathContentContains('//ul[@id="allItems"]/li[@id="RESERVATIONS"]','Réservations',$this->_response->getBody());
+	}
+
+	/** @test */
+	public function boiteReservationsShouldBeInDivisionOne() {
+		$this->assertXPath('//ul[@id="box1"]/li[@id="RESERVATIONS"][@id_module="8"]//img[contains(@onclick,"accueil/reservations")]');
 	}
 
 
@@ -82,6 +133,12 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 
 	/** @test */
+	public function boiteWrongShouldNotBeVisible() {
+		$this->assertNotXPath('//li[@id_module="666"]');
+	}
+
+
+	/** @test */
 	public function boiteCritiquesShouldBeInDivisionTwo() {
 		$this->assertXPath('//ul[@id="box2"]/li[@id="CRITIQUES"][@id_module="6"]');
 	}
@@ -89,7 +146,7 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 
 	/** @test */
 	public function preferencesBoiteKiosqueShouldBeEncodedInAttributeProprietes() {
-		$this->assertXPath('//li[@id_module="3"][@proprietes="nb_notices=12/nb_analyse=36/only_img=1/"]');
+		$this->assertXPath('//li[@id_module="3"][contains(@proprietes,"nb_notices=12/only_img=1/aleatoire=1")]');
 	}
 
 
@@ -175,5 +232,291 @@ class Admin_ProfilControllerJeunessePageAccueilTest extends Admin_AbstractContro
 		$this->assertEquals('CRITIQUES', $b2cols['preferences']['col_droite_type']);
 	}
 }
+
+
+
+class ProfilControllerPageAccueilWithTelephonePackMobileTest extends Admin_AbstractControllerTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(1);
+
+		Class_AdminVar::getLoader()->newInstanceWithId('BIB_NUMERIQUE')
+			->setValeur(1);
+
+		$profil_telephone = Class_Profil::getLoader()
+			->newInstanceWithId(3)
+			->setLibelle('iPhone')
+			->beTelephone();
+		$this->dispatch('/admin/profil/accueil/id_profil/3');
+	}
+
+
+	/** @test */
+	public function moduleNewsShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="NEWS"]');
+	}
+
+
+	/** @test */
+	public function moduleBibNumeriqueShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="BIB_NUMERIQUE"]');
+	}
+
+
+	/** @test */
+	public function moduleCritiquesShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="CRITIQUES"]');
+	}
+
+
+	/** @test */
+	public function moduleKiosqueShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="KIOSQUE"]');
+	}
+
+
+	/** @test */
+	public function moduleLoginShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="LOGIN"]');
+	}
+}
+
+
+
+
+class ProfilControllerPageAccueilWithTelephoneNoPackMobileNoBibNumTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()->newInstanceWithId('PACK_MOBILE')
+			->setValeur(0);
+
+		Class_AdminVar::getLoader()->newInstanceWithId('BIBNUM')
+			->setValeur(0);
+
+		$this->profil_jeunesse->beTelephone();
+
+		$this->dispatch('/admin/profil/accueil/id_profil/'.$this->profil_jeunesse->getId());
+	}
+
+
+	/** @test */
+	public function moduleNewsShouldBeAvailable() {
+		$this->assertXPath('//ul/li[@id="NEWS"]');
+	}
+
+
+	/** @test */
+	public function moduleBibNumeriqueShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="BIB_NUMERIQUE"]');
+	}
+
+
+	/** @test */
+	public function moduleCritiquesShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="CRITIQUES"]');
+	}
+
+
+	/** @test */
+	public function moduleKiosqueShouldNotBeAvailable() {
+		$this->assertNotXPath('//ul/li[@id="KIOSQUE"]');
+	}
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigPretsTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/prets?config=admin&id_profil=7&type_module=PRETS&id_module=9&proprietes=boite=/titre=Mes prets/',true);
+	}
+
+	/** @test */
+	public function actionShouldBePrets() {
+		$this->assertAction('prets');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModulePret() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Prêts');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesPrets() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes prets"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyPretTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/prets?config=admin&id_profil=7&type_module=PRETS&id_module=9',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesPrets() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes prêts"]');
+	}
+}
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigReservationsTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/reservations?config=admin&id_profil=7&type_module=RESERVATIONS&id_module=8&proprietes=boite=/titre=Mes reservations/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeReservations() {
+		$this->assertAction('reservations');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleReservations() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Réservations');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesReservations() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes reservations"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyReservationTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/reservations?config=admin&id_profil=7&type_module=RESERVATIONS&id_module=8',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesReservations() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes réservations"]');
+	}
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigNewslettersTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/newsletters?config=admin&id_profil=7&type_module=NEWSLETTERS&id_module=10&proprietes=boite=/titre=Mes newsletters/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeNewsletters() {
+		$this->assertAction('newsletters');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleNewsletters() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Lettres d\'informations',$this->_response->getBody());
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesNewsletters() {
+		$this->assertXPath('//input[@name="titre"][@value="Mes newsletters"]',$this->_response->getBody());
+	}
+
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyNewsletterTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/newsletters?config=admin&id_profil=7&type_module=NEWSLETTERS&id_module=11',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValueMesNewsletters() {
+		$this->assertXPath('//input[@name="titre"][@value="Lettres d\'informations"]',$this->_response->getBody());
+	}
+}
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigMultimediaTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/multimedia?config=admin&id_profil=7&type_module=MULTIMEDIA&id_module=8&proprietes=boite=/titre=Postes multimedia/',true);
+	}
+
+	/** @test */
+	public function actionShouldBeMultimedia() {
+		$this->assertAction('multimedia');
+	}
+
+	/** @test */
+	public function titleShouldBeProprieteDuModuleMultimedia() {
+		$this->assertXPathContentContains('//h1','Propriétés du module Postes Multimédia');
+	}
+
+
+	/** @test */
+	public function comboBoiteShouldBePresent() {
+		$this->assertXPath('//select[@name="boite"]/option[@value="boite_de_la_division_droite"]');
+	}
+
+
+	/** @test */
+	public function titreInputShouldHaveValueMesMultimedia() {
+		$this->assertXPath('//input[@name="titre"][@value="Postes multimedia"]');
+	}
+
+}
+
+
+
+class Admin_ProfilControllerPageAccueilJeunesseConfigEmptyMultimediaTest extends Admin_ProfilControllerPageAccueilJeunesseTestCase {
+
+	public function setup() {
+		parent::setup();
+		$this->dispatch('admin/accueil/multimedia?config=admin&id_profil=7&type_module=MULTIMEDIA&id_module=11',true);
+
+	}
+
+	/** @test */
+	public function titreInputShouldHaveValuePostesMultimedia() {
+		$this->assertXPath('//input[@name="titre"][@value="Postes multimédia"]');
+	}
+}
+
+
+
 
 ?>

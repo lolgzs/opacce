@@ -18,42 +18,42 @@
  * along with AFI-OPAC 2.0; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA 
  */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OPAC3 - Recherche
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper
-{
-		
-//---------------------------------------------------------------------
-// Main routine
-//--------------------------------------------------------------------- 
-	public function ToolBar($titre,$url_retour=false,$accueil=true)	{
-		$html='<div class="toolbar">';
-		$html.='<table cellspacing="0" cellpadding="0" width="100%"><tr>';
-		$html.='<td class="gauche">';
-		
-		if(is_array($url_retour))
-			$url_retour = $this->view->url($url_retour);
 
-		if($url_retour) 
-			$html.=sprintf('<a href="%s"><img src="%s"></a>',
-										 $url_retour,
-										 URL_IMG.'systeme/bouton_retour.png');  
-		else 
-			$html.="&nbsp;";
 
-		$html.='</td>';
-		$html.='<td align="center" width="50%"><h1>'.$titre.'</h1></td>';
-		$html.='<td class="droite">';
-
-		if($accueil) 
-			$html.=sprintf('<a href="%s"><img src="%s"></a>',
+class ZendAfi_View_Helper_Telephone_Tags_ToolBar extends ZendAfi_View_Helper_BaseHelper {
+	public function ToolBar()	{
+		$html = '<div data-role="footer" data-theme="c">';
+		$html .= '<div data-role="navbar"><ul>';
+		$html .= sprintf('<li><a href="%s"  data-icon="home" rel="external" data-ajax="false" data-iconpos="notext">%s</a></li>',
 										 $this->view->url(array(), null, true),
-										 URL_IMG.'systeme/bouton_accueil.png'); 
-		else 
-			$html.="&nbsp;";
-		$html.='</td>';
-		$html.='</tr></table></div>';
+										 $this->view->_('Accueil'));
+
+		$html .= sprintf('<li><a href="#" onclick="$(\'.search-bar\').slideToggle();$(\'.navbar-search-input\').focus();return false;" data-icon="search"  data-iconpos="notext">%s</a></li>',
+										 $this->view->_('Recherche'));
+
+
+		if (Class_AdminVar::isPackMobileEnabled()) 
+			$html .= sprintf('<li><a href="%s" data-icon="star" data-iconpos="notext" data-ajax="false">%s</a></li>',
+											 $this->view->url(array('controller' => 'abonne'), null, true),
+											 $this->view->_('Compte'));  
+
+		$html .= sprintf('<li><a href="%s"  data-icon="grid" rel="external" data-ajax="false" data-iconpos="notext">%s</a></li>',
+										 $this->view->url(array('id_profil' => 1), null, true),
+										 $this->view->_('Complet'));
+
+
+		$html .= '</ul></div>';
+
+		$html .= '</div>';
+		
+		$html .= '<div class="ui-bar ui-bar-c search-bar" style="display:none;padding:0;">';
+		$html .= sprintf('<form method="post" action="%s">', $this->view->url(array('controller' => 'recherche', 
+																																								'action' => 'simple')));
+		$html .= sprintf('<input class="navbar-search-input" data-mini="true" type="search" name="expressionRecherche" x-webkit-speech="x-webkit-speech">');
+
+		$html .= '</form>';
+		$html .= '</div>';
+
 		return $html;
 	}
 }

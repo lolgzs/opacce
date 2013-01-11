@@ -24,6 +24,7 @@ class ZendAfi_View_Helper_Admin_SubscribeUsers extends ZendAfi_View_Helper_BaseH
 	protected $_search_label = 'Rechercher des utilisateurs';
 	protected $_submit_label = 'Ajouter les utilisateurs sélectionnés';
 	protected $_by_right = 0;
+	protected $_read_only = false;
 
 	public function subscribeUsers($users, $search = '') {
 		return $this
@@ -63,6 +64,17 @@ class ZendAfi_View_Helper_Admin_SubscribeUsers extends ZendAfi_View_Helper_BaseH
 	}
 
 
+	public function setReadOnly($read_only) {
+		$this->_read_only = $read_only;
+		return $this;
+	}
+
+
+	public function isReadOnly() {
+		return $this->_read_only;
+	}
+
+
 	public function __toString() {
 		return $this->render();
 	}
@@ -79,10 +91,12 @@ class ZendAfi_View_Helper_Admin_SubscribeUsers extends ZendAfi_View_Helper_BaseH
 
 		$content .= '</tbody></table>';
 
+		if ($this->isReadOnly())
+			return $content;
 
-		$content .= $this->_findUsersForm($this->_search)->render();
-		$content .= $this->_subscribeUsersForm($this->_search)->render();
-		return $content;
+		return $content
+			.$this->_findUsersForm($this->_search)->render()
+			.$this->_subscribeUsersForm($this->_search)->render();
 	}
 
 
@@ -96,8 +110,8 @@ class ZendAfi_View_Helper_Admin_SubscribeUsers extends ZendAfi_View_Helper_BaseH
 									 $user->getNom(),
 									 $user->getPrenom(),
 									 $user->getLogin(),
-									 $this->view->tagAnchor($delete_url,
-																					$this->view->boutonIco("type=del")));
+									 $this->isReadOnly() ? '': $this->view->tagAnchor($delete_url,
+																																		$this->view->boutonIco("type=del")));
 	}
 
 

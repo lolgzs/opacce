@@ -23,6 +23,7 @@ require_once 'AdminAbstractControllerTestCase.php';
 abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 	/** @var Class_Article */
 	protected $concert;
+	protected $lieu_bonlieu, $lieu_arcadium;
 
 
 	protected function _loginHook($account) {
@@ -31,8 +32,33 @@ abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 	}
 
 
+	public function setupLieux() {
+		$this->lieu_bonlieu = Class_Lieu::newInstanceWithId(3)
+			->setLibelle('Bonlieu')
+			->setAdresse('1, rue Jean Jaures')
+			->setCodePostal('74000')
+			->setVille('Annecy')
+			->setPays('France');
+
+		$this->lieu_arcadium = Class_Lieu::newInstanceWithId(10)
+			->setLibelle('Arcadium')
+			->setAdresse('32 bd du Fier')
+			->setCodePostal('74000')
+			->setVille('Annecy')
+			->setPays('France');
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Lieu')
+			->whenCalled('findAllBy')
+			->with(array('order' => 'libelle'))
+			->answers([$this->lieu_bonlieu, $this->lieu_arcadium])
+			->whenCalled('save')->answers(true);
+	}
+
+
 	public function setUp() {
 		parent::setUp();
+
+		$this->setupLieux();
 
 		$cat_a_la_une = Class_ArticleCategorie::getLoader()
                 			->newInstanceWithId(23)
@@ -61,7 +87,8 @@ abstract class CmsControllerTestCase extends Admin_AbstractControllerTestCase {
 			->setTags('concert;jazz')
 			->setAvis(true)
 			->setIndexation(false)
-			->setDateCreation('2010-12-25');
+			->setDateCreation('2010-12-25')
+			->setAvisUsers([]);
 
 
 		$this->article_wrapper = Storm_Test_ObjectWrapper
@@ -162,6 +189,8 @@ class CmsControllerArticleEditWithoutLanguesTest extends CmsControllerTestCase {
 }
 
 
+
+
 class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControllerTestCase {
 	protected function _loginHook($account) {
 		$account->ROLE = "admin_portail";
@@ -174,7 +203,7 @@ class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControl
 			->getIdentity()
 			->setRoleLevel(ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL);
 
-		$this->dispatch('/admin/cms/newsedit/id/4');
+		$this->dispatch('/admin/cms/newsedit/id/4', true);
 	}
 
 
@@ -194,7 +223,27 @@ class CmsControllerArticleConcertAsAdminPortailEditActionTest extends CmsControl
 	function categorieSelectShouldContainsOptGroupCranGevrier() {
 		$this->assertXPath('//select[@name="id_cat"]//optgroup[@label="Cran-Gevrier"]');
 	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsAucunAndBeSelected() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@selected="selected"][@label="Aucun"][@value="0"]');		
+	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsBonlieu() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[not(@selected)][@label="Bonlieu"][@value="3"]');		
+	}
+
+
+	/** @test */
+	public function selectIdLieuShouldContainsArcadium() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@label="Arcadium"][@value="10"]');		
+	}
 }
+
+
 
 
 class CmsControllerArticleWithoutCategoryAddActionTest extends CmsControllerTestCase {
@@ -404,7 +453,8 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 									'events_debut' => '02/03/2011',
 									'events_fin' => '05/03/2011',
 									'contenu' => 'Ici: <img src="../../images/bonlieu.jpg" />',
-									'description' => 'Affiche: <img src="http://localhost' . BASE_URL . '/images/concert.jpg" />');
+									'description' => 'Affiche: <img src="http://localhost' . BASE_URL . '/images/concert.jpg" />',
+									'id_lieu' => 3);
 
 		$this
 			->getRequest()
@@ -493,6 +543,17 @@ class CmsControllerArticleConcertEditActionPostTest extends CmsControllerTestCas
 	/** @test */
 	function categorieShouldBeEvenements() {
 		$this->assertEquals($this->cat_evenements, $this->concert->getCategorie());
+	}
+
+	
+	/** @test */
+	public function lieuShouldBeBonlieu() {
+		$this->assertEquals($this->lieu_bonlieu, $this->concert->getLieu());
+	}
+
+	/** @test */
+	public function comboLieuShouldHaveOptionBonlieuSelected() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[@selected="selected"][@label="Bonlieu"][@value="3"]');		
 	}
 }
 
@@ -660,7 +721,13 @@ class CmsControllerNewsAddActionTest extends CmsControllerTestCase {
 																			$this->_response->getBody());
 	}
 
+
+	/** @test */
+	public function selectIdLieuShouldContainsBonlieu() {
+		$this->assertXPath('//select[@name="id_lieu"]//option[not(@selected)][@label="Bonlieu"][@value="3"]');		
+	}
 }
+
 
 
 
@@ -1002,7 +1069,7 @@ class CmsControllerArticleNewTraductionEditTest extends CmsControllerTestCase {
 
 	/** @test */
 	function descriptionOriginalShouldContainsVenezNombreux() {
-		$this->assertXPathContentContains('//div[@class="art_original"]', 'Venez nombreux ici: <img src="/afi-opac3/images/bonlieu.jpg" />');
+		$this->assertXPath('//div[@class="art_original"][contains(text(), "Venez nombreux ici: ")]//img[@src="/afi-opac3/images/bonlieu.jpg"]');
 	}
 }
 
@@ -1117,8 +1184,7 @@ class CmsControllerDeleteArticleTest extends CmsControllerTestCase {
 			->whenCalled('delete')
 			->answers(true);
 
-
-		$this->dispatch('/admin/cms/delete/id/4');
+		$this->dispatch('/admin/cms/delete/id/4', true);
 	}
 
 
@@ -1158,6 +1224,15 @@ class CmsControllerCategorieEvenementTest extends CmsControllerTestCase {
 
 
 	/** @test */
+	function editCategorieShouldDisplayAllCat() {
+		$this->dispatch('/admin/cms/catedit/id/34');
+		$this->assertXPath('//input[@value="Evènements"]');
+		$this->assertXPathContentContains('//select[@name="id_cat_mere"]//option[@value="0"]', "Aucune");
+		$this->assertXPathContentContains('//select[@name="id_cat_mere"]//option[@value="23"]', "A la Une");
+	}
+
+
+	/** @test */
 	function postAddCategorieShouldRedirectWithIdCat() {
 		$this
 			->getRequest()
@@ -1187,6 +1262,7 @@ class CmsControllerCategorieEvenementTest extends CmsControllerTestCase {
 		$this->assertEquals('/admin/cms/index/id_cat/34', $this->getResponseLocation());
 		$this->assertEquals('Actualite', $this->cat_evenements->getLibelle());
 		$this->assertEquals(254, $this->cat_evenements->getIdCatMere());
+		$this->assertTrue($this->categorie_wrapper->methodHasBeenCalled('save'));
 	}
 }
 

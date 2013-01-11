@@ -1,10 +1,20 @@
-<?php echo $this->render('head.phtml'); ?>
+<?php
+ob_start();
+?>
 
 <body class="main" <?php echo $this->bodyParam; ?>>
-	<img src="<?php  echo $this->profil->getHeaderImg(); ?>" width="100%">
-			<div class="main">
-				<?php 
-					echo $this->render($this->actionScript);
-				?>
-		</div>
+  <div class="main" data-role="page">
+	<?php	
+	 echo $this->partial("banniere.phtml", array("profil" => $this->profil));
+	 echo $this->render($this->actionScript);
+	?>
+	</div>
 <?php echo $this->render('footer.phtml'); ?>
+
+<?php
+$html = ob_get_contents();
+ob_end_clean();
+
+echo $this->render('head.phtml');
+echo $html;
+?>

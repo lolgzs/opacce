@@ -1,0 +1,24 @@
+<?php $this->openBoite($this->_("Réserver un poste multimédia")); ?>
+<?php echo $this->timeline($this->timelineActions);?>
+
+<div class="workflow_step">
+	<h2><?php echo $this->_('Pour quel jour ?');?></h2>
+	<?php if ($this->quotaError) { ?>
+	<div class="error"><?php echo $this->quotaError;?></div>
+	<?php } ?>
+	<?php
+	Class_ScriptLoader::getInstance()
+		->addAdminScript('jquery_ui/jquery-ui-i18n.min')
+		->addJQueryReady('$.datepicker.setDefaults($.datepicker.regional["' . ((Zend_Registry::get('locale') == 'en_US') ? '' : 'fr' ). '"]);
+											$("#hold-day").datepicker(
+												{onSelect: function (dateText, inst){location.href = location.href + "/day/" + dateText;},
+												 dateFormat: "yy-mm-dd",
+												 minDate: "' . $this->minDate . '",
+												 maxDate: "' . $this->maxDate . '",
+												 beforeShowDay: function(date){' . $this->beforeShowDay . '}}
+											);');
+	?>
+	<div id="hold-day" class="calendar"></div>
+</div>
+
+<?php $this->closeBoite();?>

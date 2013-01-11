@@ -24,15 +24,13 @@
 
 class ZendAfi_View_Helper_Division extends ZendAfi_View_Helper_BaseHelper {
 	public function division($profil, $division, $html_id, $content=null) {
-		$width = $profil->_get('largeur_division'.$division);
+		$width = $profil->_get('largeur_division' . $division);
 		if ($html_id == "colContenu"  and  $profil->getNbDivisions() == 3)
 			$width += $profil->getLargeurDivision3();
 
 		$marge = $profil->_get('marge_division'.$division);
 		$style = "float:left;overflow:hidden;width:".$width."px;max-width:".$width."px";
 		$style_inner = "padding-left:".$marge."px;padding-right:".$marge."px";
-
-		$template_div = '<div class="%1$s" style="%2$s"><div id="%1$sInner" style="%3$s">%4$s %5$s</div></div>';
 
 		$barre_nav = '';
 		if (in_array($html_id, array('colContenu', 'colMilieu'))	and ($profil->getBarreNavOn()))
@@ -43,7 +41,10 @@ class ZendAfi_View_Helper_Division extends ZendAfi_View_Helper_BaseHelper {
 			$content = $boites[$division];
 		}
 
-		return sprintf($template_div, $html_id, $style, $style_inner, $barre_nav, $content);
+		return sprintf('<div class="%1$s layout-division" id="layout-division-%6$s" style="%2$s">
+                      <div id="%1$sInner" style="%3$s">%4$s %5$s</div>
+                   </div>', 
+									 $html_id, $style, $style_inner, $barre_nav, $content, $division);
 	}
 }
 

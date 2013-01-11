@@ -44,6 +44,8 @@ class ModulesAppliValeursParDefautTest extends PHPUnit_Framework_TestCase {
 		$def_val = $this->modules_appli->getValeursParDefaut("recherche", "viewnotice");
 		$this->assertEquals("Notice", $def_val["barre_nav"]);
 		$this->assertEquals(2, $def_val["onglets"]["exemplaires"]["aff"]);
+		
+		$this->assertTrue(array_key_exists('frbr', $def_val['onglets']));
 	}
 
 

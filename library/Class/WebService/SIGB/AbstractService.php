@@ -22,6 +22,13 @@
 abstract class Class_WebService_SIGB_AbstractService {
 	protected $_notice_cache;
 
+	/**
+	 * @return Class_WebService_SIGB_AbstractService
+	 */
+	public static function newInstance() {
+		return new static();
+	}
+
 
 	public function getReservationsOf($emprunteur) {
 		return array();
@@ -86,6 +93,10 @@ abstract class Class_WebService_SIGB_AbstractService {
 	protected function _error($message) {
 		return array('statut' => false,
 								  'erreur' => $message);
+	}
+
+	public function isPergame() {
+		return false;
 	}
 }
 

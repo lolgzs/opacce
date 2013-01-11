@@ -44,6 +44,11 @@ class ProfilVideTest extends ModelTestCase {
 	public function getModuleAccueilPreferencesShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->profil_vide->getModuleAccueilPreferences(1));
 	}
+
+	/** @test */
+	public function profilZonesTitreShouldReturn200_E_H_I() {
+		$this->assertEquals(['200$e', '200$h', '200$i'], Class_Profil::getCurrentProfil()->getZonesTitre());
+	}
 }
 
 
@@ -73,6 +78,8 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 			::onLoaderOfModel('Class_Profil')
 			->whenCalled('findAllBy')
 			->answers(array());
+
+		Class_Profil::setFileWriter(Storm_Test_ObjectWrapper::mock()->whenCalled('fileExists')->answers(true));
 	}
 
 
@@ -81,10 +88,12 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 		$this->assertEquals(array(
 															'H' => array(
 																					 "libelle" => "Menu horizontal",
-																					 "picto" => "vide.gif"),
+																					 "picto" => "vide.gif",
+																					 'menus' => array()),
 															'V' => array(
 																					 "libelle" => "Menu vertical",
-																					 "picto" => "vide.gif")),
+																					 "picto" => "vide.gif",
+																					 'menus' => array())),
 												$this->profil_astro->getCfgMenusAsArray());
 	}
 
@@ -105,7 +114,8 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 		$this->assertEquals(array(
 															'H' => array(
 																					 "libelle" => "Menu horizontal",
-																					 "picto" => "vide.gif"),
+																					 "picto" => "vide.gif",
+																					 "menus" => array()),
 															'V' => array(
 																					 "libelle" => "Les news",
 																					 "picto" => "home.gif",
@@ -269,7 +279,7 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 	 */
 	public function profilLoaderShouldHaveFindAllByCalledWithParentIdOfAstrolabe($loader) {
 		$param = $loader->getFirstAttributeForLastCallOn('findAllBy');
-		$this->assertEquals('parent', $param['role']);
+		$this->assertEquals('parent_profil', $param['role']);
 
 		$this->assertEquals($this->profil_astro->toArray(),
 												$param['model']->toArray());
@@ -286,17 +296,18 @@ class ProfilJeunesseAstrolabeTest extends ModelTestCase {
 
 
 
-class ProfilAdulteChatenayTest extends ModelTestCase {
+abstract class ProfilAdulteChatenayTestCase extends ModelTestCase {
 	public function setUp() {
-		$cfg_accueil = array('modules' => array('1' => array('division' => '4',
+		parent::setUp();
+				$cfg_accueil = array('modules' => array('1' => array('division' => '4',
 																												 'type_module' => 'RECH_SIMPLE',
 																												 'preferences' => array()),
 
-																						'2' => array('division' => '4',
-																												 'type_module' => 'LOGIN',
-																												 'preferences' => array()),
-																						'4' => array('division' => '1',
-																												 'type_module' => 'NEWS')),
+																								'2' => array('division' => '4',
+																														 'type_module' => 'LOGIN',
+																														 'preferences' => array()),
+																								'4' => array('division' => '1',
+																														 'type_module' => 'NEWS')),
 												 'options' => 	array());
 
 		$this->profil = Class_Profil::getLoader()
@@ -310,9 +321,17 @@ class ProfilAdulteChatenayTest extends ModelTestCase {
 			->setLargeurDivision2(600)
 			->setLargeurDivision3(0)
 			->setCfgAccueil($cfg_accueil)
-			->setAccessLevel('-1');
+			->setAccessLevel('-1')
+			->setMailSuggestionAchat('chatenay@chatenay.fr');
+	}
+}
 
 
+
+
+class ProfilAdulteChatenayTest extends ProfilAdulteChatenayTestCase  {
+	public function setUp() {
+		parent::setUp();
 
 		$cfg_accueil_histoire = array('modules' => array(
 																										 '4' => array('division' => '1',
@@ -526,6 +545,151 @@ class ProfilAdulteChatenayTest extends ModelTestCase {
 		$this->assertTrue($loader
 											->methodHasBeenCalledWithParams('delete',
 																											array($this->page_histoire)));
+	}
+
+
+	/** @test */
+	public function pagePolitiqueMailSuggestionAchatShouldBeChatenayAtChatenayDotFr() {
+		$this->assertEquals('chatenay@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatPagePolitiqueShouldGetOneFromPortail() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('suggest@chatenay.fr');
+		$this->profil->setMailSuggestionAchat('');
+		$this->assertEquals('suggest@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatShouldGetMailSite() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('');
+		$this->profil->setMailSuggestionAchat('')->setMailSite('contact@chatenay.fr');
+		$this->assertEquals('contact@chatenay.fr', $this->page_politique->getMailSuggestionAchatOrPortail());
+	}
+
+
+	/** @test */
+	public function withoutMailSuggestionAchatProfilPortailShouldGetMailSite() {
+		Class_Profil::getPortail()->setMailSuggestionAchat('')->setMailSite('admin@chatenay.fr');
+		$this->assertEquals('admin@chatenay.fr', Class_Profil::getPortail()->getMailSuggestionAchatOrPortail());
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleMoveNEWSFromDiv1PosZeroToDivFourPositionOneTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(1, 0, 4, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdFourShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['4']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdFourShouldBeBetweenOneAndTwo() {
+		$this->assertEquals(array(1, 4, 2), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleLOGINToFirstPosInDivFourTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 1, 4, 0);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['2']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeOnTop() {
+		$this->assertEquals(array(2, 1, 4), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleRECH_SIMPLEToSecondPosInDivFourTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 0, 4, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdOneShouldBeInDivFour() {
+		$this->assertEquals(4, $this->modules['1']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeOnTop() {
+		$this->assertEquals(array(2, 4, 1), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
+	}
+}
+
+
+
+
+class ProfilAdulteChatenayMoveModuleLOGINToLastPosInDivOneTest extends ProfilAdulteChatenayTestCase {
+	public function setUp() {
+		parent::setUp();
+		$this->profil->moveModuleOldDivPosNewDivPos(4, 1, 1, 1);
+		$this->modules = array_at('modules', $this->profil->getCfgAccueilAsArray());
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeInDivOne() {
+		$this->assertEquals(1, $this->modules['2']['division']);
+	}
+
+
+	/** @test */
+	public function moduleIdTwoShouldBeLast() {
+		$this->assertEquals(array(1, 4, 2), array_keys($this->modules));
+	}
+
+
+	/** @test */
+	public function modulesCountShouldBeThree() {
+		$this->assertEquals(3, count($this->modules));
 	}
 }
 
@@ -774,3 +938,97 @@ class ProfilPortailTest extends ModelTestCase {
 		$this->assertEmpty($this->_profil->copy()->id_profil);
 	}
 }
+
+
+
+
+class ProfilWithPagesCopyTest extends Storm_Test_ModelTestCase {
+	protected $_clone;
+
+	public function setUp() {
+		parent::setUp();
+
+		$id = 100;
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Profil')
+			->whenCalled('findAllBy')
+			->answers([])
+			->whenCalled('save')
+			->willDo(function ($model) use (&$id) {
+					$model->setId($id++);
+				} );
+
+
+		$profil = Class_Profil::newInstanceWithId(3)
+			->setSubProfils([ Class_Profil::newInstanceWithId(31),
+												Class_Profil::newInstanceWithId(32),
+												Class_Profil::newInstanceWithId(33)->setLibelle('CD'),
+												Class_Profil::newInstanceWithId(34)
+												]);
+
+		$this->_clone = $profil->deepCopy();
+		$this->_clone->save();
+	}
+
+
+	/** @test */
+	public function cloneShouldHaveFourPages() {
+		$this->assertEquals(4, $this->_clone->numberOfSubProfils());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageLibelleShouldBeIndexedAtNouveauProfil() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil **']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneSecondPageLibelleShouldBeIndexedAtNouveauProfil1() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil ** (1)']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneThirdPageLibelleShouldBeIndexedAtCD() {
+		$this->assertEquals('CD', $this->_clone->getSubProfils()['CD']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneFourthPageLibelleShouldBeIndexedAtNouveauProfil2() {
+		$this->assertEquals('** nouveau profil **', $this->_clone->getSubProfils()['** nouveau profil ** (2)']->getLibelle());
+	}
+
+
+	/** @test */
+	public function cloneIdShouldBe100() {
+		$this->assertEquals(100, $this->_clone->getId());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageIdShouldBe101() {
+		$this->assertEquals(101, array_values($this->_clone->getSubProfils())[0]->getId());
+	}
+
+
+	/** @test */
+	public function cloneFirstPageParentIdShouldBe100() {
+		$this->assertEquals(100, array_values($this->_clone->getSubProfils())[0]->getParentId());
+	}
+
+
+	/** @test */
+	public function cloneLastPageIdShouldBe104() {
+		$this->assertEquals(104, array_values($this->_clone->getSubProfils())[3]->getId());
+	}
+
+	/** @test */
+	public function cloneLastPageParentIdShouldBe100() {
+		$this->assertEquals(100, array_values($this->_clone->getSubProfils())[3]->getParentId());
+	}
+
+}
+
+
+?>

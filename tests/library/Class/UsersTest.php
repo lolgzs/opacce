@@ -26,8 +26,8 @@ class UserFixtures {
 	public static function miles() {
 		return array('ID_USER' => 1,
 				'LOGIN' => 'mdavis',
-				'ROLE' => 'invite',
-				'ROLE_LEVEL' => 0,
+				'ROLE' => 'abonne_sigb',
+				'ROLE_LEVEL' => 2,
 				'PASSWORD' => 'nifniff',
 				'ID_SITE' => 1,
 				'NOM' => 'Davis',
@@ -85,6 +85,12 @@ class UsersMilesDavisAttributesTest extends PHPUnit_Framework_TestCase {
 
 	public function testPRENOM() {
 		$this->assertEquals('Miles', $this->miles->PRENOM);
+	}
+
+
+	/** @test */
+	public function idSigbShouldDefaultToEmpty() {
+		$this->assertEquals('', $this->miles->getIdSigb());
 	}
 
 	public function testSetPRENOM() {
@@ -213,7 +219,12 @@ class UsersTestSave extends ModelTestCase {
 												 'date_fin' => '',
 												 'naissance' => '',
 												 'date_debut' => 0,
-												 'telephone' => ''));
+												 'telephone' => '',
+												 'mail' => '',
+												 'adresse' => '',
+												 'code_postal' => '',
+												 'ville' => '',
+												 'id_sigb' => null));
 
 		$coltrane = new Class_Users();
 		$coltrane
@@ -245,7 +256,11 @@ class UsersTestSave extends ModelTestCase {
 									 'idabon' => '',
 									 'naissance' => '',
 									 'date_debut' => 0,
-									 'telephone' => ''), 
+									 'telephone' => '',
+									 'adresse' => '',
+									 'code_postal' => '',
+									 'ville' => '',
+									 'id_sigb' => null), 
 						 'id_user=\'34\'');
 
 		Class_Users::getLoader()
@@ -415,18 +430,17 @@ class UsersTestAge extends ModelTestCase {
 
 
 
-class UsersRegistrationTest extends Storm_Test_ModelTestCase {
-	protected 
-		$user,
-		$mock_sql;
+abstract class UsersMailingActionTestCase extends Storm_Test_ModelTestCase {
+	protected $mock_transport, $user ,$mock_sql;
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->mock_transport = new MockMailTransport();
 		Zend_Mail::setDefaultTransport($this->mock_transport);
 
+
 		$this->user = new Class_Users();
+
 		$this->mock_sql = Storm_Test_ObjectWrapper::on(Zend_Registry::get('sql'));
 		Zend_Registry::set('sql', $this->mock_sql);
 
@@ -434,6 +448,65 @@ class UsersRegistrationTest extends Storm_Test_ModelTestCase {
 		Class_CosmoVar::getLoader()
 			->newInstanceWithId('mail_admin')
 			->setValeur('admin@afi-sa.fr');
+	}
+
+
+	public function tearDown() {
+		Zend_Registry::set('sql', $this->mock_sql->getWrappedObject());
+		parent::tearDown();
+	}
+}
+
+
+
+
+class UsersLostPassTest extends UsersMailingActionTestCase {
+	protected $ret, $mail;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->mock_sql
+			->whenCalled('fetchEnreg')
+			->with("Select * from bib_admin_users where LOGIN='zork'", false)
+			->answers(array('LOGIN' => 'zork',
+											'MAIL' => 'zork@afi.fr',
+											'PASSWORD' => '123'))
+			->beStrict();
+
+		$this->ret = $this->user->lostPass('zork');
+		$this->mail = $this->mock_transport->sent_mail;
+	}
+
+	
+	/** @test */
+	public function retShouldContainsUnMailViensDetreEnvoye() {
+		$this->assertContains('Un mail vient de vous', $this->ret['message_mail']);
+	}
+
+
+	/** @test */
+	public function mailShouldHaveBeenSentToZork() {
+		$this->assertContains('zork@afi.fr', $this->mail->getRecipients());
+	}
+
+
+	/** @test */
+	public function mailShouldContainsLoginAndPassword() {
+		$body = quoted_printable_decode($this->mail->getBodyText()->getContent());
+		$this->assertContains('Votre identifiant : zork', $body);
+		$this->assertContains('Votre mot de passe : 123', $body);
+	}
+}
+
+
+
+
+class UsersRegistrationTest extends UsersMailingActionTestCase {
+	protected $user;
+
+	public function setUp() {
+		parent::setUp();
 
 		Class_AdminVar::getLoader()
 			->newInstanceWithId('REGISTER_OK')
@@ -463,12 +536,6 @@ class UsersRegistrationTest extends Storm_Test_ModelTestCase {
 			->whenCalled('findFirstBy')
 			->with(array('login' => 'laurent'))
 			->answers(true);
-	}
-
-
-	public function tearDown() {
-		Zend_Registry::set('sql', $this->mock_sql->getWrappedObject());
-		parent::tearDown();
 	}
 
 

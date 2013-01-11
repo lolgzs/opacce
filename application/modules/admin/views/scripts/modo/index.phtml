@@ -2,25 +2,36 @@
 $moderer = new Class_Moderer();
 $modstats = $moderer->getModerationStats();
 
-$menus = array(array("icon" => "article.png",
-										 "label" => "Articles",
-										 "url" => "/admin/modo/aviscms",
-										 "count" => $modstats['avis_articles']['count']),
-							 array("icon" => "books.png",
-										 "label" => "Notices",
-										 "url" => "/admin/modo/avisnotice",
-										 "count" => $modstats['avis_notices']['count']),
-							 array("icon" => "tag_blue.png",
-										 "label" => "Tags notices",
-										 "url" => "/admin/modo/tagnotice",
-										 "count" => $modstats['tags_notices']['count'])
-							 //array("icon" => "alert.png", 
-							 //    	 "label" => "Alertes",
-							 //   	 "url" => "/admin/modo/alert")
-							 );
-echo '<div class="menu">'.$this->getHelper('MenuHorizontalAdmin')->generateMenu($menus).'</div>';
+$menus = [["icon" => "article.png",
+					 "label" => "Articles",
+					 "url" => "/admin/modo/aviscms",
+					 "count" => $modstats['avis_articles']['count']],
+				  ["icon" => "books.png",
+					 "label" => "Notices",
+					 "url" => "/admin/modo/avisnotice",
+					 "count" => $modstats['avis_notices']['count']],
+					["icon" => "tag_blue.png",
+					 "label" => "Tags notices",
+					 "url" => "/admin/modo/tagnotice",
+					 "count" => $modstats['tags_notices']['count']],
+	        ["icon" => "traductions_16.png",
+					 "label" => "Suggestions d'achat",
+					 "url" => "/admin/modo/suggestion-achat",
+					 "count" => $modstats['suggestions_achat']['count']]
+					
+];
 
-if ($this->subview) 
-	echo "<div class='subview'>".$this->subview."<div class='clear'></div></div>";
-?>	
+if (isset($modstats['formulaires'])) {
+	$menus[] =	
+	["icon" => "formulaires_16.png",
+	 "label" => "Formulaires",
+	 "url" => "/admin/modo/formulaires",
+	 "count" => $modstats['formulaires']['count']]
+	;}
+?>
+<div class="menu"><?php echo $this->getHelper('MenuHorizontalAdmin')->generateMenu($menus);?></div>
+
+<?php if ($this->subview) { ?>
+		<div class="subview"><?php echo $this->subview;?><div class="clear"></div></div>
+<?php } ?>
 

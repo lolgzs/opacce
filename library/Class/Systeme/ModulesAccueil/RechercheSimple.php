@@ -35,7 +35,7 @@ class Class_Systeme_ModulesAccueil_RechercheSimple extends Class_Systeme_Modules
 	protected $_popupHeight = 520;
 
 	/** @var bool */
-	protected $_isPhone = true;
+	protected $_isPhone = false;
 
 	/** @var array */
 	protected $_defaultValues = array(

@@ -58,6 +58,7 @@ abstract class AbonneFlorenceIsLoggedControllerTestCase extends AbstractControll
 
 abstract class AbonneControllerAvisTestCase extends AbonneFlorenceIsLoggedControllerTestCase {
 	public function setUp() {
+		parent::setUp();
 		$this->avis_loader = $this->_generateLoaderFor('Class_AvisNotice',
 																									 array('findAllBy', 'save'));
 
@@ -499,7 +500,7 @@ class RssControllerViewAvisUserTest extends AvisControllersFixturesTestCase {
 	/** @test */
 	function firstItemNoteCritiqueShouldBeImgStars4Gif() {
 		$this->assertTrue(false !== strpos($this->_response->getBody(),
-																			 "src='http://localhost" . BASE_URL . "/public/admin/images/stars/stars-4.gif'"));
+																			 'src="http://localhost' . BASE_URL . '/public/admin/images/stars/stars-4.gif"'));
 	}
 }
 

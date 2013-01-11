@@ -202,6 +202,11 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 
 		$this->_article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
 			->whenCalled('getArticlesByPreferences')
+			->with(array('event_date' => '2011-09-03',
+									 'id_bib' => null,
+									 'display_order' => 'EventDebut',
+									 'events_only' => true,
+									 'published' => false))
 			->answers(
 				array(
 					Class_Article::getLoader()
@@ -227,10 +232,10 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 										Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
 												->setLibelle('Alimentaire')
 								),
-							))
-			->getWrapper();
+							));
 
-		$this->dispatch('/cms/articleviewbydate?d=2011-09-03&id_module=8&select_id_categorie=all');
+
+		$this->dispatch('/cms/articleviewbydate?d=2011-09-03&id_module=8&id_profil=2&select_id_categorie=all');
 	}
 
 	/** @test */
@@ -277,7 +282,7 @@ class CmsControllerArticleViewByDateTest extends AbstractControllerTestCase {
 }
 
 
-class CmsControllerArticleViewByDateCategorie23Test extends AbstractControllerTestCase {
+class CmsControllerArticleViewByDateCategorie23AndNoProfilParamTest extends AbstractControllerTestCase {
 	protected $_article_loader;
 
 	public function setUp() {
@@ -306,50 +311,162 @@ class CmsControllerArticleViewByDateCategorie23Test extends AbstractControllerTe
 
 
 
-abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractControllerTestCase {
+
+class CmsControllerArticleViewByDateWitoutEventDateTest extends AbstractControllerTestCase {
+	protected $_article_loader;
+
 	public function setUp() {
 		parent::setUp();
 
-		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
-			->whenCalled('find')
-			->with(224)
-			->answers(
-					Class_Article::getLoader()
-					->newInstanceWithId(224)
-					->setTitre('La fête de la frite')
-					->setContenu('<div>Une fête appétissante</div>')
-					->setEventsDebut('2011-09-03')
-					->setEventsFin('2011-10-05')
-					->setTraductions(array(Class_Article::getLoader()
-																 ->newInstanceWithId(2241)
-																 ->setLangue('en')
-																 ->setParentId(224)
-																 ->setTitre('Feast of fried')
-																 ->setContenu('<div>an appetizing feast</div>'))));
+		$this->_article_loader = Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Article')
+			->whenCalled('getArticlesByPreferences')
+			->with(['event_date' => null,
+							'id_bib' => null,
+							'display_order' => 'EventDebut',
+							'events_only' => true,
+							'published' => true])
+			->answers([Class_Article::newInstanceWithId(1)
+								->setTitre('Corrige le clic sur le bandeau de la boite calendrier qui affichait les articles non publiés')
+								->setCategorie(Class_ArticleCategorie::getLoader()->newInstanceWithId(1)
+												->setLibelle('Bugs')
+												->setBib(Class_Bib::newInstanceWithId(1)->setLibelle('Annecy')))
+			]);
+
+
+		$this->dispatch('/cms/articleviewbydate/id_module/8/id_profil/2');
+	}
+
+
+	/** @test */
+	public function articleCorrigeCalendirerShouldBePresent() {
+		$this->assertXpathContentContains('//ul//li//a', 'Corrige le clic');
 	}
 }
 
 
-class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCase {
+
+
+abstract class CmsControllerWithFeteDeLaFriteTestCase extends AbstractControllerTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/cms/articleview/id/224');
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(0);
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS')
+			->setValeur(0);
+
+
+		Class_Article::newInstanceWithId(224)
+			->setTitre('La fête de la frite')
+			->setContenu('<div>Une fête appétissante</div>')
+			->setEventsDebut('2011-09-03')
+			->setEventsFin('2011-10-05')
+			->setTraductions(array(Class_Article::getLoader()
+														 ->newInstanceWithId(2241)
+														 ->setLangue('en')
+														 ->setParentId(224)
+														 ->setTitre('Feast of fried')
+														 ->setContenu('<div>an appetizing feast</div>')))
+			->setAvis(1)
+			->setLieu(Class_Lieu::newInstanceWithId(3)
+								->setLibelle('Bonlieu')
+								->setAdresse('1, rue Jean Jaures')
+								->setCodePostal('74000')
+								->setVille('Annecy')
+								->setPays('France'))
+			->setAvisUsers(array($avis_mimi = Class_Avis::getLoader()
+													 ->newInstanceWithId(34)
+													 ->setAuteur(Class_Users::getLoader()
+																			 ->newInstanceWithId(98)
+																			 ->setPseudo('Mimi'))
+													 ->setDateAvis('2012-02-05')
+													 ->setNote(4)
+													 ->setEntete('Hmmm')
+													 ->setAvis('ça a l\'air bon')
+													 ->beWrittenByAbonne(),
+
+													 $avis_florence = Class_Avis::getLoader()
+													 ->newInstanceWithId(35)
+													 ->setAuteur(Class_Users::getLoader()
+																			 ->newInstanceWithId(123)
+																			 ->setPseudo('Florence'))
+													 ->setDateAvis('2012-12-05')
+													 ->setNote(2)
+													 ->setEntete('Argg')
+													 ->setAvis('ça ne me tente pas')
+													 ->beWrittenByBibliothecaire()));
+
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_CmsRank')
+			->whenCalled('findFirstBy')
+			->answers(null)
+			
+			->whenCalled('findFirstBy')
+			->with(array('id_cms' => 224))
+			->answers(Class_CmsRank::getLoader()->newInstanceWithId(987));
+      
+
+		Storm_Test_ObjectWrapper::onLoaderOfModel('Class_Avis')
+			->whenCalled('findAllBy')
+			->with(array(
+				'id_cms' => 224,
+				'order' => 'date_avis desc',
+				'abon_ou_bib' => 0))
+			->answers(array($avis_mimi))
+
+
+			->whenCalled('findAllBy')
+			->with(array(
+				'id_cms' => 224,
+				'order' => 'date_avis desc',
+				'abon_ou_bib' => 1))
+			->answers(array($avis_florence));
+
 	}
+}
+
+
+
+
+class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ABONNE_SIGB;
+		$account->PSEUDO = "admin";
+	}
+
+	
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/cms/articleview/id/224', true);
+	}
+
 
 	/** @test */
 	public function titleShouldBeFeteDeLaFrite() {
 		$this->assertXpathContentContains('//h1', 'La fête de la frite');
 	}
 
+
+	/** @test */
+	public function pageTitleShouldContainsLaFeteDeLaFrite() {
+		$this->assertXpathContentContains('//title', 'La fête de la frite');
+	}
+
+
 	/** @test */
 	public function calendarDateShouldBeDu3SeptembreAu5Octobre() {
 		$this->assertXpathContentContains('//span[@class="calendar_event_date"]', 'Du 03 septembre au 05 octobre');
 	}
 
+
 	/** @test */
 	public function socialNetworksContainerShouldBePresent() {
 		$this->assertXpath('//div[@id="reseaux-sociaux-224"]');
 	}
+
 
 	/** @test */
 	public function contentShouldBePresent() {
@@ -382,14 +499,105 @@ class CmsControllerArticleViewTest extends CmsControllerWithFeteDeLaFriteTestCas
 		$this->dispatch('/cms/articleview/id/224');
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
+
+	/** @test */
+	public function avisArgShouldNotHaveLinkForDeletion() {
+		$this->assertNotXPath('//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
+	}
+
+
+	/** @test */
+	function divShouldContainsAdresseBonlieu() {
+		$this->assertXPathContentContains('//div[@class="lieu"]', 'Bonlieu');
+	}
+
+
+	/** @test */
+	function divShouldContainsGoogleMap() {
+		$this->assertXPath('//div[@class="lieu"]//img[contains(@src,"http://maps.googleapis.com/maps")]');
+	}
 }
+
+
+
+
+class CmsControllerArticleViewAsAdminTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	protected function _loginHook($account) {
+		$account->ROLE_LEVEL = ZendAfi_Acl_AdminControllerRoles::ADMIN_PORTAIL;
+		$account->PSEUDO = "admin";
+	}
+	
+	public function setUp() {
+		parent::setUp();
+		$this->dispatch('/cms/articleview/id/224', true);
+	}
+
+
+	/** @test */
+	public function avisShouldContainsEnteteArgg() {
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Argg');
+	}
+
+
+
+	/** @test */
+	public function avisShouldContainsEnteteHmmm() {
+		$this->assertXPathContentContains('//table[@class="avis"]//td', 'Hmmm');
+	}
+
+
+	/** @test */
+	public function avisHmmShouldHaveLinkForDeletion() {
+		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Hmmm")]//a[contains(@href, "admin/modo/delete-cms-avis/id/34")]');
+	}
+
+
+	/** @test */
+	public function avisArgShouldHaveLinkForDeletion() {
+		$this->assertXPath('//table[@class="avis"]//td[contains(text(), "Argg")]//a[contains(@href, "admin/modo/delete-cms-avis/id/35")]');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewWithModoTest extends CmsControllerWithFeteDeLaFriteTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS_BIBLIO')
+			->setValeur(1);
+
+		Class_AdminVar::getLoader()
+			->newInstanceWithId('MODO_AVIS')
+			->setValeur(1);
+		
+		$this->dispatch('/cms/articleview/id/224', true);
+	}
+
+
+	/** @test */
+	public function avisNotShouldContainsEnteteArgg() {
+		$this->assertNotXPathContentContains('//table[@class="avis"]//td', 'Argg');
+	}
+
+
+
+	/** @test */
+	public function avisNotShouldContainsEnteteHmmm() {
+		$this->assertNotXPathContentContains('//table[@class="avis"]//td', 'Hmmm');
+	}
+
+}
+
 
 
 
 class CmsControllerArticleReadTest extends CmsControllerWithFeteDeLaFriteTestCase {
 	public function setUp() {
 		parent::setUp();
-		$this->dispatch('/cms/articleread/id/224');
+		$this->dispatch('/cms/articleread/id/224', true);
 	}
 
 	/** @test */
@@ -406,10 +614,11 @@ class CmsControllerArticleReadTest extends CmsControllerWithFeteDeLaFriteTestCas
 	/** @test */
 	function withLanguageEnArticleReadShouldReturnEnglishTranslation() {
 		$this->bootstrap();
-		$this->dispatch('/cms/articleread/id/224/language/en');
+		$this->dispatch('/cms/articleread/id/224/language/en', true);
 		$this->assertXpathContentContains('//h1', 'Feast of fried');
 	}
 }
+
 
 
 
@@ -422,6 +631,7 @@ abstract class CmsControllerListTestCase extends AbstractControllerTestCase {
 					Class_Article::getLoader()
 						->newInstanceWithId(224)
 						->setTitre('La fête de la frite')
+					   ->setDescription('Ce soir ça frite !')
 						->setContenu('<div>Une fête appétissante</div>'),
 					Class_Article::getLoader()
 						->newInstanceWithId(225)
@@ -467,17 +677,25 @@ abstract class CmsControllerListTestCase extends AbstractControllerTestCase {
 	}
 }
 
+
+
+
 class CmsControllerArticleViewRecentTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
 		$this->dispatch('/cms/articleviewrecent/nb/2');
 	}
 }
 
+
+
+
 class CmsControllerViewSummaryTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
 		$this->dispatch('/cms/viewsummary');
 	}
 }
+
+
 
 class CmsControllerArticleViewSelectionTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {
@@ -502,6 +720,90 @@ class CmsControllerArticleViewSelectionTest extends CmsControllerListTestCase {
 		$this->assertEquals('DateCreationDesc', $this->preferences['display_order']);
 	}
 }
+
+
+
+
+class CmsControllerArticleViewPreferencesBySelectionTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection');
+	}
+
+
+	public function setUp() {
+		parent::setUp();
+		$this->preferences = Class_Article::getLoader()->getFirstAttributeForLastCallOn('getArticlesByPreferences');
+	}
+
+
+	/** @test */
+	public function itemsShouldBeOneAndThree() {
+		$this->assertEquals('1-3', $this->preferences['id_items']);
+	}
+
+
+	/** @test */
+	public function orderShouldBeDatePublicationDesc() {
+		$this->assertEquals('Selection', $this->preferences['display_order']);
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsUneFeteAppetissante() {
+		$this->assertXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsCeSoirCaFrite() {
+		$this->assertNotXPathContentContains('//div', 'Ce soir ça frite !');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewPreferencesSummaryTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection&display_mode=Summary&summary_content=Summary');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsUneFeteAppetissante() {
+		$this->assertNotXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsCeSoirCaFrite() {
+		$this->assertXPathContentContains('//div', 'Ce soir ça frite !');
+	}
+}
+
+
+
+
+class CmsControllerArticleViewPreferencesSummaryWithoutDisplayModeTest extends CmsControllerListTestCase {
+	protected function _dispatchHook() {
+		$this->dispatch('/cms/articleviewpreferences?id_items=1-3&display_order=Selection&summary_content=Summary');
+	}
+
+
+	/** @test */
+	public function aDivShouldContainsUneFeteAppetissante() {
+		$this->assertXPathContentContains('//div', 'Une fête appétissante');
+	}
+
+
+	/** @test */
+	public function noDivShouldContainsCeSoirCaFrite() {
+		$this->assertNotXPathContentContains('//div', 'Ce soir ça frite !');
+	}
+}
+
+
+
 
 class CmsControllerCategorieViewTest extends CmsControllerListTestCase {
 	protected function _dispatchHook() {

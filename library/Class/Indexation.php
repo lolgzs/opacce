@@ -35,7 +35,7 @@ class Class_Indexation
 	{
 		// Lire formes rejetées
 		$this->articles=array("L'","LE ","LA ","LES ","UN ","UNE ");
-		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO");
+		$this->inclu=array("AN","AS","OR","U2","AI","LU","XO","DO","RE","MI","FA","SI","AC","DC","XX","B","C","D","E","F","G","H","I","J","K","M","N","P","Q","R","S","T","V","W","X","Y","Z","L","YU","UT","LI","OC","PI","ZU","WU","TO","OZ","ZZ");
 		$this->exclu = array("LES","DES","MES","TES","ENTRE","CHEZ","SES","LEUR","MON","ENTRE","POUR","ELLE","ILS","COMME","DANS","EUX","CEUX","MAIS","MEME","SANS",
 		"TOME","VERS","VOUS","CECI","CES","ETC","PARCE","QUE","QUEL","QUELLE","QUELS","QUELLES","PAS","QUI","QUOI","VOS","AFIN","CECI","CELA","LUI","PAR","PUIS","SOI");
 		
@@ -175,6 +175,7 @@ class Class_Indexation
 			if( strLen($mot[$i]) < 3 And intVal($mot[$i])==false)
 			{
 				if( in_array( $mot[$i], $this->inclu) == false) continue;
+				if(strlen($mot[$i])==1) $mot[$i].="00"; // mots d'1 lettre : on rajoute 00
 			}
 			// Retirer mots vides
 			if( in_array($mot[$i], $this->exclu ) == true ) continue;
@@ -217,8 +218,8 @@ class Class_Indexation
 			$pattern_singulier = "(".$regle[0]."$)";
 			$pattern_pluriel="(".$regle[1]."$)";
 
-			$pluriel=ereg_replace($pattern_singulier, $regle[1], $mot);
-			$singulier=ereg_replace($pattern_pluriel, $regle[0], $mot);
+			$pluriel=preg_replace($pattern_singulier, $regle[1], $mot);
+			$singulier=preg_replace($pattern_pluriel, $regle[0], $mot);
 			if($singulier != $mot or $pluriel != $mot) break;
 		}
 		// Si inchangé on ajoute le S
@@ -252,7 +253,15 @@ class Class_Indexation
 		return true;
 	}
 
-	// ---------------------------------------------------
+// ---------------------------------------------------
+// Rend true si mot inclu
+// ---------------------------------------------------
+	public function  isMotInclu($mot)
+	{
+		return in_array($mot, $this->inclu);
+	}
+
+// ---------------------------------------------------
 // Othographe approchante
 // ---------------------------------------------------
 	function phonetix($sIn)

@@ -53,16 +53,33 @@ class ZendAfi_View_Helper_Accueil_Critiques extends ZendAfi_View_Helper_Accueil_
 		if (count($selected_avis) == 0)
 			$this->contenu = sprintf('<p>%s</p>', $this->translate()->_('Aucune critique récente'));
 		else {
-			$avis_helper = new ZendAfi_View_Helper_Avis;
-			$avis_helper
-				->setLimitNbWord($this->preferences['nb_words'])
-				->setVignetteLinkToAvis();
+			$avis_helper = $this->_newHelperAvis();
+
 			foreach ($selected_avis as $avis)
-				$this->contenu .= $avis_helper->avis($avis);
+				$this->contenu .= $this->decorateAvisHtml($avis_helper->avis($avis));
 		}
 
-		$this->contenu .= '<div class="clear"></div>';
+		$this->contenu = $this->decorateContenu($this->contenu);
 		return $this->getHtmlArray();
+	}
+
+
+	protected function decorateAvisHtml($html) {
+		return $html;
+	}
+
+
+	protected function decorateContenu($html) {
+		return $html . '<div class="clear"></div>';
+	}
+
+
+	protected function _newHelperAvis() {
+		$avis_helper = new ZendAfi_View_Helper_Avis();
+		$avis_helper
+			->setLimitNbWord($this->preferences['nb_words'])
+			->setVignetteLinkToAvis();
+		return $avis_helper;
 	}
 
 

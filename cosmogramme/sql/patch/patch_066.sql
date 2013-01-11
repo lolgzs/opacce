@@ -1,0 +1,1 @@
+ALTER TABLE  `user_groups` ADD `rights_token` int DEFAULT 0 NOT NULL;

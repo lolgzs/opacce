@@ -106,7 +106,7 @@ class UploadFichierTest extends PHPUnit_Framework_TestCase {
 													'name' => 'test.xml'
 												);
 
-		$this->_assertError('Type de fichier non permis');
+		$this->_assertError('Le fichier n\'est pas de type gif');
 	}
 
 
@@ -118,7 +118,7 @@ class UploadFichierTest extends PHPUnit_Framework_TestCase {
 			->will($this->returnValue(true));
 
 		$this->_upload->setUploadMover(
-			Storm_Test_ObjectWrapper::on(new UploadMover())
+			Storm_Test_ObjectWrapper::on(new Class_UploadMover_HttpPost())
 				->whenCalled('moveTo')->answers(false)->getWrapper()
 				->whenCalled('getError')->answers('Move error')->getWrapper()
 		);

@@ -6,22 +6,25 @@ $script_loader = Class_ScriptLoader::getInstance()
 											 $this->url_img["vignette"]))
 
 	->addStyleSheet(URL_ADMIN_JS.'slimbox/slimbox2')
-	->addAdminScript('slimbox/slimbox2')
+	->addAdminScript('slimbox/slimbox2.min.js')
 
 	->addStyleSheet(URL_ADMIN_JS.'rating/jquery.rating')
 	->addAdminScript('rating/jquery.rating.pack')
 
 	->addSkinstylesheet('recherche')
 	->addOpacScript('recherche');
-
-$notice_html=new Class_NoticeHtml($this->notice);
 ?>
+
+<script>
+
+</script>
 
 <div class="view_notice">
 	<div>
 		<div>
 			<a href="<?php if(!$this->url_retour) print(BASE_URL); else print($this->url_retour); ?>">&raquo;&nbsp;<?php echo $this->_('Retour à la liste') ?></a>
 			<span id="bloc_panier"><a href="<?php echo $this->url_panier ?>">&nbsp;&nbsp;&nbsp;&raquo;&nbsp;<?php echo $this->_('Ajouter au Panier') ?></a></span>
+      <span id="bloc_reserver"><?php echo $this->notice_LienReserver($this->notice->getId()); ?></span>
 		</div>
 
 		<div style="background:transparent url(<?php echo URL_IMG ?>separ.gif) repeat-x scroll center bottom; width:100%; height:5px; margin-bottom:5px"></div>
@@ -29,32 +32,51 @@ $notice_html=new Class_NoticeHtml($this->notice);
 
 	<div> 
 			<div style="width:30px; align:center; float: left">
-	      <?php echo $this->iconeSupport($this->notice["type_doc"]) ?>
+        <?php echo $this->iconeSupport($this->notice->getTypeDoc()) ?>
 				<?php if($this->picto_genre) echo BR.BR.'<img src="'.URL_IMG.'genres/'.$this->picto_genre.'" alt="Genre" />'?>
 			</div>
 			<div style="float: left">
 					<div>
             <h1 style="margin:0px; white-space:normal">
-	             <?php echo $this->notice["titre_principal"];
-										 echo $this->readSpeaker('recherche', 
-																						 'readnotice', 
-																						 array("id" => $this->notice["id_notice"]))	 ?></h1></div>
-	         <div><h1 style="margin:0px"><?php echo $this->notice["auteur_principal"] ?></h1></div>
+               <?php 
+							 echo $this->notice->getTitreEtSousTitre();
+                  echo $this->readSpeaker('recherche', 
+																					'readnotice', 
+																					["id" => $this->notice->getId()]);	 
+              ?>
+						</h1>
+					</div>
+					<div><h1 style="margin:0px"><?php echo $this->notice->getAuteurPrincipal() ?></h1></div>
 			</div>
 
 
 			<div style="width:120px; height: 0px; float:right; ">
 				<?php
-					if($this->url_img["image"])
-					{
-						printf('<a id="vignette" href="%s" title="%s">', $this->url_img["image"], $this->notice["titre_principal"]);
-						printf('<img src="%s" width="100" border="0" alt="%s" />', $this->url_img["vignette"], $this->_('Vignette'));
+   				if($url_image = $this->notice->getUrlImage())	{
+						printf('<a id="vignette" href="%s" title="%s">', 
+									 $url_image, 
+									 $this->notice->getTitrePrincipal());
+
+						printf('<img src="%s" width="100" border="0" alt="%s" />', 
+									 $this->notice->getUrlVignette(), 
+									 $this->_('Vignette'));
+
 						echo '</a>';
 						echo '<script type="text/javascript">$("a[id=\'vignette\']").slimbox({}, null, null)</script>';
 					}
 					else 
-						printf('<img src="%s" width="100" border="0" alt="%s" /> ', $this->url_img["vignette"], $this->_('Vignette'));
-				?>
+						printf('<img src="%s" width="100" border="0" alt="%s"/>', 
+									 $this->notice->getUrlVignette(), 
+									 $this->_('Vignette'));
+
+         if ($this->display_modifier_vignette_link)
+						echo sprintf('<a href="#" onclick="showPopWin(\'%s\', 750, 350); return false;">%s</a>',
+												 $this->url(['module' => 'admin', 
+																		 'controller' => 'upload',
+																		 'action' => 'vignette-notice',
+												 ]),
+												 $this->_('Modifier la vignette'));
+        ?>
 
 				<div id="reseaux-sociaux"></div>
 				<?php
@@ -62,8 +84,8 @@ $notice_html=new Class_NoticeHtml($this->notice);
 	            ->addJQueryReady(sprintf('$("#reseaux-sociaux").load("%s")',
 																			 $this->url(array('controller' => 'recherche', 
 																												'action' => 'reseau',
-																												'id_notice' => $this->notice['id_notice'],
-																												'type_doc' => $this->notice["type_doc"]))));
+																												'id_notice' => $this->notice->getId(),
+																												'type_doc' => $this->notice->getTypeDoc()))));
 				?>
 			</div>
       <div class="clear"></div>
@@ -72,12 +94,10 @@ $notice_html=new Class_NoticeHtml($this->notice);
 <?php
 	// Entete Notice
 	 echo sprintf('<div style="margin-left: 30px; margin-right:130px">%s</div><div  style="padding-right: 120px">%s</div><div>%s</div>',
-								$notice_html->getEntete().BR,
-								$notice_html->getBlocs().BR,
-								$notice_html->getOnglets());
+								$this->notice_Entete($this->notice, $this->preferences).BR,
+								$this->notice_Blocs($this->notice, $this->preferences).BR,
+								$this->notice_Onglets($this->notice, $this->preferences));
 
-	// Javascript pour deployer les blocs
-	print($notice_html->getJavaScriptAuto());
 	$this->closeBoite();
 ?>
 

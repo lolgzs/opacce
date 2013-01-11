@@ -56,7 +56,7 @@ class ZendAfi_View_Helper_ComboProfils extends ZendAfi_View_Helper_BaseHelper
 		$html = '<select id="select_clef_profil" name="clef_profil"'.$onchange.'>';
 		$rupture="";
 		foreach ($profils_by_bib as $bib => $profils) {
-			$html.='<optgroup label="'.$bib.'" style="font-style:bold;color:#FF6600">';
+			$html.='<optgroup label="'.htmlentities($bib).'" style="font-style:bold;color:#FF6600">';
 	
 			foreach($profils as $profil) {
 				$libelle = $profil->getLibelle();
