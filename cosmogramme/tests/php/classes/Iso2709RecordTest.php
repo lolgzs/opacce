@@ -176,41 +176,41 @@ class Iso2709RecordGetNoticeTest extends Iso2709RecordTestCase {
 class Iso2709RecordAnsidecodeTest extends Iso2709RecordTestCase {
 	public function decoded() {
 		return [ 
-			["",chr(127)],
-			//		["€",chr(128)],
+			["",chr(127)],
+			["€",chr(128)],
 			["",chr(129)],
-			[",",chr(130)],
-			//	[utf8_decode("ƒ"),chr(131)],
-			//["„",chr(132)],
-			["...",chr(133)],
-			//["†",chr(134)],
+			["‚",chr(130)],
+			["ƒ",chr(131)],
+			["„",chr(132)],
+			["…",chr(133)],
+			["†",chr(134)],
 			["‡",chr(135)],
-			["",chr(136)],
-			["",chr(137)],
-			//		["Š",chr(138)],
-			["{",chr(139)],
-			["Oe",chr(140)],
+			["ˆ",chr(136)],
+			["‰",chr(137)],
+			["Š",chr(138)],
+			["‹",chr(139)],
+			["Œ",chr(140)],
 			["",chr(141)],
 			["Ž",chr(142)],
 			["",chr(143)],
 			["",chr(144)],
-			["'",chr(145)],
-			["'",chr(146)],
-			["'",chr(147)],
-			["'",chr(148)],
-			[".",chr(149)],
-			["-",chr(150)],
-			["-",chr(151)],
-			["~",chr(152)],
+			["‘",chr(145)],
+			["’",chr(146)],
+			["“",chr(147)],
+			["”",chr(148)],
+			["•",chr(149)],
+			["–",chr(150)],
+			["—",chr(151)],
+			["˜",chr(152)],
 			["™",chr(153)],
 			["š",chr(154)],
-			["}",chr(155)],
-			["oe",chr(156)],
+			["›",chr(155)],
+			["œ",chr(156)],
 			["",chr(157)],
 			["ž",chr(158)],
 			["Ÿ",chr(159)],
-			["Â",chr(160)],
-			["É",chr(0xC9)]
+			[" ",chr(160)],
+			["É",chr(201)]
 		];
 
 	}
@@ -221,7 +221,10 @@ class Iso2709RecordAnsidecodeTest extends Iso2709RecordTestCase {
 	 * @dataProvider decoded
 	 */
 	public function resultShouldBeDecoded( $expected, $str) {
-		$this->assertEquals(utf8_encode($expected), $this->_record->ansi_decode($str),sprintf("%d :%d",ord(utf8_encode($expected)),ord($this->_record->ansi_decode($str))));
+		$this->assertEquals($expected, $this->_record->ansi_decode($str),
+												sprintf("%d :%d",
+																$expected,
+																$this->_record->ansi_decode($str)));
 	}
 }
 

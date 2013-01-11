@@ -55,9 +55,6 @@ class iso2709_record {
 	// constructeur : init des constantes
 	// ---------------------------------------------------
 	public function __construct() {
-		$this->ansi_decode_from = [chr(127),chr(128),chr(129),chr(130),chr(131),chr(132),chr(133),chr(134),chr(135),chr(136),chr(137),chr(138),chr(139),chr(140),chr(141),chr(142),chr(143),chr(144),chr(145),chr(146),chr(147),chr(148),chr(149),chr(150),chr(151),chr(152),chr(153),chr(154),chr(155),chr(156),chr(157),chr(158),chr(159),chr(160),chr(201)];
-		$this->ansi_decode_replacedby = ["","€","",",","ƒ", "„"  , "...", "†"  , "‡"  , ""   , ""   , "Š"  , "{"  , "Oe" , ""   , "Ž"  , ""   , ""   , "'"  , "'"  , "'"  , "'"  , "."  , "-"  , "-"  , "~" , "™"  , "š"  , "}"  , "oe" , ""   , "ž" , "Ÿ"  , "Â","É"  ];
-
 		$this->tracer_accents = isset(self::$_tracer_accents_iso) 
 			? self::$_tracer_accents_iso 
 			: self::$_tracer_accents_iso = getVariable('tracer_accents_iso');
@@ -611,7 +608,7 @@ class iso2709_record {
 
 	
 	public function ansi_decode($chaine) {
-		return utf8_encode(str_replace($this->ansi_decode_from,$this->ansi_decode_replacedby,$chaine));
+		return iconv('WINDOWS-1252', 'UTF-8', $chaine);
 	}
 
 
