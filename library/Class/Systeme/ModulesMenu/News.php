@@ -51,7 +51,7 @@ class Class_Systeme_ModulesMenu_News extends Class_Systeme_ModulesMenu_Null{
 		);
 
 	public function getUrl($preferences = []) {
-		return BASE_URL . '/cms/articleviewpreferences?' . http_build_query($preferences);
+		return BASE_URL . '/cms/articleviewpreferences?' . http_build_query(array_filter($preferences));
 	}
 }
 ?>

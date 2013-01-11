@@ -23,9 +23,9 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Class_AdminVar::getLoader()
-			->newInstanceWithId('VODECLIC_KEY')
-			->setValeur(1234);
+		Class_AdminVar::newInstanceWithId('VODECLIC_KEY', ['valeur' => 1234]);
+		Class_AdminVar::newInstanceWithId('MULTIMEDIA_KEY', ['valeur' => 'zork']);
+
 
 		$this->module_menu = new Class_Systeme_ModulesMenu();
 	}
@@ -37,21 +37,21 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 
 		$this->module_menu = new Class_Systeme_ModulesMenu();
 		$menu = $this->module_menu->getFonction('VODECLIC');
-		$this->assertEquals('index', $menu['action']);
+		$this->assertEquals('index', $menu->getAction());
 	}
 
 
 	/** @test */
 	public function menuShouldNotContainsVodeclicWhenDisabled() {
 		$menu = $this->module_menu->getFonction('VODECLIC');
-		$this->assertEquals('Lien vers Vodeclic', $menu['libelle']);
+		$this->assertEquals('Lien vers Vodeclic', $menu->getLibelle());
 	}
 
 
 	/** @test */
 	public function vodeclicUrlWithoutUserShouldBeLoginPage() {
 		ZendAfi_Auth::getInstance()->clearIdentity();
-		$this->assertEquals(array('url' => BASE_URL.'/auth/login', 'target' => '0'), 
+		$this->assertEquals(array('url' => BASE_URL.'/auth/login', 'target' => ''), 
 												$this->module_menu->getUrl('VODECLIC', array()));
 	}
 
@@ -81,7 +81,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 		
 		$menu_url = $this->module_menu->getUrl('VODECLIC', array());
 		$this->assertContains('vodeclic', $menu_url['url']);
-		$this->assertEquals('1', $menu_url['target']);
+		$this->assertEquals('_blank', $menu_url['target']);
 	}
 
 
@@ -91,7 +91,7 @@ class ModulesMenuTest extends Storm_Test_ModelTestCase {
 
 		$menu_url = $this->module_menu->getUrl('VODECLIC', array());
 		$this->assertContains('javascript:alert(\\\'Votre abonnement est terminé\\\')', $menu_url['url']);
-		$this->assertEquals('1', $menu_url['target']);
+		$this->assertEquals('_blank', $menu_url['target']);
 	}
 
 

@@ -44,7 +44,7 @@ class Class_Systeme_ModulesMenu_Url extends Class_Systeme_ModulesMenu_Null{
 
 
 	public function shouldOpenInNewWindow($preferences=[]) {
-		return $preferences['target'];
+		return (0 == $preferences['target']);
 	}
 
 	

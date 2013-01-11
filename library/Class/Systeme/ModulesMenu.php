@@ -33,8 +33,8 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 
 	protected $_groupes = [
 		self::GROUP_MENU_NAVIGATION => "Navigation"  ,
-		 self::GROUP_MENU_INFORMATIONS => "Informations",
-		 self::GROUP_MENU_RECHERCHES =>"Recherches" ,
+		self::GROUP_MENU_INFORMATIONS => "Informations",
+		self::GROUP_MENU_RECHERCHES =>"Recherches" ,
 		self::GROUP_MENU_CATALOGUES => "Catalogues",
 		self::GROUP_MENU_ABONNES	=> "Abonnés",
 		Class_Systeme_ModulesAccueil::GROUP_INFO => "Modules informations",
@@ -49,39 +49,42 @@ class Class_Systeme_ModulesMenu extends Class_Systeme_ModulesAbstract {
 	public function __construct() {
 		$this->fonctions = [
 			"vide" => new Class_Systeme_ModulesMenu_Null(),
-			"MENUACCUEIL" => new Class_Systeme_ModulesMenu_Accueil(),
-			"MENUCONNECT" => new Class_Systeme_ModulesMenu_Connect(),
-			"MENUDISCONNECT" => new Class_Systeme_ModulesMenu_Disconnect(),
-			"MENUGOOGLEMAP" => new Class_Systeme_ModulesMenu_GoogleMap(),
-			"MENUAVIS" => new Class_Systeme_ModulesMenu_Avis(),
-			"MENULAST_NEWS" => new Class_Systeme_ModulesMenu_LastNews(),
-			"MENUNEWS" => new Class_Systeme_ModulesMenu_News(),
-			"MENUSITO" => new Class_Systeme_ModulesMenu_Sitotheque(),
-			"MENURSS" => new Class_Systeme_ModulesMenu_Rss(),
-			"MENUURL" => new Class_Systeme_ModulesMenu_Url(),
-			"MENUPROFIL" => new Class_Systeme_ModulesMenu_Profil(),
-			"MENUBIBNUM" => new Class_Systeme_ModulesMenu_BibliothequeNumerique(),
-			"MENURECH_SIMPLE" => new Class_Systeme_ModulesMenu_RechercheSimple(),
-			"MENURECH_AVANCEE" => new Class_Systeme_ModulesMenu_RechercheAvancee(),
-			"MENURECH_GUIDEE" => new Class_Systeme_ModulesMenu_RechercheGuidee(),
-			"MENURECH_GEO" => new Class_Systeme_ModulesMenu_RechercheGeographique(),
-			"MENURECH_OAI" => new Class_Systeme_ModulesMenu_RechercheOai(),
-			"MENUCATALOGUE" => new Class_Systeme_ModulesMenu_Catalogue(),
-			"MENUETAGERE" => new Class_Systeme_ModulesMenu_Etagere(),
-			"MENUTAGS" => new Class_Systeme_ModulesMenu_Tags(),
-			"MENUPANIER" => new Class_Systeme_ModulesMenu_Paniers(),
-			"MENUABON_AVIS" => new Class_Systeme_ModulesMenu_Avis(),
-			"MENUABON_FICHE" => new Class_Systeme_ModulesMenu_AbonneFiche(),
-			"MENUABON_MODIF_FICHE" => new Class_Systeme_ModulesMenu_AbonneModificationFiche(),
-			"MENUABON_PRETS" => new Class_Systeme_ModulesMenu_AbonnePrets(),
-			"MENUABON_RESAS" => new Class_Systeme_ModulesMenu_AbonneReservations(),
-			"MENUABON_FORMATIONS" => new Class_Systeme_ModulesMenu_AbonneFormations(),
-			"MENUFORM_CONTACT" => new Class_Systeme_ModulesMenu_FormulaireContact(), 
-			"MENUVODECLIC" => new Class_Systeme_ModulesMenu_Vodeclic(),
-			"MENURESERVER_POSTE" => new Class_Systeme_ModulesMenu_ReserverPoste(),
-			'MENUSUGGESTION_ACHAT' => new Class_Systeme_ModulesMenu_SuggestionAchat()
+			"ACCUEIL" => new Class_Systeme_ModulesMenu_Accueil(),
+			"CONNECT" => new Class_Systeme_ModulesMenu_Connect(),
+			"DISCONNECT" => new Class_Systeme_ModulesMenu_Disconnect(),
+			"GOOGLEMAP" => new Class_Systeme_ModulesMenu_GoogleMap(),
+			"AVIS" => new Class_Systeme_ModulesMenu_Avis(),
+			"LAST_NEWS" => new Class_Systeme_ModulesMenu_LastNews(),
+			"NEWS" => new Class_Systeme_ModulesMenu_News(),
+			"SITO" => new Class_Systeme_ModulesMenu_Sitotheque(),
+			"RSS" => new Class_Systeme_ModulesMenu_Rss(),
+			"URL" => new Class_Systeme_ModulesMenu_Url(),
+			"PROFIL" => new Class_Systeme_ModulesMenu_Profil(),
+			"BIBNUM" => new Class_Systeme_ModulesMenu_BibliothequeNumerique(),
+			"RECH_SIMPLE" => new Class_Systeme_ModulesMenu_RechercheSimple(),
+			"RECH_AVANCEE" => new Class_Systeme_ModulesMenu_RechercheAvancee(),
+			"RECH_GUIDEE" => new Class_Systeme_ModulesMenu_RechercheGuidee(),
+			"RECH_GEO" => new Class_Systeme_ModulesMenu_RechercheGeographique(),
+			"RECH_OAI" => new Class_Systeme_ModulesMenu_RechercheOai(),
+			"CATALOGUE" => new Class_Systeme_ModulesMenu_Catalogue(),
+			"ETAGERE" => new Class_Systeme_ModulesMenu_Etagere(),
+			"TAGS" => new Class_Systeme_ModulesMenu_Tags(),
+			"PANIER" => new Class_Systeme_ModulesMenu_Paniers(),
+			"ABON_AVIS" => new Class_Systeme_ModulesMenu_Avis(),
+			"ABON_FICHE" => new Class_Systeme_ModulesMenu_AbonneFiche(),
+			"ABON_MODIF_FICHE" => new Class_Systeme_ModulesMenu_AbonneModificationFiche(),
+			"ABON_PRETS" => new Class_Systeme_ModulesMenu_AbonnePrets(),
+			"ABON_RESAS" => new Class_Systeme_ModulesMenu_AbonneReservations(),
+			"ABON_FORMATIONS" => new Class_Systeme_ModulesMenu_AbonneFormations(),
+			"FORM_CONTACT" => new Class_Systeme_ModulesMenu_FormulaireContact(), 
+			"VODECLIC" => new Class_Systeme_ModulesMenu_Vodeclic(),
+			"RESERVER_POSTE" => new Class_Systeme_ModulesMenu_ReserverPoste(),
+			'SUGGESTION_ACHAT' => new Class_Systeme_ModulesMenu_SuggestionAchat()
 	 ];
-		$this->fonctions = array_merge($this->fonctions,Class_Systeme_ModulesAccueil::getModules());
+
+		$modules_accueil = Class_Systeme_ModulesAccueil::getModules();
+		
+		//		$this->fonctions = array_merge($this->fonctions,Class_Systeme_ModulesAccueil::getModules());
 	
 		foreach ($this->fonctions as $key => $module) {
 			if (!$module->isVisibleForProfil(null)) 

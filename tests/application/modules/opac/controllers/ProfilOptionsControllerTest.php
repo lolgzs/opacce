@@ -206,14 +206,16 @@ class ProfilOptionsControllerViewProfilAdulteTest extends ProfilOptionsControlle
 
 	/** @test */
 	public function menuHorizontalShouldIncludeExternalLinkToGoogle() {
-		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[@href='http://www.google.com'][@target='_blank']", 'Google');
+		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[@href='http://www.google.com'][@target='_blank']", 
+																			'Google');
 	}
 
 
 	/** @test */
 	public function menuHorizontalShouldIncludeLinkToArticleCms() {
-		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[contains(@href, 'cms/articleviewpreferences?id_items=1-3&display_order=Selection')]", 
-																			'Articles');
+		$this->assertXPathContentContains("//div[@id='menu_horizontal']//li//a[contains(@href, 'cms/articleviewpreferences?id_items=1-3&nb_aff=5&nb_analyse=10&display_order=Selection')]", 
+																			'Articles',
+																			$this->_response->getBody());
 	}
 
 
